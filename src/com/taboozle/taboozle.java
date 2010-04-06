@@ -4,9 +4,6 @@ import android.app.*;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import com.taboozle.common.Card;
 
 /**
  * This is the activity class that kicks off Taboozle
@@ -23,7 +20,7 @@ public class taboozle extends Activity {
     super.onCreate(savedInstanceState);
     this.setContentView(R.layout.main);
     ListView cardView = (ListView) this.findViewById(R.id.CardView);
-    ArrayAdapter cardAdapter = ArrayAdapter.createFromResource(
+    ArrayAdapter<CharSequence> cardAdapter = ArrayAdapter.createFromResource(
         this, R.array.testCard, R.layout.word);
     cardView.setAdapter(cardAdapter);
     /**
