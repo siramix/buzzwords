@@ -23,17 +23,6 @@ public class taboozle extends Activity {
     ArrayAdapter<CharSequence> cardAdapter = ArrayAdapter.createFromResource(
         this, R.array.testCard, R.layout.word);
     cardView.setAdapter(cardAdapter);
-    /**
-    card.AddBadWords(badWords);
-    TextView v = new TextView(this);
-    v.setText(card.GetName());
-    v.setTextSize(50);
-    v.setGravity(android.view.Gravity.CENTER);
-    this.getListView().addHeaderView(v);
-    this.getListView().setHeaderDividersEnabled(true);
-    this.setListAdapter(new ArrayAdapter<String>(this,
-        android.R.layout.simple_list_item_1,card.GetBadWords()));
-    this.getListView().setClickable(false);**/
   }
 
 }
