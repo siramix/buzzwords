@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, taboozle!</string>
-    <string name="app_name">taboozle</string>
+  <string name="app_name">taboozle</string>
+  <string-array name="testCard">
+    <item>Perfidious</item>
+    <item>TRUST</item>
+    <item>BETRAY</item>
+    <item>GOSSIP</item>
+    <item>LIAR</item>
+    <item>Backstab</item>
+  </string-array>
 </resources>
