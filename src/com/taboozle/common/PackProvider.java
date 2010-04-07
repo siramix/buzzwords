@@ -50,7 +50,7 @@ public class PackProvider extends ContentProvider {
             db.execSQL("CREATE TABLE " + CARDS_TABLE_NAME + " ("
                     + Cards._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + Cards.TITLE + " TEXT,"
-                    + Cards.BAD_WORDS + " TEXT,"
+                    + Cards.BAD_WORDS + " TEXT"
                     + ");");
         }
 
