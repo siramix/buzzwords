@@ -47,14 +47,16 @@ public class taboozle extends Activity {
     values.put(Cards.TITLE, "Hello");
     values.put(Cards.BAD_WORDS,"HI,GREETING,HOLA,SAY,YOU");
     resolver.insert(Cards.CONTENT_URI, values);
+    
     //Form an array specifying which columns to return.
-    String[] projection = new String[] { 
+    String[] projection = new String[] {
       Cards.TITLE,
       Cards.BAD_WORDS };
     Cursor cur = resolver.query(Pack.Cards.CONTENT_URI, projection, null, null, 
       null);
     cur.moveToFirst();
-    System.out.println(cur.getString(0));
+    Log.e(TAG,cur.getString(0));
+    Log.e(TAG,cur.getString(1));
   }
 
 }

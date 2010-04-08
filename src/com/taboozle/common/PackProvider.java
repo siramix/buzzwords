@@ -7,7 +7,6 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -58,7 +57,7 @@ public class PackProvider extends ContentProvider {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS notes");
+            db.execSQL("DROP TABLE IF EXISTS cards;");
             onCreate(db);
         }
     }
@@ -115,33 +114,39 @@ public class PackProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues initialValues) {
         // Validate the requested uri
-        if (sUriMatcher.match(uri) != CARDS) {
-            throw new IllegalArgumentException("Unknown URI " + uri);
-        }
+        if (sUriMatcher.match(uri) != CARDS) 
+          {
+          throw new IllegalArgumentException("Unknown URI " + uri);
+          }
 
         ContentValues values;
-        if (initialValues != null) {
-            values = new ContentValues(initialValues);
-        } else {
-            values = new ContentValues();
-        }
+        if( initialValues != null ) 
+          {
+          values = new ContentValues(initialValues);
+          } 
+        else 
+          {
+          values = new ContentValues();
+          }
 
-        if (values.containsKey(Pack.Cards.TITLE) == false) {
-            Resources r = Resources.getSystem();
-            values.put(Pack.Cards.TITLE, r.getString(android.R.string.untitled));
-        }
+        if( values.containsKey( Pack.Cards.TITLE ) == false ) 
+          {
+          values.put( Pack.Cards.TITLE, "No Title Given" );
+          }
 
-        if (values.containsKey(Pack.Cards.BAD_WORDS) == false) {
-            values.put(Pack.Cards.BAD_WORDS, "");
-        }
+        if( values.containsKey(Pack.Cards.BAD_WORDS) == false ) 
+          {
+          values.put( Pack.Cards.BAD_WORDS, "No Bad Words Given" );
+          }
 
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        long rowId = db.insert(CARDS_TABLE_NAME, Cards.BAD_WORDS, values);
-        if (rowId > 0) {
-            Uri noteUri = ContentUris.withAppendedId(Pack.Cards.CONTENT_URI, rowId);
-            getContext().getContentResolver().notifyChange(noteUri, null);
-            return noteUri;
-        }
+        long rowId = db.insert( CARDS_TABLE_NAME, "", values );
+        if( rowId > 0 ) 
+          {
+          Uri cardUri = ContentUris.withAppendedId( Pack.Cards.CONTENT_URI, rowId );
+          this.getContext().getContentResolver().notifyChange(cardUri, null);
+          return cardUri;
+          }
 
         throw new SQLException("Failed to insert row into " + uri);
     }
@@ -170,7 +175,9 @@ public class PackProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String where, String[] whereArgs) {
+    public int update( Uri uri, ContentValues values, String where, 
+                       String[] whereArgs ) 
+      {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int count;
         switch (sUriMatcher.match(uri)) {
@@ -190,9 +197,10 @@ public class PackProvider extends ContentProvider {
 
         getContext().getContentResolver().notifyChange(uri, null);
         return count;
-    }
+      }
 
-    static {
+    static 
+      {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         sUriMatcher.addURI(Pack.AUTHORITY, "cards", CARDS);
         sUriMatcher.addURI(Pack.AUTHORITY, "cards/#", CARD_ID);
@@ -201,5 +209,5 @@ public class PackProvider extends ContentProvider {
         sCardsProjectionMap.put(Cards._ID, Cards._ID);
         sCardsProjectionMap.put(Cards.TITLE, Cards.TITLE);
         sCardsProjectionMap.put(Cards.BAD_WORDS, Cards.BAD_WORDS);
-    }
+      }
 }
