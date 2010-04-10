@@ -22,192 +22,234 @@ import com.taboozle.common.Pack.Cards;
  * Provides access to a database of cards. Each card has a title and the words
  * the user cannot say when trying to describe the word.
  */
-public class PackProvider extends ContentProvider {
+public class PackProvider extends ContentProvider
+{
 
-    private static final String TAG = "PackProvider";
+  /**
+   * Tag for logging output
+   */
+  private static final String TAG = "PackProvider";
 
-    private static final String DATABASE_NAME = "cards.db";
-    private static final int DATABASE_VERSION = 2;
-    private static final String CARDS_TABLE_NAME = "cards";
+  /**
+   * Database constants
+   */
+  private static final String DATABASE_NAME = "cards.db";
+  private static final int DATABASE_VERSION = 2;
+  private static final String CARDS_TABLE_NAME = "cards";
 
-    private static final int CARDS = 1;
-    private static final int CARD_ID = 2;
-    private static HashMap<String, String> sCardsProjectionMap;
-    private static final UriMatcher sUriMatcher;
+  /**
+   * Query and URI matching constants
+   */
+  private static final int CARDS = 1;
+  private static final int CARD_ID = 2;
+  private static HashMap<String, String> sCardsProjectionMap;
+  private static final UriMatcher sUriMatcher;
+
+  /**
+   * This class helps open, create, and upgrade the database file.
+   */
+  private static class DatabaseHelper extends SQLiteOpenHelper
+  {
 
     /**
-     * This class helps open, create, and upgrade the database file.
+     * Default constructor for the database helper
+     * 
+     * @param context
+     *          - database context object
      */
-    private static class DatabaseHelper extends SQLiteOpenHelper {
-
-        DatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE " + CARDS_TABLE_NAME + " ("
-                    + Cards._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + Cards.TITLE + " TEXT,"
-                    + Cards.BAD_WORDS + " TEXT"
-                    + ");");
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-                    + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS cards;");
-            onCreate(db);
-        }
-    }
-
-    private DatabaseHelper mOpenHelper;
-
-    @Override
-    public boolean onCreate() {
-        mOpenHelper = new DatabaseHelper(getContext());
-        return true;
+    DatabaseHelper( Context context )
+    {
+      super( context, DATABASE_NAME, null, DATABASE_VERSION );
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-            String sortOrder) {
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(CARDS_TABLE_NAME);
-
-        switch (sUriMatcher.match(uri)) {
-        case CARDS:
-            qb.setProjectionMap(sCardsProjectionMap);
-            break;
-
-        case CARD_ID:
-            qb.setProjectionMap(sCardsProjectionMap);
-            qb.appendWhere(Cards._ID + "=" + uri.getPathSegments().get(1));
-            break;
-
-        default:
-            throw new IllegalArgumentException("Unknown URI " + uri);
-        }
-
-        // Get the database and run the query
-        SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-        Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, null);
-
-        // Tell the cursor what uri to watch, so it knows when its source data changes
-        c.setNotificationUri(getContext().getContentResolver(), uri);
-        return c;
+    public void onCreate( SQLiteDatabase db )
+    {
+      db.execSQL( "CREATE TABLE " + CARDS_TABLE_NAME + " (" + Cards._ID
+                  + " INTEGER PRIMARY KEY AUTOINCREMENT," + Cards.TITLE
+                  + " TEXT," + Cards.BAD_WORDS + " TEXT" + ");" );
     }
 
     @Override
-    public String getType(Uri uri) {
-        switch (sUriMatcher.match(uri)) {
-          case CARDS:
-            return Cards.CONTENT_TYPE;
-          case CARD_ID:
-            return Cards.CONTENT_ITEM_TYPE;
-          default:
-            throw new IllegalArgumentException("Unknown URI " + uri);
-        }
+    public void onUpgrade( SQLiteDatabase db, int oldVersion, int newVersion )
+    {
+      Log.w( TAG, "Upgrading database from version " + oldVersion + " to "
+                  + newVersion + ", which will destroy all old data" );
+      db.execSQL( "DROP TABLE IF EXISTS cards;" );
+      onCreate( db );
     }
 
-    @Override
-    public Uri insert(Uri uri, ContentValues initialValues) {
-        // Validate the requested uri
-        if (sUriMatcher.match(uri) != CARDS) 
-          {
-          throw new IllegalArgumentException("Unknown URI " + uri);
-          }
+  } // End of DatabaseHelper
 
-        ContentValues values;
-        if( initialValues != null ) 
-          {
-          values = new ContentValues(initialValues);
-          } 
-        else 
-          {
-          values = new ContentValues();
-          }
+  private DatabaseHelper mOpenHelper;
 
-        if( values.containsKey( Pack.Cards.TITLE ) == false ) 
-          {
-          values.put( Pack.Cards.TITLE, "No Title Given" );
-          }
+  @Override
+  public boolean onCreate()
+  {
+    mOpenHelper = new DatabaseHelper( getContext() );
+    return true;
+  }
 
-        if( values.containsKey(Pack.Cards.BAD_WORDS) == false ) 
-          {
-          values.put( Pack.Cards.BAD_WORDS, "No Bad Words Given" );
-          }
+  @Override
+  public Cursor query( Uri uri, String[] projection, String selection,
+                       String[] selectionArgs, String sortOrder )
+  {
+    SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+    qb.setTables( CARDS_TABLE_NAME );
 
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        long rowId = db.insert( CARDS_TABLE_NAME, "", values );
-        if( rowId > 0 ) 
-          {
-          Uri cardUri = ContentUris.withAppendedId( Pack.Cards.CONTENT_URI, rowId );
-          this.getContext().getContentResolver().notifyChange(cardUri, null);
-          return cardUri;
-          }
+    switch ( sUriMatcher.match( uri ) )
+    {
+      case CARDS:
+        qb.setProjectionMap( sCardsProjectionMap );
+        break;
 
-        throw new SQLException("Failed to insert row into " + uri);
+      case CARD_ID:
+        qb.setProjectionMap( sCardsProjectionMap );
+        qb.appendWhere( Cards._ID + "=" + uri.getPathSegments().get( 1 ) );
+        break;
+
+      default:
+        throw new IllegalArgumentException( "Unknown URI: " + uri );
     }
 
-    @Override
-    public int delete(Uri uri, String where, String[] whereArgs) {
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        int count;
-        switch (sUriMatcher.match(uri)) {
-        case CARDS:
-            count = db.delete(CARDS_TABLE_NAME, where, whereArgs);
-            break;
+    // Get the database and run the query
+    SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+    Cursor c = qb.query( db, projection, selection, selectionArgs, null, null,
+                         null );
 
-        case CARD_ID:
-            String noteId = uri.getPathSegments().get(1);
-            count = db.delete(CARDS_TABLE_NAME, Cards._ID + "=" + noteId
-                    + (!TextUtils.isEmpty(where) ? " AND (" + where + ')' : ""), whereArgs);
-            break;
+    // Tell the cursor what uri to watch, so it knows when its source data
+    // changes
+    c.setNotificationUri( getContext().getContentResolver(), uri );
+    return c;
+  }
 
-        default:
-            throw new IllegalArgumentException("Unknown URI " + uri);
-        }
+  @Override
+  public String getType( Uri uri )
+  {
+    switch ( sUriMatcher.match( uri ) )
+    {
+      case CARDS:
+        return Cards.CONTENT_TYPE;
+      case CARD_ID:
+        return Cards.CONTENT_ITEM_TYPE;
+      default:
+        throw new IllegalArgumentException( "Unknown URI: " + uri );
+    }
+  }
 
-        getContext().getContentResolver().notifyChange(uri, null);
-        return count;
+  @Override
+  public Uri insert( Uri uri, ContentValues initialValues )
+  {
+    // Validate the requested uri
+    if( sUriMatcher.match( uri ) != CARDS )
+    {
+      throw new IllegalArgumentException( "Unknown URI " + uri );
     }
 
-    @Override
-    public int update( Uri uri, ContentValues values, String where, 
-                       String[] whereArgs ) 
-      {
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        int count;
-        switch (sUriMatcher.match(uri)) {
-        case CARDS:
-            count = db.update(CARDS_TABLE_NAME, values, where, whereArgs);
-            break;
+    ContentValues values;
+    if( initialValues != null )
+    {
+      values = new ContentValues( initialValues );
+    }
+    else
+    {
+      values = new ContentValues();
+    }
 
-        case CARD_ID:
-            String noteId = uri.getPathSegments().get(1);
-            count = db.update(CARDS_TABLE_NAME, values, Cards._ID + "=" + noteId
-                    + (!TextUtils.isEmpty(where) ? " AND (" + where + ')' : ""), whereArgs);
-            break;
+    if( values.containsKey( Pack.Cards.TITLE ) == false )
+    {
+      values.put( Pack.Cards.TITLE, "No Title Given" );
+    }
 
-        default:
-            throw new IllegalArgumentException("Unknown URI " + uri);
-        }
+    if( values.containsKey( Pack.Cards.BAD_WORDS ) == false )
+    {
+      values.put( Pack.Cards.BAD_WORDS, "No Bad Words Given" );
+    }
 
-        getContext().getContentResolver().notifyChange(uri, null);
-        return count;
-      }
+    SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+    long rowId = db.insert( CARDS_TABLE_NAME, "", values );
+    if( rowId > 0 )
+    {
+      Uri cardUri = ContentUris.withAppendedId( Pack.Cards.CONTENT_URI, rowId );
+      this.getContext().getContentResolver().notifyChange( cardUri, null );
+      return cardUri;
+    }
 
-    static 
-      {
-        sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        sUriMatcher.addURI(Pack.AUTHORITY, "cards", CARDS);
-        sUriMatcher.addURI(Pack.AUTHORITY, "cards/#", CARD_ID);
+    throw new SQLException( "Failed to insert row into " + uri );
+  }
 
-        sCardsProjectionMap = new HashMap<String, String>();
-        sCardsProjectionMap.put(Cards._ID, Cards._ID);
-        sCardsProjectionMap.put(Cards.TITLE, Cards.TITLE);
-        sCardsProjectionMap.put(Cards.BAD_WORDS, Cards.BAD_WORDS);
-      }
+  @Override
+  public int delete( Uri uri, String where, String[] whereArgs )
+  {
+    SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+    int count;
+    switch ( sUriMatcher.match( uri ) )
+    {
+      case CARDS:
+        count = db.delete( CARDS_TABLE_NAME, where, whereArgs );
+        break;
+
+      case CARD_ID:
+        String noteId = uri.getPathSegments().get( 1 );
+        count = db
+                  .delete( CARDS_TABLE_NAME,
+                           Cards._ID
+                               + "="
+                               + noteId
+                               + ( !TextUtils.isEmpty( where ) ? " AND ("
+                                                                 + where + ')'
+                                                              : "" ), whereArgs );
+        break;
+
+      default:
+        throw new IllegalArgumentException( "Unknown URI " + uri );
+    }
+
+    getContext().getContentResolver().notifyChange( uri, null );
+    return count;
+  }
+
+  @Override
+  public int update( Uri uri, ContentValues values, String where,
+                     String[] whereArgs )
+  {
+    SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+    int count;
+    switch ( sUriMatcher.match( uri ) )
+    {
+      case CARDS:
+        count = db.update( CARDS_TABLE_NAME, values, where, whereArgs );
+        break;
+
+      case CARD_ID:
+        String noteId = uri.getPathSegments().get( 1 );
+        count = db
+                  .update( CARDS_TABLE_NAME, values,
+                           Cards._ID
+                               + "="
+                               + noteId
+                               + ( !TextUtils.isEmpty( where ) ? " AND ("
+                                                                 + where + ')'
+                                                              : "" ), whereArgs );
+        break;
+
+      default:
+        throw new IllegalArgumentException( "Unknown URI " + uri );
+    }
+
+    getContext().getContentResolver().notifyChange( uri, null );
+    return count;
+  }
+
+  static
+  {
+    sUriMatcher = new UriMatcher( UriMatcher.NO_MATCH );
+    sUriMatcher.addURI( Pack.AUTHORITY, "cards", CARDS );
+    sUriMatcher.addURI( Pack.AUTHORITY, "cards/#", CARD_ID );
+
+    sCardsProjectionMap = new HashMap<String, String>();
+    sCardsProjectionMap.put( Cards._ID, Cards._ID );
+    sCardsProjectionMap.put( Cards.TITLE, Cards.TITLE );
+    sCardsProjectionMap.put( Cards.BAD_WORDS, Cards.BAD_WORDS );
+  }
 }
