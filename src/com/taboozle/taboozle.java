@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * This is the activity class that kicks off Taboozle
@@ -45,13 +46,15 @@ public class taboozle extends Activity
 
     // Setup the main content view and add a card to it from the strings xml
     this.setContentView( R.layout.main );
-    ListView cardView = (ListView) this.findViewById( R.id.CardView );
+    TextView cardTitle = (TextView) this.findViewById( R.id.CardTitle );
+    cardTitle.setText( this.getText(R.string.testTitle) );
+    ListView cardWords = (ListView) this.findViewById( R.id.CardWords );
     ArrayAdapter<CharSequence> cardAdapter = ArrayAdapter
                                                          .createFromResource(
                                                                               this,
-                                                                              R.array.testCard,
+                                                                              R.array.testWords,
                                                                               R.layout.word );
-    cardView.setAdapter( cardAdapter );
+    cardWords.setAdapter( cardAdapter );
 
     // Add content to our content provider
     ContentResolver resolver = this.getContentResolver();

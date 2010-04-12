@@ -7,10 +7,12 @@
 
 
 
-<ListView android:id="@+id/CardView" android:layout_width="fill_parent" android:layout_height="wrap_content">
+<LinearLayout android:id="@+id/CardLayout" android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="wrap_content"><TextView android:id="@+id/CardTitle" android:text="CardTitle" android:layout_gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="center" android:paddingTop="10dp" android:paddingBottom="10dp" android:textSize="32dp"></TextView><ListView android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/CardWords" android:divider="@null" android:dividerHeight="0px" android:paddingTop="30dp" android:paddingBottom="50dp">
 </ListView>
-<LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/ButtonLayout" android:layout_width="fill_parent"><Button android:layout_height="wrap_content" android:text="Buzzer" android:id="@+id/BuzzerButton" android:layout_width="wrap_content"></Button>
-<Button android:layout_height="wrap_content" android:text="Wrong" android:id="@+id/WrongButton" android:layout_width="wrap_content"></Button>
-<Button android:layout_height="wrap_content" android:text="Right" android:id="@+id/RightButton" android:layout_width="wrap_content"></Button>
 </LinearLayout>
+<LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/ButtonLayout" android:layout_width="fill_parent" android:gravity="center_horizontal"><Button android:layout_height="wrap_content" android:text="Buzzer" android:id="@+id/BuzzerButton" android:layout_width="wrap_content"></Button>
+<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Skip" android:id="@+id/SkipButton"></Button>
+<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Correct" android:id="@+id/CorrectButton"></Button>
+</LinearLayout>
+
 </LinearLayout>
