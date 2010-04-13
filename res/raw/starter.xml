@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pack>
+  <card>
+    <title>fungus</title>
+    <bad-words>
+      <word>mushroom</word>
+      <word>spore</word>
+      <word>mildew</word>
+      <word>mold</word>
+      <word>green</word>
+    </bad-words>
+  </card>
+  <card>
+    <title>spaceship</title>
+    <bad-words>
+      <word>moon</word>
+      <word>shuttle</word> 
+      <word>nasa</word>
+      <word>stars</word>
+      <word>galactica</word>
+    </bad-words>
+  </card>
+</pack>

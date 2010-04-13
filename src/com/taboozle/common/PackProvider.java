@@ -1,6 +1,17 @@
 package com.taboozle.common;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -16,6 +27,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.taboozle.R;
 import com.taboozle.common.Pack.Cards;
 
 /**
@@ -50,7 +62,8 @@ public class PackProvider extends ContentProvider
    */
   private static class DatabaseHelper extends SQLiteOpenHelper
   {
-
+    
+    private static Context curContext;
     /**
      * Default constructor for the database helper
      * 
@@ -60,6 +73,7 @@ public class PackProvider extends ContentProvider
     DatabaseHelper( Context context )
     {
       super( context, DATABASE_NAME, null, DATABASE_VERSION );
+      curContext = context;
     }
 
     @Override
@@ -68,6 +82,68 @@ public class PackProvider extends ContentProvider
       db.execSQL( "CREATE TABLE " + CARDS_TABLE_NAME + " (" + Cards._ID
                   + " INTEGER PRIMARY KEY AUTOINCREMENT," + Cards.TITLE
                   + " TEXT," + Cards.BAD_WORDS + " TEXT" + ");" );
+      
+      InputStream starterXML =
+        curContext.getResources().openRawResource(R.raw.starter);
+      DocumentBuilderFactory docBuilderFactory = 
+        DocumentBuilderFactory.newInstance();
+      try
+      {
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(starterXML);
+        NodeList cardNodes = doc.getElementsByTagName( "card" );
+        for(int i = 0; i < cardNodes.getLength(); i++)
+        {        
+          NodeList titleWhiteAndBads = cardNodes.item( i ).getChildNodes();
+          Node titleNode = null;
+          Node badsNode = null;
+          for( int j = 0; j < titleWhiteAndBads.getLength(); j++ )
+          {
+            String candidateName = titleWhiteAndBads.item( j ).getNodeName(); 
+            if( candidateName.equals( "title" ) )
+            {
+              titleNode = titleWhiteAndBads.item( j );
+            }
+            else if( candidateName.equals( "bad-words" ) )
+            {
+              badsNode = titleWhiteAndBads.item( j );
+            }
+            else
+            {
+              continue; // We found some #text
+            }
+          }
+          String title = titleNode.getFirstChild().getNodeValue();
+          String badWords = "";
+          NodeList bads = badsNode.getChildNodes();
+          for( int j = 0; j < bads.getLength(); j++ )
+          {
+            
+            String candidateName = bads.item( j ).getNodeName();
+            if( candidateName.equals( "word" ) )
+            {
+              badWords += bads.item( j ).getFirstChild().getNodeValue() + ",";
+            }
+          }
+          badWords = badWords.substring( 0, badWords.length()-1 ); //hack
+          db.execSQL( "INSERT INTO " + CARDS_TABLE_NAME + " (" + Cards.TITLE 
+                      + ", " 
+                      + Cards.BAD_WORDS + ") VALUES (\"" + title + "\",\""
+                      + badWords + "\"" + ");" );
+        }
+      }
+      catch( ParserConfigurationException e )
+      {
+        e.printStackTrace();
+      }
+      catch( SAXException e )
+      {
+        e.printStackTrace();
+      }
+      catch( IOException e )
+      {
+        e.printStackTrace();
+      }                     
     }
 
     @Override

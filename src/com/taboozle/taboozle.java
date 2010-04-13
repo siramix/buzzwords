@@ -5,7 +5,6 @@ import com.taboozle.common.Pack.Cards;
 
 import android.app.*;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -44,24 +43,8 @@ public class taboozle extends Activity
       intent.setData( Cards.CONTENT_URI );
     }
 
-    // Setup the main content view and add a card to it from the strings xml
-    this.setContentView( R.layout.main );
-    TextView cardTitle = (TextView) this.findViewById( R.id.CardTitle );
-    cardTitle.setText( this.getText(R.string.testTitle) );
-    ListView cardWords = (ListView) this.findViewById( R.id.CardWords );
-    ArrayAdapter<CharSequence> cardAdapter = ArrayAdapter
-                                                         .createFromResource(
-                                                                              this,
-                                                                              R.array.testWords,
-                                                                              R.layout.word );
-    cardWords.setAdapter( cardAdapter );
-
     // Add content to our content provider
     ContentResolver resolver = this.getContentResolver();
-    ContentValues values = new ContentValues();
-    values.put( Cards.TITLE, "Hello" );
-    values.put( Cards.BAD_WORDS, "HI,GREETING,HOLA,SAY,YOU" );
-    resolver.insert( Cards.CONTENT_URI, values );
 
     // Form an array specifying which columns to return.
     String[] projection = new String[] { Cards.TITLE, Cards.BAD_WORDS };
@@ -69,9 +52,33 @@ public class taboozle extends Activity
     // Query and print the added card record
     Cursor cur = resolver.query( Pack.Cards.CONTENT_URI, projection, null,
                                  null, null );
-    cur.moveToFirst();
-    Log.e( TAG, cur.getString( 0 ) );
-    Log.e( TAG, cur.getString( 1 ) );
-  }
+        
+    // Run the query
+    if( cur.moveToFirst() )
+    {
+      int titleColumn = cur.getColumnIndex( Cards.TITLE );
+      int badWordsColumn = cur.getColumnIndex( Cards.BAD_WORDS );
 
+      do
+      {
+        // Get the field values
+        String title = cur.getString( titleColumn );
+        String badWords = cur.getString( badWordsColumn );
+
+        // Do something with the values.
+        Log.d( TAG, title );
+        Log.d( TAG, badWords );
+        
+        // Setup the main content view and add a card to it from the strings xml
+        this.setContentView( R.layout.main );
+        TextView cardTitle = (TextView) this.findViewById( R.id.CardTitle );
+        cardTitle.setText( title );
+        ListView cardWords = (ListView) this.findViewById( R.id.CardWords );
+        ArrayAdapter<CharSequence> cardAdapter = 
+          ArrayAdapter.createFromResource( this, R.array.testWords, R.layout.word );
+        cardWords.setAdapter( cardAdapter );
+      }
+      while( cur.moveToNext() );
+    }
+  }
 }
