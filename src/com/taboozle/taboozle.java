@@ -1,5 +1,7 @@
 package com.taboozle;
 
+import java.util.StringTokenizer;
+
 import com.taboozle.common.Pack;
 import com.taboozle.common.Pack.Cards;
 
@@ -20,7 +22,6 @@ import android.widget.TextView;
  */
 public class taboozle extends Activity
 {
-
   /**
    * constant for the logging tag
    */
@@ -74,8 +75,13 @@ public class taboozle extends Activity
         TextView cardTitle = (TextView) this.findViewById( R.id.CardTitle );
         cardTitle.setText( title );
         ListView cardWords = (ListView) this.findViewById( R.id.CardWords );
-        ArrayAdapter<CharSequence> cardAdapter = 
-          ArrayAdapter.createFromResource( this, R.array.testWords, R.layout.word );
+        ArrayAdapter<String> cardAdapter = 
+          new ArrayAdapter<String>( this, R.layout.word );
+        StringTokenizer tok = new StringTokenizer(badWords);
+        while( tok.hasMoreTokens() )
+        {
+          cardAdapter.add( tok.nextToken( "," ) );
+        }
         cardWords.setAdapter( cardAdapter );
       }
       while( cur.moveToNext() );
