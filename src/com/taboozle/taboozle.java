@@ -8,10 +8,14 @@ import com.taboozle.common.Pack.Cards;
 import android.app.*;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.view.View.OnClickListener;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +26,16 @@ import android.widget.TextView;
  */
 public class taboozle extends Activity
 {
+
+  //Create an anonymous implementation of OnClickListener
+  private OnClickListener BuzzListener = new OnClickListener() {
+      public void onClick(View v) 
+      {
+        MediaPlayer mp = MediaPlayer.create( v.getContext(), R.raw.buzzer );
+        mp.start();
+      }
+  };
+  
   /**
    * constant for the logging tag
    */
@@ -86,5 +100,7 @@ public class taboozle extends Activity
       }
       while( cur.moveToNext() );
     }
+    Button buzzerButton = (Button)this.findViewById( R.id.BuzzerButton );
+    buzzerButton.setOnClickListener( BuzzListener );
   }
 }
