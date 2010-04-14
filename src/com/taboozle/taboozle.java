@@ -1,5 +1,6 @@
 package com.taboozle;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import com.taboozle.common.Pack;
@@ -12,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,8 +27,37 @@ import android.widget.TextView;
 public class taboozle extends Activity
 {
 
-  //Create an anonymous implementation of OnClickListener
-  private OnClickListener BuzzListener = new OnClickListener() {
+  /**
+   * Small private class for representing the card in memory as strings 
+   */
+  private class CardStrings
+  {
+    public String title;
+    public ArrayList<String> badWords;
+    
+    public CardStrings()
+    {
+      title = "";
+      badWords = new ArrayList<String>();
+    }
+    
+  }
+  
+  /**
+   * A variable-length list of cards for in-memory storage
+   */
+  protected ArrayList<CardStrings> cardStrings;
+  
+  /**
+   * An integer to keep track of were we are
+   */
+  protected int cardPosition;
+  
+  /**
+   * OnClickListener for the buzzer button
+   */
+  private OnClickListener BuzzListener = new OnClickListener() 
+  {
       public void onClick(View v) 
       {
         MediaPlayer mp = MediaPlayer.create( v.getContext(), R.raw.buzzer );
@@ -39,8 +68,54 @@ public class taboozle extends Activity
   /**
    * constant for the logging tag
    */
-  private static final String TAG = "taboozle";
+  //private static final String TAG = "taboozle";
 
+  /**
+   * Function for changing the currently viewed card. It does a bit of bounds
+   * checking.
+   */
+  protected void showCard()
+  {
+    if( this.cardPosition >= this.cardStrings.size() ||
+        this.cardPosition < 0 )
+    {
+      this.cardPosition = 0;
+    }
+    TextView cardTitle = (TextView) this.findViewById( R.id.CardTitle );
+    ListView cardWords = (ListView) this.findViewById( R.id.CardWords );
+    ArrayAdapter<String> cardAdapter = 
+      new ArrayAdapter<String>( this, R.layout.word );
+    CardStrings curCard = this.cardStrings.get( this.cardPosition );
+    cardTitle.setText( curCard.title );
+    for( int i = 0; i < curCard.badWords.size(); i++ )
+    {
+      cardAdapter.add( curCard.badWords.get( i ) );
+    }
+    cardWords.setAdapter( cardAdapter );
+  }
+  
+  private OnClickListener CorrectListener = new OnClickListener() 
+  {
+      public void onClick(View v) 
+      {
+        cardPosition++;
+        showCard();
+      }
+  };
+  
+  private OnClickListener SkipListener = new OnClickListener() 
+  {
+      public void onClick(View v) 
+      {
+        cardPosition--;
+        if( cardPosition < 0 )
+        {
+          cardPosition = cardStrings.size()-1;
+        }
+        showCard();
+      }
+  };
+  
   /**
    * onCreate - initializes the activity to display the word you have to cause
    * your team mates to say with the words you cannot say below.
@@ -50,6 +125,9 @@ public class taboozle extends Activity
   {
     super.onCreate( savedInstanceState );
 
+    this.cardStrings = new ArrayList<CardStrings>();
+    this.cardPosition = 0;
+      
     // If no data was given in the intent (because we were started
     // as a MAIN activity), then use our default content provider.
     Intent intent = this.getIntent();
@@ -67,6 +145,9 @@ public class taboozle extends Activity
     // Query and print the added card record
     Cursor cur = resolver.query( Pack.Cards.CONTENT_URI, projection, null,
                                  null, null );
+    
+    // Setup the view
+    this.setContentView( R.layout.main );
         
     // Run the query
     if( cur.moveToFirst() )
@@ -80,27 +161,30 @@ public class taboozle extends Activity
         String title = cur.getString( titleColumn );
         String badWords = cur.getString( badWordsColumn );
 
-        // Do something with the values.
-        Log.d( TAG, title );
-        Log.d( TAG, badWords );
-        
-        // Setup the main content view and add a card to it from the strings xml
-        this.setContentView( R.layout.main );
-        TextView cardTitle = (TextView) this.findViewById( R.id.CardTitle );
-        cardTitle.setText( title );
-        ListView cardWords = (ListView) this.findViewById( R.id.CardWords );
-        ArrayAdapter<String> cardAdapter = 
-          new ArrayAdapter<String>( this, R.layout.word );
         StringTokenizer tok = new StringTokenizer(badWords);
+
+        CardStrings cWords = new CardStrings();
+        cWords.title = title;
+        
         while( tok.hasMoreTokens() )
         {
-          cardAdapter.add( tok.nextToken( "," ) );
+          cWords.badWords.add( tok.nextToken( "," ) );
         }
-        cardWords.setAdapter( cardAdapter );
+        
+        this.cardStrings.add( cWords );
       }
       while( cur.moveToNext() );
     }
+    
+    this.showCard();
+    
     Button buzzerButton = (Button)this.findViewById( R.id.BuzzerButton );
     buzzerButton.setOnClickListener( BuzzListener );
+    
+    Button nextButton = (Button)this.findViewById( R.id.CorrectButton );
+    nextButton.setOnClickListener( CorrectListener );
+    
+    Button skipButton = (Button)this.findViewById( R.id.SkipButton );
+    skipButton.setOnClickListener( SkipListener );
   }
 }
