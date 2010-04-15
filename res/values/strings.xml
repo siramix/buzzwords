@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">taboozle</string>
-  <string name="testTitle">Perfidious</string>
-  <string-array name="testWords">
-    <item>TRUST</item>
-    <item>BETRAY</item>
-    <item>GOSSIP</item>
-    <item>LIAR</item>
-    <item>BACKSTAB</item>
-  </string-array>
 </resources>
