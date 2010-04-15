@@ -10,6 +10,9 @@ import android.app.*;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -76,6 +79,26 @@ public class taboozle extends Activity
    */
   //private static final String TAG = "taboozle";
 
+  private Animation InFromRightAnimation ()
+  {
+	Animation inFromRight = new TranslateAnimation(
+		  	Animation.RELATIVE_TO_PARENT,  1.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
+		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
+  	inFromRight.setDuration(2000);
+  	inFromRight.setInterpolator(new OvershootInterpolator(1));
+  	return inFromRight;
+  }
+
+  private Animation OutToLeftAnimation ()
+  {
+	Animation outToLeft = new TranslateAnimation(
+		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,  -1.0f,
+		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
+	outToLeft.setDuration(2000);
+	outToLeft.setInterpolator(new OvershootInterpolator(1));
+  	return outToLeft;
+  }  
+  
   /**
    * Function for changing the currently viewed card. It does a bit of bounds
    * checking.
@@ -156,7 +179,15 @@ public class taboozle extends Activity
     this.Deck = new ArrayList<CardStrings>();
     this.DeckPosition = 0;
     this.AIsActive = true;
-      
+
+    
+    // Setup the view
+    this.setContentView( R.layout.main );
+    
+    ViewFlipper flipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
+    flipper.setInAnimation(InFromRightAnimation());
+    flipper.setOutAnimation(OutToLeftAnimation());
+    
     // If no data was given in the intent (because we were started
     // as a MAIN activity), then use our default content provider.
     Intent intent = this.getIntent();
@@ -175,9 +206,6 @@ public class taboozle extends Activity
     // Query and print the added card record
     Cursor cur = resolver.query( Pack.Cards.CONTENT_URI, projection, null,
                                  null, null );
-    
-    // Setup the view
-    this.setContentView( R.layout.main );
 
     // Iterate through cursor transferring from database to memory
     if( cur.moveToFirst() )
