@@ -20,4 +20,14 @@
       <word>galactica</word>
     </bad-words>
   </card>
+  <card>
+    <title>town house</title>
+    <bad-words>
+      <word>neighbor</word>
+      <word>yard</word> 
+      <word>live</word>
+      <word>home</word>
+      <word>residence</word>
+    </bad-words>
+  </card>
 </pack>

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 /**
  * This is the activity class that kicks off Taboozle
@@ -87,8 +88,21 @@ public class taboozle extends Activity
       this.DeckPosition = 0;
     }
 
-    TextView cardTitle = (TextView) this.findViewById( R.id.CardTitleA );
-    ListView cardWords = (ListView) this.findViewById( R.id.CardWordsA );
+    int curTitle = 0;
+    int curWords = 0;
+    if( this.AIsActive )
+    {
+    	curTitle = R.id.CardTitleA;
+    	curWords = R.id.CardWordsA;
+    }
+    else
+    {
+    	curTitle = R.id.CardTitleB;
+    	curWords = R.id.CardWordsB;
+    }
+    
+    TextView cardTitle = (TextView) this.findViewById( curTitle );
+    ListView cardWords = (ListView) this.findViewById( curWords );
     // Disable the ListView to prevent its children from being clickable
     cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter = 
@@ -106,6 +120,9 @@ public class taboozle extends Activity
   {
       public void onClick(View v) 
       {
+        AIsActive = !AIsActive;
+        ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
+        flipper.showNext();
         DeckPosition++;
         ShowCard();
       }
@@ -115,6 +132,9 @@ public class taboozle extends Activity
   {
       public void onClick(View v) 
       {
+        AIsActive = !AIsActive;
+        ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
+        flipper.showNext();
         DeckPosition--;
         if( DeckPosition < 0 )
         {
@@ -135,6 +155,7 @@ public class taboozle extends Activity
 
     this.Deck = new ArrayList<CardStrings>();
     this.DeckPosition = 0;
+    this.AIsActive = true;
       
     // If no data was given in the intent (because we were started
     // as a MAIN activity), then use our default content provider.
@@ -189,11 +210,17 @@ public class taboozle extends Activity
     
     ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonA );
     buzzerButton.setOnClickListener( BuzzListener );
+    buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonB );
+    buzzerButton.setOnClickListener( BuzzListener );
     
     ImageButton nextButton = (ImageButton)this.findViewById( R.id.CorrectButtonA );
     nextButton.setOnClickListener( CorrectListener );
+    nextButton = (ImageButton)this.findViewById( R.id.CorrectButtonB );
+    nextButton.setOnClickListener( CorrectListener );
     
     Button skipButton = (Button)this.findViewById( R.id.SkipButtonA );
+    skipButton.setOnClickListener( SkipListener );
+    skipButton = (Button)this.findViewById( R.id.SkipButtonB );
     skipButton.setOnClickListener( SkipListener );
   }
 }
