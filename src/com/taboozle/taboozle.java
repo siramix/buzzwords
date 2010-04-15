@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,7 +41,6 @@ public class taboozle extends Activity
       title = "";
       badWords = new ArrayList<String>();
     }
-    
   }
   
   /**
@@ -49,7 +49,7 @@ public class taboozle extends Activity
   protected ArrayList<CardStrings> cardStrings;
   
   /**
-   * An integer to keep track of were we are
+   * An integer to keep track of where we are
    */
   protected int cardPosition;
   
@@ -83,6 +83,8 @@ public class taboozle extends Activity
     }
     TextView cardTitle = (TextView) this.findViewById( R.id.CardTitle );
     ListView cardWords = (ListView) this.findViewById( R.id.CardWords );
+    // Disable the ListView to prevent its children from being clickable
+    cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter = 
       new ArrayAdapter<String>( this, R.layout.word );
     CardStrings curCard = this.cardStrings.get( this.cardPosition );
@@ -131,30 +133,31 @@ public class taboozle extends Activity
     // If no data was given in the intent (because we were started
     // as a MAIN activity), then use our default content provider.
     Intent intent = this.getIntent();
+
     if( intent.getData() == null )
     {
       intent.setData( Cards.CONTENT_URI );
     }
-
+    
     // Add content to our content provider
     ContentResolver resolver = this.getContentResolver();
-
+    
     // Form an array specifying which columns to return.
     String[] projection = new String[] { Cards.TITLE, Cards.BAD_WORDS };
-
+    
     // Query and print the added card record
     Cursor cur = resolver.query( Pack.Cards.CONTENT_URI, projection, null,
                                  null, null );
     
     // Setup the view
     this.setContentView( R.layout.main );
-        
-    // Run the query
+
+    // Iterate through cursor transfering from database to memory
     if( cur.moveToFirst() )
     {
       int titleColumn = cur.getColumnIndex( Cards.TITLE );
       int badWordsColumn = cur.getColumnIndex( Cards.BAD_WORDS );
-
+      
       do
       {
         // Get the field values
@@ -178,10 +181,10 @@ public class taboozle extends Activity
     
     this.showCard();
     
-    Button buzzerButton = (Button)this.findViewById( R.id.BuzzerButton );
+    ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButton );
     buzzerButton.setOnClickListener( BuzzListener );
     
-    Button nextButton = (Button)this.findViewById( R.id.CorrectButton );
+    ImageButton nextButton = (ImageButton)this.findViewById( R.id.CorrectButton );
     nextButton.setOnClickListener( CorrectListener );
     
     Button skipButton = (Button)this.findViewById( R.id.SkipButton );
