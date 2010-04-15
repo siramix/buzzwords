@@ -46,12 +46,17 @@ public class taboozle extends Activity
   /**
    * A variable-length list of cards for in-memory storage
    */
-  protected ArrayList<CardStrings> cardStrings;
+  protected ArrayList<CardStrings> Deck;
   
   /**
    * An integer to keep track of where we are
    */
-  protected int cardPosition;
+  protected int DeckPosition;
+  
+  /**
+   * Boolean to track which views are currently active
+   */
+  protected boolean AIsActive;
   
   /**
    * OnClickListener for the buzzer button
@@ -74,20 +79,21 @@ public class taboozle extends Activity
    * Function for changing the currently viewed card. It does a bit of bounds
    * checking.
    */
-  protected void showCard()
+  protected void ShowCard()
   {
-    if( this.cardPosition >= this.cardStrings.size() ||
-        this.cardPosition < 0 )
+    if( this.DeckPosition >= this.Deck.size() ||
+        this.DeckPosition < 0 )
     {
-      this.cardPosition = 0;
+      this.DeckPosition = 0;
     }
-    TextView cardTitle = (TextView) this.findViewById( R.id.CardTitle );
-    ListView cardWords = (ListView) this.findViewById( R.id.CardWords );
+
+    TextView cardTitle = (TextView) this.findViewById( R.id.CardTitleA );
+    ListView cardWords = (ListView) this.findViewById( R.id.CardWordsA );
     // Disable the ListView to prevent its children from being clickable
     cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter = 
       new ArrayAdapter<String>( this, R.layout.word );
-    CardStrings curCard = this.cardStrings.get( this.cardPosition );
+    CardStrings curCard = this.Deck.get( this.DeckPosition );
     cardTitle.setText( curCard.title );
     for( int i = 0; i < curCard.badWords.size(); i++ )
     {
@@ -100,8 +106,8 @@ public class taboozle extends Activity
   {
       public void onClick(View v) 
       {
-        cardPosition++;
-        showCard();
+        DeckPosition++;
+        ShowCard();
       }
   };
   
@@ -109,12 +115,12 @@ public class taboozle extends Activity
   {
       public void onClick(View v) 
       {
-        cardPosition--;
-        if( cardPosition < 0 )
+        DeckPosition--;
+        if( DeckPosition < 0 )
         {
-          cardPosition = cardStrings.size()-1;
+        	DeckPosition = Deck.size()-1;
         }
-        showCard();
+        ShowCard();
       }
   };
   
@@ -127,8 +133,8 @@ public class taboozle extends Activity
   {
     super.onCreate( savedInstanceState );
 
-    this.cardStrings = new ArrayList<CardStrings>();
-    this.cardPosition = 0;
+    this.Deck = new ArrayList<CardStrings>();
+    this.DeckPosition = 0;
       
     // If no data was given in the intent (because we were started
     // as a MAIN activity), then use our default content provider.
@@ -152,7 +158,7 @@ public class taboozle extends Activity
     // Setup the view
     this.setContentView( R.layout.main );
 
-    // Iterate through cursor transfering from database to memory
+    // Iterate through cursor transferring from database to memory
     if( cur.moveToFirst() )
     {
       int titleColumn = cur.getColumnIndex( Cards.TITLE );
@@ -174,20 +180,20 @@ public class taboozle extends Activity
           cWords.badWords.add( tok.nextToken( "," ) );
         }
         
-        this.cardStrings.add( cWords );
+        this.Deck.add( cWords );
       }
       while( cur.moveToNext() );
     }
     
-    this.showCard();
+    this.ShowCard();
     
-    ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButton );
+    ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonA );
     buzzerButton.setOnClickListener( BuzzListener );
     
-    ImageButton nextButton = (ImageButton)this.findViewById( R.id.CorrectButton );
+    ImageButton nextButton = (ImageButton)this.findViewById( R.id.CorrectButtonA );
     nextButton.setOnClickListener( CorrectListener );
     
-    Button skipButton = (Button)this.findViewById( R.id.SkipButton );
+    Button skipButton = (Button)this.findViewById( R.id.SkipButtonA );
     skipButton.setOnClickListener( SkipListener );
   }
 }
