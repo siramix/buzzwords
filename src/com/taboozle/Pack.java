@@ -1,4 +1,4 @@
-package com.taboozle.common;
+package com.taboozle;
 
 import android.net.*;
 import android.provider.*;
@@ -12,7 +12,7 @@ public final class Pack
   /**
    * Constant for the authority to be used in the URI
    */
-  public static final String AUTHORITY = "com.taboozle.provider.Pack";
+  public static final String AUTHORITY = "com.taboozle.Pack";
 
   // This class cannot be instantiated
   private Pack()

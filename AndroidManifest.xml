@@ -11,8 +11,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    <provider android:name=".common.PackProvider" 
-              android:authorities="com.taboozle.provider.Pack" />
+    <provider android:name="com.taboozle.PackProvider" 
+              android:authorities="com.taboozle.Pack" />
   </application>
 	<uses-sdk android:minSdkVersion="7" 
           android:targetSdkVersion="7"

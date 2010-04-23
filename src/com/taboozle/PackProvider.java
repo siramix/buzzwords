@@ -1,4 +1,4 @@
-package com.taboozle.common;
+package com.taboozle;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +28,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.taboozle.R;
-import com.taboozle.common.Pack.Cards;
+import com.taboozle.Pack.Cards;
 
 /**
  * Provides access to a database of cards. Each card has a title and the words

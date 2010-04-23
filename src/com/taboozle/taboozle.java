@@ -3,8 +3,7 @@ package com.taboozle;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import com.taboozle.common.Pack;
-import com.taboozle.common.Pack.Cards;
+import com.taboozle.Pack.Cards;
 
 import android.app.*;
 import android.content.ContentResolver;
