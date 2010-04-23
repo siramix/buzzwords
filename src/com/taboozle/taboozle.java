@@ -16,6 +16,7 @@ import android.view.animation.TranslateAnimation;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -46,7 +47,7 @@ public class taboozle extends Activity
       badWords = new ArrayList<String>();
     }
   }
-  
+ 
   /**
    * A variable-length list of cards for in-memory storage
    */
@@ -61,6 +62,25 @@ public class taboozle extends Activity
    * Boolean to track which views are currently active
    */
   protected boolean AIsActive;
+  
+  /**
+   * Unique IDs for Options menu
+   */
+  protected static final int MENU_ENDGAME = 0;
+  protected static final int MENU_SCORE = 1;
+  protected static final int MENU_RULES = 2;  
+ 
+  /**
+   *  Creates the menu items 
+   */
+  public boolean onCreateOptionsMenu(Menu menu) 
+  {	  
+      menu.add(0, MENU_ENDGAME, 0, "End Game");
+      menu.add(0, MENU_SCORE, 0, "Score");
+      menu.add(0, MENU_RULES, 0, "Rules");
+      
+      return true;
+  } 
   
   /**
    * OnClickListener for the buzzer button
