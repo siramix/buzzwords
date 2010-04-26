@@ -7,15 +7,19 @@ import com.taboozle.Pack.Cards;
 
 import android.app.*;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.database.Cursor;
-import android.media.MediaPlayer;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -63,6 +67,13 @@ public class taboozle extends Activity
   protected boolean AIsActive;
   
   /**
+   * Sound pool for playing the buzz sound on a loop.
+   */
+  protected SoundPool soundPool;
+  protected int buzzSoundId;
+  protected int buzzStreamId;
+  
+  /**
    * Unique IDs for Options menu
    */
   protected static final int MENU_ENDGAME = 0;
@@ -84,12 +95,31 @@ public class taboozle extends Activity
   /**
    * OnClickListener for the buzzer button
    */
-  private OnClickListener BuzzListener = new OnClickListener() 
+  private OnTouchListener BuzzListener = new OnTouchListener() 
   {
-      public void onClick(View v) 
+      public boolean onTouch(View v, MotionEvent event) 
       {
-        MediaPlayer mp = MediaPlayer.create( v.getContext(), R.raw.buzzer );
-        mp.start();
+        AudioManager mgr = 
+          (AudioManager) v.getContext().getSystemService( Context.AUDIO_SERVICE );
+        float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
+        float streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC); 
+        float volume = streamVolumeCurrent / streamVolumeMax;
+        boolean ret = false;
+        if( event.getAction() == MotionEvent.ACTION_DOWN )
+        {
+          buzzStreamId = soundPool.play( buzzSoundId, volume, volume, 1, -1, 1.0f );
+          ret = true;
+        }
+        else if( event.getAction() == MotionEvent.ACTION_UP)
+        {
+          soundPool.stop( buzzStreamId );
+          ret = true;
+        }
+        else
+        {
+          ret = false;
+        }
+        return ret;
       }
   };
   
@@ -199,6 +229,9 @@ public class taboozle extends Activity
     this.DeckPosition = 0;
     this.AIsActive = true;
 
+
+    this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
+    this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
     
     // Setup the view
     this.setContentView( R.layout.main );
@@ -256,9 +289,9 @@ public class taboozle extends Activity
     this.ShowCard();
     
     ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonA );
-    buzzerButton.setOnClickListener( BuzzListener );
+    buzzerButton.setOnTouchListener( BuzzListener );
     buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonB );
-    buzzerButton.setOnClickListener( BuzzListener );
+    buzzerButton.setOnTouchListener( BuzzListener );
     
     ImageButton nextButton = (ImageButton)this.findViewById( R.id.CorrectButtonA );
     nextButton.setOnClickListener( CorrectListener );
