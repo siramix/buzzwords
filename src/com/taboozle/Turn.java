@@ -29,11 +29,12 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 /**
- * This is the activity class that kicks off Taboozle
+ * This handles a single turn consisting of cards presented to a player for a 
+ * limited amount of time.
  * 
  * @author The Taboozle Team
  */
-public class taboozle extends Activity
+public class Turn extends Activity
 {
 
   /**
@@ -234,7 +235,7 @@ public class taboozle extends Activity
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
     
     // Setup the view
-    this.setContentView( R.layout.main );
+    this.setContentView(R.layout.turn );
     
     ViewFlipper flipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
     flipper.setInAnimation(InFromRightAnimation());
