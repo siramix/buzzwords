@@ -18,6 +18,7 @@ import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -216,7 +217,34 @@ public class Turn extends Activity
         ShowCard();
       }
   };
-  
+ 
+  /**
+   * CountdownTimer - This initializes a timer during every turn that runs a
+   * method when it completes as well as during update intervals.
+  */ 
+  public class TurnTimer extends CountDownTimer
+  {
+	  
+	  public TurnTimer(long millisInFuture, long countDownInterval) 
+	  {
+		  super(millisInFuture, countDownInterval);
+	  }
+	  
+	  @Override
+      public void onFinish() {
+		 TextView countdownTxt = (TextView) findViewById( R.id.Timer );
+         countdownTxt.setText("Out of time!");
+      }
+	  
+	  @Override
+      public void onTick(long millisUntilFinished) 
+      {
+		 TextView countdownTxt = (TextView) findViewById( R.id.Timer );
+		 countdownTxt.setText( Long.toString(( millisUntilFinished / 1000 ) + 1 ));
+      }
+  };
+
+
   /**
    * onCreate - initializes the activity to display the word you have to cause
    * your team mates to say with the words you cannot say below.
@@ -288,6 +316,9 @@ public class Turn extends Activity
     }
     
     this.ShowCard();
+    
+    TurnTimer counter = new TurnTimer( 60000, 200);
+    counter.start();
     
     ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonA );
     buzzerButton.setOnTouchListener( BuzzListener );
