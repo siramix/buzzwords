@@ -1,7 +1,7 @@
 package com.taboozle;
 
-import android.net.Uri;
-import android.provider.BaseColumns;
+import android.net.*;
+import android.provider.*;
 
 /**
  * Convenience definitions for CardProvider
