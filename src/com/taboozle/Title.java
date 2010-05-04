@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.taboozle;
 
 import android.app.Activity;
@@ -14,19 +11,21 @@ import android.widget.ImageButton;
  * 
  * @author The Taboozle Team
  */
-public class Title extends Activity {
-
+public class Title extends Activity
+{
+  /**
+  * PlayGameListener is used for the start game button.  It launches the next activity.
+  */
   private OnClickListener PlayGameListener = new OnClickListener() 
   {
       public void onClick(View v) 
       {
     	  	startActivity(new Intent(Intent.ACTION_RUN, getIntent().getData()));
       }
-  };	
+  };
 	
 /**
-* onCreate - initializes the activity to display the word you have to cause
-* your team mates to say with the words you cannot say below.
+* onCreate - initializes a welcome screen that starts the game.
 */
 @Override
 public void onCreate( Bundle savedInstanceState )

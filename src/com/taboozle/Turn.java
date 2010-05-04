@@ -232,8 +232,7 @@ public class Turn extends Activity
 	  
 	  @Override
       public void onFinish() {
-		 TextView countdownTxt = (TextView) findViewById( R.id.Timer );
-         countdownTxt.setText("Out of time!");
+         OnTurnEnd();
       }
 	  
 	  @Override
@@ -244,6 +243,15 @@ public class Turn extends Activity
       }
   };
 
+  /**
+   * OnTurnEnd - Hands off the intent to the next turn summary activity.
+   */
+  protected void OnTurnEnd( )
+  {
+	  Intent newintent = new Intent( this, TurnSummary.class);
+	  //startActivity(new Intent(Intent.ACTION_SEND, getIntent().getData()));
+	  startActivity(newintent);
+  }
 
   /**
    * onCreate - initializes the activity to display the word you have to cause
@@ -317,7 +325,7 @@ public class Turn extends Activity
     
     this.ShowCard();
     
-    TurnTimer counter = new TurnTimer( 60000, 200);
+    TurnTimer counter = new TurnTimer( 10000, 200);
     counter.start();
     
     ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonA );
