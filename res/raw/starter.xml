@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pack>
   <card>
+    <pack-name>starter</pack-name>
     <title>fungus</title>
+    <categories>starter</categories>
     <bad-words>
       <word>mushroom</word>
       <word>spore</word>
@@ -11,7 +13,9 @@
     </bad-words>
   </card>
   <card>
+    <pack-name>starter</pack-name>
     <title>spaceship</title>
+    <categories>starter</categories>
     <bad-words>
       <word>moon</word>
       <word>shuttle</word> 
@@ -21,7 +25,9 @@
     </bad-words>
   </card>
   <card>
+    <pack-name>starter</pack-name>  
     <title>town house</title>
+    <categories>starter</categories>
     <bad-words>
       <word>neighbor</word>
       <word>yard</word> 

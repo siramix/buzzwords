@@ -53,6 +53,14 @@ public final class Pack
      * </P>
      */
     public static final String TITLE = "title";
+    
+    /**
+     * name of the pack that it comes from 
+     * <P>
+     * Type: TEXT
+     * </P>
+     */
+    public static final String PACK_NAME = "pack_name";
 
     /**
      * The words the user cannot say when describing the card
@@ -61,5 +69,13 @@ public final class Pack
      * </P>
      */
     public static final String BAD_WORDS = "badwords";
+    
+    /**
+     * The categories the word falls into
+     * <P>
+     * Type: TEXT
+     * </P>
+     */
+    public static final String CATEGORIES = "categories";
   }
 }
