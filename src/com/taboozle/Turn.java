@@ -248,8 +248,9 @@ public class Turn extends Activity
    */
   protected void OnTurnEnd( )
   {
+	  //Stop the sound if someone had the buzzer held down
+	  soundPool.stop( buzzStreamId );
 	  Intent newintent = new Intent( this, TurnSummary.class);
-	  //startActivity(new Intent(Intent.ACTION_SEND, getIntent().getData()));
 	  startActivity(newintent);
   }
 
