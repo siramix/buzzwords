@@ -98,16 +98,93 @@ public final class GameData
     
   }
   
-  /* FinalScores ( for optimization purposes)                                      
-  ** final_score_id - int                                                         
-  ** team_id - int                                                                
-  ** game_id - int                                                                
-  ** score - something big                                                        
-  * GameHistories ( extra verbosity )                                             
-  ** id - int                                                                     
-  ** game_id - int                                                                
-  ** team_id - int                                                                
-  ** card_id - int                                                                
-  ** turn_score_id - int                                                          
-  ** rws - tiny int (2 bits)*/ 
+  /**
+   * FinalScores Table
+   */
+  public static final class FinalScores implements BaseColumns
+  {
+
+    // This class cannot be instantiated
+    private FinalScores()
+    {
+    }
+
+    /**
+     * The id of the team that corresponds to the TurnScore
+     * <P>
+     * Type: INTEGER
+     * </P>
+     */
+    public static final String TEAM_ID = "team_id";
+    
+    /**
+     * The id of the game that corresponds to the TurnScore
+     * <P>
+     * Type: INTEGER
+     * </P>
+     */
+    public static final String GAME_ID = "game_id";
+    
+    /**
+     * The number of points
+     * <P>
+     * Type: INTEGER
+     * </P>
+     */
+    public static final String SCORE = "score";
+    
+  }
+  
+  /**
+   * FinalScores Table
+   */
+  public static final class GameHistory implements BaseColumns
+  {
+
+    // This class cannot be instantiated
+    private GameHistory()
+    {
+    }
+
+    /**
+     * The id of the team that corresponds to the GameHistory
+     * <P>
+     * Type: INTEGER
+     * </P>
+     */
+    public static final String TEAM_ID = "team_id";
+    
+    /**
+     * The id of the game that corresponds to the GameHistory
+     * <P>
+     * Type: INTEGER
+     * </P>
+     */
+    public static final String GAME_ID = "game_id";
+    
+    /**
+     * The id of the card that corresponds to the GameHistory
+     * <P>
+     * Type: INTEGER
+     * </P>
+     */
+    public static final String CARD_ID = "card_id";
+    
+    /**
+     * The id of the TurnScore that corresponds to the GameHistory
+     * <P>
+     * Type: INTEGER
+     * </P>
+     */
+    public static final String TURN_SCORE_ID = "turn_score_id";
+    
+    /**
+     * Right 0, Wrong 1, Skip 2 
+     * <P>
+     * Type: INTEGER
+     * </P>
+     */
+    public static final String RWS = "rws";
+    
+  }
 }
