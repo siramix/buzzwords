@@ -28,7 +28,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.taboozle.R;
-import com.taboozle.Pack.Cards;
 
 /**
  * Provides access to a database of cards. Each card has a title and the words
@@ -42,12 +41,6 @@ public class PackProvider extends ContentProvider
    */
   private static final String TAG = "PackProvider";
 
-  /**
-   * Database constants
-   */
-  private static final String DATABASE_NAME = "cards.db";
-  private static final int DATABASE_VERSION = 2;
-  private static final String CARDS_TABLE_NAME = "cards";
 
   /**
    * Query and URI matching constants
@@ -72,19 +65,20 @@ public class PackProvider extends ContentProvider
      */
     DatabaseHelper( Context context )
     {
-      super( context, DATABASE_NAME, null, DATABASE_VERSION );
+      super( context, GameData.DATABASE_NAME, null, 
+             GameData.DATABASE_VERSION );
       curContext = context;
     }
 
     @Override
     public void onCreate( SQLiteDatabase db )
     {
-      db.execSQL( "CREATE TABLE " + CARDS_TABLE_NAME + " (" + 
-                  Cards._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                  Cards.PACK_NAME + " TEXT," +
-                  Cards.TITLE + " TEXT," + 
-                  Cards.BAD_WORDS + " TEXT," 
-                  + Cards.CATEGORIES + " TEXT);" );
+      db.execSQL( "CREATE TABLE " + GameData.CARD_TABLE_NAME + " (" + 
+                  GameData.Cards._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                  GameData.Cards.PACK_NAME + " TEXT," +
+                  GameData.Cards.TITLE + " TEXT," + 
+                  GameData.Cards.BAD_WORDS + " TEXT," + 
+                  GameData.Cards.CATEGORIES + " TEXT);" );
       
       InputStream starterXML =
         curContext.getResources().openRawResource(R.raw.starter);
@@ -141,9 +135,9 @@ public class PackProvider extends ContentProvider
           }
           // hack because I have a comma at the end
           badWords = badWords.substring( 0, badWords.length() - 1 );
-          db.execSQL( "INSERT INTO " + CARDS_TABLE_NAME + " (" + 
-                      Cards.PACK_NAME + "," + Cards.TITLE  + ", " + 
-                      Cards.BAD_WORDS + ", " + Cards.CATEGORIES + 
+          db.execSQL( "INSERT INTO " + GameData.CARD_TABLE_NAME + " (" + 
+                      GameData.Cards.PACK_NAME + "," + GameData.Cards.TITLE  + ", " + 
+                      GameData.Cards.BAD_WORDS + ", " + GameData.Cards.CATEGORIES + 
                       ") VALUES (\"" + 
                       packName + "\",\"" +
                       title + "\",\"" +
@@ -190,7 +184,7 @@ public class PackProvider extends ContentProvider
                        String[] selectionArgs, String sortOrder )
   {
     SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-    qb.setTables( CARDS_TABLE_NAME );
+    qb.setTables( GameData.CARD_TABLE_NAME );
 
     switch ( sUriMatcher.match( uri ) )
     {
@@ -200,7 +194,7 @@ public class PackProvider extends ContentProvider
 
       case CARD_ID:
         qb.setProjectionMap( sCardsProjectionMap );
-        qb.appendWhere( Cards._ID + "=" + uri.getPathSegments().get( 1 ) );
+        qb.appendWhere( GameData.Cards._ID + "=" + uri.getPathSegments().get( 1 ) );
         break;
 
       default:
@@ -224,9 +218,9 @@ public class PackProvider extends ContentProvider
     switch ( sUriMatcher.match( uri ) )
     {
       case CARDS:
-        return Cards.CONTENT_TYPE;
+        return GameData.Cards.CONTENT_TYPE;
       case CARD_ID:
-        return Cards.CONTENT_ITEM_TYPE;
+        return GameData.Cards.CONTENT_ITEM_TYPE;
       default:
         throw new IllegalArgumentException( "Unknown URI: " + uri );
     }
@@ -251,21 +245,21 @@ public class PackProvider extends ContentProvider
       values = new ContentValues();
     }
 
-    if( values.containsKey( Pack.Cards.TITLE ) == false )
+    if( values.containsKey( GameData.Cards.TITLE ) == false )
     {
-      values.put( Pack.Cards.TITLE, "No Title Given" );
+      values.put( GameData.Cards.TITLE, "No Title Given" );
     }
 
-    if( values.containsKey( Pack.Cards.BAD_WORDS ) == false )
+    if( values.containsKey( GameData.Cards.BAD_WORDS ) == false )
     {
-      values.put( Pack.Cards.BAD_WORDS, "No Bad Words Given" );
+      values.put( GameData.Cards.BAD_WORDS, "No Bad Words Given" );
     }
 
     SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-    long rowId = db.insert( CARDS_TABLE_NAME, "", values );
+    long rowId = db.insert( GameData.CARD_TABLE_NAME, "", values );
     if( rowId > 0 )
     {
-      Uri cardUri = ContentUris.withAppendedId( Pack.Cards.CONTENT_URI, rowId );
+      Uri cardUri = ContentUris.withAppendedId( GameData.Cards.CONTENT_URI, rowId );
       this.getContext().getContentResolver().notifyChange( cardUri, null );
       return cardUri;
     }
@@ -281,14 +275,14 @@ public class PackProvider extends ContentProvider
     switch ( sUriMatcher.match( uri ) )
     {
       case CARDS:
-        count = db.delete( CARDS_TABLE_NAME, where, whereArgs );
+        count = db.delete( GameData.CARD_TABLE_NAME, where, whereArgs );
         break;
 
       case CARD_ID:
         String noteId = uri.getPathSegments().get( 1 );
         count = db
-                  .delete( CARDS_TABLE_NAME,
-                           Cards._ID
+                  .delete( GameData.CARD_TABLE_NAME,
+                           GameData.Cards._ID
                                + "="
                                + noteId
                                + ( !TextUtils.isEmpty( where ) ? " AND ("
@@ -313,14 +307,14 @@ public class PackProvider extends ContentProvider
     switch ( sUriMatcher.match( uri ) )
     {
       case CARDS:
-        count = db.update( CARDS_TABLE_NAME, values, where, whereArgs );
+        count = db.update( GameData.CARD_TABLE_NAME, values, where, whereArgs );
         break;
 
       case CARD_ID:
         String noteId = uri.getPathSegments().get( 1 );
         count = db
-                  .update( CARDS_TABLE_NAME, values,
-                           Cards._ID
+                  .update( GameData.CARD_TABLE_NAME, values,
+                           GameData.Cards._ID
                                + "="
                                + noteId
                                + ( !TextUtils.isEmpty( where ) ? " AND ("
@@ -339,12 +333,13 @@ public class PackProvider extends ContentProvider
   static
   {
     sUriMatcher = new UriMatcher( UriMatcher.NO_MATCH );
-    sUriMatcher.addURI( Pack.AUTHORITY, "cards", CARDS );
-    sUriMatcher.addURI( Pack.AUTHORITY, "cards/#", CARD_ID );
+    sUriMatcher.addURI( GameData.AUTHORITY, "cards", CARDS );
+    sUriMatcher.addURI( GameData.AUTHORITY, "cards/#", CARD_ID );
 
     sCardsProjectionMap = new HashMap<String, String>();
-    sCardsProjectionMap.put( Cards._ID, Cards._ID );
-    sCardsProjectionMap.put( Cards.TITLE, Cards.TITLE );
-    sCardsProjectionMap.put( Cards.BAD_WORDS, Cards.BAD_WORDS );
+    sCardsProjectionMap.put( GameData.Cards._ID, GameData.Cards._ID );
+    sCardsProjectionMap.put( GameData.Cards.TITLE, GameData.Cards.TITLE );
+    sCardsProjectionMap.put( GameData.Cards.BAD_WORDS, 
+                             GameData.Cards.BAD_WORDS );
   }
 }

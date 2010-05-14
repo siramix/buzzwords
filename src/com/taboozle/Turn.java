@@ -3,8 +3,6 @@ package com.taboozle;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import com.taboozle.Pack.Cards;
-
 import android.app.*;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -284,24 +282,25 @@ public class Turn extends Activity
 
     if( intent.getData() == null )
     {
-      intent.setData( Cards.CONTENT_URI );
+      intent.setData( GameData.Cards.CONTENT_URI );
     }
     
     // Add content to our content provider
     ContentResolver resolver = this.getContentResolver();
     
     // Form an array specifying which columns to return.
-    String[] projection = new String[] { Cards.TITLE, Cards.BAD_WORDS };
+    String[] projection = new String[] { GameData.Cards.TITLE, 
+                                         GameData.Cards.BAD_WORDS };
     
     // Query and print the added card record
-    Cursor cur = resolver.query( Pack.Cards.CONTENT_URI, projection, null,
+    Cursor cur = resolver.query( GameData.Cards.CONTENT_URI, projection, null,
                                  null, null );
 
     // Iterate through cursor transferring from database to memory
     if( cur.moveToFirst() )
     {
-      int titleColumn = cur.getColumnIndex( Cards.TITLE );
-      int badWordsColumn = cur.getColumnIndex( Cards.BAD_WORDS );
+      int titleColumn = cur.getColumnIndex( GameData.Cards.TITLE );
+      int badWordsColumn = cur.getColumnIndex( GameData.Cards.BAD_WORDS );
       
       do
       {
