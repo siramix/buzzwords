@@ -315,7 +315,7 @@ public class Turn extends Activity
         
         while( tok.hasMoreTokens() )
         {
-          cWords.badWords.add( tok.nextToken( "," ) );
+          cWords.badWords.add( tok.nextToken( "," ).toUpperCase() );
         }
         
         this.Deck.add( cWords );
