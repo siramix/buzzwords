@@ -155,7 +155,7 @@ public final class GameData
      * Type: INTEGER
      * </P>
      */
-    public static final String INDEX = "index";
+    public static final String ROUND = "round";
     
     /**
      * The number of points

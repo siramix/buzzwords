@@ -3,11 +3,12 @@
  */
 package com.taboozle;
 
+import java.util.Date;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 
 /**
  * @author taboozle team
@@ -26,6 +27,83 @@ public class Game extends SQLiteOpenHelper
     super( context, GameData.DATABASE_NAME, null, 
            GameData.DATABASE_VERSION );
   }
+  
+  /**
+   * 
+   */
+  public int newGame()
+  {
+    Date currentTime = new Date();
+    String dateString = currentTime.toString();    
+    SQLiteDatabase db = this.getWritableDatabase();    
+    db.execSQL( "INSERT INTO " + GameData.GAME_TABLE_NAME + " (" +
+                GameData.Games.TIME + ") VALUES (\"" +
+                dateString + "\");" );
+    return 0;
+  }
+  
+  /**
+   * 
+   * @param name
+   * @return
+   */
+  public int newTeam( String name )
+  {
+    return 0;
+  }
+  
+  /**
+   * 
+   * @param gameId
+   * @param teamId
+   * @param index
+   * @return
+   */
+  public int newTurn( int gameId, int teamId, int index )
+  {
+    return 0;
+  }
+  
+  /**
+   * 
+   * @param turnScoreId
+   * @param score
+   * @return
+   */
+  public int endTurn( int turnScoreId, int score )
+  {
+    return 0;
+  }
+  
+  /**
+   * 
+   * @param gameId
+   * @param teamId
+   * @param cardId
+   * @param turnScoreId
+   * @param rws
+   */
+  public void completeCard( int gameId, int teamId, int cardId, 
+                            int turnScoreId, int rws )
+  {
+    String strTeamId = Integer.toString( teamId );
+    String strGameId = Integer.toString( gameId );
+    String strCardId = Integer.toString( cardId );
+    String strTurnScoreId = Integer.toString( turnScoreId );
+    String strRWS = Integer.toString( rws );
+    SQLiteDatabase db = this.getWritableDatabase();    
+    db.execSQL( "INSERT INTO " + GameData.GAME_HISTORY_TABLE_NAME + " (" +
+                GameData.GameHistory.TEAM_ID + "," +
+                GameData.GameHistory.GAME_ID + "," +
+                GameData.GameHistory.CARD_ID + "," +
+                GameData.GameHistory.TURN_SCORE_ID + "," +
+                GameData.GameHistory.RWS + ") VALUES (\"" +
+                strTeamId + "\",\"" +
+                strGameId + "\",\"" +
+                strCardId + "\",\"" +
+                strTurnScoreId + "\",\"" +
+                strRWS + "\");" ); 
+  }
 
   /* (non-Javadoc)
    * @see android.database.sqlite.SQLiteOpenHelper#onCreate(android.database.sqlite.SQLiteDatabase)
@@ -43,7 +121,7 @@ public class Game extends SQLiteOpenHelper
                 GameData.TurnScores._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 GameData.TurnScores.TEAM_ID + " INTEGER," +
                 GameData.TurnScores.GAME_ID + " INTEGER," + 
-                GameData.TurnScores.INDEX + " INTEGER," +
+                GameData.TurnScores.ROUND + " INTEGER," +
                 GameData.TurnScores.SCORE + " INTEGER);" );
     db.execSQL( "CREATE TABLE " + GameData.FINAL_SCORES_TABLE_NAME + " (" +
                 GameData.FinalScores._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
