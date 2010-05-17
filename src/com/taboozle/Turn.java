@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
-import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.database.Cursor;
 import android.media.AudioManager;
@@ -133,8 +132,7 @@ public class Turn extends Activity
 	Animation inFromRight = new TranslateAnimation(
 		  	Animation.RELATIVE_TO_PARENT,  1.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
-  	inFromRight.setDuration(2000);
-  	inFromRight.setInterpolator(new OvershootInterpolator(1));
+  	inFromRight.setDuration(500);
   	return inFromRight;
   }
 
@@ -143,8 +141,7 @@ public class Turn extends Activity
 	Animation outToLeft = new TranslateAnimation(
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,  -1.0f,
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
-	outToLeft.setDuration(2000);
-	outToLeft.setInterpolator(new OvershootInterpolator(1));
+	outToLeft.setDuration(500);
   	return outToLeft;
   }  
   
@@ -237,7 +234,7 @@ public class Turn extends Activity
       public void onTick(long millisUntilFinished) 
       {
 		 TextView countdownTxt = (TextView) findViewById( R.id.Timer );
-		 countdownTxt.setText( Long.toString(( millisUntilFinished / 1000 ) + 1 ));
+		 countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
       }
   };
 
@@ -265,10 +262,9 @@ public class Turn extends Activity
     this.DeckPosition = 0;
     this.AIsActive = true;
 
-
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
-    
+
     // Setup the view
     this.setContentView(R.layout.turn );
     
@@ -325,7 +321,7 @@ public class Turn extends Activity
     
     this.ShowCard();
     
-    TurnTimer counter = new TurnTimer( 10000, 200);
+    TurnTimer counter = new TurnTimer( 60000, 200);
     counter.start();
     
     ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonA );
