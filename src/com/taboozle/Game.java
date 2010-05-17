@@ -4,7 +4,9 @@
 package com.taboozle;
 
 import java.util.Date;
+import java.util.HashMap;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -22,6 +24,8 @@ public class Game extends SQLiteOpenHelper
    */
   public static final String TAG = "Game";
   
+  private static HashMap<String,String> sGameProjectionMap;
+  
   public Game( Context context )
   {
     super( context, GameData.DATABASE_NAME, null, 
@@ -31,15 +35,17 @@ public class Game extends SQLiteOpenHelper
   /**
    * 
    */
-  public int newGame()
+  public long newGame()
   {
+    // Prepare the current date for insertion
     Date currentTime = new Date();
-    String dateString = currentTime.toString();    
-    SQLiteDatabase db = this.getWritableDatabase();    
-    db.execSQL( "INSERT INTO " + GameData.GAME_TABLE_NAME + " (" +
-                GameData.Games.TIME + ") VALUES (\"" +
-                dateString + "\");" );
-    return 0;
+    String dateString = currentTime.toString();
+    ContentValues values = new ContentValues();
+    values.put( GameData.Games.TIME, dateString ); 
+    SQLiteDatabase db = this.getWritableDatabase();
+    
+    // Do the insert and return the row id
+    return db.insert(GameData.GAME_TABLE_NAME, "", values);
   }
   
   /**
@@ -47,9 +53,12 @@ public class Game extends SQLiteOpenHelper
    * @param name
    * @return
    */
-  public int newTeam( String name )
+  public long newTeam( String name )
   {
-    return 0;
+    ContentValues values = new ContentValues();
+    values.put(GameData.Teams.NAME, name);
+    SQLiteDatabase db = this.getWritableDatabase();
+    return db.insert(GameData.TEAM_TABLE_NAME, "", values);
   }
   
   /**
@@ -59,20 +68,15 @@ public class Game extends SQLiteOpenHelper
    * @param index
    * @return
    */
-  public int newTurn( int gameId, int teamId, int index )
+  public long newTurn( long gameId, long teamId, long round, long score )
   {
-    return 0;
-  }
-  
-  /**
-   * 
-   * @param turnScoreId
-   * @param score
-   * @return
-   */
-  public int endTurn( int turnScoreId, int score )
-  {
-    return 0;
+    ContentValues values = new ContentValues();
+    values.put( GameData.TurnScores.GAME_ID, gameId );
+    values.put( GameData.TurnScores.TEAM_ID, teamId );
+    values.put( GameData.TurnScores.ROUND, round );
+    values.put( GameData.TurnScores.SCORE, score );
+    SQLiteDatabase db = this.getWritableDatabase();
+    return db.insert(GameData.TURN_SCORES_TABLE_NAME, "", values);
   }
   
   /**
@@ -151,6 +155,13 @@ public class Game extends SQLiteOpenHelper
     db.execSQL( "DROP TABLE IF EXISTS" + GameData.FINAL_SCORES_TABLE_NAME + ";" );
     db.execSQL( "DROP TABLE IF EXISTS" + GameData.GAME_HISTORY_TABLE_NAME + ";" );
     onCreate( db );
+  }
+  
+  static
+  {
+    sGameProjectionMap = new HashMap<String, String>();
+    sGameProjectionMap.put( GameData.Games._ID, GameData.Cards._ID );
+    sGameProjectionMap.put( GameData.Games.TIME, GameData.Games.TIME );
   }
 
 }
