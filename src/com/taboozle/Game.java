@@ -87,14 +87,14 @@ public class Game extends SQLiteOpenHelper
    * @param turnScoreId
    * @param rws
    */
-  public void completeCard( int gameId, int teamId, int cardId, 
-                            int turnScoreId, int rws )
+  public void completeCard( long gameId, long teamId, long cardId, 
+		  					long turnScoreId, long rws )
   {
-    String strTeamId = Integer.toString( teamId );
-    String strGameId = Integer.toString( gameId );
-    String strCardId = Integer.toString( cardId );
-    String strTurnScoreId = Integer.toString( turnScoreId );
-    String strRWS = Integer.toString( rws );
+    String strTeamId = Long.toString( teamId );
+    String strGameId = Long.toString( gameId );
+    String strCardId = Long.toString( cardId );
+    String strTurnScoreId = Long.toString( turnScoreId );
+    String strRWS = Long.toString( rws );
     SQLiteDatabase db = this.getWritableDatabase();    
     db.execSQL( "INSERT INTO " + GameData.GAME_HISTORY_TABLE_NAME + " (" +
                 GameData.GameHistory.TEAM_ID + "," +

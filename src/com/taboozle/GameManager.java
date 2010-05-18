@@ -3,6 +3,7 @@
  */
 package com.taboozle;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.content.Context;
@@ -32,6 +33,8 @@ public class GameManager
   
   private LinkedList<cardPair> currentCardPairs;
   
+  private final long[] RWS_VALUE_RULES = {1,-1,0};
+  
   public GameManager()
   {
     this.currentRound = 0;
@@ -50,9 +53,9 @@ public class GameManager
     }
   }
   
-  public void DoTurn( long score )
+  public void NextTurn( )
   {
-    game.newTurn( this.currentGameId, this.teamIds[this.activeTeamIndex], this.currentRound, score );
+   // game.newTurn( this.currentGameId, this.teamIds[this.activeTeamIndex], this.currentRound, score );
     this.activeTeamIndex++;
     if( this.activeTeamIndex == this.teamIds.length )
     {
@@ -62,13 +65,36 @@ public class GameManager
     this.currentCardPairs = new LinkedList<cardPair>();
   }
   
+  private void WriteTurnResults( )
+  {
+	  long scoreTotal = 0;
+	  
+	  // Which of these is a better implementation for iterating a linked list?
+	  for ( int i = 0; i < this.currentCardPairs.size(); i++ )
+	  {
+		  scoreTotal += RWS_VALUE_RULES[(int)this.currentCardPairs.get(i).rws];
+	  }
+//	  for( Iterator<cardPair> it = currentCardPairs.iterator(); it.hasNext(); )
+//	  {
+//		 cardPair card = (cardPair) it.next();
+//		 scoreTotal += RWS_VALUE_RULES[(int)card.rws];
+//	  }
+	  long currentTurnScoreID = game.newTurn( this.currentGameId, 
+			  			this.teamIds[this.activeTeamIndex], this.currentRound, scoreTotal );
+	  
+	  for ( int i = 0; i < this.currentCardPairs.size(); i++ )
+	  {
+		  game.completeCard( this.currentGameId, this.teamIds[this.activeTeamIndex], 
+				  this.currentCardId, currentTurnScoreID, this.currentCardPairs.get(i).rws);
+	  }
+  }
+  
   public void ProcessCard( int rws )
   {
     cardPair curCardPair = new cardPair();
     curCardPair.id = this.currentCardId;
     curCardPair.rws = rws;
-    this.currentCardPairs.add( curCardPair );
-    
+    this.currentCardPairs.add( curCardPair ); 
   }
   
   public String GetCurrentCardTitle()
