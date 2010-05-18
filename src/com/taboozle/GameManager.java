@@ -65,6 +65,10 @@ public class GameManager
     this.currentCardPairs = new LinkedList<cardPair>();
   }
   
+  /*
+   * Write the results of a turn to the database.  Totals the score of all cards for a round, following
+   * any end-round modifications (if this is allowed.)  Also enters the results for each card.
+   */
   private void WriteTurnResults( )
   {
 	  long scoreTotal = 0;
