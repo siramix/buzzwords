@@ -34,8 +34,8 @@ public void onCreate( Bundle savedInstanceState )
 	// Setup the view
 	this.setContentView(R.layout.title );
 
-    ImageButton playGameButton = (ImageButton)this.findViewById( R.id.PlayGameButton );
-    playGameButton.setOnClickListener( PlayGameListener );
-    
+  ImageButton playGameButton = (ImageButton) this.findViewById( R.id.PlayGameButton );
+  playGameButton.setOnClickListener( PlayGameListener );
 }
+
 }

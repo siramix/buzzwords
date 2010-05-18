@@ -157,11 +157,4 @@ public class Game extends SQLiteOpenHelper
     onCreate( db );
   }
   
-  static
-  {
-    sGameProjectionMap = new HashMap<String, String>();
-    sGameProjectionMap.put( GameData.Games._ID, GameData.Cards._ID );
-    sGameProjectionMap.put( GameData.Games.TIME, GameData.Games.TIME );
-  }
-
 }
