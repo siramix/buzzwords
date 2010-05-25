@@ -18,6 +18,7 @@ import org.xml.sax.SAXException;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -41,6 +42,27 @@ public class Game extends SQLiteOpenHelper
     super( context, GameData.DATABASE_NAME, null, 
            GameData.DATABASE_VERSION );
     this.curContext = context;
+  }
+  
+  public Card getNextCard()
+  {
+    SQLiteDatabase db = this.getReadableDatabase();
+    String[] columns = new String[] {GameData.Cards._ID, GameData.Cards.TITLE, 
+                        GameData.Cards.BAD_WORDS};
+    Cursor cur = db.query( GameData.CARD_TABLE_NAME, columns, null, null, 
+                         null, null, "RANDOM()", "1" );
+    Card card = new Card();
+    if( cur.moveToFirst() )
+    {
+      int titleColumn = cur.getColumnIndex( GameData.Cards.TITLE );
+      int badWordsColumn = cur.getColumnIndex( GameData.Cards.BAD_WORDS );
+      
+      card.title = cur.getString( titleColumn );
+      card.badWords = Card.BustString( cur.getString( badWordsColumn ) );
+    }
+    cur.close();
+    
+    return card;
   }
   
   /**

@@ -1,17 +1,12 @@
 package com.taboozle;
 
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-
 import android.app.*;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -35,30 +30,7 @@ import android.widget.ViewFlipper;
 public class Turn extends Activity
 {
 
-  /**
-   * Small private class for representing the card in memory as strings 
-   */
-  private class CardStrings
-  {
-    public String title;
-    public ArrayList<String> badWords;
-    
-    public CardStrings()
-    {
-      title = "";
-      badWords = new ArrayList<String>();
-    }
-  }
- 
-  /**
-   * A variable-length list of cards for in-memory storage
-   */
-  protected ArrayList<CardStrings> Deck;
-  
-  /**
-   * An integer to keep track of where we are
-   */
-  protected int DeckPosition;
+  private Game curGame;
   
   /**
    * Boolean to track which views are currently active
@@ -151,12 +123,6 @@ public class Turn extends Activity
    */
   protected void ShowCard()
   {
-    if( this.DeckPosition >= this.Deck.size() ||
-        this.DeckPosition < 0 )
-    {
-      this.DeckPosition = 0;
-    }
-
     int curTitle = 0;
     int curWords = 0;
     if( this.AIsActive )
@@ -172,11 +138,11 @@ public class Turn extends Activity
     
     TextView cardTitle = (TextView) this.findViewById( curTitle );
     ListView cardWords = (ListView) this.findViewById( curWords );
-    // Disable the ListView to prevent its children from being clickable
+    // Disable the ListView to prevent its children from being click-able
     cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter = 
       new ArrayAdapter<String>( this, R.layout.word );
-    CardStrings curCard = this.Deck.get( this.DeckPosition );
+    Card curCard = this.curGame.getNextCard();
     cardTitle.setText( curCard.title );
     for( int i = 0; i < curCard.badWords.size(); i++ )
     {
@@ -192,7 +158,6 @@ public class Turn extends Activity
         AIsActive = !AIsActive;
         ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
         flipper.showNext();
-        DeckPosition++;
         ShowCard();
       }
   };
@@ -204,11 +169,6 @@ public class Turn extends Activity
         AIsActive = !AIsActive;
         ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
         flipper.showNext();
-        DeckPosition--;
-        if( DeckPosition < 0 )
-        {
-        	DeckPosition = Deck.size()-1;
-        }
         ShowCard();
       }
   };
@@ -258,66 +218,19 @@ public class Turn extends Activity
   {
     super.onCreate( savedInstanceState );
 
-    this.Deck = new ArrayList<CardStrings>();
-    this.DeckPosition = 0;
     this.AIsActive = true;
 
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
 
+    this.curGame = new Game( this );
+    
     // Setup the view
     this.setContentView(R.layout.turn );
     
     ViewFlipper flipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
     flipper.setInAnimation(InFromRightAnimation());
     flipper.setOutAnimation(OutToLeftAnimation());
-    
-    // If no data was given in the intent (because we were started
-    // as a MAIN activity), then use our default content provider.
-    Intent intent = this.getIntent();
-
-    if( intent.getData() == null )
-    {
-      intent.setData( GameData.Cards.CONTENT_URI );
-    }
-    
-    // Add content to our content provider
-    ContentResolver resolver = this.getContentResolver();
-    
-    // Form an array specifying which columns to return.
-    String[] projection = new String[] { GameData.Cards.TITLE, 
-                                         GameData.Cards.BAD_WORDS };
-    
-    // Query and print the added card record
-    Cursor cur = resolver.query( GameData.Cards.CONTENT_URI, projection, null,
-                                 null, null );
-
-    // Iterate through cursor transferring from database to memory
-    if( cur.moveToFirst() )
-    {
-      int titleColumn = cur.getColumnIndex( GameData.Cards.TITLE );
-      int badWordsColumn = cur.getColumnIndex( GameData.Cards.BAD_WORDS );
-      
-      do
-      {
-        // Get the field values
-        String title = cur.getString( titleColumn );
-        String badWords = cur.getString( badWordsColumn );
-
-        StringTokenizer tok = new StringTokenizer(badWords);
-
-        CardStrings cWords = new CardStrings();
-        cWords.title = title;
-        
-        while( tok.hasMoreTokens() )
-        {
-          cWords.badWords.add( tok.nextToken( "," ).toUpperCase() );
-        }
-        
-        this.Deck.add( cWords );
-      }
-      while( cur.moveToNext() );
-    }
     
     this.ShowCard();
     
