@@ -3,8 +3,18 @@
  */
 package com.taboozle;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
-import java.util.HashMap;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -24,12 +34,13 @@ public class Game extends SQLiteOpenHelper
    */
   public static final String TAG = "Game";
   
-  private static HashMap<String,String> sGameProjectionMap;
+  private Context curContext;
   
   public Game( Context context )
   {
     super( context, GameData.DATABASE_NAME, null, 
            GameData.DATABASE_VERSION );
+    this.curContext = context;
   }
   
   /**
@@ -139,7 +150,91 @@ public class Game extends SQLiteOpenHelper
                 GameData.GameHistory.CARD_ID + " INTEGER," +
                 GameData.GameHistory.TURN_SCORE_ID + " INTEGER," +
                 GameData.GameHistory.RWS + " INTEGER);" );
- }
+    db.execSQL( "CREATE TABLE " + GameData.CARD_TABLE_NAME + " (" + 
+                GameData.Cards._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                GameData.Cards.PACK_NAME + " TEXT," +
+                GameData.Cards.TITLE + " TEXT," + 
+                GameData.Cards.BAD_WORDS + " TEXT," + 
+                GameData.Cards.CATEGORIES + " TEXT);" );
+    
+    InputStream starterXML =
+      curContext.getResources().openRawResource(R.raw.starter);
+    DocumentBuilderFactory docBuilderFactory = 
+      DocumentBuilderFactory.newInstance();
+    try
+    {
+      DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+      Document doc = docBuilder.parse(starterXML);
+      NodeList cardNodes = doc.getElementsByTagName( "card" );
+      for(int i = 0; i < cardNodes.getLength(); i++)
+      {        
+        NodeList titleWhiteAndBads = cardNodes.item( i ).getChildNodes();
+        Node titleNode = null;
+        Node badsNode = null;
+        Node categoriesNode = null;
+        Node packNameNode = null;
+        for( int j = 0; j < titleWhiteAndBads.getLength(); j++ )
+        {
+          String candidateName = titleWhiteAndBads.item( j ).getNodeName(); 
+          if( candidateName.equals( "title" ) )
+          {
+            titleNode = titleWhiteAndBads.item( j );
+          }
+          else if( candidateName.equals( "pack-name" ) )
+          {
+            packNameNode = titleWhiteAndBads.item( j );
+          }
+          else if( candidateName.equals( "bad-words" ) )
+          {
+            badsNode = titleWhiteAndBads.item( j );
+          }
+          else if( candidateName.equals( "categories" ) )
+          {
+            categoriesNode = titleWhiteAndBads.item( j );
+          }
+          else
+          {
+            continue; // We found some #text
+          }
+        }
+        String title = titleNode.getFirstChild().getNodeValue();
+        String packName = packNameNode.getFirstChild().getNodeValue();
+        String categories = categoriesNode.getFirstChild().getNodeValue();
+        String badWords = "";
+        NodeList bads = badsNode.getChildNodes();
+        for( int j = 0; j < bads.getLength(); j++ )
+        {
+          String candidateName = bads.item( j ).getNodeName();
+          if( candidateName.equals( "word" ) )
+          {
+            badWords += bads.item( j ).getFirstChild().getNodeValue() + ",";
+          }
+        }
+        // hack because I have a comma at the end
+        badWords = badWords.substring( 0, badWords.length() - 1 );
+        db.execSQL( "INSERT INTO " + GameData.CARD_TABLE_NAME + " (" + 
+                    GameData.Cards.PACK_NAME + "," + GameData.Cards.TITLE  + ", " + 
+                    GameData.Cards.BAD_WORDS + ", " + GameData.Cards.CATEGORIES + 
+                    ") VALUES (\"" + 
+                    packName + "\",\"" +
+                    title + "\",\"" +
+                    badWords + "\",\"" + 
+                    categories + "\");" );
+      }
+    }
+    catch( ParserConfigurationException e )
+    {
+      e.printStackTrace();
+    }
+    catch( SAXException e )
+    {
+      e.printStackTrace();
+    }
+    catch( IOException e )
+    {
+      e.printStackTrace();
+    }                     
+  }
 
   /* (non-Javadoc)
    * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
@@ -154,6 +249,7 @@ public class Game extends SQLiteOpenHelper
     db.execSQL( "DROP TABLE IF EXISTS" + GameData.TURN_SCORES_TABLE_NAME + ";" );
     db.execSQL( "DROP TABLE IF EXISTS" + GameData.FINAL_SCORES_TABLE_NAME + ";" );
     db.execSQL( "DROP TABLE IF EXISTS" + GameData.GAME_HISTORY_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS" + GameData.CARD_TABLE_NAME + ";" );
     onCreate( db );
   }
   
