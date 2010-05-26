@@ -5,6 +5,7 @@ package com.taboozle;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -36,6 +37,8 @@ public class Game extends SQLiteOpenHelper
   public static final String TAG = "Game";
   
   private Context curContext;
+  private ArrayList<Long> cardIds;
+  private int cardIdPosition;
   
   public Game( Context context )
   {
@@ -44,19 +47,47 @@ public class Game extends SQLiteOpenHelper
     this.curContext = context;
   }
   
+  public void prepDeck()
+  {
+    this.cardIds = new ArrayList<Long>();
+    this.cardIdPosition = 0;
+    SQLiteDatabase db = this.getReadableDatabase();
+    String[] columns = new String[] {GameData.Cards._ID};
+    Cursor cur = db.query( GameData.CARD_TABLE_NAME, columns, null, null, 
+                         null, null, "RANDOM()");
+    if( cur.moveToFirst() )
+    {
+      do
+      {
+        int idColumn = cur.getColumnIndex( GameData.Cards._ID );
+        this.cardIds.add( cur.getLong( idColumn ) );
+        
+      } while( cur.moveToNext() );
+    }
+    
+  }
+  
   public Card getNextCard()
   {
+    if( this.cardIdPosition >= this.cardIds.size() )
+    {
+      this.prepDeck();
+    }
     SQLiteDatabase db = this.getReadableDatabase();
     String[] columns = new String[] {GameData.Cards._ID, GameData.Cards.TITLE, 
                         GameData.Cards.BAD_WORDS};
-    Cursor cur = db.query( GameData.CARD_TABLE_NAME, columns, null, null, 
-                         null, null, "RANDOM()", "1" );
+    Cursor cur = db.query( GameData.CARD_TABLE_NAME, columns, 
+                           GameData.Cards._ID + "=" + 
+                           this.cardIds.get( this.cardIdPosition++ ), 
+                           null, null, null, null, "1" );
     Card card = new Card();
     if( cur.moveToFirst() )
     {
+      int idColumn = cur.getColumnIndex( GameData.Cards._ID );
       int titleColumn = cur.getColumnIndex( GameData.Cards.TITLE );
       int badWordsColumn = cur.getColumnIndex( GameData.Cards.BAD_WORDS );
       
+      card.id = cur.getLong( idColumn );
       card.title = cur.getString( titleColumn );
       card.badWords = Card.BustString( cur.getString( badWordsColumn ) );
     }

@@ -26,6 +26,7 @@ public class Card
   }
   
   public long id;
+  public int rws;
   public String title;
   public ArrayList<String> badWords;
   

@@ -96,14 +96,14 @@ public class GameManager
     this.currentCardPairs.add( curCardPair ); 
   }
   
-  public String GetCurrentCardTitle()
+  public void PrepDeck()
   {
-    return "";
+    this.game.prepDeck();
   }
   
-  public String[] GetCurrentCardBadWords()
+  public Card GetNextCard()
   {
-    return null;
+    return this.game.getNextCard();
   }
   
 }

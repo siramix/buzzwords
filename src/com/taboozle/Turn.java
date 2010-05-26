@@ -30,7 +30,7 @@ import android.widget.ViewFlipper;
 public class Turn extends Activity
 {
 
-  private Game curGame;
+  private GameManager curGameManager;
   
   /**
    * Boolean to track which views are currently active
@@ -142,7 +142,7 @@ public class Turn extends Activity
     cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter = 
       new ArrayAdapter<String>( this, R.layout.word );
-    Card curCard = this.curGame.getNextCard();
+    Card curCard = this.curGameManager.GetNextCard();
     cardTitle.setText( curCard.title );
     for( int i = 0; i < curCard.badWords.size(); i++ )
     {
@@ -223,7 +223,8 @@ public class Turn extends Activity
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
 
-    this.curGame = new Game( this );
+    this.curGameManager = new GameManager( this );
+    this.curGameManager.PrepDeck();
     
     // Setup the view
     this.setContentView(R.layout.turn );
