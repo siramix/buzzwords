@@ -158,6 +158,7 @@ public class Turn extends Activity
         AIsActive = !AIsActive;
         ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
         flipper.showNext();
+        curGameManager.ProcessCard( 0 );
         ShowCard();
       }
   };
@@ -169,6 +170,7 @@ public class Turn extends Activity
         AIsActive = !AIsActive;
         ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
         flipper.showNext();
+        curGameManager.ProcessCard( 2 );
         ShowCard();
       }
   };
@@ -225,6 +227,9 @@ public class Turn extends Activity
 
     this.curGameManager = new GameManager( this );
     this.curGameManager.PrepDeck();
+    String[] teams = new String[]{ "Good Guys", "Bad Guys" };
+    this.curGameManager.StartGame( teams );
+    this.curGameManager.NextTurn();
     
     // Setup the view
     this.setContentView(R.layout.turn );

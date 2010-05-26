@@ -103,7 +103,9 @@ public class GameManager
   
   public Card GetNextCard()
   {
-    return this.game.getNextCard();
+    Card ret = this.game.getNextCard();
+    this.currentCardId = ret.id;
+    return ret;
   }
   
 }
