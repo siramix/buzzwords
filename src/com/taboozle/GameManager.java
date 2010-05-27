@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.taboozle;
 
 import java.util.Iterator;
@@ -10,34 +7,73 @@ import android.content.Context;
 
 /**
  * @author The Taboozle Team
+ * 
+ * The Game Manager is a class that will manage all aspects of the game scoring
+ * and general bookkeeping. This is the go-to class for creating new games,
+ * turns, and teams. The application shall also use this class for preparing
+ * and retrieving cards from the virtual deck.
  */
 public class GameManager
 {
-  private class cardPair
-  {
-    public long id;
-    public long rws;
-  }
-  
+  /**
+   * The game object used for database access
+   */
   private Game game;
+  
+  /**
+   * The id of the game currently being played
+   */
   private long currentGameId;
+  
+  /**
+   * The position in the teamIds collection of the team currently doing the
+   * guessing
+   */
   private int activeTeamIndex;
+  
+  /**
+   * A collection of teamIds indicating the teams that are currently playing
+   * the game
+   */
   private long[] teamIds;
+  
+  /**
+   * The index of the round being played
+   */
   private long currentRound;
-  private long currentCardId;
   
-  private LinkedList<cardPair> currentCardPairs;
+  /**
+   * The id of the card in play
+   */
+  private Card currentCard;
   
+  /**
+   * The set of cards that have been activated in the latest turn
+   */
+  private LinkedList<Card> currentCards;
+  
+  /**
+   * An array indicating scoring for right, wrong, and skip (in that order)
+   */
   private final long[] RWS_VALUE_RULES = {1,-1,0};
   
+  /**
+   * Standard Constructor
+   * @param context - required for game to instantiate the database
+   */
   public GameManager( Context context )
   {
     this.currentRound = 0;
     this.activeTeamIndex = 0;
-    this.currentCardPairs = new LinkedList<cardPair>();
+    this.currentCards = new LinkedList<Card>();
     this.game = new Game( context );
   }
   
+  /**
+   * Start the game given a set of team names. This creates both a game and
+   * a set of teams in the database
+   * @param teams - a string array of team names
+   */
   public void StartGame( String[] teams )
   {
     this.currentGameId = this.game.newGame();
@@ -48,6 +84,10 @@ public class GameManager
     }
   }
   
+  /**
+   * Starts a new turn incrementing the round and/or team index as necessary.
+   * This function also empties the collection of active cards.
+   */
   public void NextTurn( )
   {
     this.WriteTurnResults();
@@ -57,21 +97,22 @@ public class GameManager
       this.activeTeamIndex = 0;
       this.currentRound++;
     }
-    this.currentCardPairs = new LinkedList<cardPair>();
+    this.currentCards = new LinkedList<Card>();
   }
   
-  /*
-   * Write the results of a turn to the database.  Totals the score of all cards for a round, following
-   * any end-round modifications (if this is allowed.)  Also enters the results for each card.
+  /**
+   * Write the results of a turn to the database.  Totals the score of all 
+   * cards for a round, following any end-round modifications (if this is 
+   * allowed.)  Also enters the results for each card.
    */
   private void WriteTurnResults( )
   {
 	  long scoreTotal = 0;
 	  
-	  for( Iterator<cardPair> it = currentCardPairs.iterator(); it.hasNext(); )
+	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
 	  {
-	    cardPair card = (cardPair) it.next();
-	    scoreTotal += RWS_VALUE_RULES[(int)card.rws];
+	    Card card = (Card) it.next();
+	    scoreTotal += RWS_VALUE_RULES[(int)card.getRws()];
 	  }
 	  
 	  long currentTurnScoreID = game.newTurn( this.currentGameId, 
@@ -79,33 +120,43 @@ public class GameManager
 	                                          this.currentRound, 
 	                                          scoreTotal );
 	  
-	  for( Iterator<cardPair> it = currentCardPairs.iterator(); it.hasNext(); )
+	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
     {
-	    cardPair card = (cardPair) it.next();
+	    Card card = (Card) it.next();
 	    game.completeCard( this.currentGameId, this.teamIds[this.activeTeamIndex], 
-	                       card.id, currentTurnScoreID, 
-	                       card.rws);
+	                       card.getId(), currentTurnScoreID, 
+	                       card.getRws());
 	  }
   }
   
+  /**
+   * Adds the current card to the active cards 
+   * @param rws - the right, wrong, skip status
+   */
   public void ProcessCard( int rws )
   {
-    cardPair curCardPair = new cardPair();
-    curCardPair.id = this.currentCardId;
-    curCardPair.rws = rws;
-    this.currentCardPairs.add( curCardPair ); 
+    this.currentCard.setRws( rws );
+    this.currentCards.add( this.currentCard );
   }
   
+  /**
+   * Prepare the deck to be dealt. Essentially a pass-through call to Game.
+   */
   public void PrepDeck()
   {
     this.game.prepDeck();
   }
   
+  /**
+   * Get the next card in our Game's "deck" and set a reference to it to 
+   * currentCard. This is the virtual equivalent of placing the taboozle card
+   * on the staging area.
+   * @return the card currently in play
+   */
   public Card GetNextCard()
   {
-    Card ret = this.game.getNextCard();
-    this.currentCardId = ret.getId();
-    return ret;
+    this.currentCard = this.game.getNextCard();
+    return this.currentCard;
   }
   
 }
