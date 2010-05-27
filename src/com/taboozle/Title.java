@@ -20,7 +20,14 @@ public class Title extends Activity
   {
       public void onClick(View v) 
       {
-    	  	startActivity(new Intent(Intent.ACTION_RUN, getIntent().getData()));
+        TaboozleApplication application = 
+          (TaboozleApplication) Title.this.getApplication();
+        GameManager gm = new GameManager(Title.this);
+        gm.PrepDeck();
+        String[] teams = new String[]{ "Good Guys", "Bad Guys" };
+        gm.StartGame( teams );
+        application.SetGameManager( gm );
+        startActivity(new Intent(Intent.ACTION_RUN, getIntent().getData()));
       }
   };
 	

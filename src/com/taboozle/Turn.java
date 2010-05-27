@@ -225,10 +225,9 @@ public class Turn extends Activity
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
 
-    this.curGameManager = new GameManager( this );
-    this.curGameManager.PrepDeck();
-    String[] teams = new String[]{ "Good Guys", "Bad Guys" };
-    this.curGameManager.StartGame( teams );
+    TaboozleApplication application = 
+      (TaboozleApplication) this.getApplication();
+    this.curGameManager = application.GetGameManager();
     this.curGameManager.NextTurn();
     
     // Setup the view

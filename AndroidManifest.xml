@@ -3,7 +3,10 @@
       package="com.taboozle"
       android:versionCode="1"
       android:versionName="1.0">
-  <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar">
+  <application android:icon="@drawable/icon" 
+               android:label="@string/app_name" 
+               android:theme="@android:style/Theme.NoTitleBar"
+               android:name=".TaboozleApplication">
         <activity android:name=".Title"
                   android:label="@string/app_name">
             <intent-filter>
