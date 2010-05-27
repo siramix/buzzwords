@@ -87,9 +87,9 @@ public class Game extends SQLiteOpenHelper
       int titleColumn = cur.getColumnIndex( GameData.Cards.TITLE );
       int badWordsColumn = cur.getColumnIndex( GameData.Cards.BAD_WORDS );
       
-      card.id = cur.getLong( idColumn );
-      card.title = cur.getString( titleColumn );
-      card.badWords = Card.BustString( cur.getString( badWordsColumn ) );
+      card.setId( cur.getLong( idColumn ) );
+      card.setTitle( cur.getString( titleColumn ) );
+      card.setBadWords( cur.getString( badWordsColumn ) );
     }
     cur.close();
     

@@ -104,7 +104,7 @@ public class GameManager
   public Card GetNextCard()
   {
     Card ret = this.game.getNextCard();
-    this.currentCardId = ret.id;
+    this.currentCardId = ret.getId();
     return ret;
   }
   

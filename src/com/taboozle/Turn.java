@@ -54,6 +54,7 @@ public class Turn extends Activity
   /**
    *  Creates the menu items 
    */
+  @Override
   public boolean onCreateOptionsMenu(Menu menu) 
   {	  
       menu.add(0, MENU_ENDGAME, 0, "End Game");
@@ -143,10 +144,10 @@ public class Turn extends Activity
     ArrayAdapter<String> cardAdapter = 
       new ArrayAdapter<String>( this, R.layout.word );
     Card curCard = this.curGameManager.GetNextCard();
-    cardTitle.setText( curCard.title );
-    for( int i = 0; i < curCard.badWords.size(); i++ )
+    cardTitle.setText( curCard.getTitle() );
+    for( int i = 0; i < curCard.getBadWords().size(); i++ )
     {
-      cardAdapter.add( curCard.badWords.get( i ) );
+      cardAdapter.add( curCard.getBadWords().get( i ) );
     }
     cardWords.setAdapter( cardAdapter );
   }
