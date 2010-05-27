@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.taboozle;
 
 import java.io.IOException;
@@ -308,6 +305,8 @@ public class Game extends SQLiteOpenHelper
         }
         // hack because I have a comma at the end
         badWords = badWords.substring( 0, badWords.length() - 1 );
+        
+        // use a hard-coded query for performance and readability
         db.execSQL( "INSERT INTO " + GameData.CARD_TABLE_NAME + " (" + 
                     GameData.Cards.PACK_NAME + "," + GameData.Cards.TITLE  + ", " + 
                     GameData.Cards.BAD_WORDS + ", " + GameData.Cards.CATEGORIES + 
