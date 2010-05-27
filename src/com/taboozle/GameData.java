@@ -1,6 +1,5 @@
 package com.taboozle;
 
-import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
@@ -17,8 +16,6 @@ public final class GameData
   public static final String TURN_SCORES_TABLE_NAME = "turnscores";
   public static final String FINAL_SCORES_TABLE_NAME = "finalscores";
   public static final String GAME_HISTORY_TABLE_NAME = "gamehistory";
-
-  public static final String AUTHORITY = "com.taboozle.Pack";
   
   // This class cannot be instantiated
   private GameData()
@@ -32,22 +29,6 @@ public final class GameData
     private Cards()
     {
     }
-
-    /**
-     * The content:// style URL for this table
-     */
-    public static final Uri CONTENT_URI = Uri.parse( "content://" + AUTHORITY
-                                                     + "/cards" );
-
-    /**
-     * The MIME type of {@link #CONTENT_URI} providing a pack of cards.
-     */
-    public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.taboozle.card";
-
-    /**
-     * The MIME type of a {@link #CONTENT_URI} sub-directory of a single card
-     */
-    public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.taboozle.card";
 
     /**
      * The title of the card
