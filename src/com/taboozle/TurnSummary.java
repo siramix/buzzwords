@@ -7,15 +7,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 /**
- * This activity class is responsible for summarizing the turn and the handoff into the next turn 
- * or game end.
  * @author The Taboozle Team
+ * This activity class is responsible for summarizing the turn and the hand-off 
+ * into the next turn or game end.
  */
 public class TurnSummary extends Activity
 {
 
 	/**
-	  * NextTurnListener watches the button that handles handoff to the next turn activity.
+	  * Watches the button that handles hand-off to the next turn activity.
 	  */
 	  private OnClickListener NextTurnListener = new OnClickListener() 
 	  {
@@ -23,7 +23,7 @@ public class TurnSummary extends Activity
 	      {
 	    	  	startActivity(new Intent(Intent.ACTION_RUN, getIntent().getData()));
 	      }
-	  };
+	  }; // End NextTurnListener
 			
 	
 /**
@@ -36,7 +36,8 @@ public void onCreate( Bundle savedInstanceState )
 	// Setup the view
 	this.setContentView(R.layout.turnsummary);
 	
-    Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
-    playGameButton.setOnClickListener( NextTurnListener );
+  Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
+  playGameButton.setOnClickListener( NextTurnListener );
 }
+
 }
