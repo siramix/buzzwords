@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+
 /**
  * This is the activity class that kicks off Taboozle
  * 
@@ -14,7 +15,8 @@ import android.widget.ImageButton;
 public class Title extends Activity
 {
   /**
-  * PlayGameListener is used for the start game button.  It launches the next activity.
+  * PlayGameListener is used for the start game button.  It launches the next 
+  * activity.
   */
   private OnClickListener PlayGameListener = new OnClickListener() 
   {
@@ -41,7 +43,8 @@ public void onCreate( Bundle savedInstanceState )
 	// Setup the view
 	this.setContentView(R.layout.title );
 
-  ImageButton playGameButton = (ImageButton) this.findViewById( R.id.PlayGameButton );
+  ImageButton playGameButton = 
+    (ImageButton) this.findViewById( R.id.PlayGameButton );
   playGameButton.setOnClickListener( PlayGameListener );
 }
 
