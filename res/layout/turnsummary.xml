@@ -2,9 +2,9 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/bg_turnsummary">
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumNextTurn" android:text="Next Round" android:layout_alignParentBottom="true" android:layout_alignParentRight="true"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:id="@+id/TurnSumEndGame" android:layout_alignParentLeft="true" android:text="End Game ToDo"></Button><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumTitle" android:text="Turn Summary" android:textColor="#000" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:layout_marginLeft="20px" android:layout_marginTop="20px" android:textSize="26px"></TextView>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumNextTurn" android:text="Next Round" android:layout_alignParentBottom="true" android:layout_alignParentRight="true"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:id="@+id/TurnSumEndGame" android:layout_alignParentLeft="true" android:text="End Game ToDo"></Button><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumTitle" android:text="Turn Summary" android:textColor="#000" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:textSize="26px" android:layout_marginTop="5dip" android:layout_marginLeft="20dip"></TextView>
 
-<ListView android:layout_below="@id/TurnSumTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumCardList">
+<ListView android:layout_below="@id/TurnSumTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumCardList" android:paddingTop="10dip">
 
 
 </ListView>

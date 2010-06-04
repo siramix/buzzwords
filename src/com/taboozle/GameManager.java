@@ -159,4 +159,8 @@ public class GameManager
     return this.currentCard;
   }
   
+  public LinkedList<Card> GetAllCards()
+  {
+	  return this.currentCards;
+  }
 }

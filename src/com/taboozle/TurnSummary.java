@@ -1,11 +1,18 @@
 package com.taboozle;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 /**
  * @author The Taboozle Team
  * This activity class is responsible for summarizing the turn and the hand-off 
@@ -36,8 +43,32 @@ public void onCreate( Bundle savedInstanceState )
 	// Setup the view
 	this.setContentView(R.layout.turnsummary);
 	
-  Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
-  playGameButton.setOnClickListener( NextTurnListener );
+	ListView list = (ListView) findViewById(R.id.TurnSumCardList);
+
+    TaboozleApplication application = 
+        (TaboozleApplication) this.getApplication();
+    GameManager game = application.GetGameManager();
+	
+	ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
+
+	
+	LinkedList<Card> cardlist = game.GetAllCards();
+	for( Iterator<Card> it = cardlist.iterator(); it.hasNext(); )
+	{
+	  Card card = (Card) it.next();
+	  HashMap<String, String> map = new HashMap<String, String>();
+	  map.put("title", card.getTitle());
+	  map.put("rws", "0");
+	  mylist.add(map);
+	}
+
+	SimpleAdapter mSchedule = new SimpleAdapter(this, mylist, R.layout.turnsumrow,
+	            new String[] {"title", "rws"}, new int[] {R.id.TurnSum_CardTitle, R.id.TurnSum_CardRWS});
+	list.setAdapter(mSchedule);
+
+	
+    Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
+    playGameButton.setOnClickListener( NextTurnListener );
 }
 
 }

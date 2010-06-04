@@ -266,7 +266,7 @@ public class Turn extends Activity
     
     this.ShowCard();
     
-    TurnTimer counter = new TurnTimer( 60000, 200);
+    TurnTimer counter = new TurnTimer( 5000, 200);
     counter.start();
     
     ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonA );
