@@ -159,6 +159,10 @@ public class GameManager
     return this.currentCard;
   }
   
+  /**
+   * Get a list of all cards that have been acted on in a given turn.
+   * @return list of all cards 
+   */
   public LinkedList<Card> GetAllCards()
   {
 	  return this.currentCards;

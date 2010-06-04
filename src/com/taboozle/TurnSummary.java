@@ -49,24 +49,21 @@ public void onCreate( Bundle savedInstanceState )
         (TaboozleApplication) this.getApplication();
     GameManager game = application.GetGameManager();
 	
-	ArrayList<HashMap<String, String>> mylist = new ArrayList<HashMap<String, String>>();
-
-	
 	LinkedList<Card> cardlist = game.GetAllCards();
+	ArrayList<HashMap<String, String>> sumrows = new ArrayList<HashMap<String, String>>();
 	for( Iterator<Card> it = cardlist.iterator(); it.hasNext(); )
 	{
 	  Card card = (Card) it.next();
 	  HashMap<String, String> map = new HashMap<String, String>();
 	  map.put("title", card.getTitle());
-	  map.put("rws", "0");
-	  mylist.add(map);
+	  map.put("rws", Integer.toString(card.getRws()));
+	  sumrows.add(map);
 	}
 
-	SimpleAdapter mSchedule = new SimpleAdapter(this, mylist, R.layout.turnsumrow,
+	SimpleAdapter mSchedule = new SimpleAdapter(this, sumrows, R.layout.turnsumrow,
 	            new String[] {"title", "rws"}, new int[] {R.id.TurnSum_CardTitle, R.id.TurnSum_CardRWS});
 	list.setAdapter(mSchedule);
 
-	
     Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
     playGameButton.setOnClickListener( NextTurnListener );
 }
