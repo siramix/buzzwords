@@ -49,7 +49,7 @@ public void onCreate( Bundle savedInstanceState )
         (TaboozleApplication) this.getApplication();
     GameManager game = application.GetGameManager();
 	
-	LinkedList<Card> cardlist = game.GetAllCards();
+	LinkedList<Card> cardlist = game.GetCurrentCards();
 	ArrayList<HashMap<String, String>> sumrows = new ArrayList<HashMap<String, String>>();
 	for( Iterator<Card> it = cardlist.iterator(); it.hasNext(); )
 	{

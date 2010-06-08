@@ -163,7 +163,7 @@ public class GameManager
    * Get a list of all cards that have been acted on in a given turn.
    * @return list of all cards 
    */
-  public LinkedList<Card> GetAllCards()
+  public LinkedList<Card> GetCurrentCards()
   {
 	  return this.currentCards;
   }
