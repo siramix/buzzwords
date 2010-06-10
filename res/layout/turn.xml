@@ -1,29 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:id="@+id/MultiCardLayout">
-
-
-
-<ViewFlipper android:id="@+id/ViewFlipper0" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/actionbar"><RelativeLayout android:background="@drawable/bg_taboozlecard" android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/CardLayoutA"><TextView android:text="CardTitle" android:gravity="center" android:textSize="32dp" android:textColor="#000" android:id="@+id/CardTitleA" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:paddingBottom="15dp" android:paddingTop="15dp"></TextView><ListView android:layout_width="fill_parent" android:divider="@null" android:dividerHeight="0px" android:paddingBottom="30dp" android:id="@+id/CardWordsA" android:layout_height="wrap_content" android:layout_below="@+id/CardTitleA" android:paddingTop="30dp">
-</ListView><LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:gravity="center_horizontal" android:id="@+id/ButtonLayoutA" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:layout_marginBottom="5dp">
-<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/wrong" android:layout_gravity="left|center_vertical" android:id="@+id/BuzzerButtonA" android:layout_marginRight="80dp"></ImageButton><Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Skip" android:id="@+id/SkipButtonA"></Button>
-
-<ImageButton android:layout_height="wrap_content" android:background="@drawable/correct" android:layout_gravity="right|center_vertical" android:layout_width="wrap_content" android:id="@+id/CorrectButtonA" android:layout_marginLeft="80dp"></ImageButton>
-
-</LinearLayout></RelativeLayout><RelativeLayout android:background="@drawable/bg_taboozlecard" android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/CardLayoutB"><TextView android:text="CardTitle" android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="center" android:textSize="32dp" android:textColor="#000" android:id="@+id/CardTitleB" android:layout_alignParentTop="true" android:paddingBottom="15dp" android:paddingTop="15dp"></TextView><ListView android:layout_width="fill_parent" android:divider="@null" android:dividerHeight="0px" android:paddingTop="30dp" android:paddingBottom="30dp" android:id="@+id/CardWordsB" android:layout_height="wrap_content" android:layout_below="@+id/CardTitleB">
-</ListView><LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:gravity="center_horizontal" android:id="@+id/ButtonLayoutB" android:layout_height="wrap_content" android:layout_marginBottom="5dp" android:layout_alignParentBottom="true">
-<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/wrong" android:layout_gravity="left|center_vertical" android:id="@+id/BuzzerButtonB" android:layout_marginRight="80dp"></ImageButton><Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/SkipButtonB" android:text="SkipB"></Button>
-
-<ImageButton android:layout_height="wrap_content" android:background="@drawable/correct" android:layout_gravity="right|center_vertical" android:layout_width="wrap_content" android:id="@+id/CorrectButtonB" android:layout_marginLeft="80dp"></ImageButton>
-
-
-</LinearLayout></RelativeLayout>
-</ViewFlipper><RelativeLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/actionbar" android:background="@drawable/titlebar_blue"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="60s" android:id="@+id/Timer" android:layout_alignParentRight="true" android:layout_alignParentTop="true" android:layout_marginRight="10dp" android:textSize="16dp" android:paddingTop="5dp" android:textColor="#FFFFFF"></TextView></RelativeLayout>
-
-
-
-
-
-
+	<ViewFlipper
+		android:id="@+id/ViewFlipper0"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content" 
+		android:layout_below="@+id/actionbar">
+		<RelativeLayout
+			android:background="@drawable/bg_taboozlecard"
+			android:layout_height="fill_parent"
+			android:layout_width="fill_parent"
+			android:id="@+id/CardLayoutA">
+			<TextView
+				android:text="CardTitle"
+				android:gravity="center"
+				android:textSize="32dp"
+				android:textColor="#000"
+				android:id="@+id/CardTitleA"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content" 
+				android:layout_alignParentTop="true" 
+				android:paddingBottom="15dp" 
+				android:paddingTop="15dp">
+			</TextView>
+			<ListView 
+				android:layout_width="fill_parent" 
+				android:divider="@null" 
+				android:dividerHeight="0px" 
+				android:paddingBottom="30dp" 
+				android:id="@+id/CardWordsA" 
+				android:layout_height="wrap_content" 
+				android:layout_below="@+id/CardTitleA" 
+				android:paddingTop="30dp">
+			</ListView>
+			<LinearLayout 
+				android:orientation="horizontal" 
+				android:layout_width="fill_parent" 
+				android:gravity="center_horizontal" 
+				android:id="@+id/ButtonLayoutA" 
+				android:layout_alignParentBottom="true" 
+				android:layout_height="wrap_content" 
+				android:layout_marginBottom="5dp">
+				<ImageButton 
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:background="@drawable/wrong" 
+					android:layout_gravity="left|center_vertical" 
+					android:id="@+id/BuzzerButtonA" 
+					android:layout_marginRight="80dp">
+				</ImageButton>
+				<Button 
+					android:layout_height="wrap_content" 
+					android:layout_width="wrap_content" 
+					android:text="Skip" 
+					android:id="@+id/SkipButtonA">
+				</Button>
+				<ImageButton 
+					android:layout_height="wrap_content" 
+					android:background="@drawable/correct" 
+					android:layout_gravity="right|center_vertical" 
+					android:layout_width="wrap_content" 
+					android:id="@+id/CorrectButtonA" 
+					android:layout_marginLeft="80dp">
+				</ImageButton>
+			</LinearLayout>
+		</RelativeLayout>
+		<RelativeLayout
+		android:background="@drawable/bg_taboozlecard"
+		android:layout_height="fill_parent"
+		android:layout_width="fill_parent"
+		android:id="@+id/CardLayoutB">
+		<TextView
+			android:text="CardTitle"
+			android:gravity="center"
+			android:textSize="32dp"
+			android:textColor="#000"
+			android:id="@+id/CardTitleB"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content" 
+			android:layout_alignParentTop="true" 
+			android:paddingBottom="15dp" 
+			android:paddingTop="15dp">
+		</TextView>
+		<ListView 
+			android:layout_width="fill_parent" 
+			android:divider="@null" 
+			android:dividerHeight="0px" 
+			android:paddingBottom="30dp" 
+			android:id="@+id/CardWordsB" 
+			android:layout_height="wrap_content" 
+			android:layout_below="@+id/CardTitleB" 
+			android:paddingTop="30dp">
+		</ListView>
+		<LinearLayout 
+			android:orientation="horizontal" 
+			android:layout_width="fill_parent" 
+			android:gravity="center_horizontal" 
+			android:id="@+id/ButtonLayoutB" 
+			android:layout_alignParentBottom="true" 
+			android:layout_height="wrap_content" 
+			android:layout_marginBottom="5dp">
+			<ImageButton 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:background="@drawable/wrong" 
+				android:layout_gravity="left|center_vertical" 
+				android:id="@+id/BuzzerButtonB" 
+				android:layout_marginRight="80dp">
+			</ImageButton>
+			<Button 
+				android:layout_height="wrap_content" 
+				android:layout_width="wrap_content" 
+				android:text="Skip" 
+				android:id="@+id/SkipButtonB">
+			</Button>
+			<ImageButton 
+				android:layout_height="wrap_content" 
+				android:background="@drawable/correct" 
+				android:layout_gravity="right|center_vertical" 
+				android:layout_width="wrap_content" 
+				android:id="@+id/CorrectButtonB" 
+				android:layout_marginLeft="80dp">
+			</ImageButton>
+		</LinearLayout>
+	</RelativeLayout>
+	</ViewFlipper>
+	<RelativeLayout
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent"
+	android:id="@+id/actionbar"
+	android:background="@drawable/titlebar_blue">
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="60s" android:id="@+id/Timer"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginRight="10dp"
+		android:textSize="16dp"
+		android:paddingTop="5dp"
+		android:textColor="#FFFFFF">
+	</TextView>
+	</RelativeLayout>
 </RelativeLayout>
