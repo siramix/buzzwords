@@ -28,11 +28,15 @@ public class TurnSummary extends Activity
 	  {
 	      public void onClick(View v) 
 	      {
-	    	  	startActivity(new Intent(Intent.ACTION_RUN, getIntent().getData()));
+	        // You have to draw before getting the view
+	        /*ListView list = (ListView) findViewById(R.id.TurnSumCardList);
+	        LinearLayout lay = (LinearLayout) list.getChildAt( 1 );
+	        ImageView iv = (ImageView) lay.getChildAt( 1 );
+	        iv.setBackgroundResource( R.drawable.wrong );*/
+     	  	startActivity(new Intent(Intent.ACTION_RUN, getIntent().getData()));
 	      }
 	  }; // End NextTurnListener
-			
-	
+
 /**
 * onCreate - initializes the activity to display the results of the turn.
 */
@@ -63,9 +67,9 @@ public void onCreate( Bundle savedInstanceState )
 	SimpleAdapter mSchedule = new SimpleAdapter(this, sumrows, R.layout.turnsumrow,
 	            new String[] {"title", "rws"}, new int[] {R.id.TurnSum_CardTitle, R.id.TurnSum_CardRWS});
 	list.setAdapter(mSchedule);
-
-    Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
-    playGameButton.setOnClickListener( NextTurnListener );
+	
+  Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
+  playGameButton.setOnClickListener( NextTurnListener );
 }
 
 }
