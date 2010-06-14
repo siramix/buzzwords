@@ -43,6 +43,11 @@ public class GameManager
   private long currentRound;
   
   /**
+   * Running total of scores
+   */
+  private long[] teamScores;
+  
+  /**
    * The id of the card in play
    */
   private Card currentCard;
@@ -78,6 +83,7 @@ public class GameManager
   {
     this.currentGameId = this.game.newGame();
     this.teamIds = new long[teams.length];
+    this.teamScores = new long[teams.length];
     for( int i = 0; i < teams.length; ++i )
     {
       this.teamIds[i] = game.newTeam( teams[i] );
@@ -91,6 +97,7 @@ public class GameManager
   public void NextTurn( )
   {
     this.WriteTurnResults();
+    this.teamScores[this.activeTeamIndex] += GetTurnScore();
     this.activeTeamIndex++;
     if( this.activeTeamIndex == this.teamIds.length )
     {
@@ -109,19 +116,17 @@ public class GameManager
   {
 	  long scoreTotal = 0;
 	  
-	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
-	  {
-	    Card card = (Card) it.next();
-	    scoreTotal += RWS_VALUE_RULES[(int)card.getRws()];
-	  }
+	  /* Iterate through cards and total the score for the round */
+	  scoreTotal = this.GetTurnScore();
 	  
 	  long currentTurnScoreID = game.newTurn( this.currentGameId, 
 	                                          this.teamIds[this.activeTeamIndex], 
 	                                          this.currentRound, 
 	                                          scoreTotal );
 	  
+	  /* Once we've calculated the score and gotten the ID, write to DB */
 	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
-    {
+	  {
 	    Card card = (Card) it.next();
 	    game.completeCard( this.currentGameId, this.teamIds[this.activeTeamIndex], 
 	                       card.getId(), currentTurnScoreID, 
@@ -166,5 +171,30 @@ public class GameManager
   public LinkedList<Card> GetCurrentCards()
   {
 	  return this.currentCards;
+  }
+  
+  /**
+   * Iterate through through all cards for the current turn and return the 
+   * total score
+   * @return score for the round 
+   */
+  public long GetTurnScore()
+  {
+	  long ret = 0;
+	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
+	  {
+	    Card card = (Card) it.next();
+	    ret += RWS_VALUE_RULES[(int)card.getRws()];
+	  }
+	  return ret;
+  }
+  
+  /**
+   * Return an array of scores representing a running score total.
+   * @return Array of longs with an element for each team's latest total score.
+   */
+  public long[] GetTeamScores()
+  {
+	  return teamScores;
   }
 }

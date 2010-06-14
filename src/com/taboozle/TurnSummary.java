@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 /**
  * @author The Taboozle Team
  * This activity class is responsible for summarizing the turn and the hand-off 
@@ -52,7 +53,7 @@ public void onCreate( Bundle savedInstanceState )
     TaboozleApplication application = 
         (TaboozleApplication) this.getApplication();
     GameManager game = application.GetGameManager();
-	
+    
 	LinkedList<Card> cardlist = game.GetCurrentCards();
 	ArrayList<HashMap<String, String>> sumrows = new ArrayList<HashMap<String, String>>();
 	for( Iterator<Card> it = cardlist.iterator(); it.hasNext(); )
@@ -62,14 +63,17 @@ public void onCreate( Bundle savedInstanceState )
 	  map.put("title", card.getTitle());
 	  map.put("rws", Integer.toString(card.getRws()));
 	  sumrows.add(map);
-	}
-
-	SimpleAdapter mSchedule = new SimpleAdapter(this, sumrows, R.layout.turnsumrow,
-	            new String[] {"title", "rws"}, new int[] {R.id.TurnSum_CardTitle, R.id.TurnSum_CardRWS});
-	list.setAdapter(mSchedule);
+	}	
 	
-  Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
-  playGameButton.setOnClickListener( NextTurnListener );
+	SimpleAdapter turnCards = new SimpleAdapter(this, sumrows, R.layout.turnsumrow,
+	            new String[] {"title", "rws"}, new int[] {R.id.TurnSum_CardTitle, R.id.TurnSum_CardRWS});
+	list.setAdapter(turnCards);
+	
+	TextView totalscore = (TextView) findViewById(R.id.TurnTotalScore);
+	totalscore.setText(Long.toString(game.GetTurnScore()));    
+	
+	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
+	playGameButton.setOnClickListener( NextTurnListener );
 }
 
 }
