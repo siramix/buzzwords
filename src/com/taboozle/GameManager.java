@@ -195,6 +195,11 @@ public class GameManager
    */
   public long[] GetTeamScores()
   {
-	  return teamScores;
+	  return this.teamScores;
+  }
+  
+  public int GetActiveTeamIndex()
+  {
+	  return this.activeTeamIndex;
   }
 }

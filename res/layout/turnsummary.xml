@@ -9,4 +9,6 @@
 
 </ListView>
 <TextView android:layout_below="@id/TurnSumCardList" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTotalScore" android:text="00" android:layout_alignParentRight="true" android:layout_marginRight="10dp"></TextView>
+<TextView android:layout_below="@id/TurnTotalScore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TeamAScoreHere" android:id="@+id/TeamAScore"></TextView>
+<TextView android:layout_below="@id/TeamAScore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TeamBScoreHere" android:id="@+id/TeamBScore"></TextView>
 </RelativeLayout>

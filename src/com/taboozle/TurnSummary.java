@@ -69,11 +69,33 @@ public void onCreate( Bundle savedInstanceState )
 	            new String[] {"title", "rws"}, new int[] {R.id.TurnSum_CardTitle, R.id.TurnSum_CardRWS});
 	list.setAdapter(turnCards);
 	
-	TextView totalscore = (TextView) findViewById(R.id.TurnTotalScore);
-	totalscore.setText(Long.toString(game.GetTurnScore()));    
+	UpdateScoreViews();
 	
 	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
 	playGameButton.setOnClickListener( NextTurnListener );
+}
+
+/**
+ * Update the views to display the proper scores for the current round
+ */
+private void UpdateScoreViews()
+{
+    TaboozleApplication application = 
+        (TaboozleApplication) this.getApplication();
+    GameManager game = application.GetGameManager();
+	
+	long turnscore = game.GetTurnScore();
+	long[] totalscores = game.GetTeamScores();
+
+
+	TextView scoreview = (TextView) findViewById(R.id.TurnTotalScore);
+	scoreview.setText(Long.toString(turnscore));
+	
+	TextView teamATotalScore = (TextView) findViewById(R.id.TeamAScore);
+	teamATotalScore.setText("Team A: " + Long.toString(totalscores[0]));
+	
+	TextView teamBTotalScore = (TextView) findViewById(R.id.TeamBScore);
+	teamBTotalScore.setText("Team B: " + Long.toString(totalscores[1]));   
 }
 
 }
