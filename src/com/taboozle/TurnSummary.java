@@ -85,9 +85,10 @@ private void UpdateScoreViews()
     GameManager game = application.GetGameManager();
 	
 	long turnscore = game.GetTurnScore();
-	long[] totalscores = game.GetTeamScores();
+	long[] totalscores = game.GetTeamScores().clone();
 
-
+	totalscores[game.GetActiveTeamIndex()] += turnscore;	
+	
 	TextView scoreview = (TextView) findViewById(R.id.TurnTotalScore);
 	scoreview.setText(Long.toString(turnscore));
 	
