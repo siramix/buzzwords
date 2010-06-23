@@ -98,7 +98,11 @@ public class Game extends SQLiteOpenHelper
   }
 
   /**
-   * Query the database for all round scores for a game.  
+   * Query the database for all round scores for a team in a given game.  
+   * 
+   * @param teamID - the database ID of the team whose scores are being retrieved
+   * @param gameID - the database ID of the game whose scores are being retrieved
+   * @return an array of scores, one element per round
    */
   public long[] getRoundScores(long teamID, long gameID)
   {

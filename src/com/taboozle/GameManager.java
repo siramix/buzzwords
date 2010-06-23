@@ -200,7 +200,7 @@ public class GameManager
 
   /**
    * Return an array of scores for each round for a given team.
-   * @return Array of longs with an element for each team's latest total score.
+   * @return Array of longs with an element for the team's scores for every round, first to last.
    */
   public long[] GetRoundScores(long teamIndex)
   {
