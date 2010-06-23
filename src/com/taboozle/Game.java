@@ -95,8 +95,38 @@ public class Game extends SQLiteOpenHelper
       } while( cur.moveToNext() );
     }
     cur.close();
-    
   }
+
+  /**
+   * Query the database for all round scores for a game.  
+   */
+  public long[] getRoundScores(long teamID, long gameID)
+  {
+    // query for scores
+    SQLiteDatabase db = this.getReadableDatabase();
+    String[] columns = new String[] {GameData.TurnScores.SCORE};
+    Cursor cur = db.query( GameData.TURN_SCORES_TABLE_NAME, columns, 
+    		               GameData.TurnScores.TEAM_ID + "=" + teamID + " AND " + 
+    		               GameData.TurnScores.GAME_ID + "=" + gameID, null, null, null, 
+    		               GameData.TurnScores.ROUND);
+    
+    long[] scores = new long[cur.getCount()];
+
+    // iterate through the cursor populating array of scores
+    if( cur.moveToFirst() )
+    {
+      int i = 0; 
+      do
+      {
+        int scoreColumn = cur.getColumnIndex( GameData.TurnScores.SCORE );
+        scores[i] = cur.getLong( scoreColumn );
+        i++;
+      } while( cur.moveToNext() );
+    }
+
+    cur.close();  
+    return scores;
+  }  
   
   /**
    * Get the card indicated by the cardIdPosition. If we've dealt past the end

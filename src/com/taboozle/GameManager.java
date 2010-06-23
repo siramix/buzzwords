@@ -197,6 +197,16 @@ public class GameManager
   {
 	  return this.teamScores;
   }
+
+  /**
+   * Return an array of scores for each round for a given team.
+   * @return Array of longs with an element for each team's latest total score.
+   */
+  public long[] GetRoundScores(long teamIndex)
+  {
+	  return this.game.getRoundScores(this.teamIds[(int)teamIndex], this.currentGameId);
+  }
+  
   
   public int GetActiveTeamIndex()
   {
