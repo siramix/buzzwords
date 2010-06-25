@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -277,20 +276,15 @@ public class Turn extends Activity
     
     TurnTimer counter = new TurnTimer( 5000, 200);
     counter.start();
-    
-    ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonA );
-    buzzerButton.setOnTouchListener( BuzzListener );
-    buzzerButton = (ImageButton)this.findViewById( R.id.BuzzerButtonB );
+   
+    ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.ButtonWrong );
     buzzerButton.setOnTouchListener( BuzzListener );
     
-    ImageButton nextButton = (ImageButton)this.findViewById( R.id.CorrectButtonA );
-    nextButton.setOnClickListener( CorrectListener );
-    nextButton = (ImageButton)this.findViewById( R.id.CorrectButtonB );
+    ImageButton nextButton = (ImageButton)this.findViewById( R.id.ButtonCorrect );
     nextButton.setOnClickListener( CorrectListener );
     
-    Button skipButton = (Button)this.findViewById( R.id.SkipButtonA );
+    ImageButton skipButton = (ImageButton)this.findViewById( R.id.ButtonSkip );
     skipButton.setOnClickListener( SkipListener );
-    skipButton = (Button)this.findViewById( R.id.SkipButtonB );
-    skipButton.setOnClickListener( SkipListener );
+
   }
 }

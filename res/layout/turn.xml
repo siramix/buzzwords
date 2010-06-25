@@ -10,9 +10,7 @@
 		android:layout_below="@+id/actionbar">
 		<RelativeLayout
 			android:background="@drawable/bg_taboozlecard"
-			android:layout_height="fill_parent"
-			android:layout_width="fill_parent"
-			android:id="@+id/CardLayoutA">
+			android:id="@+id/CardLayoutA" android:layout_width="wrap_content" android:layout_height="wrap_content">
 			<TextView
 				android:text="CardTitle"
 				android:gravity="center"
@@ -22,8 +20,7 @@
 				android:layout_width="fill_parent" 
 				android:layout_height="wrap_content" 
 				android:layout_alignParentTop="true" 
-				android:paddingBottom="15dp" 
-				android:paddingTop="15dp">
+				android:paddingBottom="15dp" android:paddingTop="30dp">
 			</TextView>
 			<ListView 
 				android:layout_width="fill_parent" 
@@ -35,43 +32,11 @@
 				android:layout_below="@+id/CardTitleA" 
 				android:paddingTop="30dp">
 			</ListView>
-			<LinearLayout 
-				android:orientation="horizontal" 
-				android:layout_width="fill_parent" 
-				android:gravity="center_horizontal" 
-				android:id="@+id/ButtonLayoutA" 
-				android:layout_alignParentBottom="true" 
-				android:layout_height="wrap_content" 
-				android:layout_marginBottom="5dp">
-				<ImageButton 
-					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content" 
-					android:background="@drawable/wrong" 
-					android:layout_gravity="left|center_vertical" 
-					android:id="@+id/BuzzerButtonA" 
-					android:layout_marginRight="80dp">
-				</ImageButton>
-				<Button 
-					android:layout_height="wrap_content" 
-					android:layout_width="wrap_content" 
-					android:text="Skip" 
-					android:id="@+id/SkipButtonA">
-				</Button>
-				<ImageButton 
-					android:layout_height="wrap_content" 
-					android:background="@drawable/correct" 
-					android:layout_gravity="right|center_vertical" 
-					android:layout_width="wrap_content" 
-					android:id="@+id/CorrectButtonA" 
-					android:layout_marginLeft="80dp">
-				</ImageButton>
-			</LinearLayout>
+			
 		</RelativeLayout>
 		<RelativeLayout
 		android:background="@drawable/bg_taboozlecard"
-		android:layout_height="fill_parent"
-		android:layout_width="fill_parent"
-		android:id="@+id/CardLayoutB">
+		android:id="@+id/CardLayoutB" android:layout_height="wrap_content" android:layout_width="wrap_content">
 		<TextView
 			android:text="CardTitle"
 			android:gravity="center"
@@ -81,8 +46,7 @@
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content" 
 			android:layout_alignParentTop="true" 
-			android:paddingBottom="15dp" 
-			android:paddingTop="15dp">
+			android:paddingBottom="15dp" android:paddingTop="30dp">
 		</TextView>
 		<ListView 
 			android:layout_width="fill_parent" 
@@ -94,44 +58,13 @@
 			android:layout_below="@+id/CardTitleB" 
 			android:paddingTop="30dp">
 		</ListView>
-		<LinearLayout 
-			android:orientation="horizontal" 
-			android:layout_width="fill_parent" 
-			android:gravity="center_horizontal" 
-			android:id="@+id/ButtonLayoutB" 
-			android:layout_alignParentBottom="true" 
-			android:layout_height="wrap_content" 
-			android:layout_marginBottom="5dp">
-			<ImageButton 
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				android:background="@drawable/wrong" 
-				android:layout_gravity="left|center_vertical" 
-				android:id="@+id/BuzzerButtonB" 
-				android:layout_marginRight="80dp">
-			</ImageButton>
-			<Button 
-				android:layout_height="wrap_content" 
-				android:layout_width="wrap_content" 
-				android:text="Skip" 
-				android:id="@+id/SkipButtonB">
-			</Button>
-			<ImageButton 
-				android:layout_height="wrap_content" 
-				android:background="@drawable/correct" 
-				android:layout_gravity="right|center_vertical" 
-				android:layout_width="wrap_content" 
-				android:id="@+id/CorrectButtonB" 
-				android:layout_marginLeft="80dp">
-			</ImageButton>
-		</LinearLayout>
+		
 	</RelativeLayout>
 	</ViewFlipper>
 	<RelativeLayout
-	android:layout_height="wrap_content"
 	android:layout_width="fill_parent"
 	android:id="@+id/actionbar"
-	android:background="@drawable/titlebar_blue">
+	android:background="@drawable/titlebar_blue" android:layout_height="wrap_content">
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -144,4 +77,10 @@
 		android:textColor="#FFFFFF">
 	</TextView>
 	</RelativeLayout>
+
+<RelativeLayout android:layout_width="wrap_content" android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_below="@+id/ViewFlipper0" android:layout_marginLeft="10px" android:layout_height="wrap_content">
+<ImageButton android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_width="wrap_content" android:background="@drawable/wrong" android:layout_marginLeft="20px" android:id="@+id/ButtonWrong"></ImageButton>
+<ImageButton android:layout_height="wrap_content" android:layout_centerInParent="true" android:background="@drawable/skip" android:layout_width="wrap_content" android:id="@+id/ButtonSkip"></ImageButton>
+<ImageButton android:layout_height="wrap_content" android:layout_alignParentRight="true" android:background="@drawable/correct" android:layout_width="wrap_content" android:layout_marginRight="10px" android:id="@+id/ButtonCorrect"></ImageButton>
+</RelativeLayout>
 </RelativeLayout>
