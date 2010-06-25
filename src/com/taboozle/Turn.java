@@ -11,6 +11,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,6 +57,11 @@ public class Turn extends Activity
   private int buzzStreamId;
   
   /**
+   * vibrator object to vibrate on buzz click
+   */
+  private Vibrator buzzVibrator;
+  
+  /**
    * Unique IDs for Options menu
    */
   protected static final int MENU_ENDGAME = 0;
@@ -93,13 +99,15 @@ public class Turn extends Activity
         {
           case MotionEvent.ACTION_DOWN:
             buzzStreamId = soundPool.play( buzzSoundId, volume, volume, 1, -1, 1.0f );
+            buzzVibrator.vibrate(1000);
             ret = true;
             break;
           case MotionEvent.ACTION_UP:
             soundPool.stop( buzzStreamId );
+            buzzVibrator.cancel();
             ret = true;
             break;
-          default:
+          	default:
             ret = false;              
         }
 
@@ -251,6 +259,7 @@ public class Turn extends Activity
 
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
+    this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
     TaboozleApplication application = 
       (TaboozleApplication) this.getApplication();
