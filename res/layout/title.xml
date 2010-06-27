@@ -1,3 +1,50 @@
-<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/StartLayout" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:id="@+id/Title" android:text="Taboozle" android:layout_gravity="center_vertical|center_horizontal" android:layout_height="wrap_content"></TextView>
-<ImageButton android:layout_width="wrap_content" android:layout_gravity="center_horizontal|clip_vertical" android:layout_height="wrap_content" android:id="@+id/PlayGameButton"></ImageButton>
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:id="@+id/StartLayout" 
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent" 
+	android:orientation="vertical" android:background="#eee">
+	
+	<TextView android:id="@+id/Title"
+		android:text="Taboozle" 			 
+		android:layout_width="wrap_content" 	
+		android:layout_height="wrap_content" 
+		android:layout_centerHorizontal="true" />
+		
+	<ImageButton android:id="@+id/PlayGameButton" 	
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:layout_centerHorizontal="true" 
+		android:layout_below="@+id/Title" />
+		
+	<RelativeLayout android:id="@+id/OptionsIcons" 
+		android:layout_below="@+id/PlayGameButton" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true" 
+		android:layout_marginTop="75dip" >
+		
+		<ImageButton android:id="@+id/CardPacksIcon" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:background="@drawable/mainscreen_cardpacks" />
+			
+		<ImageButton android:id="@+id/GameRulesIcon" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@+id/CardPacksIcon" 
+			android:background="@drawable/mainscreen_bluewhistle" android:layout_marginLeft="25dip"/>
+		
+		<ImageButton android:id="@+id/StatsIcon"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:layout_below="@+id/CardPacksIcon" 
+			android:layout_alignLeft="@+id/CardPacksIcon" android:background="@drawable/mainscreen_stats" android:layout_marginTop="50dip"/>
+			
+		<ImageButton android:id="@+id/SettingsIcon" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:background="@drawable/mainscreen_settings" android:layout_alignBottom="@+id/StatsIcon" android:layout_alignRight="@+id/GameRulesIcon"/>
+	
+	</RelativeLayout>
+
+</RelativeLayout>
