@@ -241,6 +241,7 @@ public class Turn extends Activity
   {
 	  //Stop the sound if someone had the buzzer held down
 	  soundPool.stop( buzzStreamId );
+	  buzzVibrator.cancel();
 	  Intent newintent = new Intent( this, TurnSummary.class);
 	  startActivity(newintent);
   }
