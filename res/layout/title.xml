@@ -4,24 +4,26 @@
 	android:layout_height="fill_parent" 
 	android:orientation="vertical" android:background="#eee">
 	
-	<TextView android:id="@+id/Title"
-		android:text="Taboozle" 			 
+	<TextView android:id="@+id/Title"		 
 		android:layout_width="wrap_content" 	
 		android:layout_height="wrap_content" 
-		android:layout_centerHorizontal="true" />
+		android:layout_centerHorizontal="true" 
+		android:background="@drawable/mainscreen_logo" />
 		
 	<ImageButton android:id="@+id/PlayGameButton" 	
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content" 
 		android:layout_centerHorizontal="true" 
-		android:layout_below="@+id/Title" />
+		android:layout_below="@+id/Title" 
+		android:layout_marginTop="30dip" 
+		android:background="@drawable/mainscreen_play" />
 		
 	<RelativeLayout android:id="@+id/OptionsIcons" 
 		android:layout_below="@+id/PlayGameButton" 
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true" 
-		android:layout_marginTop="75dip" >
+		android:layout_marginTop="50dip" >
 		
 		<ImageButton android:id="@+id/CardPacksIcon" 
 			android:layout_width="wrap_content" 
