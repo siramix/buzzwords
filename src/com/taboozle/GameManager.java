@@ -228,9 +228,21 @@ public class GameManager
 	  return this.game.getRoundScores(this.teamIds[(int)teamIndex], this.currentGameId);
   }
   
-  
+  /**
+   * Return the index of the team currently in play.
+   * @return integer representing the index of the current team starting at 0.
+   */
   public int GetActiveTeamIndex()
   {
 	  return this.activeTeamIndex;
+  }
+  
+  /**
+   * Return the number of teams set up by the game manager.
+   * @return integer representing the number of teams ie. the length of teamIds[]
+   */
+  public int GetNumTeams()
+  {
+	  return this.teamIds.length;
   }
 }
