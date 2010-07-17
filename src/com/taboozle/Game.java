@@ -23,14 +23,14 @@ import android.util.Log;
 
 /**
  * @author The Taboozle Team
- * 
+ *
  * The Game class is a database abstraction class that deals with the database
  * transaction necessary to care a game of taboozle forward. Game should only
  * be used by game manager as a matter of design.
  */
 public class Game extends SQLiteOpenHelper
 {
-  
+
   /**
    * logging tag
    */
@@ -39,20 +39,20 @@ public class Game extends SQLiteOpenHelper
   /**
    * The current context (used for database creation and initialization)
    */
-  private Context curContext;
-  
+  private final Context curContext;
+
   /**
    * The list of cardIds that we pull from (our "deck" of cards)
    */
   private ArrayList<Long> cardIds;
-  
+
   /**
    * The position in the list of card ids (where we are in the "deck")
    */
   private int cardIdPosition;
-  
+
   /**
-   * Standard constructor. If you're wondering about the necessity of the 
+   * Standard constructor. If you're wondering about the necessity of the
    * context, it is used to create the database of the superclass and we need
    * it to populate the card table with the xml resource containing the starter
    * pack.
@@ -61,29 +61,29 @@ public class Game extends SQLiteOpenHelper
    */
   public Game( Context context )
   {
-    super( context, GameData.DATABASE_NAME, null, 
+    super( context, GameData.DATABASE_NAME, null,
            GameData.DATABASE_VERSION );
     this.curContext = context;
   }
-  
+
   /**
    * Query the database for all the cards it has. That query specifies a random
    * order; thus, a cursor full of longs is returned. We push those longs into
    * our newly initialized ArrayList, cardIds. Note the cardIdPosition is set
-   * to zero indicating the first card id in our "deck." 
+   * to zero indicating the first card id in our "deck."
    */
   public void prepDeck()
   {
     // initialize our data structures
     this.cardIds = new ArrayList<Long>();
     this.cardIdPosition = 0;
-    
+
     // query for ids
     SQLiteDatabase db = this.getReadableDatabase();
     String[] columns = new String[] {GameData.Cards._ID};
-    Cursor cur = db.query( GameData.CARD_TABLE_NAME, columns, null, null, 
+    Cursor cur = db.query( GameData.CARD_TABLE_NAME, columns, null, null,
                          null, null, "RANDOM()");
-    
+
     // iterate through the cursor pushing the ids into cardIds
     if( cur.moveToFirst() )
     {
@@ -91,15 +91,15 @@ public class Game extends SQLiteOpenHelper
       {
         int idColumn = cur.getColumnIndex( GameData.Cards._ID );
         this.cardIds.add( cur.getLong( idColumn ) );
-        
+
       } while( cur.moveToNext() );
     }
     cur.close();
   }
 
   /**
-   * Query the database for all round scores for a team in a given game.  
-   * 
+   * Query the database for all round scores for a team in a given game.
+   *
    * @param teamID - the database ID of the team whose scores are being retrieved
    * @param gameID - the database ID of the game whose scores are being retrieved
    * @return an array of scores, one element per round
@@ -109,17 +109,17 @@ public class Game extends SQLiteOpenHelper
     // query for scores
     SQLiteDatabase db = this.getReadableDatabase();
     String[] columns = new String[] {GameData.TurnScores.SCORE};
-    Cursor cur = db.query( GameData.TURN_SCORES_TABLE_NAME, columns, 
-    		               GameData.TurnScores.TEAM_ID + "=" + teamID + " AND " + 
-    		               GameData.TurnScores.GAME_ID + "=" + gameID, null, null, null, 
+    Cursor cur = db.query( GameData.TURN_SCORES_TABLE_NAME, columns,
+    		               GameData.TurnScores.TEAM_ID + "=" + teamID + " AND " +
+    		               GameData.TurnScores.GAME_ID + "=" + gameID, null, null, null,
     		               GameData.TurnScores.ROUND);
-    
+
     long[] scores = new long[cur.getCount()];
 
     // iterate through the cursor populating array of scores
     if( cur.moveToFirst() )
     {
-      int i = 0; 
+      int i = 0;
       do
       {
         int scoreColumn = cur.getColumnIndex( GameData.TurnScores.SCORE );
@@ -128,10 +128,10 @@ public class Game extends SQLiteOpenHelper
       } while( cur.moveToNext() );
     }
 
-    cur.close();  
+    cur.close();
     return scores;
-  }  
-  
+  }
+
   /**
    * Get the card indicated by the cardIdPosition. If we've dealt past the end
    * of the deck, we should prep the deck.
@@ -144,38 +144,38 @@ public class Game extends SQLiteOpenHelper
     {
       this.prepDeck();
     }
-    
+
     // query for the specific card indicated by cardId
     SQLiteDatabase db = this.getReadableDatabase();
-    String[] columns = new String[] {GameData.Cards._ID, GameData.Cards.TITLE, 
+    String[] columns = new String[] {GameData.Cards._ID, GameData.Cards.TITLE,
                         GameData.Cards.BAD_WORDS};
-    Cursor cur = db.query( GameData.CARD_TABLE_NAME, columns, 
-                           GameData.Cards._ID + "=" + 
-                           this.cardIds.get( this.cardIdPosition++ ), 
+    Cursor cur = db.query( GameData.CARD_TABLE_NAME, columns,
+                           GameData.Cards._ID + "=" +
+                           this.cardIds.get( this.cardIdPosition++ ),
                            null, null, null, null, "1" );
-    
+
     // create a blank card
     Card card = new Card();
-    
+
     // Get the first result from the cursor and populate the blank card
     if( cur.moveToFirst() )
     {
       int idColumn = cur.getColumnIndex( GameData.Cards._ID );
       int titleColumn = cur.getColumnIndex( GameData.Cards.TITLE );
       int badWordsColumn = cur.getColumnIndex( GameData.Cards.BAD_WORDS );
-      
+
       card.setId( cur.getLong( idColumn ) );
       card.setTitle( cur.getString( titleColumn ) );
       card.setBadWords( cur.getString( badWordsColumn ) );
     }
-    
-    // release the cursor 
+
+    // release the cursor
     cur.close();
-    
+
     // return the card (it could be blank)
     return card;
   }
-  
+
   /**
    * Create a game identified by the current date and return its database id
    * @return the id of the newly created game
@@ -186,13 +186,13 @@ public class Game extends SQLiteOpenHelper
     Date currentTime = new Date();
     String dateString = currentTime.toString();
     ContentValues values = new ContentValues();
-    values.put( GameData.Games.TIME, dateString ); 
+    values.put( GameData.Games.TIME, dateString );
     SQLiteDatabase db = this.getWritableDatabase();
-    
+
     // Do the insert and return the row id
     return db.insert(GameData.GAME_TABLE_NAME, "", values);
   }
-  
+
   /**
    * Create a team identified by name and return the team's id
    * @param name - the name of the team
@@ -217,10 +217,10 @@ public class Game extends SQLiteOpenHelper
     values.put( GameData.FinalScores.SCORE, score );
     SQLiteDatabase db = this.getWritableDatabase();
     return db.insert( GameData.FINAL_SCORES_TABLE_NAME, "", values );
-    }  
+    }
   /**
-   * Creates a turn record in the database. The turn knows about the game, 
-   * team, and round in which it occurred, as well as its score. 
+   * Creates a turn record in the database. The turn knows about the game,
+   * team, and round in which it occurred, as well as its score.
    * @param gameId - the id of the game in which the turn took place
    * @param teamId - the id of the team doing the guessing on the turn
    * @param round - the round in which the turn took place
@@ -237,7 +237,7 @@ public class Game extends SQLiteOpenHelper
     SQLiteDatabase db = this.getWritableDatabase();
     return db.insert(GameData.TURN_SCORES_TABLE_NAME, "", values);
   }
-  
+
   /**
    * Adds a record of a played card to the database
    * @param gameId - the game the card occurred in
@@ -246,7 +246,7 @@ public class Game extends SQLiteOpenHelper
    * @param turnScoreId - the turn the card was called in
    * @param rws - whether the card was right, wrong or skipped
    */
-  public void completeCard( long gameId, long teamId, long cardId, 
+  public void completeCard( long gameId, long teamId, long cardId,
 		  					long turnScoreId, long rws )
   {
     ContentValues values = new ContentValues();
@@ -265,16 +265,16 @@ public class Game extends SQLiteOpenHelper
   @Override
   public void onCreate( SQLiteDatabase db )
   {
-    db.execSQL( "CREATE TABLE " + GameData.TEAM_TABLE_NAME + " (" + 
+    db.execSQL( "CREATE TABLE " + GameData.TEAM_TABLE_NAME + " (" +
                 GameData.Teams._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 GameData.Teams.NAME + " TEXT);" );
-    db.execSQL( "CREATE TABLE " + GameData.GAME_TABLE_NAME + " (" + 
+    db.execSQL( "CREATE TABLE " + GameData.GAME_TABLE_NAME + " (" +
                 GameData.Games._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 GameData.Games.TIME + " TEXT);" );
-    db.execSQL( "CREATE TABLE " + GameData.TURN_SCORES_TABLE_NAME + " (" + 
+    db.execSQL( "CREATE TABLE " + GameData.TURN_SCORES_TABLE_NAME + " (" +
                 GameData.TurnScores._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 GameData.TurnScores.TEAM_ID + " INTEGER," +
-                GameData.TurnScores.GAME_ID + " INTEGER," + 
+                GameData.TurnScores.GAME_ID + " INTEGER," +
                 GameData.TurnScores.ROUND + " INTEGER," +
                 GameData.TurnScores.SCORE + " INTEGER);" );
     db.execSQL( "CREATE TABLE " + GameData.FINAL_SCORES_TABLE_NAME + " (" +
@@ -289,16 +289,16 @@ public class Game extends SQLiteOpenHelper
                 GameData.GameHistory.CARD_ID + " INTEGER," +
                 GameData.GameHistory.TURN_SCORE_ID + " INTEGER," +
                 GameData.GameHistory.RWS + " INTEGER);" );
-    db.execSQL( "CREATE TABLE " + GameData.CARD_TABLE_NAME + " (" + 
+    db.execSQL( "CREATE TABLE " + GameData.CARD_TABLE_NAME + " (" +
                 GameData.Cards._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 GameData.Cards.PACK_NAME + " TEXT," +
-                GameData.Cards.TITLE + " TEXT," + 
-                GameData.Cards.BAD_WORDS + " TEXT," + 
+                GameData.Cards.TITLE + " TEXT," +
+                GameData.Cards.BAD_WORDS + " TEXT," +
                 GameData.Cards.CATEGORIES + " TEXT);" );
-    
+
     InputStream starterXML =
       curContext.getResources().openRawResource(R.raw.starter);
-    DocumentBuilderFactory docBuilderFactory = 
+    DocumentBuilderFactory docBuilderFactory =
       DocumentBuilderFactory.newInstance();
     try
     {
@@ -306,7 +306,7 @@ public class Game extends SQLiteOpenHelper
       Document doc = docBuilder.parse(starterXML);
       NodeList cardNodes = doc.getElementsByTagName( "card" );
       for(int i = 0; i < cardNodes.getLength(); i++)
-      {        
+      {
         NodeList titleWhiteAndBads = cardNodes.item( i ).getChildNodes();
         Node titleNode = null;
         Node badsNode = null;
@@ -314,7 +314,7 @@ public class Game extends SQLiteOpenHelper
         Node packNameNode = null;
         for( int j = 0; j < titleWhiteAndBads.getLength(); j++ )
         {
-          String candidateName = titleWhiteAndBads.item( j ).getNodeName(); 
+          String candidateName = titleWhiteAndBads.item( j ).getNodeName();
           if( candidateName.equals( "title" ) )
           {
             titleNode = titleWhiteAndBads.item( j );
@@ -351,15 +351,15 @@ public class Game extends SQLiteOpenHelper
         }
         // hack because I have a comma at the end
         badWords = badWords.substring( 0, badWords.length() - 1 );
-        
+
         // use a hard-coded query for performance and readability
-        db.execSQL( "INSERT INTO " + GameData.CARD_TABLE_NAME + " (" + 
-                    GameData.Cards.PACK_NAME + "," + GameData.Cards.TITLE  + ", " + 
-                    GameData.Cards.BAD_WORDS + ", " + GameData.Cards.CATEGORIES + 
-                    ") VALUES (\"" + 
+        db.execSQL( "INSERT INTO " + GameData.CARD_TABLE_NAME + " (" +
+                    GameData.Cards.PACK_NAME + "," + GameData.Cards.TITLE  + ", " +
+                    GameData.Cards.BAD_WORDS + ", " + GameData.Cards.CATEGORIES +
+                    ") VALUES (\"" +
                     packName + "\",\"" +
                     title + "\",\"" +
-                    badWords + "\",\"" + 
+                    badWords + "\",\"" +
                     categories + "\");" );
       }
     }
@@ -374,7 +374,7 @@ public class Game extends SQLiteOpenHelper
     catch( IOException e )
     {
       e.printStackTrace();
-    }                     
+    }
   }
 
   /* (non-Javadoc)
@@ -393,5 +393,5 @@ public class Game extends SQLiteOpenHelper
     db.execSQL( "DROP TABLE IF EXISTS" + GameData.CARD_TABLE_NAME + ";" );
     onCreate( db );
   }
-  
+
 }
