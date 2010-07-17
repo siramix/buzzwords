@@ -34,6 +34,11 @@ public class TurnSummary extends Activity
 	        LinearLayout lay = (LinearLayout) list.getChildAt( 1 );
 	        ImageView iv = (ImageView) lay.getChildAt( 1 );
 	        iv.setBackgroundResource( R.drawable.wrong );*/
+	        
+	        TaboozleApplication application = 
+	          (TaboozleApplication) TurnSummary.this.getApplication();
+	        GameManager gm = application.GetGameManager();
+	        gm.NextTurn();
      	  	startActivity(new Intent(Intent.ACTION_RUN, getIntent().getData()));
 	      }
 	  }; // End NextTurnListener
@@ -96,7 +101,10 @@ private void UpdateScoreViews()
 	teamATotalScore.setText("Team A: " + Long.toString(totalscores[0]));
 	
 	TextView teamBTotalScore = (TextView) findViewById(R.id.TeamBScore);
-	teamBTotalScore.setText("Team B: " + Long.toString(totalscores[1]));   
+	teamBTotalScore.setText("Team B: " + Long.toString(totalscores[1]));
+	
+  TextView curTeam = (TextView) findViewById(R.id.CurTeamIndex);
+  curTeam.setText("Current Team: " + Long.toString(game.GetActiveTeamIndex())); 
 }
 
 }

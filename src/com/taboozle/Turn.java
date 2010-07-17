@@ -264,7 +264,6 @@ public class Turn extends Activity
     TaboozleApplication application = 
       (TaboozleApplication) this.getApplication();
     this.curGameManager = application.GetGameManager();
-    this.curGameManager.NextTurn();
     
     // Setup the view
     this.setContentView(R.layout.turn );
