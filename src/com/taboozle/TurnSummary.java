@@ -43,6 +43,20 @@ public class TurnSummary extends Activity
 	      }
 	  }; // End NextTurnListener
 
+	  /**
+	   * Watches the end turn button that cancels the game.
+	   */
+	  private OnClickListener EndTurnListener = new OnClickListener()
+	  {
+	      public void onClick(View v)
+	      {
+          TaboozleApplication application = 
+            (TaboozleApplication) TurnSummary.this.getApplication();
+          GameManager gm = application.GetGameManager();
+          gm.EndGame();
+          startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
+	      }
+	  }; // End OnClickListener
 /**
 * onCreate - initializes the activity to display the results of the turn.
 */
@@ -78,6 +92,9 @@ public void onCreate( Bundle savedInstanceState )
 	
 	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
 	playGameButton.setOnClickListener( NextTurnListener );
+	
+	Button endGameButton = (Button)this.findViewById( R.id.TurnSumEndGame );
+	endGameButton.setOnClickListener( EndTurnListener );
 }
 
 /**

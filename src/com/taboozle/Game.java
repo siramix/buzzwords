@@ -205,7 +205,19 @@ public class Game extends SQLiteOpenHelper
     SQLiteDatabase db = this.getWritableDatabase();
     return db.insert(GameData.TEAM_TABLE_NAME, "", values);
   }
-  
+  /**
+   * Creates an entry in the Game History table for each team representing the
+   * game's final scores.
+   */
+  public long completeGame( long gameId, long teamId, long score )
+  {
+    ContentValues values = new ContentValues();
+    values.put( GameData.FinalScores.GAME_ID, gameId );
+    values.put( GameData.FinalScores.TEAM_ID, teamId );
+    values.put( GameData.FinalScores.SCORE, score );
+    SQLiteDatabase db = this.getWritableDatabase();
+    return db.insert( GameData.FINAL_SCORES_TABLE_NAME, "", values );
+    }  
   /**
    * Creates a turn record in the database. The turn knows about the game, 
    * team, and round in which it occurred, as well as its score. 

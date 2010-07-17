@@ -94,7 +94,7 @@ public class GameManager
    * Starts a new turn incrementing the round and/or team index as necessary.
    * This function also empties the collection of active cards.
    */
-  public void NextTurn( )
+  public void NextTurn()
   {
     this.WriteTurnResults();
     this.teamScores[this.activeTeamIndex] += GetTurnScore();
@@ -108,11 +108,21 @@ public class GameManager
   }
   
   /**
+   * Write turn and game relevant data to the database.
+   */
+  public void EndGame()
+  {
+    this.WriteTurnResults();
+    this.teamScores[this.activeTeamIndex] += GetTurnScore();
+    this.WriteGameResults();
+  }
+  
+  /**
    * Write the results of a turn to the database.  Totals the score of all 
    * cards for a round, following any end-round modifications (if this is 
    * allowed.)  Also enters the results for each card.
    */
-  private void WriteTurnResults( )
+  private void WriteTurnResults()
   {
 	  long scoreTotal = 0;
 	  
@@ -132,6 +142,17 @@ public class GameManager
 	                       card.getId(), currentTurnScoreID, 
 	                       card.getRws());
 	  }
+  }
+  /**
+   * Write the game results to the database.  Game results consist of an entry for
+   * each team in the game, including their score and ID.
+   */
+  private void WriteGameResults()
+  {
+    for( int i = 0; i < teamIds.length; i++ )
+    {
+      game.completeGame( this.currentGameId, this.teamIds[i], this.teamScores[i]);
+    }
   }
   
   /**

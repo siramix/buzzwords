@@ -19,7 +19,14 @@
             <intent-filter>
          	   <action android:name="android.intent.action.RUN"></action>
          	   <category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
+			     </intent-filter>
+        </activity>
+        <activity android:name=".GameEnd"
+                  android:label="@string/app_name">
+            <intent-filter>
+             <action android:name="android.intent.action.CALL"></action>
+             <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity android:name=".TurnSummary"
                   android:label="@string/app_name">
