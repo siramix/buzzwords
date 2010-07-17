@@ -69,6 +69,11 @@ public class Turn extends Activity
   protected static final int MENU_RULES = 2;
 
   /**
+   * Time for the Timer
+   */
+  protected static final int TURN_TIME = 10000;
+
+  /**
    *  Creates the menu items for the options menu
    */
   @Override
@@ -275,7 +280,8 @@ public class Turn extends Activity
 
     this.ShowCard();
 
-    TurnTimer counter = new TurnTimer( 5000, 200);
+    TurnTimer counter = new TurnTimer( TURN_TIME, 200);
+
     counter.start();
 
     ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.ButtonWrong );
