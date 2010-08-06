@@ -9,12 +9,13 @@ import android.app.Application;
  */
 public class TaboozleApplication extends Application
 {
+  public static final String IntentTitle = "com.taboozle.intent.action.TITLE";
 
   /**
    * The GameManager for all of taboozle
    */
   private GameManager gameManager;
-  
+
   /**
    * Default constructor
    */
@@ -22,7 +23,7 @@ public class TaboozleApplication extends Application
   {
     super();
   }
-  
+
   /**
    * @return a reference to the game manager
    */
@@ -30,7 +31,7 @@ public class TaboozleApplication extends Application
   {
     return this.gameManager;
   }
-  
+
   /**
    * @param gm - a reference to the game manager
    */

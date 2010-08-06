@@ -1,8 +1,13 @@
 package com.taboozle;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
+import com.taboozle.TaboozleApplication;
 
 /**
  * The GameEnd class is the final screen of the application, called
@@ -14,6 +19,18 @@ import android.widget.TextView;
  */
 public class GameEnd extends Activity
 {
+
+  /**
+   * Listener for the 'Correct' button. It deals with the flip to the next
+   * card.
+   */
+  private final OnClickListener MainMenuListener = new OnClickListener()
+  {
+      public void onClick(View v)
+      {
+        startActivity(new Intent(TaboozleApplication.IntentTitle, getIntent().getData()));
+      }
+  }; // End MainMenuListener
 
     @Override
     public void onCreate( Bundle savedInstanceState )
@@ -48,6 +65,9 @@ public class GameEnd extends Activity
 
 		TextView curTeam = (TextView) findViewById(R.id.EndGameCurTeamIndex);
 			curTeam.setText("Current Team: " + Long.toString(game.GetActiveTeamIndex()));
+
+  	Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
+		mainMenuButton.setOnClickListener( MainMenuListener );
 
     }
 }
