@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">taboozle</string>
+  <string name="AppName">taboozle</string>
+  <string name="IntentTitle">com.taboozle.intent.action.TITLE</string>
 </resources>

@@ -9,7 +9,6 @@ import android.app.Application;
  */
 public class TaboozleApplication extends Application
 {
-  public static final String IntentTitle = "com.taboozle.intent.action.TITLE";
 
   /**
    * The GameManager for all of taboozle

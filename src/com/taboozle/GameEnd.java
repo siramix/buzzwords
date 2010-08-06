@@ -28,7 +28,8 @@ public class GameEnd extends Activity
   {
       public void onClick(View v)
       {
-        startActivity(new Intent(TaboozleApplication.IntentTitle, getIntent().getData()));
+        startActivity(new Intent( getApplication().getString( R.string.IntentTitle ),
+                                  getIntent().getData()));
       }
   }; // End MainMenuListener
 
