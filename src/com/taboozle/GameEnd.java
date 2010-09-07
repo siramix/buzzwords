@@ -90,6 +90,37 @@ public class GameEnd extends Activity
 		TextView teamBTotalScore = (TextView) findViewById(R.id.EndGameTeamBScore);
 		teamBTotalScore.setText("Team B: " + Long.toString(finalScores[1]));
 		
+		int winningTeamIndex = 0;
+		boolean tieGame = false;
+		
+		for (int i = 0; i < finalScores.length; ++i)
+		{
+			if ( i == winningTeamIndex )
+			{
+				continue;
+			}
+
+			if (finalScores[winningTeamIndex] < finalScores[i])
+			{
+				winningTeamIndex = i;
+			}
+			else if (finalScores[winningTeamIndex] == finalScores[i])
+			{
+				tieGame = true;
+			}
+		}
+		
+		String[] teamnames = {"Team A", "Team B"};
+		TextView winner = (TextView) findViewById(R.id.EndGameWinner);
+		if (!tieGame)
+		{
+			winner.setText(teamnames[winningTeamIndex] + " wins!!!!");
+		}
+		else
+		{
+			winner.setText("TIE GAME");
+		}
+		
 		Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
 			mainMenuButton.setOnClickListener( MainMenuListener );
 
