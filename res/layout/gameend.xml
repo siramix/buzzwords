@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/bg_turnsummary">
+  android:layout_width="fill_parent" 
+  android:layout_height="fill_parent" 
+  android:background="@drawable/bg_turnsummary">
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:text="Rematch" android:id="@+id/EndGameRematch"></Button>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:text="Main Menu" android:id="@+id/EndGameMainMenu"></Button>
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#000" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:textSize="26px" android:layout_marginTop="5dip" android:layout_marginLeft="20dip" android:id="@+id/EndGameTitle" android:text="End Game"></TextView>
