@@ -47,7 +47,7 @@ public class GameManager implements Serializable
    * The index of the round being played
    */
   private long currentRound;
-
+  
   /**
    * Running total of scores
    */
@@ -89,7 +89,8 @@ public class GameManager implements Serializable
   {
     this.currentGameId = this.game.newGame();
     this.teamIds = new long[teams.length];
-    this.teamScores = new long[teams.length];
+    this.teamScores = new long[teams.length]; 
+    
     for( int i = 0; i < teams.length; ++i )
     {
       this.teamIds[i] = game.newTeam( teams[i] );
@@ -121,6 +122,7 @@ public class GameManager implements Serializable
     this.WriteTurnResults();
     this.teamScores[this.activeTeamIndex] += GetTurnScore();
     this.WriteGameResults();
+	this.activeTeamIndex = -1;
   }
 
   /**
@@ -253,5 +255,23 @@ public class GameManager implements Serializable
   public int GetNumTeams()
   {
 	  return this.teamIds.length;
+  }
+  
+  /**
+   * Return the number of rounds
+   * @return long representing the number of rounds thusfar in a game 
+   */
+  public long GetNumRounds()
+  {
+	  return this.currentRound+1;
+  }  
+ 
+  /**
+   * Accessor to return teamIDs which are the IDs stored in the database for each team.
+   * @return array of longs representing each team's unique ID as stored in the db
+   */
+  public long[] GetTeamIDs()
+  {
+	  return this.teamIds;
   }
 }

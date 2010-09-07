@@ -1,11 +1,16 @@
 package com.taboozle;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import com.taboozle.TaboozleApplication;
 
@@ -39,36 +44,54 @@ public class GameEnd extends Activity
 		super.onCreate(savedInstanceState);
 		this.setContentView( R.layout.gameend );
 
-		//ListView list = (ListView) findViewById(R.id.EndGameTurnList);
-
 		TaboozleApplication application =
 			(TaboozleApplication) this.getApplication();
-		GameManager game = application.GetGameManager();
+		GameManager game = application.GetGameManager();		
+		
+		int numRounds = (int) game.GetNumRounds();
+		int numTeams = game.GetNumTeams();
+		
+		long[][] endTable = new long[numRounds][numTeams];
 
-		//ArrayList<Integer> roundScoreList = new ArrayList<Integer>();
+		for ( int i = 0; i < numTeams; ++i )
+		{
+			long[] roundscores = game.GetRoundScores((long) i);
+			for ( int j = 0; j < roundscores.length; j++)
+			{
+				endTable[j][i] = roundscores[j];
+			}
+		}
 
-		//for(int i=0; i<game.GetNumTeams(); ++i)
-		//{
-		//	round
-		//}
-		/*
-		SimpleAdapter roundScores = new SimpleAdapter(this, roundScoreList, R.layout.gameend,
-		            new String[] {"title", "rws"}, new int[] {R.id.TurnSum_CardTitle, R.id.TurnSum_CardRWS});
-		list.setAdapter(roundScores);
-	  */
-		long[] totalscores = game.GetTeamScores().clone();
+		ListView list = (ListView) findViewById(R.id.EndGameTurnList);		
+		
+		ArrayList<HashMap<String, String>> endTableRows = new ArrayList<HashMap<String, String>>();
 
+		for (int i = 0; i < numRounds; ++i)
+		{
+			HashMap<String, String> map = new HashMap<String, String>();
+			for(int j = 0; j < numTeams; ++j)
+			{
+				map.put("team" + Integer.toString(j+1), Long.toString(endTable[i][j]));
+			}
+			endTableRows.add(map);
+		}
+
+		SimpleAdapter gameEndTable = new SimpleAdapter(this, endTableRows, R.layout.gameendrow,
+	            new String[] {"team1", "team2"}, new int[] {R.id.GameEnd_Team1, 
+				R.id.GameEnd_Team2});
+		
+		list.setAdapter(gameEndTable);			
+		
+		long[] finalScores = game.GetTeamScores();
+		
 		TextView teamATotalScore = (TextView) findViewById(R.id.EndGameTeamAScore);
-		teamATotalScore.setText("Team A: " + Long.toString(totalscores[0]));
+		teamATotalScore.setText("Team A: " + Long.toString(finalScores[0]));
 
 		TextView teamBTotalScore = (TextView) findViewById(R.id.EndGameTeamBScore);
-		teamBTotalScore.setText("Team B: " + Long.toString(totalscores[1]));
-
-		TextView curTeam = (TextView) findViewById(R.id.EndGameCurTeamIndex);
-			curTeam.setText("Current Team: " + Long.toString(game.GetActiveTeamIndex()));
-
-  	Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
-		mainMenuButton.setOnClickListener( MainMenuListener );
+		teamBTotalScore.setText("Team B: " + Long.toString(finalScores[1]));
+		
+		Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
+			mainMenuButton.setOnClickListener( MainMenuListener );
 
     }
 }

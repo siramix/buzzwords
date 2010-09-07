@@ -11,8 +11,10 @@
 <ListView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="10dip" android:id="@+id/EndGameTurnList" android:layout_below="@id/EndGameTitle">
 </ListView>
 
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_marginRight="10dp" android:layout_below="@id/EndGameTitle" android:text="FILLER TEXT" android:id="@+id/EndGameWinner"></TextView>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TeamAScoreHere" android:id="@+id/EndGameTeamAScore" android:layout_below="@id/EndGameWinner"></TextView>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TeamBScoreHere" android:layout_below="@id/EndGameTeamAScore" android:id="@+id/EndGameTeamBScore"></TextView>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CurrentTeamIndexHere" android:layout_alignParentRight="true" android:layout_marginRight="10dp" android:id="@+id/EndGameCurTeamIndex" android:layout_below="@id/EndGameWinner">></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_marginRight="10dp" android:text="FILLER TEXT" android:id="@+id/EndGameWinner" android:layout_below="@+id/EndGameTotalScores"></TextView>
+
+
+
+<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/EndGameTotalScores" android:layout_below="@+id/EndGameTurnList" android:orientation="horizontal"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TeamAScoreHere" android:id="@+id/EndGameTeamAScore" android:layout_below="@id/EndGameWinner"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TeamBScoreHere" android:layout_below="@id/EndGameTeamAScore" android:id="@+id/EndGameTeamBScore"></TextView>
+</LinearLayout>
 </RelativeLayout>
