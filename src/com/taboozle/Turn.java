@@ -71,7 +71,7 @@ public class Turn extends Activity
   /**
    * Time for the Timer
    */
-  protected static final int TURN_TIME = 10000;
+  protected static final int TURN_TIME = 5000;
 
   /**
    *  Creates the menu items for the options menu

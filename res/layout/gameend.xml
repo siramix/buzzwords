@@ -8,13 +8,16 @@
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:text="Main Menu" android:id="@+id/EndGameMainMenu"></Button>
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#000" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:textSize="26px" android:layout_marginTop="5dip" android:layout_marginLeft="20dip" android:id="@+id/EndGameTitle" android:text="End Game"></TextView>
 
-<ListView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="10dip" android:id="@+id/EndGameTurnList" android:layout_below="@id/EndGameTitle">
+<ListView android:layout_width="wrap_content" android:paddingTop="10dip" android:id="@+id/EndGameTurnList" android:layout_below="@id/EndGameTitle" android:layout_height="100dip">
 </ListView>
 
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_marginRight="10dp" android:text="FILLER TEXT" android:id="@+id/EndGameWinner" android:layout_below="@+id/EndGameTotalScores"></TextView>
 
 
 
-<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/EndGameTotalScores" android:layout_below="@+id/EndGameTurnList" android:orientation="horizontal"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TeamAScoreHere" android:id="@+id/EndGameTeamAScore" android:layout_below="@id/EndGameWinner"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TeamBScoreHere" android:layout_below="@id/EndGameTeamAScore" android:id="@+id/EndGameTeamBScore"></TextView>
+
+<LinearLayout android:layout_height="wrap_content" android:id="@+id/EndGameTotalScores" android:layout_below="@+id/EndGameTurnList" android:orientation="horizontal" android:layout_width="fill_parent">
+	<TextView android:layout_height="wrap_content" android:text="TeamAScoreHere" android:id="@+id/EndGameTeamAScore" android:layout_width="fill_parent" android:layout_weight="1" android:layout_marginLeft="40dip"></TextView>
+	<TextView android:layout_height="wrap_content" android:text="TeamBScoreHere" android:layout_below="@id/EndGameTeamAScore" android:id="@+id/EndGameTeamBScore" android:layout_width="fill_parent" android:layout_weight="1" android:layout_marginLeft="10dip"></TextView>
 </LinearLayout>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:text="FILLER TEXT" android:id="@+id/EndGameWinner" android:layout_below="@+id/EndGameTotalScores" android:layout_centerHorizontal="true" android:paddingTop="10dip" android:textSize="24px" android:textColor="#000000" android:paddingBottom="10dip"></TextView>
 </RelativeLayout>

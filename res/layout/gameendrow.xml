@@ -7,17 +7,12 @@
  
      <TextView 
 	     android:id="@+id/GameEnd_Team1" 
-	     android:layout_height="wrap_content" 
 	     android:text="Team1" 
-	     android:layout_marginLeft="50dip" 
-	     android:layout_width="50dip" 
-	     android:paddingTop="6dip"/>
+	     android:paddingTop="6dip" android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:layout_marginLeft="40dip"/>
 
      <TextView 
 	     android:id="@+id/GameEnd_Team2" 
-	     android:layout_height="wrap_content" 
 	     android:text="Team2" 
-	     android:layout_width="50dip" 
-	     android:paddingTop="6dip"/>	     	     
+	     android:paddingTop="6dip" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1" android:layout_marginLeft="10dip"/>	     	     
 
 </LinearLayout>
