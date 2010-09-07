@@ -38,6 +38,10 @@ public class GameEnd extends Activity
       }
   }; // End MainMenuListener
 
+    /**
+     * GameEnd on create handles all logic, including calls to query the db, populate
+     * views, and display them.
+     */
     @Override
     public void onCreate( Bundle savedInstanceState )
     {

@@ -32,6 +32,18 @@ public class Title extends Activity
         startActivity(new Intent(Intent.ACTION_RUN, getIntent().getData()));
       }
   };
+  
+  private OnClickListener SettingsListener = new OnClickListener()
+  {
+
+	@Override
+	public void onClick(View v) 
+	{
+        startActivity(new Intent(getApplication().getString( R.string.IntentSettings ), 
+        			  getIntent().getData()));
+	}
+	  
+  };
 	
 /**
 * onCreate - initializes a welcome screen that starts the game.
@@ -46,6 +58,10 @@ public void onCreate( Bundle savedInstanceState )
   ImageButton playGameButton = 
     (ImageButton) this.findViewById( R.id.PlayGameButton );
   playGameButton.setOnClickListener( PlayGameListener );
+  
+  ImageButton settingsButton = (ImageButton) this.findViewById( R.id.SettingsIcon );
+  
+  settingsButton.setOnClickListener( SettingsListener );
 }
 
 }

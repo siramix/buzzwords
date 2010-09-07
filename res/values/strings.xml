@@ -2,4 +2,5 @@
 <resources>
   <string name="AppName">taboozle</string>
   <string name="IntentTitle">com.taboozle.intent.action.TITLE</string>
+  <string name="IntentSettings">com.taboozle.intent.action.SETTINGS</string>
 </resources>
