@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+   
+   <PreferenceCategory android:title="Hardware">
+        <CheckBoxPreference
+                android:key="volume_settings"
+                android:title="Volume"
+                android:defaultValue="true"/>    
+        <CheckBoxPreference
+                android:key="vibrate"
+                android:title="Vibrate"
+                android:defaultValue="true"
+                android:summary="Enable vibrate on buzz"/>                   
+   </PreferenceCategory>
+   
+   <PreferenceCategory android:title="Game">
+		<CheckBoxPreference
+                android:key="turntimer_setting"
+                android:title="Turn Timer"
+                android:defaultValue="false"
+                android:summary="Subtract a point for skipped cards"/>   
+		<CheckBoxPreference
+                android:key="skip_penalty"
+                android:title="Skip Penalty"
+                android:defaultValue="false"
+                android:summary="Subtract a point for skipped cards"/>          
+   </PreferenceCategory>
+   
+   <PreferenceCategory android:title="Accessibility">
+		<CheckBoxPreference
+		        android:key="read_aloud"
+                android:title="Read Words Aloud"
+                android:defaultValue="false"
+                android:summary="Outputs the guess word and bad words to headphones"/>                                                                                
+    </PreferenceCategory>
+</PreferenceScreen>
