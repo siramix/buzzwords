@@ -8,24 +8,28 @@
                 android:title="Volume"
                 android:defaultValue="true"/>    
         <CheckBoxPreference
-                android:key="vibrate"
+         		android:key="vibrate_pref"
                 android:title="Vibrate"
                 android:defaultValue="true"
                 android:summary="Enable vibrate on buzz"/>                   
    </PreferenceCategory>
    
    <PreferenceCategory android:title="Game">
-		<CheckBoxPreference
-                android:key="turntimer_setting"
-                android:title="Turn Timer"
-                android:defaultValue="false"
-                android:summary="Subtract a point for skipped cards"/>   
+   
+         <ListPreference 
+           android:key="turn_timer" 
+           android:title="Turn Timer Length"
+           android:defaultValue="60" 
+           android:entryValues="@array/turntime_values" 
+           android:entries="@array/turntimes" android:summary="Defaults to 60 seconds"/>      
+		   
 		<CheckBoxPreference
                 android:key="skip_penalty"
                 android:title="Skip Penalty"
                 android:defaultValue="false"
                 android:summary="Subtract a point for skipped cards"/>          
-   </PreferenceCategory>
+
+</PreferenceCategory>
    
    <PreferenceCategory android:title="Accessibility">
 		<CheckBoxPreference

@@ -3,6 +3,7 @@ package com.taboozle;
 import android.app.*;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
@@ -12,6 +13,7 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -92,9 +94,10 @@ public class Turn extends Activity
    * touch-up.
    */
   private final OnTouchListener BuzzListener = new OnTouchListener()
-  {
+  {	 	  
       public boolean onTouch(View v, MotionEvent event)
       {
+    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         AudioManager mgr =
           (AudioManager) v.getContext().getSystemService( Context.AUDIO_SERVICE );
         float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
@@ -114,13 +117,19 @@ public class Turn extends Activity
         {
           case MotionEvent.ACTION_DOWN:
             buzzStreamId = soundPool.play( buzzSoundId, volume, volume, 1, -1, 1.0f );
-            buzzVibrator.vibrate(1000);
+            if (sp.getBoolean("vibrate_pref", true))
+            {
+              buzzVibrator.vibrate(1000);
+            }
             wrongStamp.setVisibility( View.VISIBLE ); //Show stamp on down
             ret = true;
             break;
           case MotionEvent.ACTION_UP:
             soundPool.stop( buzzStreamId );
-            buzzVibrator.cancel();
+            if (sp.getBoolean("vibrate_pref", true))
+            {
+              buzzVibrator.cancel();
+            }
             wrongStamp.setVisibility( View.INVISIBLE );	//Hide stamp on up
             ret = true;
             break;
@@ -322,7 +331,7 @@ public class Turn extends Activity
 
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
-    this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+    this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);	
 
     TaboozleApplication application =
       (TaboozleApplication) this.getApplication();
