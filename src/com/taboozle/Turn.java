@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -96,20 +97,31 @@ public class Turn extends Activity
       {
         AudioManager mgr =
           (AudioManager) v.getContext().getSystemService( Context.AUDIO_SERVICE );
-        float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
-        float streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
+        float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
         float volume = streamVolumeCurrent / streamVolumeMax;
+
+        //Show wrong controls once the buzzer is hit
+        ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
+        ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
+        ImageView wrongStamp = (ImageView) findViewById( R.id.WrongStamp );
+        
+        confirm.setVisibility( View.VISIBLE );
+        cancel.setVisibility( View.VISIBLE );
+        
         boolean ret;
         switch( event.getAction() )
         {
           case MotionEvent.ACTION_DOWN:
             buzzStreamId = soundPool.play( buzzSoundId, volume, volume, 1, -1, 1.0f );
             buzzVibrator.vibrate(1000);
+            wrongStamp.setVisibility( View.VISIBLE ); //Show stamp on down
             ret = true;
             break;
           case MotionEvent.ACTION_UP:
             soundPool.stop( buzzStreamId );
             buzzVibrator.cancel();
+            wrongStamp.setVisibility( View.INVISIBLE );	//Hide stamp on up
             ret = true;
             break;
           	default:
@@ -153,6 +165,40 @@ public class Turn extends Activity
       }
   }; // End SkipListener
 
+  /**
+   * Listener for the button that confirms a buzz.  This will cause the application
+   * to move to the next card and record a wrong score.
+   */
+  private final OnClickListener ConfirmWrongListener = new OnClickListener()
+  {
+    public void onClick(View v)
+	{
+      AIsActive = !AIsActive;
+      ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
+      flipper.showNext();
+      curGameManager.ProcessCard( 1 );
+      ShowCard();
+	}
+  }; // End ConfirmWrongListener
+  
+  /**
+   * 
+   */
+  private final OnClickListener CancelWrongListener = new OnClickListener()
+  {
+    public void onClick(View v)
+    {
+      //Hide the wrong stamp and wrong controls on every new card
+      ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
+      ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
+      ImageView wrongStamp = (ImageView) findViewById( R.id.WrongStamp );
+
+      confirm.setVisibility( View.INVISIBLE );
+      cancel.setVisibility( View.INVISIBLE );
+      wrongStamp.setVisibility( View.INVISIBLE );
+    }
+  }; // End CancelWrongListener
+  
   /**
    * CountdownTimer - This initializes a timer during every turn that runs a
    * method when it completes as well as during update intervals.
@@ -225,6 +271,17 @@ public class Turn extends Activity
 
     TextView cardTitle = (TextView) this.findViewById( curTitle );
     ListView cardWords = (ListView) this.findViewById( curWords );
+    
+    //Hide the wrong stamp and wrong controls on every new card
+    ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
+    ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
+    ImageView wrongStamp = (ImageView) this.findViewById( R.id.WrongStamp );
+    
+    confirm.setVisibility( View.INVISIBLE );
+    cancel.setVisibility( View.INVISIBLE );
+    wrongStamp.setVisibility( View.INVISIBLE );
+    
+    
     // Disable the ListView to prevent its children from being click-able
     cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter =
@@ -284,15 +341,21 @@ public class Turn extends Activity
 
     counter.start();
 
-    ImageButton buzzerButton = (ImageButton)this.findViewById( R.id.ButtonWrong );
+    ImageButton buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
     buzzerButton.setOnTouchListener( BuzzListener );
 
-    ImageButton nextButton = (ImageButton)this.findViewById( R.id.ButtonCorrect );
+    ImageButton nextButton = (ImageButton) this.findViewById( R.id.ButtonCorrect );
     nextButton.setOnClickListener( CorrectListener );
 
-    ImageButton skipButton = (ImageButton)this.findViewById( R.id.ButtonSkip );
+    ImageButton skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
     skipButton.setOnClickListener( SkipListener );
+    
+    ImageButton confirmWrongButton = (ImageButton )this.findViewById( R.id.ButtonConfirmWrong );
+    confirmWrongButton.setOnClickListener( ConfirmWrongListener );
 
+    ImageButton cancelWrongButton = (ImageButton) this.findViewById( R.id.ButtonCancelWrong );
+    cancelWrongButton.setOnClickListener( CancelWrongListener );
+    
   }
 
   /**

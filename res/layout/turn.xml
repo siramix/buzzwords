@@ -9,8 +9,7 @@
 		android:layout_width="wrap_content" 
 		android:layout_below="@+id/actionbar">
 		<RelativeLayout
-			android:background="@drawable/bg_taboozlecard"
-			android:id="@+id/CardLayoutA" android:layout_width="wrap_content" android:layout_height="wrap_content">
+			android:id="@+id/CardLayoutA" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_taboozlecard">
 			<TextView
 				android:text="CardTitle"
 				android:gravity="center"
@@ -33,10 +32,10 @@
 				android:paddingTop="30dp">
 			</ListView>
 			
-		</RelativeLayout>
+		
+</RelativeLayout>
 		<RelativeLayout
-		android:background="@drawable/bg_taboozlecard"
-		android:id="@+id/CardLayoutB" android:layout_height="wrap_content" android:layout_width="wrap_content">
+		android:id="@+id/CardLayoutB" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/bg_taboozlecard">
 		<TextView
 			android:text="CardTitle"
 			android:gravity="center"
@@ -76,11 +75,16 @@
 		android:paddingTop="5dp"
 		android:textColor="#FFFFFF">
 	</TextView>
-	</RelativeLayout>
+	</RelativeLayout><ImageView android:layout_below="@id/CardWordsA" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:id="@+id/WrongStamp" android:background="@drawable/wrong_stamp"></ImageView>
 
+<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonCancelWrong" android:background="@drawable/cancelwrong" android:layout_above="@+id/lowbar" android:layout_alignParentLeft="true"></ImageButton><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonConfirmWrong" android:background="@drawable/wrong" android:layout_above="@+id/lowbar" android:layout_alignParentRight="true"></ImageButton>
 <RelativeLayout android:layout_width="wrap_content" android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_below="@+id/ViewFlipper0" android:layout_marginLeft="10px" android:layout_height="wrap_content">
-<ImageButton android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_width="wrap_content" android:background="@drawable/wrong" android:layout_marginLeft="20px" android:id="@+id/ButtonWrong"></ImageButton>
-<ImageButton android:layout_height="wrap_content" android:layout_centerInParent="true" android:background="@drawable/skip" android:layout_width="wrap_content" android:id="@+id/ButtonSkip"></ImageButton>
-<ImageButton android:layout_height="wrap_content" android:layout_alignParentRight="true" android:background="@drawable/correct" android:layout_width="wrap_content" android:layout_marginRight="10px" android:id="@+id/ButtonCorrect"></ImageButton>
+<ImageButton android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_width="wrap_content" android:background="@drawable/wrong" android:id="@+id/ButtonWrong" android:layout_marginLeft="60dip"></ImageButton>
+<ImageButton android:layout_height="wrap_content" android:background="@drawable/skip" android:layout_width="wrap_content" android:id="@+id/ButtonSkip" android:layout_centerInParent="true" android:layout_toRightOf="@+id/ButtonWrong"></ImageButton>
+<ImageButton android:layout_height="wrap_content" android:background="@drawable/correct" android:layout_width="wrap_content" android:id="@+id/ButtonCorrect" android:layout_alignWithParentIfMissing="true" android:layout_toRightOf="@+id/ButtonSkip"></ImageButton>
+
 </RelativeLayout>
+
+
+
 </RelativeLayout>
