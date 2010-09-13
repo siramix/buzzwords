@@ -16,6 +16,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -82,13 +83,36 @@ public class Turn extends Activity
   @Override
   public boolean onCreateOptionsMenu(Menu menu)
   {
-      menu.add(0, MENU_ENDGAME, 0, "End Game");
-      menu.add(0, MENU_SCORE, 0, "Score");
-      menu.add(0, MENU_RULES, 0, "Rules");
+      menu.add(0, R.string.menu_EndGame, 0, "End Game");
+      menu.add(0, R.string.menu_Score, 0, "Score");
+      menu.add(0, R.string.menu_Rules, 0, "Rules");
 
       return true;
   }
 
+  /**
+   * Handle various menu clicks
+   */
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+      TaboozleApplication application =
+          (TaboozleApplication) Turn.this.getApplication();
+        GameManager gm = application.GetGameManager();
+	  
+      // Handle item selection
+      switch (item.getItemId()) {
+      case R.string.menu_EndGame:
+    	  gm.EndGame();
+    	  startActivity(new Intent( this, GameEnd.class ));
+          return true;
+      case R.string.menu_Score:
+          //quit();
+          return true;
+      default:
+          return super.onOptionsItemSelected(item);
+      }
+  }  
+  
   /**
    * Listener for the buzzer that plays on touch-down and stops playing on
    * touch-up.
@@ -222,6 +246,7 @@ public class Turn extends Activity
 
     @Override
       public void onFinish() {
+    	
          OnTurnEnd();
       }
 

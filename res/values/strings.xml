@@ -3,4 +3,7 @@
   <string name="AppName">taboozle</string>
   <string name="IntentTitle">com.taboozle.intent.action.TITLE</string>
   <string name="IntentSettings">com.taboozle.intent.action.SETTINGS</string>
+  <string name="menu_EndGame">MENU_ENDGAME</string>
+  <string name="menu_Score">MENU_SCORE</string>
+  <string name="menu_Rules">MENU_RULES</string>
 </resources>
