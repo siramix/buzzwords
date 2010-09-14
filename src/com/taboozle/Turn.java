@@ -78,87 +78,92 @@ public class Turn extends Activity
   @Override
   public boolean onCreateOptionsMenu(Menu menu)
   {
-      menu.add(0, R.string.menu_EndGame, 0, "End Game");
-      menu.add(0, R.string.menu_Score, 0, "Score");
-      menu.add(0, R.string.menu_Rules, 0, "Rules");
+    menu.add(0, R.string.menu_EndGame, 0, "End Game");
+    menu.add(0, R.string.menu_Score, 0, "Score");
+    menu.add(0, R.string.menu_Rules, 0, "Rules");
 
-      return true;
+    return true;
   }
 
   /**
    * Handle various menu clicks
    */
   @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-      TaboozleApplication application =
-          (TaboozleApplication) Turn.this.getApplication();
-        GameManager gm = application.GetGameManager();
-	  
-      // Handle item selection
-      switch (item.getItemId()) {
+  public boolean onOptionsItemSelected(MenuItem item) 
+  {
+    TaboozleApplication application =
+            (TaboozleApplication) Turn.this.getApplication();
+    GameManager gm = application.GetGameManager();
+      
+    // Handle item selection
+    switch (item.getItemId()) 
+    {
       case R.string.menu_EndGame:
-    	  gm.EndGame();
-    	  startActivity(new Intent( this, GameEnd.class ));
-          return true;
+        gm.EndGame();
+        startActivity(new Intent( this, GameEnd.class ));
+        return true;
       case R.string.menu_Score:
-          //quit();
-          return true;
+        //quit();
+        return true;
+      case R.string.menu_Rules:
+        startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 
+            getIntent().getData()));
+        return true;
       default:
-          return super.onOptionsItemSelected(item);
-      }
+        return super.onOptionsItemSelected(item);
+    }
   }  
-  
+
   /**
    * Listener for the buzzer that plays on touch-down and stops playing on
    * touch-up.
    */
   private final OnTouchListener BuzzListener = new OnTouchListener()
   {	 	  
-      public boolean onTouch(View v, MotionEvent event)
+    public boolean onTouch(View v, MotionEvent event)
+    {
+      SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+      AudioManager mgr =
+        (AudioManager) v.getContext().getSystemService( Context.AUDIO_SERVICE );
+      float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
+      float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
+      float volume = streamVolumeCurrent / streamVolumeMax;
+
+      //Show wrong controls once the buzzer is hit
+      ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
+      ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
+      ImageView wrongStamp = (ImageView) findViewById( R.id.WrongStamp );
+  
+      confirm.setVisibility( View.VISIBLE );
+      cancel.setVisibility( View.VISIBLE );
+  
+      boolean ret;
+      switch( event.getAction() )
       {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        AudioManager mgr =
-          (AudioManager) v.getContext().getSystemService( Context.AUDIO_SERVICE );
-        float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
-        float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
-        float volume = streamVolumeCurrent / streamVolumeMax;
-
-        //Show wrong controls once the buzzer is hit
-        ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
-        ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
-        ImageView wrongStamp = (ImageView) findViewById( R.id.WrongStamp );
-        
-        confirm.setVisibility( View.VISIBLE );
-        cancel.setVisibility( View.VISIBLE );
-        
-        boolean ret;
-        switch( event.getAction() )
-        {
-          case MotionEvent.ACTION_DOWN:
-            buzzStreamId = soundPool.play( buzzSoundId, volume, volume, 1, -1, 1.0f );
-            if (sp.getBoolean("vibrate_pref", true))
-            {
-              buzzVibrator.vibrate(1000);
-            }
-            wrongStamp.setVisibility( View.VISIBLE ); //Show stamp on down
-            ret = true;
-            break;
-          case MotionEvent.ACTION_UP:
-            soundPool.stop( buzzStreamId );
-            if (sp.getBoolean("vibrate_pref", true))
-            {
-              buzzVibrator.cancel();
-            }
-            wrongStamp.setVisibility( View.INVISIBLE );	//Hide stamp on up
-            ret = true;
-            break;
-          	default:
-            ret = false;
-        }
-
-        return ret;
+        case MotionEvent.ACTION_DOWN:
+          buzzStreamId = soundPool.play( buzzSoundId, volume, volume, 1, -1, 1.0f );
+          if (sp.getBoolean("vibrate_pref", true))
+          {
+            buzzVibrator.vibrate(1000);
+          }
+          wrongStamp.setVisibility( View.VISIBLE ); //Show stamp on down
+          ret = true;
+          break;
+        case MotionEvent.ACTION_UP:
+          soundPool.stop( buzzStreamId );
+          if (sp.getBoolean("vibrate_pref", true))
+          {
+            buzzVibrator.cancel();
+          }
+          wrongStamp.setVisibility( View.INVISIBLE );	//Hide stamp on up
+          ret = true;
+          break;
+        default:
+          ret = false;
       }
 
+      return ret;
+    }
   }; // End BuzzListener
 
   /**

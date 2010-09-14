@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content" android:background="@drawable/bg_turnsummary">
+	<TextView 	
+		android:id="@+id/RulesTitle" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:textColor="#000" 
+		android:layout_alignParentLeft="true" 
+		android:layout_alignParentTop="true" 
+		android:textSize="26px" 
+		android:layout_marginTop="5dip" 
+		android:layout_marginLeft="20dip" 
+		android:text="Game Rules"></TextView>
+<TextView android:layout_below="@id/RulesTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20dip" android:layout_marginLeft="10dip" android:id="@+id/RulePreferencesHeader" android:text="Custom Rules: "></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dip" android:id="@+id/RulePreferences" android:layout_below="@id/RulePreferencesHeader" android:text="CURRENT SETTINGS LIKE RWS, SKIP PENALTY, ROUND TIME GO HERE"></TextView>
+</RelativeLayout>

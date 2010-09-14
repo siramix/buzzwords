@@ -33,16 +33,33 @@ public class Title extends Activity
       }
   };
   
+  /**
+   * Listener to determine when the settings button is clicked.  Includes an onClick function
+   * that starts the settingsActivity.
+   */
   private OnClickListener SettingsListener = new OnClickListener()
   {
-
-	@Override
-	public void onClick(View v) 
-	{
-        startActivity(new Intent(getApplication().getString( R.string.IntentSettings ), 
-        			  getIntent().getData()));
-	}
-	  
+  	@Override
+  	public void onClick(View v) 
+  	{
+  	  startActivity(new Intent(getApplication().getString( R.string.IntentSettings ), 
+  	        getIntent().getData()));
+  	}
+  }; //End SettingsListener
+  
+  /**
+   * Listener to determiner when the Rules button is clicked on the title screen.  Includes
+   * an onClick method that will start the Rule activity.
+   */
+  private OnClickListener RulesListener = new OnClickListener() 
+  {
+    @Override
+    public void onClick(View v) 
+    {
+      startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 
+          getIntent().getData()));
+      
+    }
   };
 	
 /**
@@ -59,9 +76,11 @@ public void onCreate( Bundle savedInstanceState )
     (ImageButton) this.findViewById( R.id.PlayGameButton );
   playGameButton.setOnClickListener( PlayGameListener );
   
-  ImageButton settingsButton = (ImageButton) this.findViewById( R.id.SettingsIcon );
-  
+  ImageButton settingsButton = (ImageButton) this.findViewById( R.id.SettingsIcon );  
   settingsButton.setOnClickListener( SettingsListener );
+  
+  ImageButton rulesButton = (ImageButton) this.findViewById( R.id.GameRulesIcon );
+  rulesButton.setOnClickListener( RulesListener );
 }
 
 }

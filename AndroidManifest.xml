@@ -25,6 +25,13 @@
             	<category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>  
+        <activity android:name=".Rules"
+        		  android:label="@string/AppName">
+			<intent-filter>
+				<action android:name="com.taboozle.intent.action.RULES" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>        		  
+        </activity>
         <activity android:name=".Turn"
                   android:label="@string/AppName">
             <intent-filter>
