@@ -73,11 +73,6 @@ public class Turn extends Activity
   protected static final int MENU_RULES = 2;
 
   /**
-   * Time for the Timer
-   */
-  protected static int turn_time;
-
-  /**
    *  Creates the menu items for the options menu
    */
   @Override
@@ -370,11 +365,7 @@ public class Turn extends Activity
 
     this.ShowCard();
 
-    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-    turn_time = Integer.parseInt(sp.getString("turn_timer", "10")) * 1000;
-    
-    System.out.println("Turn time is " + turn_time );
-    TurnTimer counter = new TurnTimer( turn_time, 200);
+    TurnTimer counter = new TurnTimer( this.curGameManager.GetTurnTime(), 200);
 
     counter.start();
 

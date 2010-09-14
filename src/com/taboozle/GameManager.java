@@ -68,12 +68,17 @@ public class GameManager implements Serializable
   /**
    * An array indicating scoring for right, wrong, and skip (in that order)
    */
-  private long[] RWS_VALUE_RULES;
+  private long[] rws_value_rules;
   
   /**
    * An array of resource IDs to each right, wrong, skip sprite
    */
   public final int[] rws_resourceIDs;
+  
+  /**
+   * Time for the Timer in miliseconds
+   */
+  private int turn_time;
 
   /**
    * Standard Constructor
@@ -88,21 +93,25 @@ public class GameManager implements Serializable
     this.currentCards = new LinkedList<Card>();
     this.game = new Game( context );
     this.rws_resourceIDs = new int[] {R.drawable.correct, R.drawable.wrong, R.drawable.skip};
-    this.RWS_VALUE_RULES = new long[3];
+    
+    this.turn_time = Integer.parseInt(sp.getString("turn_timer", "10")) * 1000;
+    
+    System.out.println("Turn time is " + turn_time );    
+    this.rws_value_rules = new long[3];
     
     //Set score values for game
-    this.RWS_VALUE_RULES[0] = 1;  //Value for correct cards
-    this.RWS_VALUE_RULES[1] = -1; //Value for wrong cards
+    this.rws_value_rules[0] = 1;  //Value for correct cards
+    this.rws_value_rules[1] = -1; //Value for wrong cards
     
     if (!sp.getBoolean("skip_penalty", false))
     {
       //set skip value to 0 if skip penalty is not on
-      this.RWS_VALUE_RULES[2] = 0;
+      this.rws_value_rules[2] = 0;
     }
     else
     {
       //set skip value to -1 if skip penalty is on
-      this.RWS_VALUE_RULES[2] = -1;
+      this.rws_value_rules[2] = -1;
     }      
   }
 
@@ -239,7 +248,7 @@ public class GameManager implements Serializable
 	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
 	  {
 	    Card card = it.next();
-	    ret += RWS_VALUE_RULES[card.getRws()];
+	    ret += rws_value_rules[card.getRws()];
 	  }
 	  return ret;
   }
@@ -299,5 +308,14 @@ public class GameManager implements Serializable
   public long[] GetTeamIDs()
   {
 	  return this.teamIds;
+  }
+  
+  /**
+   * Accessor to return the amount of time in each turn.
+   * @return integer representing the number of miliseconds in each turn.
+   */
+  public int GetTurnTime()
+  {
+    return this.turn_time;
   }
 }
