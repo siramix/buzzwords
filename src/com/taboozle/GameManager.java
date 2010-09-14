@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 /**
  * @author The Taboozle Team
@@ -66,7 +68,7 @@ public class GameManager implements Serializable
   /**
    * An array indicating scoring for right, wrong, and skip (in that order)
    */
-  private final long[] RWS_VALUE_RULES = {1,-1,0};
+  private long[] RWS_VALUE_RULES;
   
   /**
    * An array of resource IDs to each right, wrong, skip sprite
@@ -79,11 +81,29 @@ public class GameManager implements Serializable
    */
   public GameManager( Context context )
   {
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    
     this.currentRound = 0;
     this.activeTeamIndex = 0;
     this.currentCards = new LinkedList<Card>();
     this.game = new Game( context );
     this.rws_resourceIDs = new int[] {R.drawable.correct, R.drawable.wrong, R.drawable.skip};
+    this.RWS_VALUE_RULES = new long[3];
+    
+    //Set score values for game
+    this.RWS_VALUE_RULES[0] = 1;  //Value for correct cards
+    this.RWS_VALUE_RULES[1] = -1; //Value for wrong cards
+    
+    if (!sp.getBoolean("skip_penalty", false))
+    {
+      //set skip value to 0 if skip penalty is not on
+      this.RWS_VALUE_RULES[2] = 0;
+    }
+    else
+    {
+      //set skip value to -1 if skip penalty is on
+      this.RWS_VALUE_RULES[2] = -1;
+    }      
   }
 
   /**
