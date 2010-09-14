@@ -67,6 +67,11 @@ public class GameManager implements Serializable
    * An array indicating scoring for right, wrong, and skip (in that order)
    */
   private final long[] RWS_VALUE_RULES = {1,-1,0};
+  
+  /**
+   * An array of resource IDs to each right, wrong, skip sprite
+   */
+  public final int[] rws_resourceIDs;
 
   /**
    * Standard Constructor
@@ -78,6 +83,7 @@ public class GameManager implements Serializable
     this.activeTeamIndex = 0;
     this.currentCards = new LinkedList<Card>();
     this.game = new Game( context );
+    this.rws_resourceIDs = new int[] {R.drawable.correct, R.drawable.wrong, R.drawable.skip};
   }
 
   /**

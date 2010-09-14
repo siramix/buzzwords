@@ -136,5 +136,22 @@ public class Card
   {
     this.badWords = Card.BustString( commaSeparated ); 
   }
+  
+  /**
+   * Get the resource ID for this card's right wrong skip icon
+   */
+  public int getDrawableId()
+  {
+	switch ( this.rws )
+	{
+	case 0:
+	  return R.drawable.correct;
+	case 1:
+	  return R.drawable.wrong;
+	case 2:
+	default:
+	  return R.drawable.skip;
+	}
+  }
 
 }

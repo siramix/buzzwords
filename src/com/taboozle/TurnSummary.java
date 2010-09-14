@@ -1,7 +1,5 @@
 package com.taboozle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -12,8 +10,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 /**
  * @author The Taboozle Team
@@ -68,27 +67,32 @@ public void onCreate( Bundle savedInstanceState )
 	// Setup the view
 	this.setContentView(R.layout.turnsummary);
 
-	ListView list = (ListView) findViewById(R.id.TurnSumCardList);
-
+	ScrollView list = (ScrollView) findViewById(R.id.TurnSumCardList);
+	LinearLayout layout = new LinearLayout(this.getBaseContext());
+	layout.setOrientation(LinearLayout.VERTICAL);
     TaboozleApplication application =
         (TaboozleApplication) this.getApplication();
     GameManager game = application.GetGameManager();
 
 	LinkedList<Card> cardlist = game.GetCurrentCards();
-	ArrayList<HashMap<String, String>> sumrows = new ArrayList<HashMap<String, String>>();
+	Card card = null;
+	int count = 0;
 	for( Iterator<Card> it = cardlist.iterator(); it.hasNext(); )
 	{
-	  Card card = it.next();
-	  HashMap<String, String> map = new HashMap<String, String>();
-	  map.put("title", card.getTitle());
-	  map.put("rws", Integer.toString(card.getRws()));
-	  sumrows.add(map);
+	  card = it.next();
+		
+	  LinearLayout line = (LinearLayout) LinearLayout.inflate(this.getBaseContext(), R.layout.turnsumrow, layout);
+	  LinearLayout realLine = (LinearLayout) line.getChildAt(count);
+	  
+	  TextView cardTitle = (TextView) realLine.getChildAt(0);
+	  cardTitle.setText(card.getTitle());
+	  
+	  ImageView cardIcon = (ImageView) realLine.getChildAt(1);
+	  cardIcon.setImageResource(card.getDrawableId());
+	  count++;
 	}
-
-	SimpleAdapter turnCards = new SimpleAdapter(this, sumrows, R.layout.turnsumrow,
-	            new String[] {"title", "rws"}, new int[] {R.id.TurnSum_CardTitle, R.id.TurnSum_CardRWS});
-	list.setAdapter(turnCards);
-
+	list.addView(layout);
+	
 	UpdateScoreViews();
 
 	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
