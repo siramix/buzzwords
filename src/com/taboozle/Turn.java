@@ -75,7 +75,7 @@ public class Turn extends Activity
   /**
    * Time for the Timer
    */
-  protected static final int TURN_TIME = 5000;
+  protected static int turn_time;
 
   /**
    *  Creates the menu items for the options menu
@@ -121,7 +121,7 @@ public class Turn extends Activity
   {	 	  
       public boolean onTouch(View v, MotionEvent event)
       {
-    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         AudioManager mgr =
           (AudioManager) v.getContext().getSystemService( Context.AUDIO_SERVICE );
         float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
@@ -205,13 +205,13 @@ public class Turn extends Activity
   private final OnClickListener ConfirmWrongListener = new OnClickListener()
   {
     public void onClick(View v)
-	{
+    {
       AIsActive = !AIsActive;
       ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
       flipper.showNext();
       curGameManager.ProcessCard( 1 );
       ShowCard();
-	}
+    }
   }; // End ConfirmWrongListener
   
   /**
@@ -237,25 +237,24 @@ public class Turn extends Activity
    * method when it completes as well as during update intervals.
   */
   private class TurnTimer extends CountDownTimer
-  {
-
+  {     
     public TurnTimer(long millisInFuture, long countDownInterval)
     {
       super(millisInFuture, countDownInterval);
     }
 
     @Override
-      public void onFinish() {
-    	
-         OnTurnEnd();
-      }
+    public void onFinish() 
+    {
+      OnTurnEnd();
+    }
 
     @Override
-      public void onTick(long millisUntilFinished)
-      {
-     TextView countdownTxt = (TextView) findViewById( R.id.Timer );
-     countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
-      }
+    public void onTick(long millisUntilFinished)
+    {
+      TextView countdownTxt = (TextView) findViewById( R.id.Timer );
+      countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
+    }
   }; // End TurnTimer
 
   /**
@@ -264,7 +263,7 @@ public class Turn extends Activity
    */
   private Animation InFromRightAnimation ()
   {
-	Animation inFromRight = new TranslateAnimation(
+    Animation inFromRight = new TranslateAnimation(
 		  	Animation.RELATIVE_TO_PARENT,  1.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
   	inFromRight.setDuration(500);
@@ -277,10 +276,10 @@ public class Turn extends Activity
    */
   private Animation OutToLeftAnimation ()
   {
-	Animation outToLeft = new TranslateAnimation(
+    Animation outToLeft = new TranslateAnimation(
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,  -1.0f,
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
-	outToLeft.setDuration(500);
+    outToLeft.setDuration(500);
   	return outToLeft;
   }
 
@@ -371,7 +370,11 @@ public class Turn extends Activity
 
     this.ShowCard();
 
-    TurnTimer counter = new TurnTimer( TURN_TIME, 200);
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+    turn_time = Integer.parseInt(sp.getString("turn_timer", "10")) * 1000;
+    
+    System.out.println("Turn time is " + turn_time );
+    TurnTimer counter = new TurnTimer( turn_time, 200);
 
     counter.start();
 

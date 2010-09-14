@@ -2,6 +2,8 @@
 <resources>
    
     <string-array name="turntimes">
+    	<item>5 seconds (DEBUG)</item>
+    	<item>10 seconds (DEBUG)</item>
         <item>30 seconds</item>
         <item>60 seconds</item>
         <item>90 seconds</item>
@@ -11,6 +13,8 @@
     </string-array>
     
     <string-array name="turntime_values">
+    	<item>5</item>
+    	<item>10</item>
         <item>30</item>
         <item>60</item>
         <item>90</item>
