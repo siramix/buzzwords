@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -46,15 +48,34 @@ public class TurnSummary extends Activity
 	  /**
 	   * Watches the end turn button that cancels the game.
 	   */
-	  private final OnClickListener EndTurnListener = new OnClickListener()
+	  private final OnClickListener EndGameListener = new OnClickListener()
 	  {
 	      public void onClick(View v)
 	      {
-          TaboozleApplication application =
-            (TaboozleApplication) TurnSummary.this.getApplication();
-          GameManager gm = application.GetGameManager();
-          gm.EndGame();
-          startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
+	        AlertDialog confirmEnd = new AlertDialog.Builder(v.getContext()).create();
+	        confirmEnd.setTitle("Confirm End Game");
+	        confirmEnd.setMessage("Are you sure you want to end the current game?");
+	        
+	        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener() 
+          {            
+            @Override
+            public void onClick(DialogInterface dialog, int which) {                           
+            }
+          });
+	        
+	        confirmEnd.setButton2("Yes", new DialogInterface.OnClickListener() 
+	        {            
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              TaboozleApplication application =
+                (TaboozleApplication) TurnSummary.this.getApplication();
+              GameManager gm = application.GetGameManager();
+              gm.EndGame();
+              startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));              
+            }
+          });
+         
+	        confirmEnd.show();
 	      }
 	  }; // End OnClickListener
 /**
@@ -99,7 +120,7 @@ public void onCreate( Bundle savedInstanceState )
 	playGameButton.setOnClickListener( NextTurnListener );
 
 	Button endGameButton = (Button)this.findViewById( R.id.TurnSumEndGame );
-	endGameButton.setOnClickListener( EndTurnListener );
+	endGameButton.setOnClickListener( EndGameListener );
 }
 
 /**
@@ -163,4 +184,5 @@ public boolean onKeyUp(int keyCode, KeyEvent event)
 
   return super.onKeyUp(keyCode, event);
   }
+
 }

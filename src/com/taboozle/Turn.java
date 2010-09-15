@@ -2,6 +2,7 @@ package com.taboozle;
 
 import android.app.*;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View.OnClickListener;
@@ -90,17 +91,36 @@ public class Turn extends Activity
    */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) 
-  {
-    TaboozleApplication application =
-            (TaboozleApplication) Turn.this.getApplication();
-    GameManager gm = application.GetGameManager();
-      
+  {      
     // Handle item selection
     switch (item.getItemId()) 
     {
       case R.string.menu_EndGame:
-        gm.EndGame();
-        startActivity(new Intent( this, GameEnd.class ));
+        AlertDialog confirmEnd = new AlertDialog.Builder(this.getCurrentFocus().getContext()).create();
+        confirmEnd.setTitle("Confirm End Game");
+        confirmEnd.setMessage("Are you sure you want to end the current game?");
+              
+        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener() 
+        {            
+          @Override
+          public void onClick(DialogInterface dialog, int which) {                           
+          }
+        });
+        
+        confirmEnd.setButton2("Yes", new DialogInterface.OnClickListener()
+        {
+          @Override
+          public void onClick(DialogInterface dialog, int which) 
+          {
+            TaboozleApplication application =
+              (TaboozleApplication) Turn.this.getApplication();
+            GameManager gm = application.GetGameManager();
+            gm.EndGame();
+            startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));  
+          }
+        });
+   
+        confirmEnd.show();
         return true;
       case R.string.menu_Score:
         //quit();
