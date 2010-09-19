@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import android.util.Log;
 
 /**
  * This handles a single turn consisting of cards presented to a player for a
@@ -36,6 +37,9 @@ import android.widget.ViewFlipper;
 public class Turn extends Activity
 {
 
+  private static final String TAG = "Turn";
+  
+  
   /**
    * This is a reference to the current game manager
    */
@@ -72,6 +76,60 @@ public class Turn extends Activity
   protected static final int MENU_ENDGAME = 0;
   protected static final int MENU_SCORE = 1;
   protected static final int MENU_RULES = 2;
+  
+  /**
+   * CountdownTimer - This initializes a timer during every turn that runs a
+   * method when it completes as well as during update intervals.
+  */
+  private boolean timerOn;
+  private class TurnTimer extends CountDownTimer
+  {     
+    public TurnTimer(long millisInFuture, long countDownInterval)
+    {
+      super(millisInFuture, countDownInterval);
+      Turn.this.timerOn = true;
+    }
+
+    @Override
+    public void onFinish() 
+    {
+      Turn.this.OnTurnEnd();
+    }
+
+    @Override
+    public void onTick(long millisUntilFinished)
+    {
+      Turn.this.timerState = millisUntilFinished;
+      TextView countdownTxt = (TextView) findViewById( R.id.Timer );
+      countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
+    }
+  }; // End TurnTimer
+  private TurnTimer counter;
+  private long timerState;
+  
+  
+  private void stopTimer()
+  {
+    Log.d( TAG, "stopTimer()" );
+    Log.d( TAG, Long.toString( this.timerState ) );
+    if( this.timerOn )
+    {
+      counter.cancel();
+      this.timerOn = false;
+    }
+  }
+  
+  private void resumeTimer()
+  {
+    Log.d( TAG, "resumeTimer()" );
+    Log.d( TAG, Long.toString( this.timerState ) );
+    if( !this.timerOn )
+    {
+      Log.d( TAG, "Do the Resume." );
+      this.counter = new TurnTimer( this.timerState, 200);
+      this.counter.start();
+    }
+  }
 
   /**
    *  Creates the menu items for the options menu
@@ -79,6 +137,7 @@ public class Turn extends Activity
   @Override
   public boolean onCreateOptionsMenu(Menu menu)
   {
+    Log.d( TAG, "onCreateOptionsMenu()" );
     menu.add(0, R.string.menu_EndGame, 0, "End Game");
     menu.add(0, R.string.menu_Score, 0, "Score");
     menu.add(0, R.string.menu_Rules, 0, "Rules");
@@ -91,7 +150,8 @@ public class Turn extends Activity
    */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) 
-  {      
+  {
+    Log.d( TAG, "onOptionsItemSelected()" );
     // Handle item selection
     switch (item.getItemId()) 
     {
@@ -250,30 +310,7 @@ public class Turn extends Activity
     }
   }; // End CancelWrongListener
   
-  /**
-   * CountdownTimer - This initializes a timer during every turn that runs a
-   * method when it completes as well as during update intervals.
-  */
-  private class TurnTimer extends CountDownTimer
-  {     
-    public TurnTimer(long millisInFuture, long countDownInterval)
-    {
-      super(millisInFuture, countDownInterval);
-    }
-
-    @Override
-    public void onFinish() 
-    {
-      OnTurnEnd();
-    }
-
-    @Override
-    public void onTick(long millisUntilFinished)
-    {
-      TextView countdownTxt = (TextView) findViewById( R.id.Timer );
-      countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
-    }
-  }; // End TurnTimer
+  
 
   /**
    * @return The animation that brings cards into view from the right of the
@@ -368,6 +405,7 @@ public class Turn extends Activity
   public void onCreate( Bundle savedInstanceState )
   {
     super.onCreate( savedInstanceState );
+    Log.d( TAG, "onCreate()" );
 
     this.AIsActive = true;
 
@@ -388,9 +426,8 @@ public class Turn extends Activity
 
     this.ShowCard();
 
-    TurnTimer counter = new TurnTimer( this.curGameManager.GetTurnTime(), 200);
-
-    counter.start();
+    this.counter = new TurnTimer( this.curGameManager.GetTurnTime(), 200);
+    this.counter.start();
 
     ImageButton buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
     buzzerButton.setOnTouchListener( BuzzListener );
@@ -408,13 +445,76 @@ public class Turn extends Activity
     cancelWrongButton.setOnClickListener( CancelWrongListener );
     
   }
+  
+  /**
+   * 
+   */
+  @Override
+  public void onRestart()
+  {
+    super.onRestart();
+    Log.d( TAG, "onRestart()" );
+  }
+  
+  /**
+   * 
+   */
+  @Override
+  public void onStart()
+  {
+    super.onStart();
+    Log.d( TAG, "onStart()" );
+  }
+  
+  /**
+   * 
+   */
+  @Override
+  public void onResume()
+  {
+    super.onResume();
+    Log.d( TAG, "onResume()" );
+    this.resumeTimer();
+  }
+  
+  /**
+   * 
+   */
+  @Override
+  public void onPause()
+  {
+    super.onPause();
+    Log.d( TAG, "onPause()" );
+  }
+  
+  /**
+   * 
+   */
+  @Override
+  public void onStop()
+  {
+    super.onStop();
+    Log.d( TAG, "onStop()" );
+    this.stopTimer();
+  }
+  
+  /**
+   * 
+   */
+  @Override
+  public void onDestroy()
+  {
+    super.onDestroy();
+    Log.d( TAG, "onDestroy()" );
+  }
 
   /**
    * Handler for key down events
    */
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
+  {
+    Log.d( TAG, "onKeyDown()" );
 
     // Handle the back button
     if( keyCode == KeyEvent.KEYCODE_BACK
@@ -425,14 +525,15 @@ public class Turn extends Activity
       }
 
     return super.onKeyDown(keyCode, event);
-   }
+  }
 
   /**
    * Handler for key up events
    */
   @Override
   public boolean onKeyUp(int keyCode, KeyEvent event)
-    {
+  {
+    Log.d( TAG, "onKeyUp()" );
 
     // Make back do nothing on key-up instead of climb the action stack
     if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
@@ -442,5 +543,5 @@ public class Turn extends Activity
       }
 
     return super.onKeyUp(keyCode, event);
-    }
+  }
 }

@@ -217,7 +217,8 @@ public class Game extends SQLiteOpenHelper
     values.put( GameData.FinalScores.SCORE, score );
     SQLiteDatabase db = this.getWritableDatabase();
     return db.insert( GameData.FINAL_SCORES_TABLE_NAME, "", values );
-    }
+  }
+  
   /**
    * Creates a turn record in the database. The turn knows about the game,
    * team, and round in which it occurred, as well as its score.
