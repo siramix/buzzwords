@@ -38,8 +38,8 @@ public class Turn extends Activity
 {
 
   private static final String TAG = "Turn";
-  
-  
+
+
   /**
    * This is a reference to the current game manager
    */
@@ -76,15 +76,15 @@ public class Turn extends Activity
   protected static final int MENU_ENDGAME = 0;
   protected static final int MENU_SCORE = 1;
   protected static final int MENU_RULES = 2;
-  
+
   /**
    * CountdownTimer - This initializes a timer during every turn that runs a
    * method when it completes as well as during update intervals.
   */
-  private static final long TICK = 200; 
+  private static final long TICK = 200;
   private boolean timerOn;
   private class TurnTimer extends CountDownTimer
-  {     
+  {
     public TurnTimer(long millisInFuture, long countDownInterval)
     {
       super(millisInFuture, countDownInterval);
@@ -92,7 +92,7 @@ public class Turn extends Activity
     }
 
     @Override
-    public void onFinish() 
+    public void onFinish()
     {
       Turn.this.OnTurnEnd();
     }
@@ -107,8 +107,8 @@ public class Turn extends Activity
   }; // End TurnTimer
   private TurnTimer counter;
   private long timerState;
-  
-  
+
+
   private void stopTimer()
   {
     Log.d( TAG, "stopTimer()" );
@@ -119,14 +119,14 @@ public class Turn extends Activity
       this.timerOn = false;
     }
   }
-  
+
   private void startTimer()
   {
     Log.d( TAG, "startTimer()" );
     this.counter = new TurnTimer( this.curGameManager.GetTurnTime(), TICK);
     this.counter.start();
   }
-  
+
   private void resumeTimer()
   {
     Log.d( TAG, "resumeTimer()" );
@@ -157,55 +157,57 @@ public class Turn extends Activity
    * Handle various menu clicks
    */
   @Override
-  public boolean onOptionsItemSelected(MenuItem item) 
+  public boolean onOptionsItemSelected(MenuItem item)
   {
     Log.d( TAG, "onOptionsItemSelected()" );
+
     // Handle item selection
-    switch (item.getItemId()) 
+    switch (item.getItemId())
     {
       case R.string.menu_EndGame:
+        System.out.println("CURRENT FOCUS: " + this.getCurrentFocus());
         AlertDialog confirmEnd = new AlertDialog.Builder(this.getCurrentFocus().getContext()).create();
         confirmEnd.setTitle("Confirm End Game");
         confirmEnd.setMessage("Are you sure you want to end the current game?");
-              
-        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener() 
+
+        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener()
         {
-          public void onClick(DialogInterface dialog, int which) {                           
+          public void onClick(DialogInterface dialog, int which) {
           }
         });
-        
+
         confirmEnd.setButton2("Yes", new DialogInterface.OnClickListener()
         {
-          public void onClick(DialogInterface dialog, int which) 
+          public void onClick(DialogInterface dialog, int which)
           {
             TaboozleApplication application =
               (TaboozleApplication) Turn.this.getApplication();
             GameManager gm = application.GetGameManager();
             gm.EndGame();
-            startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));  
+            startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
           }
         });
-   
+
         confirmEnd.show();
         return true;
       case R.string.menu_Score:
         //quit();
         return true;
       case R.string.menu_Rules:
-        startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 
+        startActivity(new Intent(getApplication().getString( R.string.IntentRules ),
             getIntent().getData()));
         return true;
       default:
         return super.onOptionsItemSelected(item);
     }
-  }  
+  }
 
   /**
    * Listener for the buzzer that plays on touch-down and stops playing on
    * touch-up.
    */
   private final OnTouchListener BuzzListener = new OnTouchListener()
-  {	 	  
+  {
     public boolean onTouch(View v, MotionEvent event)
     {
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -219,10 +221,10 @@ public class Turn extends Activity
       ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
       ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
       ImageView wrongStamp = (ImageView) findViewById( R.id.WrongStamp );
-  
+
       confirm.setVisibility( View.VISIBLE );
       cancel.setVisibility( View.VISIBLE );
-  
+
       boolean ret;
       switch( event.getAction() )
       {
@@ -299,9 +301,9 @@ public class Turn extends Activity
       ShowCard();
     }
   }; // End ConfirmWrongListener
-  
+
   /**
-   * 
+   *
    */
   private final OnClickListener CancelWrongListener = new OnClickListener()
   {
@@ -317,8 +319,6 @@ public class Turn extends Activity
       wrongStamp.setVisibility( View.INVISIBLE );
     }
   }; // End CancelWrongListener
-  
-  
 
   /**
    * @return The animation that brings cards into view from the right of the
@@ -367,17 +367,17 @@ public class Turn extends Activity
 
     TextView cardTitle = (TextView) this.findViewById( curTitle );
     ListView cardWords = (ListView) this.findViewById( curWords );
-    
+
     //Hide the wrong stamp and wrong controls on every new card
     ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
     ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
     ImageView wrongStamp = (ImageView) this.findViewById( R.id.WrongStamp );
-    
+
     confirm.setVisibility( View.INVISIBLE );
     cancel.setVisibility( View.INVISIBLE );
     wrongStamp.setVisibility( View.INVISIBLE );
-    
-    
+
+
     // Disable the ListView to prevent its children from being click-able
     cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter =
@@ -419,7 +419,7 @@ public class Turn extends Activity
 
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
-    this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);	
+    this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
     TaboozleApplication application =
       (TaboozleApplication) this.getApplication();
@@ -444,17 +444,17 @@ public class Turn extends Activity
 
     ImageButton skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
     skipButton.setOnClickListener( SkipListener );
-    
+
     ImageButton confirmWrongButton = (ImageButton )this.findViewById( R.id.ButtonConfirmWrong );
     confirmWrongButton.setOnClickListener( ConfirmWrongListener );
 
     ImageButton cancelWrongButton = (ImageButton) this.findViewById( R.id.ButtonCancelWrong );
     cancelWrongButton.setOnClickListener( CancelWrongListener );
-    
+
   }
-  
+
   /**
-   * 
+   *
    */
   @Override
   public void onRestart()
@@ -462,9 +462,9 @@ public class Turn extends Activity
     super.onRestart();
     Log.d( TAG, "onRestart()" );
   }
-  
+
   /**
-   * 
+   *
    */
   @Override
   public void onStart()
@@ -472,9 +472,9 @@ public class Turn extends Activity
     super.onStart();
     Log.d( TAG, "onStart()" );
   }
-  
+
   /**
-   * 
+   *
    */
   @Override
   public void onResume()
@@ -483,9 +483,9 @@ public class Turn extends Activity
     Log.d( TAG, "onResume()" );
     this.resumeTimer();
   }
-  
+
   /**
-   * 
+   *
    */
   @Override
   public void onPause()
@@ -493,9 +493,9 @@ public class Turn extends Activity
     super.onPause();
     Log.d( TAG, "onPause()" );
   }
-  
+
   /**
-   * 
+   *
    */
   @Override
   public void onStop()
@@ -504,9 +504,9 @@ public class Turn extends Activity
     Log.d( TAG, "onStop()" );
     this.stopTimer();
   }
-  
+
   /**
-   * 
+   *
    */
   @Override
   public void onDestroy()
