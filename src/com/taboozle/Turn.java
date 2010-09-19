@@ -81,6 +81,7 @@ public class Turn extends Activity
    * CountdownTimer - This initializes a timer during every turn that runs a
    * method when it completes as well as during update intervals.
   */
+  private static final long TICK = 200; 
   private boolean timerOn;
   private class TurnTimer extends CountDownTimer
   {     
@@ -119,6 +120,13 @@ public class Turn extends Activity
     }
   }
   
+  private void startTimer()
+  {
+    Log.d( TAG, "startTimer()" );
+    this.counter = new TurnTimer( this.curGameManager.GetTurnTime(), TICK);
+    this.counter.start();
+  }
+  
   private void resumeTimer()
   {
     Log.d( TAG, "resumeTimer()" );
@@ -126,7 +134,7 @@ public class Turn extends Activity
     if( !this.timerOn )
     {
       Log.d( TAG, "Do the Resume." );
-      this.counter = new TurnTimer( this.timerState, 200);
+      this.counter = new TurnTimer( this.timerState, TICK);
       this.counter.start();
     }
   }
@@ -426,8 +434,7 @@ public class Turn extends Activity
 
     this.ShowCard();
 
-    this.counter = new TurnTimer( this.curGameManager.GetTurnTime(), 200);
-    this.counter.start();
+    this.startTimer();
 
     ImageButton buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
     buzzerButton.setOnTouchListener( BuzzListener );
