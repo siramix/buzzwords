@@ -8,9 +8,6 @@
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content" 
 		android:layout_below="@+id/actionbar">
-  <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ReadyLayout" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ReadyMessageTeam" android:text="TEAMNAMEHERE" android:textSize="30dip" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:layout_marginTop="150dip" android:layout_marginLeft="30dip"></TextView>
-<TextView android:layout_below="@id/ReadyMessageTeam" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ReadyMessageText" android:textSize="30dip" android:text="touch when ready!" android:layout_marginLeft="30dip"></TextView>
-</LinearLayout>		
 		<RelativeLayout
 			android:id="@+id/CardLayoutA" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_taboozlecard">
 			<TextView
