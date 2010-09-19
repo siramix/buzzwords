@@ -134,7 +134,7 @@ public class Turn extends Activity
     if( !this.timerOn )
     {
       Log.d( TAG, "Do the Resume." );
-      this.counter = new TurnTimer( this.timerState, TICK);
+      this.counter = new TurnTimer( this.timerState, 200);
       this.counter.start();
     }
   }
@@ -434,7 +434,8 @@ public class Turn extends Activity
 
     this.ShowCard();
 
-    this.startTimer();
+    this.counter = new TurnTimer( this.curGameManager.GetTurnTime(), 200);
+    this.counter.start();
 
     ImageButton buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
     buzzerButton.setOnTouchListener( BuzzListener );
