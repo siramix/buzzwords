@@ -90,54 +90,55 @@ public class Turn extends Activity
    * Handle various menu clicks
    */
   @Override
-  public boolean onOptionsItemSelected(MenuItem item) 
-  {      
+  public boolean onOptionsItemSelected(MenuItem item)
+  {
     // Handle item selection
-    switch (item.getItemId()) 
+    switch (item.getItemId())
     {
       case R.string.menu_EndGame:
+        System.out.println("CURRENT FOCUS: " + this.getCurrentFocus());
         AlertDialog confirmEnd = new AlertDialog.Builder(this.getCurrentFocus().getContext()).create();
         confirmEnd.setTitle("Confirm End Game");
         confirmEnd.setMessage("Are you sure you want to end the current game?");
-              
-        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener() 
+
+        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener()
         {
-          public void onClick(DialogInterface dialog, int which) {                           
+          public void onClick(DialogInterface dialog, int which) {
           }
         });
-        
+
         confirmEnd.setButton2("Yes", new DialogInterface.OnClickListener()
         {
-          public void onClick(DialogInterface dialog, int which) 
+          public void onClick(DialogInterface dialog, int which)
           {
             TaboozleApplication application =
               (TaboozleApplication) Turn.this.getApplication();
             GameManager gm = application.GetGameManager();
             gm.EndGame();
-            startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));  
+            startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
           }
         });
-   
+
         confirmEnd.show();
         return true;
       case R.string.menu_Score:
         //quit();
         return true;
       case R.string.menu_Rules:
-        startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 
+        startActivity(new Intent(getApplication().getString( R.string.IntentRules ),
             getIntent().getData()));
         return true;
       default:
         return super.onOptionsItemSelected(item);
     }
-  }  
+  }
 
   /**
    * Listener for the buzzer that plays on touch-down and stops playing on
    * touch-up.
    */
   private final OnTouchListener BuzzListener = new OnTouchListener()
-  {	 	  
+  {
     public boolean onTouch(View v, MotionEvent event)
     {
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -151,10 +152,10 @@ public class Turn extends Activity
       ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
       ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
       ImageView wrongStamp = (ImageView) findViewById( R.id.WrongStamp );
-  
+
       confirm.setVisibility( View.VISIBLE );
       cancel.setVisibility( View.VISIBLE );
-  
+
       boolean ret;
       switch( event.getAction() )
       {
@@ -231,9 +232,9 @@ public class Turn extends Activity
       ShowCard();
     }
   }; // End ConfirmWrongListener
-  
+
   /**
-   * 
+   *
    */
   private final OnClickListener CancelWrongListener = new OnClickListener()
   {
@@ -249,20 +250,20 @@ public class Turn extends Activity
       wrongStamp.setVisibility( View.INVISIBLE );
     }
   }; // End CancelWrongListener
-  
+
   /**
    * CountdownTimer - This initializes a timer during every turn that runs a
    * method when it completes as well as during update intervals.
   */
   private class TurnTimer extends CountDownTimer
-  {     
+  {
     public TurnTimer(long millisInFuture, long countDownInterval)
     {
       super(millisInFuture, countDownInterval);
     }
 
     @Override
-    public void onFinish() 
+    public void onFinish()
     {
       OnTurnEnd();
     }
@@ -322,17 +323,17 @@ public class Turn extends Activity
 
     TextView cardTitle = (TextView) this.findViewById( curTitle );
     ListView cardWords = (ListView) this.findViewById( curWords );
-    
+
     //Hide the wrong stamp and wrong controls on every new card
     ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
     ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
     ImageView wrongStamp = (ImageView) this.findViewById( R.id.WrongStamp );
-    
+
     confirm.setVisibility( View.INVISIBLE );
     cancel.setVisibility( View.INVISIBLE );
     wrongStamp.setVisibility( View.INVISIBLE );
-    
-    
+
+
     // Disable the ListView to prevent its children from being click-able
     cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter =
@@ -373,7 +374,7 @@ public class Turn extends Activity
 
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
-    this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);	
+    this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
     TaboozleApplication application =
       (TaboozleApplication) this.getApplication();
@@ -400,13 +401,13 @@ public class Turn extends Activity
 
     ImageButton skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
     skipButton.setOnClickListener( SkipListener );
-    
+
     ImageButton confirmWrongButton = (ImageButton )this.findViewById( R.id.ButtonConfirmWrong );
     confirmWrongButton.setOnClickListener( ConfirmWrongListener );
 
     ImageButton cancelWrongButton = (ImageButton) this.findViewById( R.id.ButtonCancelWrong );
     cancelWrongButton.setOnClickListener( CancelWrongListener );
-    
+
   }
 
   /**
