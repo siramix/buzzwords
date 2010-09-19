@@ -39,7 +39,6 @@ public class Title extends Activity
    */
   private OnClickListener SettingsListener = new OnClickListener()
   {
-  	@Override
   	public void onClick(View v) 
   	{
   	  startActivity(new Intent(getApplication().getString( R.string.IntentSettings ), 
@@ -53,7 +52,6 @@ public class Title extends Activity
    */
   private OnClickListener RulesListener = new OnClickListener() 
   {
-    @Override
     public void onClick(View v) 
     {
       startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 

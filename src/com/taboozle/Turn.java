@@ -101,15 +101,13 @@ public class Turn extends Activity
         confirmEnd.setMessage("Are you sure you want to end the current game?");
               
         confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener() 
-        {            
-          @Override
+        {
           public void onClick(DialogInterface dialog, int which) {                           
           }
         });
         
         confirmEnd.setButton2("Yes", new DialogInterface.OnClickListener()
         {
-          @Override
           public void onClick(DialogInterface dialog, int which) 
           {
             TaboozleApplication application =
