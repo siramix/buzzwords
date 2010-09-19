@@ -31,17 +31,11 @@ public class TurnSummary extends Activity
 	  {
 	      public void onClick(View v)
 	      {
-	        // You have to draw before getting the view
-	        /*ListView list = (ListView) findViewById(R.id.TurnSumCardList);
-	        LinearLayout lay = (LinearLayout) list.getChildAt( 1 );
-	        ImageView iv = (ImageView) lay.getChildAt( 1 );
-	        iv.setBackgroundResource( R.drawable.wrong );*/
-
 	        TaboozleApplication application =
 	          (TaboozleApplication) TurnSummary.this.getApplication();
 	        GameManager gm = application.GetGameManager();
 	        gm.NextTurn();
-     	  	startActivity(new Intent(Intent.ACTION_RUN, getIntent().getData()));
+     	  	startActivity(new Intent(TurnSummary.this.getApplication().getString(R.string.IntentTurn), getIntent().getData()));
 	      }
 	  }; // End NextTurnListener
 
@@ -138,14 +132,15 @@ private void UpdateScoreViews()
 	TextView scoreview = (TextView) findViewById(R.id.TurnTotalScore);
 	scoreview.setText(Long.toString(turnscore));
 
-	TextView teamATotalScore = (TextView) findViewById(R.id.TeamAScore);
-	teamATotalScore.setText("Team A: " + Long.toString(totalscores[0]));
+	int[] scoreViewIds = new int[]{R.id.TeamAScore, R.id.TeamBScore};
+	for (int i = 0; i < scoreViewIds.length; i++)
+	{
+		TextView teamTotalScoreView = (TextView) findViewById(scoreViewIds[i]);
+		teamTotalScoreView.setText(game.GetTeamNames()[i] + ": " + Long.toString(totalscores[i]));
+	}
 
-	TextView teamBTotalScore = (TextView) findViewById(R.id.TeamBScore);
-	teamBTotalScore.setText("Team B: " + Long.toString(totalscores[1]));
-
-  TextView curTeam = (TextView) findViewById(R.id.CurTeamIndex);
-  curTeam.setText("Current Team: " + Long.toString(game.GetActiveTeamIndex()));
+    TextView curTeam = (TextView) findViewById(R.id.CurTeamIndex);
+    curTeam.setText("Current Team: " + Long.toString(game.GetActiveTeamIndex()));
 }
 
 /**

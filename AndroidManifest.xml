@@ -32,10 +32,17 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>        		  
         </activity>
+        <activity android:name=".GameSetup"
+        		  android:label="@string/AppName">
+			<intent-filter>
+				<action android:name="com.taboozle.intent.action.GAMESETUP" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>        		  
+        </activity>
         <activity android:name=".Turn"
                   android:label="@string/AppName">
             <intent-filter>
-         	   <action android:name="android.intent.action.RUN"></action>
+         	   <action android:name="com.taboozle.intent.action.TURN"></action>
          	   <category android:name="android.intent.category.DEFAULT" />
 			     </intent-filter>
         </activity>
