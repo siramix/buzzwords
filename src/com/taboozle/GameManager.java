@@ -44,6 +44,11 @@ public class GameManager implements Serializable
    * the game
    */
   private long[] teamIds;
+  
+  /**
+   * An array of the team names
+   */
+  private String[] teamNames;
 
   /**
    * The index of the round being played
@@ -125,6 +130,7 @@ public class GameManager implements Serializable
     this.currentGameId = this.game.newGame();
     this.teamIds = new long[teams.length];
     this.teamScores = new long[teams.length]; 
+    this.teamNames = teams.clone();
     
     for( int i = 0; i < teams.length; ++i )
     {
@@ -308,6 +314,15 @@ public class GameManager implements Serializable
   public long[] GetTeamIDs()
   {
 	  return this.teamIds;
+  }
+  
+  
+  /**
+   * Returns a string array of the team names.
+   */
+  public String[] GetTeamNames()
+  {
+	  return this.teamNames;
   }
   
   /**

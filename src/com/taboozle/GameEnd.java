@@ -54,9 +54,10 @@ public class GameEnd extends Activity
 		
 		int numRounds = (int) game.GetNumRounds();
 		int numTeams = game.GetNumTeams();
+		String[] teamNames = game.GetTeamNames();
 		
+		// Populate storage table for end game round results
 		long[][] endTable = new long[numRounds][numTeams];
-
 		for ( int i = 0; i < numTeams; ++i )
 		{
 			long[] roundscores = game.GetRoundScores((long) i);
@@ -66,10 +67,9 @@ public class GameEnd extends Activity
 			}
 		}
 
+		// Populate list display
 		ListView list = (ListView) findViewById(R.id.EndGameTurnList);		
-		
 		ArrayList<HashMap<String, String>> endTableRows = new ArrayList<HashMap<String, String>>();
-
 		for (int i = 0; i < numRounds; ++i)
 		{
 			HashMap<String, String> map = new HashMap<String, String>();
@@ -86,14 +86,16 @@ public class GameEnd extends Activity
 		
 		list.setAdapter(gameEndTable);			
 		
+		// Display final scores
 		long[] finalScores = game.GetTeamScores();
+		int[] scoreViewIds = new int[]{R.id.EndGameTeamAScore, R.id.EndGameTeamBScore};
+		for (int i = 0; i < scoreViewIds.length; i++)
+		{
+			TextView teamTotalScoreView = (TextView) findViewById(scoreViewIds[i]);
+			teamTotalScoreView.setText(teamNames[i] + ": " + Long.toString(finalScores[i]));
+		}
 		
-		TextView teamATotalScore = (TextView) findViewById(R.id.EndGameTeamAScore);
-		teamATotalScore.setText("Team A: " + Long.toString(finalScores[0]));
-
-		TextView teamBTotalScore = (TextView) findViewById(R.id.EndGameTeamBScore);
-		teamBTotalScore.setText("Team B: " + Long.toString(finalScores[1]));
-		
+		// Display winning team
 		int winningTeamIndex = 0;
 		boolean tieGame = false;
 		
@@ -103,7 +105,6 @@ public class GameEnd extends Activity
 			{
 				continue;
 			}
-
 			if (finalScores[winningTeamIndex] < finalScores[i])
 			{
 				winningTeamIndex = i;
@@ -114,11 +115,10 @@ public class GameEnd extends Activity
 			}
 		}
 		
-		String[] teamnames = {"Team A", "Team B"};
 		TextView winner = (TextView) findViewById(R.id.EndGameWinner);
 		if (!tieGame)
 		{
-			winner.setText(teamnames[winningTeamIndex] + " wins!!!!");
+			winner.setText(teamNames[winningTeamIndex] + " wins!!!!");
 		}
 		else
 		{
