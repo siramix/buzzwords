@@ -1,6 +1,7 @@
 package com.taboozle;
 
 import android.app.Application;
+import android.util.Log;
 
 /**
  * @author The Taboozle Team
@@ -9,7 +10,11 @@ import android.app.Application;
  */
 public class TaboozleApplication extends Application
 {
-
+  /**
+   * logging tag
+   */
+  public static String TAG = "TaboozleApplication";
+  
   /**
    * The GameManager for all of taboozle
    */
@@ -21,6 +26,7 @@ public class TaboozleApplication extends Application
   public TaboozleApplication()
   {
     super();
+    Log.d( TAG, "TaboozleApplication()" ); 
   }
 
   /**
@@ -28,6 +34,7 @@ public class TaboozleApplication extends Application
    */
   public GameManager GetGameManager()
   {
+    Log.d( TAG, "GetGameManager()" ); 
     return this.gameManager;
   }
 
@@ -36,6 +43,7 @@ public class TaboozleApplication extends Application
    */
   public void SetGameManager( GameManager gm )
   {
+    Log.d( TAG, "SetGameManager()" );     
     this.gameManager = gm;
   }
 

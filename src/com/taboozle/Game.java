@@ -63,6 +63,7 @@ public class Game extends SQLiteOpenHelper
   {
     super( context, GameData.DATABASE_NAME, null,
            GameData.DATABASE_VERSION );
+    Log.d( TAG, "Game()" );    
     this.curContext = context;
   }
 
@@ -74,6 +75,7 @@ public class Game extends SQLiteOpenHelper
    */
   public void prepDeck()
   {
+    Log.d( TAG, "prepDeck()" );
     // initialize our data structures
     this.cardIds = new ArrayList<Long>();
     this.cardIdPosition = 0;
@@ -106,6 +108,7 @@ public class Game extends SQLiteOpenHelper
    */
   public long[] getRoundScores(long teamID, long gameID)
   {
+    Log.d( TAG, "getRoundScores()" );
     // query for scores
     SQLiteDatabase db = this.getReadableDatabase();
     String[] columns = new String[] {GameData.TurnScores.SCORE};
@@ -139,6 +142,7 @@ public class Game extends SQLiteOpenHelper
    */
   public Card getNextCard()
   {
+    Log.d( TAG, "getNextCard()" );
     // check deck bounds
     if( this.cardIdPosition >= this.cardIds.size() )
     {
@@ -182,6 +186,7 @@ public class Game extends SQLiteOpenHelper
    */
   public long newGame()
   {
+    Log.d( TAG, "newGame()" );
     // Prepare the current date for insertion
     Date currentTime = new Date();
     String dateString = currentTime.toString();
@@ -200,6 +205,7 @@ public class Game extends SQLiteOpenHelper
    */
   public long newTeam( String name )
   {
+    Log.d( TAG, "newTeam()" );
     ContentValues values = new ContentValues();
     values.put(GameData.Teams.NAME, name);
     SQLiteDatabase db = this.getWritableDatabase();
@@ -211,6 +217,7 @@ public class Game extends SQLiteOpenHelper
    */
   public long completeGame( long gameId, long teamId, long score )
   {
+    Log.d( TAG, "completeGame()" );
     ContentValues values = new ContentValues();
     values.put( GameData.FinalScores.GAME_ID, gameId );
     values.put( GameData.FinalScores.TEAM_ID, teamId );
@@ -230,6 +237,7 @@ public class Game extends SQLiteOpenHelper
    */
   public long newTurn( long gameId, long teamId, long round, long score )
   {
+    Log.d( TAG, "newTurn()" );
     ContentValues values = new ContentValues();
     values.put( GameData.TurnScores.GAME_ID, gameId );
     values.put( GameData.TurnScores.TEAM_ID, teamId );
@@ -250,6 +258,7 @@ public class Game extends SQLiteOpenHelper
   public void completeCard( long gameId, long teamId, long cardId,
 		  					long turnScoreId, long rws )
   {
+    Log.d( TAG, "completeCard()" );
     ContentValues values = new ContentValues();
     values.put(  GameData.GameHistory.GAME_ID, gameId );
     values.put( GameData.GameHistory.TEAM_ID, teamId );
@@ -266,6 +275,7 @@ public class Game extends SQLiteOpenHelper
   @Override
   public void onCreate( SQLiteDatabase db )
   {
+    Log.d( TAG, "onCreate()" );
     db.execSQL( "CREATE TABLE " + GameData.TEAM_TABLE_NAME + " (" +
                 GameData.Teams._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 GameData.Teams.NAME + " TEXT);" );
@@ -384,6 +394,7 @@ public class Game extends SQLiteOpenHelper
   @Override
   public void onUpgrade( SQLiteDatabase db, int oldVersion, int newVersion )
   {
+    Log.d( TAG, "onUpgrade()" );
     Log.w( TAG, "Upgrading database from version " + oldVersion + " to "
            + newVersion + ", which will destroy all old data" );
     db.execSQL( "DROP TABLE IF EXISTS" + GameData.TEAM_TABLE_NAME + ";" );

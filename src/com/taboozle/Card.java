@@ -3,6 +3,8 @@ package com.taboozle;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import android.util.Log;
+
 /**
  * @author The Taboozle Team
  * 
@@ -11,6 +13,10 @@ import java.util.StringTokenizer;
  */
 public class Card
 {
+  /**
+   * Static string used to refer to this class, in debug output for example.
+   */
+  private static final String TAG = "Card";
   
   /**
    * The id of the card in the database
@@ -41,6 +47,7 @@ public class Card
    */
   public static ArrayList<String> BustString( String commaSeparated )
   {
+    Log.d( TAG, "BustString()" );
     ArrayList<String> ret = new ArrayList<String>();
     StringTokenizer tok = new StringTokenizer( commaSeparated );
 
@@ -56,7 +63,8 @@ public class Card
    * Default constructor 
    */
   public Card()
-  {
+  {    
+    Log.d( TAG, "Card()" );
     this.init( -1, -1, "", new ArrayList<String>() );
   }
   
@@ -65,6 +73,7 @@ public class Card
    */
   public Card( Card rhs )
   {
+    Log.d( TAG, "Card( Card )" );
     ArrayList<String> bws = new ArrayList<String>( rhs.getBadWords() );
     this.init( rhs.getId(), this.getRws(), this.getTitle(), bws );
   }
@@ -75,6 +84,7 @@ public class Card
   private void init( long id, int rws, String title, 
                      ArrayList<String> badWords )
   {
+    Log.d( TAG, "init()" );
     this.id = id;
     this.rws = rws;
     this.title = title;
@@ -83,48 +93,56 @@ public class Card
   
   public long getId()
   {
+    Log.d( TAG, "getId()" );
     return this.id;
   }
 
   
   public void setId( long id )
   {
+    Log.d( TAG, "setId()" );
     this.id = id;
   }
 
   
   public int getRws()
-  {
+  {    
+    Log.d( TAG, "getRws()" );
     return this.rws;
   }
 
   
   public void setRws( int rws )
   {
+    Log.d( TAG, "setRws()" );
     this.rws = rws;
   }
 
   
   public String getTitle()
   {
+    Log.d( TAG, "getTitle()" );
     return this.title;
   }
 
   
   public void setTitle( String title )
   {
+    Log.d( TAG, "setTitle()" );
     this.title = title;
   }
 
   
   public ArrayList<String> getBadWords()
   {
+    Log.d( TAG, "getBadWords()" );
     return this.badWords;
   }
 
   
   public void setBadWords( ArrayList<String> badWords )
   {
+    Log.d( TAG, "setBadWords(ArrayList<String>)" );
     this.badWords = badWords;
   }
   
@@ -134,6 +152,7 @@ public class Card
    */
   public void setBadWords( String commaSeparated )
   {
+    Log.d( TAG, "setBadWords(String)" );
     this.badWords = Card.BustString( commaSeparated ); 
   }
   
@@ -142,16 +161,17 @@ public class Card
    */
   public int getDrawableId()
   {
-	switch ( this.rws )
-	{
-	case 0:
-	  return R.drawable.correct;
-	case 1:
-	  return R.drawable.wrong;
-	case 2:
-	default:
-	  return R.drawable.skip;
-	}
+    Log.d( TAG, "getDrawableId()" );
+  	switch ( this.rws )
+  	{
+  	case 0:
+  	  return R.drawable.correct;
+  	case 1:
+  	  return R.drawable.wrong;
+  	case 2:
+  	default:
+  	  return R.drawable.skip;
+  	}
   }
 
 }

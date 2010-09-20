@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -13,12 +14,19 @@ import android.widget.TextView;
 public class Rules extends Activity
 {
   /**
+   * logging tag
+   */
+  public static String TAG = "Rules";
+  
+  /**
   * onCreate - initializes the activity to display the rules.
   */
   @Override
   public void onCreate( Bundle savedInstanceState )
   {
     super.onCreate( savedInstanceState );
+    Log.d( TAG, "onCreate()" ); 
+    
     this.setContentView(R.layout.rules);
     
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());

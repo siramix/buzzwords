@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * @author The Taboozle Team
@@ -18,6 +19,11 @@ import android.preference.PreferenceManager;
  */
 public class GameManager implements Serializable
 {
+  /**
+   * logging tag
+   */
+  public static String TAG = "GameManager";
+  
   /**
    *
    */
@@ -91,6 +97,7 @@ public class GameManager implements Serializable
    */
   public GameManager( Context context )
   {
+    Log.d( TAG, "GameManager()" );
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     
     this.currentRound = 0;
@@ -127,6 +134,7 @@ public class GameManager implements Serializable
    */
   public void StartGame( String[] teams )
   {
+    Log.d( TAG, "StartGame()" );
     this.currentGameId = this.game.newGame();
     this.teamIds = new long[teams.length];
     this.teamScores = new long[teams.length]; 
@@ -144,6 +152,7 @@ public class GameManager implements Serializable
    */
   public void NextTurn()
   {
+    Log.d( TAG, "NextTurn()" );
     this.WriteTurnResults();
     this.teamScores[this.activeTeamIndex] += GetTurnScore();
     this.activeTeamIndex++;
@@ -160,6 +169,7 @@ public class GameManager implements Serializable
    */
   public void EndGame()
   {
+    Log.d( TAG, "EndGame()" );
     this.WriteTurnResults();
     this.teamScores[this.activeTeamIndex] += GetTurnScore();
     this.WriteGameResults();
@@ -173,6 +183,7 @@ public class GameManager implements Serializable
    */
   private void WriteTurnResults()
   {
+    Log.d( TAG, "WriteTurnResults()" );
 	  long scoreTotal = 0;
 
 	  /* Iterate through cards and total the score for the round */
@@ -198,6 +209,7 @@ public class GameManager implements Serializable
    */
   private void WriteGameResults()
   {
+    Log.d( TAG, "WriteGameResults()" );   
     for( int i = 0; i < teamIds.length; i++ )
     {
       game.completeGame( this.currentGameId, this.teamIds[i], this.teamScores[i]);
@@ -210,6 +222,7 @@ public class GameManager implements Serializable
    */
   public void ProcessCard( int rws )
   {
+    Log.d( TAG, "ProcessCard()" );      
     this.currentCard.setRws( rws );
     this.currentCards.add( this.currentCard );
   }
@@ -219,6 +232,7 @@ public class GameManager implements Serializable
    */
   public void PrepDeck()
   {
+    Log.d( TAG, "PrepDeck()" );          
     this.game.prepDeck();
   }
 
@@ -230,6 +244,7 @@ public class GameManager implements Serializable
    */
   public Card GetNextCard()
   {
+    Log.d( TAG, "GetNextCard()" );              
     this.currentCard = this.game.getNextCard();
     return this.currentCard;
   }
@@ -239,7 +254,8 @@ public class GameManager implements Serializable
    * @return list of all cards
    */
   public LinkedList<Card> GetCurrentCards()
-  {
+  {   
+    Log.d( TAG, "GetCurrentCards()" );              
 	  return this.currentCards;
   }
 
@@ -250,7 +266,8 @@ public class GameManager implements Serializable
    */
   public long GetTurnScore()
   {
-	  long ret = 0;
+    Log.d( TAG, "GetTurnScore()" );              
+    long ret = 0;
 	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
 	  {
 	    Card card = it.next();
@@ -265,6 +282,7 @@ public class GameManager implements Serializable
    */
   public long[] GetTeamScores()
   {
+    Log.d( TAG, "GetTeamScores()" );                  
 	  return this.teamScores;
   }
 
@@ -275,6 +293,7 @@ public class GameManager implements Serializable
    */
   public long[] GetRoundScores(long teamIndex)
   {
+    Log.d( TAG, "GetRoundScores()" );                      
     return this.game.getRoundScores( this.teamIds[(int)teamIndex], 
                                      this.currentGameId );
   }
@@ -285,6 +304,7 @@ public class GameManager implements Serializable
    */
   public int GetActiveTeamIndex()
   {
+    Log.d( TAG, "GetActiveTeamIndex()" );                      
     return this.activeTeamIndex;
   }
   
@@ -295,6 +315,7 @@ public class GameManager implements Serializable
    */
   public int GetNumTeams()
   {
+    Log.d( TAG, "GetNumTeams()" );                          
 	  return this.teamIds.length;
   }
   
@@ -304,7 +325,8 @@ public class GameManager implements Serializable
    */
   public long GetNumRounds()
   {
-	  return this.currentRound+1;
+    Log.d( TAG, "GetNumRounds()" );                          
+    return this.currentRound+1;
   }  
  
   /**
@@ -313,6 +335,7 @@ public class GameManager implements Serializable
    */
   public long[] GetTeamIDs()
   {
+    Log.d( TAG, "GetTeamIDs()" );    
 	  return this.teamIds;
   }
   
@@ -322,6 +345,7 @@ public class GameManager implements Serializable
    */
   public String[] GetTeamNames()
   {
+    Log.d( TAG, "GetTeamNames()" );    
 	  return this.teamNames;
   }
   
@@ -331,6 +355,7 @@ public class GameManager implements Serializable
    */
   public int GetTurnTime()
   {
+    Log.d( TAG, "GetTurnTime()" );    
     return this.turn_time;
   }
 }

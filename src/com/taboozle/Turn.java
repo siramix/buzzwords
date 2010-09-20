@@ -37,6 +37,9 @@ import android.util.Log;
 public class Turn extends Activity
 {
 
+  /**
+   * Static string used to refer to this class, in debug output for example.
+   */
   private static final String TAG = "Turn";
 
 
@@ -88,23 +91,27 @@ public class Turn extends Activity
     public TurnTimer(long millisInFuture, long countDownInterval)
     {
       super(millisInFuture, countDownInterval);
+      Log.d( TAG, "TurnTimer()" );
       Turn.this.timerOn = true;
     }
 
     @Override
     public void onFinish()
     {
+      Log.d( TAG, "onFinish()" );
       Turn.this.OnTurnEnd();
     }
 
     @Override
     public void onTick(long millisUntilFinished)
     {
+      //Log.d( TAG, "onTick()" ); //Log out commented to prevent spam      
       Turn.this.timerState = millisUntilFinished;
       TextView countdownTxt = (TextView) findViewById( R.id.Timer );
       countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
     }
   }; // End TurnTimer
+  
   private TurnTimer counter;
   private long timerState;
 
@@ -208,6 +215,7 @@ public class Turn extends Activity
   {	 	  
     public boolean onTouch(View v, MotionEvent event)
     {
+      Log.d( TAG, "BuzzListener onTouch()" );                                 
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
       AudioManager mgr =
         (AudioManager) v.getContext().getSystemService( Context.AUDIO_SERVICE );
@@ -258,14 +266,15 @@ public class Turn extends Activity
    */
   private final OnClickListener CorrectListener = new OnClickListener()
   {
-      public void onClick(View v)
-      {
-        AIsActive = !AIsActive;
-        ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
-        flipper.showNext();
-        curGameManager.ProcessCard( 0 );
-        ShowCard();
-      }
+    public void onClick(View v)
+    {
+      Log.d( TAG, "CorrectListener OnClick()" );                           
+      AIsActive = !AIsActive;
+      ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
+      flipper.showNext();
+      curGameManager.ProcessCard( 0 );
+      ShowCard();
+    }
   }; // End CorrectListener
 
   /**
@@ -274,14 +283,16 @@ public class Turn extends Activity
    */
   private final OnClickListener SkipListener = new OnClickListener()
   {
-      public void onClick(View v)
-      {
-        AIsActive = !AIsActive;
-        ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
-        flipper.showNext();
-        curGameManager.ProcessCard( 2 );
-        ShowCard();
-      }
+    
+    public void onClick(View v)
+    {
+      Log.d( TAG, "SkipListener OnClick()" );                   
+      AIsActive = !AIsActive;
+      ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
+      flipper.showNext();
+      curGameManager.ProcessCard( 2 );
+      ShowCard();
+    }
   }; // End SkipListener
 
   /**
@@ -292,6 +303,7 @@ public class Turn extends Activity
   {
     public void onClick(View v)
     {
+      Log.d( TAG, "ConfirmWrongListener OnClick()" );            
       AIsActive = !AIsActive;
       ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
       flipper.showNext();
@@ -307,6 +319,7 @@ public class Turn extends Activity
   {
     public void onClick(View v)
     {
+      Log.d( TAG, "CancelWrongListener OnClick()" );      
       //Hide the wrong stamp and wrong controls on every new card
       ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
       ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
@@ -324,6 +337,7 @@ public class Turn extends Activity
    */
   private Animation InFromRightAnimation ()
   {
+    Log.d( TAG, "InFromRightAnimation()" );      
     Animation inFromRight = new TranslateAnimation(
 		  	Animation.RELATIVE_TO_PARENT,  1.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
@@ -337,6 +351,7 @@ public class Turn extends Activity
    */
   private Animation OutToLeftAnimation ()
   {
+    Log.d( TAG, "OutToLeftAnimation()" );  
     Animation outToLeft = new TranslateAnimation(
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,  -1.0f,
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
@@ -350,6 +365,7 @@ public class Turn extends Activity
    */
   protected void ShowCard()
   {
+    Log.d( TAG, "ShowCard()" );      
     int curTitle;
     int curWords;
     if( this.AIsActive )
@@ -396,6 +412,7 @@ public class Turn extends Activity
    */
   protected void OnTurnEnd( )
   {
+    Log.d( TAG, "onTurnEnd()" );    
 	  //Stop the sound if someone had the buzzer held down
 	  soundPool.stop( buzzStreamId );
 	  buzzVibrator.cancel();

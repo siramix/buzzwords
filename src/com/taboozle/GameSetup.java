@@ -3,6 +3,7 @@ package com.taboozle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -15,6 +16,11 @@ import android.widget.EditText;
 public class GameSetup extends Activity
 {
 
+  /**
+   * logging tag
+   */
+  public static String TAG = "GameSetup";
+  
 	/**
 	  * Watches the button that handles hand-off to the Turn activity.
 	  */
@@ -22,6 +28,7 @@ public class GameSetup extends Activity
 	  {
 	      public void onClick(View v)
 	      {
+	        Log.d( TAG, "StartGameListener onClick()" );
 	        TaboozleApplication application =
 	          (TaboozleApplication) GameSetup.this.getApplication();
 	        GameManager gm = new GameManager(GameSetup.this);
@@ -47,6 +54,8 @@ public class GameSetup extends Activity
 public void onCreate( Bundle savedInstanceState )
 {
 	super.onCreate( savedInstanceState );
+  Log.d( TAG, "onCreate()" );
+  
 	// Setup the view
 	this.setContentView(R.layout.gamesetup);
 

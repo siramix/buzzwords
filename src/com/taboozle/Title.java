@@ -3,6 +3,7 @@ package com.taboozle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -15,6 +16,11 @@ import android.widget.ImageButton;
 public class Title extends Activity
 {
   /**
+   * logging tag
+   */
+  public static String TAG = "Title";
+  
+  /**
   * PlayGameListener is used for the start game button.  It launches the next 
   * activity.
   */
@@ -22,6 +28,7 @@ public class Title extends Activity
   {
       public void onClick(View v) 
       {
+        Log.d( TAG, "PlayGameListener OnClick()" );         
         startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentGameSetup),
         		                 getIntent().getData()));
       }
@@ -35,6 +42,7 @@ public class Title extends Activity
   {
   	public void onClick(View v) 
   	{
+      Log.d( TAG, "SettingsListener OnClick()" );           	  
   	  startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentSettings ), 
   	        getIntent().getData()));
   	}
@@ -48,6 +56,7 @@ public class Title extends Activity
   {
     public void onClick(View v) 
     {
+      Log.d( TAG, "RulesListener OnClick()" );                     
       startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 
           getIntent().getData()));
       
@@ -61,6 +70,7 @@ public class Title extends Activity
 public void onCreate( Bundle savedInstanceState )
 {
 	super.onCreate( savedInstanceState );
+  Log.d( TAG, "onCreate()" );                     	
 	// Setup the view
 	this.setContentView(R.layout.title );
 

@@ -2,6 +2,7 @@ package com.taboozle;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 
 /**
  * @author The Taboozle Team
@@ -10,7 +11,11 @@ import android.preference.PreferenceActivity;
  */
 public class Settings extends PreferenceActivity 
 {
-
+  /**
+   * logging tag
+   */
+  public static String TAG = "Settings";
+  
 	/**
 	* onCreate - initializes a settings screen
 	*/
@@ -18,6 +23,7 @@ public class Settings extends PreferenceActivity
 	public void onCreate( Bundle savedInstanceState )
 	{
 		super.onCreate( savedInstanceState );
+    Log.d( TAG, "onCreate()" ); 
 		
 		addPreferencesFromResource(R.xml.settings);
 		
