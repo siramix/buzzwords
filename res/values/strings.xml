@@ -9,4 +9,13 @@
   <string name="menu_EndGame">MENU_ENDGAME</string>
   <string name="menu_Score">MENU_SCORE</string>
   <string name="menu_Rules">MENU_RULES</string>
+  
+  <!-- For end game dialog -->
+  <string name="endGameDialog_title">Confirm End Game</string>
+  <string name="endGameDialog_text">Are you sure you want to end the current game?</string>
+  
+  <!-- For end game dialog -->
+  <string name="pauseGameDialog_title">Game Paused</string>
+  <string name="pauseGameDialog_text">Paused</string>
+  
 </resources>
