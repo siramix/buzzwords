@@ -114,17 +114,8 @@ public class GameManager implements Serializable
     //Set score values for game
     this.rws_value_rules[0] = 1;  //Value for correct cards
     this.rws_value_rules[1] = -1; //Value for wrong cards
-    
-    if (!sp.getBoolean("skip_penalty", false))
-    {
-      //set skip value to 0 if skip penalty is not on
-      this.rws_value_rules[2] = 0;
-    }
-    else
-    {
-      //set skip value to -1 if skip penalty is on
-      this.rws_value_rules[2] = -1;
-    }      
+    this.rws_value_rules[2] = 0;  //set skip value to 0 if skip penalty is not on
+
   }
 
   /**

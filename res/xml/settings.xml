@@ -24,10 +24,10 @@
            android:entries="@array/turntimes" android:summary="Defaults to 60 seconds"/>      
 		   
 		<CheckBoxPreference
-                android:key="skip_penalty"
-                android:title="Skip Penalty"
-                android:defaultValue="false"
-                android:summary="Subtract a point for skipped cards"/>          
+                android:key="allow_skip"
+                android:title="Allow Skipping"
+                android:defaultValue="true"
+                android:summary="If checked players may skip cards."/>          
 
 </PreferenceCategory>
    

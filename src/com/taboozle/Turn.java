@@ -482,7 +482,18 @@ public class Turn extends Activity
     this.nextButton.setOnClickListener( CorrectListener );
 
     this.skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
-    this.skipButton.setOnClickListener( SkipListener );
+    
+    //Only show skipButton and set listener if preference is enabled
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+    if (sp.getBoolean("allow_skip", true))
+    {
+      this.skipButton.setOnClickListener( SkipListener );
+      this.skipButton.setVisibility(View.VISIBLE);
+    }
+    else
+    {
+      this.skipButton.setVisibility(View.INVISIBLE);
+    }    
     
     this.confirmWrongButton.setOnClickListener( ConfirmWrongListener );
     this.cancelWrongButton.setOnClickListener( CancelWrongListener );
