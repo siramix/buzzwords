@@ -41,10 +41,10 @@ public class Turn extends Activity
    * Static string used to refer to this class, in debug output for example.
    */
   private static final String TAG = "Turn";
-  
+
   static final int DIALOG_PAUSED_ID = 0;
   static final int DIALOG_GAMEOVER_ID = 1;
-  
+
   private ImageButton confirmWrongButton;
   private ImageButton cancelWrongButton;
   private ImageView wrongStamp;
@@ -52,6 +52,7 @@ public class Turn extends Activity
   private ImageButton buzzerButton;
   private ImageButton nextButton;
   private ImageButton skipButton;
+  private TextView countdownTxt;
 
   /**
    * This is a reference to the current game manager
@@ -115,13 +116,12 @@ public class Turn extends Activity
     @Override
     public void onTick(long millisUntilFinished)
     {
-      //Log.d( TAG, "onTick()" ); //Log out commented to prevent spam      
+      //Log.d( TAG, "onTick()" ); //Log out commented to prevent spam
       Turn.this.timerState = millisUntilFinished;
-      TextView countdownTxt = (TextView) findViewById( R.id.Timer );
-      countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
+      Turn.this.countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
     }
   }; // End TurnTimer
-  
+
   private TurnTimer counter;
   private long timerState;
 
@@ -178,54 +178,54 @@ public class Turn extends Activity
   {
     Log.d( TAG, "onOptionsItemSelected()" );
     // Handle item selection
-    switch (item.getItemId()) 
+    switch (item.getItemId())
     {
       case R.string.menu_EndGame:
         AlertDialog confirmEnd = new AlertDialog.Builder(this).create();
         confirmEnd.setTitle("Confirm End Game");
         confirmEnd.setMessage("Are you sure you want to end the current game?");
-              
-        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener() 
+
+        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener()
         {
-          public void onClick(DialogInterface dialog, int which) {                           
+          public void onClick(DialogInterface dialog, int which) {
           }
         });
-        
+
         confirmEnd.setButton2("Yes", new DialogInterface.OnClickListener()
         {
-          public void onClick(DialogInterface dialog, int which) 
+          public void onClick(DialogInterface dialog, int which)
           {
             TaboozleApplication application =
               (TaboozleApplication) Turn.this.getApplication();
             GameManager gm = application.GetGameManager();
             gm.EndGame();
-            startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));  
+            startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
           }
         });
-   
+
         confirmEnd.show();
         return true;
       case R.string.menu_Score:
         //quit();
         return true;
       case R.string.menu_Rules:
-        startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 
+        startActivity(new Intent(getApplication().getString( R.string.IntentRules ),
             getIntent().getData()));
         return true;
       default:
         return super.onOptionsItemSelected(item);
     }
-  }  
+  }
 
   /**
    * Listener for the buzzer that plays on touch-down and stops playing on
    * touch-up.
    */
   private final OnTouchListener BuzzListener = new OnTouchListener()
-  {	 	  
+  {
     public boolean onTouch(View v, MotionEvent event)
     {
-      Log.d( TAG, "BuzzListener onTouch()" );                                 
+      Log.d( TAG, "BuzzListener onTouch()" );
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
       AudioManager mgr =
         (AudioManager) v.getContext().getSystemService( Context.AUDIO_SERVICE );
@@ -237,10 +237,10 @@ public class Turn extends Activity
       ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
       ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
       ImageView wrongStamp = (ImageView) findViewById( R.id.WrongStamp );
-  
+
       confirm.setVisibility( View.VISIBLE );
       cancel.setVisibility( View.VISIBLE );
-  
+
       boolean ret;
       switch( event.getAction() )
       {
@@ -271,6 +271,18 @@ public class Turn extends Activity
   }; // End BuzzListener
 
   /**
+   * Listener for click on the timer to pause
+   */
+  private final OnClickListener TimerClickListener = new OnClickListener()
+  {
+    public void onClick( View v)
+    {
+      Log.d( TAG, "TimerClickListener OnClick()" );
+      Turn.this.pauseGame();
+    }
+  };
+
+  /**
    * Listener for the 'Correct' button. It deals with the flip to the next
    * card.
    */
@@ -278,7 +290,7 @@ public class Turn extends Activity
   {
     public void onClick(View v)
     {
-      Log.d( TAG, "CorrectListener OnClick()" );                           
+      Log.d( TAG, "CorrectListener OnClick()" );
       AIsActive = !AIsActive;
       ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
       flipper.showNext();
@@ -293,10 +305,10 @@ public class Turn extends Activity
    */
   private final OnClickListener SkipListener = new OnClickListener()
   {
-    
+
     public void onClick(View v)
     {
-      Log.d( TAG, "SkipListener OnClick()" );                   
+      Log.d( TAG, "SkipListener OnClick()" );
       AIsActive = !AIsActive;
       ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
       flipper.showNext();
@@ -313,7 +325,7 @@ public class Turn extends Activity
   {
     public void onClick(View v)
     {
-      Log.d( TAG, "ConfirmWrongListener OnClick()" );            
+      Log.d( TAG, "ConfirmWrongListener OnClick()" );
       Turn.this.confirmWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.cancelWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.wrongStamp.setVisibility( View.INVISIBLE );
@@ -324,22 +336,22 @@ public class Turn extends Activity
       ShowCard();
     }
   }; // End ConfirmWrongListener
-  
+
   /**
-   * 
+   *
    */
   private final OnClickListener CancelWrongListener = new OnClickListener()
   {
     public void onClick(View v)
     {
-      Log.d( TAG, "CancelWrongListener OnClick()" );      
+      Log.d( TAG, "CancelWrongListener OnClick()" );
 
       Turn.this.confirmWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.cancelWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.wrongStamp.setVisibility( View.INVISIBLE );
     }
   }; // End CancelWrongListener
-  
+
   /**
    * Listener for the pause overlay. It unpauses the the game.
    */
@@ -351,14 +363,14 @@ public class Turn extends Activity
         Turn.this.closeOptionsMenu();
       }
   }; // End CorrectListener
-  
+
   /**
    * @return The animation that brings cards into view from the right of the
    * screen
    */
   private Animation InFromRightAnimation ()
   {
-    Log.d( TAG, "InFromRightAnimation()" );      
+    Log.d( TAG, "InFromRightAnimation()" );
     Animation inFromRight = new TranslateAnimation(
 		  	Animation.RELATIVE_TO_PARENT,  1.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
@@ -372,7 +384,7 @@ public class Turn extends Activity
    */
   private Animation OutToLeftAnimation ()
   {
-    Log.d( TAG, "OutToLeftAnimation()" );  
+    Log.d( TAG, "OutToLeftAnimation()" );
     Animation outToLeft = new TranslateAnimation(
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,  -1.0f,
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
@@ -386,7 +398,7 @@ public class Turn extends Activity
    */
   protected void ShowCard()
   {
-    Log.d( TAG, "ShowCard()" );      
+    Log.d( TAG, "ShowCard()" );
     int curTitle;
     int curWords;
     if( this.AIsActive )
@@ -402,7 +414,7 @@ public class Turn extends Activity
 
     TextView cardTitle = (TextView) this.findViewById( curTitle );
     ListView cardWords = (ListView) this.findViewById( curWords );
-    
+
     // Disable the ListView to prevent its children from being click-able
     cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter =
@@ -423,14 +435,14 @@ public class Turn extends Activity
    */
   protected void OnTurnEnd( )
   {
-    Log.d( TAG, "onTurnEnd()" );    
+    Log.d( TAG, "onTurnEnd()" );
 	  //Stop the sound if someone had the buzzer held down
 	  soundPool.stop( buzzStreamId );
 	  buzzVibrator.cancel();
 	  Intent newintent = new Intent( this, TurnSummary.class);
 	  startActivity(newintent);
   }
-  
+
   /**
    * onCreate - initializes the activity to display the word you have to cause
    * your team mates to say with the words you cannot say below.
@@ -445,7 +457,7 @@ public class Turn extends Activity
 
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
-    this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);	
+    this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
     TaboozleApplication application =
       (TaboozleApplication) this.getApplication();
@@ -453,19 +465,23 @@ public class Turn extends Activity
 
     // Setup the view
     this.setContentView(R.layout.turn );
-    
+
     //Hide the wrong stamp and wrong controls on every new card
     this.confirmWrongButton = (ImageButton) this.findViewById( R.id.ButtonConfirmWrong );
     this.cancelWrongButton = (ImageButton) this.findViewById( R.id.ButtonCancelWrong );
     this.wrongStamp = (ImageView) this.findViewById( R.id.WrongStamp );
     this.pauseOverlay = (ImageView) this.findViewById( R.id.PauseImageView );
-    
+    this.countdownTxt = (TextView) findViewById( R.id.Timer );
+
+
     this.confirmWrongButton.setVisibility( View.INVISIBLE );
     this.cancelWrongButton.setVisibility( View.INVISIBLE );
     this.wrongStamp.setVisibility( View.INVISIBLE );
     this.pauseOverlay.setVisibility( View.INVISIBLE );
-    
+
     this.pauseOverlay.setOnClickListener( PauseListener );
+
+    this.countdownTxt.setOnClickListener( this.TimerClickListener );
 
     ViewFlipper flipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
     flipper.setInAnimation(InFromRightAnimation());
@@ -482,7 +498,7 @@ public class Turn extends Activity
     this.nextButton.setOnClickListener( CorrectListener );
 
     this.skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
-    
+
     //Only show skipButton and set listener if preference is enabled
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
     if (sp.getBoolean("allow_skip", true))
@@ -493,11 +509,11 @@ public class Turn extends Activity
     else
     {
       this.skipButton.setVisibility(View.INVISIBLE);
-    }    
-    
+    }
+
     this.confirmWrongButton.setOnClickListener( ConfirmWrongListener );
     this.cancelWrongButton.setOnClickListener( CancelWrongListener );
-    
+
   }
 
   /**
@@ -560,9 +576,9 @@ public class Turn extends Activity
     super.onDestroy();
     Log.d( TAG, "onDestroy()" );
   }
-  
+
   /**
-   * 
+   *
    */
   @Override
   protected Dialog onCreateDialog(int id)
@@ -574,11 +590,11 @@ public class Turn extends Activity
     default:
         dialog = null;
     }
-    
+
     return dialog;
-    
+
   }
-  
+
   protected void resumeGame()
   {
     this.resumeTimer();
@@ -604,7 +620,7 @@ public class Turn extends Activity
     this.skipButton.setEnabled( true );
     this.nextButton.setEnabled( true );
   }
-  
+
   protected void pauseGame()
   {
     this.stopTimer();
@@ -628,9 +644,9 @@ public class Turn extends Activity
     cardWords.setVisibility( View.INVISIBLE );
     this.buzzerButton.setEnabled( false );
     this.skipButton.setEnabled( false );
-    this.nextButton.setEnabled( false );    
+    this.nextButton.setEnabled( false );
   }
-  
+
   @Override
   public boolean onMenuOpened(int featureId, Menu menu)
   {
