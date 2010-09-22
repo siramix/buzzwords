@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:id="@+id/BuzzerLayout">
+	
+	<RelativeLayout
+	android:layout_width="fill_parent"
+	android:id="@+id/actionbar"
+	android:background="@drawable/titlebar_blue" android:layout_height="wrap_content">
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="60s" android:id="@+id/Timer"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginRight="10dp"
+		android:textSize="16dp"
+		android:paddingTop="5dp"
+		android:textColor="#FFFFFF">
+	</TextView>
+	</RelativeLayout><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BigBuzzerButtton" android:layout_centerInParent="true" android:layout_centerVertical="true" android:background="@drawable/buzzmode_bluebuzzer"></ImageButton>
+
+
+
+
+
+
+
+
+
+</RelativeLayout>
