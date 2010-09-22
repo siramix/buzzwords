@@ -33,10 +33,20 @@ public class Rules extends Activity
     
     //String used for displaying the customizable preferences to the user
     StringBuilder prefBuilder = new StringBuilder();
+    prefBuilder.append("(These rules can be changed any time from the Settings screen.)");
     
-    prefBuilder.append("Turn Length: " + sp.getString("turn_timer", "60") + " seconds");
-    prefBuilder.append("\nSkip Penalty: " + sp.getBoolean("skip_penalty",false));
+    //Turn Length rule display
+    prefBuilder.append("\n\nTurn Length: " + sp.getString("turn_timer", "60") + " seconds");
     
+    //Allow Skipping rule display
+    if (sp.getBoolean("allow_skip",true))
+    {
+      prefBuilder.append("\nAllow Skipping: Players may skip words.");
+    }
+    else 
+    {
+      prefBuilder.append("\nAllow Skipping: Players can not skip words.");
+    }
     TextView rulePrefs = (TextView) this.findViewById(R.id.RulePreferences);
     rulePrefs.setText(prefBuilder);
   }
