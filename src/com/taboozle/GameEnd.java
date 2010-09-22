@@ -32,8 +32,7 @@ public class GameEnd extends Activity
   public static String TAG = "GameEnd";
   
   /**
-   * Listener for the 'Correct' button. It deals with the flip to the next
-   * card.
+   * Listener for the 'Main Menu' button. Sends user back to the main screen on click.
    */
   private final OnClickListener MainMenuListener = new OnClickListener()
   {
@@ -45,6 +44,29 @@ public class GameEnd extends Activity
       }
   }; // End MainMenuListener
 
+  /**
+   * Listener for the 'Rematch' button. Starts a new game with same team names.
+   */
+  private final OnClickListener RematchListener = new OnClickListener()
+  {
+      public void onClick(View v)
+      {
+        Log.d( TAG, "MainMenuListener onClick()" );
+        
+        TaboozleApplication application =
+          (TaboozleApplication) GameEnd.this.getApplication();
+                
+        String[] currentNames = application.GetGameManager().GetTeamNames();
+        
+        GameManager newgm = new GameManager(GameEnd.this);
+        newgm.PrepDeck();
+        newgm.StartGame( currentNames );
+        application.SetGameManager( newgm );
+        
+        startActivity(new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()));        
+      }
+  }; // End MainMenuListener
+  
     /**
      * GameEnd on create handles all logic, including calls to query the db, populate
      * views, and display them.
@@ -133,8 +155,11 @@ public class GameEnd extends Activity
   			winner.setText("TIE GAME");
   		}
   		
+  		//Set onclick listeners for game end buttons
   		Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
-  			mainMenuButton.setOnClickListener( MainMenuListener );
+  		mainMenuButton.setOnClickListener( MainMenuListener );
 
+  		Button rematchButton = (Button)this.findViewById( R.id.EndGameRematch );
+  		rematchButton.setOnClickListener( RematchListener );
     }
 }
