@@ -118,11 +118,11 @@ public class GameEnd extends Activity
   		
   		// Display final scores
   		long[] finalScores = game.GetTeamScores();
-  		int[] scoreViewIds = new int[]{R.id.EndGameTeamAScore, R.id.EndGameTeamBScore};
-  		for (int i = 0; i < scoreViewIds.length; i++)
+  		final int[] SCORE_VIEW_IDS = new int[]{ R.id.EndGameTeamAScore, R.id.EndGameTeamBScore };
+  		for (int i = 0; i < SCORE_VIEW_IDS.length; i++)
   		{
-  			TextView teamTotalScoreView = (TextView) findViewById(scoreViewIds[i]);
-  			teamTotalScoreView.setText(teamNames[i] + ": " + Long.toString(finalScores[i]));
+  			TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
+  			teamTotalScoreView.setText( teamNames[i] + ": " + Long.toString( finalScores[i] ) );
   		}
   		
   		// Display winning team

@@ -44,7 +44,8 @@ public class TurnSummary extends Activity
 	          (TaboozleApplication) TurnSummary.this.getApplication();
 	        GameManager gm = application.GetGameManager();
 	        gm.NextTurn();
-     	  	startActivity(new Intent(TurnSummary.this.getApplication().getString(R.string.IntentTurn), getIntent().getData()));
+     	  	startActivity(new Intent(TurnSummary.this.getApplication().getString(R.string.IntentTurn),
+     	  								getIntent().getData()));
 	      }
 	  }; // End NextTurnListener
 
@@ -106,6 +107,7 @@ public class TurnSummary extends Activity
   	// Setup the view
   	this.setContentView(R.layout.turnsummary);
 
+  	// Populate and display list of cards
   	ScrollView list = (ScrollView) findViewById(R.id.TurnSumCardList);
   	LinearLayout layout = new LinearLayout(this.getBaseContext());
   	layout.setOrientation(LinearLayout.VERTICAL);
@@ -113,6 +115,7 @@ public class TurnSummary extends Activity
           (TaboozleApplication) this.getApplication();
       GameManager game = application.GetGameManager();
 
+	// iterate through all completed cards and set layout accordingly
     this.cardViewList = new LinkedList<ImageView>();
   	this.cardList = game.GetCurrentCards();
   	Card card = null;
@@ -135,8 +138,10 @@ public class TurnSummary extends Activity
   	}
   	list.addView(layout);
 
+  	// Update the scoreboard views
   	UpdateScoreViews();
 
+  	// Bind Next / End buttons
   	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
   	playGameButton.setOnClickListener( NextTurnListener );
 
@@ -157,20 +162,32 @@ public class TurnSummary extends Activity
   	long turnscore = game.GetTurnScore();
   	long[] totalscores = game.GetTeamScores().clone();
 
+  	// Set new total score for the current team
   	totalscores[game.GetActiveTeamIndex()] += turnscore;
 
+  	// Display total score for the current team
   	TextView scoreview = (TextView) findViewById(R.id.TurnTotalScore);
   	scoreview.setText(Long.toString(turnscore));
 
-  	int[] scoreViewIds = new int[]{R.id.TeamAScore, R.id.TeamBScore};
-  	for (int i = 0; i < scoreViewIds.length; i++)
+  	// Populate Scoreboard
+  	final int[] SCORE_VIEW_IDS = new int[]{R.id.TeamAScore, R.id.TeamBScore,
+  											R.id.TeamCScore, R.id.TeamDScore};
+  	for (int i = 0; i < totalscores.length; i++)
   	{
-  		TextView teamTotalScoreView = (TextView) findViewById(scoreViewIds[i]);
+  		TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
   		teamTotalScoreView.setText(game.GetTeamNames()[i] + ": " + Long.toString(totalscores[i]));
   	}
+  	// Hide teams that are not being played
+  	for (int i = totalscores.length; i < SCORE_VIEW_IDS.length; i++)
+  	{
+  		TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
+  		teamTotalScoreView.setVisibility( View.INVISIBLE );
+  	}
 
-      TextView curTeam = (TextView) findViewById(R.id.CurTeamIndex);
-      curTeam.setText("Current Team: " + Long.toString(game.GetActiveTeamIndex()));
+  	// Debug - display current team index.  This should be removed once we have some way to
+  	//   indicate what team this turn summary relates to
+    TextView curTeam = (TextView) findViewById(R.id.CurTeamIndex);
+    curTeam.setText("Current Team: " + Long.toString(game.GetActiveTeamIndex()));
   }
 
   /**

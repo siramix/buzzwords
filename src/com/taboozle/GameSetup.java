@@ -16,6 +16,8 @@ import android.widget.ViewFlipper;
  */
 public class GameSetup extends Activity
 {
+  
+  private int numTeams;
 
   /**
    * logging tag
@@ -36,12 +38,15 @@ public class GameSetup extends Activity
 	        gm.PrepDeck();
 	        
 	        // Get text from each team EditText view
-	        EditText textField = (EditText) GameSetup.this.findViewById(R.id.SetTeamAName);
-	        String teamNameA = textField.getText().toString();
-	        textField = (EditText) GameSetup.this.findViewById(R.id.SetTeamBName);
-	        String teamNameB = textField.getText().toString();
+	        final int[] TEAM_NAME_VIEWS = new int[] {R.id.SetTeamAName, R.id.SetTeamBName, 
+	        								R.id.SetTeamNameC, R.id.SetTeamNameD};
+	        String[] teams = new String[ GameSetup.this.numTeams ];
+	        for( int i = 0; i < numTeams; i++)
+	        {
+		        EditText textField = (EditText) GameSetup.this.findViewById( TEAM_NAME_VIEWS[i] );
+	        	teams[i] = textField.getText().toString();
+	        }
 	        
-	        String[] teams = new String[]{ teamNameA, teamNameB };
 	        gm.StartGame( teams );
 	        application.SetGameManager( gm );
 	        
@@ -62,6 +67,8 @@ public class GameSetup extends Activity
 	        
 	        ViewFlipper nextFlipper = (ViewFlipper) GameSetup.this.findViewById( R.id.AddTeamDFlipper );
 	        nextFlipper.setVisibility( View.VISIBLE );
+	        
+	        GameSetup.this.numTeams++;
 	      }
 	  };
 
@@ -76,6 +83,8 @@ public class GameSetup extends Activity
 	
 	        ViewFlipper flipper = (ViewFlipper) GameSetup.this.findViewById( R.id.AddTeamDFlipper );
 	        flipper.showNext();
+	        
+	        GameSetup.this.numTeams++;
 	      }
 	  };
 	  
@@ -93,6 +102,8 @@ public class GameSetup extends Activity
 	        
 	        ViewFlipper flipperD = (ViewFlipper) GameSetup.this.findViewById( R.id.AddTeamDFlipper );
 	        flipperD.setVisibility( View.INVISIBLE );
+	        
+	        GameSetup.this.numTeams--;
 	      }
 	  };	
 	  
@@ -107,6 +118,8 @@ public class GameSetup extends Activity
 	
 	        ViewFlipper flipper = (ViewFlipper) GameSetup.this.findViewById( R.id.AddTeamDFlipper );
 	        flipper.showPrevious();
+	        
+	        GameSetup.this.numTeams--;
 	      }
 	  };	
 /**
@@ -116,7 +129,7 @@ public class GameSetup extends Activity
 public void onCreate( Bundle savedInstanceState )
 {
 	super.onCreate( savedInstanceState );
-  Log.d( TAG, "onCreate()" );
+	Log.d( TAG, "onCreate()" );
   
 	// Setup the view
 	this.setContentView(R.layout.gamesetup);
@@ -136,6 +149,9 @@ public void onCreate( Bundle savedInstanceState )
 	
 	Button removeTeamDButton = (Button) this.findViewById( R.id.RemoveTeamDButton );
 	removeTeamDButton.setOnClickListener( RemoveTeamDListener );
+	
+	// Initialize number of teams
+	this.numTeams = 2;
 }
 
 }
