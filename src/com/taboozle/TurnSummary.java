@@ -107,13 +107,14 @@ public class TurnSummary extends Activity
   	// Setup the view
   	this.setContentView(R.layout.turnsummary);
 
+    TaboozleApplication application =
+        (TaboozleApplication) this.getApplication();
+    GameManager game = application.GetGameManager();
+
   	// Populate and display list of cards
   	ScrollView list = (ScrollView) findViewById(R.id.TurnSumCardList);
   	LinearLayout layout = new LinearLayout(this.getBaseContext());
   	layout.setOrientation(LinearLayout.VERTICAL);
-      TaboozleApplication application =
-          (TaboozleApplication) this.getApplication();
-      GameManager game = application.GetGameManager();
 
 	// iterate through all completed cards and set layout accordingly
     this.cardViewList = new LinkedList<ImageView>();

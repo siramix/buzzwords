@@ -2,6 +2,8 @@ package com.taboozle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,8 +11,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import com.taboozle.TaboozleApplication;
@@ -74,7 +80,7 @@ public class GameEnd extends Activity
     @Override
     public void onCreate( Bundle savedInstanceState )
     {
-      Log.d( TAG, "onCreate()" );
+        Log.d( TAG, "onCreate()" );
   		super.onCreate(savedInstanceState);
   		this.setContentView( R.layout.gameend );
   
@@ -96,33 +102,52 @@ public class GameEnd extends Activity
   				endTable[j][i] = roundscores[j];
   			}
   		}
-  
-  		// Populate list display
-  		ListView list = (ListView) findViewById(R.id.EndGameTurnList);		
-  		ArrayList<HashMap<String, String>> endTableRows = new ArrayList<HashMap<String, String>>();
-  		for (int i = 0; i < numRounds; ++i)
-  		{
-  			HashMap<String, String> map = new HashMap<String, String>();
-  			for(int j = 0; j < numTeams; ++j)
-  			{
-  				map.put("team" + Integer.toString(j+1), Long.toString(endTable[i][j]));
-  			}
-  			endTableRows.add(map);
-  		}
-  
-  		SimpleAdapter gameEndTable = new SimpleAdapter(this, endTableRows, R.layout.gameendrow,
-  	            new String[] {"team1", "team2"}, new int[] {R.id.GameEnd_Team1, 
-  				R.id.GameEnd_Team2});
-  		
-  		list.setAdapter(gameEndTable);			
-  		
+
+  	  	// Populate and display list of cards
+  	  	ScrollView list = (ScrollView) findViewById(R.id.EndGameTurnList);
+  	  	LinearLayout layout = new LinearLayout(this.getBaseContext());
+  	  	layout.setOrientation(LinearLayout.VERTICAL);
+
+  		// iterate through each row of the end game scores table
+  	  	int count = 0;
+  	  	for( int i = 0; i < endTable.length; i++ )
+  	  	{
+  	  	  LinearLayout line = (LinearLayout) LinearLayout.inflate(this.getBaseContext(), 
+  	  			  												  R.layout.gameendrow, layout);
+  	  	  LinearLayout realLine = (LinearLayout) line.getChildAt(count);
+  	  	  
+  	  	  for (int j = 0; j < realLine.getChildCount(); j++ )
+  	  	  {
+  	  		  TextView txt = (TextView) realLine.getChildAt(j);
+  	  		  // HACK - Set width to fill parent... really I want to inherit this from the xml
+  	  		  txt.setWidth( 400 / numTeams );
+  	  		  if(  j < numTeams )
+  	  		  {
+  	  			  txt.setText(Long.toString(endTable[i][j]));
+  	  		  }
+  	  		  else
+  	  		  {
+  	  			  txt.setVisibility( View.GONE );
+  	  		  }
+  	  	  }
+  	  	  ++count;
+  	  	}
+  	  	list.addView(layout);
+
   		// Display final scores
   		long[] finalScores = game.GetTeamScores();
-  		final int[] SCORE_VIEW_IDS = new int[]{ R.id.EndGameTeamAScore, R.id.EndGameTeamBScore };
-  		for (int i = 0; i < SCORE_VIEW_IDS.length; i++)
+  		final int[] SCORE_VIEW_IDS = new int[]{ R.id.EndGameTeamAScore, R.id.EndGameTeamBScore,
+  												R.id.EndGameTeamCScore, R.id.EndGameTeamDScore};
+  		for (int i = 0; i < finalScores.length; i++)
   		{
   			TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
   			teamTotalScoreView.setText( teamNames[i] + ": " + Long.toString( finalScores[i] ) );
+  		}
+  		// Hide scores for teams who did not participate
+  		for (int i = finalScores.length; i < SCORE_VIEW_IDS.length; i++)
+  		{
+  			TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
+  			teamTotalScoreView.setVisibility( View.GONE );
   		}
   		
   		// Display winning team

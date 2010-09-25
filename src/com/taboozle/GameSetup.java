@@ -38,7 +38,7 @@ public class GameSetup extends Activity
 	        gm.PrepDeck();
 	        
 	        // Get text from each team EditText view
-	        final int[] TEAM_NAME_VIEWS = new int[] {R.id.SetTeamAName, R.id.SetTeamBName, 
+	        final int[] TEAM_NAME_VIEWS = new int[] {R.id.SetTeamNameA, R.id.SetTeamNameB, 
 	        								R.id.SetTeamNameC, R.id.SetTeamNameD};
 	        String[] teams = new String[ GameSetup.this.numTeams ];
 	        for( int i = 0; i < numTeams; i++)
