@@ -185,10 +185,12 @@ public class TurnSummary extends Activity
   		teamTotalScoreView.setVisibility( View.INVISIBLE );
   	}
 
-  	// Debug - display current team index.  This should be removed once we have some way to
-  	//   indicate what team this turn summary relates to
-    TextView curTeam = (TextView) findViewById(R.id.CurTeamIndex);
-    curTeam.setText("Current Team: " + Long.toString(game.GetActiveTeamIndex()));
+  	// Display current team name
+    TextView curTeam = (TextView) findViewById(R.id.TurnTeamName);
+    curTeam.setText(game.GetTeamNames()[game.GetActiveTeamIndex()]);
+    // Set team name color
+	final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA, R.color.teamB, R.color.teamC, R.color.teamC };
+    curTeam.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[game.GetActiveTeamIndex()]));
   }
 
   /**

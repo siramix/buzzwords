@@ -2,14 +2,51 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/bg_turnsummary">
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumNextTurn" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:text="Next Team"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:id="@+id/TurnSumEndGame" android:layout_alignParentLeft="true" android:text="End Game"></Button><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumTitle" android:text="Turn Summary" android:textColor="#000" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:textSize="26px" android:layout_marginTop="5dip" android:layout_marginLeft="20dip"></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumTitle" android:text="Turn Summary" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:textSize="26px" android:layout_marginTop="5dip" android:layout_marginLeft="20dip" android:textColor="@color/black"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_marginRight="10dp" android:layout_toRightOf="@+id/TurnSumTitle" android:id="@+id/TurnTeamName" android:text="CurrentTeam" android:paddingTop="20px" android:gravity="center_horizontal">></TextView>
 
-<ScrollView android:layout_below="@id/TurnSumTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumCardList" android:paddingTop="10dip" android:layout_marginBottom="50dip">
+<ScrollView android:layout_below="@id/TurnSumTitle" android:layout_width="wrap_content" android:id="@+id/TurnSumCardList" android:paddingTop="10dip" android:layout_height="275px">
+
 
 
 </ScrollView>
-<TextView android:layout_below="@id/TurnSumCardList" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTotalScore" android:text="00" android:layout_alignParentRight="true" android:layout_marginRight="10dp"></TextView>
-<TextView android:layout_below="@id/TurnTotalScore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TeamAScoreHere" android:id="@+id/TeamAScore" android:layout_marginLeft="4px"></TextView>
-<TextView android:layout_below="@id/TeamAScore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TeamBScoreHere" android:id="@+id/TeamBScore" android:layout_marginLeft="4px"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="4px" android:id="@+id/TeamCScore" android:layout_below="@id/TeamBScore" android:text="TeamCScoreHere"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="4px" android:layout_below="@id/TeamCScore" android:id="@+id/TeamDScore" android:text="TeamDScoreHere"></TextView>
-<TextView android:layout_below="@id/TurnTotalScore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CurrentTeamIndexHere" android:id="@+id/CurTeamIndex" android:layout_alignParentRight="true" android:layout_marginRight="10dp">></TextView>
+<LinearLayout 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content" 
+	android:id="@+id/TurnScoreboard" 
+	android:orientation="vertical" 
+	android:layout_below="@+id/TurnSumCardList">
+	<TextView 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:text="TeamAScoreHere" 
+		android:id="@+id/TeamAScore" 
+		android:layout_marginLeft="4px">
+	</TextView>
+	<TextView 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:text="TeamBScoreHere" 
+		android:id="@+id/TeamBScore" 
+		android:layout_marginLeft="4px">
+	</TextView>
+	<TextView 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:layout_marginLeft="4px" 
+		android:id="@+id/TeamCScore" 
+		android:text="TeamCScoreHere">
+	</TextView>
+	<TextView 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:layout_marginLeft="4px"
+		android:id="@+id/TeamDScore" 
+		android:text="TeamDScoreHere">
+	</TextView>
+</LinearLayout>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTotalScore" android:text="00" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:paddingBottom="10px"></TextView><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:id="@+id/TurnSumEndGame" android:layout_alignParentLeft="true" android:text="End Game"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumNextTurn" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:text="Next Team">
+</Button>
+
+
+
 </RelativeLayout>

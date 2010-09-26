@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <color name="black">
+      #000000
+   </color>
+   <color name="teamA">
+      #FF3541
+   </color>
+   <color name="teamB">
+      #5B9AFF
+   </color>
+   <color name="teamC">
+      #FFE740
+   </color>
+   <color name="teamD">
+      #9F43E8
+   </color>
+</resources>

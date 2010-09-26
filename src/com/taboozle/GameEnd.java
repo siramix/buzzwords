@@ -160,11 +160,13 @@ public class GameEnd extends Activity
   				tieGame = true;
   			}
   		}
-  		
+  
+  		final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA, R.color.teamB, R.color.teamC, R.color.teamC };
   		TextView winner = (TextView) findViewById(R.id.EndGameWinner);
   		if (!tieGame)
   		{
   			winner.setText(teamNames[winningTeamIndex] + " wins!!!!");
+  			winner.setTextColor( this.getResources().getColor( TEAM_COLOR_IDS[winningTeamIndex] ) );
   		}
   		else
   		{
