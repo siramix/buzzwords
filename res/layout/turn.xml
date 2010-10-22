@@ -9,53 +9,47 @@
 		android:layout_width="wrap_content" 
 		android:layout_below="@+id/actionbar">
 		<RelativeLayout
-			android:id="@+id/CardLayoutA" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_taboozlecard">
+			android:id="@+id/CardLayoutA" android:layout_width="wrap_content" android:layout_height="wrap_content">
 			<TextView
 				android:text="CardTitle"
 				android:gravity="center"
-				android:textSize="32dp"
-				android:textColor="#000"
 				android:id="@+id/CardTitleA"
 				android:layout_width="fill_parent" 
 				android:layout_height="wrap_content" 
 				android:layout_alignParentTop="true" 
-				android:paddingBottom="15dp" android:paddingTop="30dp">
+				android:paddingBottom="15dp" android:paddingTop="30dp" android:textColor="#FFF" android:textSize="36dp">
 			</TextView>
 			<ListView 
 				android:layout_width="fill_parent" 
 				android:divider="@null" 
 				android:dividerHeight="0px" 
-				android:paddingBottom="30dp" 
 				android:id="@+id/CardWordsA" 
 				android:layout_height="wrap_content" 
 				android:layout_below="@+id/CardTitleA" 
-				android:paddingTop="30dp">
+				android:paddingBottom="10dp" android:paddingTop="10dp">
 			</ListView>
 			
 		
 </RelativeLayout>
 		<RelativeLayout
-		android:id="@+id/CardLayoutB" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/bg_taboozlecard">
+		android:id="@+id/CardLayoutB" android:layout_height="wrap_content" android:layout_width="wrap_content">
 		<TextView
 			android:text="CardTitle"
 			android:gravity="center"
-			android:textSize="32dp"
-			android:textColor="#000"
 			android:id="@+id/CardTitleB"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content" 
 			android:layout_alignParentTop="true" 
-			android:paddingBottom="15dp" android:paddingTop="30dp">
+			android:paddingBottom="15dp" android:paddingTop="30dp" android:textColor="#FFF" android:textSize="36dp">
 		</TextView>
 		<ListView 
 			android:layout_width="fill_parent" 
 			android:divider="@null" 
 			android:dividerHeight="0px" 
-			android:paddingBottom="30dp" 
 			android:id="@+id/CardWordsB" 
 			android:layout_height="wrap_content" 
 			android:layout_below="@+id/CardTitleB" 
-			android:paddingTop="30dp">
+			android:paddingBottom="10dp" android:paddingTop="10dp">
 		</ListView>
 		
 	</RelativeLayout>
@@ -77,11 +71,11 @@
 	</TextView>
 	</RelativeLayout><ImageView android:layout_below="@id/CardWordsA" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:id="@+id/WrongStamp" android:background="@drawable/wrong_stamp"></ImageView>
 
-<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonCancelWrong" android:background="@drawable/cancelwrong" android:layout_above="@+id/lowbar" android:layout_alignParentLeft="true"></ImageButton><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonConfirmWrong" android:background="@drawable/wrong" android:layout_above="@+id/lowbar" android:layout_alignParentRight="true"></ImageButton><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/PauseImageView" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:background="@drawable/paused"></ImageView>
-<RelativeLayout android:layout_width="wrap_content" android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_below="@+id/ViewFlipper0" android:layout_marginLeft="10px" android:layout_height="wrap_content">
-<ImageButton android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_width="wrap_content" android:background="@drawable/wrong" android:id="@+id/ButtonWrong" android:layout_marginLeft="60dip"></ImageButton>
-<ImageButton android:layout_height="wrap_content" android:background="@drawable/skip" android:layout_width="wrap_content" android:id="@+id/ButtonSkip" android:layout_centerInParent="true" android:layout_toRightOf="@+id/ButtonWrong"></ImageButton>
-<ImageButton android:layout_height="wrap_content" android:background="@drawable/correct" android:layout_width="wrap_content" android:id="@+id/ButtonCorrect" android:layout_alignWithParentIfMissing="true" android:layout_toRightOf="@+id/ButtonSkip"></ImageButton>
+<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonCancelWrong" android:background="@drawable/cancelwrong" android:layout_above="@+id/lowbar" android:layout_alignParentLeft="true" android:layout_marginBottom="2dp"></ImageButton><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonConfirmWrong" android:background="@drawable/wrong" android:layout_above="@+id/lowbar" android:layout_alignParentRight="true" android:layout_marginBottom="2dp"></ImageButton><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/PauseImageView" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:background="@drawable/paused"></ImageView>
+<RelativeLayout android:layout_width="wrap_content" android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:paddingLeft="2dp">
+<ImageButton android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_width="wrap_content" android:background="@drawable/wrong" android:id="@+id/ButtonWrong" android:layout_marginLeft="4dp"></ImageButton>
+<ImageButton android:layout_height="wrap_content" android:background="@drawable/skip" android:layout_width="wrap_content" android:id="@+id/ButtonSkip" android:layout_toRightOf="@+id/ButtonWrong" android:layout_marginLeft="4dp"></ImageButton>
+<ImageButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/ButtonCorrect" android:layout_alignWithParentIfMissing="true" android:layout_toRightOf="@+id/ButtonSkip" android:background="@drawable/right" android:layout_marginLeft="4dp"></ImageButton>
 
 </RelativeLayout>
 

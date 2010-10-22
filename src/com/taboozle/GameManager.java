@@ -104,7 +104,7 @@ public class GameManager implements Serializable
     this.activeTeamIndex = 0;
     this.currentCards = new LinkedList<Card>();
     this.game = new Game( context );
-    this.rws_resourceIDs = new int[] {R.drawable.correct, R.drawable.wrong, R.drawable.skip};
+    this.rws_resourceIDs = new int[] {R.drawable.right, R.drawable.wrong, R.drawable.skip};
     
     this.turn_time = Integer.parseInt(sp.getString("turn_timer", "10")) * 1000;
     

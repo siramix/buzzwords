@@ -165,7 +165,7 @@ public class Card
   	switch ( this.rws )
   	{
   	case 0:
-  	  return R.drawable.correct;
+  	  return R.drawable.right;
   	case 1:
   	  return R.drawable.wrong;
   	case 2:
