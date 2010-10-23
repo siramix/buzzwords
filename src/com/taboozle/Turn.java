@@ -53,6 +53,7 @@ public class Turn extends Activity
   private ImageButton nextButton;
   private ImageButton skipButton;
   private TextView countdownTxt;
+  private ViewFlipper viewFlipper;
 
   /**
    * This is a reference to the current game manager
@@ -421,18 +422,8 @@ public class Turn extends Activity
 	  startActivity(newintent);
   }
 
-  /**
-   * onCreate - initializes the activity to display the word you have to cause
-   * your team mates to say with the words you cannot say below.
-   */
-  @Override
-  public void onCreate( Bundle savedInstanceState )
+  protected void setupViewReferences()
   {
-    super.onCreate( savedInstanceState );
-    Log.d( TAG, "onCreate()" );
-
-    this.AIsActive = true;
-
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
     this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
@@ -441,17 +432,20 @@ public class Turn extends Activity
       (TaboozleApplication) this.getApplication();
     this.curGameManager = application.GetGameManager();
 
-    // Setup the view
-    this.setContentView(R.layout.turn );
-
-    //Hide the wrong stamp and wrong controls on every new card
     this.confirmWrongButton = (ImageButton) this.findViewById( R.id.ButtonConfirmWrong );
     this.cancelWrongButton = (ImageButton) this.findViewById( R.id.ButtonCancelWrong );
     this.wrongStamp = (ImageView) this.findViewById( R.id.WrongStamp );
     this.pauseOverlay = (ImageView) this.findViewById( R.id.PauseImageView );
     this.countdownTxt = (TextView) findViewById( R.id.Timer );
-
-
+    this.viewFlipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
+    
+    this.buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
+    this.nextButton = (ImageButton) this.findViewById( R.id.ButtonCorrect );
+    this.skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
+  }
+  
+  protected void setupUIProperties()
+  {
     this.confirmWrongButton.setVisibility( View.INVISIBLE );
     this.cancelWrongButton.setVisibility( View.INVISIBLE );
     this.wrongStamp.setVisibility( View.INVISIBLE );
@@ -461,22 +455,12 @@ public class Turn extends Activity
 
     this.countdownTxt.setOnClickListener( this.TimerClickListener );
 
-    ViewFlipper flipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
-    flipper.setInAnimation(InFromRightAnimation());
-    flipper.setOutAnimation(OutToLeftAnimation());
-
-    this.ShowCard();
-
-    this.startTimer();
-
-    this.buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
+    this.viewFlipper.setInAnimation(InFromRightAnimation());
+    this.viewFlipper.setOutAnimation(OutToLeftAnimation());
+    
     this.buzzerButton.setOnTouchListener( BuzzListener );
-
-    this.nextButton = (ImageButton) this.findViewById( R.id.ButtonCorrect );
     this.nextButton.setOnClickListener( CorrectListener );
-
-    this.skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
-
+    
     //Only show skipButton and set listener if preference is enabled
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
     if (sp.getBoolean("allow_skip", true))
@@ -491,6 +475,32 @@ public class Turn extends Activity
 
     this.confirmWrongButton.setOnClickListener( ConfirmWrongListener );
     this.cancelWrongButton.setOnClickListener( CancelWrongListener );
+
+  }
+  
+  /**
+   * onCreate - initializes the activity to display the word you have to cause
+   * your team mates to say with the words you cannot say below.
+   */
+  @Override
+  public void onCreate( Bundle savedInstanceState )
+  {
+    super.onCreate( savedInstanceState );
+    Log.d( TAG, "onCreate()" );
+
+    // set which card is active
+    this.AIsActive = true;
+
+    // Setup the view
+    this.setContentView(R.layout.turn );
+    
+    this.setupViewReferences();
+    
+    this.setupUIProperties();
+
+    this.ShowCard();
+
+    this.startTimer();
 
   }
 
