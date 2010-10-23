@@ -181,29 +181,7 @@ public class Turn extends Activity
     switch (item.getItemId())
     {
       case R.string.menu_EndGame:
-        AlertDialog confirmEnd = new AlertDialog.Builder(this).create();
-        confirmEnd.setTitle("Confirm End Game");
-        confirmEnd.setMessage("Are you sure you want to end the current game?");
-
-        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener()
-        {
-          public void onClick(DialogInterface dialog, int which) {
-          }
-        });
-
-        confirmEnd.setButton2("Yes", new DialogInterface.OnClickListener()
-        {
-          public void onClick(DialogInterface dialog, int which)
-          {
-            TaboozleApplication application =
-              (TaboozleApplication) Turn.this.getApplication();
-            GameManager gm = application.GetGameManager();
-            gm.EndGame();
-            startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
-          }
-        });
-
-        confirmEnd.show();
+        this.showDialog( DIALOG_GAMEOVER_ID );
         return true;
       case R.string.menu_Score:
         //quit();
@@ -586,11 +564,27 @@ public class Turn extends Activity
     Dialog dialog = null;
     switch(id) {
     case DIALOG_GAMEOVER_ID:
+      AlertDialog.Builder builder = new AlertDialog.Builder(this);
+      builder.setMessage( "Are you sure you want to end the current game?" )
+             .setTitle("Confirm End Game")
+             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog, int id) {
+                 TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+                 GameManager gm = application.GetGameManager();
+                 gm.EndGame();
+                 startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
+                 }
+               })
+             .setNegativeButton("No", new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog, int id) {
+                 dialog.cancel();
+                 }
+               });       
+      dialog = builder.create();
       break;
     default:
         dialog = null;
     }
-
     return dialog;
 
   }
