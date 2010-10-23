@@ -16,7 +16,10 @@
 		android:layout_centerHorizontal="true" 
 		android:layout_below="@+id/Title" 
 		android:layout_marginTop="30dip" 
-		android:clickable="true" android:nextFocusDown="@drawable/mainscreen_play_onclick" android:nextFocusUp="@drawable/mainscreen_play" android:background="@drawable/mainscreen_play_selector"/>
+		android:clickable="true" 
+		android:nextFocusDown="@drawable/mainscreen_play_onclick" 
+		android:nextFocusUp="@drawable/mainscreen_play" 
+		android:background="@drawable/mainscreen_play_selector"/>
 		
 	<RelativeLayout android:id="@+id/OptionsIcons" 
 		android:layout_below="@+id/PlayGameButton" 

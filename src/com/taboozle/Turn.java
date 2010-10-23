@@ -251,7 +251,7 @@ public class Turn extends Activity
             buzzVibrator.vibrate(1000);
           }
           wrongStamp.setVisibility( View.VISIBLE ); //Show stamp on down
-          ret = true;
+          ret = false;
           break;
         case MotionEvent.ACTION_UP:
           soundPool.stop( buzzStreamId );
@@ -260,7 +260,7 @@ public class Turn extends Activity
             buzzVibrator.cancel();
           }
           wrongStamp.setVisibility( View.INVISIBLE );	//Hide stamp on up
-          ret = true;
+          ret = false;
           break;
         default:
           ret = false;
