@@ -170,26 +170,37 @@ public class TurnSummary extends Activity
   	TextView scoreview = (TextView) findViewById(R.id.TurnTotalScore);
   	scoreview.setText(Long.toString(turnscore));
 
-  	// Populate Scoreboard
+  	// Populate Scoreboard scores
   	final int[] SCORE_VIEW_IDS = new int[]{R.id.TeamAScore, R.id.TeamBScore,
   											R.id.TeamCScore, R.id.TeamDScore};
   	for (int i = 0; i < totalscores.length; i++)
   	{
   		TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
-  		teamTotalScoreView.setText(game.GetTeamNames()[i] + ": " + Long.toString(totalscores[i]));
+  		teamTotalScoreView.setText(Long.toString(totalscores[i]));
   	}
+    // Populate Scoreboard names
+    final int[] SCORE_TEAMNAME_IDS = new int[]{R.id.TurnSummaryScoreATeamname, R.id.TurnSummaryScoreBTeamname,
+                                               R.id.TurnSummaryScoreCTeamname, R.id.TurnSummaryScoreD};
+    for (int i = 0; i < totalscores.length; i++)
+    {
+      TextView teamnameView = (TextView) findViewById( SCORE_TEAMNAME_IDS[i] );
+      teamnameView.setText(game.GetTeamNames()[i]);
+    }
+
   	// Hide teams that are not being played
-  	for (int i = totalscores.length; i < SCORE_VIEW_IDS.length; i++)
+    final int[] SCORE_VIEW_GROUP_IDS = new int[]{R.id.TurnSummaryScoreA, R.id.TurnSummaryScoreB,
+                                           R.id.TurnSummaryScoreC, R.id.TurnSummaryScoreD};
+  	for (int i = totalscores.length; i < SCORE_VIEW_GROUP_IDS.length; i++)
   	{
-  		TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
-  		teamTotalScoreView.setVisibility( View.INVISIBLE );
+  		LinearLayout teamScoreGroupView = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[i] );
+  		teamScoreGroupView.setVisibility( View.GONE );
   	}
 
   	// Display current team name
     TextView curTeam = (TextView) findViewById(R.id.TurnTeamName);
     curTeam.setText(game.GetTeamNames()[game.GetActiveTeamIndex()]);
     // Set team name color
-	final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA, R.color.teamB, R.color.teamC, R.color.teamC };
+	  final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA, R.color.teamB, R.color.teamC, R.color.teamC };
     curTeam.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[game.GetActiveTeamIndex()]));
   }
 

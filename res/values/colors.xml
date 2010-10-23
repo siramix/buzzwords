@@ -4,15 +4,21 @@
       #000000
    </color>
    <color name="teamA">
-      #FF3541
+      #BE0028
    </color>
    <color name="teamB">
-      #5B9AFF
+      #0A2EBF
    </color>
    <color name="teamC">
-      #FFE740
+      #00BF1F
    </color>
    <color name="teamD">
-      #9F43E8
+      #BF900A
+   </color>
+   <color name="title">
+      #FFFFFF
+   </color>
+   <color name="turnSummaryListItem">
+      #666666
    </color>
 </resources>
