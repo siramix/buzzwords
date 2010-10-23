@@ -54,6 +54,9 @@ public class Turn extends Activity
   private ImageButton skipButton;
   private TextView countdownTxt;
   private ViewFlipper viewFlipper;
+  
+  private TextView cardTitle;
+  private ListView cardWords;
 
   /**
    * This is a reference to the current game manager
@@ -370,6 +373,25 @@ public class Turn extends Activity
     outToLeft.setDuration(500);
   	return outToLeft;
   }
+  
+  protected void setActiveCard()
+  {
+    int curTitle;
+    int curWords;
+    if( this.AIsActive )
+    {
+      curTitle = R.id.CardTitleA;
+      curWords = R.id.CardWordsA;
+    }
+    else
+    {
+      curTitle = R.id.CardTitleB;
+      curWords = R.id.CardWordsB;
+    }
+
+    this.cardTitle = (TextView) this.findViewById( curTitle );
+    this.cardWords = (ListView) this.findViewById( curWords );
+  }
 
   /**
    * Function for changing the currently viewed card. It does a bit of bounds
@@ -378,33 +400,20 @@ public class Turn extends Activity
   protected void ShowCard()
   {
     Log.d( TAG, "ShowCard()" );
-    int curTitle;
-    int curWords;
-    if( this.AIsActive )
-    {
-    	curTitle = R.id.CardTitleA;
-    	curWords = R.id.CardWordsA;
-    }
-    else
-    {
-    	curTitle = R.id.CardTitleB;
-    	curWords = R.id.CardWordsB;
-    }
-
-    TextView cardTitle = (TextView) this.findViewById( curTitle );
-    ListView cardWords = (ListView) this.findViewById( curWords );
+    
+    this.setActiveCard();
 
     // Disable the ListView to prevent its children from being click-able
-    cardWords.setEnabled(false);
+    this.cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter =
-      new ArrayAdapter<String>( this, R.layout.word );
+    new ArrayAdapter<String>( this, R.layout.word );
     Card curCard = this.curGameManager.GetNextCard();
-    cardTitle.setText( curCard.getTitle() );
+    this.cardTitle.setText( curCard.getTitle() );
     for( int i = 0; i < curCard.getBadWords().size(); i++ )
     {
       cardAdapter.add( curCard.getBadWords().get( i ) );
     }
-    cardWords.setAdapter( cardAdapter );
+    this.cardWords.setAdapter( cardAdapter );
   }
 
 
@@ -416,8 +425,8 @@ public class Turn extends Activity
   {
     Log.d( TAG, "onTurnEnd()" );
 	  //Stop the sound if someone had the buzzer held down
-	  soundPool.stop( buzzStreamId );
-	  buzzVibrator.cancel();
+	  this.soundPool.stop( buzzStreamId );
+	  this.buzzVibrator.cancel();
 	  Intent newintent = new Intent( this, TurnSummary.class);
 	  startActivity(newintent);
   }
@@ -603,23 +612,11 @@ public class Turn extends Activity
   {
     this.resumeTimer();
     this.pauseOverlay.setVisibility( View.INVISIBLE );
-    int curTitle;
-    int curWords;
-    if( this.AIsActive )
-    {
-      curTitle = R.id.CardTitleA;
-      curWords = R.id.CardWordsA;
-    }
-    else
-    {
-      curTitle = R.id.CardTitleB;
-      curWords = R.id.CardWordsB;
-    }
 
-    TextView cardTitle = (TextView) this.findViewById( curTitle );
-    ListView cardWords = (ListView) this.findViewById( curWords );
-    cardTitle.setVisibility( View.VISIBLE );
-    cardWords.setVisibility( View.VISIBLE );
+    this.setActiveCard();
+    
+    this.cardTitle.setVisibility( View.VISIBLE );
+    this.cardWords.setVisibility( View.VISIBLE );
     this.buzzerButton.setEnabled( true );
     this.skipButton.setEnabled( true );
     this.nextButton.setEnabled( true );
@@ -629,21 +626,9 @@ public class Turn extends Activity
   {
     this.stopTimer();
     this.pauseOverlay.setVisibility( View.VISIBLE );
-    int curTitle;
-    int curWords;
-    if( this.AIsActive )
-    {
-      curTitle = R.id.CardTitleA;
-      curWords = R.id.CardWordsA;
-    }
-    else
-    {
-      curTitle = R.id.CardTitleB;
-      curWords = R.id.CardWordsB;
-    }
 
-    TextView cardTitle = (TextView) this.findViewById( curTitle );
-    ListView cardWords = (ListView) this.findViewById( curWords );
+    this.setActiveCard();
+    
     cardTitle.setVisibility( View.INVISIBLE );
     cardWords.setVisibility( View.INVISIBLE );
     this.buzzerButton.setEnabled( false );
