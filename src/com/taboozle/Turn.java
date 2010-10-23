@@ -53,6 +53,10 @@ public class Turn extends Activity
   private ImageButton nextButton;
   private ImageButton skipButton;
   private TextView countdownTxt;
+  private ViewFlipper viewFlipper;
+  
+  private TextView cardTitle;
+  private ListView cardWords;
 
   /**
    * This is a reference to the current game manager
@@ -181,29 +185,7 @@ public class Turn extends Activity
     switch (item.getItemId())
     {
       case R.string.menu_EndGame:
-        AlertDialog confirmEnd = new AlertDialog.Builder(this).create();
-        confirmEnd.setTitle("Confirm End Game");
-        confirmEnd.setMessage("Are you sure you want to end the current game?");
-
-        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener()
-        {
-          public void onClick(DialogInterface dialog, int which) {
-          }
-        });
-
-        confirmEnd.setButton2("Yes", new DialogInterface.OnClickListener()
-        {
-          public void onClick(DialogInterface dialog, int which)
-          {
-            TaboozleApplication application =
-              (TaboozleApplication) Turn.this.getApplication();
-            GameManager gm = application.GetGameManager();
-            gm.EndGame();
-            startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
-          }
-        });
-
-        confirmEnd.show();
+        this.showDialog( DIALOG_GAMEOVER_ID );
         return true;
       case R.string.menu_Score:
         //quit();
@@ -391,6 +373,25 @@ public class Turn extends Activity
     outToLeft.setDuration(500);
   	return outToLeft;
   }
+  
+  protected void setActiveCard()
+  {
+    int curTitle;
+    int curWords;
+    if( this.AIsActive )
+    {
+      curTitle = R.id.CardTitleA;
+      curWords = R.id.CardWordsA;
+    }
+    else
+    {
+      curTitle = R.id.CardTitleB;
+      curWords = R.id.CardWordsB;
+    }
+
+    this.cardTitle = (TextView) this.findViewById( curTitle );
+    this.cardWords = (ListView) this.findViewById( curWords );
+  }
 
   /**
    * Function for changing the currently viewed card. It does a bit of bounds
@@ -399,33 +400,20 @@ public class Turn extends Activity
   protected void ShowCard()
   {
     Log.d( TAG, "ShowCard()" );
-    int curTitle;
-    int curWords;
-    if( this.AIsActive )
-    {
-    	curTitle = R.id.CardTitleA;
-    	curWords = R.id.CardWordsA;
-    }
-    else
-    {
-    	curTitle = R.id.CardTitleB;
-    	curWords = R.id.CardWordsB;
-    }
-
-    TextView cardTitle = (TextView) this.findViewById( curTitle );
-    ListView cardWords = (ListView) this.findViewById( curWords );
+    
+    this.setActiveCard();
 
     // Disable the ListView to prevent its children from being click-able
-    cardWords.setEnabled(false);
+    this.cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter =
-      new ArrayAdapter<String>( this, R.layout.word );
+    new ArrayAdapter<String>( this, R.layout.word );
     Card curCard = this.curGameManager.GetNextCard();
-    cardTitle.setText( curCard.getTitle() );
+    this.cardTitle.setText( curCard.getTitle() );
     for( int i = 0; i < curCard.getBadWords().size(); i++ )
     {
       cardAdapter.add( curCard.getBadWords().get( i ) );
     }
-    cardWords.setAdapter( cardAdapter );
+    this.cardWords.setAdapter( cardAdapter );
   }
 
 
@@ -437,24 +425,14 @@ public class Turn extends Activity
   {
     Log.d( TAG, "onTurnEnd()" );
 	  //Stop the sound if someone had the buzzer held down
-	  soundPool.stop( buzzStreamId );
-	  buzzVibrator.cancel();
+	  this.soundPool.stop( buzzStreamId );
+	  this.buzzVibrator.cancel();
 	  Intent newintent = new Intent( this, TurnSummary.class);
 	  startActivity(newintent);
   }
 
-  /**
-   * onCreate - initializes the activity to display the word you have to cause
-   * your team mates to say with the words you cannot say below.
-   */
-  @Override
-  public void onCreate( Bundle savedInstanceState )
+  protected void setupViewReferences()
   {
-    super.onCreate( savedInstanceState );
-    Log.d( TAG, "onCreate()" );
-
-    this.AIsActive = true;
-
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
     this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
@@ -463,17 +441,20 @@ public class Turn extends Activity
       (TaboozleApplication) this.getApplication();
     this.curGameManager = application.GetGameManager();
 
-    // Setup the view
-    this.setContentView(R.layout.turn );
-
-    //Hide the wrong stamp and wrong controls on every new card
     this.confirmWrongButton = (ImageButton) this.findViewById( R.id.ButtonConfirmWrong );
     this.cancelWrongButton = (ImageButton) this.findViewById( R.id.ButtonCancelWrong );
     this.wrongStamp = (ImageView) this.findViewById( R.id.WrongStamp );
     this.pauseOverlay = (ImageView) this.findViewById( R.id.PauseImageView );
     this.countdownTxt = (TextView) findViewById( R.id.Timer );
-
-
+    this.viewFlipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
+    
+    this.buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
+    this.nextButton = (ImageButton) this.findViewById( R.id.ButtonCorrect );
+    this.skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
+  }
+  
+  protected void setupUIProperties()
+  {
     this.confirmWrongButton.setVisibility( View.INVISIBLE );
     this.cancelWrongButton.setVisibility( View.INVISIBLE );
     this.wrongStamp.setVisibility( View.INVISIBLE );
@@ -483,22 +464,12 @@ public class Turn extends Activity
 
     this.countdownTxt.setOnClickListener( this.TimerClickListener );
 
-    ViewFlipper flipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
-    flipper.setInAnimation(InFromRightAnimation());
-    flipper.setOutAnimation(OutToLeftAnimation());
-
-    this.ShowCard();
-
-    this.startTimer();
-
-    this.buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
+    this.viewFlipper.setInAnimation(InFromRightAnimation());
+    this.viewFlipper.setOutAnimation(OutToLeftAnimation());
+    
     this.buzzerButton.setOnTouchListener( BuzzListener );
-
-    this.nextButton = (ImageButton) this.findViewById( R.id.ButtonCorrect );
     this.nextButton.setOnClickListener( CorrectListener );
-
-    this.skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
-
+    
     //Only show skipButton and set listener if preference is enabled
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
     if (sp.getBoolean("allow_skip", true))
@@ -513,6 +484,32 @@ public class Turn extends Activity
 
     this.confirmWrongButton.setOnClickListener( ConfirmWrongListener );
     this.cancelWrongButton.setOnClickListener( CancelWrongListener );
+
+  }
+  
+  /**
+   * onCreate - initializes the activity to display the word you have to cause
+   * your team mates to say with the words you cannot say below.
+   */
+  @Override
+  public void onCreate( Bundle savedInstanceState )
+  {
+    super.onCreate( savedInstanceState );
+    Log.d( TAG, "onCreate()" );
+
+    // set which card is active
+    this.AIsActive = true;
+
+    // Setup the view
+    this.setContentView(R.layout.turn );
+    
+    this.setupViewReferences();
+    
+    this.setupUIProperties();
+
+    this.ShowCard();
+
+    this.startTimer();
 
   }
 
@@ -586,11 +583,27 @@ public class Turn extends Activity
     Dialog dialog = null;
     switch(id) {
     case DIALOG_GAMEOVER_ID:
+      AlertDialog.Builder builder = new AlertDialog.Builder(this);
+      builder.setMessage( "Are you sure you want to end the current game?" )
+             .setTitle("Confirm End Game")
+             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog, int id) {
+                 TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+                 GameManager gm = application.GetGameManager();
+                 gm.EndGame();
+                 startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
+                 }
+               })
+             .setNegativeButton("No", new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog, int id) {
+                 dialog.cancel();
+                 }
+               });       
+      dialog = builder.create();
       break;
     default:
         dialog = null;
     }
-
     return dialog;
 
   }
@@ -599,23 +612,11 @@ public class Turn extends Activity
   {
     this.resumeTimer();
     this.pauseOverlay.setVisibility( View.INVISIBLE );
-    int curTitle;
-    int curWords;
-    if( this.AIsActive )
-    {
-      curTitle = R.id.CardTitleA;
-      curWords = R.id.CardWordsA;
-    }
-    else
-    {
-      curTitle = R.id.CardTitleB;
-      curWords = R.id.CardWordsB;
-    }
 
-    TextView cardTitle = (TextView) this.findViewById( curTitle );
-    ListView cardWords = (ListView) this.findViewById( curWords );
-    cardTitle.setVisibility( View.VISIBLE );
-    cardWords.setVisibility( View.VISIBLE );
+    this.setActiveCard();
+    
+    this.cardTitle.setVisibility( View.VISIBLE );
+    this.cardWords.setVisibility( View.VISIBLE );
     this.buzzerButton.setEnabled( true );
     this.skipButton.setEnabled( true );
     this.nextButton.setEnabled( true );
@@ -625,21 +626,9 @@ public class Turn extends Activity
   {
     this.stopTimer();
     this.pauseOverlay.setVisibility( View.VISIBLE );
-    int curTitle;
-    int curWords;
-    if( this.AIsActive )
-    {
-      curTitle = R.id.CardTitleA;
-      curWords = R.id.CardWordsA;
-    }
-    else
-    {
-      curTitle = R.id.CardTitleB;
-      curWords = R.id.CardWordsB;
-    }
 
-    TextView cardTitle = (TextView) this.findViewById( curTitle );
-    ListView cardWords = (ListView) this.findViewById( curWords );
+    this.setActiveCard();
+    
     cardTitle.setVisibility( View.INVISIBLE );
     cardWords.setVisibility( View.INVISIBLE );
     this.buzzerButton.setEnabled( false );
