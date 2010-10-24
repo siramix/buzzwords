@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -54,6 +56,8 @@ public class Turn extends Activity
   private ImageButton skipButton;
   private TextView countdownTxt;
   private ViewFlipper viewFlipper;
+  
+  private ImageView timerfill;
   
   private TextView cardTitle;
   private ListView cardWords;
@@ -374,6 +378,20 @@ public class Turn extends Activity
   	return outToLeft;
   }
   
+  /**
+   * @return The animation that scales the timer as the time depletes
+   */
+  private Animation ScaleTimer ()
+  {
+    Log.d( TAG, "ScaleTimerAnimation()" );
+    // animation shrinks timer from left to right at a linear rate
+    ScaleAnimation scaleTimer = new ScaleAnimation(1.0f, 0.0f, 1.0f, 1.0f, Animation.RELATIVE_TO_SELF,
+    												1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
+    scaleTimer.setDuration(this.curGameManager.GetTurnTime());
+    scaleTimer.setInterpolator(new LinearInterpolator());
+  	return scaleTimer;
+  }
+  
   protected void setActiveCard()
   {
     int curTitle;
@@ -451,6 +469,8 @@ public class Turn extends Activity
     this.buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
     this.nextButton = (ImageButton) this.findViewById( R.id.ButtonCorrect );
     this.skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
+    
+    this.timerfill = (ImageView) this.findViewById(R.id.TurnTimerFill);
   }
   
   protected void setupUIProperties()
@@ -510,7 +530,7 @@ public class Turn extends Activity
     this.ShowCard();
 
     this.startTimer();
-
+    this.timerfill.startAnimation(ScaleTimer());
   }
 
   /**

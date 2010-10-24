@@ -55,33 +55,24 @@
 	</RelativeLayout>
 	</ViewFlipper>
 	<RelativeLayout
-	android:layout_width="fill_parent"
 	android:id="@+id/actionbar"
-	android:background="@drawable/titlebar_blue" android:layout_height="wrap_content">
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="60s" android:id="@+id/Timer"
-		android:layout_alignParentRight="true"
-		android:layout_alignParentTop="true"
-		android:layout_marginRight="10dp"
-		android:textSize="16dp"
-		android:paddingTop="5dp"
-		android:textColor="#FFFFFF">
+	android:layout_height="wrap_content" android:layout_width="wrap_content"><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTimerBG" android:background="@drawable/timer_bg_red"></ImageView><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/timer_fill_red" android:id="@+id/TurnTimerFill" android:layout_below="@+id/TurnTimerBG" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_marginRight="2dp" android:layout_marginTop="2dp"></ImageView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="60s" android:id="@+id/Timer" android:layout_alignParentRight="true" android:textSize="16dp" android:textColor="#FFFFFF" android:layout_marginRight="2dp" android:layout_below="@+id/TurnTimerFill" android:layout_alignParentTop="true">
 	</TextView>
-	</RelativeLayout><ImageView android:layout_below="@id/CardWordsA" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:id="@+id/WrongStamp" android:background="@drawable/wrong_stamp"></ImageView>
+	
+	
+
+</RelativeLayout><ImageView android:layout_below="@id/CardWordsA" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:id="@+id/WrongStamp" android:background="@drawable/wrong_stamp"></ImageView>
 
 <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonCancelWrong" android:background="@drawable/cancelwrong" android:layout_above="@+id/lowbar" android:layout_alignParentLeft="true" android:layout_marginBottom="2dp"></ImageButton><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonConfirmWrong" android:background="@drawable/wrong" android:layout_above="@+id/lowbar" android:layout_alignParentRight="true" android:layout_marginBottom="2dp"></ImageButton><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/PauseImageView" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:background="@drawable/paused"></ImageView>
 <RelativeLayout android:layout_width="wrap_content" android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:paddingLeft="2dp">
 	<ImageButton 
-		android:layout_height="wrap_content" 
 		android:layout_alignParentLeft="true" 
 		android:layout_width="wrap_content" 
 		android:background="@drawable/wrong_selector" 
 		android:id="@+id/ButtonWrong"
 		android:nextFocusDown="@drawable/wrong_onclick" 
 		android:nextFocusUp="@drawable/wrong"
-		android:layout_marginLeft="4dp"></ImageButton>
+		android:layout_marginLeft="4dp" android:layout_height="wrap_content"></ImageButton>
 	<ImageButton 
 		android:layout_height="wrap_content" 
 		android:background="@drawable/skip_selector" 
