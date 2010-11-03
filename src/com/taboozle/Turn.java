@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
@@ -23,11 +24,14 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import android.widget.ImageView.ScaleType;
+import android.text.Layout;
 import android.util.Log;
 
 /**
@@ -377,13 +381,34 @@ public class Turn extends Activity
     outToLeft.setDuration(500);
   	return outToLeft;
   }
+
+  /**
+   * Ghetto way to pause the timer which involves starting a really really long animation
+   * that has the starting scale where the timer currently is at time of pause.
+   * 
+   * @return The animation that scales the timer as the time depletes
+   */
+  private Animation StopTimerAnimation ()
+  {
+    Log.d( TAG, "ScaleTimerAnimation()" );
+    // animation shrinks timer from left to right at a linear rate
+    float percentTimeLeft = (float) this.timerState / this.curGameManager.GetTurnTime(); //X start = time left / total time
+   
+    ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, 0.0f, 1.0f, 1.0f, Animation.RELATIVE_TO_SELF,
+        1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
+    
+    scaleTimer.setFillBefore(true);
+    scaleTimer.setDuration(2100000000);
+    
+    return scaleTimer;
+  }
   
   /**
    * @return The animation that scales the timer as the time depletes
    */
-  private Animation ScaleTimer ()
+  private Animation StartTimerAnimation ()
   {
-    Log.d( TAG, "ScaleTimerAnimation()" );
+    Log.d( TAG, "StartTimerAnimation()" );
     // animation shrinks timer from left to right at a linear rate
     ScaleAnimation scaleTimer = new ScaleAnimation(1.0f, 0.0f, 1.0f, 1.0f, Animation.RELATIVE_TO_SELF,
     												1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
@@ -392,6 +417,26 @@ public class Turn extends Activity
   	return scaleTimer;
   }
   
+  /**
+   * Restarts the animation with a scaling factor that is equal to the ratio
+   * of game time left to game time total.
+   * 
+   * @return The animation that scales the timer when game time is resumed
+   */
+  private Animation ResumeTimerAnimation ()
+  {
+    Log.d( TAG, "ResumeTimerAnimation()" );
+    // animation shrinks timer from left to right at a linear rate
+    float percentTimeLeft = (float) this.timerState / this.curGameManager.GetTurnTime(); 
+    //X start = time left / total time
+    ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, 0.0f, 1.0f, 1.0f, Animation.RELATIVE_TO_SELF,
+                            1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
+    scaleTimer.setDuration(this.timerState);
+    scaleTimer.setInterpolator(new LinearInterpolator());
+    return scaleTimer;
+  }
+  
+
   protected void setActiveCard()
   {
     int curTitle;
@@ -530,7 +575,7 @@ public class Turn extends Activity
     this.ShowCard();
 
     this.startTimer();
-    this.timerfill.startAnimation(ScaleTimer());
+    this.timerfill.startAnimation(StartTimerAnimation());
   }
 
   /**
@@ -631,6 +676,7 @@ public class Turn extends Activity
   protected void resumeGame()
   {
     this.resumeTimer();
+    this.timerfill.startAnimation(ResumeTimerAnimation());
     this.pauseOverlay.setVisibility( View.INVISIBLE );
 
     this.setActiveCard();
@@ -645,6 +691,8 @@ public class Turn extends Activity
   protected void pauseGame()
   {
     this.stopTimer();
+    this.timerfill.clearAnimation();
+    this.timerfill.startAnimation(StopTimerAnimation());
     this.pauseOverlay.setVisibility( View.VISIBLE );
 
     this.setActiveCard();
