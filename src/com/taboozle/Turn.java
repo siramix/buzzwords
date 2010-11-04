@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,6 +58,9 @@ public class Turn extends Activity
   static final int TIMERANIM_RESUME_ID = 1;
   static final int TIMERANIM_START_ID = 2;
 
+  private static final int SWIPE_MIN_DISTANCE = 120;
+  private static final int SWIPE_MAX_OFF_PATH = 250;
+  private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
   private ImageButton confirmWrongButton;
   private ImageButton cancelWrongButton;
@@ -108,6 +113,27 @@ public class Turn extends Activity
   protected static final int MENU_ENDGAME = 0;
   protected static final int MENU_SCORE = 1;
   protected static final int MENU_RULES = 2;
+  
+  /**
+   * Swipe Stuff
+   */
+  private SimpleOnGestureListener swipeListener = new SimpleOnGestureListener() {
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+      if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
+        {
+        Turn.this.doSkip();
+        return true;
+        }
+      else
+      {
+        return false;
+      }
+     }    
+  };
+  
+  private GestureDetector swipeDetector;
 
   /**
    * CountdownTimer - This initializes a timer during every turn that runs a
@@ -307,11 +333,7 @@ public class Turn extends Activity
     public void onClick(View v)
     {
       Log.d( TAG, "SkipListener OnClick()" );
-      AIsActive = !AIsActive;
-      ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
-      flipper.showNext();
-      curGameManager.ProcessCard( 2 );
-      ShowCard();
+      Turn.this.doSkip();
     }
   }; // End SkipListener
 
@@ -445,6 +467,13 @@ public class Turn extends Activity
   	return scaleTimer;
   }
 
+  protected void doSkip()
+  {
+    AIsActive = !AIsActive;
+    this.viewFlipper.showNext();
+    this.curGameManager.ProcessCard( 2 );
+    ShowCard();
+  }
 
   protected void setActiveCard()
   {
@@ -559,7 +588,8 @@ public class Turn extends Activity
 
     this.confirmWrongButton.setOnClickListener( ConfirmWrongListener );
     this.cancelWrongButton.setOnClickListener( CancelWrongListener );
-
+    
+    this.swipeDetector = new GestureDetector(swipeListener);
   }
   
   /**
@@ -769,5 +799,13 @@ public class Turn extends Activity
       }
 
     return super.onKeyUp(keyCode, event);
+  }
+  
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+  if (this.swipeDetector.onTouchEvent(event))
+  return true;
+  else
+  return false;
   }
 }
