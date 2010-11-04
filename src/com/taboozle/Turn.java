@@ -179,6 +179,7 @@ public class Turn extends Activity
     {
       counter.cancel();
       this.timerOn = false;
+      this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_PAUSE_ID));
     }
   }
 
@@ -187,6 +188,7 @@ public class Turn extends Activity
     Log.d( TAG, "startTimer()" );
     this.counter = new TurnTimer( this.curGameManager.GetTurnTime(), TICK);
     this.counter.start();
+    this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
   }
 
   private void resumeTimer()
@@ -198,6 +200,7 @@ public class Turn extends Activity
       Log.d( TAG, "Do the Resume." );
       this.counter = new TurnTimer( this.timerState, TICK);
       this.counter.start();
+      this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_RESUME_ID));
     }
   }
 
@@ -417,27 +420,6 @@ public class Turn extends Activity
     outToLeft.setDuration(500);
   	return outToLeft;
   }
-
-  /**
-   * Ghetto way to pause the timer which involves starting a really really long animation
-   * that has the starting scale where the timer currently is at time of pause.
-   * 
-   * @return The animation that scales the timer as the time depletes
-   */
-  private Animation StopTimerAnimation ()
-  {
-    Log.d( TAG, "ScaleTimerAnimation()" );
-    // animation shrinks timer from left to right at a linear rate
-    float percentTimeLeft = (float) this.timerState / this.curGameManager.GetTurnTime(); //X start = time left / total time
-   
-    ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, 0.0f, 1.0f, 1.0f, Animation.RELATIVE_TO_SELF,
-        1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-    
-    scaleTimer.setFillBefore(true);
-    scaleTimer.setDuration(Integer.MAX_VALUE);
-    
-    return scaleTimer;
-  }
   
   /**
    * Animation method for the timer bar that takes an integer to determine
@@ -459,7 +441,10 @@ public class Turn extends Activity
     	duration = (int) this.timerState;
     }
     else if (timerCommand == Turn.TIMERANIM_PAUSE_ID)
+    {
+    	percentTimeLeft = (float) this.timerState / this.curGameManager.GetTurnTime();
     	duration = Integer.MAX_VALUE;
+    }
     
     ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, 0.0f, 1.0f, 1.0f, Animation.RELATIVE_TO_SELF,
         1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
@@ -726,16 +711,18 @@ public class Turn extends Activity
     case DIALOG_READY_ID:
       String curTeam = this.curGameManager.GetActiveTeamName();
       builder = new AlertDialog.Builder(this);
-      builder.setMessage( curTeam + ", are you ready?" )
-             .setTitle("Ready?")
-             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-               public void onClick(DialogInterface dialog, int id) {
-                 Turn.this.ShowCard();
-                 Turn.this.startTimer();
-                 Turn.this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
-                 }
-               });   
+      builder.setMessage("Tap to start!" )
+             .setTitle( "Ready " + curTeam + "?" )
+             .setCancelable(false)
+             .setOnCancelListener(new DialogInterface.OnCancelListener() {				
+				public void onCancel(DialogInterface dialog) {
+	                 Turn.this.ShowCard();
+	                 Turn.this.startTimer();	                 					
+				}
+			});
+      
       dialog = builder.create();
+      dialog.setCanceledOnTouchOutside (true);
       break;
     default:
         dialog = null;
@@ -743,11 +730,10 @@ public class Turn extends Activity
     return dialog;
 
   }
-
+  
   protected void resumeGame()
   {
     this.resumeTimer();
-    this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_RESUME_ID));
     this.pauseOverlay.setVisibility( View.INVISIBLE );
 
     this.setActiveCard();
@@ -762,8 +748,6 @@ public class Turn extends Activity
   protected void pauseGame()
   {
     this.stopTimer();
-    this.timerfill.clearAnimation();
-    this.timerfill.startAnimation(StopTimerAnimation());
     this.pauseOverlay.setVisibility( View.VISIBLE );
 
     this.setActiveCard();

@@ -161,7 +161,7 @@ public class GameEnd extends Activity
   			}
   		}
   
-  		final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA, R.color.teamB, R.color.teamC, R.color.teamC };
+  		final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA, R.color.teamB, R.color.teamC, R.color.teamD };
   		TextView winner = (TextView) findViewById(R.id.EndGameWinner);
   		if (!tieGame)
   		{
