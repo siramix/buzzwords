@@ -25,6 +25,7 @@
 				android:id="@+id/CardWordsA" 
 				android:layout_height="wrap_content" 
 				android:layout_below="@+id/CardTitleA" 
+				android:listSelector="@android:color/transparent"
 				android:paddingBottom="10dp" android:paddingTop="10dp">
 			</ListView>
 			
@@ -48,6 +49,7 @@
 			android:id="@+id/CardWordsB" 
 			android:layout_height="wrap_content" 
 			android:layout_below="@+id/CardTitleB" 
+			android:listSelector="@android:color/transparent"
 			android:paddingBottom="10dp" android:paddingTop="10dp">
 		</ListView>
 		

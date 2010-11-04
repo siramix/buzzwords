@@ -135,6 +135,8 @@ public class Turn extends Activity
   
   private GestureDetector swipeDetector;
 
+  View.OnTouchListener gestureListener;
+  
   /**
    * CountdownTimer - This initializes a timer during every turn that runs a
    * method when it completes as well as during update intervals.
@@ -504,8 +506,6 @@ public class Turn extends Activity
     
     this.setActiveCard();
 
-    // Disable the ListView to prevent its children from being click-able
-    this.cardWords.setEnabled(false);
     ArrayAdapter<String> cardAdapter =
     new ArrayAdapter<String>( this, R.layout.word );
     Card curCard = this.curGameManager.GetNextCard();
@@ -590,6 +590,24 @@ public class Turn extends Activity
     this.cancelWrongButton.setOnClickListener( CancelWrongListener );
     
     this.swipeDetector = new GestureDetector(swipeListener);
+    this.gestureListener = new View.OnTouchListener() {
+      public boolean onTouch(View v, MotionEvent event) {
+          if (swipeDetector.onTouchEvent(event)) {
+              return true;
+          }
+          return false;
+      }
+    };
+    
+    this.findViewById( R.id.CardTitleA ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.CardWordsA ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.CardTitleB ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.CardWordsB ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.MultiCardLayout ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.ViewFlipper0 ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.CardLayoutA ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.CardLayoutB ).setOnTouchListener( this.gestureListener );
+    
   }
   
   /**
