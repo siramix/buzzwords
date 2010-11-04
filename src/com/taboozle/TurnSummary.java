@@ -180,7 +180,7 @@ public class TurnSummary extends Activity
   	}
     // Populate Scoreboard names
     final int[] SCORE_TEAMNAME_IDS = new int[]{R.id.TurnSummaryScoreATeamname, R.id.TurnSummaryScoreBTeamname,
-                                               R.id.TurnSummaryScoreCTeamname, R.id.TurnSummaryScoreD};
+                                               R.id.TurnSummaryScoreCTeamname, R.id.TurnSummaryScoreDTeamname};
     for (int i = 0; i < totalscores.length; i++)
     {
       TextView teamnameView = (TextView) findViewById( SCORE_TEAMNAME_IDS[i] );
@@ -189,7 +189,7 @@ public class TurnSummary extends Activity
 
   	// Hide teams that are not being played
     final int[] SCORE_VIEW_GROUP_IDS = new int[]{R.id.TurnSummaryScoreA, R.id.TurnSummaryScoreB,
-                                           R.id.TurnSummaryScoreC, R.id.TurnSummaryScoreD};
+    											 R.id.TurnSummaryScoreC, R.id.TurnSummaryScoreD};
   	for (int i = totalscores.length; i < SCORE_VIEW_GROUP_IDS.length; i++)
   	{
   		LinearLayout teamScoreGroupView = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[i] );
@@ -200,7 +200,7 @@ public class TurnSummary extends Activity
     TextView curTeam = (TextView) findViewById(R.id.TurnTeamName);
     curTeam.setText(game.GetTeamNames()[game.GetActiveTeamIndex()]);
     // Set team name color
-	  final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA, R.color.teamB, R.color.teamC, R.color.teamC };
+	  final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA, R.color.teamB, R.color.teamC, R.color.teamD };
     curTeam.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[game.GetActiveTeamIndex()]));
   }
 
