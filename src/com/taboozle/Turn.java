@@ -50,10 +50,12 @@ public class Turn extends Activity
 
   static final int DIALOG_PAUSED_ID = 0;
   static final int DIALOG_GAMEOVER_ID = 1;
+  static final int DIALOG_READY_ID = 2;
   
   static final int TIMERANIM_PAUSE_ID = 0;
   static final int TIMERANIM_RESUME_ID = 1;
   static final int TIMERANIM_START_ID = 2;
+
 
   private ImageButton confirmWrongButton;
   private ImageButton cancelWrongButton;
@@ -132,7 +134,6 @@ public class Turn extends Activity
     @Override
     public void onTick(long millisUntilFinished)
     {
-      //Log.d( TAG, "onTick()" ); //Log out commented to prevent spam
       Turn.this.timerState = millisUntilFinished;
       Turn.this.countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
     }
@@ -234,6 +235,9 @@ public class Turn extends Activity
 
       confirm.setVisibility( View.VISIBLE );
       cancel.setVisibility( View.VISIBLE );
+      
+      Turn.this.nextButton.setEnabled( false );
+      Turn.this.skipButton.setEnabled( false );
 
       boolean ret;
       switch( event.getAction() )
@@ -323,6 +327,8 @@ public class Turn extends Activity
       Turn.this.confirmWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.cancelWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.wrongStamp.setVisibility( View.INVISIBLE );
+      Turn.this.nextButton.setEnabled( true );
+      Turn.this.skipButton.setEnabled( true );
       AIsActive = !AIsActive;
       ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
       flipper.showNext();
@@ -343,6 +349,8 @@ public class Turn extends Activity
       Turn.this.confirmWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.cancelWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.wrongStamp.setVisibility( View.INVISIBLE );
+      Turn.this.nextButton.setEnabled( true );
+      Turn.this.skipButton.setEnabled( true );
     }
   }; // End CancelWrongListener
 
@@ -529,6 +537,7 @@ public class Turn extends Activity
     this.pauseOverlay.setOnClickListener( PauseListener );
 
     this.countdownTxt.setOnClickListener( this.TimerClickListener );
+    this.countdownTxt.setText( Integer.toString( this.curGameManager.GetTurnTime()/1000 ) + "s" );
 
     this.viewFlipper.setInAnimation(InFromRightAnimation());
     this.viewFlipper.setOutAnimation(OutToLeftAnimation());
@@ -572,11 +581,9 @@ public class Turn extends Activity
     this.setupViewReferences();
     
     this.setupUIProperties();
+    
+    this.showDialog( DIALOG_READY_ID );
 
-    this.ShowCard();
-
-    this.startTimer();
-    this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
   }
 
   /**
@@ -647,9 +654,10 @@ public class Turn extends Activity
   protected Dialog onCreateDialog(int id)
   {
     Dialog dialog = null;
+    AlertDialog.Builder builder = null;
     switch(id) {
     case DIALOG_GAMEOVER_ID:
-      AlertDialog.Builder builder = new AlertDialog.Builder(this);
+      builder = new AlertDialog.Builder(this);
       builder.setMessage( "Are you sure you want to end the current game?" )
              .setTitle("Confirm End Game")
              .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -665,6 +673,20 @@ public class Turn extends Activity
                  dialog.cancel();
                  }
                });       
+      dialog = builder.create();
+      break;
+    case DIALOG_READY_ID:
+      String curTeam = this.curGameManager.GetActiveTeamName();
+      builder = new AlertDialog.Builder(this);
+      builder.setMessage( curTeam + ", are you ready?" )
+             .setTitle("Ready?")
+             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+               public void onClick(DialogInterface dialog, int id) {
+                 Turn.this.ShowCard();
+                 Turn.this.startTimer();
+                 Turn.this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
+                 }
+               });   
       dialog = builder.create();
       break;
     default:

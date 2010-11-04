@@ -349,4 +349,14 @@ public class GameManager implements Serializable
     Log.d( TAG, "GetTurnTime()" );    
     return this.turn_time;
   }
+  
+  /**
+   * Return the current team name
+   * @return string for the current team name
+   */
+  public String GetActiveTeamName()
+  {
+    Log.d( TAG, "GetActiveTeamName()" );
+    return this.teamNames[this.activeTeamIndex];
+  }
 }
