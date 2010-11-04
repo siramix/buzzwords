@@ -230,6 +230,9 @@ public class Turn extends Activity
 
       confirm.setVisibility( View.VISIBLE );
       cancel.setVisibility( View.VISIBLE );
+      
+      Turn.this.nextButton.setEnabled( false );
+      Turn.this.skipButton.setEnabled( false );
 
       boolean ret;
       switch( event.getAction() )
@@ -319,6 +322,8 @@ public class Turn extends Activity
       Turn.this.confirmWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.cancelWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.wrongStamp.setVisibility( View.INVISIBLE );
+      Turn.this.nextButton.setEnabled( false );
+      Turn.this.skipButton.setEnabled( false );
       AIsActive = !AIsActive;
       ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
       flipper.showNext();
@@ -339,6 +344,8 @@ public class Turn extends Activity
       Turn.this.confirmWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.cancelWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.wrongStamp.setVisibility( View.INVISIBLE );
+      Turn.this.nextButton.setEnabled( false );
+      Turn.this.skipButton.setEnabled( false );
     }
   }; // End CancelWrongListener
 
