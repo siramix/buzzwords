@@ -50,6 +50,10 @@ public class Turn extends Activity
 
   static final int DIALOG_PAUSED_ID = 0;
   static final int DIALOG_GAMEOVER_ID = 1;
+  
+  static final int TIMERANIM_PAUSE_ID = 0;
+  static final int TIMERANIM_RESUME_ID = 1;
+  static final int TIMERANIM_START_ID = 2;
 
   private ImageButton confirmWrongButton;
   private ImageButton cancelWrongButton;
@@ -398,44 +402,41 @@ public class Turn extends Activity
         1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
     
     scaleTimer.setFillBefore(true);
-    scaleTimer.setDuration(2100000000);
+    scaleTimer.setDuration(Integer.MAX_VALUE);
     
     return scaleTimer;
   }
   
   /**
+   * Animation method for the timer bar that takes an integer to determine
+   * whether it is starting, resuming, or stopping animation.
+   * 
+   * @param Accepts an integer value of 0 for Pause, 1 for Resume, and 2 for Start
+   * 
    * @return The animation that scales the timer as the time depletes
    */
-  private Animation StartTimerAnimation ()
+  private Animation TimerAnimation (int timerCommand)
   {
-    Log.d( TAG, "StartTimerAnimation()" );
-    // animation shrinks timer from left to right at a linear rate
-    ScaleAnimation scaleTimer = new ScaleAnimation(1.0f, 0.0f, 1.0f, 1.0f, Animation.RELATIVE_TO_SELF,
-    												1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-    scaleTimer.setDuration(this.curGameManager.GetTurnTime());
+    Log.d( TAG, "TimerAnimation()");
+    float percentTimeLeft = 1.0f;
+    int duration = this.curGameManager.GetTurnTime();
+    
+    if (timerCommand == Turn.TIMERANIM_RESUME_ID)
+    {
+    	percentTimeLeft = (float) this.timerState / this.curGameManager.GetTurnTime();
+    	duration = (int) this.timerState;
+    }
+    else if (timerCommand == Turn.TIMERANIM_PAUSE_ID)
+    	duration = Integer.MAX_VALUE;
+    
+    ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, 0.0f, 1.0f, 1.0f, Animation.RELATIVE_TO_SELF,
+        1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
+    
+    scaleTimer.setDuration(duration);
     scaleTimer.setInterpolator(new LinearInterpolator());
   	return scaleTimer;
   }
-  
-  /**
-   * Restarts the animation with a scaling factor that is equal to the ratio
-   * of game time left to game time total.
-   * 
-   * @return The animation that scales the timer when game time is resumed
-   */
-  private Animation ResumeTimerAnimation ()
-  {
-    Log.d( TAG, "ResumeTimerAnimation()" );
-    // animation shrinks timer from left to right at a linear rate
-    float percentTimeLeft = (float) this.timerState / this.curGameManager.GetTurnTime(); 
-    //X start = time left / total time
-    ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, 0.0f, 1.0f, 1.0f, Animation.RELATIVE_TO_SELF,
-                            1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-    scaleTimer.setDuration(this.timerState);
-    scaleTimer.setInterpolator(new LinearInterpolator());
-    return scaleTimer;
-  }
-  
+
 
   protected void setActiveCard()
   {
@@ -575,7 +576,7 @@ public class Turn extends Activity
     this.ShowCard();
 
     this.startTimer();
-    this.timerfill.startAnimation(StartTimerAnimation());
+    this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
   }
 
   /**
@@ -676,7 +677,7 @@ public class Turn extends Activity
   protected void resumeGame()
   {
     this.resumeTimer();
-    this.timerfill.startAnimation(ResumeTimerAnimation());
+    this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_RESUME_ID));
     this.pauseOverlay.setVisibility( View.INVISIBLE );
 
     this.setActiveCard();
