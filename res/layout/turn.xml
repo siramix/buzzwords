@@ -69,9 +69,8 @@
 	<ImageButton 
 		android:layout_alignParentLeft="true" 
 		android:layout_width="wrap_content" 
-		android:background="@drawable/wrong_selector" 
 		android:id="@+id/ButtonWrong"
-		android:layout_marginLeft="4dp" android:layout_height="wrap_content"></ImageButton>
+		android:layout_marginLeft="4dp" android:layout_height="wrap_content" android:background="@drawable/controls_wrong_selector" android:layout_marginTop="5dp"></ImageButton>
 	<ImageButton 
 		android:layout_height="wrap_content" 
 		android:layout_width="wrap_content" 
