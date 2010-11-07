@@ -19,17 +19,21 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.widget.ImageView.ScaleType;
@@ -432,17 +436,22 @@ public class Turn extends Activity
   private Animation TimerAnimation (int timerCommand)
   {
     Log.d( TAG, "TimerAnimation()");
-    float percentTimeLeft = 1.0f;
+    //TODO: Let's see if this is the best way to do this.  Anyone have any concerns over importing
+    //      Display and WindowManager for this one task?
+    Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay(); 
+    float screenWidth = display.getWidth() - 4; 
+    
+    float percentTimeLeft = screenWidth;
     int duration = this.curGameManager.GetTurnTime();
     
     if (timerCommand == Turn.TIMERANIM_RESUME_ID)
     {
-    	percentTimeLeft = (float) this.timerState / this.curGameManager.GetTurnTime();
+    	percentTimeLeft = ((float) this.timerState / this.curGameManager.GetTurnTime()) * screenWidth;
     	duration = (int) this.timerState;
     }
     else if (timerCommand == Turn.TIMERANIM_PAUSE_ID)
     {
-    	percentTimeLeft = (float) this.timerState / this.curGameManager.GetTurnTime();
+    	percentTimeLeft = ((float) this.timerState / this.curGameManager.GetTurnTime()) * screenWidth;
     	duration = Integer.MAX_VALUE;
     }
     
@@ -584,6 +593,7 @@ public class Turn extends Activity
       }
     };
     
+    //Setup the "card" views to allow for skip gesture to be performed on top
     this.findViewById( R.id.CardTitleA ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.CardWordsA ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.CardTitleB ).setOnTouchListener( this.gestureListener );
@@ -593,6 +603,31 @@ public class Turn extends Activity
     this.findViewById( R.id.CardLayoutA ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.CardLayoutB ).setOnTouchListener( this.gestureListener );
     
+    //Change views to appropriate team color
+    ImageView barFill = (ImageView) this.findViewById( R.id.TurnTimerFill );
+   // this.findViewById( R.layout.word ).inflate(context, resource, root);
+    
+    switch (this.curGameManager.GetActiveTeamIndex()) {      
+      case 0: //Red Team
+        barFill.setImageResource( R.drawable.timer_fill_red );
+        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamA_BG );
+       // badWords.setTextColor( R.color.teamA_Text );
+        break;
+      case 1: //Blue Team 
+        barFill.setImageResource( R.drawable.timer_fill_blue );
+        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamB_BG );        
+        break;
+      case 2: //Green Team 
+        barFill.setImageResource( R.drawable.timer_fill_green );
+        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamC_BG );     
+        break;
+      case 3: //Yellow Team 
+        barFill.setImageResource( R.drawable.timer_fill_yellow );
+        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamD_BG );     
+        break;        
+      default: barFill.setImageResource( R.drawable.timer_fill_red ); //Red Team
+    }
+          
   }
   
   /**

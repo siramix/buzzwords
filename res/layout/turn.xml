@@ -16,7 +16,7 @@
 				android:layout_width="fill_parent" 
 				android:layout_height="wrap_content" 
 				android:layout_alignParentTop="true" 
-				android:paddingBottom="15dp" android:paddingTop="30dp" android:textColor="#FFF" android:textSize="36dp">
+				android:paddingBottom="15dp" android:paddingTop="30dp" android:textColor="#FFF" android:textStyle="bold" android:typeface="serif" android:textSize="40dp">
 			</TextView>
 			<ListView 
 				android:layout_width="fill_parent" 
@@ -40,7 +40,7 @@
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content" 
 			android:layout_alignParentTop="true" 
-			android:paddingBottom="15dp" android:paddingTop="30dp" android:textColor="#FFF" android:textSize="36dp">
+			android:paddingBottom="15dp" android:paddingTop="30dp" android:textColor="#FFF" android:textStyle="bold" android:typeface="serif" android:textSize="40dp">
 		</TextView>
 		<ListView 
 			android:layout_width="fill_parent" 
@@ -57,7 +57,7 @@
 	</ViewFlipper>
 	<RelativeLayout
 	android:id="@+id/actionbar"
-	android:layout_height="wrap_content" android:layout_width="wrap_content"><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTimerBG" android:background="@drawable/timer_bg_red"></ImageView><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/timer_fill_red" android:id="@+id/TurnTimerFill" android:layout_below="@+id/TurnTimerBG" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_marginRight="2dp" android:layout_marginTop="2dp"></ImageView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="60s" android:id="@+id/Timer" android:layout_alignParentRight="true" android:textSize="16dp" android:textColor="#FFFFFF" android:layout_marginRight="2dp" android:layout_below="@+id/TurnTimerFill" android:layout_alignParentTop="true">
+	android:layout_height="wrap_content" android:layout_width="wrap_content"><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTimerBG" android:background="@drawable/timer_bg"></ImageView><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTimerFill" android:layout_below="@+id/TurnTimerBG" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_marginRight="2dp" android:background="@drawable/timer_fill_blue" android:layout_marginTop="3dp"></ImageView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="60s" android:id="@+id/Timer" android:layout_alignParentRight="true" android:textSize="16dp" android:textColor="#FFFFFF" android:layout_below="@+id/TurnTimerFill" android:layout_alignParentTop="true" android:layout_marginTop="5dp" android:layout_marginRight="4dp">
 	</TextView>
 	
 	

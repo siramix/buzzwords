@@ -2,4 +2,4 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center" android:textSize="24dp" android:textColor="#BBB"/>
+    android:gravity="center" android:textColor="#000000" android:id="@+id/badword" android:textStyle="bold" android:typeface="serif" android:textSize="34dp"/>

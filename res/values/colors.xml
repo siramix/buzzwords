@@ -6,15 +6,39 @@
    <color name="teamA">
       #BE0028
    </color>
+   <color name="teamA_BG">
+      #ba5555
+   </color>
+   <color name="teamA_Text">
+      #470000
+   </color>   
    <color name="teamB">
       #0A2EBF
    </color>
+   <color name="teamB_BG">
+      #316495
+   </color> 
+   <color name="teamB_Text">
+      #001b2b
+   </color>    
    <color name="teamC">
       #00BF1F
    </color>
+   <color name="teamC_BG">
+      #5f7760
+   </color>   
+   <color name="teamC_Text">
+      #556f55
+   </color>  
    <color name="teamD">
       #BF900A
    </color>
+   <color name="teamD_BG">
+      #baa310
+   </color>   
+      <color name="teamD_Text">
+      #2e2e00
+   </color>  
    <color name="title">
       #FFFFFF
    </color>
