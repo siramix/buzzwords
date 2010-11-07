@@ -65,39 +65,25 @@
 </RelativeLayout><ImageView android:layout_below="@id/CardWordsA" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:id="@+id/WrongStamp" android:background="@drawable/wrong_stamp"></ImageView>
 
 <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonCancelWrong" android:background="@drawable/cancelwrong" android:layout_above="@+id/lowbar" android:layout_alignParentLeft="true" android:layout_marginBottom="2dp"></ImageButton><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonConfirmWrong" android:background="@drawable/wrong" android:layout_above="@+id/lowbar" android:layout_alignParentRight="true" android:layout_marginBottom="2dp"></ImageButton><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/PauseImageView" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:background="@drawable/paused"></ImageView>
-<RelativeLayout android:layout_width="wrap_content" android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:paddingLeft="2dp">
+<RelativeLayout android:layout_width="wrap_content" android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:paddingLeft="2dp" android:background="@drawable/controls_bg">
 	<ImageButton 
 		android:layout_alignParentLeft="true" 
 		android:layout_width="wrap_content" 
 		android:background="@drawable/wrong_selector" 
 		android:id="@+id/ButtonWrong"
-		android:nextFocusDown="@drawable/wrong_onclick" 
-		android:nextFocusUp="@drawable/wrong"
 		android:layout_marginLeft="4dp" android:layout_height="wrap_content"></ImageButton>
 	<ImageButton 
 		android:layout_height="wrap_content" 
-		android:background="@drawable/skip_selector" 
 		android:layout_width="wrap_content" 
 		android:id="@+id/ButtonSkip" 
 		android:layout_toRightOf="@+id/ButtonWrong"
-		android:nextFocusDown="@drawable/skip_onclick" 
-		android:nextFocusUp="@drawable/skip" 
-		android:layout_marginLeft="4dp"></ImageButton>
+		android:background="@drawable/controls_skip_selector" android:layout_marginLeft="5dp" android:layout_marginTop="5dp"></ImageButton>
 	<ImageButton 
-		android:layout_height="wrap_content" 
-		android:layout_width="wrap_content" 
 		android:id="@+id/ButtonCorrect" 
-		android:layout_alignWithParentIfMissing="true" 
 		android:layout_toRightOf="@+id/ButtonSkip" 
-		android:background="@drawable/right_selector"
-		android:nextFocusDown="@drawable/right_onclick" 
-		android:nextFocusUp="@drawable/right" 
-		android:layout_marginLeft="4dp"></ImageButton>
-
+		android:background="@drawable/controls_right_selector" 
+		android:layout_height="wrap_content" 
+		android:layout_width="wrap_content" android:layout_marginLeft="5dp" android:layout_marginTop="5dp"></ImageButton>
 </RelativeLayout>
-
-
-
-
 
 </RelativeLayout>
