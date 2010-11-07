@@ -16,7 +16,7 @@
 				android:layout_width="fill_parent" 
 				android:layout_height="wrap_content" 
 				android:layout_alignParentTop="true" 
-				android:paddingBottom="15dp" android:paddingTop="30dp" android:textColor="#FFF" android:textStyle="bold" android:typeface="serif" android:textSize="40dp">
+				android:textColor="#FFF" android:textStyle="bold" android:typeface="serif" android:textSize="40dp" android:paddingTop="10dp" android:paddingBottom="10dp">
 			</TextView>
 			<ListView 
 				android:layout_width="fill_parent" 
@@ -40,7 +40,7 @@
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content" 
 			android:layout_alignParentTop="true" 
-			android:paddingBottom="15dp" android:paddingTop="30dp" android:textColor="#FFF" android:textStyle="bold" android:typeface="serif" android:textSize="40dp">
+			android:textColor="#FFF" android:textStyle="bold" android:typeface="serif" android:textSize="40dp" android:paddingTop="10dp" android:paddingBottom="10dp">
 		</TextView>
 		<ListView 
 			android:layout_width="fill_parent" 
