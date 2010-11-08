@@ -107,6 +107,16 @@ public class Turn extends Activity
   private int buzzStreamId;
 
   /**
+   * id of the correct sound within the sound-pool framework
+   */
+  private int rightSoundId;
+  
+  /**
+   * id of the swipe sound within the sound-pool framework
+   */
+  private int swipeSoundId;
+  
+  /**
    * vibrator object to vibrate on buzz click
    */
   private Vibrator buzzVibrator;
@@ -324,11 +334,8 @@ public class Turn extends Activity
     public void onClick(View v)
     {
       Log.d( TAG, "CorrectListener OnClick()" );
-      AIsActive = !AIsActive;
-      ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
-      flipper.showNext();
-      curGameManager.ProcessCard( 0 );
-      ShowCard();
+      
+      Turn.this.doCorrect();
     }
   }; // End CorrectListener
 
@@ -342,6 +349,7 @@ public class Turn extends Activity
     public void onClick(View v)
     {
       Log.d( TAG, "SkipListener OnClick()" );
+      
       Turn.this.doSkip();
     }
   }; // End SkipListener
@@ -463,14 +471,53 @@ public class Turn extends Activity
   	return scaleTimer;
   }
 
+  /**
+   * Works with GameManager to perform the back end processing of a card skip.  Also
+   * handles the sound for skipping so that all forms of skips (swipes or button clicks)
+   * play the sound.
+   */
   protected void doSkip()
   {
     AIsActive = !AIsActive;
+    AudioManager mgr =
+      (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
+    float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
+    float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
+    float volume = streamVolumeCurrent / streamVolumeMax;
+    
     this.viewFlipper.showNext();
     this.curGameManager.ProcessCard( 2 );
-    ShowCard();
+
+    //Only play sound once card has been processed so we don't confuse the user
+    soundPool.play( swipeSoundId, volume, volume, 1, 0, 1.0f );
+    
+    ShowCard();    
   }
 
+  /**
+   * Works with GameManager to perform the back end processing of a correct card.
+   * For consistency this method was created to match the skip architecture.  Also for
+   * consistency the sound for correct cards will be handled in this method.
+   */
+  protected void doCorrect() 
+  {
+    AIsActive = !AIsActive;    
+    AudioManager mgr =
+      (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
+    float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
+    float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
+    float volume = streamVolumeCurrent / streamVolumeMax;
+      
+    ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
+    flipper.showNext();
+    curGameManager.ProcessCard( 0 );
+
+    //Only play sound once card has been processed so we don't confuse the user
+    soundPool.play( rightSoundId, volume, volume, 1, 0, 1.0f );
+    
+    ShowCard();    
+  }
+  
   protected void setActiveCard()
   {
     int curTitle;
@@ -531,6 +578,8 @@ public class Turn extends Activity
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
     this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+    this.rightSoundId = this.soundPool.load( this, R.raw.wine_clink, 1);
+    this.swipeSoundId = this.soundPool.load( this, R.raw.swipe, 1);
 
     TaboozleApplication application =
       (TaboozleApplication) this.getApplication();
