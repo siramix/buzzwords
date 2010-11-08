@@ -4,37 +4,37 @@
       #000000
    </color>
    <color name="teamA_text">
-      #0A2EBF 
+      #317695
    </color>
    <color name="teamA_BG">
-      #316495 
+      #317695
    </color>
    <color name="teamA_CardText">
       #001b2b 
    </color>   
    <color name="teamB_text">
-      #00BF1F
+      #6FA234
    </color>
    <color name="teamB_BG">
-      #5f7760
+      #6FA234
    </color> 
    <color name="teamB_CardText">
       #556f55
    </color>    
    <color name="teamC_text">
-      #BE0028
+      #AC2D20
    </color>
    <color name="teamC_BG">
-      #9d4c4c
+      #AC2D20
    </color>   
    <color name="teamC_CardText">
       #470000
    </color>  
    <color name="teamD_text">
-      #BF900A
+      #AC9B29
    </color>
    <color name="teamD_BG">
-      #baa310
+      #AC9B29
    </color>   
       <color name="teamD_CardText">
       #2e2e00
