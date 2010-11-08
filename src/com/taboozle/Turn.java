@@ -608,17 +608,17 @@ public class Turn extends Activity
    // this.findViewById( R.layout.word ).inflate(context, resource, root);
     
     switch (this.curGameManager.GetActiveTeamIndex()) {      
-      case 0: //Red Team
-        barFill.setImageResource( R.drawable.timer_fill_red );
+      case 0: //Blue Team
+        barFill.setImageResource( R.drawable.timer_fill_blue );
         this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamA_BG );
        // badWords.setTextColor( R.color.teamA_Text );
         break;
-      case 1: //Blue Team 
-        barFill.setImageResource( R.drawable.timer_fill_blue );
+      case 1: //Green Team 
+        barFill.setImageResource( R.drawable.timer_fill_green );
         this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamB_BG );        
         break;
-      case 2: //Green Team 
-        barFill.setImageResource( R.drawable.timer_fill_green );
+      case 2: //Red Team 
+        barFill.setImageResource( R.drawable.timer_fill_red );
         this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamC_BG );     
         break;
       case 3: //Yellow Team 

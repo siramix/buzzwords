@@ -6,11 +6,11 @@
      android:orientation="horizontal">
  
      <TextView 
-	     android:paddingTop="6dip" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center" android:id="@+id/GameEnd_TeamA" android:layout_width="fill_parent" android:text="TeamA" android:textColor="@color/teamA"/><TextView 
-	     android:paddingTop="6dip" android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:gravity="center" android:id="@+id/GameEnd_TeamB" android:text="TeamB" android:textColor="@color/teamB"/>
+	     android:paddingTop="6dip" android:layout_height="fill_parent" android:layout_weight="1" android:gravity="center" android:id="@+id/GameEnd_TeamA" android:layout_width="fill_parent" android:text="TeamA" android:textColor="@color/teamA_text"/><TextView 
+	     android:paddingTop="6dip" android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:gravity="center" android:id="@+id/GameEnd_TeamB" android:text="TeamB" android:textColor="@color/teamB_text"/>
 
      <TextView 
-	     android:paddingTop="6dip" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1" android:gravity="center" android:id="@+id/GameEnd_TeamC" android:text="TeamC" android:textColor="@color/teamC"/><TextView 
-	     android:paddingTop="6dip" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1" android:gravity="center" android:id="@+id/GameEnd_TeamD" android:text="TeamD" android:textColor="@color/teamD"/>	     	     
+	     android:paddingTop="6dip" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1" android:gravity="center" android:id="@+id/GameEnd_TeamC" android:text="TeamC" android:textColor="@color/teamC_text"/><TextView 
+	     android:paddingTop="6dip" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1" android:gravity="center" android:id="@+id/GameEnd_TeamD" android:text="TeamD" android:textColor="@color/teamD_text"/>	     	     
 
 </LinearLayout>

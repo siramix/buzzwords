@@ -3,40 +3,40 @@
    <color name="black">
       #000000
    </color>
-   <color name="teamA">
-      #BE0028
+   <color name="teamA_text">
+      #0A2EBF 
    </color>
    <color name="teamA_BG">
-      #ba5555
+      #316495 
    </color>
-   <color name="teamA_Text">
-      #470000
+   <color name="teamA_CardText">
+      #001b2b 
    </color>   
-   <color name="teamB">
-      #0A2EBF
-   </color>
-   <color name="teamB_BG">
-      #316495
-   </color> 
-   <color name="teamB_Text">
-      #001b2b
-   </color>    
-   <color name="teamC">
+   <color name="teamB_text">
       #00BF1F
    </color>
-   <color name="teamC_BG">
+   <color name="teamB_BG">
       #5f7760
-   </color>   
-   <color name="teamC_Text">
+   </color> 
+   <color name="teamB_CardText">
       #556f55
+   </color>    
+   <color name="teamC_text">
+      #BE0028
+   </color>
+   <color name="teamC_BG">
+      #9d4c4c
+   </color>   
+   <color name="teamC_CardText">
+      #470000
    </color>  
-   <color name="teamD">
+   <color name="teamD_text">
       #BF900A
    </color>
    <color name="teamD_BG">
       #baa310
    </color>   
-      <color name="teamD_Text">
+      <color name="teamD_CardText">
       #2e2e00
    </color>  
    <color name="title">

@@ -19,9 +19,9 @@
   <string name="pauseGameDialog_text">Paused</string>
   
   <!-- Team names -->
-  <string name="teamnameA">Red Team</string>
-  <string name="teamnameB">Blue Team</string>
-  <string name="teamnameC">Green Team</string>
+  <string name="teamnameA">Blue Team</string>
+  <string name="teamnameB">Green Team</string>
+  <string name="teamnameC">Red Team</string>
   <string name="teamnameD">Yellow Team</string>
   
   

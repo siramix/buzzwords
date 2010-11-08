@@ -200,7 +200,7 @@ public class TurnSummary extends Activity
     TextView curTeam = (TextView) findViewById(R.id.TurnTeamName);
     curTeam.setText(game.GetTeamNames()[game.GetActiveTeamIndex()]);
     // Set team name color
-	  final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA, R.color.teamB, R.color.teamC, R.color.teamD };
+	  final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
     curTeam.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[game.GetActiveTeamIndex()]));
   }
 
