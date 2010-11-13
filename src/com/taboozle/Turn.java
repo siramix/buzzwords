@@ -444,22 +444,21 @@ public class Turn extends Activity
   private Animation TimerAnimation (int timerCommand)
   {
     Log.d( TAG, "TimerAnimation()");
-    //TODO: Let's see if this is the best way to do this.  Anyone have any concerns over importing
-    //      Display and WindowManager for this one task?
-    Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay(); 
-    float screenWidth = display.getWidth() - 4; 
+   
+    ImageView timerContainer = (ImageView) findViewById(R.id.TurnTimerBG);
+    float timerContainerWidth = timerContainer.getWidth() - 4; 
     
-    float percentTimeLeft = screenWidth;
+    float percentTimeLeft = timerContainerWidth;
     int duration = this.curGameManager.GetTurnTime();
     
     if (timerCommand == Turn.TIMERANIM_RESUME_ID)
     {
-    	percentTimeLeft = ((float) this.timerState / this.curGameManager.GetTurnTime()) * screenWidth;
+    	percentTimeLeft = ((float) this.timerState / this.curGameManager.GetTurnTime()) * timerContainerWidth;
     	duration = (int) this.timerState;
     }
     else if (timerCommand == Turn.TIMERANIM_PAUSE_ID)
     {
-    	percentTimeLeft = ((float) this.timerState / this.curGameManager.GetTurnTime()) * screenWidth;
+    	percentTimeLeft = ((float) this.timerState / this.curGameManager.GetTurnTime()) * timerContainerWidth;
     	duration = Integer.MAX_VALUE;
     }
     
