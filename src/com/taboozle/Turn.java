@@ -162,7 +162,7 @@ public class Turn extends Activity
     public TurnTimer(long millisInFuture, long countDownInterval)
     {
       super(millisInFuture, countDownInterval);
-      Log.d( TAG, "TurnTimer()" );
+      Log.d( TAG, "TurnTimer(" + millisInFuture + ", " + countDownInterval + ")" );
       Turn.this.timerOn = true;
     }
 
@@ -176,6 +176,7 @@ public class Turn extends Activity
     @Override
     public void onTick(long millisUntilFinished)
     {
+      Log.d( TAG, "onTick(" + millisUntilFinished + ")");
       Turn.this.timerState = millisUntilFinished;
       Turn.this.countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
     }
@@ -400,6 +401,7 @@ public class Turn extends Activity
   {
       public void onClick(View v)
       {
+        Log.d( TAG, "PauseListener OnClick()" );
         Turn.this.resumeGame();
         Turn.this.closeOptionsMenu();
       }
@@ -477,6 +479,7 @@ public class Turn extends Activity
    */
   protected void doSkip()
   {
+    Log.d( TAG, "doSkip()");
     AIsActive = !AIsActive;
     AudioManager mgr =
       (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
@@ -500,6 +503,7 @@ public class Turn extends Activity
    */
   protected void doCorrect() 
   {
+    Log.d( TAG, "doCorrect()");
     AIsActive = !AIsActive;    
     AudioManager mgr =
       (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
@@ -519,6 +523,7 @@ public class Turn extends Activity
   
   protected void setActiveCard()
   {
+    Log.d( TAG, "setActiveCard()");
     int curTitle;
     int curWords;
     if( this.AIsActive )
@@ -574,6 +579,7 @@ public class Turn extends Activity
 
   protected void setupViewReferences()
   {
+    Log.d( TAG, "setupViewReferences()");
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
     this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
@@ -600,6 +606,7 @@ public class Turn extends Activity
   
   protected void setupUIProperties()
   {
+    Log.d( TAG, "setupUIProperties()");
     this.confirmWrongButton.setVisibility( View.INVISIBLE );
     this.cancelWrongButton.setVisibility( View.INVISIBLE );
     this.wrongStamp.setVisibility( View.INVISIBLE );
@@ -609,7 +616,7 @@ public class Turn extends Activity
 
     this.countdownTxt.setOnClickListener( this.TimerClickListener );
     this.countdownTxt.setText( Integer.toString( this.curGameManager.GetTurnTime()/1000 ) + "s" );
-
+    
     this.viewFlipper.setInAnimation(InFromRightAnimation());
     this.viewFlipper.setOutAnimation(OutToLeftAnimation());
     
@@ -637,7 +644,7 @@ public class Turn extends Activity
           if (swipeDetector.onTouchEvent(event)) {
               return true;
           }
-          return false;
+          return true; //prevents highlighting badwords by consuming even if not detected as a swipe
       }
     };
     
@@ -675,7 +682,7 @@ public class Turn extends Activity
         break;        
       default: barFill.setImageResource( R.drawable.timer_fill_red ); //Red Team
     }
-          
+    
   }
   
   /**
@@ -687,7 +694,7 @@ public class Turn extends Activity
   {
     super.onCreate( savedInstanceState );
     Log.d( TAG, "onCreate()" );
-
+    
     // set which card is active
     this.AIsActive = true;
 
@@ -769,8 +776,10 @@ public class Turn extends Activity
   @Override
   protected Dialog onCreateDialog(int id)
   {
+    Log.d( TAG, "onCreateDialog(" + id + ")" );
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
+    
     switch(id) {
     case DIALOG_GAMEOVER_ID:
       builder = new AlertDialog.Builder(this);
