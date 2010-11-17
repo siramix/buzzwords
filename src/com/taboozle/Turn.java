@@ -406,7 +406,7 @@ public class Turn extends Activity
         Turn.this.closeOptionsMenu();
       }
   }; // End CorrectListener
-
+  
   /**
    * @return The animation that brings cards into view from the right of the
    * screen
@@ -803,18 +803,25 @@ public class Turn extends Activity
     case DIALOG_READY_ID:
       String curTeam = this.curGameManager.GetActiveTeamName();
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("Tap to start!" )
-             .setTitle( "Ready " + curTeam + "?" )
+      builder.setTitle( "Ready " + curTeam + "?" )
              .setCancelable(false)
+             .setPositiveButton("START!", new DialogInterface.OnClickListener() {
+              
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                Turn.this.ShowCard();
+                Turn.this.startTimer();                
+              }
+            })
+            
              .setOnCancelListener(new DialogInterface.OnCancelListener() {				
-				public void onCancel(DialogInterface dialog) {
+             public void onCancel(DialogInterface dialog) {
+             // Handles cancelling the dialog (which shouldn't be possible anymore)
 	                 Turn.this.ShowCard();
 	                 Turn.this.startTimer();	                 					
-				}
-			});
-      
+               }
+             });      
       dialog = builder.create();
-      dialog.setCanceledOnTouchOutside (true);
       break;
     default:
         dialog = null;
