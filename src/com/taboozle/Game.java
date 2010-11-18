@@ -269,6 +269,36 @@ public class Game extends SQLiteOpenHelper
     db.insert( GameData.GAME_HISTORY_TABLE_NAME, "", values );
   }
 
+
+  /*
+   * Most Skips
+   * 
+   * SELECT team_id
+   * FROM gamehistory
+   * WHERE game_id = gameId
+   * GROUP BY team_id
+   * HAVING RWS = 2
+   * ORDER BY COUNT(*) DESC
+   * LIMIT 1;
+   * 
+   */
+  public String[] awardsQuery( int awardID, long gameId)
+  {
+	String[] results = {"test", ""};
+	SQLiteDatabase db = this.getReadableDatabase();
+	Cursor cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + " " + 
+				    "FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+				    "WHERE " + GameData.GameHistory.GAME_ID + "=" + gameId + " " + 
+				    "GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+				    "HAVING " + GameData.GameHistory.RWS + "=2 " +
+				    "ORDER BY COUNT(*) DESC " + 
+				    "LIMIT 1", null);
+	cursor.moveToFirst();
+	results[0] = cursor.getString(0);
+	
+	return results;
+  }
+  
   /* (non-Javadoc)
    * @see android.database.sqlite.SQLiteOpenHelper#onCreate(android.database.sqlite.SQLiteDatabase)
    */
@@ -405,5 +435,5 @@ public class Game extends SQLiteOpenHelper
     db.execSQL( "DROP TABLE IF EXISTS" + GameData.CARD_TABLE_NAME + ";" );
     onCreate( db );
   }
-
+  
 }
