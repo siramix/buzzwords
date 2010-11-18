@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
@@ -19,25 +18,18 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.view.Display;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-import android.widget.ImageView.ScaleType;
-import android.text.Layout;
 import android.util.Log;
 
 /**
@@ -63,7 +55,6 @@ public class Turn extends Activity
   static final int TIMERANIM_START_ID = 2;
 
   private static final int SWIPE_MIN_DISTANCE = 120;
-  private static final int SWIPE_MAX_OFF_PATH = 250;
   private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
   private ImageButton confirmWrongButton;
@@ -807,7 +798,6 @@ public class Turn extends Activity
              .setCancelable(false)
              .setPositiveButton("START!", new DialogInterface.OnClickListener() {
               
-              @Override
               public void onClick(DialogInterface dialog, int which) {
                 Turn.this.ShowCard();
                 Turn.this.startTimer();                
