@@ -275,28 +275,42 @@ public class Game extends SQLiteOpenHelper
    * 
    * SELECT team_id
    * FROM gamehistory
-   * WHERE game_id = gameId
+   * WHERE game_id = gameID
    * GROUP BY team_id
    * HAVING RWS = 2
    * ORDER BY COUNT(*) DESC
    * LIMIT 1;
    * 
    */
-  public String[] awardsQuery( int awardID, long gameId)
+  public String[] awardsQuery( int awardID, long gameID, int turnTime)
   {
-	String[] results = {"test", ""};
-	SQLiteDatabase db = this.getReadableDatabase();
-	Cursor cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + " " + 
-				    "FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
-				    "WHERE " + GameData.GameHistory.GAME_ID + "=" + gameId + " " + 
-				    "GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
-				    "HAVING " + GameData.GameHistory.RWS + "=2 " +
-				    "ORDER BY COUNT(*) DESC " + 
-				    "LIMIT 1", null);
-	cursor.moveToFirst();
-	results[0] = cursor.getString(0);
-	
-	return results;
+   	String[] results = {"", ""};
+  	SQLiteDatabase db = this.getReadableDatabase();
+  	Cursor cursor = db.rawQuery( "select -1, -1", null);
+  	
+  	switch (awardID) 
+  	{  	
+  	  case 1:  	  
+      	cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + " " + 
+      		"FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+      		"WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID + " " + 
+      				    "GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+      				    "HAVING " + GameData.GameHistory.RWS + "=2 " +
+      				    "ORDER BY COUNT(*) DESC " + 
+      				    "LIMIT 1", null);
+      	break;
+  	}
+  	
+    if (cursor.moveToFirst())     
+      results[0] = cursor.getString(0);
+    else
+      results[0] = "-1";    
+    if (cursor.moveToNext())
+      results[1] = cursor.getString(1);
+    else
+      results[1] = "-1";
+    
+  	return results;
   }
   
   /* (non-Javadoc)

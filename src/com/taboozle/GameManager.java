@@ -359,4 +359,28 @@ public class GameManager implements Serializable
     Log.d( TAG, "GetActiveTeamName()" );
     return this.teamNames[this.activeTeamIndex];
   }
+  
+  /**
+   * Accessor for the game ID for the game in progress.
+   * @return long representing the database ID of the game in progress.
+   */
+  public long GetGameId()
+  {
+    Log.d( TAG, "GetGameId()" );
+    return this.currentGameId;
+  }
+  
+  /**
+   * Game method that calls the database methods in Game and passes 
+   * on it's results.
+   * 
+   * @param awardID The ID of the award to be queried for.  IDs map to values in the XML constants.
+   * @param gameID The ID of the game 
+   * @return
+   */
+  public String[] awardsQuery( int awardID, long gameID)
+  {
+    Log.d( TAG, "awardsQuery(" + awardID + ", " + gameID + ")" );
+    return this.game.awardsQuery(awardID, gameID, this.turn_time);
+  }
 }
