@@ -290,7 +290,7 @@ public class Game extends SQLiteOpenHelper
   	
   	switch (awardID) 
   	{  	
-  	  case 1:  	  
+  	  case 1: //Most Skips 	  
       	cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + " " + 
       		"FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
       		"WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID + " " + 
@@ -299,8 +299,19 @@ public class Game extends SQLiteOpenHelper
       				    "ORDER BY COUNT(*) DESC " + 
       				    "LIMIT 1", null);
       	break;
+  	  case 2: //Most Incorrect
+        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + " " + 
+            "FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+            "WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID + " " + 
+                    "GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+                    "HAVING " + GameData.GameHistory.RWS + "=1 " +
+                    "ORDER BY COUNT(*) DESC " + 
+                    "LIMIT 1", null);
+          break;
+  	    
   	}
   	
+  	// Set results array to the answers returned from sqlite query
     if (cursor.moveToFirst())     
       results[0] = cursor.getString(0);
     else
