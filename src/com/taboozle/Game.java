@@ -284,43 +284,72 @@ public class Game extends SQLiteOpenHelper
    */
   public String[] awardsQuery( int awardID, long gameID, int turnTime)
   {
-   	String[] results = {"", ""};
+   	String[] results = {"", ""}; //TeamID, AwardValue or Word
   	SQLiteDatabase db = this.getReadableDatabase();
-  	Cursor cursor = db.rawQuery( "select -1, -1", null);
+  	Cursor cursor = db.rawQuery( "select 'DEFAULT', 'DEFAULT'", null);
   	
   	switch (awardID) 
   	{  	
   	  case 1: //Most Skips 	  
-      	cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + " " + 
-      		"FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
-      		"WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID + " " + 
-      				    "GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
-      				    "HAVING " + GameData.GameHistory.RWS + "=2 " +
-      				    "ORDER BY COUNT(*) DESC " + 
-      				    "LIMIT 1", null);
+      	cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*)" +  
+      		" FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+      		" WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+      		   " and " + GameData.GameHistory.RWS + "=2 " + 
+      		" GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+      		" ORDER BY 2 DESC" + 
+      		" LIMIT 2", null);
       	break;
   	  case 2: //Most Incorrect
-        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + " " + 
-            "FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
-            "WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID + " " + 
-                    "GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
-                    "HAVING " + GameData.GameHistory.RWS + "=1 " +
-                    "ORDER BY COUNT(*) DESC " + 
-                    "LIMIT 1", null);
-          break;
-  	    
+        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*)" +  
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+               " and " + GameData.GameHistory.RWS + "=1" + 
+            " GROUP BY " + GameData.GameHistory.TEAM_ID + 
+            " ORDER BY 2 DESC" + 
+            " LIMIT 2", null);
+        break;
+  	  case 3: //Highest single turn score    
+  	    cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + ", " + GameData.TurnScores.SCORE +
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+            " GROUP BY " + GameData.TurnScores.TEAM_ID + 
+            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+            " LIMIT 2", null);
+  	    break;
   	}
   	
   	// Set results array to the answers returned from sqlite query
-    if (cursor.moveToFirst())     
+    if (cursor.moveToFirst())
+    {
       results[0] = cursor.getString(0);
-    else
-      results[0] = "-1";    
+      
+      if (cursor.getColumnCount() == 2)
+        results[1] = cursor.getString(1);
+      else
+        results[1] = "EMPTY";
+      
+    }    
+    // Empty results get set to -1
+    else 
+    {
+      results[0] = "EMPTY";
+      results[1] = "EMPTY";
+    }
+        
+    //Handle Tied Awards
     if (cursor.moveToNext())
-      results[1] = cursor.getString(1);
-    else
-      results[1] = "-1";
+    {
+      if (cursor.getColumnCount() == 2)
+      {
+        if (cursor.getString(1).compareTo(results[1]) == 0)  //Ties disqualify award
+        {
+          results[0] = "TIE";
+          results[1] = cursor.getString(1);
+        }
+      }
+    }
     
+    cursor.close();
   	return results;
   }
   
