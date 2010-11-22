@@ -290,7 +290,7 @@ public class Game extends SQLiteOpenHelper
   	
   	switch (awardID) 
   	{  	
-  	  case 1: //Most Skips 	  
+  	  case 1: //Most Skips in the Game
       	cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*)" +  
       		" FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
       		" WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
@@ -299,7 +299,7 @@ public class Game extends SQLiteOpenHelper
       		" ORDER BY 2 DESC" + 
       		" LIMIT 2", null);
       	break;
-  	  case 2: //Most Incorrect
+  	  case 2: //Most Incorrect in the Game
         cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*)" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
@@ -308,7 +308,7 @@ public class Game extends SQLiteOpenHelper
             " ORDER BY 2 DESC" + 
             " LIMIT 2", null);
         break;
-      case 3: //Most Correct
+      case 3: //Most Correct in the Game
         cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*)" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
@@ -327,13 +327,42 @@ public class Game extends SQLiteOpenHelper
   	    break;
       case 5: //Most Correct in Round and not Highest Scoring
         cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*)" +  
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
+            " WHERE gh." + GameData.GameHistory.GAME_ID + "=" + gameID +
+               " and gh." + GameData.GameHistory.RWS + "=0" + 
+               " and gh." + GameData.GameHistory.TURN_SCORE_ID + " not in " +
+               // Find out which teams match the highest score
+               " (SELECT ts." + GameData.TurnScores.TEAM_ID + 
+                 " FROM " + GameData.TURN_SCORES_TABLE_NAME + " ts" + 
+                 " WHERE ts." + GameData.TurnScores.GAME_ID + "=" + gameID +
+                   " and ts." + GameData.TurnScores.SCORE + " = " +
+                   // Retrieve the highest score
+                   " (SELECT ts2." + GameData.TurnScores.SCORE +
+                     " FROM " + GameData.TURN_SCORES_TABLE_NAME + " ts2" +
+                     " WHERE ts2." + GameData.TurnScores.GAME_ID + "=" + gameID +
+                     " ORDER BY ts2." + GameData.TurnScores.SCORE + " DESC" + 
+                     " LIMIT 1)" +
+                ")" +
+            " GROUP BY gh." + GameData.GameHistory.TURN_SCORE_ID + 
+            " ORDER BY 2 DESC", null);
+        break;   
+      case 6: //Most skipped in a single round
+        cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUMSKIPS" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-               " and " + GameData.GameHistory.RWS + "=0" + 
-            " GROUP BY " + GameData.GameHistory.TEAM_ID + 
-            " ORDER BY 2 DESC" + 
-            " LIMIT 2", null);
-        break;   
+              " and " + GameData.GameHistory.RWS + "=2" + 
+            " GROUP BY " + GameData.GameHistory.TURN_SCORE_ID +
+            " HAVING " + "COUNT(*)=" +
+               //Retrieve the highest number of skipped cards in a single turn
+               " (SELECT COUNT(*)" +
+                 " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                 " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                   " and gh2." + GameData.GameHistory.RWS + "=2" + 
+                 " GROUP BY gh2." + GameData.GameHistory.TURN_SCORE_ID + 
+                 " ORDER BY 1 DESC" +
+                 " LIMIT 1)" +
+            " ORDER BY 2 DESC", null);
+        break;       
   	}
   	
   	// Set results array to the answers returned from sqlite query
