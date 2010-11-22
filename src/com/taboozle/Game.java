@@ -318,7 +318,7 @@ public class Game extends SQLiteOpenHelper
             " LIMIT 2", null);
         break;
   	  case 4: //Highest single turn score    
-  	    cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + ", " + GameData.TurnScores.SCORE +
+  	    cursor = db.rawQuery("SELECT DISTINCT " + GameData.TurnScores.TEAM_ID + ", " + GameData.TurnScores.SCORE +
             " FROM " + GameData.TURN_SCORES_TABLE_NAME +
             " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
             " GROUP BY " + GameData.TurnScores.TEAM_ID + 
@@ -326,7 +326,7 @@ public class Game extends SQLiteOpenHelper
             " LIMIT 2", null);
   	    break;
       case 5: //Most Correct in Round and not Highest Scoring
-        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*)" +  
+        cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*)" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
             " WHERE gh." + GameData.GameHistory.GAME_ID + "=" + gameID +
                " and gh." + GameData.GameHistory.RWS + "=0" + 
