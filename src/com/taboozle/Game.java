@@ -297,7 +297,7 @@ public class Game extends SQLiteOpenHelper
       		   " and " + GameData.GameHistory.RWS + "=2 " + 
       		" GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
       		" ORDER BY 2 DESC" + 
-      		" LIMIT 2", null);
+      		" LIMIT 1", null);
       	break;
       	
   	  case 2: //Most Incorrect in the Game
@@ -307,7 +307,7 @@ public class Game extends SQLiteOpenHelper
                " and " + GameData.GameHistory.RWS + "=1" + 
             " GROUP BY " + GameData.GameHistory.TEAM_ID + 
             " ORDER BY 2 DESC" + 
-            " LIMIT 2", null);
+            " LIMIT 1", null);
         break;
         
       case 3: //Most Correct in the Game
@@ -317,7 +317,7 @@ public class Game extends SQLiteOpenHelper
                " and " + GameData.GameHistory.RWS + "=0" + 
             " GROUP BY " + GameData.GameHistory.TEAM_ID + 
             " ORDER BY 2 DESC" + 
-            " LIMIT 2", null);
+            " LIMIT 1", null);
         break;
         
   	  case 4: //Highest single turn score    
@@ -334,7 +334,7 @@ public class Game extends SQLiteOpenHelper
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
             " WHERE gh." + GameData.GameHistory.GAME_ID + "=" + gameID +
                " and gh." + GameData.GameHistory.RWS + "=0" + 
-               " and gh." + GameData.GameHistory.TURN_SCORE_ID + " not in " +
+               " and gh." + GameData.GameHistory.TEAM_ID + " NOT IN " +
                // Find out which teams match the highest score
                " (SELECT ts." + GameData.TurnScores.TEAM_ID + 
                  " FROM " + GameData.TURN_SCORES_TABLE_NAME + " ts" + 
@@ -376,7 +376,7 @@ public class Game extends SQLiteOpenHelper
               " and " + GameData.GameHistory.RWS + "=1" + 
             " GROUP BY " + GameData.GameHistory.TURN_SCORE_ID +
             " HAVING " + "COUNT(*)=" +
-               //Retrieve the highest number of skipped cards in a single turn
+               //Retrieve the highest number of incorrect cards in a single turn
                " (SELECT COUNT(*)" +
                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
                  " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
@@ -392,7 +392,7 @@ public class Game extends SQLiteOpenHelper
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
                " and " + GameData.GameHistory.RWS + "=2" + 
-               " and " + GameData.GameHistory.TURN_SCORE_ID + " not in " +
+               " and " + GameData.GameHistory.TURN_SCORE_ID + " NOT IN " +
                //Exclude all turns that had something other than a skip
                " (SELECT DISTINCT gh2." + GameData.GameHistory.TURN_SCORE_ID +
                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " as gh2" +
@@ -400,9 +400,34 @@ public class Game extends SQLiteOpenHelper
                    " OR " + GameData.GameHistory.RWS + "=1)" +                   
             " GROUP BY " + GameData.GameHistory.TURN_SCORE_ID + 
             " HAVING NUM_SKIPS > 0" +
-            " ORDER BY 2 DESC" + 
-            " LIMIT 2", null);
+            " ORDER BY 2 DESC", null);
         break;    
+        
+      case 9: //All teams that got negative points in a round
+        cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID +
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID +
+                " and " + GameData.TurnScores.SCORE + "<0", null);
+        break;   
+        
+      case 10: //All teams that got zero points in a round
+        cursor = db.rawQuery("SELECT DISTINCT " + GameData.TurnScores.TEAM_ID +
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID +
+                " and " + GameData.TurnScores.SCORE + "=0", null);
+        break;
+        
+      case 11: //No actions performed
+        cursor = db.rawQuery("SELECT DISTINCT " + GameData.TurnScores.TEAM_ID +
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID +
+              " and " + GameData.TurnScores.SCORE + "=0" + 
+              " and " + GameData.TurnScores._ID + " NOT IN " +
+              //Exclude turns that have registered an action performed by a team
+              " (SELECT DISTINCT gh." + GameData.GameHistory.TURN_SCORE_ID + 
+                " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " as gh" +
+                " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID + ")", null);
+        break;        
   	}
   	
   	// Set results array to the answers returned from sqlite query
