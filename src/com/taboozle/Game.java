@@ -428,6 +428,92 @@ public class Game extends SQLiteOpenHelper
                 " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " as gh" +
                 " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID + ")", null);
         break;        
+      
+      case 12: //Longest Correct streak 
+        // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
+        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
+            " FROM " +
+            " (SELECT " + GameData.GameHistory.TEAM_ID + ", " 
+                        + GameData.GameHistory.RWS + ", COUNT(*) as STREAK" +
+              " FROM " +
+                //Result table contains team_id, rws, and its 'group'.  Every streak of numbers
+                //belongs to the same streak.
+                " (SELECT " + GameData.GameHistory.TEAM_ID + ", " + GameData.GameHistory.RWS + "," +
+                  //Count the number of times up to the current row where a value other than 
+                  //the current has been seen (so the count repeats as long as the rws doesn't change).
+                  //This is the 'group' that the entry belongs to
+                  " (SELECT COUNT(*)" +
+                    " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                    " WHERE gh2." + GameData.GameHistory.GAME_ID + " = " + gameID +
+                    " and gh2." + GameData.GameHistory.RWS + " <> gh." + GameData.GameHistory.RWS +
+                    " and gh2." + GameData.GameHistory._ID + " <= gh." + GameData.GameHistory._ID +
+                    " and gh2." + GameData.GameHistory.TEAM_ID + " = gh." + 
+                                          GameData.GameHistory.TEAM_ID + ") as GROUPNUM" +
+                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
+                  " WHERE " + GameData.GameHistory.GAME_ID + "= " + gameID + ")" + 
+              " WHERE " + GameData.GameHistory.RWS + " = 0" +
+              " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
+                       GameData.GameHistory.RWS + ")" +
+            " GROUP BY " + GameData.GameHistory.TEAM_ID, null);
+        break;        
+        
+      case 13: //Longest Wrong streak 
+        // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
+        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
+            " FROM " +
+            " (SELECT " + GameData.GameHistory.TEAM_ID + ", " 
+                        + GameData.GameHistory.RWS + ", COUNT(*) as STREAK" +
+              " FROM " +
+                //Result table contains team_id, rws, and its 'group'.  Every streak of numbers
+                //belongs to the same streak.
+                " (SELECT " + GameData.GameHistory.TEAM_ID + ", " + GameData.GameHistory.RWS + "," +
+                  //Count the number of times up to the current row where a value other than 
+                  //the current has been seen (so the count repeats as long as the rws doesn't change).
+                  //This is the 'group' that the entry belongs to
+                  " (SELECT COUNT(*)" +
+                    " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                    " WHERE gh2." + GameData.GameHistory.GAME_ID + " = " + gameID +
+                    " and gh2." + GameData.GameHistory.RWS + " <> gh." + GameData.GameHistory.RWS +
+                    " and gh2." + GameData.GameHistory._ID + " <= gh." + GameData.GameHistory._ID +
+                    " and gh2." + GameData.GameHistory.TEAM_ID + " = gh." + 
+                                          GameData.GameHistory.TEAM_ID + ") as GROUPNUM" +
+                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
+                  " WHERE " + GameData.GameHistory.GAME_ID + "= " + gameID + ")" + 
+              " WHERE " + GameData.GameHistory.RWS + " = 1" + 
+              //This above line is the line that changes between the wrong, skip, and right streaks
+              " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
+                       GameData.GameHistory.RWS + ")" +
+            " GROUP BY " + GameData.GameHistory.TEAM_ID, null);
+        break; 
+        
+      case 14: //Longest Skip streak 
+        // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
+        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
+            " FROM " +
+            " (SELECT " + GameData.GameHistory.TEAM_ID + ", " 
+                        + GameData.GameHistory.RWS + ", COUNT(*) as STREAK" +
+              " FROM " +
+                //Result table contains team_id, rws, and its 'group'.  Every streak of numbers
+                //belongs to the same streak.
+                " (SELECT " + GameData.GameHistory.TEAM_ID + ", " + GameData.GameHistory.RWS + "," +
+                  //Count the number of times up to the current row where a value other than 
+                  //the current has been seen (so the count repeats as long as the rws doesn't change).
+                  //This is the 'group' that the entry belongs to
+                  " (SELECT COUNT(*)" +
+                    " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                    " WHERE gh2." + GameData.GameHistory.GAME_ID + " = " + gameID +
+                    " and gh2." + GameData.GameHistory.RWS + " <> gh." + GameData.GameHistory.RWS +
+                    " and gh2." + GameData.GameHistory._ID + " <= gh." + GameData.GameHistory._ID +
+                    " and gh2." + GameData.GameHistory.TEAM_ID + " = gh." + 
+                                          GameData.GameHistory.TEAM_ID + ") as GROUPNUM" +
+                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
+                  " WHERE " + GameData.GameHistory.GAME_ID + "= " + gameID + ")" + 
+              " WHERE " + GameData.GameHistory.RWS + " = 2" + 
+              //This above line is the line that changes between the wrong, skip, and right streaks
+              " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
+                       GameData.GameHistory.RWS + ")" +
+            " GROUP BY " + GameData.GameHistory.TEAM_ID, null);
+        break;      
   	}
   	
   	// Set results array to the answers returned from sqlite query
