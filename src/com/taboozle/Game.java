@@ -290,34 +290,58 @@ public class Game extends SQLiteOpenHelper
   	
   	switch (awardID) 
   	{  	
-  	  case 1: //Most Skips in the Game
-      	cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPS" +  
-      		" FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
-      		" WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-      		   " and " + GameData.GameHistory.RWS + "=2 " + 
-      		" GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
-      		" ORDER BY 2 DESC" + 
-      		" LIMIT 1", null);
+  	  case 1: 
+  		  //Most Skips in the Game
+  		  //Find the teams that have total skips equal to the highest number by any team
+  		  cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPPED" +  
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " GROUP BY " + GameData.GameHistory.TEAM_ID +
+            " HAVING " + "COUNT(*)=" +
+            //Retrieve the highest number of skips by any team
+            " (SELECT COUNT(*) as NUM_SKIPS" +  
+			  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+			  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+			    " and " + GameData.GameHistory.RWS + "=2 " + 
+			  " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+			  " ORDER BY 1 DESC" + 
+			  " LIMIT 1)", null);
       	break;
       	
-  	  case 2: //Most Incorrect in the Game
+  	  case 2: 
+  		//Most Incorrect in the Game
+  		//Find the teams that have total wrongs equal to the highest number by any team
         cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_INCORRECT" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-               " and " + GameData.GameHistory.RWS + "=1" + 
-            " GROUP BY " + GameData.GameHistory.TEAM_ID + 
-            " ORDER BY 2 DESC" + 
-            " LIMIT 1", null);
+            " GROUP BY " + GameData.GameHistory.TEAM_ID +
+            " HAVING " + "COUNT(*)=" +
+            //Retrieve the highest number of wrongs by any team
+            " (SELECT COUNT(*) as NUM_SKIPS" +  
+ 			  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+ 			  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+ 			    " and " + GameData.GameHistory.RWS + "=1 " + 
+ 			  " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+ 			  " ORDER BY 1 DESC" + 
+ 			  " LIMIT 1)", null);
         break;
         
-      case 3: //Most Correct in the Game
+      case 3: 
+		//Most Correct in the Game
+		//Find the teams that have total corrects equal to the highest number by any team
         cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_CORRECT" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-               " and " + GameData.GameHistory.RWS + "=0" + 
-            " GROUP BY " + GameData.GameHistory.TEAM_ID + 
-            " ORDER BY 2 DESC" + 
-            " LIMIT 1", null);
+            " GROUP BY " + GameData.GameHistory.TEAM_ID +
+            " HAVING " + "COUNT(*)=" +
+            //Retrieve the highest number of wrongs by any team
+            " (SELECT COUNT(*) as NUM_SKIPS" +  
+			  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+			  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+			    " and " + GameData.GameHistory.RWS + "=0 " + 
+			  " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+			  " ORDER BY 1 DESC" + 
+			  " LIMIT 1)", null);
         break;
         
   	  case 4: //Highest single turn score    
@@ -513,7 +537,54 @@ public class Game extends SQLiteOpenHelper
               " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
                        GameData.GameHistory.RWS + ")" +
             " GROUP BY " + GameData.GameHistory.TEAM_ID, null);
-        break;      
+        break;  
+        
+      case 15: //Fewest Cards Seen 
+          cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
+                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+                  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+                  " GROUP BY " + GameData.GameHistory.TEAM_ID +
+                  " HAVING " + "COUNT(*)=" +
+                     //Retrieve the fewest number of cards seen for any team
+                     " (SELECT COUNT(*)" +
+                       " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                       " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                       " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+                       " ORDER BY 1 ASC" +
+                       " LIMIT 1)", null);
+          break;      
+          
+      case 16: //Most Cards Seen 
+          cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
+                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+                  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+                  " GROUP BY " + GameData.GameHistory.TEAM_ID +
+                  " HAVING " + "COUNT(*)=" +
+                     //Retrieve the fewest number of cards seen for any team
+                     " (SELECT COUNT(*)" +
+                       " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                       " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                       " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+                       " ORDER BY 1 DESC" +
+                       " LIMIT 1)", null);
+          break;
+      
+          //select sum(score) from turnscores where game_id = 115 group by team_id order by 1 asc limit 1
+          
+      case 17: //Be last and lose to next lowest player by half their score
+          cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
+                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+                  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+                  " GROUP BY " + GameData.GameHistory.TEAM_ID +
+                  " HAVING " + "COUNT(*)=" +
+                     //Retrieve the team id for the team that was last
+                     " (SELECT team_id " +
+                       " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                       " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                       " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+                       " ORDER BY 1 DESC" +
+                       " LIMIT 1)", null);
+          break;           
   	}
   	
   	// Set results array to the answers returned from sqlite query
