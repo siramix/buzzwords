@@ -175,6 +175,7 @@ public class Turn extends Activity
 
   private TurnTimer counter;
   private long timerState;
+  private long lastCardTimerState;
 
 
   private void stopTimer()
@@ -193,6 +194,7 @@ public class Turn extends Activity
   {
     Log.d( TAG, "startTimer()" );
     this.counter = new TurnTimer( this.curGameManager.GetTurnTime(), TICK);
+    this.lastCardTimerState = this.curGameManager.GetTurnTime();
     this.counter.start();
     this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
   }
@@ -363,6 +365,8 @@ public class Turn extends Activity
       AIsActive = !AIsActive;
       ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
       flipper.showNext();
+      
+      Turn.this.setCardTime();
       curGameManager.ProcessCard( 1 );
       ShowCard();
     }
@@ -479,6 +483,7 @@ public class Turn extends Activity
     float volume = streamVolumeCurrent / streamVolumeMax;
     
     this.viewFlipper.showNext();
+    this.setCardTime();
     this.curGameManager.ProcessCard( 2 );
 
     //Only play sound once card has been processed so we don't confuse the user
@@ -504,6 +509,7 @@ public class Turn extends Activity
       
     ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
     flipper.showNext();
+    this.setCardTime();
     curGameManager.ProcessCard( 0 );
 
     //Only play sound once card has been processed so we don't confuse the user
@@ -853,6 +859,12 @@ public class Turn extends Activity
   {
     this.pauseGame();
     return true;
+  }
+  
+  public void setCardTime()
+  {
+    this.curGameManager.GetCurrentCard().setTime( (int)(this.lastCardTimerState - this.timerState) );
+    this.lastCardTimerState = this.timerState;
   }
 
   /**

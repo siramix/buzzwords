@@ -32,6 +32,11 @@ public class Card
    * The title of the card, the word to be guessed
    */
   private String title;
+  
+  /**
+   * Time of the card;
+   */
+  private int time;
 
   /**
    * An array list of the words you cannot say
@@ -65,7 +70,7 @@ public class Card
   public Card()
   {
     Log.d( TAG, "Card()" );
-    this.init( -1, -1, "", new ArrayList<String>() );
+    this.init( -1, -1, "", new ArrayList<String>(), -1 );
   }
 
   /**
@@ -75,20 +80,21 @@ public class Card
   {
     Log.d( TAG, "Card( Card )" );
     ArrayList<String> bws = new ArrayList<String>( rhs.getBadWords() );
-    this.init( rhs.getId(), this.getRws(), this.getTitle(), bws );
+    this.init( rhs.getId(), rhs.getRws(), rhs.getTitle(), bws, rhs.getTime() );
   }
 
   /**
    * Function for initializing card state
    */
   private void init( long id, int rws, String title,
-                     ArrayList<String> badWords )
+                     ArrayList<String> badWords, int time )
   {
     Log.d( TAG, "init()" );
     this.id = id;
     this.rws = rws;
     this.title = title;
     this.badWords = badWords;
+    this.time = time;
   }
 
   public long getId()
@@ -185,6 +191,22 @@ public class Card
     {
       rws = 0;
     }
+  }
+  
+  /**
+   * Set the time
+   */
+  public void setTime( int time )
+  {
+    this.time = time;
+  }
+  
+  /**
+   * Get the time
+   */
+  public int getTime()
+  {
+    return this.time;
   }
 
 }

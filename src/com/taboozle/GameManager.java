@@ -239,6 +239,16 @@ public class GameManager implements Serializable
     this.currentCard = this.game.getNextCard();
     return this.currentCard;
   }
+  
+  /**
+   * Return the card currently in play without moving through the deck
+   * @return the card currently in play
+   */
+  public Card GetCurrentCard()
+  {
+    Log.d( TAG, "GetCurrentCard()" );
+    return this.currentCard;
+  }
 
   /**
    * Get a list of all cards that have been acted on in a given turn.
