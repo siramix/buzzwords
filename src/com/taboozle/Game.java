@@ -272,7 +272,13 @@ public class Game extends SQLiteOpenHelper
 
 
   /*
-   * Most Skips
+   * AwardsQuery takes the awardID and gameID and returns data related to that award and
+   * game.  Award.java should then be able to handle this data and assign awards to their
+   * appropriate teams.
+   * 
+   * Results are returned as a 4x2 matrix of doubles, where column A represents the team_ids
+   * of eligible teams to be given the award and column B is a wildcard for the relevant
+   * value being searched, such as card time or number of skips.
    * 
    * SELECT team_id
    * FROM gamehistory
@@ -283,9 +289,10 @@ public class Game extends SQLiteOpenHelper
    * LIMIT 1;
    * 
    */
-  public String[] awardsQuery( int awardID, long gameID, int turnTime)
+  public double[][] awardsQuery( int awardID, long gameID, int turnTime)
   {
-   	String[] results = {"", ""}; //TeamID, AwardValue or Word
+   	//String[] results = {"", ""}; //TeamID, AwardValue or Word
+   	double[][] results = new double[4][2]; //TeamID, AwardValue or Word
   	SQLiteDatabase db = this.getReadableDatabase();
   	Cursor cursor = db.rawQuery( "select 'DEFAULT', 'DEFAULT'", null);
   	
@@ -588,37 +595,26 @@ public class Game extends SQLiteOpenHelper
           break;           
   	}
   	
+  	for(int i=0; i<results.length; ++i)
+  	{
+  		for(int j=0; j<results[0].length; ++j)
+  		{
+  			results[i][j] = -1;
+  		}
+  	}
+  	
   	// Set results array to the answers returned from sqlite query
-    if (cursor.moveToFirst())
+  	int rownum = 0;
+    while(cursor.moveToFirst())
     {
-      results[0] = cursor.getString(0);
+      results[rownum][0] =  Double.valueOf(cursor.getString(0));
       
       if (cursor.getColumnCount() == 2)
-        results[1] = cursor.getString(1);
-      else
-        results[1] = "EMPTY";
+        results[0][1] = Double.valueOf(cursor.getString(1));
       
+      rownum++;
     }    
-    // Empty results get set to -1
-    else 
-    {
-      results[0] = "EMPTY";
-      results[1] = "EMPTY";
-    }
         
-    //Handle Tied Awards
-    if (cursor.moveToNext())
-    {
-      if (cursor.getColumnCount() == 2)
-      {
-        if (cursor.getString(1).compareTo(results[1]) == 0)  //Ties disqualify award
-        {
-          results[0] = "TIE";
-          results[1] = cursor.getString(1);
-        }
-      }
-    }
-    
     cursor.close();
     
   	return results;
