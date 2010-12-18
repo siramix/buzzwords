@@ -45,4 +45,10 @@
    <color name="turnSummaryListItem">
       #666666
    </color>
+   <color name="genericBG">
+      #111111
+   </color>
+   <color name="genericBG_trim">
+      #333333
+   </color>
 </resources>

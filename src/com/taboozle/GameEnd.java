@@ -3,7 +3,9 @@ package com.taboozle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,7 +29,66 @@ public class GameEnd extends Activity
    * logging tag
    */
   public static String TAG = "GameEnd";
+
+  /**
+   * This is a reference to the current game manager
+   */
+  private GameManager curGameManager;  
   
+  private class AwardTimer extends CountDownTimer
+  {
+    public AwardTimer(long millisInFuture, long countDownInterval)
+    {
+      super(millisInFuture, countDownInterval);
+      Log.d( TAG, "TurnTimer(" + millisInFuture + ", " + countDownInterval + ")" );
+    }
+
+    @Override
+    public void onFinish()
+    {
+      Log.d( TAG, "onFinish()" );
+      GameEnd.this.showNextAward();
+      GameEnd.this.startAwardTimer();
+    }
+
+    @Override
+    public void onTick(long millisUntilFinished)
+    {
+      Log.d( TAG, "onTick(" + millisUntilFinished + ")");
+    }
+  };
+  
+  /**
+   * Instance of the timer used to cycle through awards
+   */
+  private AwardTimer cycleTimer;
+  private static final long TICK = 200;
+  
+  /**
+   * Tracks the currently displayed award
+   */
+  private int awardIndex = -1;
+  
+  private void startAwardTimer()
+  {
+	  this.cycleTimer = new AwardTimer(3000, TICK);
+	  this.cycleTimer.start();
+  }
+  
+  /**
+   * Cycles the award display to the award for the next team (minimum of two teams)
+   */
+  private void showNextAward()
+  {
+	 final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
+	 final String[] AWARDS = new String[] {"Award1", "Award2", "Award3", "Award4" };
+	 TextView awardName = (TextView) findViewById(R.id.EndGameAwards);
+	 TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
+	 awardIndex = (awardIndex + 1) % curGameManager.GetNumTeams();
+	 awardName.setText(AWARDS[awardIndex]);
+	 awardTeamName.setText(curGameManager.GetTeamNames()[awardIndex]);
+	 awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[awardIndex] ));
+  }
   /**
    * Listener for the 'Main Menu' button. Sends user back to the main screen on click.
    */
@@ -77,29 +138,29 @@ public class GameEnd extends Activity
   
   		TaboozleApplication application =
   			(TaboozleApplication) this.getApplication();
-  		GameManager game = application.GetGameManager();		
+  		curGameManager = application.GetGameManager();		
   		
-  		int numRounds = (int) game.GetNumRounds();
-  		int numTeams = game.GetNumTeams();
-  		String[] teamNames = game.GetTeamNames();
+  		int numRounds = (int) curGameManager.GetNumRounds();
+  		int numTeams = curGameManager.GetNumTeams();
+  		String[] teamNames = curGameManager.GetTeamNames();
   		
   		// Populate storage table for end game round results
   		long[][] endTable = new long[numRounds][numTeams];
   		for ( int i = 0; i < numTeams; ++i )
   		{
-  			long[] roundscores = game.GetRoundScores((long) i);
+  			long[] roundscores = curGameManager.GetRoundScores((long) i);
   			for ( int j = 0; j < roundscores.length; j++)
   			{
   				endTable[j][i] = roundscores[j];
   			}
   		}
 
-  	  	// Populate and display list of cards
+  	  	// Populate and display round scores
   	  	ScrollView list = (ScrollView) findViewById(R.id.EndGameTurnList);
   	  	LinearLayout layout = new LinearLayout(this.getBaseContext());
   	  	layout.setOrientation(LinearLayout.VERTICAL);
 
-  		// iterate through each row of the end game scores table
+  		// Iterate through each row of the end game scores table
   	  	int count = 0;
   	  	for( int i = 0; i < endTable.length; i++ )
   	  	{
@@ -126,7 +187,7 @@ public class GameEnd extends Activity
   	  	list.addView(layout);
 
   		// Display final scores
-  		long[] finalScores = game.GetTeamScores();
+  		long[] finalScores = curGameManager.GetTeamScores();
   		final int[] SCORE_VIEW_IDS = new int[]{ R.id.EndGameTeamAScore, R.id.EndGameTeamBScore,
   												R.id.EndGameTeamCScore, R.id.EndGameTeamDScore};
   		for (int i = 0; i < finalScores.length; i++)
@@ -160,7 +221,6 @@ public class GameEnd extends Activity
   				tieGame = true;
   			}
   		}
-  
   		final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
   		TextView winner = (TextView) findViewById(R.id.EndGameWinner);
   		if (!tieGame)
@@ -173,11 +233,31 @@ public class GameEnd extends Activity
   			winner.setText("TIE GAME");
   		}
   		
+  		//Display Awards
+  		this.startAwardTimer();
+  		this.showNextAward();
+  		
   		//Set onclick listeners for game end buttons
   		Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
   		mainMenuButton.setOnClickListener( MainMenuListener );
 
   		Button rematchButton = (Button)this.findViewById( R.id.EndGameRematch );
   		rematchButton.setOnClickListener( RematchListener );
+    }
+
+    /**
+     * Handler for key up events
+     */
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event)
+    {
+      // Make back do nothing on key-up instead of climb the action stack
+      if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+          && !event.isCanceled() )
+        {
+        return true;
+        }
+
+      return super.onKeyUp(keyCode, event);
     }
 }
