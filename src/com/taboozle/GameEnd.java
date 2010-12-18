@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -241,5 +242,21 @@ public class GameEnd extends Activity
 
   		Button rematchButton = (Button)this.findViewById( R.id.EndGameRematch );
   		rematchButton.setOnClickListener( RematchListener );
+    }
+
+    /**
+     * Handler for key up events
+     */
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event)
+    {
+      // Make back do nothing on key-up instead of climb the action stack
+      if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+          && !event.isCanceled() )
+        {
+        return true;
+        }
+
+      return super.onKeyUp(keyCode, event);
     }
 }
