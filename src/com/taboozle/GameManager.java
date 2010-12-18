@@ -388,7 +388,7 @@ public class GameManager implements Serializable
    * @param gameID The ID of the game 
    * @return
    */
-  public String[] awardsQuery( int awardID, long gameID)
+  public double[][] awardsQuery( int awardID, long gameID)
   {
     Log.d( TAG, "awardsQuery(" + awardID + ", " + gameID + ")" );
     return this.game.awardsQuery(awardID, gameID, this.turn_time);
