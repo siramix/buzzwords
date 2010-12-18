@@ -256,7 +256,7 @@ public class Game extends SQLiteOpenHelper
    * @param rws - whether the card was right, wrong or skipped
    */
   public void completeCard( long gameId, long teamId, long cardId,
-		  					long turnScoreId, long rws )
+		  					long turnScoreId, long rws, long time )
   {
     Log.d( TAG, "completeCard()" );
     ContentValues values = new ContentValues();
@@ -265,6 +265,7 @@ public class Game extends SQLiteOpenHelper
     values.put( GameData.GameHistory.CARD_ID, cardId );
     values.put( GameData.GameHistory.TURN_SCORE_ID, turnScoreId );
     values.put( GameData.GameHistory.RWS, rws );
+    values.put( GameData.GameHistory.TIME, time );
     SQLiteDatabase db = this.getWritableDatabase();
     db.insert( GameData.GAME_HISTORY_TABLE_NAME, "", values );
   }
@@ -653,7 +654,8 @@ public class Game extends SQLiteOpenHelper
                 GameData.GameHistory.GAME_ID + " INTEGER," +
                 GameData.GameHistory.CARD_ID + " INTEGER," +
                 GameData.GameHistory.TURN_SCORE_ID + " INTEGER," +
-                GameData.GameHistory.RWS + " INTEGER);" );
+                GameData.GameHistory.RWS + " INTEGER," +
+                GameData.GameHistory.TIME + " INTEGER);" );
     db.execSQL( "CREATE TABLE " + GameData.CARD_TABLE_NAME + " (" +
                 GameData.Cards._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 GameData.Cards.PACK_NAME + " TEXT," +

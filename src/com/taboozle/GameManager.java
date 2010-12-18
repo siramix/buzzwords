@@ -191,7 +191,7 @@ public class GameManager implements Serializable
 	    Card card = it.next();
 	    game.completeCard( this.currentGameId, this.teamIds[this.activeTeamIndex],
 	                       card.getId(), currentTurnScoreID,
-	                       card.getRws());
+	                       card.getRws(), card.getTime() );
 	  }
   }
   /**

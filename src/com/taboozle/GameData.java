@@ -236,5 +236,12 @@ public final class GameData
      */
     public static final String RWS = "rws";
     
+    /**
+     * The number of milliseconds taken for the card to be completed
+     * <P>
+     * Type: INTEGER
+     */
+    public static final String TIME = "time";
+    
   }
 }
