@@ -2,11 +2,10 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent" 
-  android:layout_height="fill_parent" 
-  android:background="@drawable/bg_turnsummary">
+  android:layout_height="fill_parent" android:background="@color/genericBG">
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:text="Rematch" android:id="@+id/EndGameRematch"></Button>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:text="Main Menu" android:id="@+id/EndGameMainMenu"></Button>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#000" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:textSize="26px" android:layout_marginTop="5dip" android:layout_marginLeft="20dip" android:id="@+id/EndGameTitle" android:text="End Game"></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:textSize="26px" android:layout_marginTop="5dip" android:layout_marginLeft="20dip" android:id="@+id/EndGameTitle" android:text="End Game" android:textColor="#FFFFFF"></TextView>
 
 <ScrollView android:layout_width="wrap_content" android:paddingTop="10dip" android:id="@+id/EndGameTurnList" android:layout_below="@id/EndGameTitle" android:layout_height="100dip">
 </ScrollView>
@@ -19,5 +18,8 @@
 	<TextView android:layout_height="wrap_content" android:id="@+id/EndGameTeamAScore" android:layout_width="fill_parent" android:layout_weight="1" android:text="TeamAScore" android:paddingLeft="5dip" android:paddingRight="5dip" android:textColor="@color/teamA_text"></TextView>
 	<TextView android:layout_height="wrap_content" android:id="@+id/EndGameTeamBScore" android:layout_width="fill_parent" android:layout_weight="1" android:text="TeamBScore" android:paddingLeft="5dip" android:paddingRight="5dip" android:textColor="@color/teamB_text"></TextView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="TeamCScore" android:id="@+id/EndGameTeamCScore" android:paddingLeft="5dip" android:paddingRight="5dip" android:textColor="@color/teamC_text"></TextView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:paddingLeft="5dip" android:paddingRight="5dip" android:id="@+id/EndGameTeamDScore" android:text="TeamDScore" android:textColor="@color/teamD_text"></TextView>
 </LinearLayout>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:id="@+id/EndGameWinner" android:layout_below="@+id/EndGameTotalScores" android:layout_centerHorizontal="true" android:paddingTop="10dip" android:textSize="24px" android:textColor="#000000" android:paddingBottom="10dip" android:text="WINNING TEAM NAME"></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:id="@+id/EndGameWinner" android:layout_below="@+id/EndGameTotalScores" android:layout_centerHorizontal="true" android:paddingTop="10dip" android:textSize="24px" android:paddingBottom="10dip" android:text="WINNING TEAM NAME" android:textColor="#FFFFFF"></TextView>
+
+<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/EndGameWinner" android:layout_centerHorizontal="true" android:orientation="vertical" android:layout_marginTop="20dp" android:id="@+id/EndGame_Awards"><TextView android:layout_below="@id/EndGameWinner" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/EndGameAwards" android:text="2 Fast, 2 Furious" android:layout_centerHorizontal="true" android:textSize="28dp" android:textColor="#FFFFFF"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:id="@+id/EndGameAwardTeamName" android:text="Team A" android:textColor="@color/teamA_text" android:textSize="18dp"></TextView>
+</LinearLayout>
 </RelativeLayout>
