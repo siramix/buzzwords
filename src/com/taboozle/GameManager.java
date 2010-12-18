@@ -391,6 +391,6 @@ public class GameManager implements Serializable
   public double[][] awardsQuery( int awardID, long gameID)
   {
     Log.d( TAG, "awardsQuery(" + awardID + ", " + gameID + ")" );
-    return this.game.awardsQuery(awardID, gameID, this.turn_time);
+    return this.game.awardsQuery(awardID, gameID);
   }
 }

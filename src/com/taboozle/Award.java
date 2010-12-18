@@ -4,6 +4,8 @@
 package com.taboozle;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * @author Taboozle Team
@@ -54,6 +56,30 @@ public class Award
     this.priority = priority;
   }
   
+  class PriorityComparator implements Comparator<Award>
+  {
+    
+    public int compare(Award award1, Award award2)
+    {
+ 
+        int p1 = award1.priority;        
+        int p2 = award2.priority;
+       
+        if(p1 > p2)
+        {
+          return 1;
+        }
+        else if(p1 < p2)
+        {
+          return -1;
+        }
+        else
+        {
+          return 0;
+        }
+    }
+}
+  
   static
   {
     awards.add( new Award( 0,"You Got it, Dude","Most Right", 1 ) );
@@ -81,10 +107,11 @@ public class Award
     awards.add( new Award( 22,"Dominated","Be last and lose to next lowest player by half their score", 3 ) );
     awards.add( new Award( 23,"Slowpokes","Fewest cards seen", 1 ) );
     awards.add( new Award( 24,"Cosmpolitan","Most cards seen", 1 ) );
-    awards.add( new Award( 24,"1st Place","", 0 ) );
-    awards.add( new Award( 24,"2nd Place","", 0 ) );
-    awards.add( new Award( 24,"3rd Place","", 0 ) );
-    awards.add( new Award( 24,"4th Place","", 0 ) );
+    awards.add( new Award( 25,"1st Place","", 0 ) );
+    awards.add( new Award( 26,"2nd Place","", 0 ) );
+    awards.add( new Award( 27,"3rd Place","", 0 ) );
+    awards.add( new Award( 28,"4th Place","", 0 ) );
+    Collections.sort(awards, (new Award()).new PriorityComparator());
   }
   
 }

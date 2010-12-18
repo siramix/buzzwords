@@ -289,7 +289,7 @@ public class Game extends SQLiteOpenHelper
    * LIMIT 1;
    * 
    */
-  public double[][] awardsQuery( int awardID, long gameID, int turnTime)
+  public double[][] awardsQuery( int awardID, long gameID )
   {
    	//String[] results = {"", ""}; //TeamID, AwardValue or Word
    	double[][] results = new double[4][2]; //TeamID, AwardValue or Word

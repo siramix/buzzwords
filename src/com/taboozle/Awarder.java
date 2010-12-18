@@ -4,6 +4,7 @@
 package com.taboozle;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -12,39 +13,44 @@ import java.util.ArrayList;
  */
 public class Awarder
 {
-
-  protected ArrayList<String[]> awards;
+  
   protected static final int NUM_AWARDS = 2;
-  protected int teamId;
-  protected int gameId;
+  protected Game game;
   
   /**
    * 
    */
   public Awarder()
   {
-    this.awards = new ArrayList<String[]>();
+  }
+  
+  public void setGame( Game game )
+  {
+    this.game = game;
+  }
+  
+  public Game getGame()
+  {
+    return this.game;
   }
 
-  public ArrayList<String[]> getAwards( int teamid, int gameid )
+  public ArrayList<Award> getAwards( int teamid, int gameid )
   {
-    this.teamId = teamid;
-    this.gameId = gameid;
-    
-    this.calcAwards();
-    
-    ArrayList<String[]> ret = new ArrayList<String[]>(NUM_AWARDS);
-    for( int i = 0; i < ret.size(); ++i )
+    ArrayList<Award> ret = this.calcAwards();
+    ArrayList<Award> possibleAwards = Award.awards;
+    for( Iterator<Award> itr = possibleAwards.iterator(); itr.hasNext(); )
     {
-      ret.get( i )[0] = "";
-      ret.get( i )[1] = "";
+      Award cur = itr.next();
+      double[][] res = this.game.awardsQuery( cur.id, gameid );
     }
     
     return ret;
   }
   
-  protected void calcAwards()
-  { 
+  protected ArrayList<Award> calcAwards()
+  {
+    ArrayList<Award> ret = new ArrayList<Award>(NUM_AWARDS);
+    return ret;
   }
 
 }
