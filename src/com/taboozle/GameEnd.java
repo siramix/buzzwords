@@ -67,7 +67,7 @@ public class GameEnd extends Activity
   /**
    * Tracks the currently displayed award
    */
-  private int awardIndex = 0;
+  private int awardIndex = -1;
   
   private void startAwardTimer()
   {
@@ -235,6 +235,7 @@ public class GameEnd extends Activity
   		
   		//Display Awards
   		this.startAwardTimer();
+  		this.showNextAward();
   		
   		//Set onclick listeners for game end buttons
   		Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
