@@ -167,7 +167,7 @@ public class TurnSummary extends Activity
   	totalscores[game.GetActiveTeamIndex()] += turnscore;
 
   	// Display total score for the current team
-  	TextView scoreview = (TextView) findViewById(R.id.TurnTotalScore);
+  	TextView scoreview = (TextView) findViewById(R.id.TurnSummaryTurnScore);
   	scoreview.setText(Long.toString(turnscore));
 
   	// Populate Scoreboard scores
@@ -195,13 +195,26 @@ public class TurnSummary extends Activity
   		LinearLayout teamScoreGroupView = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[i] );
   		teamScoreGroupView.setVisibility( View.GONE );
   	}
+  	
+  	// Hide current team (it has its own line)
+	LinearLayout layout = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[game.GetActiveTeamIndex()] );
+	layout.setVisibility( View.GONE );
 
-  	// Display current team name
-    TextView curTeam = (TextView) findViewById(R.id.TurnTeamName);
-    curTeam.setText(game.GetTeamNames()[game.GetActiveTeamIndex()]);
+  	// Display current team name and score
+    TextView curTeamHeader = (TextView) findViewById(R.id.TurnSummaryTeamName);
+    TextView curTeamName = (TextView) findViewById(R.id.TurnSummaryCurrentScoreTeamname);
+    TextView curTeamScore = (TextView) findViewById(R.id.TurnSummaryCurrentScoreNum);
+    String teamName = game.GetTeamNames()[game.GetActiveTeamIndex()];
+    curTeamHeader.setText(teamName);
+    curTeamName.setText(teamName);
     // Set team name color
-	  final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
-    curTeam.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[game.GetActiveTeamIndex()]));
+	final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
+    int teamColor = this.getResources().getColor( TEAM_COLOR_IDS[game.GetActiveTeamIndex()]);
+	curTeamHeader.setTextColor(teamColor);
+	curTeamName.setTextColor(teamColor);
+	curTeamScore.setTextColor(teamColor);
+	curTeamScore.setText(Long.toString(totalscores[game.GetActiveTeamIndex()]));
+    
   }
 
   /**
