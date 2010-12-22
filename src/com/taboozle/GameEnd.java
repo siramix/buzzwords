@@ -54,7 +54,7 @@ public class GameEnd extends Activity
     @Override
     public void onTick(long millisUntilFinished)
     {
-      Log.d( TAG, "onTick(" + millisUntilFinished + ")");
+      //Log.d( TAG, "onTick(" + millisUntilFinished + ")");
     }
   };
   
@@ -236,6 +236,9 @@ public class GameEnd extends Activity
   		//Display Awards
   		this.startAwardTimer();
   		this.showNextAward();
+  		
+  		Awarder a = new Awarder();
+  		a.setGameManager( curGameManager );
   		
   		//Set onclick listeners for game end buttons
   		Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
