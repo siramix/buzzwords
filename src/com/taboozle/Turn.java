@@ -268,15 +268,7 @@ public class Turn extends Activity
       float volume = streamVolumeCurrent / streamVolumeMax;
 
       //Show wrong controls once the buzzer is hit
-      ImageButton confirm = (ImageButton) findViewById( R.id.ButtonConfirmWrong );
-      ImageButton cancel = (ImageButton) findViewById( R.id.ButtonCancelWrong );
-      ImageView wrongStamp = (ImageView) findViewById( R.id.WrongStamp );
-
-      confirm.setVisibility( View.VISIBLE );
-      cancel.setVisibility( View.VISIBLE );
-      
-      Turn.this.nextButton.setEnabled( false );
-      Turn.this.skipButton.setEnabled( false );
+      Turn.this.showWrongStamp();
 
       boolean ret;
       switch( event.getAction() )
@@ -287,7 +279,6 @@ public class Turn extends Activity
           {
             buzzVibrator.vibrate(1000);
           }
-          wrongStamp.setVisibility( View.VISIBLE ); //Show stamp on down
           ret = false;
           break;
         case MotionEvent.ACTION_UP:
@@ -296,7 +287,6 @@ public class Turn extends Activity
           {
             buzzVibrator.cancel();
           }
-          wrongStamp.setVisibility( View.INVISIBLE );	//Hide stamp on up
           ret = false;
           break;
         default:
@@ -332,14 +322,27 @@ public class Turn extends Activity
       Turn.this.doCorrect();
     }
   }; // End CorrectListener
-
+  
+  /**
+   * Listener for the 'Correct' button. It deals with the flip to the next
+   * card.
+   */
+  private final OnClickListener WrongListener = new OnClickListener()
+  {
+    public void onClick(View v)
+    {
+      Log.d( TAG, "WrongListener OnClick()" );
+      
+      Turn.this.doWrong();
+    }
+  }; // End WrongListener
+  
   /**
    * Listener for the 'Skip' button. This deals with moving to the next card
    * via the ViewFlipper, but denotes that the card was skipped;
    */
   private final OnClickListener SkipListener = new OnClickListener()
   {
-
     public void onClick(View v)
     {
       Log.d( TAG, "SkipListener OnClick()" );
@@ -357,18 +360,9 @@ public class Turn extends Activity
     public void onClick(View v)
     {
       Log.d( TAG, "ConfirmWrongListener OnClick()" );
-      Turn.this.confirmWrongButton.setVisibility( View.INVISIBLE );
-      Turn.this.cancelWrongButton.setVisibility( View.INVISIBLE );
-      Turn.this.wrongStamp.setVisibility( View.INVISIBLE );
-      Turn.this.nextButton.setEnabled( true );
-      Turn.this.skipButton.setEnabled( true );
-      AIsActive = !AIsActive;
-      ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
-      flipper.showNext();
-      
-      Turn.this.setCardTime();
-      curGameManager.ProcessCard( 1 );
-      ShowCard();
+      //Hide confirmation widgets
+      Turn.this.hideWrongStamp();
+      Turn.this.doWrong();
     }
   }; // End ConfirmWrongListener
 
@@ -379,16 +373,37 @@ public class Turn extends Activity
   {
     public void onClick(View v)
     {
-      Log.d( TAG, "CancelWrongListener OnClick()" );
+      Log.d( TAG, "CancelWrongListener OnClick()" );    
+      //Hide confirmation widgets
+      Turn.this.hideWrongStamp();
+    }
+  }; // End CancelWrongListener
 
+  /**
+   * Shows the WRONG stamp that requires a confirmation from the player to proceed
+   */
+  private void showWrongStamp()
+  {
+      //Show wrong controls once the buzzer is hit
+      Turn.this.confirmWrongButton.setVisibility( View.VISIBLE );
+      Turn.this.cancelWrongButton.setVisibility( View.VISIBLE );
+      Turn.this.wrongStamp.setVisibility( View.VISIBLE );
+      Turn.this.nextButton.setEnabled( false );
+      Turn.this.skipButton.setEnabled( false );	  
+  }
+  
+  /**
+   * Hide the WRONG stamp that requires a confirmation from the player to proceed
+   */
+  private void hideWrongStamp()
+  {
       Turn.this.confirmWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.cancelWrongButton.setVisibility( View.INVISIBLE );
       Turn.this.wrongStamp.setVisibility( View.INVISIBLE );
       Turn.this.nextButton.setEnabled( true );
-      Turn.this.skipButton.setEnabled( true );
-    }
-  }; // End CancelWrongListener
-
+      Turn.this.skipButton.setEnabled( true );	  
+  }
+  
   /**
    * Listener for the pause overlay. It unpauses the the game.
    */
@@ -468,6 +483,58 @@ public class Turn extends Activity
   }
 
   /**
+   * Works with GameManager to perform the back end processing of a correct card.
+   * For consistency this method was created to match the skip architecture.  Also for
+   * consistency the sound for correct cards will be handled in this method.
+   */
+  protected void doCorrect() 
+  {
+    Log.d( TAG, "doCorrect()"); 
+    AudioManager mgr =
+      (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
+    float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
+    float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
+    float volume = streamVolumeCurrent / streamVolumeMax;
+  
+    ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
+    
+    AIsActive = !AIsActive;   
+    flipper.showNext();
+    this.setCardTime();
+    curGameManager.ProcessCard( 0 );
+
+    //Only play sound once card has been processed so we don't confuse the user
+    soundPool.play( rightSoundId, volume, volume, 1, 0, 1.0f );
+    
+    ShowCard();    
+  }
+  
+  /**
+   * Works with GameManager to perform the back end processing of a card wrong.  Also
+   * handles playing of a durative incorrect sound, as opposed to the buzzer.
+   */
+  protected void doWrong()
+  {
+    Log.d( TAG, "doWrong()");
+    AudioManager mgr =
+      (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
+    float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
+    float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
+    float volume = streamVolumeCurrent / streamVolumeMax;
+    
+    AIsActive = !AIsActive;
+    ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
+    flipper.showNext();
+    
+    Turn.this.setCardTime();
+    curGameManager.ProcessCard( 1 );
+    ShowCard();
+
+    //Only play sound once card has been processed so we don't confuse the user
+    buzzStreamId = soundPool.play( buzzSoundId, volume, volume, 1, 0, 1.0f );
+  }
+
+  /**
    * Works with GameManager to perform the back end processing of a card skip.  Also
    * handles the sound for skipping so that all forms of skips (swipes or button clicks)
    * play the sound.
@@ -475,45 +542,19 @@ public class Turn extends Activity
   protected void doSkip()
   {
     Log.d( TAG, "doSkip()");
-    AIsActive = !AIsActive;
     AudioManager mgr =
       (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
     float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
     float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
     float volume = streamVolumeCurrent / streamVolumeMax;
-    
+ 
+    AIsActive = !AIsActive;
     this.viewFlipper.showNext();
     this.setCardTime();
     this.curGameManager.ProcessCard( 2 );
 
     //Only play sound once card has been processed so we don't confuse the user
     soundPool.play( swipeSoundId, volume, volume, 1, 0, 1.0f );
-    
-    ShowCard();    
-  }
-
-  /**
-   * Works with GameManager to perform the back end processing of a correct card.
-   * For consistency this method was created to match the skip architecture.  Also for
-   * consistency the sound for correct cards will be handled in this method.
-   */
-  protected void doCorrect() 
-  {
-    Log.d( TAG, "doCorrect()");
-    AIsActive = !AIsActive;    
-    AudioManager mgr =
-      (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
-    float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
-    float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
-    float volume = streamVolumeCurrent / streamVolumeMax;
-      
-    ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
-    flipper.showNext();
-    this.setCardTime();
-    curGameManager.ProcessCard( 0 );
-
-    //Only play sound once card has been processed so we don't confuse the user
-    soundPool.play( rightSoundId, volume, volume, 1, 0, 1.0f );
     
     ShowCard();    
   }
@@ -617,7 +658,8 @@ public class Turn extends Activity
     this.viewFlipper.setInAnimation(InFromRightAnimation());
     this.viewFlipper.setOutAnimation(OutToLeftAnimation());
     
-    this.buzzerButton.setOnTouchListener( BuzzListener );
+    //this.buzzerButton.setOnTouchListener( BuzzListener );
+    this.buzzerButton.setOnClickListener( WrongListener );
     this.nextButton.setOnClickListener( CorrectListener );
     
     //Only show skipButton and set listener if preference is enabled
