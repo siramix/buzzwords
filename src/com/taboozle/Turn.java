@@ -101,6 +101,11 @@ public class Turn extends Activity
    * id of the correct sound within the sound-pool framework
    */
   private int rightSoundId;
+
+  /**
+   * id of the wrong sound within the sound-pool framework
+   */
+  private int wrongSoundId;
   
   /**
    * id of the swipe sound within the sound-pool framework
@@ -531,7 +536,7 @@ public class Turn extends Activity
     ShowCard();
 
     //Only play sound once card has been processed so we don't confuse the user
-    buzzStreamId = soundPool.play( buzzSoundId, volume, volume, 1, 0, 1.0f );
+    buzzStreamId = soundPool.play( wrongSoundId, volume, volume, 1, 0, 1.0f );
   }
 
   /**
@@ -623,6 +628,7 @@ public class Turn extends Activity
     this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
     this.rightSoundId = this.soundPool.load( this, R.raw.wine_clink, 1);
     this.swipeSoundId = this.soundPool.load( this, R.raw.swipe, 1);
+    this.wrongSoundId = this.soundPool.load( this, R.raw.wrong, 1);
 
     TaboozleApplication application =
       (TaboozleApplication) this.getApplication();
