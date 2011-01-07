@@ -356,7 +356,6 @@ public class Game extends SQLiteOpenHelper
   	    cursor = db.rawQuery("SELECT DISTINCT " + GameData.TurnScores.TEAM_ID + ", " + GameData.TurnScores.SCORE +
             " FROM " + GameData.TURN_SCORES_TABLE_NAME +
             " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-            " GROUP BY " + GameData.TurnScores.TEAM_ID + 
             " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
             " LIMIT 2", null);
   	    break;
@@ -593,22 +592,51 @@ public class Game extends SQLiteOpenHelper
                        " ORDER BY 1 DESC" +
                        " LIMIT 1)", null);
           break;
-/*
+
       case 18: //1st Place
-        cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
-                " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-                " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-                " GROUP BY " + GameData.GameHistory.TEAM_ID +
-                " HAVING " + "COUNT(*)=" +
-                   //Retrieve the team id for the team that was last
-                   " (SELECT team_id " +
-                     " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
-                     " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-                     " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
-                     " ORDER BY 1 DESC" +
-                     " LIMIT 1)", null);
+        cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
+                                        ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+            " LIMIT 1", null);
         break;
-*/    
+
+      case 19: //2nd Place
+        cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
+                                        ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+            " LIMIT 1 OFFSET 1", null);
+        break;
+        
+      case 20: //3rd Place
+        cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
+                                        ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+            " LIMIT 1 OFFSET 2", null);
+        break;
+        
+      case 21: //4th Place
+        cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
+                                        ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+            " LIMIT 1 OFFSET 3", null);
+        break;
+  
+      case 22: //Fastest Correct Under 5s
+      //Returns each team's fastest card, sorted by fastest to slowest
+        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + GameData.GameHistory.CARD_ID +
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+              " and " + GameData.GameHistory.TIME + "< 5000" +
+              " and " + GameData.GameHistory.RWS + "=0" +
+            " ORDER BY " + GameData.GameHistory.TIME + " DESC", null);
   	}
   	
   	for(int i=0; i<results.length; ++i)
