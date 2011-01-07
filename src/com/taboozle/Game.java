@@ -294,7 +294,7 @@ public class Game extends SQLiteOpenHelper
    	//String[] results = {"", ""}; //TeamID, AwardValue or Word
    	double[][] results = new double[4][2]; //TeamID, AwardValue or Word
   	SQLiteDatabase db = this.getReadableDatabase();
-  	Cursor cursor = db.rawQuery( "select 'DEFAULT', 'DEFAULT'", null);
+  	Cursor cursor = db.rawQuery( "select '-1', '-1'", null);
   	
   	switch (awardID) 
   	{  	
@@ -592,7 +592,23 @@ public class Game extends SQLiteOpenHelper
                        " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
                        " ORDER BY 1 DESC" +
                        " LIMIT 1)", null);
-          break;           
+          break;
+/*
+      case 18: //1st Place
+        cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
+                " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+                " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+                " GROUP BY " + GameData.GameHistory.TEAM_ID +
+                " HAVING " + "COUNT(*)=" +
+                   //Retrieve the team id for the team that was last
+                   " (SELECT team_id " +
+                     " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                     " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                     " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+                     " ORDER BY 1 DESC" +
+                     " LIMIT 1)", null);
+        break;
+*/    
   	}
   	
   	for(int i=0; i<results.length; ++i)
