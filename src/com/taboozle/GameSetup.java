@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.ViewFlipper;
 /**
  * @author The Taboozle Team
@@ -47,7 +48,21 @@ public class GameSetup extends Activity
 	        	teams[i] = textField.getText().toString();
 	        }
 	        
-	        gm.StartGame( teams );
+	        // Get number of rounds based on radio button selection
+	        final int[] ROUND_RADIO_BUTTONS = new int[] {R.id.GameSetupRounds5, R.id.GameSetupRounds10,
+	        		                          R.id.GameSetupRounds15,};
+	        final int[] ROUND_CHOICES = new int[] {5, 10, 15,};
+	        int rounds = 0;
+	        for ( int i = 0; i < ROUND_RADIO_BUTTONS.length; i++)
+	        {
+	        	RadioButton test = (RadioButton) GameSetup.this.findViewById( ROUND_RADIO_BUTTONS[i]);
+	        	if (test.isChecked())
+	        	{
+	        		rounds = ROUND_CHOICES[i];
+	        		break;
+	        	}
+	        }
+	        gm.StartGame( teams, rounds );
 	        application.SetGameManager( gm );
 	        
      	  	startActivity(new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()));

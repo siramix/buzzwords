@@ -43,9 +43,18 @@ public class TurnSummary extends Activity
 	        TaboozleApplication application =
 	          (TaboozleApplication) TurnSummary.this.getApplication();
 	        GameManager gm = application.GetGameManager();
-	        gm.NextTurn();
-     	  	startActivity(new Intent(TurnSummary.this.getApplication().getString(R.string.IntentTurn),
-     	  								getIntent().getData()));
+	        if( gm.GetNumTurnsRemaining() == 0 )
+	        {
+	        	gm.EndGame();
+	        	startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
+	        }
+	        else
+	        {
+	        	gm.NextTurn();
+	     	  	startActivity(new Intent(TurnSummary.this.getApplication().getString(R.string.IntentTurn),
+							getIntent().getData()));
+	        }
+
 	      }
 	  }; // End NextTurnListener
 

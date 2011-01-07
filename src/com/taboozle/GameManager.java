@@ -57,9 +57,14 @@ public class GameManager implements Serializable
   private String[] teamNames;
 
   /**
+   * The maximum number of rounds for this game
+   */
+  private int numRounds;
+  
+  /**
    * The index of the round being played
    */
-  private long currentRound;
+  private int currentRound;
   
   /**
    * Running total of scores
@@ -115,7 +120,6 @@ public class GameManager implements Serializable
     this.rws_value_rules[0] = 1;  //Value for correct cards
     this.rws_value_rules[1] = -1; //Value for wrong cards
     this.rws_value_rules[2] = 0;  //set skip value to 0 if skip penalty is not on
-
   }
 
   /**
@@ -123,13 +127,14 @@ public class GameManager implements Serializable
    * a set of teams in the database
    * @param teams - a string array of team names
    */
-  public void StartGame( String[] teams )
+  public void StartGame( String[] teams, int rounds )
   {
     Log.d( TAG, "StartGame()" );
     this.currentGameId = this.game.newGame();
     this.teamIds = new long[teams.length];
     this.teamScores = new long[teams.length]; 
     this.teamNames = teams.clone();
+    this.numRounds = rounds;
     
     for( int i = 0; i < teams.length; ++i )
     {
@@ -321,15 +326,35 @@ public class GameManager implements Serializable
   }
   
   /**
-   * Return the number of rounds
-   * @return long representing the number of rounds thusfar in a game 
+   * Return the number of rounds that have fully taken place
+   * @return int representing the number of rounds thusfar in a game 
    */
-  public long GetNumRounds()
+  public int GetCurrentRound()
+  {
+    Log.d( TAG, "GetCurrentRound()" );                          
+    return this.currentRound+1;
+  }
+
+  /**
+   * Return the maximum number of rounds in this game
+   * @return int representing the maximum number of rounds in this game
+   */
+  public int GetNumRounds()
   {
     Log.d( TAG, "GetNumRounds()" );                          
-    return this.currentRound+1;
-  }  
- 
+    return this.numRounds;
+  }
+  
+  /**
+   * Return the number of turns still left to play
+   * @return int representing number of turns before max rounds reached
+   */
+  public int GetNumTurnsRemaining()
+  {
+    Log.d( TAG, "GetNumTurnsRemaining()" );                          
+    return ((this.numRounds - this.currentRound) * this.teamIds.length) - (this.activeTeamIndex + 1);
+  }
+  
   /**
    * Accessor to return teamIDs which are the IDs stored in the database for each team.
    * @return array of longs representing each team's unique ID as stored in the db
