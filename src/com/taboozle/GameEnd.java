@@ -123,12 +123,11 @@ public class GameEnd extends Activity
         
         TaboozleApplication application =
           (TaboozleApplication) GameEnd.this.getApplication();
-                
-        String[] currentNames = application.GetGameManager().GetTeamNames();
         
+        GameManager curgm = application.GetGameManager();
         GameManager newgm = new GameManager(GameEnd.this);
         newgm.PrepDeck();
-        newgm.StartGame( currentNames );
+        newgm.StartGame( curgm.GetTeamNames(), curgm.GetNumRounds() );
         application.SetGameManager( newgm );
         
         startActivity(new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()));        
@@ -150,7 +149,7 @@ public class GameEnd extends Activity
   			(TaboozleApplication) this.getApplication();
   		curGameManager = application.GetGameManager();		
   		
-  		int numRounds = (int) curGameManager.GetNumRounds();
+  		int numRounds = curGameManager.GetNumRounds();
   		int numTeams = curGameManager.GetNumTeams();
   		String[] teamNames = curGameManager.GetTeamNames();
   		
