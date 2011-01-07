@@ -81,14 +81,24 @@ public class GameEnd extends Activity
   private void showNextAward()
   {
 	 final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
-	 final String[] AWARDS = new String[] {"Award1", "Award2", "Award3", "Award4" };
+	 final double[] AWARDS = new double[] {0.0, 1.0, 2.0, 3.0 };
+	 
+	 //Temp code for testing all awards
+   TaboozleApplication application =
+     (TaboozleApplication) this.getApplication();
+   curGameManager = application.GetGameManager();    
+	 
+	 AWARDS[0] = curGameManager.awardsQuery(1, 6)[0][0];
+	 AWARDS[1] = curGameManager.awardsQuery(2, 6)[0][0];
+	 
 	 TextView awardName = (TextView) findViewById(R.id.EndGameAwards);
 	 TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
-	 awardIndex = (awardIndex + 1) % curGameManager.GetNumTeams();
-	 awardName.setText(AWARDS[awardIndex]);
-	 awardTeamName.setText(curGameManager.GetTeamNames()[awardIndex]);
-	 awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[awardIndex] ));
+	 this.awardIndex = (this.awardIndex + 1) % curGameManager.GetNumTeams();
+	 awardName.setText(Double.toString(AWARDS[this.awardIndex]));
+	 awardTeamName.setText(curGameManager.GetTeamNames()[this.awardIndex]);
+	 awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[this.awardIndex] ));
   }
+  
   /**
    * Listener for the 'Main Menu' button. Sends user back to the main screen on click.
    */

@@ -605,7 +605,7 @@ public class Game extends SQLiteOpenHelper
   	
   	// Set results array to the answers returned from sqlite query
   	int rownum = 0;
-    while(cursor.moveToFirst())
+    while(cursor.moveToNext())
     {
       results[rownum][0] =  Double.valueOf(cursor.getString(0));
       
