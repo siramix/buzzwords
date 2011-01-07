@@ -82,6 +82,7 @@ public class Award
   
   static
   {
+    awards = new ArrayList<Award>();
     awards.add( new Award( 0,"You Got it, Dude","Most Right", 1 ) );
     awards.add( new Award( 1,"Total Screwups","Most Incorrect", 1 ) );
     awards.add( new Award( 2,"Sultans of Swipe","Most Skips", 1 ) );

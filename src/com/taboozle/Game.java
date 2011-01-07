@@ -631,12 +631,13 @@ public class Game extends SQLiteOpenHelper
   
       case 22: //Fastest Correct Under 5s
       //Returns each team's fastest card, sorted by fastest to slowest
-        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + GameData.GameHistory.CARD_ID +
+        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + "," + GameData.GameHistory.CARD_ID +
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
               " and " + GameData.GameHistory.TIME + "< 5000" +
               " and " + GameData.GameHistory.RWS + "=0" +
-            " ORDER BY " + GameData.GameHistory.TIME + " DESC", null);
+            " ORDER BY " + GameData.GameHistory.TIME + " DESC" +
+            " LIMIT 4", null);
   	}
   	
   	for(int i=0; i<results.length; ++i)
@@ -649,15 +650,25 @@ public class Game extends SQLiteOpenHelper
   	
   	// Set results array to the answers returned from sqlite query
   	int rownum = 0;
-    while(cursor.moveToNext())
-    {
-      results[rownum][0] =  Double.valueOf(cursor.getString(0));
-      
-      if (cursor.getColumnCount() == 2)
-        results[0][1] = Double.valueOf(cursor.getString(1));
-      
-      rownum++;
-    }    
+  	if( cursor.moveToFirst() )
+  	{
+      while(cursor.moveToNext())
+      {
+        if( cursor.getColumnCount() < 0 )
+        {
+          continue;
+        }
+        Log.d(TAG,Integer.toString( rownum));
+        results[rownum][0] =  Double.valueOf(cursor.getString(0));
+        
+        if (cursor.getColumnCount() == 2)
+        {
+          results[0][1] = Double.valueOf(cursor.getString(1));
+        }
+        
+        rownum++;
+      }
+  	}
         
     cursor.close();
     

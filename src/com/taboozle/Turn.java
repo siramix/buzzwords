@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
+//import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
@@ -90,7 +90,7 @@ public class Turn extends Activity
   /**
    * id of the buzz within android's sound-pool framework
    */
-  private int buzzSoundId;
+  //private int buzzSoundId;
 
   /**
    * id of the buzz's stream within android's sound-pool framework
@@ -260,7 +260,7 @@ public class Turn extends Activity
    * Listener for the buzzer that plays on touch-down and stops playing on
    * touch-up.
    */
-  private final OnTouchListener BuzzListener = new OnTouchListener()
+  /*private final OnTouchListener BuzzListener = new OnTouchListener()
   {
     public boolean onTouch(View v, MotionEvent event)
     {
@@ -300,7 +300,7 @@ public class Turn extends Activity
 
       return ret;
     }
-  }; // End BuzzListener
+  }; // End BuzzListener */
 
   /**
    * Listener for click on the timer to pause
@@ -387,7 +387,7 @@ public class Turn extends Activity
   /**
    * Shows the WRONG stamp that requires a confirmation from the player to proceed
    */
-  private void showWrongStamp()
+  /*private void showWrongStamp()
   {
       //Show wrong controls once the buzzer is hit
       Turn.this.confirmWrongButton.setVisibility( View.VISIBLE );
@@ -395,7 +395,7 @@ public class Turn extends Activity
       Turn.this.wrongStamp.setVisibility( View.VISIBLE );
       Turn.this.nextButton.setEnabled( false );
       Turn.this.skipButton.setEnabled( false );	  
-  }
+  }*/
   
   /**
    * Hide the WRONG stamp that requires a confirmation from the player to proceed
@@ -624,7 +624,7 @@ public class Turn extends Activity
   {
     Log.d( TAG, "setupViewReferences()");
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
-    this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
+    //this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
     this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
     this.rightSoundId = this.soundPool.load( this, R.raw.wine_clink, 1);
     this.swipeSoundId = this.soundPool.load( this, R.raw.swipe, 1);

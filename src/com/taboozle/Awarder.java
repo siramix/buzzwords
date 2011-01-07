@@ -41,18 +41,25 @@ public class Awarder
     return this.gameManager;
   }
 
-  public ArrayList<Award> getAwards( int teamid, int gameid )
+  /*public String[] getAwards( int gameid )
   {
     Log.d( TAG, "getAwards()" );
     ArrayList<Award> ret = this.calcAwards( gameid );
     return ret;
-  }
+  }*/
   
-  protected ArrayList<Award> calcAwards( int gameid )
+  public ArrayList<Award> calcAwards( long gameid )
   {
     Log.d( TAG, "calcAwards()" );
-    ArrayList<Award> ret = new ArrayList<Award>(NUM_AWARDS);
     ArrayList<Award> possibleAwards = Award.awards;
+    long[] teamIds = this.gameManager.GetTeamIDs();
+    ArrayList<Award> ret = new ArrayList<Award>(teamIds.length);
+    boolean[] awarded = new boolean[teamIds.length];
+    for( int i = 0; i < teamIds.length; ++i )
+    {
+      awarded[i] = false;
+      ret.add( i, null );
+    }
     for( Iterator<Award> itr = possibleAwards.iterator(); itr.hasNext(); )
     {
       Award cur = itr.next();
@@ -61,9 +68,29 @@ public class Awarder
       Log.d( TAG, Double.toString( res[1][0] ) + " " + Double.toString( res[1][1] ) );
       Log.d( TAG, Double.toString( res[2][0] ) + " " + Double.toString( res[2][1] ) );
       Log.d( TAG, Double.toString( res[3][0] ) + " " + Double.toString( res[3][1] ) );
+      int processed = 0;
+      for( int i = 0; i < teamIds.length; ++i )
+      {
+        if( !awarded[i] && res[0][0] == (double)teamIds[i] )
+        {
+          awarded[i] = true;
+          Log.d( TAG, Integer.toString( i ) );
+          ret.set( i, cur );
+          processed++;
+        }
+      }
+      if( processed == teamIds.length )
+      {
+        break;
+      }
     }
     
     return ret;
+  }
+  
+  public ArrayList<Award> calcAwards()
+  {
+    return this.calcAwards( this.gameManager.GetGameId() );
   }
 
 }

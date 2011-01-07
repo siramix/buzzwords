@@ -1,5 +1,7 @@
 package com.taboozle;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +35,9 @@ public class GameEnd extends Activity
   /**
    * This is a reference to the current game manager
    */
-  private GameManager curGameManager;  
+  private GameManager curGameManager;
+  
+  private ArrayList<Award> awards;
   
   private class AwardTimer extends CountDownTimer
   {
@@ -80,21 +84,17 @@ public class GameEnd extends Activity
    */
   private void showNextAward()
   {
+   GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
 	 final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
-	 final double[] AWARDS = new double[] {0.0, 1.0, 2.0, 3.0 };
-	 
-	 //Temp code for testing all awards
-   TaboozleApplication application =
-     (TaboozleApplication) this.getApplication();
-   curGameManager = application.GetGameManager();    
-	 
-	 AWARDS[0] = curGameManager.awardsQuery(1, 6)[0][0];
-	 AWARDS[1] = curGameManager.awardsQuery(2, 6)[0][0];
-	 
+	 final String[] stringAwards = new String[gm.GetTeamIDs().length];
+	 for( int i = 0; i < stringAwards.length; ++i )
+	 {
+	   stringAwards[i] = this.awards.get( i ).name;
+	 }
 	 TextView awardName = (TextView) findViewById(R.id.EndGameAwards);
 	 TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
 	 this.awardIndex = (this.awardIndex + 1) % curGameManager.GetNumTeams();
-	 awardName.setText(Double.toString(AWARDS[this.awardIndex]));
+	 awardName.setText(stringAwards[this.awardIndex]);
 	 awardTeamName.setText(curGameManager.GetTeamNames()[this.awardIndex]);
 	 awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[this.awardIndex] ));
   }
@@ -243,11 +243,11 @@ public class GameEnd extends Activity
   		}
   		
   		//Display Awards
+      Awarder a = new Awarder();
+      a.setGameManager( curGameManager );
+      this.awards = a.calcAwards();
   		this.startAwardTimer();
   		this.showNextAward();
-  		
-  		Awarder a = new Awarder();
-  		a.setGameManager( curGameManager );
   		
   		//Set onclick listeners for game end buttons
   		Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
