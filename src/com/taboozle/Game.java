@@ -548,95 +548,99 @@ public class Game extends SQLiteOpenHelper
         
       case 15: //Fewest Cards Seen 
           cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
-                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-                  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-                  " GROUP BY " + GameData.GameHistory.TEAM_ID +
-                  " HAVING " + "COUNT(*)=" +
-                     //Retrieve the fewest number of cards seen for any team
-                     " (SELECT COUNT(*)" +
-                       " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
-                       " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-                       " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
-                       " ORDER BY 1 ASC" +
-                       " LIMIT 1)", null);
+              " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+              " GROUP BY " + GameData.GameHistory.TEAM_ID +
+              " HAVING " + "COUNT(*)=" +
+                 //Retrieve the fewest number of cards seen for any team
+                 " (SELECT COUNT(*)" +
+                   " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                   " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                   " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+                   " ORDER BY 1 ASC" +
+                   " LIMIT 1)", null);
           break;      
           
       case 16: //Most Cards Seen 
           cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
-                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-                  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-                  " GROUP BY " + GameData.GameHistory.TEAM_ID +
-                  " HAVING " + "COUNT(*)=" +
-                     //Retrieve the fewest number of cards seen for any team
-                     " (SELECT COUNT(*)" +
-                       " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
-                       " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-                       " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
-                       " ORDER BY 1 DESC" +
-                       " LIMIT 1)", null);
+              " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+              " GROUP BY " + GameData.GameHistory.TEAM_ID +
+              " HAVING " + "COUNT(*)=" +
+                 //Retrieve the fewest number of cards seen for any team
+                 " (SELECT COUNT(*)" +
+                   " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                   " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                   " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+                   " ORDER BY 1 DESC" +
+                   " LIMIT 1)", null);
           break;
       
           //select sum(score) from turnscores where game_id = 115 group by team_id order by 1 asc limit 1
           
       case 17: //Be last and lose to next lowest player by half their score
           cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
-                  " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-                  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-                  " GROUP BY " + GameData.GameHistory.TEAM_ID +
-                  " HAVING " + "COUNT(*)=" +
-                     //Retrieve the team id for the team that was last
-                     " (SELECT team_id " +
-                       " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
-                       " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-                       " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
-                       " ORDER BY 1 DESC" +
-                       " LIMIT 1)", null);
+              " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+              " GROUP BY " + GameData.GameHistory.TEAM_ID +
+              " HAVING " + "COUNT(*)=" +
+                 //Retrieve the team id for the team that was last
+                 " (SELECT team_id " +
+                   " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                   " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                   " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+                   " ORDER BY 1 DESC" +
+                   " LIMIT 1)", null);
           break;
 
       case 18: //1st Place
         cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
-                                        ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
-            " LIMIT 1", null);
+                                    ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+              " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+              " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+              " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+              " LIMIT 1", null);
         break;
 
       case 19: //2nd Place
         cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
-                                        ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
-            " LIMIT 1 OFFSET 1", null);
+                                    ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+              " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+              " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+              " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+              " LIMIT 1 OFFSET 1", null);
         break;
         
       case 20: //3rd Place
         cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
-                                        ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
-            " LIMIT 1 OFFSET 2", null);
+                                    ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+              " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+              " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+              " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+              " LIMIT 1 OFFSET 2", null);
         break;
         
       case 21: //4th Place
         cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
-                                        ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
-            " LIMIT 1 OFFSET 3", null);
+                                    ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+              " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+              " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+              " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+              " LIMIT 1 OFFSET 3", null);
         break;
   
       case 22: //Fastest Correct Under 5s
       //Returns each team's fastest card, sorted by fastest to slowest
-        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + GameData.GameHistory.CARD_ID +
-            " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-              " and " + GameData.GameHistory.TIME + "< 5000" +
-              " and " + GameData.GameHistory.RWS + "=0" +
-            " ORDER BY " + GameData.GameHistory.TIME + " DESC", null);
+        cursor = db.rawQuery("SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
+              " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh " +
+              " INNER JOIN (" + 
+                " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
+                    "MIN(" + GameData.GameHistory.TIME + ") as mintime " +
+                " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+                " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+                " and " + GameData.GameHistory.TIME + "< 5000" +
+                " and " + GameData.GameHistory.RWS + "=0" + ")" +
+              " ORDER BY " + GameData.GameHistory.TIME + " ASC", null);
   	}
   	
   	for(int i=0; i<results.length; ++i)

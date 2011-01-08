@@ -88,8 +88,8 @@ public class GameEnd extends Activity
      (TaboozleApplication) this.getApplication();
    curGameManager = application.GetGameManager();    
 	 
-	 AWARDS[0] = curGameManager.awardsQuery(1, 6)[0][0];
-	 AWARDS[1] = curGameManager.awardsQuery(2, 6)[0][0];
+   AWARDS[0] = curGameManager.awardsQuery(6, 33)[0][0];
+   AWARDS[1] = curGameManager.awardsQuery(22, 33)[0][0];
 	 
 	 TextView awardName = (TextView) findViewById(R.id.EndGameAwards);
 	 TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
