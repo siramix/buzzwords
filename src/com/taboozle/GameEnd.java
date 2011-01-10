@@ -86,11 +86,13 @@ public class GameEnd extends Activity
   {
    GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
 	 final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
+
 	 final String[] stringAwards = new String[gm.GetTeamIDs().length];
 	 for( int i = 0; i < stringAwards.length; ++i )
 	 {
 	   stringAwards[i] = this.awards.get( i ).name;
 	 }
+
 	 TextView awardName = (TextView) findViewById(R.id.EndGameAwards);
 	 TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
 	 this.awardIndex = (this.awardIndex + 1) % curGameManager.GetNumTeams();
