@@ -74,6 +74,12 @@ public class Turn extends Activity
   private long lastCardTimerState;
   
   /**
+   * Tracks the current state of the Turn as a boolean.  Set to true when time has expired and
+   * activity is showing the user "Time's up!"
+   */
+  private boolean turnIsOver = false;
+  
+  /**
    * This is a reference to the current game manager
    */
   private GameManager curGameManager;
@@ -163,6 +169,7 @@ public class Turn extends Activity
       {
         Turn.this.OnTimeExpired();
         Turn.this.countdownTxt.setText( ":0" );
+        Turn.this.turnIsOver = true;
       }
 
       @Override
@@ -176,11 +183,11 @@ public class Turn extends Activity
     this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
   }
 
-  private void stopTimer()
+  private void stopTurnTimer()
   {
     Log.d( TAG, "stopTimer()" );
     Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );
-    if(!this.counter.isPaused())
+    if(!this.turnIsOver && this.counter.isActive())
     {
       Log.d( TAG, "Do the Pause." );
       this.counter.pause();
@@ -188,11 +195,11 @@ public class Turn extends Activity
     }
   }
 
-  private void resumeTimer()
+  private void resumeTurnTimer()
   {
     Log.d( TAG, "resumeTimer()" );
     Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );
-    if(this.counter.isPaused())
+    if(!this.turnIsOver && !this.counter.isActive())
     {
       Log.d( TAG, "Do the Resume." );
       this.counter.resume();
@@ -593,10 +600,8 @@ public class Turn extends Activity
    */
   protected void OnTimeExpired( )
   {
-    Turn.this.OnTurnEnd();
-    /*
     Log.d( TAG, "onTimeExpired()" );
-    resultsDelay = new PauseTimer(2000)
+    resultsDelay = new PauseTimer(1000)
     {
       @Override
       public void onFinish() 
@@ -623,7 +628,6 @@ public class Turn extends Activity
     
     TextView test = (TextView) this.findViewById(R.id.TurnTimesUp);
     test.setVisibility( View.VISIBLE);
-    */
   }
   
   /**
@@ -895,30 +899,46 @@ public class Turn extends Activity
   
   protected void resumeGame()
   {
-    this.resumeTimer();
     this.pauseOverlay.setVisibility( View.INVISIBLE );
-
-    this.setActiveCard();
     
-    this.cardTitle.setVisibility( View.VISIBLE );
-    this.cardWords.setVisibility( View.VISIBLE );
-    this.buzzerButton.setEnabled( true );
-    this.skipButton.setEnabled( true );
-    this.nextButton.setEnabled( true );
+    if(!this.turnIsOver)
+    {
+      this.resumeTurnTimer();
+  
+      this.setActiveCard();
+      
+      this.cardTitle.setVisibility( View.VISIBLE );
+      this.cardWords.setVisibility( View.VISIBLE );
+      this.buzzerButton.setEnabled( true );
+      this.skipButton.setEnabled( true );
+      this.nextButton.setEnabled( true );
+    }
+    else
+    {
+      resultsDelay.resume();
+    }
   }
 
   protected void pauseGame()
   {
-    this.stopTimer();
     this.pauseOverlay.setVisibility( View.VISIBLE );
-
-    this.setActiveCard();
     
-    cardTitle.setVisibility( View.INVISIBLE );
-    cardWords.setVisibility( View.INVISIBLE );
-    this.buzzerButton.setEnabled( false );
-    this.skipButton.setEnabled( false );
-    this.nextButton.setEnabled( false );
+    if(!this.turnIsOver)
+    {    
+      this.stopTurnTimer();
+  
+      this.setActiveCard();
+      
+      cardTitle.setVisibility( View.INVISIBLE );
+      cardWords.setVisibility( View.INVISIBLE );
+      this.buzzerButton.setEnabled( false );
+      this.skipButton.setEnabled( false );
+      this.nextButton.setEnabled( false );
+    }
+    else
+    {
+      resultsDelay.pause();
+    }
   }
 
   @Override

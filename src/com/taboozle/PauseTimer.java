@@ -30,6 +30,7 @@ public abstract class PauseTimer
     public void onFinish() 
     {
       PauseTimer.this.onFinish();
+      PauseTimer.this.timerActive = false;
     }
     
     @Override
@@ -94,11 +95,11 @@ public abstract class PauseTimer
 
   /*
    * Check if a timer is currently counting down or paused.
-   * @return true if timer is not counting down (paused).
+   * @return true if timer is counting down (paused).  returns false if paused or already expired
    */   
-  public boolean isPaused()
+  public boolean isActive()
   {
-    return !this.timerActive;
+    return this.timerActive;
   }
   
   /*
