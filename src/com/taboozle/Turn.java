@@ -15,7 +15,6 @@ import android.view.animation.TranslateAnimation;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
@@ -72,6 +71,8 @@ public class Turn extends Activity
   private TextView cardTitle;
   private ListView cardWords;
 
+  private long lastCardTimerState;
+  
   /**
    * This is a reference to the current game manager
    */
@@ -146,60 +147,36 @@ public class Turn extends Activity
   private GestureDetector swipeDetector;
 
   View.OnTouchListener gestureListener;
-  
-  /**
-   * CountdownTimer - This initializes a timer during every turn that runs a
-   * method when it completes as well as during update intervals.
-  */
-  private static final long TICK = 200;
-  private boolean timerOn;
-  private class TurnTimer extends CountDownTimer
-  {
-    public TurnTimer(long millisInFuture, long countDownInterval)
-    {
-      super(millisInFuture, countDownInterval);
-      Log.d( TAG, "TurnTimer(" + millisInFuture + ", " + countDownInterval + ")" );
-      Turn.this.timerOn = true;
-    }
 
-    @Override
-    public void onFinish()
-    {
-      Log.d( TAG, "onFinish()" );
-      Turn.this.OnTurnEnd();
-    }
-
-    @Override
-    public void onTick(long millisUntilFinished)
-    {
-      Log.d( TAG, "onTick(" + millisUntilFinished + ")");
-      Turn.this.timerState = millisUntilFinished;
-      Turn.this.countdownTxt.setText( ":" + Long.toString(( millisUntilFinished / 1000 ) + 1 ));
-    }
-  }; // End TurnTimer
-
-  private TurnTimer counter;
-  private long timerState;
-  private long lastCardTimerState;
-
+  private PauseTimer counter;
 
   private void stopTimer()
   {
     Log.d( TAG, "stopTimer()" );
-    Log.d( TAG, Long.toString( this.timerState ) );
-    if( this.timerOn )
-    {
-      counter.cancel();
-      this.timerOn = false;
-      this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_PAUSE_ID));
-    }
+    Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );
+    counter.pause();
   }
 
   private void startTimer()
   {
     Log.d( TAG, "startTimer()" );
-    this.counter = new TurnTimer( this.curGameManager.GetTurnTime(), TICK);
-    this.lastCardTimerState = this.curGameManager.GetTurnTime();
+
+    long time = this.curGameManager.GetTurnTime();
+    counter = new PauseTimer(time)
+    {
+      @Override
+      public void onFinish() 
+      {
+        Turn.this.OnTimeExpired();
+      }
+
+      @Override
+      public void onTick()
+      {
+        Turn.this.countdownTxt.setText( ":" + Long.toString(( counter.getTimeRemaining() / 1000 ) + 1 ));
+      }
+    };
+    this.lastCardTimerState = time;
     this.counter.start();
     this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
   }
@@ -207,12 +184,11 @@ public class Turn extends Activity
   private void resumeTimer()
   {
     Log.d( TAG, "resumeTimer()" );
-    Log.d( TAG, Long.toString( this.timerState ) );
-    if( !this.timerOn )
+    Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );
+    if(counter.isPaused())
     {
       Log.d( TAG, "Do the Resume." );
-      this.counter = new TurnTimer( this.timerState, TICK);
-      this.counter.start();
+      counter.resume();
       this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_RESUME_ID));
     }
   }
@@ -470,12 +446,12 @@ public class Turn extends Activity
     
     if (timerCommand == Turn.TIMERANIM_RESUME_ID)
     {
-    	percentTimeLeft = ((float) this.timerState / this.curGameManager.GetTurnTime()) * timerContainerWidth;
-    	duration = (int) this.timerState;
+    	percentTimeLeft = ((float) this.counter.getTimeRemaining() / this.curGameManager.GetTurnTime()) * timerContainerWidth;
+    	duration = (int) this.counter.getTimeRemaining();
     }
     else if (timerCommand == Turn.TIMERANIM_PAUSE_ID)
     {
-    	percentTimeLeft = ((float) this.timerState / this.curGameManager.GetTurnTime()) * timerContainerWidth;
+    	percentTimeLeft = ((float) this.counter.getTimeRemaining() / this.curGameManager.GetTurnTime()) * timerContainerWidth;
     	duration = Integer.MAX_VALUE;
     }
     
@@ -604,9 +580,16 @@ public class Turn extends Activity
     }
     this.cardWords.setAdapter( cardAdapter );
   }
-
-
-
+  
+  /**
+   * OnTimeExpired defines what happens when the player's turn timer runs out
+   */
+  protected void OnTimeExpired( )
+  {
+    Log.d( TAG, "onTimeExpired()" );
+    this.OnTurnEnd();
+  }
+  
   /**
    * Hands off the intent to the next turn summary activity.
    */
@@ -911,8 +894,8 @@ public class Turn extends Activity
   
   public void setCardTime()
   {
-    this.curGameManager.GetCurrentCard().setTime( (int)(this.lastCardTimerState - this.timerState) );
-    this.lastCardTimerState = this.timerState;
+    this.curGameManager.GetCurrentCard().setTime( (int)(this.lastCardTimerState - this.counter.getTimeRemaining()) );
+    this.lastCardTimerState = this.counter.getTimeRemaining();
   }
 
   /**
