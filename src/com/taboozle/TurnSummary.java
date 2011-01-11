@@ -5,11 +5,14 @@ import java.util.LinkedList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,6 +35,8 @@ public class TurnSummary extends Activity
   private LinkedList<Card> cardList;
   private LinkedList<ImageView> cardViewList;
 
+  static final int DIALOG_GAMEOVER_ID = 0;
+  
 	/**
 	  * Watches the button that handles hand-off to the next turn activity.
 	  */
@@ -71,39 +76,6 @@ public class TurnSummary extends Activity
           TurnSummary.this.UpdateScoreViews();
         }
     };
-
-	  /**
-	   * Watches the end turn button that cancels the game.
-	   */
-	  private final OnClickListener EndGameListener = new OnClickListener()
-	  {
-	      public void onClick(View v)
-	      {
-          Log.d( TAG, "EndGameListener OnClick()" );
-	        AlertDialog confirmEnd = new AlertDialog.Builder(v.getContext()).create();
-	        confirmEnd.setTitle("Confirm End Game");
-	        confirmEnd.setMessage("Are you sure you want to end the current game?");
-
-	        confirmEnd.setButton("Cancel", new DialogInterface.OnClickListener()
-          {
-            public void onClick(DialogInterface dialog, int which) {
-            }
-          });
-
-	        confirmEnd.setButton2("Yes", new DialogInterface.OnClickListener()
-	        {
-            public void onClick(DialogInterface dialog, int which) {
-              TaboozleApplication application =
-                (TaboozleApplication) TurnSummary.this.getApplication();
-              GameManager gm = application.GetGameManager();
-              gm.EndGame();
-              startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
-            }
-          });
-
-	        confirmEnd.show();
-	      }
-	  }; // End OnClickListener
 
   /**
   * onCreate - initializes the activity to display the results of the turn.
@@ -151,21 +123,89 @@ public class TurnSummary extends Activity
   	// Update the scoreboard views
   	UpdateScoreViews();
 
-  	// Bind Next / End buttons
+  	// Bind Next button
   	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
   	playGameButton.setOnClickListener( NextTurnListener );
-
-  	Button endGameButton = (Button)this.findViewById( R.id.TurnSumEndGame );
-  	endGameButton.setOnClickListener( EndGameListener );
   	
   	// Change Next Game prompt to "Game Results" when the game is over.  Remove EndGame button
   	if ( game.GetNumTurnsRemaining() == 0 )
   	{
   		playGameButton.setText( "Game Results" );
-  		endGameButton.setVisibility(View.INVISIBLE);
   	}
   }
 
+  /**
+   *  Creates the menu items for the options menu
+   */
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu)
+  {
+    Log.d( TAG, "onCreateOptionsMenu()" );
+    menu.add(0, R.string.menu_EndGame, 0, "End Game");
+    menu.add(0, R.string.menu_Rules, 0, "Rules");
+
+    return true;
+  }
+
+  /**
+   * Handle menu clicks
+   */
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item)
+  {
+    Log.d( TAG, "onOptionsItemSelected()" );
+    // Handle item selection
+    switch (item.getItemId())
+    {
+      case R.string.menu_EndGame:
+        this.showDialog( DIALOG_GAMEOVER_ID );
+        return true;
+      case R.string.menu_Rules:
+        startActivity(new Intent(getApplication().getString( R.string.IntentRules ),
+            getIntent().getData()));
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }  
+
+  /**
+  * Handle creation of dialogs used in TurnSummary
+  */
+ @Override
+ protected Dialog onCreateDialog(int id)
+ {
+   Log.d( TAG, "onCreateDialog(" + id + ")" );
+   Dialog dialog = null;
+   AlertDialog.Builder builder = null;
+   
+   switch(id) {
+   case DIALOG_GAMEOVER_ID:
+     builder = new AlertDialog.Builder(this);
+     builder.setMessage( "Are you sure you want to end the current game?" )
+            .setTitle("Confirm End Game")
+            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                TaboozleApplication application = (TaboozleApplication) TurnSummary.this.getApplication();
+                GameManager gm = application.GetGameManager();
+                gm.EndGame();
+                startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
+                }
+              })
+            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+                }
+              });       
+     dialog = builder.create();
+     break;
+   default:
+       dialog = null;
+   }
+   return dialog;
+
+ }  
+  
   /**
    * Update the views to display the proper scores for the current round
    */

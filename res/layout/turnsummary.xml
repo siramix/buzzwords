@@ -32,7 +32,7 @@
 	</TextView>
 </LinearLayout>
 </LinearLayout>
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:id="@+id/TurnSumEndGame" android:layout_alignParentLeft="true" android:text="End Game"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumNextTurn" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:text="Next Team">
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumNextTurn" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:text="Next Team">
 </Button>
 
 
