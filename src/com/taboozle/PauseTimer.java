@@ -1,23 +1,29 @@
 package com.taboozle;
 
 import android.os.CountDownTimer;
-import android.util.Log;
 
+/* 
+ * Adds pause and resume capabilities to CountDownTimer.  Requires implementation of abstract methods
+ * for onFinish and onTick.  Assumes 200ms tick time.
+ * 
+ * @author The Taboozle Team
+ */
 public abstract class PauseTimer
 {
-  private static final String TAG = "PauseTimer";
   private static final int TICK = 200;
-  private boolean timerOn = false;
+  private boolean timerActive = false;
   private long timeRemaining;
   private CountDownTimer timer;
-     
+  
+  /*
+   * The underlying timer
+   */
   private class HiddenTimer extends CountDownTimer
   {
   
     public HiddenTimer(long millisInFuture, long countDownInterval)
     {
       super(millisInFuture, countDownInterval);
-      Log.d( TAG, "PauseTimer(" + millisInFuture + ", " + countDownInterval + ")" );
     }
     
     @Override
@@ -29,46 +35,75 @@ public abstract class PauseTimer
     @Override
     public void onTick(long millisUntilFinished) 
     {
-      Log.d( TAG, "onTick(" + millisUntilFinished + ")");
       PauseTimer.this.timeRemaining = millisUntilFinished;
       PauseTimer.this.onTick();
     }
   }
-    
+
+  /*
+   * Create a timer with pause capabilities.  Must be manually started by calling .start()
+   */
   public PauseTimer(long timeToCount) 
   {
     this.timer = new HiddenTimer(timeToCount, TICK);
     this.timeRemaining = timeToCount;
   }
      
+  /*
+   * Called when internal timer finishes
+   */
   abstract public void onFinish();
+  /*
+   * Called when internal timer updates
+   */
   abstract public void onTick();
   
+  /*
+   * Start the timer countdown from the initialized time
+   */
   public void start()
   {
-    this.timerOn = true;
+    this.timerActive = true;
     this.timer.start();
   }
+  
+  /*
+   * Pause an active timer.  Use resume() to resume.
+   */
   public void pause()
   {
-    this.timerOn = false;
-    this.timer.cancel();
+    if(this.timerActive)
+    {
+      this.timerActive = false;
+      this.timer.cancel();
+    }
   }
-  	
+  
+  /*
+   * Resume the timer from the time when last paused.
+   */  	
   public void resume()
   {
-    if(!this.timerOn)
+    if(!this.timerActive)
     {
       this.timer = new HiddenTimer(timeRemaining, TICK);
       this.timer.start();
     }
   }
-    
+
+  /*
+   * Check if a timer is currently counting down or paused.
+   * @return true if timer is not counting down (paused).
+   */   
   public boolean isPaused()
   {
-    return this.timerOn;
+    return this.timerActive;
   }
   
+  /*
+   * Get the time left before this timer expires and calls onFinished()
+   * @return long representing milliseconds remaining
+   */   
   public long getTimeRemaining()
   {
     return this.timeRemaining;
