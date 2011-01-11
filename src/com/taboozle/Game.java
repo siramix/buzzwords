@@ -294,74 +294,91 @@ public class Game extends SQLiteOpenHelper
    	//String[] results = {"", ""}; //TeamID, AwardValue or Word
    	double[][] results = new double[4][2]; //TeamID, AwardValue or Word
   	SQLiteDatabase db = this.getReadableDatabase();
-  	Cursor cursor = db.rawQuery( "select '-1', '-1'", null);
+  	String queryStr = "select -1, -1";
+  	Cursor cursor = null;
   	
   	switch (awardID) 
   	{  	
-  	  case 1: 
+  	  case 0: 
   		  //Most Skips in the Game
   		  //Find the teams that have total skips equal to the highest number by any team
-  		  cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPPED" +  
-            " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " GROUP BY " + GameData.GameHistory.TEAM_ID +
-            " HAVING " + "COUNT(*)=" +
-            //Retrieve the highest number of skips by any team
-            " (SELECT COUNT(*) as NUM_SKIPS" +  
-			  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
-			  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-			    " and " + GameData.GameHistory.RWS + "=2 " + 
-			  " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
-			  " ORDER BY 1 DESC" + 
-			  " LIMIT 1)", null);
+  	    Log.d(TAG, "Query for most skips in game. Col2 is Num Skipped.");
+  	    queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPPED" +  
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " AND " + GameData.GameHistory.RWS + "=2" +
+          " GROUP BY " + GameData.GameHistory.TEAM_ID +
+          " HAVING " + "COUNT(*)=" +
+          //Retrieve the highest number of skips by any team
+          " (SELECT COUNT(*) as NUM_SKIPS" +  
+              " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+                " and " + GameData.GameHistory.RWS + "=2 " + 
+              " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+              " ORDER BY 1 DESC" + 
+              " LIMIT 1)";
+  	    Log.d(TAG, queryStr);
+  		  cursor = db.rawQuery(queryStr, null);
       	break;
       	
-  	  case 2: 
+  	  case 1: 
   		//Most Incorrect in the Game
   		//Find the teams that have total wrongs equal to the highest number by any team
-        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_INCORRECT" +  
-            " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " GROUP BY " + GameData.GameHistory.TEAM_ID +
-            " HAVING " + "COUNT(*)=" +
-            //Retrieve the highest number of wrongs by any team
-            " (SELECT COUNT(*) as NUM_SKIPS" +  
- 			  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
- 			  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
- 			    " and " + GameData.GameHistory.RWS + "=1 " + 
- 			  " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
- 			  " ORDER BY 1 DESC" + 
- 			  " LIMIT 1)", null);
+  	    Log.d(TAG, "Query for most incorrect in game. Col2 is Num Incorrect.");
+        queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_INCORRECT" +  
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " AND " + GameData.GameHistory.RWS + "=1" +            
+          " GROUP BY " + GameData.GameHistory.TEAM_ID +
+          " HAVING " + "COUNT(*)=" +
+          //Retrieve the highest number of wrongs by any team
+          " (SELECT COUNT(*) as NUM_SKIPS" +  
+       			  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+       			  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+       			    " and " + GameData.GameHistory.RWS + "=1 " + 
+       			  " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+       			  " ORDER BY 1 DESC" + 
+       			  " LIMIT 1)";
+        Log.d(TAG, queryStr);        
+        cursor = db.rawQuery(queryStr, null);
         break;
         
-      case 3: 
+      case 2: 
 		//Most Correct in the Game
 		//Find the teams that have total corrects equal to the highest number by any team
-        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_CORRECT" +  
+        Log.d(TAG, "Query for most correct in game.  Col2 is Num Correct.");
+        queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_CORRECT" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+              " AND " + GameData.GameHistory.RWS + "=0" +            
             " GROUP BY " + GameData.GameHistory.TEAM_ID +
             " HAVING " + "COUNT(*)=" +
             //Retrieve the highest number of wrongs by any team
             " (SELECT COUNT(*) as NUM_SKIPS" +  
-			  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
-			  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-			    " and " + GameData.GameHistory.RWS + "=0 " + 
-			  " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
-			  " ORDER BY 1 DESC" + 
-			  " LIMIT 1)", null);
+        			  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+        			  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+        			    " and " + GameData.GameHistory.RWS + "=0 " + 
+        			  " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+        			  " ORDER BY 1 DESC" + 
+        			  " LIMIT 1)";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;
         
-  	  case 4: //Highest single turn score    
-  	    cursor = db.rawQuery("SELECT DISTINCT " + GameData.TurnScores.TEAM_ID + ", " + GameData.TurnScores.SCORE +
+  	  case 3: //Highest single turn score
+  	    Log.d(TAG, "Query for highest single turn score in game. Col2 is Score.");
+  	    queryStr = "SELECT DISTINCT " + GameData.TurnScores.TEAM_ID + ", " + GameData.TurnScores.SCORE +
             " FROM " + GameData.TURN_SCORES_TABLE_NAME +
             " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
             " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
-            " LIMIT 2", null);
+            " LIMIT 2";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
   	    break;
   	    
-      case 5: //Most Correct in Round and not Highest Scoring
-        cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_CORRECT" +  
+      case 4: //Most Correct in Round and not Highest Scoring
+        Log.d(TAG, "Query for most correct in round and not highest scoring.  Col2 is Num Correct.");
+        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_CORRECT" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
             " WHERE gh." + GameData.GameHistory.GAME_ID + "=" + gameID +
                " and gh." + GameData.GameHistory.RWS + "=0" + 
@@ -379,11 +396,14 @@ public class Game extends SQLiteOpenHelper
                      " LIMIT 1)" +
                 ")" +
             " GROUP BY gh." + GameData.GameHistory.TURN_SCORE_ID + 
-            " ORDER BY 2 DESC", null);
+            " ORDER BY 2 DESC";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;
         
-      case 6: //Most skipped in a single round
-        cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPS" +  
+      case 5: //Most skipped in a single round
+        Log.d(TAG, "Query for most skipped in a single round. Col2 is Num Skipped.");
+        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPS" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
               " and " + GameData.GameHistory.RWS + "=2" + 
@@ -397,11 +417,14 @@ public class Game extends SQLiteOpenHelper
                  " GROUP BY gh2." + GameData.GameHistory.TURN_SCORE_ID + 
                  " ORDER BY 1 DESC" +
                  " LIMIT 1)" +
-            " ORDER BY 2 DESC", null);
+            " ORDER BY 2 DESC";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);        
         break;
         
-      case 7: //Most incorrect in a single round
-        cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_INCORRECT" +  
+      case 6: //Most incorrect in a single round
+        Log.d(TAG, "Query for most incorrect in a single round. Col2 is Num Incorrect.");
+        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_INCORRECT" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
               " and " + GameData.GameHistory.RWS + "=1" + 
@@ -415,11 +438,14 @@ public class Game extends SQLiteOpenHelper
                  " GROUP BY gh2." + GameData.GameHistory.TURN_SCORE_ID + 
                  " ORDER BY 1 DESC" +
                  " LIMIT 1)" +
-            " ORDER BY 2 DESC", null);
+            " ORDER BY 2 DESC";                 
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);        
         break;  
         
-      case 8: //Only skipped cards in a single round
-        cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPS" +  
+      case 7: //Only skipped cards in a single round
+        Log.d(TAG, "Query for only skipped cards in a single round. Col2 is Num Skips.");
+        queryStr ="SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPS" +  
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
                " and " + GameData.GameHistory.RWS + "=2" + 
@@ -431,25 +457,34 @@ public class Game extends SQLiteOpenHelper
                    " OR " + GameData.GameHistory.RWS + "=1)" +                   
             " GROUP BY " + GameData.GameHistory.TURN_SCORE_ID + 
             " HAVING NUM_SKIPS > 0" +
-            " ORDER BY 2 DESC", null);
+            " ORDER BY 2 DESC";            
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;    
         
-      case 9: //All teams that got negative points in a round
-        cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID +
+      case 8: //All teams that got negative points in a round
+        Log.d(TAG, "Query for teams with negative points in a round. Col2 is empty.");
+        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID +
             " FROM " + GameData.TURN_SCORES_TABLE_NAME +
             " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID +
-                " and " + GameData.TurnScores.SCORE + "<0", null);
+                " and " + GameData.TurnScores.SCORE + "<0";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;   
         
-      case 10: //All teams that got zero points in a round
-        cursor = db.rawQuery("SELECT DISTINCT " + GameData.TurnScores.TEAM_ID +
+      case 9: //All teams that got zero points in a round
+        Log.d(TAG, "Query for teams with zero points in a round. Col2 is empty.");
+        queryStr = "SELECT DISTINCT " + GameData.TurnScores.TEAM_ID +
             " FROM " + GameData.TURN_SCORES_TABLE_NAME +
             " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID +
-                " and " + GameData.TurnScores.SCORE + "=0", null);
+                " and " + GameData.TurnScores.SCORE + "=0";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;
         
-      case 11: //No actions performed
-        cursor = db.rawQuery("SELECT DISTINCT " + GameData.TurnScores.TEAM_ID +
+      case 10: //No actions performed
+        Log.d(TAG, "Query for teams with no actions performed. Col2 is empty.");
+        queryStr = "SELECT DISTINCT " + GameData.TurnScores.TEAM_ID +
             " FROM " + GameData.TURN_SCORES_TABLE_NAME +
             " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID +
               " and " + GameData.TurnScores.SCORE + "=0" + 
@@ -457,12 +492,16 @@ public class Game extends SQLiteOpenHelper
               //Exclude turns that have registered an action performed by a team
               " (SELECT DISTINCT gh." + GameData.GameHistory.TURN_SCORE_ID + 
                 " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " as gh" +
-                " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID + ")", null);
+                " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID + ")";
+                
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;        
       
-      case 12: //Longest Correct streak 
+      case 11: //Longest Correct streak 
         // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
-        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
+        Log.d(TAG, "Query for longest correct streak. Col2 is Max Correct Streak.");
+        queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
             " FROM " +
             " (SELECT " + GameData.GameHistory.TEAM_ID + ", " 
                         + GameData.GameHistory.RWS + ", COUNT(*) as STREAK" +
@@ -485,12 +524,15 @@ public class Game extends SQLiteOpenHelper
               " WHERE " + GameData.GameHistory.RWS + " = 0" +
               " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
                        GameData.GameHistory.RWS + ")" +
-            " GROUP BY " + GameData.GameHistory.TEAM_ID, null);
+            " GROUP BY " + GameData.GameHistory.TEAM_ID;
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;        
         
-      case 13: //Longest Wrong streak 
+      case 12: //Longest Wrong streak 
         // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
-        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
+        Log.d(TAG, "Query for longest wrong streak. Col2 is Max Wrong Streak.");
+        queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
             " FROM " +
             " (SELECT " + GameData.GameHistory.TEAM_ID + ", " 
                         + GameData.GameHistory.RWS + ", COUNT(*) as STREAK" +
@@ -514,12 +556,15 @@ public class Game extends SQLiteOpenHelper
               //This above line is the line that changes between the wrong, skip, and right streaks
               " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
                        GameData.GameHistory.RWS + ")" +
-            " GROUP BY " + GameData.GameHistory.TEAM_ID, null);
+            " GROUP BY " + GameData.GameHistory.TEAM_ID; 
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break; 
         
-      case 14: //Longest Skip streak 
+      case 13: //Longest Skip streak 
         // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
-        cursor = db.rawQuery("SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
+        Log.d(TAG, "Query for longest skip streak. Col2 is Max Skip Streak.");
+        queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
             " FROM " +
             " (SELECT " + GameData.GameHistory.TEAM_ID + ", " 
                         + GameData.GameHistory.RWS + ", COUNT(*) as STREAK" +
@@ -543,104 +588,133 @@ public class Game extends SQLiteOpenHelper
               //This above line is the line that changes between the wrong, skip, and right streaks
               " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
                        GameData.GameHistory.RWS + ")" +
-            " GROUP BY " + GameData.GameHistory.TEAM_ID, null);
+            " GROUP BY " + GameData.GameHistory.TEAM_ID; 
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;  
         
-      case 15: //Fewest Cards Seen 
-          cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
-              " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-              " GROUP BY " + GameData.GameHistory.TEAM_ID +
-              " HAVING " + "COUNT(*)=" +
-                 //Retrieve the fewest number of cards seen for any team
-                 " (SELECT COUNT(*)" +
-                   " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
-                   " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-                   " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
-                   " ORDER BY 1 ASC" +
-                   " LIMIT 1)", null);
-          break;      
+      case 14: //Fewest Cards Seen 
+        Log.d(TAG, "Query for fewest cards seen. Col2 is Num Seen.");
+        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " GROUP BY " + GameData.GameHistory.TEAM_ID +
+            " HAVING " + "COUNT(*)=" +
+               //Retrieve the fewest number of cards seen for any team
+               " (SELECT COUNT(*)" +
+                 " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                 " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                 " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+                 " ORDER BY 1 ASC" +
+                 " LIMIT 1)";         
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;      
           
-      case 16: //Most Cards Seen 
-          cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
-              " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-              " GROUP BY " + GameData.GameHistory.TEAM_ID +
-              " HAVING " + "COUNT(*)=" +
-                 //Retrieve the fewest number of cards seen for any team
-                 " (SELECT COUNT(*)" +
-                   " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
-                   " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-                   " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
-                   " ORDER BY 1 DESC" +
-                   " LIMIT 1)", null);
-          break;
+      case 15: //Most Cards Seen
+        Log.d(TAG, "Query for most cards seen. Col2 is Num Seen.");
+        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " GROUP BY " + GameData.GameHistory.TEAM_ID +
+            " HAVING " + "COUNT(*)=" +
+               //Retrieve the fewest number of cards seen for any team
+               " (SELECT COUNT(*)" +
+                 " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                 " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                 " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+                 " ORDER BY 1 DESC" +
+                 " LIMIT 1)";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;
       
-          //select sum(score) from turnscores where game_id = 115 group by team_id order by 1 asc limit 1
-          
-      case 17: //Be last and lose to next lowest player by half their score
-          cursor = db.rawQuery("SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
-              " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-              " GROUP BY " + GameData.GameHistory.TEAM_ID +
-              " HAVING " + "COUNT(*)=" +
-                 //Retrieve the team id for the team that was last
-                 " (SELECT team_id " +
-                   " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
-                   " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-                   " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
-                   " ORDER BY 1 DESC" +
-                   " LIMIT 1)", null);
-          break;
-
-      case 18: //1st Place
-        cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
-                                    ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-              " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-              " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-              " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
-              " LIMIT 1", null);
+      case 16: //Be last and lose to next lowest player by half their score
+        Log.d(TAG, "Query for be last and lose to next lowest by half their score. Col2 is Num Seen.");
+        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " GROUP BY " + GameData.GameHistory.TEAM_ID +
+            " HAVING " + "COUNT(*)=" +
+               //Retrieve the team id for the team that was last
+               " (SELECT team_id " +
+                 " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+                 " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+                 " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+                 " ORDER BY 1 DESC" +
+                 " LIMIT 1)";         
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;
 
-      case 19: //2nd Place
-        cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
-                                    ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-              " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-              " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-              " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
-              " LIMIT 1 OFFSET 1", null);
+      case 17: //1st Place
+        Log.d(TAG, "Query for first place. Col2 is Score.");
+        queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
+                                  ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+            " LIMIT 1";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;
+
+      case 18: //2nd Place
+        Log.d(TAG, "Query for second place. Col2 is Score.");
+        queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
+                                  ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+            " LIMIT 1 OFFSET 1";         
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;
         
-      case 20: //3rd Place
-        cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
-                                    ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-              " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-              " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-              " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
-              " LIMIT 1 OFFSET 2", null);
+      case 19: //3rd Place
+        Log.d(TAG, "Query for third place. Col2 is Score.");
+        queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
+                                  ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+            " LIMIT 1 OFFSET 2";        
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;
         
-      case 21: //4th Place
-        cursor = db.rawQuery("SELECT " + GameData.TurnScores.TEAM_ID + 
-                                    ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-              " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-              " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-              " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
-              " LIMIT 1 OFFSET 3", null);
+      case 20: //4th Place
+        Log.d(TAG, "Query for fourth place. Col2 is Score.");
+        queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
+                                  ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
+            " FROM " + GameData.TURN_SCORES_TABLE_NAME +
+            " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
+            " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+            " LIMIT 1 OFFSET 3";        
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
         break;
   
-      case 22: //Fastest Correct Under 5s
+      case 21: //Fastest Correct Under 5s
       //Returns each team's fastest card, sorted by fastest to slowest
-        cursor = db.rawQuery("SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
-              " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh " +
+        Log.d(TAG, "Query for fastest correct under 5. Col2 is Card_ID.");
+        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
+              " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
               " INNER JOIN (" + 
                 " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
-                       "MIN(" + GameData.GameHistory.TIME + ") as mintime " +
-                " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+                       GameData.GameHistory.CARD_ID + ", " +
+                       "MIN(" + GameData.GameHistory.TIME + ") as mintime" +
+                " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
                 " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
                 " and " + GameData.GameHistory.TIME + "< 5000" +
-                " and " + GameData.GameHistory.RWS + "=0" + ")" +
-              " ORDER BY " + GameData.GameHistory.TIME + " ASC", null);
+                " and " + GameData.GameHistory.RWS + "=0" + ") as inr_gh" +
+              " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
+              " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
+              " ORDER BY " + GameData.GameHistory.TIME + " ASC" + 
+              " LIMIT 4 "; 
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;
   	}
   	
   	for(int i=0; i<results.length; ++i)
@@ -661,7 +735,7 @@ public class Game extends SQLiteOpenHelper
         {
           continue;
         }
-        Log.d(TAG,Integer.toString( rownum));
+        Log.d(TAG,Integer.toString(rownum));
         results[rownum][0] =  Double.valueOf(cursor.getString(0));
         
         if (cursor.getColumnCount() == 2)
