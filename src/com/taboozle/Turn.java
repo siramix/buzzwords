@@ -133,10 +133,10 @@ public class Turn extends Activity
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
       if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
-        {
+      {
         Turn.this.doSkip();
         return true;
-        }
+      }
       else
       {
         return false;
@@ -149,25 +149,20 @@ public class Turn extends Activity
   View.OnTouchListener gestureListener;
 
   private PauseTimer counter;
-
-  private void stopTimer()
-  {
-    Log.d( TAG, "stopTimer()" );
-    Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );
-    counter.pause();
-  }
+  private PauseTimer resultsDelay;
 
   private void startTimer()
   {
     Log.d( TAG, "startTimer()" );
 
     long time = this.curGameManager.GetTurnTime();
-    counter = new PauseTimer(time)
+    this.counter = new PauseTimer(time)
     {
       @Override
       public void onFinish() 
       {
         Turn.this.OnTimeExpired();
+        Turn.this.countdownTxt.setText( ":0" );
       }
 
       @Override
@@ -181,14 +176,26 @@ public class Turn extends Activity
     this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
   }
 
+  private void stopTimer()
+  {
+    Log.d( TAG, "stopTimer()" );
+    Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );
+    if(!this.counter.isPaused())
+    {
+      Log.d( TAG, "Do the Pause." );
+      this.counter.pause();
+      this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_PAUSE_ID));
+    }
+  }
+
   private void resumeTimer()
   {
     Log.d( TAG, "resumeTimer()" );
     Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );
-    if(counter.isPaused())
+    if(this.counter.isPaused())
     {
       Log.d( TAG, "Do the Resume." );
-      counter.resume();
+      this.counter.resume();
       this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_RESUME_ID));
     }
   }
@@ -586,8 +593,37 @@ public class Turn extends Activity
    */
   protected void OnTimeExpired( )
   {
+    Turn.this.OnTurnEnd();
+    /*
     Log.d( TAG, "onTimeExpired()" );
-    this.OnTurnEnd();
+    resultsDelay = new PauseTimer(2000)
+    {
+      @Override
+      public void onFinish() 
+      {
+        Turn.this.OnTurnEnd();
+      }
+
+      @Override
+      public void onTick() 
+      {
+        //Do nothing on tick
+      }
+    };
+    resultsDelay.start();
+    
+    // Hide card and disable buttons.
+    this.setActiveCard();
+    
+    cardTitle.setVisibility( View.INVISIBLE );
+    cardWords.setVisibility( View.INVISIBLE );
+    this.buzzerButton.setEnabled( false );
+    this.skipButton.setEnabled( false );
+    this.nextButton.setEnabled( false );
+    
+    TextView test = (TextView) this.findViewById(R.id.TurnTimesUp);
+    test.setVisibility( View.VISIBLE);
+    */
   }
   
   /**

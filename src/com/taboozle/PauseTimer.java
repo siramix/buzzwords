@@ -63,8 +63,8 @@ public abstract class PauseTimer
    */
   public void start()
   {
-    this.timerActive = true;
     this.timer.start();
+    this.timerActive = true;
   }
   
   /*
@@ -88,6 +88,7 @@ public abstract class PauseTimer
     {
       this.timer = new HiddenTimer(timeRemaining, TICK);
       this.timer.start();
+      this.timerActive = true;
     }
   }
 
@@ -97,7 +98,7 @@ public abstract class PauseTimer
    */   
   public boolean isPaused()
   {
-    return this.timerActive;
+    return !this.timerActive;
   }
   
   /*
