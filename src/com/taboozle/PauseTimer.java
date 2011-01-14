@@ -18,10 +18,10 @@ public abstract class PauseTimer
   /*
    * The underlying timer
    */
-  private class HiddenTimer extends CountDownTimer
+  private class InternalTimer extends CountDownTimer
   {
   
-    public HiddenTimer(long millisInFuture, long countDownInterval)
+    public InternalTimer(long millisInFuture, long countDownInterval)
     {
       super(millisInFuture, countDownInterval);
     }
@@ -46,7 +46,7 @@ public abstract class PauseTimer
    */
   public PauseTimer(long timeToCount) 
   {
-    this.timer = new HiddenTimer(timeToCount, TICK);
+    this.timer = new InternalTimer(timeToCount, TICK);
     this.timeRemaining = timeToCount;
   }
      
@@ -87,7 +87,7 @@ public abstract class PauseTimer
   {
     if(!this.timerActive)
     {
-      this.timer = new HiddenTimer(timeRemaining, TICK);
+      this.timer = new InternalTimer(timeRemaining, TICK);
       this.timer.start();
       this.timerActive = true;
     }
