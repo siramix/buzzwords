@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
-//import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
@@ -143,6 +142,11 @@ public class Turn extends Activity
         Turn.this.doSkip();
         return true;
       }
+      else if(e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
+      {
+        Turn.this.doBack();
+        return true;
+      }
       else
       {
         return false;
@@ -247,52 +251,6 @@ public class Turn extends Activity
   }
 
   /**
-   * Listener for the buzzer that plays on touch-down and stops playing on
-   * touch-up.
-   */
-  /*private final OnTouchListener BuzzListener = new OnTouchListener()
-  {
-    public boolean onTouch(View v, MotionEvent event)
-    {
-      Log.d( TAG, "BuzzListener onTouch()" );
-      SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-      AudioManager mgr =
-        (AudioManager) v.getContext().getSystemService( Context.AUDIO_SERVICE );
-      float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
-      float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
-      float volume = streamVolumeCurrent / streamVolumeMax;
-
-      //Show wrong controls once the buzzer is hit
-      Turn.this.showWrongStamp();
-
-      boolean ret;
-      switch( event.getAction() )
-      {
-        case MotionEvent.ACTION_DOWN:
-          buzzStreamId = soundPool.play( buzzSoundId, volume, volume, 1, -1, 1.0f );
-          if (sp.getBoolean("vibrate_pref", true))
-          {
-            buzzVibrator.vibrate(1000);
-          }
-          ret = false;
-          break;
-        case MotionEvent.ACTION_UP:
-          soundPool.stop( buzzStreamId );
-          if (sp.getBoolean("vibrate_pref", true))
-          {
-            buzzVibrator.cancel();
-          }
-          ret = false;
-          break;
-        default:
-          ret = false;
-      }
-
-      return ret;
-    }
-  }; // End BuzzListener */
-
-  /**
    * Listener for click on the timer to pause
    */
   private final OnClickListener TimerClickListener = new OnClickListener()
@@ -373,19 +331,6 @@ public class Turn extends Activity
       Turn.this.hideWrongStamp();
     }
   }; // End CancelWrongListener
-
-  /**
-   * Shows the WRONG stamp that requires a confirmation from the player to proceed
-   */
-  /*private void showWrongStamp()
-  {
-      //Show wrong controls once the buzzer is hit
-      Turn.this.confirmWrongButton.setVisibility( View.VISIBLE );
-      Turn.this.cancelWrongButton.setVisibility( View.VISIBLE );
-      Turn.this.wrongStamp.setVisibility( View.VISIBLE );
-      Turn.this.nextButton.setEnabled( false );
-      Turn.this.skipButton.setEnabled( false );	  
-  }*/
   
   /**
    * Hide the WRONG stamp that requires a confirmation from the player to proceed
@@ -552,6 +497,10 @@ public class Turn extends Activity
     soundPool.play( swipeSoundId, volume, volume, 1, 0, 1.0f );
     
     ShowCard();    
+  }
+  
+  protected void doBack()
+  {
   }
   
   protected void setActiveCard()
