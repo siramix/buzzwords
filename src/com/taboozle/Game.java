@@ -727,23 +727,33 @@ public class Game extends SQLiteOpenHelper
   	
   	// Set results array to the answers returned from sqlite query
   	int rownum = 0;
-  	if( cursor.moveToFirst() )
+  	if( cursor.moveToFirst() && cursor.getColumnCount() > 0)
   	{
+  	  // handle 1 row answers first
+      Log.d(TAG,Integer.toString(rownum));
+      results[rownum][0] =  Double.valueOf(cursor.getString(0)); 
+      
+      if (cursor.getColumnCount() == 2)
+      {
+        results[0][1] = Double.valueOf(cursor.getString(1));
+      }            
+      
+      // handle multiple row answers by looping until end of cursor is reached
       while(cursor.moveToNext())
       {
         if( cursor.getColumnCount() < 0 )
         {
           continue;
         }
+        rownum++;
         Log.d(TAG,Integer.toString(rownum));
+        
         results[rownum][0] =  Double.valueOf(cursor.getString(0));
         
         if (cursor.getColumnCount() == 2)
         {
           results[0][1] = Double.valueOf(cursor.getString(1));
-        }
-        
-        rownum++;
+        }        
       }
   	}
         
