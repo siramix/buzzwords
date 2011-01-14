@@ -105,13 +105,13 @@ public class Award
     awards.add( new Award( 19,"Skip Sandwich DX","Skip Streak", 2 ) );
     awards.add( new Award( 20,"Comeback Kings","Come back from an X point deficit to win", 3 ) );
     awards.add( new Award( 21,"Dirty Cheaters","Win by a spread equal to or greater than 2nd place score", 3 ) );
-    awards.add( new Award( 22,"Dominated","Be last and lose to next lowest player by half their score", 3 ) );
+    /*awards.add( new Award( 22,"Dominated","Be last and lose to next lowest player by half their score", 3 ) );
     awards.add( new Award( 23,"Slowpokes","Fewest cards seen", 1 ) );
     awards.add( new Award( 24,"Cosmpolitan","Most cards seen", 1 ) );
     awards.add( new Award( 25,"1st Place","", 0 ) );
     awards.add( new Award( 26,"2nd Place","", 0 ) );
     awards.add( new Award( 27,"3rd Place","", 0 ) );
-    awards.add( new Award( 28,"4th Place","", 0 ) );
+    awards.add( new Award( 28,"4th Place","", 0 ) );*/
     Collections.sort(awards, (new Award()).new PriorityComparator());
   }
   
