@@ -521,14 +521,14 @@ public class Turn extends Activity
     // Hide card and disable buttons.
     this.setActiveCard();
     
-    cardTitle.setVisibility( View.INVISIBLE );
-    cardWords.setVisibility( View.INVISIBLE );
+    this.viewFlipper.setVisibility( View.INVISIBLE );
+    
     this.buzzerButton.setEnabled( false );
     this.skipButton.setEnabled( false );
     this.nextButton.setEnabled( false );
     
-    TextView test = (TextView) this.findViewById(R.id.TurnTimesUp);
-    test.setVisibility( View.VISIBLE);
+    TextView timesUpView = (TextView) this.findViewById(R.id.TurnTimesUp);
+    timesUpView.setVisibility( View.VISIBLE);
   }
   
   /**
@@ -797,9 +797,8 @@ public class Turn extends Activity
       this.resumeTurnTimer();
   
       this.setActiveCard();
-      
-      this.cardTitle.setVisibility( View.VISIBLE );
-      this.cardWords.setVisibility( View.VISIBLE );
+
+      this.viewFlipper.setVisibility( View.VISIBLE );
       this.buzzerButton.setEnabled( true );
       this.skipButton.setEnabled( true );
       this.nextButton.setEnabled( true );
@@ -820,8 +819,7 @@ public class Turn extends Activity
   
       this.setActiveCard();
       
-      cardTitle.setVisibility( View.INVISIBLE );
-      cardWords.setVisibility( View.INVISIBLE );
+      this.viewFlipper.setVisibility( View.INVISIBLE );
       this.buzzerButton.setEnabled( false );
       this.skipButton.setEnabled( false );
       this.nextButton.setEnabled( false );
