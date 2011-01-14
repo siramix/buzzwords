@@ -7,7 +7,7 @@
 		android:id="@+id/ViewFlipper0"
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content" 
-		android:layout_below="@+id/actionbar">
+		android:layout_below="@+id/actionbar" android:layout_centerVertical="true">
 		<RelativeLayout
 			android:id="@+id/CardLayoutA" android:layout_width="wrap_content" android:layout_height="wrap_content">
 			<TextView
@@ -62,9 +62,9 @@
 	
 	
 
-</RelativeLayout><ImageView android:layout_below="@id/CardWordsA" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:id="@+id/WrongStamp" android:background="@drawable/wrong_stamp" android:layout_alignParentTop="true" android:layout_marginTop="38dp"></ImageView>
+</RelativeLayout>
 
-<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonCancelWrong" android:background="@drawable/cancelwrong" android:layout_above="@+id/lowbar" android:layout_alignParentLeft="true" android:layout_marginBottom="2dp"></ImageButton><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ButtonConfirmWrong" android:background="@drawable/wrong" android:layout_above="@+id/lowbar" android:layout_alignParentRight="true" android:layout_marginBottom="2dp"></ImageButton><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/PauseImageView" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:background="@drawable/paused"></ImageView>
+<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/PauseImageView" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:background="@drawable/paused"></ImageView>
 <RelativeLayout android:layout_width="wrap_content" android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:paddingLeft="2dp" android:background="@drawable/controls_bg">
 	<ImageButton 
 		android:layout_alignParentLeft="true" 

@@ -55,9 +55,6 @@ public class Turn extends Activity
   private static final int SWIPE_MIN_DISTANCE = 120;
   private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
-  private ImageButton confirmWrongButton;
-  private ImageButton cancelWrongButton;
-  private ImageView wrongStamp;
   private ImageView pauseOverlay;
   private ImageButton buzzerButton;
   private ImageButton nextButton;
@@ -92,11 +89,6 @@ public class Turn extends Activity
    * Sound pool for playing the buzz sound on a loop.
    */
   private SoundPool soundPool;
-
-  /**
-   * id of the buzz within android's sound-pool framework
-   */
-  //private int buzzSoundId;
 
   /**
    * id of the buzz's stream within android's sound-pool framework
@@ -303,46 +295,6 @@ public class Turn extends Activity
       Turn.this.doSkip();
     }
   }; // End SkipListener
-
-  /**
-   * Listener for the button that confirms a buzz.  This will cause the application
-   * to move to the next card and record a wrong score.
-   */
-  private final OnClickListener ConfirmWrongListener = new OnClickListener()
-  {
-    public void onClick(View v)
-    {
-      Log.d( TAG, "ConfirmWrongListener OnClick()" );
-      //Hide confirmation widgets
-      Turn.this.hideWrongStamp();
-      Turn.this.doWrong();
-    }
-  }; // End ConfirmWrongListener
-
-  /**
-   *
-   */
-  private final OnClickListener CancelWrongListener = new OnClickListener()
-  {
-    public void onClick(View v)
-    {
-      Log.d( TAG, "CancelWrongListener OnClick()" );    
-      //Hide confirmation widgets
-      Turn.this.hideWrongStamp();
-    }
-  }; // End CancelWrongListener
-  
-  /**
-   * Hide the WRONG stamp that requires a confirmation from the player to proceed
-   */
-  private void hideWrongStamp()
-  {
-      Turn.this.confirmWrongButton.setVisibility( View.INVISIBLE );
-      Turn.this.cancelWrongButton.setVisibility( View.INVISIBLE );
-      Turn.this.wrongStamp.setVisibility( View.INVISIBLE );
-      Turn.this.nextButton.setEnabled( true );
-      Turn.this.skipButton.setEnabled( true );	  
-  }
   
   /**
    * Listener for the pause overlay. It unpauses the the game.
@@ -606,9 +558,6 @@ public class Turn extends Activity
       (TaboozleApplication) this.getApplication();
     this.curGameManager = application.GetGameManager();
 
-    this.confirmWrongButton = (ImageButton) this.findViewById( R.id.ButtonConfirmWrong );
-    this.cancelWrongButton = (ImageButton) this.findViewById( R.id.ButtonCancelWrong );
-    this.wrongStamp = (ImageView) this.findViewById( R.id.WrongStamp );
     this.pauseOverlay = (ImageView) this.findViewById( R.id.PauseImageView );
     this.countdownTxt = (TextView) findViewById( R.id.Timer );
     this.viewFlipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
@@ -623,9 +572,6 @@ public class Turn extends Activity
   protected void setupUIProperties()
   {
     Log.d( TAG, "setupUIProperties()");
-    this.confirmWrongButton.setVisibility( View.INVISIBLE );
-    this.cancelWrongButton.setVisibility( View.INVISIBLE );
-    this.wrongStamp.setVisibility( View.INVISIBLE );
     this.pauseOverlay.setVisibility( View.INVISIBLE );
 
     this.pauseOverlay.setOnClickListener( PauseListener );
@@ -651,10 +597,6 @@ public class Turn extends Activity
     {
       this.skipButton.setVisibility(View.INVISIBLE);
     }
-
-    this.confirmWrongButton.setOnClickListener( ConfirmWrongListener );
-    this.cancelWrongButton.setOnClickListener( CancelWrongListener );
-    
     this.swipeDetector = new GestureDetector(swipeListener);
     this.gestureListener = new View.OnTouchListener() {
       public boolean onTouch(View v, MotionEvent event) {
