@@ -762,7 +762,7 @@ public class Game extends SQLiteOpenHelper
             
       case 24: //Slowest Correct Longer than 30s
     	//Returns each team's slowest correct card, sorted by slowest to fastest
-        Log.d(TAG, "Query for slowest correct under 5. Col2 is Card_ID.");
+        Log.d(TAG, "Query for slowest correct longer than 30s. Col2 is Card_ID.");
         queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
           " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
           " INNER JOIN (" + 
@@ -784,7 +784,7 @@ public class Game extends SQLiteOpenHelper
             
       case 25: //Slowest Wrong Longer than 30s
         //Returns each team's slowest wrong card, sorted by slowest to fastest
-        Log.d(TAG, "Query for slowest wrong under 5. Col2 is Card_ID.");
+        Log.d(TAG, "Query for slowest wrong longer than 30s. Col2 is Card_ID.");
         queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
           " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
           " INNER JOIN (" + 
@@ -806,7 +806,7 @@ public class Game extends SQLiteOpenHelper
             
       case 26: //Slowest Skip Longer than 30s
         //Returns each team's slowest skipped card, sorted by slowest to fastest
-        Log.d(TAG, "Query for slowest skip under 5. Col2 is Card_ID.");
+        Log.d(TAG, "Query for slowest skip longer than 30s. Col2 is Card_ID.");
         queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
           " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
           " INNER JOIN (" + 
@@ -820,7 +820,7 @@ public class Game extends SQLiteOpenHelper
              " and " + GameData.GameHistory.RWS + "=2" + ") as inr_gh" +
           " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
           " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
-          " ORDER BY " + GameData.GameHistory.TIME + "DESC" + 
+          " ORDER BY " + GameData.GameHistory.TIME + " DESC" + 
           " LIMIT 4 "; 
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
