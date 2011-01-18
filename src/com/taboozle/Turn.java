@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.shapes.Shape;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -624,20 +626,20 @@ public class Turn extends Activity
     switch (this.curGameManager.GetActiveTeamIndex()) {      
       case 0: //Blue Team
         barFill.setImageResource( R.drawable.timer_fill_blue );
-        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamA_BG );
+        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_bluegradient );
        // badWords.setTextColor( R.color.teamA_Text );
         break;
       case 1: //Green Team 
         barFill.setImageResource( R.drawable.timer_fill_green );
-        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamB_BG );        
+        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_greengradient );        
         break;
       case 2: //Red Team 
         barFill.setImageResource( R.drawable.timer_fill_red );
-        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamC_BG );     
+        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_redgradient );     
         break;
       case 3: //Yellow Team 
         barFill.setImageResource( R.drawable.timer_fill_yellow );
-        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.color.teamD_BG );     
+        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_yellowgradient );     
         break;        
       default: barFill.setImageResource( R.drawable.timer_fill_red ); //Red Team
     }

@@ -2,7 +2,7 @@
 <RelativeLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:id="@+id/MultiCardLayout">
+    android:layout_height="fill_parent" android:id="@+id/MultiCardLayout" android:background="@drawable/bg_bluegradient">
 	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTimesUp" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:textSize="60dp" android:textStyle="bold" android:text="Time's Up!" android:visibility="invisible"></TextView><ViewFlipper
 		android:id="@+id/ViewFlipper0"
 		android:layout_height="wrap_content"
