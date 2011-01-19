@@ -1,54 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
 	android:id="@+id/StartLayout" 
-	android:layout_width="fill_parent" 
-	android:layout_height="fill_parent" 
-	android:orientation="vertical" android:background="#eee">
+	android:layout_height="fill_parent" android:layout_width="fill_parent" android:background="@color/genericBG">
 	
-	<TextView android:id="@+id/Title"		 
-		android:layout_width="wrap_content" 	
-		android:layout_height="wrap_content" 
-		android:layout_centerHorizontal="true" 
-		android:background="@drawable/mainscreen_logo" />
-		
-	<ImageButton android:id="@+id/PlayGameButton" 	
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" 
-		android:layout_centerHorizontal="true" 
-		android:layout_below="@+id/Title" 
-		android:layout_marginTop="30dip" 
-		android:clickable="true" 
-		android:nextFocusDown="@drawable/mainscreen_play_onclick" 
-		android:nextFocusUp="@drawable/mainscreen_play" 
-		android:background="@drawable/mainscreen_play_selector"/>
-		
-	<RelativeLayout android:id="@+id/OptionsIcons" 
-		android:layout_below="@+id/PlayGameButton" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_centerHorizontal="true" 
-		android:layout_marginTop="50dip" >
-		
-		<ImageButton android:id="@+id/CardPacksIcon" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" android:background="@drawable/mainscreen_cardpacks_selector"/>
-			
-		<ImageButton android:id="@+id/GameRulesIcon" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_toRightOf="@+id/CardPacksIcon" 
-			android:layout_marginLeft="25dip" android:background="@drawable/mainscreen_rules_selector"/>
-		
-		<ImageButton android:id="@+id/StatsIcon"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" 
-			android:layout_below="@+id/CardPacksIcon" 
-			android:layout_alignLeft="@+id/CardPacksIcon" android:layout_marginTop="50dip" android:background="@drawable/mainscreen_stats_selector"/>
-			
-		<ImageButton android:id="@+id/SettingsIcon" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_alignBottom="@+id/StatsIcon" android:layout_alignRight="@+id/GameRulesIcon" android:background="@drawable/mainscreen_settings_selector"/>
 	
-	</RelativeLayout>
+		
+	
+		
+	
+
+<ImageView android:id="@+id/ImageView01" android:background="@drawable/title_title" android:layout_height="64px" android:layout_marginTop="10dp" android:layout_width="280px" android:layout_marginLeft="20dp"></ImageView><LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="100dp" android:id="@+id/Title_MenuGroup" android:layout_marginLeft="10dp"><LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_SelectionRowPlay" android:paddingLeft="20dp"><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/PlayGameButton" android:background="@drawable/title_play_selector"></ImageButton>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Play" android:textSize="58px" android:textColor="@color/teamB_text" android:id="@+id/Title_PlayGameText"></TextView>
+</LinearLayout><LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_SelectionRowRules" android:paddingLeft="20dp" android:paddingTop="10dp"><ImageButton android:background="@drawable/title_rules" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/GameRulesButton"></ImageButton>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="58px" android:text="Rules" android:textColor="@color/teamA_text" android:paddingLeft="13dp" android:id="@+id/Title_GameRulesText"></TextView>
+</LinearLayout>
+
+<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_SelectionRowSettings" android:paddingTop="10dp"><ImageButton android:background="@drawable/title_settings" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/SettingsIcon"></ImageButton>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="58px" android:text="Settings" android:textColor="@color/teamD_text" android:paddingLeft="15dp" android:id="@+id/Title_SettingsText"></TextView>
+</LinearLayout><LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_SelectionRowBuzz" android:paddingLeft="20dp" android:paddingTop="10dp"><ImageButton android:id="@+id/ImageButton01" android:background="@drawable/title_buzzer" android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageButton>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="58px" android:text="Buzz" android:textColor="@color/teamC_text" android:paddingLeft="12dp" android:id="@+id/Title_BuzzText"></TextView>
+</LinearLayout></LinearLayout>
 
 </RelativeLayout>
