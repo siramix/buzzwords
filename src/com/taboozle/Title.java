@@ -81,7 +81,7 @@ public void onCreate( Bundle savedInstanceState )
   ImageButton settingsButton = (ImageButton) this.findViewById( R.id.SettingsIcon );  
   settingsButton.setOnClickListener( SettingsListener );
   
-  ImageButton rulesButton = (ImageButton) this.findViewById( R.id.GameRulesIcon );
+  ImageButton rulesButton = (ImageButton) this.findViewById( R.id.GameRulesButton );
   rulesButton.setOnClickListener( RulesListener );
 }
 
