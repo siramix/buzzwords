@@ -175,8 +175,9 @@ public class Card
   	case 1:
   	  return R.drawable.wrong;
   	case 2:
-  	default:
   	  return R.drawable.skip;
+  	default:
+  	  return 0;
   	}
   }
 

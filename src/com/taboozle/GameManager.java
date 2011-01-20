@@ -140,6 +140,8 @@ public class GameManager implements Serializable
     {
       this.teamIds[i] = game.newTeam( teams[i] );
     }
+    
+    this.game.clearDeck();
   }
 
   /**
@@ -198,6 +200,7 @@ public class GameManager implements Serializable
 	                       card.getId(), currentTurnScoreID,
 	                       card.getRws(), card.getTime() );
 	  }
+	  this.game.pruneDeck();
   }
   /**
    * Write the game results to the database.  Game results consist of an entry for
@@ -254,6 +257,10 @@ public class GameManager implements Serializable
   {
     Log.d( TAG, "GetPreviousCard()" );
     this.currentCard = this.game.getPreviousCard();
+    if( !this.currentCards.isEmpty() )
+    {
+      this.currentCards.removeLast();
+    }
     return this.currentCard;
   }
   

@@ -66,6 +66,7 @@ public class Turn extends Activity
   
   private TextView cardTitle;
   private ListView cardWords;
+  private ImageView cardStatus;
 
   private long lastCardTimerState;
   
@@ -453,6 +454,20 @@ public class Turn extends Activity
   
   protected void doBack()
   {
+    AIsActive = !AIsActive;
+    this.viewFlipper.showNext();
+    
+    this.setActiveCard();
+    ArrayAdapter<String> cardAdapter =
+      new ArrayAdapter<String>( this, R.layout.word );
+    Card curCard = this.curGameManager.GetPreviousCard();
+    this.cardTitle.setText( curCard.getTitle() );
+    for( int i = 0; i < curCard.getBadWords().size(); i++ )
+    {
+      cardAdapter.add( curCard.getBadWords().get( i ) );
+    }
+    this.cardWords.setAdapter( cardAdapter );
+    this.cardStatus.setBackgroundResource( curCard.getDrawableId() );
   }
   
   protected void setActiveCard()
@@ -460,19 +475,24 @@ public class Turn extends Activity
     Log.d( TAG, "setActiveCard()");
     int curTitle;
     int curWords;
+    int curStatus;
     if( this.AIsActive )
     {
       curTitle = R.id.CardTitleA;
       curWords = R.id.CardWordsA;
+      curStatus = R.id.StatusImageA;
     }
     else
     {
       curTitle = R.id.CardTitleB;
       curWords = R.id.CardWordsB;
+      curStatus = R.id.StatusImageB;
     }
 
     this.cardTitle = (TextView) this.findViewById( curTitle );
     this.cardWords = (ListView) this.findViewById( curWords );
+    this.cardStatus = (ImageView) this.findViewById( curStatus );
+    
   }
 
   /**
@@ -494,6 +514,7 @@ public class Turn extends Activity
       cardAdapter.add( curCard.getBadWords().get( i ) );
     }
     this.cardWords.setAdapter( cardAdapter );
+    this.cardStatus.setBackgroundResource( curCard.getDrawableId() );
   }
   
   /**
@@ -874,6 +895,7 @@ public class Turn extends Activity
     if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled() )
       {
+      this.doBack();
       return true;
       }
 

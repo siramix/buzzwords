@@ -65,8 +65,34 @@ public class Game extends SQLiteOpenHelper
            GameData.DATABASE_VERSION );
     Log.d( TAG, "Game()" );
     this.curContext = context;
-    this.cardPosition = 0;
+    this.clearDeck();
+  }
+  
+  public void clearDeck()
+  {
     this.cards = new ArrayList<Card>();
+    this.cardPosition = -1;
+  }
+  
+  /**
+   * Kill all cards that came before
+   */
+  public void pruneDeck()
+  {
+    for( int i = 0; i < this.cards.size(); ++i )
+    {
+      if( this.cards.get( i ).getRws() != -1 )
+      {
+        this.cards.remove( i );
+        i--; // we removed so we need to hop back 
+      }
+      else
+      {
+        this.cards.remove( i );
+        break;
+      }
+    }
+    this.cardPosition = -1;
   }
 
   /**
@@ -151,13 +177,13 @@ public class Game extends SQLiteOpenHelper
   {
     Log.d( TAG, "getNextCard()" );
     // check deck bounds
-    if( this.cardPosition >= this.cards.size() || this.cardPosition < 0 )
+    if( this.cardPosition >= this.cards.size() || this.cardPosition == -1 )
     {
       this.prepDeck();
     }
 
     // return the card (it could be blank)
-    return this.cards.get( this.cardPosition++ );
+    return this.cards.get( ++this.cardPosition );
   }
 
   /**
@@ -167,15 +193,12 @@ public class Game extends SQLiteOpenHelper
   public Card getPreviousCard()
   {
     Log.d( TAG, "getPreviousCard()" );
-
-    this.cardPosition--;
-
-    if( this.cardPosition < 0 )
+    
+    if( this.cardPosition == 0 )
     {
-      this.cardPosition = 0;
+      this.cardPosition = 1; 
     }
-
-    return this.cards.get( this.cardPosition );
+    return this.cards.get( --this.cardPosition );
   }
 
   /**
