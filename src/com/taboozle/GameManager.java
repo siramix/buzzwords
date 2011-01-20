@@ -246,6 +246,18 @@ public class GameManager implements Serializable
   }
   
   /**
+   * Get the previous card. This is like going back to a previously called
+   * card.
+   * @return the previously played card
+   */
+  public Card GetPreviousCard()
+  {
+    Log.d( TAG, "GetPreviousCard()" );
+    this.currentCard = this.game.getPreviousCard();
+    return this.currentCard;
+  }
+  
+  /**
    * Return the card currently in play without moving through the deck
    * @return the card currently in play
    */

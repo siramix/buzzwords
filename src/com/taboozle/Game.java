@@ -44,12 +44,12 @@ public class Game extends SQLiteOpenHelper
   /**
    * The list of cardIds that we pull from (our "deck" of cards)
    */
-  private ArrayList<Long> cardIds;
+  private ArrayList<Card> cards;
 
   /**
    * The position in the list of card ids (where we are in the "deck")
    */
-  private int cardIdPosition;
+  private int cardPosition;
 
   /**
    * Standard constructor. If you're wondering about the necessity of the
@@ -63,8 +63,10 @@ public class Game extends SQLiteOpenHelper
   {
     super( context, GameData.DATABASE_NAME, null,
            GameData.DATABASE_VERSION );
-    Log.d( TAG, "Game()" );    
+    Log.d( TAG, "Game()" );
     this.curContext = context;
+    this.cardPosition = 0;
+    this.cards = new ArrayList<Card>();
   }
 
   /**
@@ -76,13 +78,11 @@ public class Game extends SQLiteOpenHelper
   public void prepDeck()
   {
     Log.d( TAG, "prepDeck()" );
-    // initialize our data structures
-    this.cardIds = new ArrayList<Long>();
-    this.cardIdPosition = 0;
 
     // query for ids
     SQLiteDatabase db = this.getReadableDatabase();
-    String[] columns = new String[] {GameData.Cards._ID};
+    String[] columns = new String[] {GameData.Cards._ID, GameData.Cards.TITLE,
+                                     GameData.Cards.BAD_WORDS};
     Cursor cur = db.query( GameData.CARD_TABLE_NAME, columns, null, null,
                          null, null, "RANDOM()");
 
@@ -92,7 +92,14 @@ public class Game extends SQLiteOpenHelper
       do
       {
         int idColumn = cur.getColumnIndex( GameData.Cards._ID );
-        this.cardIds.add( cur.getLong( idColumn ) );
+        int titleColumn = cur.getColumnIndex( GameData.Cards.TITLE );
+        int badWordsColumn = cur.getColumnIndex( GameData.Cards.BAD_WORDS );
+
+        Card card = new Card();
+        card.setId( cur.getLong( idColumn ) );
+        card.setTitle( cur.getString( titleColumn ) );
+        card.setBadWords( cur.getString( badWordsColumn ) );
+        this.cards.add( card );
 
       } while( cur.moveToNext() );
     }
@@ -144,40 +151,31 @@ public class Game extends SQLiteOpenHelper
   {
     Log.d( TAG, "getNextCard()" );
     // check deck bounds
-    if( this.cardIdPosition >= this.cardIds.size() )
+    if( this.cardPosition >= this.cards.size() || this.cardPosition < 0 )
     {
       this.prepDeck();
     }
 
-    // query for the specific card indicated by cardId
-    SQLiteDatabase db = this.getReadableDatabase();
-    String[] columns = new String[] {GameData.Cards._ID, GameData.Cards.TITLE,
-                        GameData.Cards.BAD_WORDS};
-    Cursor cur = db.query( GameData.CARD_TABLE_NAME, columns,
-                           GameData.Cards._ID + "=" +
-                           this.cardIds.get( this.cardIdPosition++ ),
-                           null, null, null, null, "1" );
+    // return the card (it could be blank)
+    return this.cards.get( this.cardPosition++ );
+  }
 
-    // create a blank card
-    Card card = new Card();
+  /**
+   * Return the previous card
+   * @return the previous card in the deck
+   */
+  public Card getPreviousCard()
+  {
+    Log.d( TAG, "getPreviousCard()" );
 
-    // Get the first result from the cursor and populate the blank card
-    if( cur.moveToFirst() )
+    this.cardPosition--;
+
+    if( this.cardPosition < 0 )
     {
-      int idColumn = cur.getColumnIndex( GameData.Cards._ID );
-      int titleColumn = cur.getColumnIndex( GameData.Cards.TITLE );
-      int badWordsColumn = cur.getColumnIndex( GameData.Cards.BAD_WORDS );
-
-      card.setId( cur.getLong( idColumn ) );
-      card.setTitle( cur.getString( titleColumn ) );
-      card.setBadWords( cur.getString( badWordsColumn ) );
+      this.cardPosition = 0;
     }
 
-    // release the cursor
-    cur.close();
-
-    // return the card (it could be blank)
-    return card;
+    return this.cards.get( this.cardPosition );
   }
 
   /**
