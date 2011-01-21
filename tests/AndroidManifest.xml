@@ -7,6 +7,6 @@
 
     <uses-library android:name="android.test.runner" />
     </application>
-    <uses-sdk android:minSdkVersion="6" />
+    <uses-sdk android:minSdkVersion="7" />
     <instrumentation android:targetPackage="com.taboozle" android:name="android.test.InstrumentationTestRunner" />
 </manifest> 

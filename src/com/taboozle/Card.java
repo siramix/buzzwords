@@ -82,6 +82,38 @@ public class Card
     ArrayList<String> bws = new ArrayList<String>( rhs.getBadWords() );
     this.init( rhs.getId(), rhs.getRws(), rhs.getTitle(), bws, rhs.getTime() );
   }
+  
+  /**
+   * Standard Constructor
+   */
+  public Card( long id, int rws, String title,
+               ArrayList<String> badWords, int time )
+  {
+    this.init( id, rws, title, badWords, time );
+  }
+  
+  @Override
+  public boolean equals(Object compareObj)
+  {
+    if(this == compareObj)
+    {
+      return true;
+    }
+   
+    if(compareObj == null)
+    {
+      return false;
+    }
+   
+    if(!(compareObj instanceof Card))
+    {
+      return false;
+    }
+    Card rhs = (Card) compareObj;
+    return this.badWords.equals( rhs.getBadWords() ) && 
+      this.id == rhs.getId() && this.rws == rhs.getRws() &&
+      this.time == rhs.getTime() && this.title.equals( rhs.getTitle() );    
+  }
 
   /**
    * Function for initializing card state
