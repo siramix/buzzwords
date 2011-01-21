@@ -115,6 +115,11 @@ public class Turn extends Activity
    * vibrator object to vibrate on buzz click
    */
   private Vibrator buzzVibrator;
+  
+  /**
+   * Boolean for representing whether we've gone back or not
+   */
+  private boolean isBack;
 
   /**
    * Unique IDs for Options menu
@@ -454,7 +459,12 @@ public class Turn extends Activity
   
   protected void doBack()
   {
-    AIsActive = !AIsActive;
+    if( this.isBack )
+    {
+      return;
+    }
+    
+    this.AIsActive = !this.AIsActive;
     this.viewFlipper.showNext();
     
     this.setActiveCard();
@@ -468,6 +478,7 @@ public class Turn extends Activity
     }
     this.cardWords.setAdapter( cardAdapter );
     this.cardStatus.setBackgroundResource( curCard.getDrawableId() );
+    this.isBack = true;
   }
   
   protected void setActiveCard()
@@ -515,6 +526,7 @@ public class Turn extends Activity
     }
     this.cardWords.setAdapter( cardAdapter );
     this.cardStatus.setBackgroundResource( curCard.getDrawableId() );
+    this.isBack = false;
   }
   
   /**
@@ -677,6 +689,7 @@ public class Turn extends Activity
     
     // set which card is active
     this.AIsActive = true;
+    this.isBack = true;
 
     // Setup the view
     this.setContentView(R.layout.turn );
@@ -789,6 +802,7 @@ public class Turn extends Activity
               
               public void onClick(DialogInterface dialog, int which) {
                 Turn.this.ShowCard();
+                Turn.this.isBack = true;
                 Turn.this.startTimer();                
               }
             })
@@ -797,6 +811,7 @@ public class Turn extends Activity
              public void onCancel(DialogInterface dialog) {
              // Handles cancelling the dialog (which shouldn't be possible anymore)
 	                 Turn.this.ShowCard();
+	                 Turn.this.isBack = true;
 	                 Turn.this.startTimer();	                 					
                }
              });      
