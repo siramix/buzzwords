@@ -94,24 +94,24 @@ public class Award
     awards.add( new Award( 8,"Dead Weight","Negative Points", 2 ) );
     awards.add( new Award( 9,"Pointless","Zero Points", 2 ) );
     awards.add( new Award( 10,"Out to Lunch","Complete no actions", 2 ) );
-    awards.add( new Award( 11,"Quickdraw","Fastest Correct", 3 ) );
-    awards.add( new Award( 12,"Glass Half Empty", "Fastest Skip", 3 ) );
-    awards.add( new Award( 13,"Over Before it Started","Fastest Buzz", 3 ) );
+    awards.add( new Award( 11,"Quickdraw","Fastest Correct under 5s", 3 ) );
+    awards.add( new Award( 12,"Glass Half Empty", "Fastest Skip under 5s", 3 ) );
+    awards.add( new Award( 13,"Over Before it Started","Fastest Buzz under 5s", 3 ) );
     awards.add( new Award( 14,"Took You Long Enough!","Slowest Correct", 3 ) );
     awards.add( new Award( 15,"...Did I do that?","Slowest Buzz", 3 ) );
     awards.add( new Award( 16,"Worst Guessers","Slowest Skip", 3 ) );
     awards.add( new Award( 17,"He's on Fire!","Correct Streak", 2 ) );
     awards.add( new Award( 18,"Iced","Wrong Streak", 2 ) );
     awards.add( new Award( 19,"Skip Sandwich DX","Skip Streak", 2 ) );
-    awards.add( new Award( 20,"Comeback Kings","Come back from an X point deficit to win", 3 ) );
-    awards.add( new Award( 21,"Dirty Cheaters","Win by a spread equal to or greater than 2nd place score", 3 ) );
+    //awards.add( new Award( 20,"Comeback Kings","Come back from an X point deficit to win", 3 ) );
+    //awards.add( new Award( 21,"Dirty Cheaters","Win by a spread equal to or greater than 2nd place score", 3 ) );
     awards.add( new Award( 22,"Dominated","Be last and lose to next lowest player by half their score", 3 ) );
     awards.add( new Award( 23,"Slowpokes","Fewest cards seen", 1 ) );
     awards.add( new Award( 24,"Cosmpolitan","Most cards seen", 1 ) );
     awards.add( new Award( 25,"1st Place","", 0 ) );
     awards.add( new Award( 26,"2nd Place","", 0 ) );
-    /*awards.add( new Award( 27,"3rd Place","", 0 ) );
-    awards.add( new Award( 28,"4th Place","", 0 ) );*/
+    awards.add( new Award( 27,"3rd Place","", 0 ) );
+    awards.add( new Award( 28,"4th Place","", 0 ) );
     Collections.sort(awards, (new Award()).new PriorityComparator());
   }
   

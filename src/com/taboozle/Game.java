@@ -320,7 +320,52 @@ public class Game extends SQLiteOpenHelper
   	
   	switch (awardID) 
   	{  	
-  	  case 0: 
+  	  
+      case 0: 
+        //Most Correct in the Game
+        //Find the teams that have total corrects equal to the highest number by any team
+        Log.d(TAG, "Query for most correct in game.  Col2 is Num Correct.");
+        queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_CORRECT" +  
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " AND " + GameData.GameHistory.RWS + "=0" +            
+          " GROUP BY " + GameData.GameHistory.TEAM_ID +
+          " HAVING " + "COUNT(*)=" +
+          //Retrieve the highest number of wrongs by any team
+          " (SELECT COUNT(*) as NUM_SKIPS" +  
+              " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+             " and " + GameData.GameHistory.RWS + "=0 " + 
+             " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+             " ORDER BY 1 DESC" + 
+             " LIMIT 1)";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;
+  	  
+      case 1: 
+        //Most Incorrect in the Game
+        //Find the teams that have total wrongs equal to the highest number by any team
+        Log.d(TAG, "Query for most incorrect in game. Col2 is Num Incorrect.");
+        queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_INCORRECT" +  
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " AND " + GameData.GameHistory.RWS + "=1" +            
+          " GROUP BY " + GameData.GameHistory.TEAM_ID +
+          " HAVING " + "COUNT(*)=" +
+          //Retrieve the highest number of wrongs by any team
+          " (SELECT COUNT(*) as NUM_SKIPS" +  
+              " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
+              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+                " and " + GameData.GameHistory.RWS + "=1 " + 
+              " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
+              " ORDER BY 1 DESC" + 
+              " LIMIT 1)";
+        Log.d(TAG, queryStr);        
+        cursor = db.rawQuery(queryStr, null);
+        break;        
+            
+  	  case 2: 
   		//Most Skips in the Game
   		//Find the teams that have total skips equal to the highest number by any team
   	    Log.d(TAG, "Query for most skips in game. Col2 is Num Skipped.");
@@ -341,51 +386,7 @@ public class Game extends SQLiteOpenHelper
   	    Log.d(TAG, queryStr);
   		  cursor = db.rawQuery(queryStr, null);
       	break;
-      	
-  	  case 1: 
-  		//Most Incorrect in the Game
-  		//Find the teams that have total wrongs equal to the highest number by any team
-  	    Log.d(TAG, "Query for most incorrect in game. Col2 is Num Incorrect.");
-        queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_INCORRECT" +  
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " AND " + GameData.GameHistory.RWS + "=1" +            
-          " GROUP BY " + GameData.GameHistory.TEAM_ID +
-          " HAVING " + "COUNT(*)=" +
-          //Retrieve the highest number of wrongs by any team
-          " (SELECT COUNT(*) as NUM_SKIPS" +  
-       			  " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
-       			  " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-       			    " and " + GameData.GameHistory.RWS + "=1 " + 
-       			  " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
-       			  " ORDER BY 1 DESC" + 
-       			  " LIMIT 1)";
-        Log.d(TAG, queryStr);        
-        cursor = db.rawQuery(queryStr, null);
-        break;
-        
-      case 2: 
-		//Most Correct in the Game
-		//Find the teams that have total corrects equal to the highest number by any team
-        Log.d(TAG, "Query for most correct in game.  Col2 is Num Correct.");
-        queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_CORRECT" +  
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " AND " + GameData.GameHistory.RWS + "=0" +            
-          " GROUP BY " + GameData.GameHistory.TEAM_ID +
-          " HAVING " + "COUNT(*)=" +
-          //Retrieve the highest number of wrongs by any team
-          " (SELECT COUNT(*) as NUM_SKIPS" +  
-        	      " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
-        	      " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-        			 " and " + GameData.GameHistory.RWS + "=0 " + 
-        		  " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
-        		  " ORDER BY 1 DESC" + 
-        		  " LIMIT 1)";
-        Log.d(TAG, queryStr);
-        cursor = db.rawQuery(queryStr, null);
-        break;
-        
+      	  
   	  case 3: //Highest single turn score
   	    Log.d(TAG, "Query for highest single turn score in game. Col2 is Score.");
   	    queryStr = "SELECT DISTINCT " + GameData.TurnScores.TEAM_ID + ", " + GameData.TurnScores.SCORE +
@@ -517,8 +518,140 @@ public class Game extends SQLiteOpenHelper
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
         break;        
-      
-      case 11: //Longest Correct streak 
+        
+      case 11: //Fastest Correct Under 5s
+        //Returns each team's fastest card, sorted by fastest to slowest
+        Log.d(TAG, "Query for fastest correct under 5. Col2 is Card_ID.");
+        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
+          " INNER JOIN (" + 
+          //Find the fastest correct entry in gamehistory and tie it to the team and card
+          " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
+                       GameData.GameHistory.CARD_ID + ", " +
+                      "MIN(" + GameData.GameHistory.TIME + ") as mintime" +
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
+            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " and " + GameData.GameHistory.TIME + "< 5000" +
+            " and " + GameData.GameHistory.RWS + "=0" + ") as inr_gh" +
+          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
+          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
+          " ORDER BY " + GameData.GameHistory.TIME + " ASC" + 
+          " LIMIT 4 "; 
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;
+        
+      case 12: //Fastest Skip Under 5s
+        //Returns each team's fastest skipped card, sorted by fastest to slowest
+        Log.d(TAG, "Query for fastest skip under 5. Col2 is Card_ID.");
+        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
+          " INNER JOIN (" + 
+          //Find the fastest skip entry in gamehistory and tie it to the team and card
+            " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
+                   GameData.GameHistory.CARD_ID + ", " +
+                   "MIN(" + GameData.GameHistory.TIME + ") as mintime" +
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
+            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " and " + GameData.GameHistory.TIME + "< 5000" +
+            " and " + GameData.GameHistory.RWS + "=2" + ") as inr_gh" +
+          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
+          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
+          " ORDER BY " + GameData.GameHistory.TIME + " ASC" + 
+          " LIMIT 4 "; 
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;                     
+                    
+      case 13: //Fastest Wrong Under 5s
+        //Returns each team's fastest wrong card, sorted by fastest to slowest
+        Log.d(TAG, "Query for fastest wrong under 5. Col2 is Card_ID.");
+        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
+          " INNER JOIN (" + 
+          //Find the fastest wrong entry in gamehistory and tie it to the team and card
+            " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
+                         GameData.GameHistory.CARD_ID + ", " +
+                        "MIN(" + GameData.GameHistory.TIME + ") as mintime" +
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
+            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " and " + GameData.GameHistory.TIME + "< 5000" +
+            " and " + GameData.GameHistory.RWS + "=1" + ") as inr_gh" +
+          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
+          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
+          " ORDER BY " + GameData.GameHistory.TIME + " ASC" + 
+          " LIMIT 4 "; 
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;           
+
+      case 14: //Slowest Correct Longer than 30s
+        //Returns each team's slowest correct card, sorted by slowest to fastest
+        Log.d(TAG, "Query for slowest correct longer than 30s. Col2 is Card_ID.");
+        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
+          " INNER JOIN (" + 
+          //Find the slowest correct entry in gamehistory and tie it to the team and card
+            " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
+                         GameData.GameHistory.CARD_ID + ", " +
+                        "MAX(" + GameData.GameHistory.TIME + ") as MAXTIME" +
+            " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
+            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+            " and " + GameData.GameHistory.TIME + "> 30000" +
+            " and " + GameData.GameHistory.RWS + "=0" + ") as inr_gh" +
+          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
+          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
+          " ORDER BY " + GameData.GameHistory.TIME + " DESC" + 
+          " LIMIT 4 "; 
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;           
+            
+      case 15: //Slowest Wrong Longer than 30s
+        //Returns each team's slowest wrong card, sorted by slowest to fastest
+        Log.d(TAG, "Query for slowest wrong longer than 30s. Col2 is Card_ID.");
+        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
+          " INNER JOIN (" + 
+          //Find the slowest wrong entry in gamehistory and tie it to the team and card
+            " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
+                         GameData.GameHistory.CARD_ID + ", " +
+                        "MAX(" + GameData.GameHistory.TIME + ") as MAXTIME" +
+             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
+             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+             " and " + GameData.GameHistory.TIME + "> 30000" +
+             " and " + GameData.GameHistory.RWS + "=1" + ") as inr_gh" +
+          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
+          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
+          " ORDER BY " + GameData.GameHistory.TIME + " DESC" + 
+          " LIMIT 4 "; 
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;  
+            
+      case 16: //Slowest Skip Longer than 30s
+        //Returns each team's slowest skipped card, sorted by slowest to fastest
+        Log.d(TAG, "Query for slowest skip longer than 30s. Col2 is Card_ID.");
+        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
+          " INNER JOIN (" + 
+          //Find the slowest skip entry in gamehistory and tie it to the team and card
+            " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
+                         GameData.GameHistory.CARD_ID + ", " +
+                        "MAX(" + GameData.GameHistory.TIME + ") as MAXTIME" +
+             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
+             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+             " and " + GameData.GameHistory.TIME + "> 30000" +
+             " and " + GameData.GameHistory.RWS + "=2" + ") as inr_gh" +
+          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
+          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
+          " ORDER BY " + GameData.GameHistory.TIME + " DESC" + 
+          " LIMIT 4 "; 
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;        
+        
+      case 17: //Longest Correct streak 
         // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
         Log.d(TAG, "Query for longest correct streak. Col2 is Max Correct Streak.");
         queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
@@ -549,7 +682,7 @@ public class Game extends SQLiteOpenHelper
         cursor = db.rawQuery(queryStr, null);
         break;        
         
-      case 12: //Longest Wrong streak 
+      case 18: //Longest Wrong streak 
         // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
         Log.d(TAG, "Query for longest wrong streak. Col2 is Max Wrong Streak.");
         queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
@@ -581,7 +714,7 @@ public class Game extends SQLiteOpenHelper
         cursor = db.rawQuery(queryStr, null);
         break; 
         
-      case 13: //Longest Skip streak 
+      case 19: //Longest Skip streak 
         // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
         Log.d(TAG, "Query for longest skip streak. Col2 is Max Skip Streak.");
         queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
@@ -613,43 +746,7 @@ public class Game extends SQLiteOpenHelper
         cursor = db.rawQuery(queryStr, null);
         break;  
         
-      case 14: //Fewest Cards Seen 
-        Log.d(TAG, "Query for fewest cards seen. Col2 is Num Seen.");
-        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-          " GROUP BY " + GameData.GameHistory.TEAM_ID +
-          " HAVING " + "COUNT(*)=" +
-             //Retrieve the fewest number of cards seen for any team
-             " (SELECT COUNT(*)" +
-               " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
-               " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-               " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
-               " ORDER BY 1 ASC" +
-               " LIMIT 1)";         
-        Log.d(TAG, queryStr);
-        cursor = db.rawQuery(queryStr, null);
-        break;      
-          
-      case 15: //Most Cards Seen
-        Log.d(TAG, "Query for most cards seen. Col2 is Num Seen.");
-        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-          " GROUP BY " + GameData.GameHistory.TEAM_ID +
-          " HAVING " + "COUNT(*)=" +
-             //Retrieve the fewest number of cards seen for any team
-             " (SELECT COUNT(*)" +
-               " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
-               " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-               " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
-               " ORDER BY 1 DESC" +
-               " LIMIT 1)";
-        Log.d(TAG, queryStr);
-        cursor = db.rawQuery(queryStr, null);
-        break;
-      
-      case 16: //Be last and lose to next lowest player by half their score
+      case 22: //Be last and lose to next lowest player by half their score
         Log.d(TAG, "Query for be last and lose to next lowest by half their score. Col2 is Num Seen.");
         queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
           " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
@@ -666,8 +763,44 @@ public class Game extends SQLiteOpenHelper
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
         break;
-
-      case 17: //1st Place
+        
+      case 23: //Fewest Cards Seen 
+        Log.d(TAG, "Query for fewest cards seen. Col2 is Num Seen.");
+        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+          " GROUP BY " + GameData.GameHistory.TEAM_ID +
+          " HAVING " + "COUNT(*)=" +
+             //Retrieve the fewest number of cards seen for any team
+             " (SELECT COUNT(*)" +
+               " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+               " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+               " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+               " ORDER BY 1 ASC" +
+               " LIMIT 1)";         
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;      
+        
+      case 24: //Most Cards Seen
+        Log.d(TAG, "Query for most cards seen. Col2 is Num Seen.");
+        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
+          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
+          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
+          " GROUP BY " + GameData.GameHistory.TEAM_ID +
+          " HAVING " + "COUNT(*)=" +
+             //Retrieve the fewest number of cards seen for any team
+             " (SELECT COUNT(*)" +
+               " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
+               " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
+               " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
+               " ORDER BY 1 DESC" +
+               " LIMIT 1)";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;
+        
+      case 25: //1st Place
         Log.d(TAG, "Query for first place. Col2 is Score.");
         queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
                            ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
@@ -679,7 +812,7 @@ public class Game extends SQLiteOpenHelper
         cursor = db.rawQuery(queryStr, null);
         break;
 
-      case 18: //2nd Place
+      case 26: //2nd Place
         Log.d(TAG, "Query for second place. Col2 is Score.");
         queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
                            ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
@@ -691,7 +824,7 @@ public class Game extends SQLiteOpenHelper
         cursor = db.rawQuery(queryStr, null);
         break;
         
-      case 19: //3rd Place
+      case 27: //3rd Place
         Log.d(TAG, "Query for third place. Col2 is Score.");
         queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
                            ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
@@ -703,7 +836,7 @@ public class Game extends SQLiteOpenHelper
         cursor = db.rawQuery(queryStr, null);
         break;
         
-      case 20: //4th Place
+      case 28: //4th Place
         Log.d(TAG, "Query for fourth place. Col2 is Score.");
         queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
                            ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
@@ -714,138 +847,7 @@ public class Game extends SQLiteOpenHelper
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
         break;
-  
-      case 21: //Fastest Correct Under 5s
-      //Returns each team's fastest card, sorted by fastest to slowest
-        Log.d(TAG, "Query for fastest correct under 5. Col2 is Card_ID.");
-        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
-          " INNER JOIN (" + 
-          //Find the fastest correct entry in gamehistory and tie it to the team and card
-          " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
-                       GameData.GameHistory.CARD_ID + ", " +
-                      "MIN(" + GameData.GameHistory.TIME + ") as mintime" +
-            " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
-            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " and " + GameData.GameHistory.TIME + "< 5000" +
-            " and " + GameData.GameHistory.RWS + "=0" + ") as inr_gh" +
-          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
-          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
-          " ORDER BY " + GameData.GameHistory.TIME + " ASC" + 
-          " LIMIT 4 "; 
-        Log.d(TAG, queryStr);
-        cursor = db.rawQuery(queryStr, null);
-        break;
-        
-      case 22: //Fastest Wrong Under 5s
-        //Returns each team's fastest wrong card, sorted by fastest to slowest
-        Log.d(TAG, "Query for fastest wrong under 5. Col2 is Card_ID.");
-        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
-          " INNER JOIN (" + 
-          //Find the fastest wrong entry in gamehistory and tie it to the team and card
-            " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
-                         GameData.GameHistory.CARD_ID + ", " +
-                        "MIN(" + GameData.GameHistory.TIME + ") as mintime" +
-            " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
-            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " and " + GameData.GameHistory.TIME + "< 5000" +
-            " and " + GameData.GameHistory.RWS + "=1" + ") as inr_gh" +
-          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
-          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
-          " ORDER BY " + GameData.GameHistory.TIME + " ASC" + 
-          " LIMIT 4 "; 
-        Log.d(TAG, queryStr);
-        cursor = db.rawQuery(queryStr, null);
-        break;   
-        
-      case 23: //Fastest Skip Under 5s
-        //Returns each team's fastest skipped card, sorted by fastest to slowest
-        Log.d(TAG, "Query for fastest skip under 5. Col2 is Card_ID.");
-        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
-          " INNER JOIN (" + 
-          //Find the fastest skip entry in gamehistory and tie it to the team and card
-            " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
-                   GameData.GameHistory.CARD_ID + ", " +
-                   "MIN(" + GameData.GameHistory.TIME + ") as mintime" +
-            " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
-            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " and " + GameData.GameHistory.TIME + "< 5000" +
-            " and " + GameData.GameHistory.RWS + "=2" + ") as inr_gh" +
-          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
-          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
-          " ORDER BY " + GameData.GameHistory.TIME + " ASC" + 
-          " LIMIT 4 "; 
-        Log.d(TAG, queryStr);
-        cursor = db.rawQuery(queryStr, null);
-        break;                     
-            
-      case 24: //Slowest Correct Longer than 30s
-    	//Returns each team's slowest correct card, sorted by slowest to fastest
-        Log.d(TAG, "Query for slowest correct longer than 30s. Col2 is Card_ID.");
-        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
-          " INNER JOIN (" + 
-          //Find the slowest correct entry in gamehistory and tie it to the team and card
-            " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
-                         GameData.GameHistory.CARD_ID + ", " +
-                        "MAX(" + GameData.GameHistory.TIME + ") as MAXTIME" +
-            " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
-            " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " and " + GameData.GameHistory.TIME + "> 30000" +
-            " and " + GameData.GameHistory.RWS + "=0" + ") as inr_gh" +
-          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
-          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
-          " ORDER BY " + GameData.GameHistory.TIME + " DESC" + 
-          " LIMIT 4 "; 
-        Log.d(TAG, queryStr);
-        cursor = db.rawQuery(queryStr, null);
-        break;           
-            
-      case 25: //Slowest Wrong Longer than 30s
-        //Returns each team's slowest wrong card, sorted by slowest to fastest
-        Log.d(TAG, "Query for slowest wrong longer than 30s. Col2 is Card_ID.");
-        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
-          " INNER JOIN (" + 
-          //Find the slowest wrong entry in gamehistory and tie it to the team and card
-            " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
-                         GameData.GameHistory.CARD_ID + ", " +
-                        "MAX(" + GameData.GameHistory.TIME + ") as MAXTIME" +
-             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
-             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-             " and " + GameData.GameHistory.TIME + "> 30000" +
-             " and " + GameData.GameHistory.RWS + "=1" + ") as inr_gh" +
-          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
-          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
-          " ORDER BY " + GameData.GameHistory.TIME + " DESC" + 
-          " LIMIT 4 "; 
-        Log.d(TAG, queryStr);
-        cursor = db.rawQuery(queryStr, null);
-        break;  
-            
-      case 26: //Slowest Skip Longer than 30s
-        //Returns each team's slowest skipped card, sorted by slowest to fastest
-        Log.d(TAG, "Query for slowest skip longer than 30s. Col2 is Card_ID.");
-        queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
-          " INNER JOIN (" + 
-          //Find the slowest skip entry in gamehistory and tie it to the team and card
-            " SELECT " + GameData.GameHistory.TEAM_ID + ", " +
-                         GameData.GameHistory.CARD_ID + ", " +
-                        "MAX(" + GameData.GameHistory.TIME + ") as MAXTIME" +
-             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
-             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-             " and " + GameData.GameHistory.TIME + "> 30000" +
-             " and " + GameData.GameHistory.RWS + "=2" + ") as inr_gh" +
-          " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
-          " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
-          " ORDER BY " + GameData.GameHistory.TIME + " DESC" + 
-          " LIMIT 4 "; 
-        Log.d(TAG, queryStr);
-        cursor = db.rawQuery(queryStr, null);
-        break;         
+         
   	}
   	
   	for(int i=0; i<results.length; ++i)
