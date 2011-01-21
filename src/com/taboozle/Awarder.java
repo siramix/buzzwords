@@ -84,6 +84,14 @@ public class Awarder
         break;
       }
     }
+
+    for( int i = 0; i < ret.size(); ++i )
+    {
+      if( ret.get( i ) == null )
+      {
+        ret.set( i, new Award( -1, "Awardless", "", -1 ) );
+      }
+    }
     
     return ret;
   }
