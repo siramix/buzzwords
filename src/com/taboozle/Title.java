@@ -75,13 +75,13 @@ public void onCreate( Bundle savedInstanceState )
 	this.setContentView(R.layout.title );
 
   ImageButton playGameButton = 
-    (ImageButton) this.findViewById( R.id.PlayGameButton );
+    (ImageButton) this.findViewById( R.id.Title_PlayButton );
   playGameButton.setOnClickListener( PlayGameListener );
   
-  ImageButton settingsButton = (ImageButton) this.findViewById( R.id.SettingsIcon );  
+  ImageButton settingsButton = (ImageButton) this.findViewById( R.id.Title_SettingsButton );  
   settingsButton.setOnClickListener( SettingsListener );
   
-  ImageButton rulesButton = (ImageButton) this.findViewById( R.id.GameRulesButton );
+  ImageButton rulesButton = (ImageButton) this.findViewById( R.id.Title_RulesButton );
   rulesButton.setOnClickListener( RulesListener );
 }
 
