@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 
 /**
@@ -95,8 +93,9 @@ public class Title extends Activity
     TranslateAnimation slideIn = new TranslateAnimation(
         Animation.RELATIVE_TO_PARENT,  (1.0f * labelNum), Animation.RELATIVE_TO_PARENT,  0.0f,
         Animation.RELATIVE_TO_PARENT,  (0.7f * labelNum), Animation.RELATIVE_TO_PARENT,   0.0f );
-    slideIn.setDuration(800 + ( 200 * ( labelNum + 1 ) ) );
+    slideIn.setDuration(600 + ( 200 * labelNum ) );
     slideIn.setInterpolator(new LinearInterpolator());
+    slideIn.setStartOffset(600);
     return slideIn;
   }
   
