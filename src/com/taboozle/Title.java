@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 
 /**
@@ -67,13 +69,13 @@ public class Title extends Activity
   };
 
   /**
-   * @return The animation that orients the button list 45
+   * @return The animation that brings in the buttons
    * screen
    */
   private Animation TranslateButtons(int buttonNum)
   {
+    Log.d( TAG, "TranslateButtons()" );
     
-    Log.d( TAG, "RotateButtons()" );
     TranslateAnimation slideIn = new TranslateAnimation(
         Animation.RELATIVE_TO_PARENT,  (-1.0f * buttonNum), Animation.RELATIVE_TO_PARENT,  0.0f,
         Animation.RELATIVE_TO_PARENT,  (0.7f * buttonNum), Animation.RELATIVE_TO_PARENT,   0.0f );
@@ -83,22 +85,62 @@ public class Title extends Activity
   }
 
   /**
-   * @return The animation that orients the button list 45
+   * @return The animation that brings in labels
    * screen
    */
-  private Animation TranslateLabels(int labelNum)
+  private AnimationSet TranslateLabels(int labelNum)
   {
-    
-    Log.d( TAG, "RotateButtons()" );
+    Log.d( TAG, "TranslateLabels()" );
+
+    final int MOVETIME = 600;
+    AnimationSet set = new AnimationSet(true);
+
+    // Define the translate animation
     TranslateAnimation slideIn = new TranslateAnimation(
-        Animation.RELATIVE_TO_PARENT,  (1.0f * labelNum), Animation.RELATIVE_TO_PARENT,  0.0f,
-        Animation.RELATIVE_TO_PARENT,  (0.7f * labelNum), Animation.RELATIVE_TO_PARENT,   0.0f );
-    slideIn.setDuration(600 + ( 200 * labelNum ) );
+        Animation.RELATIVE_TO_PARENT,  ( 1.0f * labelNum ), Animation.RELATIVE_TO_PARENT,  0.0f,
+        Animation.RELATIVE_TO_PARENT,  ( 0.7f * labelNum ), Animation.RELATIVE_TO_PARENT,   0.0f );
+    slideIn.setDuration( MOVETIME );
     slideIn.setInterpolator(new LinearInterpolator());
-    slideIn.setStartOffset(600);
-    return slideIn;
+    slideIn.setStartOffset( MOVETIME * labelNum );
+
+    // Define Pulse anim
+    ScaleAnimation pulse = new ScaleAnimation(1.0f, 1.05f, 1.0f, 1.05f, Animation.RELATIVE_TO_SELF,
+        0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+    pulse.setDuration(500);
+    pulse.setInterpolator(new LinearInterpolator());
+    pulse.setRepeatCount(Animation.INFINITE);
+    pulse.setRepeatMode(Animation.REVERSE);
+    
+    // Create entire sequence
+    set.addAnimation(slideIn);
+//    set.addAnimation(pulse);
+    return set;
   }
-  
+
+  /**
+   * @return The animation that scrolls the title
+   * screen
+   */
+  private Animation ScrollTitle()
+  {
+    Log.d( TAG, "ScrollTitle()" );
+    
+    TranslateAnimation scroll = new TranslateAnimation(
+        Animation.RELATIVE_TO_SELF,  -1.0f, Animation.RELATIVE_TO_SELF,  1.0f,
+        Animation.RELATIVE_TO_SELF,  1.0f, Animation.RELATIVE_TO_SELF,   -1.0f );
+    scroll.setDuration(5000);
+    scroll.setInterpolator(new LinearInterpolator());
+    scroll.setRepeatCount(Animation.INFINITE);
+    
+    ScaleAnimation pulse = new ScaleAnimation(1.0f, 1.05f, 1.0f, 1.05f, Animation.RELATIVE_TO_SELF,
+        0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+    pulse.setDuration(500);
+    pulse.setInterpolator(new LinearInterpolator());
+    pulse.setRepeatCount(Animation.INFINITE);
+    pulse.setRepeatMode(Animation.REVERSE);
+    
+    return pulse;
+  }
   
 /**
 * onCreate - initializes a welcome screen that starts the game.
@@ -138,6 +180,9 @@ public void onCreate( Bundle savedInstanceState )
   label.startAnimation(this.TranslateLabels(3));
   label = (View) this.findViewById( R.id.Title_RulesButton_Label);
   label.startAnimation(this.TranslateLabels(4));
+  
+  View title = (View) this.findViewById( R.id.Title_Title);
+  title.startAnimation(this.ScrollTitle());
 }
 
 }
