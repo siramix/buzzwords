@@ -43,6 +43,10 @@ public class Award
    */
   public Award()
   {
+    this.id = -1;
+    this.name = "";
+    this.explanation = "";
+    this.priority = 3;
   }
   
   /**
@@ -56,6 +60,64 @@ public class Award
     this.priority = priority;
   }
   
+  /**
+   * Standard getter for Id
+   * @return id
+   */
+  public int getId() {
+    return this.id;
+  }
+
+  /**
+   * Standard getter for Priority
+   * @return priority
+   */
+  public int getPriority() {
+    return this.priority;
+  }
+
+  /**
+   * Standard getter for Name
+   * @return Name
+   */
+  public String getName() {
+    return this.name;
+  }
+
+  /**
+   * Standard getter for Explanation
+   * @return explanation
+   */
+  public String getExplanation() {
+    return this.explanation;
+  }
+  
+  /**
+   * Comparison method added for testing Awards.
+   */
+  @Override
+  public boolean equals(Object compareObj)
+  {
+    if(this == compareObj)
+    {
+      return true;
+    }
+   
+    if(compareObj == null)
+    {
+      return false;
+    }
+   
+    if(!(compareObj instanceof Award))
+    {
+      return false;
+    }
+    Award rhs = (Award) compareObj;
+    return this.id == rhs.getId() && this.name.equals( rhs.getName() ) && 
+      this.explanation.equals( rhs.getExplanation() ) &&
+      this.priority == rhs.getPriority();    
+  }  
+
   class PriorityComparator implements Comparator<Award>
   {
     
