@@ -331,7 +331,7 @@ public class Turn extends Activity
 
   /**
    * @return The animation that tosses the cards from the view out into the
-   * ether at the left of the screen
+   * either at the left of the screen
    */
   private Animation OutToLeftAnimation ()
   {
