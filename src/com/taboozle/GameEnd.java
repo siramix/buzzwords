@@ -44,13 +44,13 @@ public class GameEnd extends Activity
     public AwardTimer(long millisInFuture, long countDownInterval)
     {
       super(millisInFuture, countDownInterval);
-      Log.d( TAG, "TurnTimer(" + millisInFuture + ", " + countDownInterval + ")" );
+      Log.d( TAG, "AwardTimer AwardTimer(" + millisInFuture + ", " + countDownInterval + ")" );
     }
 
     @Override
     public void onFinish()
     {
-      Log.d( TAG, "onFinish()" );
+      Log.d( TAG, "AwardTimer onFinish()" );
       GameEnd.this.showNextAward();
       GameEnd.this.startAwardTimer();
     }
@@ -58,7 +58,7 @@ public class GameEnd extends Activity
     @Override
     public void onTick(long millisUntilFinished)
     {
-      //Log.d( TAG, "onTick(" + millisUntilFinished + ")");
+      //Log.d( TAG, "AwardTimer onTick(" + millisUntilFinished + ")");
     }
   };
   
@@ -75,6 +75,7 @@ public class GameEnd extends Activity
   
   private void startAwardTimer()
   {
+    Log.d( TAG, "startAwardTimer()");
 	  this.cycleTimer = new AwardTimer(3000, TICK);
 	  this.cycleTimer.start();
   }
@@ -84,21 +85,21 @@ public class GameEnd extends Activity
    */
   private void showNextAward()
   {
-   GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
-	 final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
-
-	 final String[] stringAwards = new String[gm.GetTeamIDs().length];
-	 for( int i = 0; i < stringAwards.length; ++i )
-	 {
-	   stringAwards[i] = this.awards.get( i ).name;
-	 }
-
-	 TextView awardName = (TextView) findViewById(R.id.EndGameAwards);
-	 TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
-	 this.awardIndex = (this.awardIndex + 1) % curGameManager.GetNumTeams();
-	 awardName.setText(stringAwards[this.awardIndex]);
-	 awardTeamName.setText(curGameManager.GetTeamNames()[this.awardIndex]);
-	 awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[this.awardIndex] ));
+    Log.d( TAG, "showNextAward()");
+    GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
+    final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
+    final String[] stringAwards = new String[gm.GetTeamIDs().length];
+    for( int i = 0; i < stringAwards.length; ++i )
+    {
+      stringAwards[i] = this.awards.get( i ).name;
+    }
+    
+    TextView awardName = (TextView) findViewById(R.id.EndGameAwards);
+    TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
+    this.awardIndex = (this.awardIndex + 1) % curGameManager.GetNumTeams();
+    awardName.setText(stringAwards[this.awardIndex]);
+    awardTeamName.setText(curGameManager.GetTeamNames()[this.awardIndex]);
+    awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[this.awardIndex] ));
   }
   
   /**
@@ -106,12 +107,12 @@ public class GameEnd extends Activity
    */
   private final OnClickListener MainMenuListener = new OnClickListener()
   {
-      public void onClick(View v)
-      {
-        Log.d( TAG, "MainMenuListener onClick()" );
-        startActivity(new Intent( getApplication().getString( R.string.IntentTitle ),
-                                  getIntent().getData()));
-      }
+    public void onClick(View v)
+    {
+      Log.d( TAG, "MainMenuListener onClick()" );
+      startActivity(new Intent( getApplication().getString( R.string.IntentTitle ),
+                                 getIntent().getData()));
+    }
   }; // End MainMenuListener
 
   /**
@@ -259,6 +260,28 @@ public class GameEnd extends Activity
   		rematchButton.setOnClickListener( RematchListener );
     }
 
+    /**
+    * Method handles stopping of any outstanding timers during closing of GameEnd
+    */
+   @Override
+   public void onStop()
+   {
+     super.onStop();
+     Log.d( TAG, "onStop()" );
+     this.cycleTimer.cancel();
+   }
+
+   /**
+    * Method handles stopping of any outstanding timers during closing of GameEnd
+    */
+   @Override
+   public void onDestroy()
+   {
+     super.onDestroy();
+     Log.d( TAG, "onDestroy()" );
+     this.cycleTimer.cancel();
+   }    
+    
     /**
      * Handler for key up events
      */

@@ -6,7 +6,8 @@
   <application android:icon="@drawable/icon" 
                android:label="@string/AppName" 
                android:theme="@android:style/Theme.NoTitleBar"
-               android:name=".TaboozleApplication">
+               android:name=".TaboozleApplication"
+               android:screenOrientation="portrait">
         <activity android:name=".Title"
                   android:label="@string/AppName">
             <intent-filter>

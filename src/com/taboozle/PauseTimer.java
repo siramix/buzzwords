@@ -1,6 +1,7 @@
 package com.taboozle;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 
 /* 
  * Adds pause and resume capabilities to CountDownTimer.  Requires implementation of abstract methods
@@ -10,6 +11,11 @@ import android.os.CountDownTimer;
  */
 public abstract class PauseTimer
 {
+  /**
+   * Static string used to refer to this class, in debug output for example.
+   */
+  private static final String TAG = "PauseTimer";
+  
   private static final int TICK = 200;
   private boolean timerActive = false;
   private long timeRemaining;
@@ -24,11 +30,13 @@ public abstract class PauseTimer
     public InternalTimer(long millisInFuture, long countDownInterval)
     {
       super(millisInFuture, countDownInterval);
+      Log.d ( TAG, "InternalTimer(" + millisInFuture + "," + countDownInterval + ")" );
     }
     
     @Override
     public void onFinish() 
     {
+      Log.d( TAG, "onFinish()" );
       PauseTimer.this.onFinish();
       PauseTimer.this.timerActive = false;
     }
@@ -36,6 +44,7 @@ public abstract class PauseTimer
     @Override
     public void onTick(long millisUntilFinished) 
     {
+      //Log.d( TAG, "onTick(" + millisUntilFinished + ")" ); //ticks often, commenting out for cleaner debug output
       PauseTimer.this.timeRemaining = millisUntilFinished;
       PauseTimer.this.onTick();
     }
@@ -46,6 +55,7 @@ public abstract class PauseTimer
    */
   public PauseTimer(long timeToCount) 
   {
+    Log.d( TAG, "PauseTimer(" + timeToCount + ")" );
     this.timer = new InternalTimer(timeToCount, TICK);
     this.timeRemaining = timeToCount;
   }
@@ -57,13 +67,14 @@ public abstract class PauseTimer
   /*
    * Called when internal timer updates
    */
-  abstract public void onTick();
+  abstract public void onTick(); 
   
   /*
    * Start the timer countdown from the initialized time
    */
   public void start()
   {
+    Log.d( TAG, "start()" );
     this.timer.start();
     this.timerActive = true;
   }
@@ -73,6 +84,7 @@ public abstract class PauseTimer
    */
   public void pause()
   {
+    Log.d( TAG, "pause()" );
     if(this.timerActive)
     {
       this.timerActive = false;
@@ -85,6 +97,7 @@ public abstract class PauseTimer
    */  	
   public void resume()
   {
+    Log.d( TAG, "resume()" );
     if(!this.timerActive)
     {
       this.timer = new InternalTimer(timeRemaining, TICK);
@@ -99,6 +112,7 @@ public abstract class PauseTimer
    */   
   public boolean isActive()
   {
+    Log.d( TAG, "isActive()" );
     return this.timerActive;
   }
   
@@ -108,6 +122,7 @@ public abstract class PauseTimer
    */   
   public long getTimeRemaining()
   {
+    //Log.d( TAG, "getTimeRemaining()" ); //ticks often, commenting out for cleaner debug output
     return this.timeRemaining;
   }
 }
