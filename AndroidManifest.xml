@@ -33,6 +33,13 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>        		  
         </activity>
+        <activity android:name=".Buzzer"
+        		  android:label="@string/AppName">
+			<intent-filter>
+				<action android:name="com.taboozle.intent.action.BUZZER" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>        		  
+        </activity>
         <activity android:name=".GameSetup"
         		  android:label="@string/AppName">
 			<intent-filter>
