@@ -102,6 +102,16 @@ public class TurnSummary extends Activity
   	this.cardList = game.GetCurrentCards();
   	Card card = null;
   	int count = 0;
+
+  	// Show or hide prompt indicating no cards were completed
+  	int visibility = View.INVISIBLE;
+    TextView noCardsPrompt = (TextView) this.findViewById( R.id.TurnSumNoCards);
+  	if( this.cardList.isEmpty())
+  	{
+  	  visibility = View.VISIBLE;
+  	}
+    noCardsPrompt.setVisibility( visibility );
+    
   	for( Iterator<Card> it = this.cardList.iterator(); it.hasNext(); )
   	{
   	  card = it.next();

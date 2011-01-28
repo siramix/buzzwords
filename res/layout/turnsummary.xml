@@ -4,7 +4,7 @@
   android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@color/genericBG">
 <LinearLayout android:layout_height="wrap_content" android:layout_alignParentTop="true" android:id="@+id/TurnSummaryTitle" android:orientation="horizontal" android:layout_centerHorizontal="true" android:layout_width="fill_parent"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Turn Summary" android:textColor="@color/title" android:textSize="22px" android:id="@+id/TurnSumTitleText" android:paddingLeft="5dp"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/teamD_text" android:text="Yellow Team" android:textSize="16px" android:paddingLeft="65dp" android:id="@+id/TurnSummaryTeamName">></TextView></LinearLayout><ImageView android:id="@+id/TurnSumSpacerA" android:background="@color/genericBG_trim" android:layout_width="fill_parent" android:layout_below="@id/TurnSummaryTitle" android:layout_height="3dp"></ImageView>
 
-<ScrollView android:id="@+id/TurnSumCardList" android:paddingTop="10dip" android:layout_below="@id/TurnSummaryTitle" android:layout_width="fill_parent" android:layout_height="175dp">
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumNoCards" android:text="No Words Completed" android:textSize="18dp" android:layout_centerHorizontal="true" android:layout_marginTop="80dp"></TextView><ScrollView android:id="@+id/TurnSumCardList" android:paddingTop="10dip" android:layout_below="@id/TurnSummaryTitle" android:layout_width="fill_parent" android:layout_height="175dp">
 
 
 
@@ -34,6 +34,7 @@
 </LinearLayout>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnSumNextTurn" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:text="Next Team">
 </Button>
+
 
 
 
