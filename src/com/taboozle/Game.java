@@ -177,7 +177,7 @@ public class Game extends SQLiteOpenHelper
   {
     Log.d( TAG, "getNextCard()" );
     // check deck bounds
-    if( this.cardPosition >= this.cards.size() || this.cardPosition == -1 )
+    if( this.cardPosition >= this.cards.size()-1 || this.cardPosition == -1 )
     {
       this.prepDeck();
     }
