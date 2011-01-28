@@ -16,6 +16,9 @@ public final class GameData
   public static final String TURN_SCORES_TABLE_NAME = "turnscores";
   public static final String FINAL_SCORES_TABLE_NAME = "finalscores";
   public static final String GAME_HISTORY_TABLE_NAME = "gamehistory";
+  public static final int RIGHT = 0;
+  public static final int WRONG = 1;
+  public static final int SKIP = 2;
   
   // This class cannot be instantiated
   private GameData()
