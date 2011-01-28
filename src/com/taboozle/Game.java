@@ -312,6 +312,7 @@ public class Game extends SQLiteOpenHelper
    */
   public double[][] awardsQuery( int awardID, long gameID )
   {
+	Log.d( TAG, "awardsQuery (" + awardID + ", " + gameID + ")" );
    	//String[] results = {"", ""}; //TeamID, AwardValue or Word
    	double[][] results = new double[4][2]; //TeamID, AwardValue or Word
   	SQLiteDatabase db = this.getReadableDatabase();
@@ -335,7 +336,7 @@ public class Game extends SQLiteOpenHelper
           " (SELECT COUNT(*) as NUM_SKIPS" +  
               " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
               " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-             " and " + GameData.GameHistory.RWS + "=0 " + 
+             " and " + GameData.GameHistory.RWS + "=" + GameData.RIGHT +
              " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
              " ORDER BY 1 DESC" + 
              " LIMIT 1)";
@@ -350,14 +351,14 @@ public class Game extends SQLiteOpenHelper
         queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_INCORRECT" +  
           " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
           " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " AND " + GameData.GameHistory.RWS + "=1" +            
+            " AND " + GameData.GameHistory.RWS + "=" + GameData.WRONG +            
           " GROUP BY " + GameData.GameHistory.TEAM_ID +
           " HAVING " + "COUNT(*)=" +
           //Retrieve the highest number of wrongs by any team
           " (SELECT COUNT(*) as NUM_SKIPS" +  
               " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
               " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-                " and " + GameData.GameHistory.RWS + "=1 " + 
+                " and " + GameData.GameHistory.RWS + "=" + GameData.SKIP +
               " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
               " ORDER BY 1 DESC" + 
               " LIMIT 1)";
@@ -372,14 +373,14 @@ public class Game extends SQLiteOpenHelper
   	    queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPPED" +  
           " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
           " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " AND " + GameData.GameHistory.RWS + "=2" +
+            " AND " + GameData.GameHistory.RWS + "=" + GameData.SKIP +
           " GROUP BY " + GameData.GameHistory.TEAM_ID +
           " HAVING " + "COUNT(*)=" +
           //Retrieve the highest number of skips by any team
           " (SELECT COUNT(*) as NUM_SKIPS" +  
               " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " " +
               " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-                " and " + GameData.GameHistory.RWS + "=2 " + 
+                " and " + GameData.GameHistory.RWS + "=" + GameData.SKIP + 
               " GROUP BY " + GameData.GameHistory.TEAM_ID + " " + 
               " ORDER BY 1 DESC" + 
               " LIMIT 1)";
@@ -403,7 +404,7 @@ public class Game extends SQLiteOpenHelper
         queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_CORRECT" +  
           " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
           " WHERE gh." + GameData.GameHistory.GAME_ID + "=" + gameID +
-             " and gh." + GameData.GameHistory.RWS + "=0" + 
+             " and gh." + GameData.GameHistory.RWS + "=" + + GameData.RIGHT + 
              " and gh." + GameData.GameHistory.TEAM_ID + " NOT IN " +
              // Find out which teams match the highest score
              " (SELECT ts." + GameData.TurnScores.TEAM_ID + 
@@ -428,14 +429,14 @@ public class Game extends SQLiteOpenHelper
         queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPS" +  
           " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
           " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " and " + GameData.GameHistory.RWS + "=2" + 
+            " and " + GameData.GameHistory.RWS + "=" + GameData.SKIP + 
           " GROUP BY " + GameData.GameHistory.TURN_SCORE_ID +
           " HAVING " + "COUNT(*)=" +
              //Retrieve the highest number of skipped cards in a single turn
              " (SELECT COUNT(*)" +
                " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
                " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-                 " and gh2." + GameData.GameHistory.RWS + "=2" + 
+                 " and gh2." + GameData.GameHistory.RWS + "=" + GameData.SKIP +
                " GROUP BY gh2." + GameData.GameHistory.TURN_SCORE_ID + 
                " ORDER BY 1 DESC" +
                " LIMIT 1)" +
@@ -449,14 +450,14 @@ public class Game extends SQLiteOpenHelper
         queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_INCORRECT" +  
           " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
           " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " and " + GameData.GameHistory.RWS + "=1" + 
+            " and " + GameData.GameHistory.RWS + "=" + GameData.WRONG + 
           " GROUP BY " + GameData.GameHistory.TURN_SCORE_ID +
           " HAVING " + "COUNT(*)=" +
              //Retrieve the highest number of incorrect cards in a single turn
              " (SELECT COUNT(*)" +
                " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
                " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-                 " and gh2." + GameData.GameHistory.RWS + "=1" + 
+                 " and gh2." + GameData.GameHistory.RWS + "=" + GameData.WRONG + 
                " GROUP BY gh2." + GameData.GameHistory.TURN_SCORE_ID + 
                " ORDER BY 1 DESC" +
                " LIMIT 1)" +
@@ -470,13 +471,13 @@ public class Game extends SQLiteOpenHelper
         queryStr ="SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SKIPS" +  
           " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
           " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-             " and " + GameData.GameHistory.RWS + "=2" + 
+             " and " + GameData.GameHistory.RWS + "=" + GameData.SKIP + 
              " and " + GameData.GameHistory.TURN_SCORE_ID + " NOT IN " +
              //Exclude all turns that had something other than a skip
              " (SELECT DISTINCT gh2." + GameData.GameHistory.TURN_SCORE_ID +
                " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " as gh2" +
-               " WHERE " + GameData.GameHistory.RWS + "=0 " +
-                 " OR " + GameData.GameHistory.RWS + "=1)" +                   
+               " WHERE " + GameData.GameHistory.RWS + "=" + GameData.RIGHT +
+                 " OR " + GameData.GameHistory.RWS + "=" + GameData.WRONG + ")" +                   
           " GROUP BY " + GameData.GameHistory.TURN_SCORE_ID + 
           " HAVING NUM_SKIPS > 0" +
           " ORDER BY 2 DESC";            
@@ -532,7 +533,7 @@ public class Game extends SQLiteOpenHelper
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
             " and " + GameData.GameHistory.TIME + "< 5000" +
-            " and " + GameData.GameHistory.RWS + "=0" + ") as inr_gh" +
+            " and " + GameData.GameHistory.RWS + "=" + GameData.RIGHT + ") as inr_gh" +
           " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
           " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
           " ORDER BY " + GameData.GameHistory.TIME + " ASC" + 
@@ -554,7 +555,7 @@ public class Game extends SQLiteOpenHelper
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
             " and " + GameData.GameHistory.TIME + "< 5000" +
-            " and " + GameData.GameHistory.RWS + "=2" + ") as inr_gh" +
+            " and " + GameData.GameHistory.RWS + "=" + GameData.SKIP + ") as inr_gh" +
           " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
           " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
           " ORDER BY " + GameData.GameHistory.TIME + " ASC" + 
@@ -576,7 +577,7 @@ public class Game extends SQLiteOpenHelper
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
             " and " + GameData.GameHistory.TIME + "< 5000" +
-            " and " + GameData.GameHistory.RWS + "=1" + ") as inr_gh" +
+            " and " + GameData.GameHistory.RWS + "=" + GameData.WRONG + ") as inr_gh" +
           " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
           " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
           " ORDER BY " + GameData.GameHistory.TIME + " ASC" + 
@@ -598,7 +599,7 @@ public class Game extends SQLiteOpenHelper
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
             " and " + GameData.GameHistory.TIME + "> 30000" +
-            " and " + GameData.GameHistory.RWS + "=0" + ") as inr_gh" +
+            " and " + GameData.GameHistory.RWS + "=" + GameData.RIGHT + ") as inr_gh" +
           " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
           " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
           " ORDER BY " + GameData.GameHistory.TIME + " DESC" + 
@@ -620,7 +621,7 @@ public class Game extends SQLiteOpenHelper
              " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
              " and " + GameData.GameHistory.TIME + "> 30000" +
-             " and " + GameData.GameHistory.RWS + "=1" + ") as inr_gh" +
+             " and " + GameData.GameHistory.RWS + "=" + GameData.WRONG + ") as inr_gh" +
           " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
           " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
           " ORDER BY " + GameData.GameHistory.TIME + " DESC" + 
@@ -642,7 +643,7 @@ public class Game extends SQLiteOpenHelper
              " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
              " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
              " and " + GameData.GameHistory.TIME + "> 30000" +
-             " and " + GameData.GameHistory.RWS + "=2" + ") as inr_gh" +
+             " and " + GameData.GameHistory.RWS + "=" + GameData.SKIP + ") as inr_gh" +
           " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
           " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
           " ORDER BY " + GameData.GameHistory.TIME + " DESC" + 
@@ -674,7 +675,7 @@ public class Game extends SQLiteOpenHelper
                                         GameData.GameHistory.TEAM_ID + ") as GROUPNUM" +
                 " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
                 " WHERE " + GameData.GameHistory.GAME_ID + "= " + gameID + ")" + 
-            " WHERE " + GameData.GameHistory.RWS + " = 0" +
+            " WHERE " + GameData.GameHistory.RWS + " =" + GameData.RIGHT +
             " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
                      GameData.GameHistory.RWS + ")" +
           " GROUP BY " + GameData.GameHistory.TEAM_ID;
@@ -705,7 +706,7 @@ public class Game extends SQLiteOpenHelper
                                         GameData.GameHistory.TEAM_ID + ") as GROUPNUM" +
                 " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
                 " WHERE " + GameData.GameHistory.GAME_ID + "= " + gameID + ")" + 
-            " WHERE " + GameData.GameHistory.RWS + " = 1" + 
+            " WHERE " + GameData.GameHistory.RWS + " = " + GameData.WRONG + 
             //This above line is the line that changes between the wrong, skip, and right streaks
             " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
                      GameData.GameHistory.RWS + ")" +
@@ -737,14 +738,19 @@ public class Game extends SQLiteOpenHelper
                                         GameData.GameHistory.TEAM_ID + ") as GROUPNUM" +
                 " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh" +
                 " WHERE " + GameData.GameHistory.GAME_ID + "= " + gameID + ")" + 
-            " WHERE " + GameData.GameHistory.RWS + " = 2" + 
+            " WHERE " + GameData.GameHistory.RWS + " = " + GameData.SKIP + 
             //This above line is the line that changes between the wrong, skip, and right streaks
             " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
                      GameData.GameHistory.RWS + ")" +
           " GROUP BY " + GameData.GameHistory.TEAM_ID; 
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
-        break;  
+        break;
+        
+      //case 20: //Comeback Kings
+    	// Come back from a 
+    	//
+        //break;
         
       case 22: //Be last and lose to next lowest player by half their score
         Log.d(TAG, "Query for be last and lose to next lowest by half their score. Col2 is Num Seen.");

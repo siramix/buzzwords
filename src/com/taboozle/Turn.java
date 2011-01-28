@@ -399,7 +399,7 @@ public class Turn extends Activity
     AIsActive = !AIsActive;   
     flipper.showNext();
     this.setCardTime();
-    curGameManager.ProcessCard( 0 );
+    curGameManager.ProcessCard( GameData.RIGHT );
 
     //Only play sound once card has been processed so we don't confuse the user
     soundPool.play( rightSoundId, volume, volume, 1, 0, 1.0f );
@@ -425,7 +425,7 @@ public class Turn extends Activity
     flipper.showNext();
     
     Turn.this.setCardTime();
-    curGameManager.ProcessCard( 1 );
+    curGameManager.ProcessCard( GameData.WRONG );
     ShowCard();
 
     //Only play sound once card has been processed so we don't confuse the user
@@ -449,7 +449,7 @@ public class Turn extends Activity
     AIsActive = !AIsActive;
     this.viewFlipper.showNext();
     this.setCardTime();
-    this.curGameManager.ProcessCard( 2 );
+    this.curGameManager.ProcessCard( GameData.SKIP );
 
     //Only play sound once card has been processed so we don't confuse the user
     soundPool.play( swipeSoundId, volume, volume, 1, 0, 1.0f );

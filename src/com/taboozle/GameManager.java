@@ -221,7 +221,7 @@ public class GameManager implements Serializable
    */
   public void ProcessCard( int rws )
   {
-    Log.d( TAG, "ProcessCard()" );      
+    Log.d( TAG, "ProcessCard(" + rws + ")" );      
     this.currentCard.setRws( rws );
     this.currentCards.add( this.currentCard );
   }
