@@ -54,7 +54,7 @@ public class Title extends Activity
   }; //End SettingsListener
   
   /**
-   * Listener to determiner when the Rules button is clicked on the title screen.  Includes
+   * Listener to determine when the Rules button is clicked on the title screen.  Includes
    * an onClick method that will start the Rule activity.
    */
   private OnClickListener RulesListener = new OnClickListener() 
@@ -66,8 +66,21 @@ public class Title extends Activity
           getIntent().getData()));
       
     }
-  };
+  }; // End RulesListener
 
+  /**
+   * Listener to determine when the BuzzMode button is clicked
+   */
+  private OnClickListener BuzzerListener = new OnClickListener() 
+  {
+    public void onClick(View v) 
+    {
+      Log.d( TAG, "BuzzerListener OnClick()" );                     
+      startActivity(new Intent(getApplication().getString( R.string.IntentBuzzer ), 
+          getIntent().getData()));
+    }
+  }; // End BuzzerListener 
+  
   /**
    * @return The animation that brings in the buttons
    * screen
@@ -162,6 +175,9 @@ public void onCreate( Bundle savedInstanceState )
   
   ImageButton rulesButton = (ImageButton) this.findViewById( R.id.Title_RulesButton );
   rulesButton.setOnClickListener( RulesListener );
+  
+  ImageButton buzzerButton = (ImageButton) this.findViewById( R.id.Title_BuzzButton );
+  buzzerButton.setOnClickListener( BuzzerListener );
   
   View button = (View) this.findViewById( R.id.Title_PlayButton);
   button.startAnimation(this.TranslateButtons(1));
