@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <style name="TaboozleTheme" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <item name="android:buttonStyle">@style/TaboozleButton</item>
+    </style>
+</resources>

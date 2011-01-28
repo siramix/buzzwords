@@ -51,4 +51,7 @@
   <color name="genericBG_trim">
     #333333
   </color>
+  <color name="buttonText">
+    #FFFFFF
+  </color>
 </resources>
