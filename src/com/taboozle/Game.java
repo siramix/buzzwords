@@ -747,10 +747,18 @@ public class Game extends SQLiteOpenHelper
         cursor = db.rawQuery(queryStr, null);
         break;
         
-      //case 20: //Comeback Kings
-    	// Come back from a 
-    	//
-        //break;
+      case 20: //Comeback Kings
+    	// Come back from a 10 point deficit and win
+    	//TODO HackFixMe
+    	Log.d(TAG, "Query for coming back by a 10 point defecit and winning.");
+        queryStr = "SELECT " + GameData.FinalScores.TEAM_ID + 
+        	" FROM " + GameData.FINAL_SCORES_TABLE_NAME +
+        	" WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID +	 
+        	" ORDER BY " + GameData.FinalScores.SCORE + " DESC" + 
+        	" LIMIT 1";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;
         
       case 22: //Be last and lose to next lowest player by half their score
         Log.d(TAG, "Query for be last and lose to next lowest by half their score. Col2 is Num Seen.");
@@ -853,7 +861,6 @@ public class Game extends SQLiteOpenHelper
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
         break;
-         
   	}
   	
   	for(int i=0; i<results.length; ++i)
