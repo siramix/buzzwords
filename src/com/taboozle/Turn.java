@@ -354,21 +354,16 @@ public class Turn extends Activity
   private Animation TimerAnimation (int timerCommand)
   {
     Log.d( TAG, "TimerAnimation()");
-   
-    ImageView timerContainer = (ImageView) findViewById(R.id.TurnTimerBG);
-    float timerContainerWidth = timerContainer.getWidth() - 4; 
     
-    float percentTimeLeft = timerContainerWidth;
+    float percentTimeLeft = ((float) this.counter.getTimeRemaining() / this.curGameManager.GetTurnTime());
     int duration = this.curGameManager.GetTurnTime();
     
     if (timerCommand == Turn.TIMERANIM_RESUME_ID)
     {
-    	percentTimeLeft = ((float) this.counter.getTimeRemaining() / this.curGameManager.GetTurnTime()) * timerContainerWidth;
     	duration = (int) this.counter.getTimeRemaining();
     }
     else if (timerCommand == Turn.TIMERANIM_PAUSE_ID)
     {
-    	percentTimeLeft = ((float) this.counter.getTimeRemaining() / this.curGameManager.GetTurnTime()) * timerContainerWidth;
     	duration = Integer.MAX_VALUE;
     }
     
@@ -656,23 +651,23 @@ public class Turn extends Activity
     
     switch (this.curGameManager.GetActiveTeamIndex()) {      
       case 0: //Blue Team
-        barFill.setImageResource( R.drawable.timer_fill_blue );
+        barFill.setImageResource( R.color.teamA_text );
         this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_bluegradient );
        // badWords.setTextColor( R.color.teamA_Text );
         break;
       case 1: //Green Team 
-        barFill.setImageResource( R.drawable.timer_fill_green );
+        barFill.setImageResource( R.color.teamB_text );
         this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_greengradient );        
         break;
       case 2: //Red Team 
-        barFill.setImageResource( R.drawable.timer_fill_red );
+        barFill.setImageResource( R.color.teamC_text);
         this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_redgradient );     
         break;
       case 3: //Yellow Team 
-        barFill.setImageResource( R.drawable.timer_fill_yellow );
+        barFill.setImageResource( R.color.teamD_text );
         this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_yellowgradient );     
         break;        
-      default: barFill.setImageResource( R.drawable.timer_fill_red ); //Red Team
+      default: barFill.setImageResource( R.color.teamA_text ); //Red Team
     }
     
   }

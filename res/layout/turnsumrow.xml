@@ -12,7 +12,7 @@
 	 
      <ImageView 
 	     android:id="@+id/TurnSum_CardRWS" 
-	     android:layout_height="30dip" 
-	     android:layout_width="30dip" />
+	     android:layout_height="24dip" 
+	     android:layout_width="24dip" android:layout_gravity="center"/>
 
 </LinearLayout>

@@ -58,32 +58,31 @@
 	</ViewFlipper>
 	<RelativeLayout
 	android:id="@+id/actionbar"
-	android:layout_height="wrap_content" android:layout_width="wrap_content"><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTimerBG" android:background="@drawable/timer_bg"></ImageView><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTimerFill" android:layout_below="@+id/TurnTimerBG" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_marginRight="2dp" android:background="@drawable/timer_fill_blue" android:layout_marginTop="3dp"></ImageView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="60s" android:id="@+id/Timer" android:layout_alignParentRight="true" android:textSize="16dp" android:textColor="#FFFFFF" android:layout_below="@+id/TurnTimerFill" android:layout_alignParentTop="true" android:layout_marginTop="5dp" android:layout_marginRight="4dp">
+	android:layout_width="wrap_content" android:layout_height="wrap_content"><ImageView android:id="@+id/TurnTimerBG" android:layout_height="30dp" android:background="@color/genericBG" android:layout_width="fill_parent"></ImageView><ImageView android:id="@+id/TurnTimerFill" android:layout_below="@+id/TurnTimerBG" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:background="@color/teamA_text" android:layout_height="30dp" android:layout_width="fill_parent"></ImageView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Timer" android:layout_alignParentRight="true" android:textSize="16dp" android:textColor="#FFFFFF" android:layout_below="@+id/TurnTimerFill" android:layout_alignParentTop="true" android:layout_marginTop="5dp" android:layout_marginRight="4dp">
 	</TextView>
 	
 	
 
+<View android:layout_below="@id/Timer" android:layout_height="10dp" android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:id="@+id/TurnTimerTrim"></View>
 </RelativeLayout>
 
 <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/PauseImageView" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:background="@drawable/paused"></ImageView>
-<RelativeLayout android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:paddingLeft="2dp" android:background="@drawable/controls_bg" android:layout_width="fill_parent">
-	<ImageButton 
+<RelativeLayout android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:layout_width="fill_parent">
+	<View android:layout_width="fill_parent" android:background="@color/genericBG" android:id="@+id/TurnLowBarBG" android:layout_marginTop="40dp" android:layout_height="35dp"></View><View android:layout_height="10dp" android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:id="@+id/TurnLowBarTrim" android:layout_centerInParent="true"></View><ImageButton 
 		android:layout_alignParentLeft="true" 
 		android:layout_width="wrap_content" 
 		android:id="@+id/ButtonWrong"
-		android:layout_marginLeft="4dp" android:layout_height="wrap_content" android:background="@drawable/controls_wrong_selector" android:layout_marginTop="5dp"></ImageButton>
+		android:layout_height="wrap_content" android:background="@drawable/controls_wrong" android:layout_marginLeft="25dp"></ImageButton>
 	<ImageButton 
 		android:layout_height="wrap_content" 
 		android:layout_width="wrap_content" 
 		android:id="@+id/ButtonSkip" 
-		android:layout_toRightOf="@+id/ButtonWrong"
-		android:background="@drawable/controls_skip_selector" android:layout_marginLeft="5dp" android:layout_marginTop="5dp"></ImageButton>
+		android:background="@drawable/controls_skip_selector" android:layout_centerHorizontal="true"></ImageButton>
 	<ImageButton 
 		android:id="@+id/ButtonCorrect" 
-		android:layout_toRightOf="@+id/ButtonSkip" 
 		android:background="@drawable/controls_right_selector" 
 		android:layout_height="wrap_content" 
-		android:layout_width="wrap_content" android:layout_marginLeft="5dp" android:layout_marginTop="5dp"></ImageButton>
+		android:layout_width="wrap_content" android:layout_alignParentRight="true" android:layout_marginRight="25dp"></ImageButton>
 </RelativeLayout>
 
 
