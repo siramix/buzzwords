@@ -118,6 +118,11 @@ public class TurnSummary extends Activity
 
   	  LinearLayout line = (LinearLayout) LinearLayout.inflate(this.getBaseContext(), R.layout.turnsumrow, layout);
   	  LinearLayout realLine = (LinearLayout) line.getChildAt(count);
+      // Make every line alternating color
+      if( count % 2 == 0)
+      {
+        realLine.setBackgroundResource(R.color.genericBG_trim);
+      }
 
   	  TextView cardTitle = (TextView) realLine.getChildAt(0);
   	  cardTitle.setText(card.getTitle());
@@ -133,6 +138,10 @@ public class TurnSummary extends Activity
   	// Update the scoreboard views
   	UpdateScoreViews();
 
+  	// Update numRounds
+  	TextView rounds = (TextView) this.findViewById(R.id.TurnSumRounds);
+  	rounds.setText("Round: " + game.GetCurrentRound() + "/"+ game.GetNumRounds());
+
   	// Bind Next button
   	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
   	playGameButton.setOnClickListener( NextTurnListener );
@@ -141,6 +150,7 @@ public class TurnSummary extends Activity
   	if ( game.GetNumTurnsRemaining() == 0 )
   	{
   		playGameButton.setText( "Game Results" );
+  		rounds.setText( "Game Over" );
   	}
   }
 
