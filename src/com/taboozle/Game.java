@@ -292,7 +292,7 @@ public class Game extends SQLiteOpenHelper
   }
 
 
-  /*
+  /**
    * AwardsQuery takes the awardID and gameID and returns data related to that award and
    * game.  Award.java should then be able to handle this data and assign awards to their
    * appropriate teams.
@@ -300,15 +300,6 @@ public class Game extends SQLiteOpenHelper
    * Results are returned as a 4x2 matrix of doubles, where column A represents the team_ids
    * of eligible teams to be given the award and column B is a wildcard for the relevant
    * value being searched, such as card time or number of skips.
-   * 
-   * SELECT team_id
-   * FROM gamehistory
-   * WHERE game_id = gameID
-   * GROUP BY team_id
-   * HAVING RWS = 2
-   * ORDER BY COUNT(*) DESC
-   * LIMIT 1;
-   * 
    */
   public double[][] awardsQuery( int awardID, long gameID )
   {
