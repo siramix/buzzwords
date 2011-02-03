@@ -5,16 +5,16 @@ package com.taboozle.test;
 
 import java.util.ArrayList;
 
-import com.taboozle.Card;
+import android.test.AndroidTestCase;
 
-import junit.framework.TestCase;
+import com.taboozle.Card;
 
 
 /**
  * @author Taboozle Team
  *
  */
-public class CardTest extends TestCase
+public class CardTest extends AndroidTestCase
 {
 
   /**
@@ -23,14 +23,6 @@ public class CardTest extends TestCase
   Card empty;
   Card standard;
   
-  /**
-   * @param name
-   */
-  public CardTest( String name )
-  {
-    super( name );
-  }
-
   /* (non-Javadoc)
    * @see junit.framework.TestCase#setUp()
    */

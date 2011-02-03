@@ -44,13 +44,36 @@ public class Game extends SQLiteOpenHelper
   /**
    * The list of cardIds that we pull from (our "deck" of cards)
    */
-  private ArrayList<Card> cards;
+  private ArrayList<Card> deck;
 
   /**
    * The position in the list of card ids (where we are in the "deck")
    */
   private int cardPosition;
 
+  
+  /**
+   * @return the cardPosition
+   */
+  public int getCardPosition()
+  {
+    return this.cardPosition;
+  }
+  
+  /**
+   * @param cardPosition the cardPosition to set
+   */
+  public void setCardPosition( int cardPosition )
+  {
+    this.cardPosition = cardPosition;
+  }
+  /**
+   * @return the arraylist of cards in your deck
+   */
+  public ArrayList<Card> getDeck()
+  {
+    return this.deck;
+  }
   /**
    * Standard constructor. If you're wondering about the necessity of the
    * context, it is used to create the database of the superclass and we need
@@ -68,9 +91,12 @@ public class Game extends SQLiteOpenHelper
     this.clearDeck();
   }
   
+  /**
+   * Empties the current deck and instantiates a new ArrayList of cards.
+   */
   public void clearDeck()
   {
-    this.cards = new ArrayList<Card>();
+    this.deck = new ArrayList<Card>();
     this.cardPosition = -1;
   }
   
@@ -79,16 +105,16 @@ public class Game extends SQLiteOpenHelper
    */
   public void pruneDeck()
   {
-    for( int i = 0; i < this.cards.size(); ++i )
+    for( int i = 0; i < this.deck.size(); ++i )
     {
-      if( this.cards.get( i ).getRws() != -1 )
+      if( this.deck.get( i ).getRws() != -1 )
       {
-        this.cards.remove( i );
+        this.deck.remove( i );
         i--; // we removed so we need to hop back 
       }
       else
       {
-        this.cards.remove( i );
+        this.deck.remove( i );
         break;
       }
     }
@@ -125,7 +151,7 @@ public class Game extends SQLiteOpenHelper
         card.setId( cur.getLong( idColumn ) );
         card.setTitle( cur.getString( titleColumn ) );
         card.setBadWords( cur.getString( badWordsColumn ) );
-        this.cards.add( card );
+        this.deck.add( card );
 
       } while( cur.moveToNext() );
     }
@@ -177,13 +203,13 @@ public class Game extends SQLiteOpenHelper
   {
     Log.d( TAG, "getNextCard()" );
     // check deck bounds
-    if( this.cardPosition >= this.cards.size()-1 || this.cardPosition == -1 )
+    if( this.cardPosition >= this.deck.size()-1 || this.cardPosition == -1 )
     {
       this.prepDeck();
     }
 
     // return the card (it could be blank)
-    return this.cards.get( ++this.cardPosition );
+    return this.deck.get( ++this.cardPosition );
   }
 
   /**
@@ -198,7 +224,7 @@ public class Game extends SQLiteOpenHelper
     {
       this.cardPosition = 1; 
     }
-    return this.cards.get( --this.cardPosition );
+    return this.deck.get( --this.cardPosition );
   }
 
   /**
@@ -1028,12 +1054,12 @@ public class Game extends SQLiteOpenHelper
     Log.d( TAG, "onUpgrade()" );
     Log.w( TAG, "Upgrading database from version " + oldVersion + " to "
            + newVersion + ", which will destroy all old data" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.TEAM_TABLE_NAME + ";" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.GAME_TABLE_NAME + ";" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.TURN_SCORES_TABLE_NAME + ";" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.FINAL_SCORES_TABLE_NAME + ";" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.GAME_HISTORY_TABLE_NAME + ";" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.CARD_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.TEAM_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.GAME_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.TURN_SCORES_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.FINAL_SCORES_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.GAME_HISTORY_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.CARD_TABLE_NAME + ";" );
     onCreate( db );
   }
   
