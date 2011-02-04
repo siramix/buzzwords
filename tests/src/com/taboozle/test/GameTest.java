@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
+
 /**
  * Unit tests for game.
  * @author The Taboozle Team
@@ -21,6 +22,7 @@ public class GameTest extends AndroidTestCase
   private Game game;
   private Context context;
   private SQLiteDatabase db;
+  private final String testdbname = "taboozleGameTest.db";
 
   /* (non-Javadoc)
    * @see junit.framework.TestCase#setUp()
@@ -29,7 +31,7 @@ public class GameTest extends AndroidTestCase
   {
     super.setUp();
     context = this.getContext();
-    game = new Game( context );
+    game = new Game( context, testdbname );
   }
 
   /* (non-Javadoc)

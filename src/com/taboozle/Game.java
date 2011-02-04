@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -74,17 +75,37 @@ public class Game extends SQLiteOpenHelper
   {
     return this.deck;
   }
+
   /**
    * Standard constructor. If you're wondering about the necessity of the
    * context, it is used to create the database of the superclass and we need
    * it to populate the card table with the xml resource containing the starter
    * pack.
    * @param context - the context to pass to the superclass and initialize the
+   * @param dbname - the name of the database to create, if null is stored in memory (according to super)
    * card table.
    */
   public Game( Context context )
   {
     super( context, GameData.DATABASE_NAME, null,
+           GameData.DATABASE_VERSION );
+    Log.d( TAG, "Game()" );
+    this.curContext = context;
+    this.clearDeck();
+  }
+  
+  /**
+   * Fancy constructor designed specifically for testing. Allows for the addition of a 
+   * db name parameter to create a separate db.  Refer to the Game(Context) constructor
+   * for more detail. 
+   * 
+   * @param context - the context to pass to the superclass and initialize the
+   * @param dbname - the name of the database to create, if null is stored in memory (according to super)
+   * card table.
+   */
+  public Game( Context context, String dbname )
+  {
+    super( context, dbname, null,
            GameData.DATABASE_VERSION );
     Log.d( TAG, "Game()" );
     this.curContext = context;
@@ -931,7 +952,8 @@ public class Game extends SQLiteOpenHelper
   @Override
   public void onCreate( SQLiteDatabase db )
   {
-    Log.d( TAG, "onCreate()" );
+    Log.d( TAG, "onCreate( " + db.getPath() + ")" );
+
     db.execSQL( "CREATE TABLE " + GameData.TEAM_TABLE_NAME + " (" +
                 GameData.Teams._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 GameData.Teams.NAME + " TEXT);" );
@@ -964,10 +986,14 @@ public class Game extends SQLiteOpenHelper
                 GameData.Cards.BAD_WORDS + " TEXT," +
                 GameData.Cards.CATEGORIES + " TEXT);" );
 
+    Log.d( TAG, "Create Table statements complete." );
+    
     InputStream starterXML =
       curContext.getResources().openRawResource(R.raw.starter);
     DocumentBuilderFactory docBuilderFactory =
       DocumentBuilderFactory.newInstance();
+    
+    Log.d( TAG, "Building Factory for card pack parsing from " + R.class.toString() );
     try
     {
       DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -1061,6 +1087,28 @@ public class Game extends SQLiteOpenHelper
     db.execSQL( "DROP TABLE IF EXISTS " + GameData.GAME_HISTORY_TABLE_NAME + ";" );
     db.execSQL( "DROP TABLE IF EXISTS " + GameData.CARD_TABLE_NAME + ";" );
     onCreate( db );
+  }
+
+  /** 
+   * Overriding this function for debugging purposes.  I've added a log statement inside this
+   * to track when the Game db is opened.
+   * (non-Javadoc)
+   * @see android.database.sqlite.SQLiteOpenHelper#onOpen(android.database.sqlite.SQLiteDatabase)
+   */
+  @Override
+  public void onOpen(SQLiteDatabase db) {
+    Log.d( TAG, "onOpen( " + db.getPath() + ")" );
+    super.onOpen(db);
+  }
+
+  /**
+   * Overriding this function for debugging purposes.  I've added a log statement inside close
+   * to track when the Game db is closed.
+   */
+  @Override
+  public synchronized void close() {
+    Log.d( TAG, "close()" );
+    super.close();
   }
   
 }
