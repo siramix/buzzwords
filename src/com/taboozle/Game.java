@@ -993,7 +993,7 @@ public class Game extends SQLiteOpenHelper
     DocumentBuilderFactory docBuilderFactory =
       DocumentBuilderFactory.newInstance();
     
-    Log.d( TAG, "Building Factory for card pack parsing from " + R.class.toString() );
+    Log.d( TAG, "Building DocBuilderFactory for card pack parsing from " + R.class.toString() );
     try
     {
       DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
