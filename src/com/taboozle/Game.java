@@ -17,7 +17,6 @@ import org.xml.sax.SAXException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -89,7 +88,7 @@ public class Game extends SQLiteOpenHelper
   {
     super( context, GameData.DATABASE_NAME, null,
            GameData.DATABASE_VERSION );
-    Log.d( TAG, "Game()" );
+    Log.d( TAG, "Game(Context)" );
     this.curContext = context;
     this.clearDeck();
   }
@@ -107,7 +106,7 @@ public class Game extends SQLiteOpenHelper
   {
     super( context, dbname, null,
            GameData.DATABASE_VERSION );
-    Log.d( TAG, "Game()" );
+    Log.d( TAG, "Game(Context, String)" );
     this.curContext = context;
     this.clearDeck();
   }
@@ -1099,16 +1098,6 @@ public class Game extends SQLiteOpenHelper
   public void onOpen(SQLiteDatabase db) {
     Log.d( TAG, "onOpen( " + db.getPath() + ")" );
     super.onOpen(db);
-  }
-
-  /**
-   * Overriding this function for debugging purposes.  I've added a log statement inside close
-   * to track when the Game db is closed.
-   */
-  @Override
-  public synchronized void close() {
-    Log.d( TAG, "close()" );
-    super.close();
   }
   
 }
