@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="TaboozleButton" parent="@android:style/Widget.Button">
-        <item name="android:textColor">@color/buttonText</item>
-        <item name="android:background">@drawable/taboozle_button</item>
-    </style>
+  <style name="TaboozleButton" parent="@android:style/Widget.Button">
+    <item name="android:textColor">@color/buttonText</item>
+    <item name="android:background">@drawable/taboozle_button</item>
+  </style>
+  <style name="TaboozleRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+    <item name="android:button">@drawable/radio</item>
+  </style>
 </resources>
