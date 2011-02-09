@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 /**
@@ -117,12 +118,18 @@ public class TurnSummary extends Activity
   	  card = it.next();
 
   	  LinearLayout line = (LinearLayout) LinearLayout.inflate(this.getBaseContext(), R.layout.turnsumrow, layout);
-  	  LinearLayout realLine = (LinearLayout) line.getChildAt(count);
+  	  RelativeLayout realLine = (RelativeLayout) line.getChildAt(count);
+      // Make every line alternating color
+      if( count % 2 == 0)
+      {
+        View background = (View) realLine.getChildAt(0);
+        background.setBackgroundResource(R.color.genericBG_trim);
+      }
 
-  	  TextView cardTitle = (TextView) realLine.getChildAt(0);
+  	  TextView cardTitle = (TextView) realLine.getChildAt(1);
   	  cardTitle.setText(card.getTitle());
 
-  	  ImageView cardIcon = (ImageView) realLine.getChildAt(1);
+  	  ImageView cardIcon = (ImageView) realLine.getChildAt(2);
   	  this.cardViewList.addLast( cardIcon );
   	  cardIcon.setImageResource(card.getDrawableId());
   	  cardIcon.setOnClickListener( CardIconListener );
@@ -133,6 +140,10 @@ public class TurnSummary extends Activity
   	// Update the scoreboard views
   	UpdateScoreViews();
 
+  	// Update numRounds
+  	TextView rounds = (TextView) this.findViewById(R.id.TurnSumRounds);
+  	rounds.setText("Round: " + game.GetCurrentRound() + "/"+ game.GetNumRounds());
+
   	// Bind Next button
   	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
   	playGameButton.setOnClickListener( NextTurnListener );
@@ -141,6 +152,7 @@ public class TurnSummary extends Activity
   	if ( game.GetNumTurnsRemaining() == 0 )
   	{
   		playGameButton.setText( "Game Results" );
+  		rounds.setText( "Game Over" );
   	}
   }
 

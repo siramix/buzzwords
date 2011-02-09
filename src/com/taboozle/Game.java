@@ -44,12 +44,36 @@ public class Game extends SQLiteOpenHelper
   /**
    * The list of cardIds that we pull from (our "deck" of cards)
    */
-  private ArrayList<Card> cards;
+  private ArrayList<Card> deck;
 
   /**
    * The position in the list of card ids (where we are in the "deck")
    */
   private int cardPosition;
+
+  
+  /**
+   * @return the cardPosition
+   */
+  public int getCardPosition()
+  {
+    return this.cardPosition;
+  }
+  
+  /**
+   * @param cardPosition the cardPosition to set
+   */
+  public void setCardPosition( int cardPosition )
+  {
+    this.cardPosition = cardPosition;
+  }
+  /**
+   * @return the arraylist of cards in your deck
+   */
+  public ArrayList<Card> getDeck()
+  {
+    return this.deck;
+  }
 
   /**
    * Standard constructor. If you're wondering about the necessity of the
@@ -57,20 +81,42 @@ public class Game extends SQLiteOpenHelper
    * it to populate the card table with the xml resource containing the starter
    * pack.
    * @param context - the context to pass to the superclass and initialize the
+   * @param dbname - the name of the database to create, if null is stored in memory (according to super)
    * card table.
    */
   public Game( Context context )
   {
     super( context, GameData.DATABASE_NAME, null,
            GameData.DATABASE_VERSION );
-    Log.d( TAG, "Game()" );
+    Log.d( TAG, "Game(Context)" );
     this.curContext = context;
     this.clearDeck();
   }
   
+  /**
+   * Fancy constructor designed specifically for testing. Allows for the addition of a 
+   * db name parameter to create a separate db.  Refer to the Game(Context) constructor
+   * for more detail. 
+   * 
+   * @param context - the context to pass to the superclass and initialize the
+   * @param dbname - the name of the database to create, if null is stored in memory (according to super)
+   * card table.
+   */
+  public Game( Context context, String dbname )
+  {
+    super( context, dbname, null,
+           GameData.DATABASE_VERSION );
+    Log.d( TAG, "Game(Context, String)" );
+    this.curContext = context;
+    this.clearDeck();
+  }
+  
+  /**
+   * Empties the current deck and instantiates a new ArrayList of cards.
+   */
   public void clearDeck()
   {
-    this.cards = new ArrayList<Card>();
+    this.deck = new ArrayList<Card>();
     this.cardPosition = -1;
   }
   
@@ -79,16 +125,16 @@ public class Game extends SQLiteOpenHelper
    */
   public void pruneDeck()
   {
-    for( int i = 0; i < this.cards.size(); ++i )
+    for( int i = 0; i < this.deck.size(); ++i )
     {
-      if( this.cards.get( i ).getRws() != -1 )
+      if( this.deck.get( i ).getRws() != -1 )
       {
-        this.cards.remove( i );
+        this.deck.remove( i );
         i--; // we removed so we need to hop back 
       }
       else
       {
-        this.cards.remove( i );
+        this.deck.remove( i );
         break;
       }
     }
@@ -125,7 +171,7 @@ public class Game extends SQLiteOpenHelper
         card.setId( cur.getLong( idColumn ) );
         card.setTitle( cur.getString( titleColumn ) );
         card.setBadWords( cur.getString( badWordsColumn ) );
-        this.cards.add( card );
+        this.deck.add( card );
 
       } while( cur.moveToNext() );
     }
@@ -177,13 +223,13 @@ public class Game extends SQLiteOpenHelper
   {
     Log.d( TAG, "getNextCard()" );
     // check deck bounds
-    if( this.cardPosition >= this.cards.size()-1 || this.cardPosition == -1 )
+    if( this.cardPosition >= this.deck.size()-1 || this.cardPosition == -1 )
     {
       this.prepDeck();
     }
 
     // return the card (it could be blank)
-    return this.cards.get( ++this.cardPosition );
+    return this.deck.get( ++this.cardPosition );
   }
 
   /**
@@ -198,7 +244,7 @@ public class Game extends SQLiteOpenHelper
     {
       this.cardPosition = 1; 
     }
-    return this.cards.get( --this.cardPosition );
+    return this.deck.get( --this.cardPosition );
   }
 
   /**
@@ -292,7 +338,7 @@ public class Game extends SQLiteOpenHelper
   }
 
 
-  /*
+  /**
    * AwardsQuery takes the awardID and gameID and returns data related to that award and
    * game.  Award.java should then be able to handle this data and assign awards to their
    * appropriate teams.
@@ -300,15 +346,6 @@ public class Game extends SQLiteOpenHelper
    * Results are returned as a 4x2 matrix of doubles, where column A represents the team_ids
    * of eligible teams to be given the award and column B is a wildcard for the relevant
    * value being searched, such as card time or number of skips.
-   * 
-   * SELECT team_id
-   * FROM gamehistory
-   * WHERE game_id = gameID
-   * GROUP BY team_id
-   * HAVING RWS = 2
-   * ORDER BY COUNT(*) DESC
-   * LIMIT 1;
-   * 
    */
   public double[][] awardsQuery( int awardID, long gameID )
   {
@@ -914,7 +951,8 @@ public class Game extends SQLiteOpenHelper
   @Override
   public void onCreate( SQLiteDatabase db )
   {
-    Log.d( TAG, "onCreate()" );
+    Log.d( TAG, "onCreate( " + db.getPath() + ")" );
+
     db.execSQL( "CREATE TABLE " + GameData.TEAM_TABLE_NAME + " (" +
                 GameData.Teams._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 GameData.Teams.NAME + " TEXT);" );
@@ -947,10 +985,14 @@ public class Game extends SQLiteOpenHelper
                 GameData.Cards.BAD_WORDS + " TEXT," +
                 GameData.Cards.CATEGORIES + " TEXT);" );
 
+    Log.d( TAG, "Create Table statements complete." );
+    
     InputStream starterXML =
       curContext.getResources().openRawResource(R.raw.starter);
     DocumentBuilderFactory docBuilderFactory =
       DocumentBuilderFactory.newInstance();
+    
+    Log.d( TAG, "Building DocBuilderFactory for card pack parsing from " + R.class.toString() );
     try
     {
       DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -1037,13 +1079,25 @@ public class Game extends SQLiteOpenHelper
     Log.d( TAG, "onUpgrade()" );
     Log.w( TAG, "Upgrading database from version " + oldVersion + " to "
            + newVersion + ", which will destroy all old data" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.TEAM_TABLE_NAME + ";" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.GAME_TABLE_NAME + ";" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.TURN_SCORES_TABLE_NAME + ";" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.FINAL_SCORES_TABLE_NAME + ";" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.GAME_HISTORY_TABLE_NAME + ";" );
-    db.execSQL( "DROP TABLE IF EXISTS" + GameData.CARD_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.TEAM_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.GAME_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.TURN_SCORES_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.FINAL_SCORES_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.GAME_HISTORY_TABLE_NAME + ";" );
+    db.execSQL( "DROP TABLE IF EXISTS " + GameData.CARD_TABLE_NAME + ";" );
     onCreate( db );
+  }
+
+  /** 
+   * Overriding this function for debugging purposes.  I've added a log statement inside this
+   * to track when the Game db is opened.
+   * (non-Javadoc)
+   * @see android.database.sqlite.SQLiteOpenHelper#onOpen(android.database.sqlite.SQLiteDatabase)
+   */
+  @Override
+  public void onOpen(SQLiteDatabase db) {
+    Log.d( TAG, "onOpen( " + db.getPath() + ")" );
+    super.onOpen(db);
   }
   
 }

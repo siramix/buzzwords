@@ -1,15 +1,15 @@
 package com.taboozle.test;
 
-import com.taboozle.Award;
+import android.test.AndroidTestCase;
 
-import junit.framework.TestCase;
+import com.taboozle.Award;
 
 /**
  * Test class that tests basic methods of Award class. Nothing fancy here.
  * 
  * @author Taboozle Team
  */
-public class AwardTest extends TestCase 
+public class AwardTest extends AndroidTestCase 
 {
 
   /**
