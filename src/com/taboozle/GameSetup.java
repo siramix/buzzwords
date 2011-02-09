@@ -10,9 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.ViewFlipper;
 /**
  * @author The Taboozle Team
  * This activity class is responsible for gathering game information before the
