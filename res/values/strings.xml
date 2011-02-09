@@ -20,10 +20,10 @@
   <string name="pauseGameDialog_text">Paused</string>
   
   <!-- Team names -->
-  <string name="teamnameA">Blue Team</string>
-  <string name="teamnameB">Green Team</string>
-  <string name="teamnameC">Red Team</string>
-  <string name="teamnameD">Yellow Team</string>
+  <string name="teamnameA">Blue</string>
+  <string name="teamnameB">Green</string>
+  <string name="teamnameC">Red</string>
+  <string name="teamnameD">Yellow</string>
   
   
 </resources>

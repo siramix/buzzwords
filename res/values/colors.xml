@@ -6,6 +6,9 @@
   <color name="teamA_text">
     #317695
   </color>
+  <color name="teamA_secondary">
+    #0b1920
+  </color>
   <color name="teamA_BG">
     #317695
   </color>
@@ -14,6 +17,9 @@
   </color>
   <color name="teamB_text">
     #6FA234
+  </color>
+  <color name="teamB_secondary">
+    #22310f
   </color>
   <color name="teamB_BG">
     #6FA234
@@ -24,6 +30,9 @@
   <color name="teamC_text">
     #AC2D20
   </color>
+  <color name="teamC_secondary">
+    #370000
+  </color>
   <color name="teamC_BG">
     #AC2D20
   </color>   
@@ -32,6 +41,9 @@
   </color>  
   <color name="teamD_text">
     #AC9B29
+  </color>
+  <color name="teamD_secondary">
+    #35300e
   </color>
   <color name="teamD_BG">
     #AC9B29
@@ -49,9 +61,12 @@
     #111111
   </color>
   <color name="genericBG_trim">
-    #333333
+    #3c3c3c
   </color>
   <color name="buttonText">
     #FFFFFF
+  </color>
+  <color name="inactiveButton">
+  	#646464
   </color>
 </resources>

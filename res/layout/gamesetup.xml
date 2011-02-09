@@ -2,7 +2,7 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent" 
-  android:layout_height="fill_parent" android:background="@color/genericBG">
+  android:layout_height="fill_parent" android:background="@drawable/bg_generic">
 
 
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:textSize="26px" android:layout_marginTop="5dip" android:layout_marginLeft="20dip" android:text="Game Setup" android:id="@+id/GameSetupTitle" android:textColor="@color/title"></TextView>
@@ -15,24 +15,17 @@
 
 
 
-<TextView android:layout_height="wrap_content" android:id="@+id/GameSetupTeamHeader" android:text="Teams" android:layout_below="@id/GameSetupTitle" android:textSize="20px" android:layout_width="fill_parent" android:layout_marginLeft="2px" android:layout_marginRight="2px" android:background="@color/genericBG_trim" android:textColor="@color/title" android:layout_marginTop="5px"></TextView>
-
-<LinearLayout android:layout_below="@id/GameSetupTeamHeader" android:layout_height="wrap_content" android:id="@+id/TeamLayout" android:layout_width="fill_parent" android:orientation="vertical">Background	<EditText android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="5px" android:lines="1" android:inputType="text" android:maxLength="25" android:id="@+id/SetTeamNameA" android:textColor="@color/teamA_text" android:text="@string/teamnameA"></EditText><EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:inputType="text" android:lines="1" android:maxLength="25" android:id="@+id/SetTeamNameB" android:textColor="@color/teamB_text" android:text="@string/teamnameB"></EditText>
-<ViewFlipper android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/AddTeamCFlipper"><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Add Team" android:id="@+id/AddTeamCButton"></Button><EditText android:layout_height="wrap_content" android:id="@+id/SetTeamNameC" android:layout_width="fill_parent" android:lines="1" android:inputType="text" android:maxLength="25" android:textColor="@color/teamC_text" android:text="@string/teamnameC"></EditText>
+<LinearLayout android:id="@+id/TeamLayout" android:layout_width="fill_parent" android:orientation="vertical" android:background="@color/genericBG_trim" android:layout_height="150dp" android:layout_below="@id/GameSetupTitle">Background	
 
 
+<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:id="@+id/GameSetup_TopTwoTeams"><Button android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:background="@color/teamA_text" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:layout_marginBottom="5dp" android:layout_marginTop="5dp" android:textSize="32dp" android:textColor="@color/teamA_secondary" android:text="Blue" android:id="@+id/GameSetup_ButtonTeamA"></Button>
+<Button android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:background="@color/teamB_text" android:layout_marginBottom="5dp" android:layout_marginTop="5dp" android:text="Green" android:textColor="@color/teamB_secondary" android:textSize="32dp" android:id="@+id/GameSetup_ButtonTeamB"></Button>
+</LinearLayout><LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:id="@+id/GameSetup_BottomTwoTeams"><Button android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:background="@color/teamC_text" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:layout_marginBottom="5dp" android:layout_marginTop="5dp" android:textColor="@color/teamC_secondary" android:textSize="32dp" android:text="Red" android:id="@+id/GameSetup_ButtonTeamC"></Button>
+<Button android:layout_weight="1" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@color/teamD_text" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:layout_marginBottom="5dp" android:layout_marginTop="5dp" android:text="Yellow" android:textColor="@color/teamD_secondary" android:textSize="32dp" android:id="@+id/GameSetup_ButtonTeamD"></Button>
+</LinearLayout>
+</LinearLayout>
 
-
-</ViewFlipper><ViewFlipper android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/AddTeamDFlipper" android:visibility="invisible">
-
-
-
-
-<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/AddRemoveTeamLayout"><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Add Team" android:id="@+id/AddTeamDButton"></Button><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/RemoveTeamCButton" android:text="Remove Team"></Button>
-
-</LinearLayout><LinearLayout android:layout_height="wrap_content" android:id="@+id/SetTeamDNameLayout" android:orientation="vertical" android:layout_width="fill_parent"><EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/SetTeamNameD" android:lines="1" android:maxLength="25" android:inputType="text" android:textColor="@color/teamD_text" android:text="@string/teamnameD"></EditText><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/RemoveTeamDButton" android:text="Remove Team"></Button></LinearLayout></ViewFlipper>
-
-</LinearLayout><TextView android:layout_height="wrap_content" android:textSize="20px" android:layout_width="fill_parent" android:layout_marginLeft="2px" android:layout_marginRight="2px" android:background="@color/genericBG_trim" android:textColor="@color/title" android:text="Number of Rounds" android:id="@+id/GameSetupNumRoundsHeader" android:layout_below="@id/TeamLayout" android:layout_marginTop="2dp"></TextView>
+<TextView android:layout_height="wrap_content" android:textSize="20px" android:layout_width="fill_parent" android:layout_marginLeft="2px" android:layout_marginRight="2px" android:background="@color/genericBG_trim" android:textColor="@color/title" android:text="Number of Rounds" android:id="@+id/GameSetupNumRoundsHeader" android:layout_below="@id/TeamLayout" android:layout_marginTop="2dp"></TextView>
 
 
 <RadioGroup android:id="@+id/RadioGroup01" android:layout_below="@+id/GameSetupNumRoundsHeader" android:checkedButton="@+id/GameSetupRounds5" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">Layout below	@+id/GameSetupNumRoundsHeaderLayout below	@+id/GameSetupNumRoundsHeader<RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" android:id="@+id/GameSetupRounds1"></RadioButton><RadioButton android:layout_height="wrap_content" android:id="@+id/GameSetupRounds5" android:text="5" android:layout_gravity="center_horizontal" android:layout_weight="1" android:layout_width="fill_parent"></RadioButton><RadioButton android:layout_height="wrap_content" android:id="@+id/GameSetupRounds10" android:text="10" android:layout_gravity="center_horizontal" android:layout_weight="1" android:layout_width="fill_parent"></RadioButton><RadioButton android:layout_height="wrap_content" android:id="@+id/GameSetupRounds15" android:text="15" android:layout_gravity="center_horizontal" android:layout_weight="1" android:layout_width="fill_parent"></RadioButton>

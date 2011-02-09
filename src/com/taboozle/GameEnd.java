@@ -130,7 +130,7 @@ public class GameEnd extends Activity
         GameManager curgm = application.GetGameManager();
         GameManager newgm = new GameManager(GameEnd.this);
         newgm.PrepDeck();
-        newgm.StartGame( curgm.GetTeamNames(), curgm.GetNumRounds() );
+        newgm.StartGame( curgm.GetTeamNames(), curgm.GetTeamIndices(), curgm.GetNumRounds() );
         application.SetGameManager( newgm );
         
         startActivity(new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()));        

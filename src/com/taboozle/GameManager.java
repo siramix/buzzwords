@@ -43,7 +43,8 @@ public class GameManager implements Serializable
    * The position in the teamIds collection of the team currently doing the
    * guessing
    */
-  private int activeTeamIndex;
+  private int teamIndexPosition;
+  private int[] teamIndices;
 
   /**
    * A collection of teamIds indicating the teams that are currently playing
@@ -106,7 +107,7 @@ public class GameManager implements Serializable
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     
     this.currentRound = 0;
-    this.activeTeamIndex = 0;
+    this.teamIndexPosition = 0;
     this.currentCards = new LinkedList<Card>();
     this.game = new Game( context );
     this.rws_resourceIDs = new int[] {R.drawable.right, R.drawable.wrong, R.drawable.skip};
@@ -127,14 +128,15 @@ public class GameManager implements Serializable
    * a set of teams in the database
    * @param teams - a string array of team names
    */
-  public void StartGame( String[] teams, int rounds )
+  public void StartGame( String[] teams, int[] colors, int rounds )
   {
     Log.d( TAG, "StartGame()" );
     this.currentGameId = this.game.newGame();
     this.teamIds = new long[teams.length];
     this.teamScores = new long[teams.length]; 
-    this.teamNames = teams.clone();
+    this.teamNames = teams.clone(); //FIXME
     this.numRounds = rounds;
+    this.teamIndices = colors.clone(); //FIXME
     
     for( int i = 0; i < teams.length; ++i )
     {
@@ -152,14 +154,21 @@ public class GameManager implements Serializable
   {
     Log.d( TAG, "NextTurn()" );
     this.WriteTurnResults();
-    this.teamScores[this.activeTeamIndex] += GetTurnScore();
-    this.activeTeamIndex++;
-    if( this.activeTeamIndex == this.teamIds.length )
-    {
-      this.activeTeamIndex = 0;
-      this.currentRound++;
-    }
+    this.teamScores[this.GetActiveTeamIndex()] += GetTurnScore();
+    this.incrementActiveTeamIndex();
     this.currentCards = new LinkedList<Card>();
+  }
+  
+  private void incrementActiveTeamIndex()
+  {
+    if( this.teamIndexPosition >= this.teamIndices.length )
+    {
+      this.teamIndexPosition = 0;
+    }
+    else
+    {
+      this.teamIndexPosition++;
+    }
   }
 
   /**
@@ -169,9 +178,9 @@ public class GameManager implements Serializable
   {
     Log.d( TAG, "EndGame()" );
     this.WriteTurnResults();
-    this.teamScores[this.activeTeamIndex] += GetTurnScore();
+    this.teamScores[this.GetActiveTeamIndex()] += GetTurnScore();
     this.WriteGameResults();
-	this.activeTeamIndex = -1;
+    this.teamIndexPosition = 0;
   }
 
   /**
@@ -188,7 +197,7 @@ public class GameManager implements Serializable
 	  scoreTotal = this.GetTurnScore();
 
 	  long currentTurnScoreID = game.newTurn( this.currentGameId,
-	                                          this.teamIds[this.activeTeamIndex],
+	                                          this.teamIds[this.GetActiveTeamIndex()],
 	                                          this.currentRound,
 	                                          scoreTotal );
 
@@ -196,7 +205,7 @@ public class GameManager implements Serializable
 	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
 	  {
 	    Card card = it.next();
-	    game.completeCard( this.currentGameId, this.teamIds[this.activeTeamIndex],
+	    game.completeCard( this.currentGameId, this.teamIds[this.GetActiveTeamIndex()],
 	                       card.getId(), currentTurnScoreID,
 	                       card.getRws(), card.getTime() );
 	  }
@@ -330,7 +339,7 @@ public class GameManager implements Serializable
   public int GetActiveTeamIndex()
   {
     Log.d( TAG, "GetActiveTeamIndex()" );                      
-    return this.activeTeamIndex;
+    return this.teamIndices[this.teamIndexPosition];
   }
   
   /**
@@ -371,7 +380,7 @@ public class GameManager implements Serializable
   public int GetNumTurnsRemaining()
   {
     Log.d( TAG, "GetNumTurnsRemaining()" );                          
-    return ((this.numRounds - this.currentRound) * this.teamIds.length) - (this.activeTeamIndex + 1);
+    return ((this.numRounds - this.currentRound) * this.teamIds.length) - (this.GetActiveTeamIndex() + 1);
   }
   
   /**
@@ -411,7 +420,12 @@ public class GameManager implements Serializable
   public String GetActiveTeamName()
   {
     Log.d( TAG, "GetActiveTeamName()" );
-    return this.teamNames[this.activeTeamIndex];
+    return this.teamNames[this.GetActiveTeamIndex()];
+  }
+  
+  public int[] GetTeamIndices()
+  {
+    return this.teamIndices;
   }
   
   /**
