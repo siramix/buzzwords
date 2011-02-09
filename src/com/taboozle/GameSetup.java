@@ -225,6 +225,14 @@ public void onCreate( Bundle savedInstanceState )
   this.teams[3] = new Team();
   this.teams[3].name = GameSetup.this.getString( R.string.teamnameD );
   this.teams[3].color = 3;
+  
+  teamList.add( teams[0] );
+  teamList.add( teams[1] );
+  teamCButton.setBackgroundResource( R.color.inactiveButton );
+  teamCButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+  teamDButton.setBackgroundResource( R.color.inactiveButton );
+  teamDButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+  
 }
 
 }

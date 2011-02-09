@@ -178,7 +178,7 @@ public class GameManager implements Serializable
   {
     Log.d( TAG, "EndGame()" );
     this.WriteTurnResults();
-    this.teamScores[this.GetActiveTeamIndex()] += GetTurnScore();
+    this.teamScores[this.GetActiveTeamArrayPosition()] += GetTurnScore();
     this.WriteGameResults();
     this.teamIndexPosition = 0;
   }
@@ -343,6 +343,15 @@ public class GameManager implements Serializable
   }
   
   /**
+   * Return active team index position
+   */
+  public int GetActiveTeamArrayPosition()
+  {
+    Log.d( TAG, "GetActiveTeamArrayPosition()" );                      
+    return this.teamIndexPosition;
+  }
+  
+  /**
    * Return the number of teams set up by the game manager.
    * @return integer representing the number of teams ie. the length of 
    * teamIds[]
@@ -420,7 +429,7 @@ public class GameManager implements Serializable
   public String GetActiveTeamName()
   {
     Log.d( TAG, "GetActiveTeamName()" );
-    return this.teamNames[this.GetActiveTeamIndex()];
+    return this.teamNames[this.teamIndexPosition];
   }
   
   public int[] GetTeamIndices()

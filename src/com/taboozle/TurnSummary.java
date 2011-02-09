@@ -242,7 +242,7 @@ public class TurnSummary extends Activity
   	long[] totalscores = game.GetTeamScores().clone();
 
   	// Set new total score for the current team
-  	totalscores[game.GetActiveTeamIndex()] += turnscore;
+  	totalscores[game.GetActiveTeamArrayPosition()] += turnscore;
 
   	// Display total score for the current team
   	TextView scoreview = (TextView) findViewById(R.id.TurnSummaryTurnScore);
@@ -282,7 +282,7 @@ public class TurnSummary extends Activity
     TextView curTeamHeader = (TextView) findViewById(R.id.TurnSummaryTeamName);
     TextView curTeamName = (TextView) findViewById(R.id.TurnSummaryCurrentScoreTeamname);
     TextView curTeamScore = (TextView) findViewById(R.id.TurnSummaryCurrentScoreNum);
-    String teamName = game.GetTeamNames()[game.GetActiveTeamIndex()];
+    String teamName = game.GetTeamNames()[game.GetActiveTeamArrayPosition()];
     curTeamHeader.setText(teamName);
     curTeamName.setText(teamName);
     // Set team name color
@@ -291,7 +291,7 @@ public class TurnSummary extends Activity
 	curTeamHeader.setTextColor(teamColor);
 	curTeamName.setTextColor(teamColor);
 	curTeamScore.setTextColor(teamColor);
-	curTeamScore.setText(Long.toString(totalscores[game.GetActiveTeamIndex()]));
+	curTeamScore.setText(Long.toString(totalscores[game.GetActiveTeamArrayPosition()]));
     
   }
 
