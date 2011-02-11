@@ -2,6 +2,7 @@ package com.taboozle;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,8 +34,8 @@ public class TurnSummary extends Activity
    */
   public static String TAG = "TurnSummary";
 
-  private LinkedList<Card> cardList;
-  private LinkedList<ImageView> cardViewList;
+  private List<Card> cardList;
+  private List<ImageView> cardViewList;
 
   static final int DIALOG_GAMEOVER_ID = 0;
   
@@ -49,7 +50,7 @@ public class TurnSummary extends Activity
 	        TaboozleApplication application =
 	          (TaboozleApplication) TurnSummary.this.getApplication();
 	        GameManager gm = application.GetGameManager();
-	        if( gm.GetNumTurnsRemaining() == 0 )
+	        if( gm.GetNumberOfTurnsRemaining() == 0 )
 	        {
 	        	gm.EndGame();
 	        	startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
@@ -130,7 +131,7 @@ public class TurnSummary extends Activity
   	  cardTitle.setText(card.getTitle());
 
   	  ImageView cardIcon = (ImageView) realLine.getChildAt(2);
-  	  this.cardViewList.addLast( cardIcon );
+  	  this.cardViewList.add( cardIcon );
   	  cardIcon.setImageResource(card.getDrawableId());
   	  cardIcon.setOnClickListener( CardIconListener );
   	  count++;
@@ -149,7 +150,7 @@ public class TurnSummary extends Activity
   	playGameButton.setOnClickListener( NextTurnListener );
   	
   	// Change Next Game prompt to "Game Results" when the game is over.  Remove EndGame button
-  	if ( game.GetNumTurnsRemaining() == 0 )
+  	if ( game.GetNumberOfTurnsRemaining() == 0 )
   	{
   		playGameButton.setText( "Game Results" );
   		rounds.setText( "Game Over" );
@@ -237,12 +238,9 @@ public class TurnSummary extends Activity
     TaboozleApplication application =
           (TaboozleApplication) this.getApplication();
     GameManager game = application.GetGameManager();
-
-  	long turnscore = game.GetTurnScore();
-  	long[] totalscores = game.GetTeamScores().clone();
-
-  	// Set new total score for the current team
-  	totalscores[game.GetActiveTeamArrayPosition()] += turnscore;
+    List<Team> teams = game.GetTeams();
+    
+  	int turnscore = game.GetTurnScore();
 
   	// Display total score for the current team
   	TextView scoreview = (TextView) findViewById(R.id.TurnSummaryTurnScore);
@@ -251,47 +249,53 @@ public class TurnSummary extends Activity
   	// Populate Scoreboard scores
   	final int[] SCORE_VIEW_IDS = new int[]{R.id.TeamAScore, R.id.TeamBScore,
   											R.id.TeamCScore, R.id.TeamDScore};
-  	for (int i = 0; i < totalscores.length; i++)
+  	for (int i = 0; i < teams.size(); i++)
   	{
-  		TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
-  		teamTotalScoreView.setText(Long.toString(totalscores[i]));
+  		TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[teams.get( i ).ordinal()] );
+  		teamTotalScoreView.setText(Long.toString(teams.get( i ).getScore()));
   	}
     // Populate Scoreboard names
     final int[] SCORE_TEAMNAME_IDS = new int[]{R.id.TurnSummaryScoreATeamname, R.id.TurnSummaryScoreBTeamname,
                                                R.id.TurnSummaryScoreCTeamname, R.id.TurnSummaryScoreDTeamname};
-    for (int i = 0; i < totalscores.length; i++)
+    for (int i = 0; i < teams.size(); i++)
     {
-      TextView teamnameView = (TextView) findViewById( SCORE_TEAMNAME_IDS[i] );
-      teamnameView.setText(game.GetTeamNames()[i]);
+      TextView teamnameView = (TextView) findViewById( SCORE_TEAMNAME_IDS[teams.get( i ).ordinal()] );
+      teamnameView.setText(teams.get( i ).getName());
     }
 
   	// Hide teams that are not being played
     final int[] SCORE_VIEW_GROUP_IDS = new int[]{R.id.TurnSummaryScoreA, R.id.TurnSummaryScoreB,
     											 R.id.TurnSummaryScoreC, R.id.TurnSummaryScoreD};
-  	for (int i = totalscores.length; i < SCORE_VIEW_GROUP_IDS.length; i++)
+  	for (int i = 0; i < SCORE_VIEW_GROUP_IDS.length; i++)
   	{
   		LinearLayout teamScoreGroupView = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[i] );
   		teamScoreGroupView.setVisibility( View.GONE );
   	}
+  	for( Iterator<Team> itr = teams.iterator(); itr.hasNext();)
+  	{
+  	  Team team = itr.next();
+  	  LinearLayout teamScoreGroupView = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[team.ordinal()] );
+      teamScoreGroupView.setVisibility( View.VISIBLE );
+  	}
   	
   	// Hide current team (it has its own line)
-	LinearLayout layout = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[game.GetActiveTeamIndex()] );
+	LinearLayout layout = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[game.GetActiveTeam().ordinal()] );
 	layout.setVisibility( View.GONE );
 
   	// Display current team name and score
     TextView curTeamHeader = (TextView) findViewById(R.id.TurnSummaryTeamName);
     TextView curTeamName = (TextView) findViewById(R.id.TurnSummaryCurrentScoreTeamname);
     TextView curTeamScore = (TextView) findViewById(R.id.TurnSummaryCurrentScoreNum);
-    String teamName = game.GetTeamNames()[game.GetActiveTeamArrayPosition()];
+    String teamName = game.GetActiveTeam().getName();
     curTeamHeader.setText(teamName);
     curTeamName.setText(teamName);
     // Set team name color
-	final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
-    int teamColor = this.getResources().getColor( TEAM_COLOR_IDS[game.GetActiveTeamIndex()]);
+	
+	int teamColor = this.getResources().getColor( game.GetActiveTeam().getText() );
 	curTeamHeader.setTextColor(teamColor);
 	curTeamName.setTextColor(teamColor);
 	curTeamScore.setTextColor(teamColor);
-	curTeamScore.setText(Long.toString(totalscores[game.GetActiveTeamArrayPosition()]));
+	curTeamScore.setText(Integer.toString( game.GetActiveTeam().getScore()+turnscore ));
     
   }
 

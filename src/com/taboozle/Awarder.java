@@ -5,6 +5,7 @@ package com.taboozle;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import android.util.Log;
 
@@ -52,10 +53,10 @@ public class Awarder
   {
     Log.d( TAG, "calcAwards()" );
     ArrayList<Award> possibleAwards = Award.awards;
-    long[] teamIds = this.gameManager.GetTeamIDs();
-    ArrayList<Award> ret = new ArrayList<Award>(teamIds.length);
-    boolean[] awarded = new boolean[teamIds.length];
-    for( int i = 0; i < teamIds.length; ++i )
+    List<Team> teams = this.gameManager.GetTeams();
+    ArrayList<Award> ret = new ArrayList<Award>(teams.size());
+    boolean[] awarded = new boolean[teams.size()];
+    for( int i = 0; i < teams.size(); ++i )
     {
       awarded[i] = false;
       ret.add( i, null );
@@ -69,9 +70,9 @@ public class Awarder
       Log.d( TAG, Double.toString( res[2][0] ) + " " + Double.toString( res[2][1] ) );
       Log.d( TAG, Double.toString( res[3][0] ) + " " + Double.toString( res[3][1] ) );
       int processed = 0;
-      for( int i = 0; i < teamIds.length; ++i )
+      for( int i = 0; i < teams.size(); ++i )
       {
-        if( !awarded[i] && res[0][0] == (double)teamIds[i] )
+        if( !awarded[i] && res[0][0] == (double)teams.get( i ).ordinal() )
         {
           awarded[i] = true;
           Log.d( TAG, Integer.toString( i ) );
@@ -79,7 +80,7 @@ public class Awarder
           processed++;
         }
       }
-      if( processed == teamIds.length )
+      if( processed == teams.size() )
       {
         break;
       }

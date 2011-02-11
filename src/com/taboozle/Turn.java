@@ -647,28 +647,10 @@ public class Turn extends Activity
     
     //Change views to appropriate team color
     ImageView barFill = (ImageView) this.findViewById( R.id.TurnTimerFill );
-   // this.findViewById( R.layout.word ).inflate(context, resource, root);
     
-    switch (this.curGameManager.GetActiveTeamIndex()) {      
-      case 0: //Blue Team
-        barFill.setImageResource( R.color.teamA_text );
-        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_bluegradient );
-       // badWords.setTextColor( R.color.teamA_Text );
-        break;
-      case 1: //Green Team 
-        barFill.setImageResource( R.color.teamB_text );
-        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_greengradient );        
-        break;
-      case 2: //Red Team 
-        barFill.setImageResource( R.color.teamC_text);
-        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_redgradient );     
-        break;
-      case 3: //Yellow Team 
-        barFill.setImageResource( R.color.teamD_text );
-        this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( R.drawable.bg_yellowgradient );     
-        break;        
-      default: barFill.setImageResource( R.color.teamA_text ); //Red Team
-    }
+    Team curTeam = this.curGameManager.GetActiveTeam();
+    barFill.setImageResource( curTeam.getBg() );
+    this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( curTeam.getGradient() );
     
   }
   
@@ -789,7 +771,7 @@ public class Turn extends Activity
       dialog = builder.create();
       break;
     case DIALOG_READY_ID:
-      String curTeam = this.curGameManager.GetActiveTeamName();
+      String curTeam = this.curGameManager.GetActiveTeam().getName();
       builder = new AlertDialog.Builder(this);
       builder.setTitle( "Ready " + curTeam + "?" )
              .setCancelable(false)

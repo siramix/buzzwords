@@ -3,6 +3,7 @@ package com.taboozle;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,26 +38,15 @@ public class GameManager implements Serializable
   /**
    * The id of the game currently being played
    */
-  private long currentGameId;
+  private int currentGameId;
 
   /**
-   * The position in the teamIds collection of the team currently doing the
-   * guessing
+   * List of team objects
    */
-  private int teamIndexPosition;
-  private int[] teamIndices;
-
-  /**
-   * A collection of teamIds indicating the teams that are currently playing
-   * the game
-   */
-  private long[] teamIds;
+  private List<Team> teams; 
+  private Iterator<Team> teamIterator;
+  private Team currentTeam;
   
-  /**
-   * An array of the team names
-   */
-  private String[] teamNames;
-
   /**
    * The maximum number of rounds for this game
    */
@@ -67,10 +57,8 @@ public class GameManager implements Serializable
    */
   private int currentRound;
   
-  /**
-   * Running total of scores
-   */
-  private long[] teamScores;
+  private int numTurns;
+  private int currentTurn;
 
   /**
    * The id of the card in play
@@ -85,7 +73,7 @@ public class GameManager implements Serializable
   /**
    * An array indicating scoring for right, wrong, and skip (in that order)
    */
-  private long[] rws_value_rules;
+  private int[] rws_value_rules;
   
   /**
    * An array of resource IDs to each right, wrong, skip sprite
@@ -107,7 +95,7 @@ public class GameManager implements Serializable
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     
     this.currentRound = 0;
-    this.teamIndexPosition = 0;
+    this.currentTurn = 0;
     this.currentCards = new LinkedList<Card>();
     this.game = new Game( context );
     this.rws_resourceIDs = new int[] {R.drawable.right, R.drawable.wrong, R.drawable.skip};
@@ -115,7 +103,7 @@ public class GameManager implements Serializable
     this.turn_time = Integer.parseInt(sp.getString("turn_timer", "10")) * 1000;
     
     System.out.println("Turn time is " + turn_time );    
-    this.rws_value_rules = new long[3];
+    this.rws_value_rules = new int[3];
     
     //Set score values for game
     this.rws_value_rules[0] = 1;  //Value for correct cards
@@ -128,21 +116,16 @@ public class GameManager implements Serializable
    * a set of teams in the database
    * @param teams - a string array of team names
    */
-  public void StartGame( String[] teams, int[] colors, int rounds )
+  public void StartGame( List<Team> teams, int rounds )
   {
     Log.d( TAG, "StartGame()" );
     this.currentGameId = this.game.newGame();
-    this.teamIds = new long[teams.length];
-    this.teamScores = new long[teams.length]; 
-    this.teamNames = teams.clone(); //FIXME
+    this.teams = teams;
+    this.teamIterator = teams.iterator();
+    this.currentTeam = teamIterator.next();
     this.numRounds = rounds;
-    this.teamIndices = colors.clone(); //FIXME
-    
-    for( int i = 0; i < teams.length; ++i )
-    {
-      this.teamIds[i] = game.newTeam( teams[i] );
-    }
-    
+    this.numTurns = this.teams.size()*this.numRounds;
+    this.currentTurn++;
     this.game.clearDeck();
   }
 
@@ -154,20 +137,24 @@ public class GameManager implements Serializable
   {
     Log.d( TAG, "NextTurn()" );
     this.WriteTurnResults();
-    this.teamScores[this.GetActiveTeamIndex()] += GetTurnScore();
+    int score = this.currentTeam.getScore() + GetTurnScore();
+    this.currentTeam.setScore( score );
     this.incrementActiveTeamIndex();
     this.currentCards = new LinkedList<Card>();
+    this.currentTurn++;
   }
   
-  private void incrementActiveTeamIndex()
+  public void incrementActiveTeamIndex()
   {
-    if( this.teamIndexPosition >= this.teamIndices.length )
+    if( this.teamIterator.hasNext() )
     {
-      this.teamIndexPosition = 0;
+      this.currentTeam = this.teamIterator.next();
     }
     else
     {
-      this.teamIndexPosition++;
+      this.teamIterator = this.teams.iterator();
+      this.currentTeam = this.teamIterator.next();
+      this.currentRound++;
     }
   }
 
@@ -178,9 +165,10 @@ public class GameManager implements Serializable
   {
     Log.d( TAG, "EndGame()" );
     this.WriteTurnResults();
-    this.teamScores[this.GetActiveTeamArrayPosition()] += GetTurnScore();
+    int score = this.currentTeam.getScore() + GetTurnScore();
+    this.currentTeam.setScore( score );
     this.WriteGameResults();
-    this.teamIndexPosition = 0;
+    this.teamIterator = this.teams.iterator();
   }
 
   /**
@@ -197,7 +185,7 @@ public class GameManager implements Serializable
 	  scoreTotal = this.GetTurnScore();
 
 	  long currentTurnScoreID = game.newTurn( this.currentGameId,
-	                                          this.teamIds[this.GetActiveTeamIndex()],
+	                                          this.currentTeam.ordinal(),
 	                                          this.currentRound,
 	                                          scoreTotal );
 
@@ -205,7 +193,7 @@ public class GameManager implements Serializable
 	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
 	  {
 	    Card card = it.next();
-	    game.completeCard( this.currentGameId, this.teamIds[this.GetActiveTeamIndex()],
+	    game.completeCard( this.currentGameId, this.currentTeam.ordinal(),
 	                       card.getId(), currentTurnScoreID,
 	                       card.getRws(), card.getTime() );
 	  }
@@ -217,10 +205,12 @@ public class GameManager implements Serializable
    */
   private void WriteGameResults()
   {
-    Log.d( TAG, "WriteGameResults()" );   
-    for( int i = 0; i < teamIds.length; i++ )
+    Log.d( TAG, "WriteGameResults()" );
+    Iterator<Team> iterator = this.teams.iterator();
+    while( iterator.hasNext() )
     {
-      game.completeGame( this.currentGameId, this.teamIds[i], this.teamScores[i]);
+      Team cur = iterator.next();
+      game.completeGame( this.currentGameId, cur.ordinal(), cur.getScore());
     }
   }
 
@@ -298,10 +288,10 @@ public class GameManager implements Serializable
    * total score
    * @return score for the round
    */
-  public long GetTurnScore()
+  public int GetTurnScore()
   {
     Log.d( TAG, "GetTurnScore()" );              
-    long ret = 0;
+    int ret = 0;
 	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
 	  {
 	    Card card = it.next();
@@ -314,10 +304,10 @@ public class GameManager implements Serializable
    * Return an array of scores representing a running score total.
    * @return Array of longs with an element for each team's latest total score.
    */
-  public long[] GetTeamScores()
+  public List<Team> GetTeams()
   {
-    Log.d( TAG, "GetTeamScores()" );                  
-	  return this.teamScores;
+    Log.d( TAG, "GetTeams()" );                  
+	  return this.teams;
   }
 
   /**
@@ -325,10 +315,10 @@ public class GameManager implements Serializable
    * @return Array of longs with an element for the team's scores for every 
    * round, first to last.
    */
-  public long[] GetRoundScores(long teamIndex)
+  public int[] GetRoundScores(Team team)
   {
     Log.d( TAG, "GetRoundScores()" );                      
-    return this.game.getRoundScores( this.teamIds[(int)teamIndex], 
+    return this.game.getRoundScores( team.ordinal(), 
                                      this.currentGameId );
   }
   
@@ -336,19 +326,10 @@ public class GameManager implements Serializable
    * Return the index of the team currently in play.
    * @return integer representing the index of the current team starting at 0.
    */
-  public int GetActiveTeamIndex()
+  public Team GetActiveTeam()
   {
     Log.d( TAG, "GetActiveTeamIndex()" );                      
-    return this.teamIndices[this.teamIndexPosition];
-  }
-  
-  /**
-   * Return active team index position
-   */
-  public int GetActiveTeamArrayPosition()
-  {
-    Log.d( TAG, "GetActiveTeamArrayPosition()" );                      
-    return this.teamIndexPosition;
+    return this.currentTeam;
   }
   
   /**
@@ -359,12 +340,12 @@ public class GameManager implements Serializable
   public int GetNumTeams()
   {
     Log.d( TAG, "GetNumTeams()" );                          
-	  return this.teamIds.length;
+	  return this.teams.size();
   }
   
   /**
    * Return the number of rounds that have fully taken place
-   * @return int representing the number of rounds thusfar in a game 
+   * @return int representing the number of rounds thus far in a game 
    */
   public int GetCurrentRound()
   {
@@ -382,35 +363,6 @@ public class GameManager implements Serializable
     return this.numRounds;
   }
   
-  /**
-   * Return the number of turns still left to play
-   * @return int representing number of turns before max rounds reached
-   */
-  public int GetNumTurnsRemaining()
-  {
-    Log.d( TAG, "GetNumTurnsRemaining()" );                          
-    return ((this.numRounds - this.currentRound) * this.teamIds.length) - (this.GetActiveTeamIndex() + 1);
-  }
-  
-  /**
-   * Accessor to return teamIDs which are the IDs stored in the database for each team.
-   * @return array of longs representing each team's unique ID as stored in the db
-   */
-  public long[] GetTeamIDs()
-  {
-    Log.d( TAG, "GetTeamIDs()" );    
-	  return this.teamIds;
-  }
-  
-  
-  /**
-   * Returns a string array of the team names.
-   */
-  public String[] GetTeamNames()
-  {
-    Log.d( TAG, "GetTeamNames()" );    
-	  return this.teamNames;
-  }
   
   /**
    * Accessor to return the amount of time in each turn.
@@ -420,21 +372,6 @@ public class GameManager implements Serializable
   {
     Log.d( TAG, "GetTurnTime()" );    
     return this.turn_time;
-  }
-  
-  /**
-   * Return the current team name
-   * @return string for the current team name
-   */
-  public String GetActiveTeamName()
-  {
-    Log.d( TAG, "GetActiveTeamName()" );
-    return this.teamNames[this.teamIndexPosition];
-  }
-  
-  public int[] GetTeamIndices()
-  {
-    return this.teamIndices;
   }
   
   /**
@@ -460,4 +397,9 @@ public class GameManager implements Serializable
     Log.d( TAG, "awardsQuery(" + awardID + ", " + gameID + ")" );
     return this.game.awardsQuery(awardID, gameID);
   }
+  
+  public int GetNumberOfTurnsRemaining()
+  {
+    return this.numTurns-this.currentTurn;
+  }  
 }

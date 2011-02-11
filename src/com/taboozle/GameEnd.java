@@ -1,6 +1,8 @@
 package com.taboozle;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -37,7 +39,7 @@ public class GameEnd extends Activity
    */
   private GameManager curGameManager;
   
-  private ArrayList<Award> awards;
+  private List<Award> awards;
   
   private class AwardTimer extends CountDownTimer
   {
@@ -88,7 +90,7 @@ public class GameEnd extends Activity
     Log.d( TAG, "showNextAward()");
     GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
     final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
-    final String[] stringAwards = new String[gm.GetTeamIDs().length];
+    final String[] stringAwards = new String[gm.GetTeams().size()];
     for( int i = 0; i < stringAwards.length; ++i )
     {
       stringAwards[i] = this.awards.get( i ).name;
@@ -98,7 +100,7 @@ public class GameEnd extends Activity
     TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
     this.awardIndex = (this.awardIndex + 1) % curGameManager.GetNumTeams();
     awardName.setText(stringAwards[this.awardIndex]);
-    awardTeamName.setText(curGameManager.GetTeamNames()[this.awardIndex]);
+    awardTeamName.setText(curGameManager.GetTeams().get(this.awardIndex).getName());
     awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[this.awardIndex] ));
   }
   
@@ -130,7 +132,7 @@ public class GameEnd extends Activity
         GameManager curgm = application.GetGameManager();
         GameManager newgm = new GameManager(GameEnd.this);
         newgm.PrepDeck();
-        newgm.StartGame( curgm.GetTeamNames(), curgm.GetTeamIndices(), curgm.GetNumRounds() );
+        newgm.StartGame( curgm.GetTeams(), curgm.GetNumRounds() );
         application.SetGameManager( newgm );
         
         startActivity(new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()));        
@@ -154,14 +156,15 @@ public class GameEnd extends Activity
   		
   		int numRounds = curGameManager.GetNumRounds();
   		int numTeams = curGameManager.GetNumTeams();
-  		String[] teamNames = curGameManager.GetTeamNames();
+  	  List<Team> teams = curGameManager.GetTeams();
   		
   		// Populate storage table for end game round results
-  		long[][] endTable = new long[numRounds][numTeams];
+  		int[][] endTable = new int[numRounds][numTeams];
   		for ( int i = 0; i < numTeams; ++i )
   		{
-  			long[] roundscores = curGameManager.GetRoundScores((long) i);
-  			for ( int j = 0; j < roundscores.length; j++)
+  		  Team curTeam = teams.get( i );
+  			int[] roundscores = curGameManager.GetRoundScores(curTeam);
+  			for ( int j = 0; j < roundscores.length; ++j)
   			{
   				endTable[j][i] = roundscores[j];
   			}
@@ -182,67 +185,53 @@ public class GameEnd extends Activity
   	  	  
   	  	  for (int j = 0; j < realLine.getChildCount(); j++ )
   	  	  {
-  	  		  TextView txt = (TextView) realLine.getChildAt(j);
+  	  	    TextView txt = (TextView) realLine.getChildAt(j);
   	  		  // HACK - Set width to fill parent... really I want to inherit this from the xml
-  	  		  txt.setWidth( 400 / numTeams );
-  	  		  if(  j < numTeams )
-  	  		  {
-  	  			  txt.setText(Long.toString(endTable[i][j]));
-  	  		  }
-  	  		  else
-  	  		  {
-  	  			  txt.setVisibility( View.GONE );
-  	  		  }
+  	  		  txt.setWidth( 400 / numTeams ); //FIXME
+  	  			txt.setVisibility( View.GONE );
   	  	  }
+  	  	  for (int j = 0; j < realLine.getChildCount(); j++ )
+          {
+  	  	    for( Iterator<Team> itr = teams.iterator(); itr.hasNext(); )
+  	  	    {
+  	  	      Team curTeam = itr.next();
+  	  	      if( j == curTeam.ordinal() && j < numTeams )
+  	  	      {
+  	  	        TextView txt = (TextView) realLine.getChildAt(j);
+  	  	        txt.setText(Integer.toString(endTable[i][j]));
+  	  	      }
+  	  	    }
+          }
   	  	  ++count;
   	  	}
   	  	list.addView(layout);
 
-  		// Display final scores
-  		long[] finalScores = curGameManager.GetTeamScores();
   		final int[] SCORE_VIEW_IDS = new int[]{ R.id.EndGameTeamAScore, R.id.EndGameTeamBScore,
   												R.id.EndGameTeamCScore, R.id.EndGameTeamDScore};
-  		for (int i = 0; i < finalScores.length; i++)
+  	// Hide scores for teams who did not participate
+      for (int i = 0; i < SCORE_VIEW_IDS.length; i++)
+      {
+        TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
+        teamTotalScoreView.setVisibility( View.GONE );
+      }
+  		for (int i = 0; i < teams.size(); i++)
   		{
-  			TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
-  			teamTotalScoreView.setText( teamNames[i] + ": " + Long.toString( finalScores[i] ) );
-  		}
-  		// Hide scores for teams who did not participate
-  		for (int i = finalScores.length; i < SCORE_VIEW_IDS.length; i++)
-  		{
-  			TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
-  			teamTotalScoreView.setVisibility( View.GONE );
+  		  Team cur = teams.get( i );
+  			TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[cur.ordinal()] );
+  			teamTotalScoreView.setText( cur.getName() + ": " + Integer.toString( cur.getScore() ) );
   		}
   		
-  		// Display winning team
-  		int winningTeamIndex = 0;
-  		boolean tieGame = false;
-  		
-  		for (int i = 0; i < finalScores.length; ++i)
-  		{
-  			if ( i == winningTeamIndex )
-  			{
-  				continue;
-  			}
-  			if (finalScores[winningTeamIndex] < finalScores[i])
-  			{
-  				winningTeamIndex = i;
-  			}
-  			else if (finalScores[winningTeamIndex] == finalScores[i])
-  			{
-  				tieGame = true;
-  			}
-  		}
-  		final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
+  	  // Sort the list by scores to determine the winner(s)
+  		Collections.sort( teams, (Team.TEAMA).new ScoreComparator() );
   		TextView winner = (TextView) findViewById(R.id.EndGameWinner);
-  		if (!tieGame)
+  		if (teams.get(0).getScore() == teams.get(1).getScore())
   		{
-  			winner.setText(teamNames[winningTeamIndex] + " wins!!!!");
-  			winner.setTextColor( this.getResources().getColor( TEAM_COLOR_IDS[winningTeamIndex] ) );
+  		  winner.setText("TIE GAME");
   		}
   		else
   		{
-  			winner.setText("TIE GAME");
+  		  winner.setText(teams.get(0).getName() + " wins!!!!");
+        winner.setTextColor( this.getResources().getColor( teams.get( 0 ).getText() ) );
   		}
   		
   		//Display Awards

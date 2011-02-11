@@ -185,7 +185,7 @@ public class Game extends SQLiteOpenHelper
    * @param gameID - the database ID of the game whose scores are being retrieved
    * @return an array of scores, one element per round
    */
-  public long[] getRoundScores(long teamID, long gameID)
+  public int[] getRoundScores(int teamID, int gameID)
   {
     Log.d( TAG, "getRoundScores()" );
     // query for scores
@@ -196,7 +196,7 @@ public class Game extends SQLiteOpenHelper
     		               GameData.TurnScores.GAME_ID + "=" + gameID, null, null, null,
     		               GameData.TurnScores.ROUND);
 
-    long[] scores = new long[cur.getCount()];
+    int[] scores = new int[cur.getCount()];
 
     // iterate through the cursor populating array of scores
     if( cur.moveToFirst() )
@@ -205,7 +205,7 @@ public class Game extends SQLiteOpenHelper
       do
       {
         int scoreColumn = cur.getColumnIndex( GameData.TurnScores.SCORE );
-        scores[i] = cur.getLong( scoreColumn );
+        scores[i] = cur.getInt( scoreColumn );
         i++;
       } while( cur.moveToNext() );
     }
@@ -251,7 +251,7 @@ public class Game extends SQLiteOpenHelper
    * Create a game identified by the current date and return its database id
    * @return the id of the newly created game
    */
-  public long newGame()
+  public int newGame()
   {
     Log.d( TAG, "newGame()" );
     // Prepare the current date for insertion
@@ -262,22 +262,9 @@ public class Game extends SQLiteOpenHelper
     SQLiteDatabase db = this.getWritableDatabase();
 
     // Do the insert and return the row id
-    return db.insert(GameData.GAME_TABLE_NAME, "", values);
+    return (int) db.insert(GameData.GAME_TABLE_NAME, "", values);
   }
 
-  /**
-   * Create a team identified by name and return the team's id
-   * @param name - the name of the team
-   * @return the id of the newly created team
-   */
-  public long newTeam( String name )
-  {
-    Log.d( TAG, "newTeam()" );
-    ContentValues values = new ContentValues();
-    values.put(GameData.Teams.NAME, name);
-    SQLiteDatabase db = this.getWritableDatabase();
-    return db.insert(GameData.TEAM_TABLE_NAME, "", values);
-  }
   /**
    * Creates an entry in the Game History table for each team representing the
    * game's final scores.
@@ -986,6 +973,26 @@ public class Game extends SQLiteOpenHelper
                 GameData.Cards.CATEGORIES + " TEXT);" );
 
     Log.d( TAG, "Create Table statements complete." );
+    
+    ContentValues values = new ContentValues();
+    values.put( GameData.Teams._ID, Team.TEAMA.ordinal() );
+    values.put( GameData.Teams.NAME, Team.TEAMA.name() );
+    db.insert( GameData.TEAM_TABLE_NAME, "", values );
+    
+    values = new ContentValues();
+    values.put( GameData.Teams._ID, Team.TEAMB.ordinal() );
+    values.put( GameData.Teams.NAME, Team.TEAMB.name() );
+    db.insert( GameData.TEAM_TABLE_NAME, "", values );
+    
+    values = new ContentValues();
+    values.put( GameData.Teams._ID, Team.TEAMC.ordinal() );
+    values.put( GameData.Teams.NAME, Team.TEAMC.name() );
+    db.insert( GameData.TEAM_TABLE_NAME, "", values );
+    
+    values = new ContentValues();
+    values.put( GameData.Teams._ID, Team.TEAMD.ordinal() );
+    values.put( GameData.Teams.NAME, Team.TEAMD.name() );
+    db.insert( GameData.TEAM_TABLE_NAME, "", values );
     
     InputStream starterXML =
       curContext.getResources().openRawResource(R.raw.starter);

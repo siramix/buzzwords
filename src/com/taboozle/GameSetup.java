@@ -1,6 +1,5 @@
 package com.taboozle;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.app.Activity;
@@ -17,20 +16,7 @@ import android.widget.RadioButton;
  * game starts such as number of teams and team names
  */
 public class GameSetup extends Activity
-{
-  private class Team
-  {
-    public int color;
-    public String name;
-  }
-  
-  private final int A = 0;
-  private final int B = 1;
-  private final int C = 2;
-  private final int D = 3;
-  
-  private Team[] teams = new Team[4];
-  
+{ 
   
   private LinkedList<Team> teamList = new LinkedList<Team>();  
 
@@ -66,18 +52,8 @@ public class GameSetup extends Activity
 	        		break;
 	        	}
 	        }
-	        String[] teams = new String[GameSetup.this.teamList.size()];
-	        int[] colors = new int[GameSetup.this.teamList.size()];
-	        int index = 0;
-	        Iterator<Team> itr = GameSetup.this.teamList.iterator();
-	        while(itr.hasNext())
-	        {
-	          teams[index] = itr.next().name;
-	          colors[index] = itr.next().color;
-	          ++index;
-	        }
 	        
-	        gm.StartGame( teams, colors, rounds );
+	        gm.StartGame( teamList, rounds );
 	        application.SetGameManager( gm );
 	        
      	  	startActivity(new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()));
@@ -94,14 +70,14 @@ public class GameSetup extends Activity
            Log.d( TAG, "AddTeamAListener onClick()" );
            Button b = (Button) v;
            
-           if( teamList.remove( teams[A] ) )
+           if( teamList.remove( Team.TEAMA ) )
            {
              b.setBackgroundResource( R.color.inactiveButton );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
            }
            else
            {
-             teamList.add( teams[A] );
+             teamList.add( Team.TEAMA);
              b.setBackgroundResource( R.color.teamA_text );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamA_secondary ) );
            }
@@ -118,14 +94,14 @@ public class GameSetup extends Activity
            Log.d( TAG, "AddTeamBListener onClick()" );
            Button b = (Button) v;
            
-           if( teamList.remove( teams[B] ) )
+           if( teamList.remove( Team.TEAMB ) )
            {
              b.setBackgroundResource( R.color.inactiveButton );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
            }
            else
            {
-             teamList.add( teams[B] );
+             teamList.add( Team.TEAMB );
              b.setBackgroundResource( R.color.teamB_text );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamB_secondary ) );
            }
@@ -142,14 +118,14 @@ public class GameSetup extends Activity
 	        Log.d( TAG, "AddTeamCListener onClick()" );
 	        Button b = (Button) v;
           
-          if( teamList.remove( teams[C] ) )
+          if( teamList.remove( Team.TEAMC ) )
           {
             b.setBackgroundResource( R.color.inactiveButton );
             b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
           }
           else
           {
-            teamList.add( teams[C] );
+            teamList.add( Team.TEAMC);
             b.setBackgroundResource( R.color.teamC_text );
             b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamC_secondary ) );
           }
@@ -166,14 +142,14 @@ public class GameSetup extends Activity
 	        Log.d( TAG, "AddTeamDListener onClick()" );
 	        Button b = (Button) v;
           
-          if( teamList.remove( teams[D] ) )
+          if( teamList.remove( Team.TEAMD ) )
           {
             b.setBackgroundResource( R.color.inactiveButton );
             b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
           }
           else
           {
-            teamList.add( teams[D] );
+            teamList.add( Team.TEAMD );
             b.setBackgroundResource( R.color.teamD_text );
             b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamD_secondary ) );
           }
@@ -207,25 +183,9 @@ public void onCreate( Bundle savedInstanceState )
 	
 	Button teamDButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamD );
 	teamDButton.setOnClickListener( AddTeamDListener );
-	
-	this.teams[0] = new Team();
-  this.teams[0].name = GameSetup.this.getString( R.string.teamnameA );
-  this.teams[0].color = 0;
   
-  this.teams[1] = new Team();
-  this.teams[1].name = GameSetup.this.getString( R.string.teamnameB );
-  this.teams[1].color = 1;
-	
-  this.teams[2] = new Team();
-  this.teams[2].name = GameSetup.this.getString( R.string.teamnameC );
-  this.teams[2].color = 2;
-  
-  this.teams[3] = new Team();
-  this.teams[3].name = GameSetup.this.getString( R.string.teamnameD );
-  this.teams[3].color = 3;
-  
-  teamList.add( teams[0] );
-  teamList.add( teams[1] );
+  teamList.add( Team.TEAMA );
+  teamList.add( Team.TEAMB );
   teamCButton.setBackgroundResource( R.color.inactiveButton );
   teamCButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
   teamDButton.setBackgroundResource( R.color.inactiveButton );
