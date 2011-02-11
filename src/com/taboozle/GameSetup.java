@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.TextView;
+import android.view.animation.Animation;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.TranslateAnimation;
 /**
  * @author The Taboozle Team
  * This activity class is responsible for gathering game information before the
@@ -118,17 +122,17 @@ public class GameSetup extends Activity
 	        Log.d( TAG, "AddTeamCListener onClick()" );
 	        Button b = (Button) v;
           
-          if( teamList.remove( Team.TEAMC ) )
-          {
-            b.setBackgroundResource( R.color.inactiveButton );
-            b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-          }
-          else
-          {
-            teamList.add( Team.TEAMC);
-            b.setBackgroundResource( R.color.teamC_text );
-            b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamC_secondary ) );
-          }
+            if( teamList.remove( Team.TEAMC ) )
+            {
+              b.setBackgroundResource( R.color.inactiveButton );
+              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+            }
+            else
+            {
+              teamList.add( Team.TEAMC);
+              b.setBackgroundResource( R.color.teamC_text );
+              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamC_secondary ) );
+            }
 	      }
 	  };
 
@@ -156,6 +160,19 @@ public class GameSetup extends Activity
 	      }
 	  };
 	  
+	  
+	  /**
+	   * @return The animation that fades in helper text
+	   * screen
+	   */
+	  private Animation FadeInHelpText(long delay)
+	  {
+	    Log.d( TAG, "FadeInHelpText()" );
+	    Animation fade = new AlphaAnimation(0.0f, 1.0f);
+	    fade.setStartOffset(delay);
+	    fade.setDuration(2000);
+	    return fade;
+	  }
 /**
 * onCreate - initializes the activity to display the results of the turn.
 */
@@ -173,10 +190,10 @@ public void onCreate( Bundle savedInstanceState )
 	startGameButton.setOnClickListener( StartGameListener );
 	
 	Button teamAButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamA );
-  teamAButton.setOnClickListener( AddTeamAListener );
+    teamAButton.setOnClickListener( AddTeamAListener );
   
-  Button teamBButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamB );
-  teamBButton.setOnClickListener( AddTeamBListener );
+    Button teamBButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamB );
+    teamBButton.setOnClickListener( AddTeamBListener );
 	
 	Button teamCButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamC );
 	teamCButton.setOnClickListener( AddTeamCListener );
@@ -184,13 +201,17 @@ public void onCreate( Bundle savedInstanceState )
 	Button teamDButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamD );
 	teamDButton.setOnClickListener( AddTeamDListener );
   
-  teamList.add( Team.TEAMA );
-  teamList.add( Team.TEAMB );
-  teamCButton.setBackgroundResource( R.color.inactiveButton );
-  teamCButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-  teamDButton.setBackgroundResource( R.color.inactiveButton );
-  teamDButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-  
+	teamList.add( Team.TEAMA );
+	teamList.add( Team.TEAMC );
+	teamBButton.setBackgroundResource( R.color.inactiveButton );
+	teamBButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+	teamDButton.setBackgroundResource( R.color.inactiveButton );
+	teamDButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+	
+	TextView helpText = (TextView) this.findViewById(R.id.GameSetup_HelpText_Team);
+	helpText.setAnimation(this.FadeInHelpText(1000));
+	helpText = (TextView) this.findViewById(R.id.GameSetup_HelpText_Turn);
+	helpText.setAnimation(this.FadeInHelpText(3000));
 }
 
 }
