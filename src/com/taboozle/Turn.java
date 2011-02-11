@@ -498,7 +498,7 @@ public class Turn extends Activity
       cardAdapter.add( curCard.getBadWords().get( i ) );
     }
     this.cardWords.setAdapter( cardAdapter );
-    this.cardStatus.setBackgroundResource( curCard.getDrawableId() );
+    this.cardStatus.setBackgroundResource( curCard.getDrawableIdForBack() );
     this.isBack = true;
     
     this.viewFlipper.setInAnimation(InFromRightAnimation());  //Reset animations
