@@ -343,6 +343,26 @@ public class Turn extends Activity
   	return outToLeft;
   }
   
+  private Animation BackInFromLeftAnimation ()
+  {
+    Log.d( TAG, "BackInFromLeftAnimation()" );
+    Animation outToLeft = new TranslateAnimation(
+        Animation.RELATIVE_TO_PARENT,  -1.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
+        Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
+    outToLeft.setDuration(500);
+    return outToLeft;
+  }
+  
+  private Animation BackOutToRightAnimation ()
+  {
+    Log.d( TAG, "BackOutToRightAnimation()" );
+    Animation inFromRight = new TranslateAnimation(
+        Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,  1.0f,
+        Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
+    inFromRight.setDuration(500);
+    return inFromRight;
+  }
+  
   /**
    * Animation method for the timer bar that takes an integer to determine
    * whether it is starting, resuming, or stopping animation.
@@ -454,12 +474,18 @@ public class Turn extends Activity
   
   protected void doBack()
   {
+    Log.d( TAG, "doBack()");
     if( this.isBack )
     {
       return;
     }
     
     this.AIsActive = !this.AIsActive;
+
+    //this.viewFlipper.setInAnimation(OutToLeftAnimation());    //Reverse animations temporarily
+    this.viewFlipper.setInAnimation(BackInFromLeftAnimation());
+    this.viewFlipper.setOutAnimation(BackOutToRightAnimation());
+    
     this.viewFlipper.showNext();
     
     this.setActiveCard();
@@ -472,8 +498,11 @@ public class Turn extends Activity
       cardAdapter.add( curCard.getBadWords().get( i ) );
     }
     this.cardWords.setAdapter( cardAdapter );
-    this.cardStatus.setBackgroundResource( curCard.getDrawableId() );
+    this.cardStatus.setBackgroundResource( curCard.getDrawableIdForBack() );
     this.isBack = true;
+    
+    this.viewFlipper.setInAnimation(InFromRightAnimation());  //Reset animations
+    this.viewFlipper.setOutAnimation(OutToLeftAnimation());
   }
   
   protected void setActiveCard()

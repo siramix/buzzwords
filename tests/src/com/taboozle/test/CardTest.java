@@ -186,6 +186,18 @@ public class CardTest extends AndroidTestCase
     this.standard.setRws( 2 );
     assertEquals( this.standard.getDrawableId(), com.taboozle.R.drawable.skip );
   }
+  
+  /**
+   * Test method for {@link com.taboozle.Card#getDrawableId()}.
+   */
+  public void testGetDrawableIdForBack()
+  {
+    assertEquals( this.standard.getDrawableIdForBack(), com.taboozle.R.drawable.controls_right );
+    this.standard.setRws( 1 );
+    assertEquals( this.standard.getDrawableIdForBack(), com.taboozle.R.drawable.controls_wrong );
+    this.standard.setRws( 2 );
+    assertEquals( this.standard.getDrawableIdForBack(), com.taboozle.R.drawable.controls_skip );
+  }
 
   /**
    * Test method for {@link com.taboozle.Card#cycleRws()}.

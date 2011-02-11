@@ -212,6 +212,26 @@ public class Card
   	  return 0;
   	}
   }
+  
+  /**
+   * Get the resource ID for this card's right wrong skip icon Mid-turn (when user hits back).
+   * These IDs must differ from those on Turn Result Screen.
+   */
+  public int getDrawableIdForBack()
+  {
+    Log.d( TAG, "getDrawableIdForBack()" );
+    switch ( this.rws )
+    {
+    case 0:
+      return R.drawable.controls_right;
+    case 1:
+      return R.drawable.controls_wrong;
+    case 2:
+      return R.drawable.controls_skip;
+    default:
+      return 0;
+    }
+  }  
 
   /**
    * Cycle right/wrong/skip for the turn summary
