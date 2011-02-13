@@ -3,6 +3,9 @@ package com.taboozle;
 import java.util.LinkedList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +16,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.view.animation.Animation;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.TranslateAnimation;
 /**
  * @author The Taboozle Team
  * This activity class is responsible for gathering game information before the
@@ -21,7 +23,8 @@ import android.view.animation.TranslateAnimation;
  */
 public class GameSetup extends Activity
 { 
-  
+
+  static final int DIALOG_TEAMERROR = 0;
   private LinkedList<Team> teamList = new LinkedList<Team>();  
 
   /**
@@ -37,6 +40,14 @@ public class GameSetup extends Activity
 	      public void onClick(View v)
 	      {
 	        Log.d( TAG, "StartGameListener onClick()" );
+	        
+	        // Validate team numbers
+	        if( GameSetup.this.teamList.size() <= 1 )
+	        {
+	            GameSetup.this.showDialog( DIALOG_TEAMERROR );
+	            return;
+	        }
+	        
 	        TaboozleApplication application =
 	          (TaboozleApplication) GameSetup.this.getApplication();
 	        GameManager gm = new GameManager(GameSetup.this);
@@ -213,5 +224,36 @@ public void onCreate( Bundle savedInstanceState )
 	helpText = (TextView) this.findViewById(R.id.GameSetup_HelpText_Turn);
 	helpText.setAnimation(this.FadeInHelpText(3000));
 }
+
+  /**
+  * Handle creation of team warning dialog, used to prevent starting a game with too few teams.
+  * returns Dialog object explaining team error
+  */
+  @Override
+  protected Dialog onCreateDialog(int id)
+  {
+   Log.d( TAG, "onCreateDialog(" + id + ")" );
+   Dialog dialog = null;
+   AlertDialog.Builder builder = null;
+   
+   switch(id) {
+   case DIALOG_TEAMERROR:
+     builder = new AlertDialog.Builder(this);
+     builder.setMessage( "You must have at least two teams to start the game." )
+            .setCancelable(false)
+            .setTitle("Team Error")
+            .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+                }
+              });       
+     dialog = builder.create();
+     break;
+   default:
+       dialog = null;
+   }
+   return dialog;
+  
+  }
 
 }
