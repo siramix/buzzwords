@@ -244,58 +244,72 @@ public class TurnSummary extends Activity
 
   	// Display total score for the current team
   	TextView scoreview = (TextView) findViewById(R.id.TurnSummaryTurnScore);
-  	scoreview.setText(Long.toString(turnscore));
+  	scoreview.setText("Total: " + Long.toString(turnscore));
 
-  	// Populate Scoreboard scores
-  	final int[] SCORE_VIEW_IDS = new int[]{R.id.TeamAScore, R.id.TeamBScore,
-  											R.id.TeamCScore, R.id.TeamDScore};
-  	for (int i = 0; i < teams.size(); i++)
-  	{
-  		TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[teams.get( i ).ordinal()] );
-  		teamTotalScoreView.setText(Long.toString(teams.get( i ).getScore()));
-  	}
-    // Populate Scoreboard names
-    final int[] SCORE_TEAMNAME_IDS = new int[]{R.id.TurnSummaryScoreATeamname, R.id.TurnSummaryScoreBTeamname,
-                                               R.id.TurnSummaryScoreCTeamname, R.id.TurnSummaryScoreDTeamname};
-    for (int i = 0; i < teams.size(); i++)
-    {
-      TextView teamnameView = (TextView) findViewById( SCORE_TEAMNAME_IDS[teams.get( i ).ordinal()] );
-      teamnameView.setText(teams.get( i ).getName());
-    }
-
-  	// Hide teams that are not being played
-    final int[] SCORE_VIEW_GROUP_IDS = new int[]{R.id.TurnSummaryScoreA, R.id.TurnSummaryScoreB,
-    											 R.id.TurnSummaryScoreC, R.id.TurnSummaryScoreD};
+  	// References to Scoreboard team scores
+  	final int[] SCORE_VIEW_IDS = new int[]{R.id.TurnSummary_Scores_TeamANum,
+  	                                       R.id.TurnSummary_Scores_TeamBNum,
+  	                                       R.id.TurnSummary_Scores_TeamCNum,
+  	                                       R.id.TurnSummary_Scores_TeamDNum};
+    // References to Scoreboard team names
+    final int[] SCORE_TEAMNAME_IDS = new int[]{R.id.TurnSummary_Scores_TeamAName,
+                                               R.id.TurnSummary_Scores_TeamBName,
+                                               R.id.TurnSummary_Scores_TeamCName,
+                                               R.id.TurnSummary_Scores_TeamDName};
+   
+  	// References to Scoreboard team Groups
+    final int[] SCORE_VIEW_GROUP_IDS = new int[]{R.id.TurnSummary_Scores_TeamA,
+                                                 R.id.TurnSummary_Scores_TeamB,
+    											 R.id.TurnSummary_Scores_TeamC, 
+    											 R.id.TurnSummary_Scores_TeamD};
+    // Hide all					 
   	for (int i = 0; i < SCORE_VIEW_GROUP_IDS.length; i++)
   	{
-  		LinearLayout teamScoreGroupView = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[i] );
-  		teamScoreGroupView.setVisibility( View.GONE );
+  	  // Clear background
+  	  LinearLayout teamScoreGroupView = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[i] );
+  	  teamScoreGroupView.setBackgroundResource( R.color.genericBG_trimDark );
+  	  //  Hide Teamname
+  	  TextView text = (TextView) findViewById(SCORE_TEAMNAME_IDS[i]);
+  	  text.setVisibility( View.INVISIBLE );
+      //  Hide Score
+      text = (TextView) findViewById(SCORE_VIEW_IDS[i]);
+      text.setVisibility( View.INVISIBLE );
   	}
+  	// Show for teams that exist
   	for( Iterator<Team> itr = teams.iterator(); itr.hasNext();)
   	{
   	  Team team = itr.next();
   	  LinearLayout teamScoreGroupView = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[team.ordinal()] );
-      teamScoreGroupView.setVisibility( View.VISIBLE );
+      teamScoreGroupView.setBackgroundResource( R.color.genericBG );
+      //  Show Teamname
+      TextView text = (TextView) findViewById(SCORE_TEAMNAME_IDS[team.ordinal()]);
+      text.setVisibility( View.VISIBLE );
+      //  Show Score
+      text = (TextView) findViewById(SCORE_VIEW_IDS[team.ordinal()]);
+      text.setVisibility( View.VISIBLE );
+      
+      // Set Name
+      TextView teamnameView = (TextView) findViewById( SCORE_TEAMNAME_IDS[team.ordinal()] );
+      teamnameView.setText(team.getName());
+      // Set Score
+      TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[team.ordinal()] );
+      int score = team.getScore();
+      // if this is the current team's score, add in the temp score from the turn
+      if(game.GetActiveTeam().ordinal() == team.ordinal())
+      {
+        score += turnscore;
+      }
+      teamTotalScoreView.setText(Long.toString(score));
+
+      
   	}
-  	
-  	// Hide current team (it has its own line)
-	LinearLayout layout = (LinearLayout) findViewById( SCORE_VIEW_GROUP_IDS[game.GetActiveTeam().ordinal()] );
-	layout.setVisibility( View.GONE );
 
   	// Display current team name and score
     TextView curTeamHeader = (TextView) findViewById(R.id.TurnSummaryTeamName);
-    TextView curTeamName = (TextView) findViewById(R.id.TurnSummaryCurrentScoreTeamname);
-    TextView curTeamScore = (TextView) findViewById(R.id.TurnSummaryCurrentScoreNum);
     String teamName = game.GetActiveTeam().getName();
     curTeamHeader.setText(teamName);
-    curTeamName.setText(teamName);
-    // Set team name color
-	
 	int teamColor = this.getResources().getColor( game.GetActiveTeam().getText() );
 	curTeamHeader.setTextColor(teamColor);
-	curTeamName.setTextColor(teamColor);
-	curTeamScore.setTextColor(teamColor);
-	curTeamScore.setText(Integer.toString( game.GetActiveTeam().getScore()+turnscore ));
     
   }
 

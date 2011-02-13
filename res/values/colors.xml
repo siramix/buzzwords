@@ -63,6 +63,9 @@
   <color name="genericBG_trim">
     #3c3c3c
   </color>
+  <color name="genericBG_trimDark">
+    #282828
+  </color>
   <color name="buttonText">
     #FFFFFF
   </color>
