@@ -54,7 +54,7 @@ public enum Team
 
   
   /**
-   * @return the bg
+   * @return the background color
    */
   public int getBg()
   {
@@ -63,7 +63,7 @@ public enum Team
 
   
   /**
-   * @return the cardText
+   * @return the cardText color
    */
   public int getCardText()
   {
@@ -72,16 +72,16 @@ public enum Team
 
   
   /**
-   * @return the secondary
+   * @return the secondary color
    */
-  public int getSecondary()
+  public int getSecondaryColor()
   {
     return secondary;
   }
 
   
   /**
-   * @return the text
+   * @return the primary color
    */
   public int getText()
   {

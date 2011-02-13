@@ -145,6 +145,10 @@ public class TurnSummary extends Activity
   	TextView rounds = (TextView) this.findViewById(R.id.TurnSumRounds);
   	rounds.setText("Round: " + game.GetCurrentRound() + "/"+ game.GetNumRounds());
 
+  	
+  	// Update Turn Order display
+  	UpdateTurnOrderDisplay();
+  	
   	// Bind Next button
   	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
   	playGameButton.setOnClickListener( NextTurnListener );
@@ -314,6 +318,68 @@ public class TurnSummary extends Activity
   }
 
   /**
+   * Updates the widget group for turn order display
+   */
+  private void UpdateTurnOrderDisplay()
+  {
+    Log.d( TAG, "UpdateTurnOrderDisplay()" );
+    TaboozleApplication application =
+          (TaboozleApplication) this.getApplication();
+    GameManager game = application.GetGameManager();
+    List<Team> teams = game.GetTeams();
+    
+    // References to Scoreboard team Groups
+    final int[] TURNORDER_GROUPS = new int[]{R.id.TurnSummary_TurnOrder_TeamA,
+                                                 R.id.TurnSummary_TurnOrder_TeamB,
+                                                 R.id.TurnSummary_TurnOrder_TeamC, 
+                                                 R.id.TurnSummary_TurnOrder_TeamD};
+    // References to Scoreboard team Groups
+    final int[] TURNORDER_ICONS = new int[]{R.id.TurnSummary_TurnOrder_TeamAc,
+                                                 R.id.TurnSummary_TurnOrder_TeamBc,
+                                                 R.id.TurnSummary_TurnOrder_TeamCc, 
+                                                 R.id.TurnSummary_TurnOrder_TeamDc};    
+    // References to Scoreboard separators
+    final int[] TURNORDER_SEPARATORS = new int[]{R.id.TurnSummary_TurnOrder_Separator1,
+                                            R.id.TurnSummary_TurnOrder_Separator2,
+                                            R.id.TurnSummary_TurnOrder_Separator3};
+    // References to Scoreboard team Groups
+    final int[] TURNORDER_MARKERS = new int[]{R.id.TurnSummary_TurnOrder_TeamAmark,
+                                                 R.id.TurnSummary_TurnOrder_TeamBmark,
+                                                 R.id.TurnSummary_TurnOrder_TeamCmark, 
+                                                 R.id.TurnSummary_TurnOrder_TeamDmark};
+    
+    // Iterate through Turn Order elements, setting attributes to match the
+    // current Turn order, including active team marker
+    for( int i = 0; i < TURNORDER_GROUPS.length; i++)
+    {
+      if( i >= teams.size() )
+      {
+        // Hide groups for teams that aren't playing
+        LinearLayout turnGroup = (LinearLayout) findViewById( TURNORDER_GROUPS[i] );
+        turnGroup.setVisibility(View.GONE);
+        View separator = (View) findViewById( TURNORDER_SEPARATORS[i-1]);
+        separator.setVisibility(View.GONE);
+      }
+      else
+      {
+        View turnView = (View) findViewById( TURNORDER_ICONS[i] );
+        turnView.setBackgroundColor( this.getResources().getColor( teams.get(i).getText()));
+      }
+      
+      // Update Marker position
+      ImageView marker = (ImageView) findViewById( TURNORDER_MARKERS[i] );
+      if( teams.indexOf(game.GetActiveTeam()) == i)
+      {
+        marker.setVisibility(View.VISIBLE);
+      }
+      else
+      {
+        marker.setVisibility(View.GONE);
+      }
+    }
+  }
+  
+  /**
    * Handler for key down events
    */
   @Override
@@ -345,5 +411,6 @@ public class TurnSummary extends Activity
 
     return super.onKeyUp(keyCode, event);
   }
+
 
 }
