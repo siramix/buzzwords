@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -91,17 +92,21 @@ public class GameEnd extends Activity
     GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
     final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
     final String[] stringAwards = new String[gm.GetTeams().size()];
+    final String[] stringDescriptions = new String[gm.GetTeams().size()];
     for( int i = 0; i < stringAwards.length; ++i )
     {
       stringAwards[i] = this.awards.get( i ).name;
+      stringDescriptions[i] = this.awards.get( i ).getExplanation();
     }
     
-    TextView awardName = (TextView) findViewById(R.id.EndGameAwards);
-    TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
+    TextView awardName = (TextView) findViewById(R.id.EndGame_AwardShowcase_Name);
+    TextView awardDescription = (TextView) findViewById(R.id.EndGame_AwardShowcase_Subtext);
+//    TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
     this.awardIndex = (this.awardIndex + 1) % curGameManager.GetNumTeams();
     awardName.setText(stringAwards[this.awardIndex]);
-    awardTeamName.setText(curGameManager.GetTeams().get(this.awardIndex).getName());
-    awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[this.awardIndex] ));
+    awardDescription.setText(stringDescriptions[this.awardIndex]);
+//    awardTeamName.setText(curGameManager.GetTeams().get(this.awardIndex).getName());
+//    awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[this.awardIndex] ));
   }
   
   /**
@@ -153,100 +158,75 @@ public class GameEnd extends Activity
   		TaboozleApplication application =
   			(TaboozleApplication) this.getApplication();
   		curGameManager = application.GetGameManager();		
-  		
-  		int numRounds = curGameManager.GetNumRounds();
-  		int numTeams = curGameManager.GetNumTeams();
-  	  List<Team> teams = curGameManager.GetTeams();
-  		
-  		// Populate storage table for end game round results
-  		int[][] endTable = new int[numRounds][numTeams];
-  		for ( int i = 0; i < numTeams; ++i )
+
+  	    List<Team> teams = curGameManager.GetTeams();
+
+        // Sort the list by scores to determine the winner(s)
+        Collections.sort( teams, (Team.TEAMA).new ScoreComparator() );
+
+  	    // Ids for Scoreboard list rows (one per team).
+        final int[] TEAM_SCORE_GROUPS = new int[]{ R.id.EndGame_Team1Group, R.id.EndGame_Team2Group,
+            R.id.EndGame_Team3Group, R.id.EndGame_Team4Group};  	    
+  	    
+  	    // Ids for score placement text views.  These should only be changed in the event of ties
+        final int[] TEAM_PLACE_IDS = new int[]{ R.id.EndGame_Score1_1st, R.id.EndGame_Score2_2nd,
+            R.id.EndGame_Score3_3rd, R.id.EndGame_Score4_4th};  	    
+  	    
+        // Ids for team names
+        final int[] TEAM_NAME_IDS = new int[]{ R.id.EndGame_Score1_Name, R.id.EndGame_Score2_Name,
+            R.id.EndGame_Score3_Name, R.id.EndGame_Score4_Name};
+  	    
+        // Ids for score values
+  		final int[] TEAM_SCORE_IDS = new int[]{ R.id.EndGame_Score1_Score, R.id.EndGame_Score2_Score,
+  												R.id.EndGame_Score3_Score, R.id.EndGame_Score4_Score};
+    	
+  		// Ids for award icons on team list
+  		final int[] TEAM_AWARD_IDS = new int[]{ R.id.EndGame_Score1_Award, R.id.EndGame_Score2_Award,
+            R.id.EndGame_Score3_Award, R.id.EndGame_Score4_Award};
+
+  		// Display all team scores.  Iterate through all team groups.  Hide ranks that no team earned, 
+  		// and set values on existing teams
+  		for (int i = 0; i < TEAM_SCORE_GROUPS.length; i++)
   		{
-  		  Team curTeam = teams.get( i );
-  			int[] roundscores = curGameManager.GetRoundScores(curTeam);
-  			for ( int j = 0; j < roundscores.length; ++j)
-  			{
-  				endTable[j][i] = roundscores[j];
-  			}
+  		  if(i >= teams.size())
+  		  {
+  		    LinearLayout teamTotalScoreView = (LinearLayout) findViewById( TEAM_SCORE_GROUPS[i] );
+  		    teamTotalScoreView.setVisibility( View.GONE );
+  		  }
+  		  else
+  		  {
+  		    // team list is sorted lowest score to highest, so we want to add them highest first.
+  		    int teamIndex = ( ( teams.size() - 1 ) - i );
+  		    // Set ranking
+  		    TextView text = (TextView) findViewById( TEAM_PLACE_IDS[i]);
+  		    text.setTextColor( this.getResources().getColor( teams.get( teamIndex ).getText() ));
+  		    //text.setText( ToDo: GetTeamRank() -- Return 1 for multiple teams for tie)
+  		    // Set team name and color
+  		    text = (TextView) findViewById( TEAM_NAME_IDS[i]);
+            text.setTextColor( this.getResources().getColor( teams.get( teamIndex ).getText() ));
+            text.setText(teams.get(teamIndex).getName());
+            // Set team score and color
+            text = (TextView) findViewById( TEAM_SCORE_IDS[i]);
+            text.setTextColor( this.getResources().getColor( teams.get( teamIndex ).getText() ));
+            text.setText(Integer.toString(teams.get(teamIndex).getScore()));
+            //ImageView smallaward = (ImageView) findViewById( TEAM_AWARD_IDS[i]);
+            //smallaward.setImageDrawable( TODO: GetAwardIcon());
+  		  }
   		}
 
-  	  	// Populate and display round scores
-  	  	ScrollView list = (ScrollView) findViewById(R.id.EndGameTurnList);
-  	  	LinearLayout layout = new LinearLayout(this.getBaseContext());
-  	  	layout.setOrientation(LinearLayout.VERTICAL);
-
-  		// Iterate through each row of the end game scores table
-  	  	int count = 0;
-  	  	for( int i = 0; i < endTable.length; i++ )
-  	  	{
-  	  	  LinearLayout line = (LinearLayout) LinearLayout.inflate(this.getBaseContext(), 
-  	  			  												  R.layout.gameendrow, layout);
-  	  	  LinearLayout realLine = (LinearLayout) line.getChildAt(count);
-  	  	  
-  	  	  for (int j = 0; j < realLine.getChildCount(); j++ )
-  	  	  {
-  	  	    TextView txt = (TextView) realLine.getChildAt(j);
-  	  		  // HACK - Set width to fill parent... really I want to inherit this from the xml
-  	  		  txt.setWidth( 400 / numTeams ); //FIXME
-  	  			txt.setVisibility( View.GONE );
-  	  	  }
-  	  	  for (int j = 0; j < realLine.getChildCount(); j++ )
-          {
-  	  	    for( Iterator<Team> itr = teams.iterator(); itr.hasNext(); )
-  	  	    {
-  	  	      Team curTeam = itr.next();
-  	  	      if( j == curTeam.ordinal() && j < numTeams )
-  	  	      {
-  	  	        TextView txt = (TextView) realLine.getChildAt(j);
-  	  	        txt.setText(Integer.toString(endTable[i][j]));
-  	  	      }
-  	  	    }
-          }
-  	  	  ++count;
-  	  	}
-  	  	list.addView(layout);
-
-  		final int[] SCORE_VIEW_IDS = new int[]{ R.id.EndGameTeamAScore, R.id.EndGameTeamBScore,
-  												R.id.EndGameTeamCScore, R.id.EndGameTeamDScore};
-  	// Hide scores for teams who did not participate
-      for (int i = 0; i < SCORE_VIEW_IDS.length; i++)
-      {
-        TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[i] );
-        teamTotalScoreView.setVisibility( View.GONE );
-      }
-  		for (int i = 0; i < teams.size(); i++)
-  		{
-  		  Team cur = teams.get( i );
-  			TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[cur.ordinal()] );
-  			teamTotalScoreView.setText( cur.getName() + ": " + Integer.toString( cur.getScore() ) );
-  		}
+        //Display Awards
+        Awarder a = new Awarder();
+        a.setGameManager( curGameManager );
+        this.awards = a.calcAwards();
+        this.startAwardTimer();
+        this.showNextAward();
   		
-  	  // Sort the list by scores to determine the winner(s)
-  		Collections.sort( teams, (Team.TEAMA).new ScoreComparator() );
-  		TextView winner = (TextView) findViewById(R.id.EndGameWinner);
-  		if (teams.get(0).getScore() == teams.get(1).getScore())
-  		{
-  		  winner.setText("TIE GAME");
-  		}
-  		else
-  		{
-  		  winner.setText(teams.get(0).getName() + " wins!!!!");
-        winner.setTextColor( this.getResources().getColor( teams.get( 0 ).getText() ) );
-  		}
-  		
-  		//Display Awards
-      Awarder a = new Awarder();
-      a.setGameManager( curGameManager );
-      this.awards = a.calcAwards();
-  		this.startAwardTimer();
-  		this.showNextAward();
-  		
-  		//Set onclick listeners for game end buttons
-  		Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
-  		mainMenuButton.setOnClickListener( MainMenuListener );
+        //Set onclick listeners for game end buttons
+        Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
+        mainMenuButton.setOnClickListener( MainMenuListener );
 
-  		Button rematchButton = (Button)this.findViewById( R.id.EndGameRematch );
-  		rematchButton.setOnClickListener( RematchListener );
+        Button rematchButton = (Button)this.findViewById( R.id.EndGameRematch );
+        rematchButton.setOnClickListener( RematchListener );
     }
 
     /**

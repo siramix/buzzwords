@@ -2,24 +2,39 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent" 
-  android:layout_height="fill_parent" android:background="@color/genericBG">
+  android:layout_height="fill_parent" android:background="@drawable/bg_generic">
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:text="Rematch" android:id="@+id/EndGameRematch"></Button>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:text="Main Menu" android:id="@+id/EndGameMainMenu"></Button>
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:textSize="26px" android:layout_marginTop="5dip" android:layout_marginLeft="20dip" android:id="@+id/EndGameTitle" android:text="End Game" android:textColor="#FFFFFF"></TextView>
 
-<ScrollView android:layout_width="wrap_content" android:paddingTop="10dip" android:id="@+id/EndGameTurnList" android:layout_below="@id/EndGameTitle" android:layout_height="100dip">
-</ScrollView>
 
 
 
 
 
-<LinearLayout android:layout_height="wrap_content" android:id="@+id/EndGameTotalScores" android:layout_below="@+id/EndGameTurnList" android:orientation="horizontal" android:layout_width="fill_parent">
-	<TextView android:layout_height="wrap_content" android:id="@+id/EndGameTeamAScore" android:layout_width="fill_parent" android:layout_weight="1" android:text="TeamAScore" android:paddingLeft="5dip" android:paddingRight="5dip" android:textColor="@color/teamA_text"></TextView>
-	<TextView android:layout_height="wrap_content" android:id="@+id/EndGameTeamBScore" android:layout_width="fill_parent" android:layout_weight="1" android:text="TeamBScore" android:paddingLeft="5dip" android:paddingRight="5dip" android:textColor="@color/teamB_text"></TextView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="TeamCScore" android:id="@+id/EndGameTeamCScore" android:paddingLeft="5dip" android:paddingRight="5dip" android:textColor="@color/teamC_text"></TextView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:paddingLeft="5dip" android:paddingRight="5dip" android:id="@+id/EndGameTeamDScore" android:text="TeamDScore" android:textColor="@color/teamD_text"></TextView>
+
+
+
+
+<LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:layout_below="@+id/EndGameTitle" android:layout_width="fill_parent" android:id="@+id/EndGame_Scoreboard"><LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent" android:id="@+id/EndGame_Team1Group"><TextView android:text="1st" android:textSize="48dp" android:textColor="@color/teamB_text" android:layout_width="80dp" android:layout_height="wrap_content" android:id="@+id/EndGame_Score1_1st"></TextView>
+<TextView android:text="Green" android:textColor="@color/teamB_text" android:textSize="42dp" android:layout_height="wrap_content" android:layout_width="140dp" android:id="@+id/EndGame_Score1_Name"></TextView><TextView android:layout_height="wrap_content" android:textColor="@color/teamB_text" android:layout_width="60dp" android:textSize="48dp" android:text="24" android:id="@+id/EndGame_Score1_Score"></TextView>
+
+<ImageView android:background="@drawable/award_skipsandwich" android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center_vertical" android:id="@+id/EndGame_Score1_Award"></ImageView>
+</LinearLayout><LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent" android:id="@+id/EndGame_Team2Group"><TextView android:layout_width="80dp" android:layout_height="wrap_content" android:id="@+id/EndGame_Score2_2nd" android:textSize="32dp" android:text="2nd" android:textColor="@color/teamA_text"></TextView>
+<TextView android:layout_height="wrap_content" android:layout_width="140dp" android:id="@+id/EndGame_Score2_Name" android:textSize="32dp" android:text="Blue" android:textColor="@color/teamA_text"></TextView><TextView android:layout_height="wrap_content" android:layout_width="60dp" android:id="@+id/EndGame_Score2_Score" android:textSize="32dp" android:text="18" android:textColor="@color/teamA_text"></TextView>
+
+<ImageView android:background="@drawable/award_skipsandwich" android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center_vertical" android:id="@+id/EndGame_Score2_Award"></ImageView>
+</LinearLayout><LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent" android:id="@+id/EndGame_Team3Group"><TextView android:layout_width="80dp" android:layout_height="wrap_content" android:textSize="32dp" android:id="@+id/EndGame_Score3_3rd" android:textColor="@color/teamD_text" android:text="3rd"></TextView>
+<TextView android:layout_height="wrap_content" android:layout_width="140dp" android:textSize="32dp" android:id="@+id/EndGame_Score3_Name" android:text="Yellow" android:textColor="@color/teamD_text"></TextView><TextView android:layout_height="wrap_content" android:layout_width="60dp" android:textSize="32dp" android:id="@+id/EndGame_Score3_Score" android:textColor="@color/teamD_text" android:text="15"></TextView>
+
+<ImageView android:background="@drawable/award_skipsandwich" android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center_vertical" android:id="@+id/EndGame_Score3_Award"></ImageView>
+</LinearLayout><LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent" android:id="@+id/EndGame_Team4Group"><TextView android:layout_width="80dp" android:layout_height="wrap_content" android:textSize="32dp" android:id="@+id/EndGame_Score4_4th" android:text="4th" android:textColor="@color/teamC_text"></TextView>
+<TextView android:layout_height="wrap_content" android:layout_width="140dp" android:textSize="32dp" android:id="@+id/EndGame_Score4_Name" android:textColor="@color/teamC_text" android:text="Red"></TextView><TextView android:layout_height="wrap_content" android:layout_width="60dp" android:textSize="32dp" android:id="@+id/EndGame_Score4_Score" android:textColor="@color/teamC_text" android:text="12"></TextView>
+
+<ImageView android:background="@drawable/award_skipsandwich" android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center_vertical" android:id="@+id/EndGame_Score4_Award"></ImageView>
 </LinearLayout>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:id="@+id/EndGameWinner" android:layout_below="@+id/EndGameTotalScores" android:layout_centerHorizontal="true" android:paddingTop="10dip" android:textSize="24px" android:paddingBottom="10dip" android:text="WINNING TEAM NAME" android:textColor="#FFFFFF"></TextView>
+</LinearLayout><LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:orientation="vertical" android:layout_marginTop="20dp" android:id="@+id/EndGame_AwardShowcase" android:layout_below="@id/EndGame_Scoreboard"><ImageView android:background="@drawable/award_skipsandwich" android:layout_gravity="center_horizontal" android:id="@+id/GameEnd_AwardShowcase_Icon" android:layout_width="80dp" android:layout_height="80dp"></ImageView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#FFFFFF" android:text="Skip Sandwich DX" android:textSize="30dp" android:id="@+id/EndGame_AwardShowcase_Name" android:width="300dp" android:gravity="center"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:id="@+id/EndGame_AwardShowcase_Subtext" android:text="Skip streak" android:textSize="24dp" android:textColor="#777777" android:width="300dp" android:gravity="center"></TextView>
 
-<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/EndGameWinner" android:layout_centerHorizontal="true" android:orientation="vertical" android:layout_marginTop="20dp" android:id="@+id/EndGame_Awards"><TextView android:layout_below="@id/EndGameWinner" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/EndGameAwards" android:text="2 Fast, 2 Furious" android:layout_centerHorizontal="true" android:textSize="28dp" android:textColor="#FFFFFF"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:id="@+id/EndGameAwardTeamName" android:text="Team A" android:textColor="@color/teamA_text" android:textSize="18dp"></TextView>
 </LinearLayout>
+
 </RelativeLayout>
