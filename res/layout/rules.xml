@@ -2,18 +2,53 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="wrap_content"
-  android:layout_height="wrap_content" android:background="@drawable/bg_turnsummary">
-	<TextView 	
-		android:id="@+id/RulesTitle" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" 
-		android:textColor="#000" 
-		android:layout_alignParentLeft="true" 
-		android:layout_alignParentTop="true" 
-		android:textSize="26px" 
-		android:layout_marginTop="5dip" 
-		android:layout_marginLeft="20dip" 
-		android:text="Game Rules"></TextView>
-<TextView android:layout_below="@id/RulesTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20dip" android:layout_marginLeft="10dip" android:id="@+id/RulePreferencesHeader" android:text="Custom Rules: "></TextView>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dip" android:id="@+id/RulePreferences" android:layout_below="@id/RulePreferencesHeader" android:text="CURRENT SETTINGS LIKE RWS, SKIP PENALTY, ROUND TIME GO HERE"></TextView>
+  android:layout_height="wrap_content" android:background="@drawable/bg_generic">
+	
+<ScrollView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/RulesTitle" android:id="@+id/Scrollable" >
+<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ScrollBody" android:padding="5dp"><View android:id="@+id/View01" android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:layout_height="34dp"></View><View android:layout_width="fill_parent" android:id="@+id/View02" android:layout_below="@id/View01" android:background="#555555" android:layout_marginTop="1dp" android:layout_height="2dp"></View><TextView android:layout_height="wrap_content" android:textColor="@color/title" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:textSize="28dp" android:id="@+id/RulesTitle" android:text="Rules"></TextView>
+
+<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Rules_Section_Basics" android:layout_below="@+id/RulesTitle">
+	<RelativeLayout android:layout_height="35dp" android:layout_width="100dp" android:id="@+id/Rules_SubHeader_Basics" android:layout_below="@id/Rules_Section_Basics" android:layout_marginTop="7dp"><View android:background="@color/genericBG_trim" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/Rules_SubHeader_Basics_BG"></View><View android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@color/genericBG" android:id="@+id/Rules_SubHeader_Basics_Fill" android:layout_margin="4dp"></View><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:textSize="20dp" android:id="@+id/Rules_SubHeader_Basics_Text" android:text="Basics" android:textColor="#FFFFFF"></TextView></RelativeLayout>
+	
+	<TextView android:layout_below="@id/Rules_SubHeader_Basics" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BasicText01" android:text="At it's core, Taboozle is a team game that pits friends against friends in cutthroat wordplay action. Here are the basics:" android:padding="8dp"></TextView>
+	<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/BasicText01" android:id="@+id/BullettedList" android:paddingLeft="10dp"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BasicText02" android:text="Divide all players into teams of two or more." android:textColor="@color/text_subtext" android:layout_below="@id/BullettedList" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp"></TextView><View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:id="@+id/Bullet02" android:layout_below="@+id/BullettedList" android:layout_marginTop="5dp"></View><TextView android:layout_below="@id/BasicText02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BasicText03" android:text="Each turn, a team assigns a presenter who must try to get their team to guess as many secret words as possible without saying certain words." android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp"></TextView><View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/BasicText02" android:id="@+id/Bullet03"></View><TextView android:layout_below="@id/BasicText03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BasicText04" android:text="Points are awarded for each successfully guessed word." android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp"></TextView><View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/BasicText03" android:id="@+id/Bullet04"></View><TextView android:layout_below="@id/BasicText04" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BasicText05" android:text="The team that has the most points at the end of the game wins!" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp"></TextView><View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/BasicText04" android:id="@+id/Bullet05"></View>
+
+</RelativeLayout>
+	
+	
+	
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/RulesPreferencesHeader" android:layout_below="@id/Rules_SubHeader_Basics" android:text="House Rules: " android:visibility="gone"></TextView>
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dip" android:id="@+id/RulesPreferences" android:layout_below="@id/RulesPreferencesHeader" android:text="CURRENT SETTINGS LIKE RWS, SKIP PENALTY, ROUND TIME GO HERE" android:visibility="gone"></TextView>
+
+</RelativeLayout>
+
+<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Rules_Section_Gameplay" android:layout_below="@id/Rules_Section_Basics" android:layout_marginTop="7dp">
+	<RelativeLayout android:layout_height="35dp" android:id="@+id/Rules_SubHeader_Gameplay" android:layout_below="@+id/Rules_Section_Gameplay" android:layout_width="125dp"><View android:background="@color/genericBG_trim" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/Rules_SubHeader_Gameplay_BG"></View><View android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@color/genericBG" android:id="@+id/Rules_SubHeader_Gameplay_Fill" android:layout_margin="4dp"></View><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:textSize="20dp" android:id="@+id/Rules_SubHeader_Gameplay_Text" android:text="Gameplay" android:textColor="#FFFFFF"></TextView></RelativeLayout>
+	
+	<TextView android:layout_below="@id/Rules_SubHeader_Gameplay" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GameplayText01" android:text="Let's take a look at the buttons you'll encounter while playing." android:padding="8dp"></TextView>
+	<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/GameplayText01" android:id="@+id/Gameplay_IconsDescriptions" android:padding="10dp">
+	
+	<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/RightIconCouple" android:layout_below="@+id/Gameplay_IconsDescriptions" android:padding="5dp">
+	<ImageView android:id="@+id/Gameplay_RightButton" android:layout_below="@id/GameplayText01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/controls_right" android:contentDescription="Right button icon" android:scaleType="centerCrop" android:adjustViewBounds="true"></ImageView>
+	<TextView android:layout_below="@+id/GameplayText01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GameplayText02" android:text="Right Button:  For when your team guesses the card correctly. +1 Point." android:padding="5dp" android:layout_toRightOf="@+id/Gameplay_RightButton"></TextView></LinearLayout>
+	
+	<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/SkipIconCouple" android:layout_below="@+id/RightIconCouple" android:padding="5dp">
+	<ImageView android:id="@+id/Gameplay_SkipButton" android:layout_below="@+id/SkipIconCouple" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/controls_skip"></ImageView>
+	<TextView android:layout_below="@+id/GameplayText02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GameplayText03" android:text="Skip Button:  For when you are not up to the challenge of the current word. No penalty." android:padding="5dp" android:layout_toRightOf="@+id/Gameplay_SkipButton">></TextView></LinearLayout>
+	
+	<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/WrongIconCouple" android:layout_below="@+id/SkipIconCouple" android:padding="5dp">
+	<ImageView android:id="@+id/Gameplay_WrongButton" android:layout_below="@+id/WrongIconCouple" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/controls_wrong"></ImageView>
+	<TextView android:layout_below="@+id/GameplayText03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GameplayText04" android:text="Wrong Button:  For when you get called out by the other team for using a forbidden word. -1 Point." android:padding="5dp" android:layout_toRightOf="@+id/Gameplay_WrongButton">></TextView></LinearLayout>
+</RelativeLayout>
+	
+	
+	
+	
+	
+
+
+</RelativeLayout>
+
+</RelativeLayout>
+</ScrollView>
 </RelativeLayout>

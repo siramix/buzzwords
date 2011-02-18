@@ -3,6 +3,12 @@
 	<color name="black">
     #000000
   </color>
+  <color name="title">
+    #FFFFFF
+  </color>
+  <color name="text_subtext">
+  	#999999
+  </color>
   <color name="teamA_text">
     #317695
   </color>
@@ -51,9 +57,6 @@
   <color name="teamD_CardText">
     #2e2e00
   </color>  
-  <color name="title">
-    #FFFFFF
-  </color>
   <color name="turnSummaryListItem">
     #282828
   </color>
