@@ -3,9 +3,9 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent" 
   android:layout_height="fill_parent" android:background="@drawable/bg_generic">
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:text="Rematch" android:id="@+id/EndGameRematch"></Button>
+<RelativeLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_alignParentTop="true" android:id="@+id/EndGame_HeaderGroup"><View android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:layout_height="34dp" android:id="@+id/EndGame_Header_BG"></View><View android:layout_width="fill_parent" android:background="#555555" android:layout_marginTop="1dp" android:layout_height="2dp" android:id="@+id/EndGame_Header_Break" android:layout_below="@id/EndGame_Header_BG"></View><TextView android:layout_height="wrap_content" android:textColor="@color/title" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:textSize="28dp" android:id="@+id/EndGame_Title" android:text="Game Over"></TextView>
+</RelativeLayout><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:text="Rematch" android:id="@+id/EndGameRematch"></Button>
 <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:text="Main Menu" android:id="@+id/EndGameMainMenu"></Button>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:textSize="26px" android:layout_marginTop="5dip" android:layout_marginLeft="20dip" android:id="@+id/EndGameTitle" android:text="End Game" android:textColor="#FFFFFF"></TextView>
 
 
 
@@ -16,7 +16,8 @@
 
 
 
-<LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:layout_below="@+id/EndGameTitle" android:layout_width="fill_parent" android:id="@+id/EndGame_Scoreboard"><LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent" android:id="@+id/EndGame_Team1Group"><TextView android:text="1st" android:textSize="48dp" android:textColor="@color/teamB_text" android:layout_width="80dp" android:layout_height="wrap_content" android:id="@+id/EndGame_Score1_1st"></TextView>
+
+<LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:id="@+id/EndGame_Scoreboard" android:layout_below="@+id/EndGame_HeaderGroup"><LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent" android:id="@+id/EndGame_Team1Group"><TextView android:text="1st" android:textSize="48dp" android:textColor="@color/teamB_text" android:layout_width="80dp" android:layout_height="wrap_content" android:id="@+id/EndGame_Score1_1st"></TextView>
 <TextView android:text="Green" android:textColor="@color/teamB_text" android:textSize="42dp" android:layout_height="wrap_content" android:layout_width="140dp" android:id="@+id/EndGame_Score1_Name"></TextView><TextView android:layout_height="wrap_content" android:textColor="@color/teamB_text" android:layout_width="60dp" android:textSize="48dp" android:text="24" android:id="@+id/EndGame_Score1_Score"></TextView>
 
 <ImageView android:background="@drawable/award_skipsandwich" android:layout_width="25dp" android:layout_height="25dp" android:layout_gravity="center_vertical" android:id="@+id/EndGame_Score1_Award"></ImageView>
