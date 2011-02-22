@@ -575,6 +575,13 @@ public class Turn extends Activity
     };
     resultsDelay.start();
     
+    // Hide timer bar and time
+    ImageView timerFill = (ImageView) this.findViewById(R.id.TurnTimerFill);
+    timerFill.setVisibility( View.INVISIBLE );
+    
+    TextView timer = (TextView) this.findViewById( R.id.Timer );
+    timer.setVisibility( View.INVISIBLE );
+    
     // Hide card and disable buttons.
     this.setActiveCard();
     
@@ -634,7 +641,6 @@ public class Turn extends Activity
     this.pauseOverlay.setOnClickListener( PauseListener );
 
     this.countdownTxt.setOnClickListener( this.TimerClickListener );
-    this.countdownTxt.setText( Integer.toString( this.curGameManager.GetTurnTime()/1000 ) + "s" );
     
     this.viewFlipper.setInAnimation(InFromRightAnimation());
     this.viewFlipper.setOutAnimation(OutToLeftAnimation());
