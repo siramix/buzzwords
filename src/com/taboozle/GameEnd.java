@@ -5,6 +5,12 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -36,7 +42,15 @@ public class GameEnd extends Activity
    * This is a reference to the current game manager
    */
   private GameManager curGameManager;
+ 
+  /**
+   * Resources to be retrieved throughout GameEnd display 
+   */
+  private Resources res;
   
+  /**
+   * Set of awards to be iterated through on display.
+   */
   private List<Award> awards;
   
   private class AwardTimer extends CountDownTimer
@@ -89,18 +103,28 @@ public class GameEnd extends Activity
     GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
     final String[] stringAwards = new String[gm.GetTeams().size()];
     final String[] stringDescriptions = new String[gm.GetTeams().size()];
+    final int[] colors = new int[gm.GetTeams().size()];
     for( int i = 0; i < stringAwards.length; ++i )
     {
       stringAwards[i] = this.awards.get( i ).name;
       stringDescriptions[i] = this.awards.get( i ).getExplanation();
+      colors[i] = gm.GetTeams().get(i).getText();
     }
-    
+
     TextView awardName = (TextView) findViewById(R.id.EndGame_AwardShowcase_Name);
     TextView awardDescription = (TextView) findViewById(R.id.EndGame_AwardShowcase_Subtext);
 //    TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
     this.awardIndex = (this.awardIndex + 1) % curGameManager.GetNumTeams();
     awardName.setText(stringAwards[this.awardIndex]);
     awardDescription.setText(stringDescriptions[this.awardIndex]);
+
+    ImageView smallaward = (ImageView) findViewById( R.id.GameEnd_AwardShowcase_Icon );
+    //smallaward.setImageDrawable( TODO: GetAwardIcon());
+    Drawable d = getResources().getDrawable( R.drawable.award_cosmo );
+    //smallaward.setImageDrawable(adjust(d));
+    smallaward.setImageDrawable(d);
+    smallaward.setColorFilter( res.getColor(colors[this.awardIndex]), Mode.MULTIPLY );
+    
 //    awardTeamName.setText(curGameManager.GetTeams().get(this.awardIndex).getName());
 //    awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[this.awardIndex] ));
   }
@@ -150,13 +174,14 @@ public class GameEnd extends Activity
         Log.d( TAG, "onCreate()" );
   		super.onCreate(savedInstanceState);
   		this.setContentView( R.layout.gameend );
+  	    this.res = this.getResources();
   
   		TaboozleApplication application =
   			(TaboozleApplication) this.getApplication();
   		curGameManager = application.GetGameManager();		
 
   	    List<Team> teams = curGameManager.GetTeams();
-
+  	    
         // Sort the list by scores to determine the winner(s)
         Collections.sort( teams, (Team.TEAMA).new ScoreComparator() );
 
@@ -195,18 +220,18 @@ public class GameEnd extends Activity
   		    int teamIndex = ( ( teams.size() - 1 ) - i );
   		    // Set ranking
   		    TextView text = (TextView) findViewById( TEAM_PLACE_IDS[i]);
-  		    text.setTextColor( this.getResources().getColor( teams.get( teamIndex ).getText() ));
+  		    text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
   		    //text.setText( ToDo: GetTeamRank() -- Return 1 for multiple teams for tie)
   		    // Set team name and color
   		    text = (TextView) findViewById( TEAM_NAME_IDS[i]);
-            text.setTextColor( this.getResources().getColor( teams.get( teamIndex ).getText() ));
+            text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
             text.setText(teams.get(teamIndex).getName());
             // Set team score and color
             text = (TextView) findViewById( TEAM_SCORE_IDS[i]);
-            text.setTextColor( this.getResources().getColor( teams.get( teamIndex ).getText() ));
+            text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
             text.setText(Integer.toString(teams.get(teamIndex).getScore()));
             //ImageView smallaward = (ImageView) findViewById( TEAM_AWARD_IDS[i]);
-            //smallaward.setImageDrawable( TODO: GetAwardIcon());
+            
   		  }
   		}
 
@@ -224,7 +249,7 @@ public class GameEnd extends Activity
         Button rematchButton = (Button)this.findViewById( R.id.EndGameRematch );
         rematchButton.setOnClickListener( RematchListener );
     }
-
+    
     /**
     * Method handles stopping of any outstanding timers during closing of GameEnd
     */
