@@ -1,7 +1,6 @@
 package com.taboozle;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
@@ -13,9 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import com.taboozle.TaboozleApplication;
 
@@ -90,7 +87,6 @@ public class GameEnd extends Activity
   {
     Log.d( TAG, "showNextAward()");
     GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
-    final int[] TEAM_COLOR_IDS = new int[] { R.color.teamA_text, R.color.teamB_text, R.color.teamC_text, R.color.teamD_text };
     final String[] stringAwards = new String[gm.GetTeams().size()];
     final String[] stringDescriptions = new String[gm.GetTeams().size()];
     for( int i = 0; i < stringAwards.length; ++i )
@@ -181,8 +177,8 @@ public class GameEnd extends Activity
   												R.id.EndGame_Score3_Score, R.id.EndGame_Score4_Score};
     	
   		// Ids for award icons on team list
-  		final int[] TEAM_AWARD_IDS = new int[]{ R.id.EndGame_Score1_Award, R.id.EndGame_Score2_Award,
-            R.id.EndGame_Score3_Award, R.id.EndGame_Score4_Award};
+  		/*final int[] TEAM_AWARD_IDS = new int[]{ R.id.EndGame_Score1_Award, R.id.EndGame_Score2_Award,
+            R.id.EndGame_Score3_Award, R.id.EndGame_Score4_Award};*/
 
   		// Display all team scores.  Iterate through all team groups.  Hide ranks that no team earned, 
   		// and set values on existing teams
