@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
@@ -26,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.util.Log;
@@ -364,6 +367,61 @@ public class Turn extends Activity
   }
   
   /**
+   * @return Animation that slides the timer off screen
+   */
+  private Animation ShowTimerAnim (boolean show)
+  {
+    float y0 = 0.0f;
+    float y1 = -1.0f;
+    Animation slideUp;
+    if( show )
+    {
+      slideUp = new TranslateAnimation(
+          Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.0f,
+          Animation.RELATIVE_TO_SELF,  y1, Animation.RELATIVE_TO_SELF,   y0 );
+    }
+    else
+    {
+      slideUp = new TranslateAnimation(
+          Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.0f,
+          Animation.RELATIVE_TO_SELF,  y0, Animation.RELATIVE_TO_SELF,   y1 );      
+    }
+    slideUp.setDuration( 250 );
+    slideUp.setInterpolator( new AccelerateInterpolator());
+    // make the element maintain its orientation even after the animation finishes.
+    slideUp.setFillAfter(true);
+    return slideUp;
+  }
+
+  /**
+   * @return Animation that slides the buttons on or off screen
+   */
+  private Animation ShowButtonsAnim (boolean show)
+  {
+    float y0 = 0.0f;
+    float y1 = 1.0f;
+    Animation slideUp;
+    if( show )
+    {
+      slideUp = new TranslateAnimation(
+          Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.0f,
+          Animation.RELATIVE_TO_SELF,  y1, Animation.RELATIVE_TO_SELF,   y0 );
+    }
+    else
+    {
+      slideUp = new TranslateAnimation(
+          Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.0f,
+          Animation.RELATIVE_TO_SELF,  y0, Animation.RELATIVE_TO_SELF,   y1 );      
+    }
+    slideUp.setDuration( 250 );
+    
+    slideUp.setInterpolator( new AccelerateInterpolator());
+    // make the element maintain its orientation even after the animation finishes.
+    slideUp.setFillAfter(true);
+    return slideUp;
+  }
+  
+  /**
    * Animation method for the timer bar that takes an integer to determine
    * whether it is starting, resuming, or stopping animation.
    * 
@@ -578,6 +636,11 @@ public class Turn extends Activity
     // Hide timer bar and time
     ImageView timerFill = (ImageView) this.findViewById(R.id.TurnTimerFill);
     timerFill.setVisibility( View.INVISIBLE );
+    RelativeLayout timerGroup = (RelativeLayout) this.findViewById(R.id.actionbar);
+    timerGroup.startAnimation( this.ShowTimerAnim( false));
+    // Hide buttons
+    RelativeLayout buttonGroup = (RelativeLayout) this.findViewById(R.id.lowbar);
+    buttonGroup.startAnimation( this.ShowButtonsAnim( false));
     
     TextView timer = (TextView) this.findViewById( R.id.Timer );
     timer.setVisibility( View.INVISIBLE );
@@ -854,6 +917,10 @@ public class Turn extends Activity
     else
     {
       resultsDelay.resume();
+      
+      // Show TimesUp text when resuming after time has expired
+      TextView timesUpText = (TextView) this.findViewById(R.id.TurnTimesUp);
+      timesUpText.setVisibility( View.VISIBLE );
     }
   }
 
@@ -875,6 +942,10 @@ public class Turn extends Activity
     else
     {
       resultsDelay.pause();
+      
+      // Hide TimesUp text when pause after time has expired
+      TextView timesUpText = (TextView) this.findViewById(R.id.TurnTimesUp);
+      timesUpText.setVisibility( View.INVISIBLE );
     }
   }
 
