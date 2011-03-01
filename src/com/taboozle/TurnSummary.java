@@ -308,12 +308,10 @@ public class TurnSummary extends Activity
       
   	}
 
-  	// Display current team name and score
-    TextView curTeamHeader = (TextView) findViewById(R.id.TurnSummaryTeamName);
-    String teamName = game.GetActiveTeam().getName();
-    curTeamHeader.setText(teamName);
+  	// Color activity views according to team
+    View curTeamHeader = (View) findViewById(R.id.TurnSummaryTitle_BG);
 	int teamColor = this.getResources().getColor( game.GetActiveTeam().getText() );
-	curTeamHeader.setTextColor(teamColor);
+	curTeamHeader.setBackgroundColor( teamColor );
     
   }
 
