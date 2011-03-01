@@ -3,7 +3,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:id="@+id/MultiCardLayout" android:background="@drawable/bg_bluegradient">
-	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTimesUp" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:textSize="60dp" android:textStyle="bold" android:text="Time's Up!" android:visibility="invisible"></TextView><ViewFlipper
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TurnTimesUp" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:textSize="60dp" android:textStyle="bold" android:text="Time's Up!" android:visibility="invisible"></TextView><LinearLayout android:layout_height="wrap_content" android:id="@+id/Turn_PauseTextGroup" android:orientation="vertical" android:layout_width="fill_parent" android:layout_centerInParent="true" android:visibility="invisible"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="60dp" android:textStyle="bold" android:id="@+id/TurnPausedText" android:text="Paused" android:layout_gravity="center"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:id="@+id/TurnPausedSubText" android:textSize="20dp" android:layout_gravity="center" android:text="Tap to Unpause"></TextView></LinearLayout><ViewFlipper
 		android:id="@+id/ViewFlipper0"
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content" 
@@ -66,13 +66,14 @@
 <View android:layout_below="@id/Timer" android:layout_height="10dp" android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:id="@+id/TurnTimerTrim"></View>
 </RelativeLayout>
 
-<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/PauseImageView" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:background="@drawable/paused"></ImageView>
+
 <RelativeLayout android:id="@+id/lowbar" android:layout_alignParentBottom="true" android:layout_width="fill_parent" android:layout_height="90dp">
 	
 	
 	
 <View android:layout_width="fill_parent" android:background="@color/genericBG" android:id="@+id/TurnLowBarBG" android:layout_marginTop="40dp" android:layout_alignParentBottom="true" android:layout_height="45dp"></View><View android:layout_height="10dp" android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:id="@+id/TurnLowBarTrim" android:layout_alignTop="@id/TurnLowBarBG"></View><ImageButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/ButtonSkip" android:background="@drawable/controls_skip_selector" android:layout_centerHorizontal="true" android:layout_centerVertical="true"></ImageButton><ImageButton android:layout_width="wrap_content" android:id="@+id/ButtonWrong" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginRight="99dp" android:layout_alignRight="@id/ButtonSkip" android:background="@drawable/controls_wrong_selector"></ImageButton><ImageButton android:id="@+id/ButtonCorrect" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerVertical="true" android:background="@drawable/controls_right_selector" android:layout_alignLeft="@id/ButtonSkip" android:layout_marginLeft="99dp"></ImageButton>
-</RelativeLayout>
+</RelativeLayout><ImageView android:id="@+id/PauseImageView" android:layout_centerHorizontal="true" android:layout_centerVertical="true" android:layout_width="fill_parent" android:layout_height="fill_parent"></ImageView>
+
 
 
 </RelativeLayout>

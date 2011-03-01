@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -78,6 +79,11 @@ public class Turn extends Activity
    * activity is showing the user "Time's up!"
    */
   private boolean turnIsOver = false;
+  /**
+   * Track when the game has paused.  This will prevents code from executing pointlessly if already
+   * paused.
+   */
+  private boolean isPaused = false;
   
   /**
    * This is a reference to the current game manager
@@ -379,15 +385,18 @@ public class Turn extends Activity
       slideUp = new TranslateAnimation(
           Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.0f,
           Animation.RELATIVE_TO_SELF,  y1, Animation.RELATIVE_TO_SELF,   y0 );
+
+      slideUp.setInterpolator( new DecelerateInterpolator());
     }
     else
     {
       slideUp = new TranslateAnimation(
           Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.0f,
-          Animation.RELATIVE_TO_SELF,  y0, Animation.RELATIVE_TO_SELF,   y1 );      
+          Animation.RELATIVE_TO_SELF,  y0, Animation.RELATIVE_TO_SELF,   y1 );
+      
+      slideUp.setInterpolator( new AccelerateInterpolator());
     }
     slideUp.setDuration( 250 );
-    slideUp.setInterpolator( new AccelerateInterpolator());
     // make the element maintain its orientation even after the animation finishes.
     slideUp.setFillAfter(true);
     return slideUp;
@@ -406,16 +415,19 @@ public class Turn extends Activity
       slideUp = new TranslateAnimation(
           Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.0f,
           Animation.RELATIVE_TO_SELF,  y1, Animation.RELATIVE_TO_SELF,   y0 );
+      
+      slideUp.setInterpolator( new DecelerateInterpolator());
     }
     else
     {
       slideUp = new TranslateAnimation(
           Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.0f,
-          Animation.RELATIVE_TO_SELF,  y0, Animation.RELATIVE_TO_SELF,   y1 );      
+          Animation.RELATIVE_TO_SELF,  y0, Animation.RELATIVE_TO_SELF,   y1 );
+
+      slideUp.setInterpolator( new AccelerateInterpolator());
     }
     slideUp.setDuration( 250 );
     
-    slideUp.setInterpolator( new AccelerateInterpolator());
     // make the element maintain its orientation even after the animation finishes.
     slideUp.setFillAfter(true);
     return slideUp;
@@ -700,7 +712,6 @@ public class Turn extends Activity
   {
     Log.d( TAG, "setupUIProperties()");
     this.pauseOverlay.setVisibility( View.INVISIBLE );
-
     this.pauseOverlay.setOnClickListener( PauseListener );
 
     this.countdownTxt.setOnClickListener( this.TimerClickListener );
@@ -901,7 +912,10 @@ public class Turn extends Activity
   
   protected void resumeGame()
   {
+    this.isPaused = false;
     this.pauseOverlay.setVisibility( View.INVISIBLE );
+    LinearLayout pauseText = (LinearLayout) this.findViewById( R.id.Turn_PauseTextGroup);
+    pauseText.setVisibility( View.INVISIBLE);
     
     if(!this.turnIsOver)
     {
@@ -913,6 +927,12 @@ public class Turn extends Activity
       this.buzzerButton.setEnabled( true );
       this.skipButton.setEnabled( true );
       this.nextButton.setEnabled( true );
+
+      RelativeLayout timerGroup = (RelativeLayout) this.findViewById(R.id.actionbar);
+      timerGroup.startAnimation( this.ShowTimerAnim( true ));
+      // Hide buttons
+      RelativeLayout buttonGroup = (RelativeLayout) this.findViewById(R.id.lowbar);
+      buttonGroup.startAnimation( this.ShowButtonsAnim( true ));
     }
     else
     {
@@ -926,7 +946,10 @@ public class Turn extends Activity
 
   protected void pauseGame()
   {
+    this.isPaused = true;
     this.pauseOverlay.setVisibility( View.VISIBLE );
+    LinearLayout pauseText = (LinearLayout) this.findViewById( R.id.Turn_PauseTextGroup);
+    pauseText.setVisibility( View.VISIBLE);
     
     if(!this.turnIsOver)
     {    
@@ -938,6 +961,12 @@ public class Turn extends Activity
       this.buzzerButton.setEnabled( false );
       this.skipButton.setEnabled( false );
       this.nextButton.setEnabled( false );
+
+      RelativeLayout timerGroup = (RelativeLayout) this.findViewById(R.id.actionbar);
+      timerGroup.startAnimation( this.ShowTimerAnim( false ));
+      // Hide buttons
+      RelativeLayout buttonGroup = (RelativeLayout) this.findViewById(R.id.lowbar);
+      buttonGroup.startAnimation( this.ShowButtonsAnim( false ));
     }
     else
     {
@@ -952,7 +981,10 @@ public class Turn extends Activity
   @Override
   public boolean onMenuOpened(int featureId, Menu menu)
   {
-    this.pauseGame();
+    if( !this.isPaused )
+    {
+      this.pauseGame();
+    }
     return true;
   }
   
