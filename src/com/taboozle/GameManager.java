@@ -121,6 +121,11 @@ public class GameManager implements Serializable
     Log.d( TAG, "StartGame()" );
     this.currentGameId = this.game.newGame();
     this.teams = teams;
+    Iterator<Team> itr = teams.iterator();
+    for(itr = teams.iterator(); itr.hasNext();)
+    {
+      itr.next().setScore( 0 );
+    }
     this.teamIterator = teams.iterator();
     this.currentTeam = teamIterator.next();
     this.numRounds = rounds;
