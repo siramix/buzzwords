@@ -1,6 +1,8 @@
 package com.taboozle;
 
 import android.app.Application;
+import android.content.Context;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 /**
@@ -20,6 +22,11 @@ public class TaboozleApplication extends Application
    */
   private GameManager gameManager;
 
+  /**
+   * MediaPlayer for music
+   */
+  private MediaPlayer mp;
+  
   /**
    * Default constructor
    */
@@ -45,6 +52,17 @@ public class TaboozleApplication extends Application
   {
     Log.d( TAG, "SetGameManager()" );     
     this.gameManager = gm;
+  }
+  
+  public MediaPlayer CreateMusicPlayer( Context context, int id)
+  {
+	  mp = MediaPlayer.create(context, id);
+	  return mp;
+  }
+  
+  public MediaPlayer GetMusicPlayer()
+  {
+	  return mp;
   }
 
 }

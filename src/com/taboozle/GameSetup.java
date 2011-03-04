@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -72,6 +73,9 @@ public class GameSetup extends Activity
 	        application.SetGameManager( gm );
 	        
      	  	startActivity(new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()));
+     	  	
+     	  	MediaPlayer mp = application.GetMusicPlayer();
+     	  	mp.stop();
 	      }
 	  };
 	  

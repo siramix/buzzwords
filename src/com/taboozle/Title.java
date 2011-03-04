@@ -2,6 +2,7 @@ package com.taboozle;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -199,6 +200,31 @@ public void onCreate( Bundle savedInstanceState )
   
   View title = (View) this.findViewById( R.id.Title_Title);
   title.startAnimation(this.ScrollTitle());
+
+  TaboozleApplication application = (TaboozleApplication) this.getApplication();
+  MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
+  mp.setLooping(true);
+  mp.start();
 }
 
+@Override
+public void onStop()
+{
+   super.onStop();
+   TaboozleApplication application = (TaboozleApplication) this.getApplication();
+   MediaPlayer mp = application.GetMusicPlayer();
+   mp.pause();	
+}
+
+@Override
+public void onResume()
+{
+   super.onStop();
+   TaboozleApplication application = (TaboozleApplication) this.getApplication();
+   MediaPlayer mp = application.GetMusicPlayer();
+   if( !mp.isPlaying())
+   {
+	   mp.start();   
+   }	
+}
 }
