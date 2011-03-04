@@ -488,7 +488,7 @@ public class Turn extends Activity
 
     //Only play sound once card has been processed so we don't confuse the user
     soundPool.play( rightSoundId, volume, volume, 1, 0, 1.0f );
-    
+
     ShowCard();    
   }
   
