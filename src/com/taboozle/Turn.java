@@ -64,6 +64,8 @@ public class Turn extends Activity
   private ImageButton nextButton;
   private ImageButton skipButton;
   private TextView countdownTxt;
+  private TextView timesUpText;
+  private LinearLayout pauseTextLayout;
   private ViewFlipper viewFlipper;
   
   private ImageView timerfill;
@@ -71,7 +73,10 @@ public class Turn extends Activity
   private TextView cardTitle;
   private ListView cardWords;
   private ImageView cardStatus;
-
+  
+  RelativeLayout timerGroup;
+  RelativeLayout buttonGroup;
+  
   private long lastCardTimerState;
   
   /**
@@ -700,12 +705,17 @@ public class Turn extends Activity
     this.pauseOverlay = (ImageView) this.findViewById( R.id.PauseImageView );
     this.countdownTxt = (TextView) findViewById( R.id.Timer );
     this.viewFlipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
+    this.timesUpText = (TextView) this.findViewById(R.id.TurnTimesUp);
     
     this.buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
     this.nextButton = (ImageButton) this.findViewById( R.id.ButtonCorrect );
     this.skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
     
     this.timerfill = (ImageView) this.findViewById(R.id.TurnTimerFill);
+    this.pauseTextLayout = (LinearLayout) this.findViewById( R.id.Turn_PauseTextGroup);
+    
+    this.timerGroup = (RelativeLayout) this.findViewById(R.id.actionbar);
+    this.buttonGroup = (RelativeLayout) this.findViewById(R.id.lowbar);
   }
   
   protected void setupUIProperties()
@@ -895,7 +905,7 @@ public class Turn extends Activity
             
              .setOnCancelListener(new DialogInterface.OnCancelListener() {				
              public void onCancel(DialogInterface dialog) {
-             // Handles cancelling the dialog (which shouldn't be possible anymore)
+             // Handles canceling the dialog (which shouldn't be possible anymore)
 	                 Turn.this.ShowCard();
 	                 Turn.this.isBack = true;
 	                 Turn.this.startTimer();	                 					
@@ -914,8 +924,7 @@ public class Turn extends Activity
   {
     this.isPaused = false;
     this.pauseOverlay.setVisibility( View.INVISIBLE );
-    LinearLayout pauseText = (LinearLayout) this.findViewById( R.id.Turn_PauseTextGroup);
-    pauseText.setVisibility( View.INVISIBLE);
+    this.pauseTextLayout.setVisibility( View.INVISIBLE);
     
     if(!this.turnIsOver)
     {
@@ -928,19 +937,16 @@ public class Turn extends Activity
       this.skipButton.setEnabled( true );
       this.nextButton.setEnabled( true );
 
-      RelativeLayout timerGroup = (RelativeLayout) this.findViewById(R.id.actionbar);
-      timerGroup.startAnimation( this.ShowTimerAnim( true ));
-      // Hide buttons
-      RelativeLayout buttonGroup = (RelativeLayout) this.findViewById(R.id.lowbar);
-      buttonGroup.startAnimation( this.ShowButtonsAnim( true ));
+      
+      this.timerGroup.startAnimation( this.ShowTimerAnim( true ));
+      this.buttonGroup.startAnimation( this.ShowButtonsAnim( true ));
     }
     else
     {
       resultsDelay.resume();
       
       // Show TimesUp text when resuming after time has expired
-      TextView timesUpText = (TextView) this.findViewById(R.id.TurnTimesUp);
-      timesUpText.setVisibility( View.VISIBLE );
+      this.timesUpText.setVisibility( View.VISIBLE );
     }
   }
 
@@ -948,8 +954,9 @@ public class Turn extends Activity
   {
     this.isPaused = true;
     this.pauseOverlay.setVisibility( View.VISIBLE );
-    LinearLayout pauseText = (LinearLayout) this.findViewById( R.id.Turn_PauseTextGroup);
-    pauseText.setVisibility( View.VISIBLE);
+    
+    this.pauseTextLayout = (LinearLayout) this.findViewById( R.id.Turn_PauseTextGroup);
+    pauseTextLayout.setVisibility( View.VISIBLE);
     
     if(!this.turnIsOver)
     {    
@@ -962,19 +969,15 @@ public class Turn extends Activity
       this.skipButton.setEnabled( false );
       this.nextButton.setEnabled( false );
 
-      RelativeLayout timerGroup = (RelativeLayout) this.findViewById(R.id.actionbar);
-      timerGroup.startAnimation( this.ShowTimerAnim( false ));
-      // Hide buttons
-      RelativeLayout buttonGroup = (RelativeLayout) this.findViewById(R.id.lowbar);
-      buttonGroup.startAnimation( this.ShowButtonsAnim( false ));
+      this.timerGroup.startAnimation( this.ShowTimerAnim( false ));
+      this.buttonGroup.startAnimation( this.ShowButtonsAnim( false ));
     }
     else
     {
       resultsDelay.pause();
       
       // Hide TimesUp text when pause after time has expired
-      TextView timesUpText = (TextView) this.findViewById(R.id.TurnTimesUp);
-      timesUpText.setVisibility( View.INVISIBLE );
+      this.timesUpText.setVisibility( View.INVISIBLE );
     }
   }
 
