@@ -2,6 +2,7 @@ package com.taboozle;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -49,5 +50,36 @@ public class Rules extends Activity
     }
     TextView rulePrefs = (TextView) this.findViewById(R.id.RulesPreferences);
     rulePrefs.setText(prefBuilder);
+  }
+   
+  /**
+   * Override onPause to prevent activity specific processes from running while app is in background
+   */
+  @Override
+  public void onPause()
+  {
+     Log.d( TAG, "onPause()" );   
+     super.onPause();
+     TaboozleApplication application = (TaboozleApplication) this.getApplication();
+     MediaPlayer mp = application.GetMusicPlayer();
+     mp.pause();
+  }
+
+  /**
+   * Override OnResume to resume activity specific processes
+   */
+  @Override
+  public void onResume()
+  {
+     Log.d( TAG, "onResume()" );   
+     super.onResume();
+     
+     // Resume Title Music
+     TaboozleApplication application = (TaboozleApplication) this.getApplication();
+     MediaPlayer mp = application.GetMusicPlayer();
+     if( !mp.isPlaying())
+     {
+         mp.start();   
+     }
   }
 }

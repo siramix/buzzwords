@@ -257,7 +257,36 @@ public void onCreate( Bundle savedInstanceState )
        dialog = null;
    }
    return dialog;
+  }
   
+  /**
+   * Override onPause to prevent activity specific processes from running while app is in background
+   */
+  @Override
+  public void onPause()
+  {
+     Log.d( TAG, "onPause()" );   
+     super.onPause();
+     TaboozleApplication application = (TaboozleApplication) this.getApplication();
+     MediaPlayer mp = application.GetMusicPlayer();
+     mp.pause();
   }
 
+  /**
+   * Override OnResume to resume activity specific processes
+   */
+  @Override
+  public void onResume()
+  {
+     Log.d( TAG, "onResume()" );   
+     super.onResume();
+     
+     // Resume Title Music
+     TaboozleApplication application = (TaboozleApplication) this.getApplication();
+     MediaPlayer mp = application.GetMusicPlayer();
+     if( !mp.isPlaying())
+     {
+         mp.start();   
+     }
+  }
 }

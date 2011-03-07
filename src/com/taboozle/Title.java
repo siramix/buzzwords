@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
@@ -27,6 +28,11 @@ public class Title extends Activity
   public static String TAG = "Title";
   
   /**
+   * flag used for stopping music OnStop() event.
+   */
+  private boolean musicHandled;
+  
+  /**
   * PlayGameListener is used for the start game button.  It launches the next 
   * activity.
   */
@@ -34,7 +40,8 @@ public class Title extends Activity
   {
       public void onClick(View v) 
       {
-        Log.d( TAG, "PlayGameListener OnClick()" );         
+        Log.d( TAG, "PlayGameListener OnClick()" );
+        musicHandled = true;
         startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentGameSetup),
         		                 getIntent().getData()));
       }
@@ -48,7 +55,8 @@ public class Title extends Activity
   {
   	public void onClick(View v) 
   	{
-      Log.d( TAG, "SettingsListener OnClick()" );           	  
+      Log.d( TAG, "SettingsListener OnClick()" );
+      musicHandled = true;
   	  startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentSettings ), 
   	        getIntent().getData()));
   	}
@@ -62,7 +70,8 @@ public class Title extends Activity
   {
     public void onClick(View v) 
     {
-      Log.d( TAG, "RulesListener OnClick()" );                     
+      Log.d( TAG, "RulesListener OnClick()" );
+      musicHandled = true;
       startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 
           getIntent().getData()));
       
@@ -76,7 +85,8 @@ public class Title extends Activity
   {
     public void onClick(View v) 
     {
-      Log.d( TAG, "BuzzerListener OnClick()" );                     
+      Log.d( TAG, "BuzzerListener OnClick()" );
+      musicHandled = false;
       startActivity(new Intent(getApplication().getString( R.string.IntentBuzzer ), 
           getIntent().getData()));
     }
@@ -94,7 +104,7 @@ public class Title extends Activity
         Animation.RELATIVE_TO_PARENT,  (-1.0f * buttonNum), Animation.RELATIVE_TO_PARENT,  0.0f,
         Animation.RELATIVE_TO_PARENT,  (0.7f * buttonNum), Animation.RELATIVE_TO_PARENT,   0.0f );
     slideIn.setDuration(600 + ( 200 * buttonNum) );
-    slideIn.setInterpolator(new LinearInterpolator());
+    slideIn.setInterpolator(new DecelerateInterpolator());
     return slideIn;
   }
 
@@ -106,7 +116,7 @@ public class Title extends Activity
   {
     Log.d( TAG, "TranslateLabels()" );
 
-    final int MOVETIME = 600;
+    final int MOVETIME = 400;
     AnimationSet set = new AnimationSet(true);
 
     // Define the translate animation
@@ -114,7 +124,7 @@ public class Title extends Activity
         Animation.RELATIVE_TO_PARENT,  ( 1.0f * labelNum ), Animation.RELATIVE_TO_PARENT,  0.0f,
         Animation.RELATIVE_TO_PARENT,  ( 0.7f * labelNum ), Animation.RELATIVE_TO_PARENT,   0.0f );
     slideIn.setDuration( MOVETIME );
-    slideIn.setInterpolator(new LinearInterpolator());
+    slideIn.setInterpolator(new DecelerateInterpolator());
     slideIn.setStartOffset( MOVETIME * labelNum );
 
     // Define Pulse anim
@@ -205,26 +215,40 @@ public void onCreate( Bundle savedInstanceState )
   MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
   mp.setLooping(true);
   mp.start();
+  
+  musicHandled = false;
 }
 
+/**
+ * Override onPause to prevent activity specific processes from running while app is in background
+ */
 @Override
-public void onStop()
+public void onPause()
 {
-   super.onStop();
-   TaboozleApplication application = (TaboozleApplication) this.getApplication();
-   MediaPlayer mp = application.GetMusicPlayer();
-   mp.pause();	
+   Log.d( TAG, "onPause()" );   
+   super.onPause();
+   if( !musicHandled )
+   {
+     TaboozleApplication application = (TaboozleApplication) this.getApplication();
+     MediaPlayer mp = application.GetMusicPlayer();
+     mp.pause();
+   }
 }
 
+/**
+ * Override OnResume to resume activity specific processes
+ */
 @Override
 public void onResume()
 {
-   super.onStop();
+   Log.d( TAG, "onResume()" );   
+   super.onResume();
+   
+   // Resume Title Music
    TaboozleApplication application = (TaboozleApplication) this.getApplication();
    MediaPlayer mp = application.GetMusicPlayer();
-   if( !mp.isPlaying())
-   {
-	   mp.start();   
-   }	
+   mp.start();   
+   // set flag to let onStop handle music
+   musicHandled = false;
 }
 }
