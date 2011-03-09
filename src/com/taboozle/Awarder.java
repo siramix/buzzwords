@@ -55,10 +55,10 @@ public class Awarder
     ArrayList<Award> possibleAwards = Award.awards;
     List<Team> teams = this.gameManager.GetTeams();
     ArrayList<Award> ret = new ArrayList<Award>(teams.size());
-    boolean[] awarded = new boolean[teams.size()];
+    int[] awarded = new int[teams.size()];
     for( int i = 0; i < teams.size(); ++i )
     {
-      awarded[i] = false;
+      awarded[i] = -1;
       ret.add( i, null );
     }
     for( Iterator<Award> itr = possibleAwards.iterator(); itr.hasNext(); )
@@ -72,10 +72,10 @@ public class Awarder
       int processed = 0;
       for( int i = 0; i < teams.size(); ++i )
       {
-        if( !awarded[i] && res[0][0] == (double)teams.get( i ).ordinal() )
+        if( cur.getPriority() > awarded[i] && res[0][0] == (double)teams.get( i ).ordinal() )
         {
-          awarded[i] = true;
-          Log.d( TAG, Integer.toString( i ) );
+          awarded[i] = cur.getPriority();
+          Log.d( TAG, "Awarded Team: " + Integer.toString( i ) );
           ret.set( i, cur );
           processed++;
         }

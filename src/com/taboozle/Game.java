@@ -785,19 +785,20 @@ public class Game extends SQLiteOpenHelper
         break;
         
       case 22: //Be last and lose to next lowest player by half their score
-        Log.d(TAG, "Query for be last and lose to next lowest by half their score. Col2 is Num Seen.");
-        queryStr = "SELECT DISTINCT " + GameData.GameHistory.TEAM_ID + ", COUNT(*) as NUM_SEEN" +  
-          " FROM " + GameData.GAME_HISTORY_TABLE_NAME +
-          " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-          " GROUP BY " + GameData.GameHistory.TEAM_ID +
-          " HAVING " + "COUNT(*)=" +
-             //Retrieve the team id for the team that was last
-             " (SELECT team_id " +
-               " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " gh2" +
-               " WHERE gh2." + GameData.GameHistory.GAME_ID + "=" + gameID +
-               " GROUP BY gh2." + GameData.GameHistory.TEAM_ID + 
-               " ORDER BY 1 DESC" +
-               " LIMIT 1)";         
+        Log.d(TAG, "Query for be last and lose to next lowest by half their score. Col2 is score.");
+        //First find the team that was last
+        queryStr = "SELECT " + GameData.FinalScores.TEAM_ID + ", " + GameData.FinalScores.SCORE + 
+          " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
+          " WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID + 
+            " and " + GameData.FinalScores.SCORE + " <= " +
+            //Then compare the score to the second to last score
+            "(SELECT " + GameData.FinalScores.SCORE + 
+              " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
+              " WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID + 
+              " ORDER BY " + GameData.FinalScores.SCORE + " ASC" + 
+              " LIMIT 1 OFFSET 1)" + "/2.0" + 
+          " ORDER BY 2 ASC" +
+          " LIMIT 1";         
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
         break;
@@ -840,11 +841,10 @@ public class Game extends SQLiteOpenHelper
         
       case 25: //1st Place
         Log.d(TAG, "Query for first place. Col2 is Score.");
-        queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
-                           ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-          " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-          " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-          " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+        queryStr = "SELECT " + GameData.FinalScores.TEAM_ID + ", " + GameData.FinalScores.SCORE + 
+          " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
+          " WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID + 
+          " ORDER BY " + GameData.FinalScores.SCORE + " DESC" + 
           " LIMIT 1";
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
@@ -852,11 +852,10 @@ public class Game extends SQLiteOpenHelper
 
       case 26: //2nd Place
         Log.d(TAG, "Query for second place. Col2 is Score.");
-        queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
-                           ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-          " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-          " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-          " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+        queryStr = "SELECT " + GameData.FinalScores.TEAM_ID + ", " + GameData.FinalScores.SCORE + 
+          " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
+          " WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID + 
+          " ORDER BY " + GameData.FinalScores.SCORE + " DESC" + 
           " LIMIT 1 OFFSET 1";         
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
@@ -864,11 +863,10 @@ public class Game extends SQLiteOpenHelper
         
       case 27: //3rd Place
         Log.d(TAG, "Query for third place. Col2 is Score.");
-        queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
-                           ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-          " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-          " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-          " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+        queryStr = "SELECT " + GameData.FinalScores.TEAM_ID + ", " + GameData.FinalScores.SCORE + 
+          " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
+          " WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID + 
+          " ORDER BY " + GameData.FinalScores.SCORE + " DESC" + 
           " LIMIT 1 OFFSET 2";        
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
@@ -876,11 +874,10 @@ public class Game extends SQLiteOpenHelper
         
       case 28: //4th Place
         Log.d(TAG, "Query for fourth place. Col2 is Score.");
-        queryStr = "SELECT " + GameData.TurnScores.TEAM_ID + 
-                           ", SUM(" + GameData.TurnScores.SCORE + ")" + " as FINAL_SCORE" + 
-          " FROM " + GameData.TURN_SCORES_TABLE_NAME +
-          " WHERE " + GameData.TurnScores.GAME_ID + "=" + gameID + 
-          " ORDER BY " + GameData.TurnScores.SCORE + " DESC" + 
+        queryStr = "SELECT " + GameData.FinalScores.TEAM_ID + ", " + GameData.FinalScores.SCORE + 
+          " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
+          " WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID + 
+          " ORDER BY " + GameData.FinalScores.SCORE + " DESC" + 
           " LIMIT 1 OFFSET 3";        
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
