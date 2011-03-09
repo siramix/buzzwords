@@ -116,7 +116,7 @@ public class Title extends Activity
   {
     Log.d( TAG, "TranslateLabels()" );
 
-    final int MOVETIME = 400;
+    final int MOVETIME = 300;
     AnimationSet set = new AnimationSet(true);
 
     // Define the translate animation
@@ -125,7 +125,7 @@ public class Title extends Activity
         Animation.RELATIVE_TO_PARENT,  ( 0.7f * labelNum ), Animation.RELATIVE_TO_PARENT,   0.0f );
     slideIn.setDuration( MOVETIME );
     slideIn.setInterpolator(new DecelerateInterpolator());
-    slideIn.setStartOffset( MOVETIME * labelNum );
+    slideIn.setStartOffset( MOVETIME * (labelNum+1) );
 
     // Define Pulse anim
     ScaleAnimation pulse = new ScaleAnimation(1.0f, 1.05f, 1.0f, 1.05f, Animation.RELATIVE_TO_SELF,
