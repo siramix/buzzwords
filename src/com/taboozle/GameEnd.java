@@ -101,11 +101,13 @@ public class GameEnd extends Activity
     GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
     final String[] stringAwards = new String[gm.GetTeams().size()];
     final String[] stringDescriptions = new String[gm.GetTeams().size()];
+    final int[] awardsIconIDs = new int[gm.GetTeams().size()];
     final int[] colors = new int[gm.GetTeams().size()];
     for( int i = 0; i < stringAwards.length; ++i )
     {
       stringAwards[i] = this.awards.get( i ).name;
       stringDescriptions[i] = this.awards.get( i ).getExplanation();
+      awardsIconIDs[i] = this.awards.get( i ).getIconID();
       colors[i] = gm.GetTeams().get(i).getText();
     }
 
@@ -117,8 +119,8 @@ public class GameEnd extends Activity
     awardDescription.setText(stringDescriptions[this.awardIndex]);
 
     ImageView smallaward = (ImageView) findViewById( R.id.GameEnd_AwardShowcase_Icon );
-    //smallaward.setImageDrawable( TODO: GetAwardIcon());
-    Drawable d = getResources().getDrawable( R.drawable.award_cosmo );
+    //smallaward.setImageDrawable( GetAwardIcon());
+    Drawable d = getResources().getDrawable( awardsIconIDs[this.awardIndex] );
     //smallaward.setImageDrawable(adjust(d));
     smallaward.setImageDrawable(d);
     smallaward.setColorFilter( res.getColor(colors[this.awardIndex]), Mode.MULTIPLY );

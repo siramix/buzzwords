@@ -90,7 +90,7 @@ public class Awarder
     {
       if( ret.get( i ) == null )
       {
-        ret.set( i, new Award( -1, "Awardless", "", -1 ) );
+        ret.set( i, new Award( -1, "Awardless", "", -1, R.drawable.award_cosmo ) );
       }
     }
     

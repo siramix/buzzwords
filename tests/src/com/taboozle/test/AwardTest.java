@@ -22,6 +22,7 @@ public class AwardTest extends AndroidTestCase
   String aName;
   String aExplanation;
   int aPriority;
+  int anIcon;
   
   /* (non-Javadoc)
    * @see junit.framework.TestCase#setUp()
@@ -33,8 +34,9 @@ public class AwardTest extends AndroidTestCase
     aName = "basicAwardTest";
     aExplanation = "just a simple test";
     aPriority = 1;
+    anIcon = R.drawable.icon;
     this.empty = new Award();
-    this.basicAward = new Award(aId, aName, aExplanation, aPriority);
+    this.basicAward = new Award(aId, aName, aExplanation, aPriority, anIcon);
   }
 
   /**
