@@ -166,7 +166,7 @@ public class Award
     awards.add( new Award( 18,"Iced","Wrong streak", 2 ) );
     awards.add( new Award( 19,"Skip Sandwich DX","Skip streak", 2 ) );
     //awards.add( new Award( 20,"Comeback Kings","Come back from an X point deficit to win", 3 ) );
-    //awards.add( new Award( 21,"Dirty Cheaters","Win by a spread equal to or greater than 2nd place score", 3 ) );
+    awards.add( new Award( 21,"Dirty Cheaters","Win by a spread equal to or greater than 2nd place score", 3 ) );
     awards.add( new Award( 22,"Dominated","Lose with a score half as large as next team", 3 ) );
     awards.add( new Award( 23,"Slowpokes","Fewest cards seen", 1 ) );
     awards.add( new Award( 24,"Cosmpolitan","Most cards seen", 1 ) );

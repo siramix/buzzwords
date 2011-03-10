@@ -436,10 +436,10 @@ public class Game extends SQLiteOpenHelper
                " WHERE ts." + GameData.TurnScores.GAME_ID + "=" + gameID +
                  " and ts." + GameData.TurnScores.SCORE + " = " +
                  // Retrieve the highest score
-                 " (SELECT ts2." + GameData.TurnScores.SCORE +
-                   " FROM " + GameData.TURN_SCORES_TABLE_NAME + " ts2" +
-                   " WHERE ts2." + GameData.TurnScores.GAME_ID + "=" + gameID +
-                   " ORDER BY ts2." + GameData.TurnScores.SCORE + " DESC" + 
+                 " (SELECT fs." + GameData.FinalScores.SCORE +
+                   " FROM " + GameData.FINAL_SCORES_TABLE_NAME + " fs" +
+                   " WHERE fs." + GameData.FinalScores.GAME_ID + "=" + gameID +
+                   " ORDER BY fs." + GameData.FinalScores.SCORE + " DESC" + 
                    " LIMIT 1)" +
               ")" +
           " GROUP BY gh." + GameData.GameHistory.TURN_SCORE_ID + 
@@ -566,7 +566,7 @@ public class Game extends SQLiteOpenHelper
         cursor = db.rawQuery(queryStr, null);
         break;
         
-      case 12: //Fastest Skip Under 5s
+      case 12: //Fastest Skip Under 2s
         //Returns each team's fastest skipped card, sorted by fastest to slowest
         Log.d(TAG, "Query for fastest skip under 5. Col2 is Card_ID.");
         queryStr = "SELECT gh." + GameData.GameHistory.TEAM_ID + ", gh." + GameData.GameHistory.CARD_ID +
@@ -578,7 +578,7 @@ public class Game extends SQLiteOpenHelper
                    "MIN(" + GameData.GameHistory.TIME + ") as mintime" +
             " FROM " + GameData.GAME_HISTORY_TABLE_NAME + " inr_gh" +
             " WHERE " + GameData.GameHistory.GAME_ID + "=" + gameID +
-            " and " + GameData.GameHistory.TIME + "< 5000" +
+            " and " + GameData.GameHistory.TIME + "< 2000" +
             " and " + GameData.GameHistory.RWS + "=" + GameData.SKIP + ") as inr_gh" +
           " ON " + "gh." + GameData.GameHistory.TEAM_ID + " = inr_gh." + GameData.GameHistory.TEAM_ID +
           " AND " + "gh." + GameData.GameHistory.CARD_ID + " = inr_gh." + GameData.GameHistory.CARD_ID +
@@ -676,7 +676,7 @@ public class Game extends SQLiteOpenHelper
         cursor = db.rawQuery(queryStr, null);
         break;        
         
-      case 17: //Longest Correct streak 
+      case 17: //Longest Correct streak (greater than or equal to 10)
         // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
         Log.d(TAG, "Query for longest correct streak. Col2 is Max Correct Streak.");
         queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
@@ -702,12 +702,13 @@ public class Game extends SQLiteOpenHelper
             " WHERE " + GameData.GameHistory.RWS + " =" + GameData.RIGHT +
             " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
                      GameData.GameHistory.RWS + ")" +
-          " GROUP BY " + GameData.GameHistory.TEAM_ID;
+          " GROUP BY " + GameData.GameHistory.TEAM_ID + 
+          " HAVING MAX(STREAK) >= 10"; 
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
         break;        
         
-      case 18: //Longest Wrong streak 
+      case 18: //Longest Wrong streak (greater than or equal to 5 wrongs)
         // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
         Log.d(TAG, "Query for longest wrong streak. Col2 is Max Wrong Streak.");
         queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
@@ -734,12 +735,13 @@ public class Game extends SQLiteOpenHelper
             //This above line is the line that changes between the wrong, skip, and right streaks
             " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
                      GameData.GameHistory.RWS + ")" +
-          " GROUP BY " + GameData.GameHistory.TEAM_ID; 
+          " GROUP BY " + GameData.GameHistory.TEAM_ID + 
+          " HAVING MAX(STREAK) >= 5";  
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
         break; 
         
-      case 19: //Longest Skip streak 
+      case 19: //Longest Skip streak (greater than or equal to 5)
         // Reference: http://www.sqlteam.com/article/detecting-runs-or-streaks-in-your-data
         Log.d(TAG, "Query for longest skip streak. Col2 is Max Skip Streak.");
         queryStr = "SELECT " + GameData.GameHistory.TEAM_ID + ", MAX(STREAK)" +
@@ -766,20 +768,40 @@ public class Game extends SQLiteOpenHelper
             //This above line is the line that changes between the wrong, skip, and right streaks
             " GROUP BY GROUPNUM, " + GameData.GameHistory.TEAM_ID + ", " + 
                      GameData.GameHistory.RWS + ")" +
-          " GROUP BY " + GameData.GameHistory.TEAM_ID; 
+          " GROUP BY " + GameData.GameHistory.TEAM_ID + 
+          " HAVING MAX(STREAK) >= 5"; 
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
         break;
         
-      case 20: //Comeback Kings
-    	// Come back from a 10 point deficit and win
-    	//TODO HackFixMe
-    	Log.d(TAG, "Query for coming back by a 10 point defecit and winning.");
+      case 20: //Comeback Kings ADD THIS TO THE WISHLIST CAUSE ITS NOT HAPPENING
+    	//Come back from a 10 point deficit and win
+        Log.d(TAG, "Query for coming back by a 10 point defecit and winning.");
+        //First we find the winning team
         queryStr = "SELECT " + GameData.FinalScores.TEAM_ID + 
         	" FROM " + GameData.FINAL_SCORES_TABLE_NAME +
         	" WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID +	 
         	" ORDER BY " + GameData.FinalScores.SCORE + " DESC" + 
         	" LIMIT 1";
+        Log.d(TAG, queryStr);
+        cursor = db.rawQuery(queryStr, null);
+        break;
+
+      case 21: //Be first and win over the next highest player by twice their score
+        Log.d(TAG, "Query for be last and lose to next lowest by half their score. Col2 is score.");
+        //First find the team that was last
+        queryStr = "SELECT " + GameData.FinalScores.TEAM_ID + ", " + GameData.FinalScores.SCORE + 
+          " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
+          " WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID + 
+            " and " + GameData.FinalScores.SCORE + " >= " +
+            //Then compare the score to the second highest score
+            "(SELECT " + GameData.FinalScores.SCORE + 
+              " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
+              " WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID + 
+              " ORDER BY " + GameData.FinalScores.SCORE + " DESC" + 
+              " LIMIT 1 OFFSET 1)" + "*2.0" + 
+          " ORDER BY 2 DESC" +
+          " LIMIT 1";         
         Log.d(TAG, queryStr);
         cursor = db.rawQuery(queryStr, null);
         break;
