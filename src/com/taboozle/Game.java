@@ -793,7 +793,7 @@ public class Game extends SQLiteOpenHelper
         queryStr = "SELECT " + GameData.FinalScores.TEAM_ID + ", " + GameData.FinalScores.SCORE + 
           " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
           " WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID + 
-            " and " + GameData.FinalScores.SCORE + " >= " +
+            " and " + GameData.FinalScores.SCORE + " > " +
             //Then compare the score to the second highest score
             "(SELECT " + GameData.FinalScores.SCORE + 
               " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
@@ -812,7 +812,7 @@ public class Game extends SQLiteOpenHelper
         queryStr = "SELECT " + GameData.FinalScores.TEAM_ID + ", " + GameData.FinalScores.SCORE + 
           " FROM " + GameData.FINAL_SCORES_TABLE_NAME +
           " WHERE " + GameData.FinalScores.GAME_ID + "=" + gameID + 
-            " and " + GameData.FinalScores.SCORE + " <= " +
+            " and " + GameData.FinalScores.SCORE + " < " +
             //Then compare the score to the second to last score
             "(SELECT " + GameData.FinalScores.SCORE + 
               " FROM " + GameData.FINAL_SCORES_TABLE_NAME +

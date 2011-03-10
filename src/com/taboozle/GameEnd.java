@@ -85,6 +85,31 @@ public class GameEnd extends Activity
    */
   private int awardIndex = -1;
   
+  /**
+   * Sets the icons to the right of the team to the correct award.
+   */
+  private void setSmallAwardImgs()
+  {    
+    Log.d( TAG, "setSmallAwardImgs()");    
+    GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
+    
+    ImageView smallaward1 = (ImageView) findViewById( R.id.EndGame_Score1_Award );
+    ImageView smallaward2 = (ImageView) findViewById( R.id.EndGame_Score2_Award );
+    ImageView smallaward3 = (ImageView) findViewById( R.id.EndGame_Score3_Award );
+    ImageView smallaward4 = (ImageView) findViewById( R.id.EndGame_Score4_Award );
+    ImageView smallawardAR[] = {smallaward1, smallaward2, smallaward3, smallaward4};
+    final int[] awardsIconIDs = new int[gm.GetTeams().size()];
+
+    for( int i = 0; i < awardsIconIDs.length; ++i )
+    {
+      awardsIconIDs[i] = this.awards.get( i ).getIconID();
+      Drawable d = getResources().getDrawable( awardsIconIDs[i] );
+      smallawardAR[i].setImageDrawable(d);
+      smallawardAR[i].setColorFilter( res.getColor(gm.GetTeams().get(i).getText()), Mode.MULTIPLY ); 
+    }  
+
+  }
+  
   private void startAwardTimer()
   {
     Log.d( TAG, "startAwardTimer()");
@@ -110,20 +135,21 @@ public class GameEnd extends Activity
       awardsIconIDs[i] = this.awards.get( i ).getIconID();
       colors[i] = gm.GetTeams().get(i).getText();
     }
-
+    
+    //Award Showcase below
     TextView awardName = (TextView) findViewById(R.id.EndGame_AwardShowcase_Name);
     TextView awardDescription = (TextView) findViewById(R.id.EndGame_AwardShowcase_Subtext);
 //    TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
     this.awardIndex = (this.awardIndex + 1) % curGameManager.GetNumTeams();
     awardName.setText(stringAwards[this.awardIndex]);
-    awardDescription.setText(stringDescriptions[this.awardIndex]);
-
-    ImageView smallaward = (ImageView) findViewById( R.id.GameEnd_AwardShowcase_Icon );
+    awardDescription.setText(stringDescriptions[this.awardIndex]); 
+    
+    ImageView bigaward = (ImageView) findViewById( R.id.GameEnd_AwardShowcase_Icon );    
     //smallaward.setImageDrawable( GetAwardIcon());
     Drawable d = getResources().getDrawable( awardsIconIDs[this.awardIndex] );
     //smallaward.setImageDrawable(adjust(d));
-    smallaward.setImageDrawable(d);
-    smallaward.setColorFilter( res.getColor(colors[this.awardIndex]), Mode.MULTIPLY );
+    bigaward.setImageDrawable(d);
+    bigaward.setColorFilter( res.getColor(colors[this.awardIndex]), Mode.MULTIPLY );
     
 //    awardTeamName.setText(curGameManager.GetTeams().get(this.awardIndex).getName());
 //    awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[this.awardIndex] ));
@@ -239,6 +265,7 @@ public class GameEnd extends Activity
         Awarder a = new Awarder();
         a.setGameManager( curGameManager );
         this.awards = a.calcAwards();
+        this.setSmallAwardImgs();
         this.startAwardTimer();
         this.showNextAward();
   		
