@@ -166,11 +166,11 @@ public class Award
     awards.add( new Award( 4,"2 Fast, 2 Furious","Most correct in round without winning", 2, R.drawable.award_blank ) );
     awards.add( new Award( 5,"Slackers","Most skips in a round", 1, R.drawable.award_slackers ) );
     awards.add( new Award( 6,"Foot in Mouth","Most incorrect in a round", 1, R.drawable.award_blank ) );
-    awards.add( new Award( 7,"Paralyzed by Fear","Only skipped cards for an entire round", 2, R.drawable.award_blank ) );
+    awards.add( new Award( 7,"Paralyzed by Fear","Only skipped cards for an entire round", 2, R.drawable.award_paralyzed ) );
     awards.add( new Award( 8,"Dead Weight","Negative scoring round", 2, R.drawable.award_deadweight ) );
     awards.add( new Award( 9,"Pointless","Zero point round", 2, R.drawable.award_pointless ) );
     awards.add( new Award( 10,"Out to Lunch","Take no action in a round", 2, R.drawable.award_outtolunch ) );
-    awards.add( new Award( 11,"Quickdraw","Very fast correct", 3, R.drawable.award_blank ) );
+    awards.add( new Award( 11,"Quickdraw","Very fast correct", 3, R.drawable.award_quickdraw ) );
     awards.add( new Award( 12,"Glass Half Empty", "Very fast skip", 1, R.drawable.award_blank ) );
     awards.add( new Award( 13,"Over Before it Started","Buzzed very quickly", 3, R.drawable.award_blank ) );
     awards.add( new Award( 14,"Took You Long Enough!","Very slow correct", 3, R.drawable.award_blank ) );
@@ -186,8 +186,8 @@ public class Award
     awards.add( new Award( 24,"Cosmpolitan","Most cards seen", 1, R.drawable.award_cosmo ) );
     awards.add( new Award( 25,"1st Place","", 0, R.drawable.award_first ) );
     awards.add( new Award( 26,"2nd Place","", 0, R.drawable.award_second ) );
-    awards.add( new Award( 27,"3rd Place","", 0, R.drawable.award_blank ) );
-    awards.add( new Award( 28,"4th Place","", 0, R.drawable.award_blank ) );
+    awards.add( new Award( 27,"3rd Place","", 0, R.drawable.award_third ) );
+    awards.add( new Award( 28,"4th Place","", 0, R.drawable.award_fourth ) );
     Collections.sort(awards, (new Award()).new PriorityComparator());
   }
   
