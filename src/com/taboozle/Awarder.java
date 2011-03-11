@@ -72,7 +72,7 @@ public class Awarder
       int processed = 0;
       for( int i = 0; i < teams.size(); ++i )
       {
-        if( cur.getPriority() > awarded[i] && res[0][0] == (double)teams.get( i ).ordinal() )
+        if( cur.getPriority() >= awarded[i] && res[0][0] == (double)teams.get( i ).ordinal() )
         {
           awarded[i] = cur.getPriority();
           Log.d( TAG, "Awarded Team: " + Integer.toString( i ) );
@@ -90,7 +90,7 @@ public class Awarder
     {
       if( ret.get( i ) == null )
       {
-        ret.set( i, new Award( -1, "Awardless", "", -1, R.drawable.award_cosmo ) );
+        ret.set( i, new Award( -1, "Awardless", "", -1, R.drawable.award_blank ) );
       }
     }
     
