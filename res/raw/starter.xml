@@ -316,4 +316,172 @@
 <word>SPORT</word>
 <word>SMALL</word>
 <word>JUDGE</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Tennis Racket</title><categories>starter</categories><bad-words>
+<word>SWING</word>
+<word>BALL</word>
+<word>HIT</word>
+<word>SPORT</word>
+<word>STRING</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Berlin</title><categories>starter</categories><bad-words>
+<word>CITY</word>
+<word>GERMANY</word>
+<word>WALL</word>
+<word>WORLD</word>
+<word>HITLER</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Cucumber</title><categories>starter</categories><bad-words>
+<word>VEGETABLE</word>
+<word>GREEN</word>
+<word>CRUNCH</word>
+<word>GROW</word>
+<word>PICKLE</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Mayor</title><categories>starter</categories><bad-words>
+<word>CITY</word>
+<word>GOVERN</word>
+<word>LEAD</word>
+<word>ELECT</word>
+<word>VOTE</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Stewardess</title><categories>starter</categories><bad-words>
+<word>PLANE</word>
+<word>SERVE</word>
+<word>ORDER</word>
+<word>AIR</word>
+<word>FOOD</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Drawbridge</title><categories>starter</categories><bad-words>
+<word>CASTLE</word>
+<word>MOAT</word>
+<word>PULL</word>
+<word>BOAT</word>
+<word>RIVER</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Earthquake</title><categories>starter</categories><bad-words>
+<word>GROUND</word>
+<word>FAULT</word>
+<word>MOUNTAIN</word>
+<word>PLATE</word>
+<word>VOLCANO</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Jump Rope</title><categories>starter</categories><bad-words>
+<word>PLAYGROUND</word>
+<word>SKIP</word>
+<word>HOP</word>
+<word>KID</word>
+<word>EXERCISE</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Han Solo</title><categories>starter</categories><bad-words>
+<word>STAR</word>
+<word>SMUGGLE</word>
+<word>LUKE SKYWALKER</word>
+<word>HARRISON FORD</word>
+<word>MELLENIUM FALCON</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Cumulonimbus</title><categories>starter</categories><bad-words>
+<word>CLOUD</word>
+<word>FLUFFY</word>
+<word>WHITE</word>
+<word>SKY</word>
+<word>STORM</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Torey</title><categories>starter</categories><bad-words>
+<word>BRITAIN</word>
+<word>LOYAL</word>
+<word>REVOLUTION</word>
+<word>SUPPORT</word>
+<word>COLONY</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Amerigo Vespucci</title><categories>starter</categories><bad-words>
+<word>AMERICA</word>
+<word>EXPLORE</word>
+<word>DISCOVER</word>
+<word>NAME</word>
+<word>SOUTH</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Sesame Street</title><categories>starter</categories><bad-words>
+<word>OSCAR</word>
+<word>BIG BIRD</word>
+<word>KIDS</word>
+<word>MUPPET</word>
+<word>GET</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Algebra</title><categories>starter</categories><bad-words>
+<word>MATH</word>
+<word>X</word>
+<word>VARIABLE</word>
+<word>NUMBER</word>
+<word>GEOMETRY</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Bullet</title><categories>starter</categories><bad-words>
+<word>GUN</word>
+<word>KILL</word>
+<word>SHOOT</word>
+<word>FIRE</word>
+<word>RIFLE</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Abraham Lincoln</title><categories>starter</categories><bad-words>
+<word>HONEST ABE</word>
+<word>ASSASSINATE</word>
+<word>SLAVE</word>
+<word>BEARD</word>
+<word>PRESIDENT</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Serial Killer</title><categories>starter</categories><bad-words>
+<word>MURDER</word>
+<word>HANNIBAL</word>
+<word>CRAZY</word>
+<word>KILL</word>
+<word>CATCH</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>To Kill a Mockingbird</title><categories>starter</categories><bad-words>
+<word>HARPER LEE</word>
+<word>FINCH</word>
+<word>ATTICUS</word>
+<word>BOO RADLEY</word>
+<word>BOOK</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Toothpaste</title><categories>starter</categories><bad-words>
+<word>BRUSH</word>
+<word>TEETH</word>
+<word>MOUTH</word>
+<word>BED</word>
+<word>CLEAN</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Amelia Earheart</title><categories>starter</categories><bad-words>
+<word>PLANE</word>
+<word>WOMAN</word>
+<word>FLY</word>
+<word>DISAPPEAR</word>
+<word>MYSTERY</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Fouton</title><categories>starter</categories><bad-words>
+<word>COUCH</word>
+<word>SIT</word>
+<word>BED</word>
+<word>DORM</word>
+<word>FOLD</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Rockstar</title><categories>starter</categories><bad-words>
+<word>PLAY</word>
+<word>BAND</word>
+<word>FAN</word>
+<word>GROUPIE</word>
+<word>GUITAR</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Carpet Bagger</title><categories>starter</categories><bad-words>
+<word>RUN</word>
+<word>FOREIGN</word>
+<word>ELECT</word>
+<word>NATIVE</word>
+<word>RICH</word></bad-words></card>
+<card><pack-name>starterpack</pack-name>
+<title>Scream</title><categories>starter</categories><bad-words>
+<word>YELL</word>
+<word>SHOUT</word>
+<word>SCARE</word>
+<word>FEAR</word>
+<word>SURPRISE</word></bad-words></card>
 </pack>
