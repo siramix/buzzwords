@@ -166,6 +166,25 @@ public class Turn extends Activity
      }    
   };
   
+  /**
+   * Swipe Stuff
+   */
+  private SimpleOnGestureListener onlybackswipeListener = new SimpleOnGestureListener() {
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+      if(e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
+      {
+        Turn.this.doBack();
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+     }    
+  };
+  
   private GestureDetector swipeDetector;
 
   View.OnTouchListener gestureListener;
@@ -739,20 +758,35 @@ public class Turn extends Activity
     {
       this.skipButton.setOnClickListener( SkipListener );
       this.skipButton.setVisibility(View.VISIBLE);
+      
+      //Only listen for backs and swipes (swipeListener) if skip pref is on
+      this.swipeDetector = new GestureDetector(swipeListener);
+      this.gestureListener = new View.OnTouchListener() {
+        public boolean onTouch(View v, MotionEvent event) {
+            if (swipeDetector.onTouchEvent(event)) {
+                return true;
+            }
+            return true; //prevents highlighting badwords by consuming even if not detected as a swipe
+        }
+      };
     }
     else
     {
       this.skipButton.setVisibility(View.INVISIBLE);
+      
+      //If skip pref is off, set up gestureListener to only listen to back swipes
+      this.swipeDetector = new GestureDetector(onlybackswipeListener);
+      this.gestureListener = new View.OnTouchListener() {
+        public boolean onTouch(View v, MotionEvent event) {
+            if (swipeDetector.onTouchEvent(event)) {
+                return true;
+            }
+            return true; //prevents highlighting badwords by consuming even if not detected as a swipe
+        }
+      };
     }
-    this.swipeDetector = new GestureDetector(swipeListener);
-    this.gestureListener = new View.OnTouchListener() {
-      public boolean onTouch(View v, MotionEvent event) {
-          if (swipeDetector.onTouchEvent(event)) {
-              return true;
-          }
-          return true; //prevents highlighting badwords by consuming even if not detected as a swipe
-      }
-    };
+    
+
     
     //Setup the "card" views to allow for skip gesture to be performed on top
     this.findViewById( R.id.CardTitleA ).setOnTouchListener( this.gestureListener );
