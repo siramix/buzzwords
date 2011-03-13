@@ -5,6 +5,7 @@
   <string name="IntentSettings">com.taboozle.intent.action.SETTINGS</string>
   <string name="IntentRules">com.taboozle.intent.action.RULES</string>
   <string name="IntentBuzzer">com.taboozle.intent.action.BUZZER</string>
+  <string name="IntentAboutUs">com.taboozle.intent.action.ABOUTUS</string>
   <string name="IntentGameSetup">com.taboozle.intent.action.GAMESETUP</string>
   <string name="IntentTurn">com.taboozle.intent.action.TURN</string>
   <string name="menu_EndGame">MENU_ENDGAME</string>

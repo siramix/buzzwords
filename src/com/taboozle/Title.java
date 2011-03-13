@@ -77,6 +77,22 @@ public class Title extends Activity
       
     }
   }; // End RulesListener
+  
+  /**
+   * Listener to determine when the About Us button is clicked on the title screen.  Includes
+   * an onClick method that will start the Rule activity.
+   */
+  private OnClickListener AboutUsListener = new OnClickListener() 
+  {
+    public void onClick(View v) 
+    {
+      Log.d( TAG, "AboutUsListener OnClick()" );
+      musicHandled = true;
+      startActivity(new Intent(getApplication().getString( R.string.IntentAboutUs ), 
+          getIntent().getData()));
+      
+    }
+  }; // End AboutUsListener
 
   /**
    * Listener to determine when the BuzzMode button is clicked
@@ -173,8 +189,23 @@ public class Title extends Activity
 public void onCreate( Bundle savedInstanceState )
 {
 	super.onCreate( savedInstanceState );
-  Log.d( TAG, "onCreate()" );                     	
-	// Setup the view
+  Log.d( TAG, "onCreate()" );               
+  
+  TaboozleApplication application = (TaboozleApplication) this.getApplication();
+  MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
+  mp.setLooping(true);
+  mp.start();
+  
+  musicHandled = false;
+  
+  //TODO 
+  //This should be it's own method and shouldn't be it's own activity
+  //Instead it should just be an image that fades in and out before the main screen
+  //comes up, in LAR's opinion.
+  //SPLASH SCREEN
+  //this.setContentView(R.layout.aboutus);
+
+	// Setup the Main Title Screen view
 	this.setContentView(R.layout.title );
 
   ImageButton playGameButton = 
@@ -189,6 +220,9 @@ public void onCreate( Bundle savedInstanceState )
   
   ImageButton buzzerButton = (ImageButton) this.findViewById( R.id.Title_BuzzButton );
   buzzerButton.setOnClickListener( BuzzerListener );
+  
+  ImageButton aboutusButton = (ImageButton) this.findViewById( R.id.Title_AboutUs );
+  aboutusButton.setOnClickListener( AboutUsListener );
   
   View button = (View) this.findViewById( R.id.Title_PlayButton);
   button.startAnimation(this.TranslateButtons(1));
@@ -211,12 +245,7 @@ public void onCreate( Bundle savedInstanceState )
   View title = (View) this.findViewById( R.id.Title_Title);
   title.startAnimation(this.ScrollTitle());
 
-  TaboozleApplication application = (TaboozleApplication) this.getApplication();
-  MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
-  mp.setLooping(true);
-  mp.start();
-  
-  musicHandled = false;
+
 }
 
 /**
