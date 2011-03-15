@@ -198,13 +198,6 @@ public void onCreate( Bundle savedInstanceState )
   
   musicHandled = false;
   
-  //TODO 
-  //This should be it's own method and shouldn't be it's own activity
-  //Instead it should just be an image that fades in and out before the main screen
-  //comes up, in LAR's opinion.
-  //SPLASH SCREEN
-  //this.setContentView(R.layout.aboutus);
-
 	// Setup the Main Title Screen view
 	this.setContentView(R.layout.title );
 

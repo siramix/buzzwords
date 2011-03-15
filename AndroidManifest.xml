@@ -8,12 +8,20 @@
                android:theme="@style/TaboozleTheme"
                android:name=".TaboozleApplication"
                android:screenOrientation="portrait">
-        <activity android:name=".Title"
-                  android:label="@string/AppName">
+        <activity android:name=".SplashScreen"
+                  android:label="@string/AppName"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="com.taboozle.intent.action.SPLASHSCREEN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>               
+        <activity android:name=".Title"
+                  android:label="@string/AppName">
             <intent-filter>
                 <action android:name="com.taboozle.intent.action.TITLE" />
                 <category android:name="android.intent.category.DEFAULT" />
