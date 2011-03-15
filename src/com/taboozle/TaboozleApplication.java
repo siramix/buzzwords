@@ -56,12 +56,14 @@ public class TaboozleApplication extends Application
   
   public MediaPlayer CreateMusicPlayer( Context context, int id)
   {
+    Log.d( TAG, "CreateMusicPlayer(" + context + "," + id + ")" );
 	  mp = MediaPlayer.create(context, id);
 	  return mp;
   }
   
   public MediaPlayer GetMusicPlayer()
   {
+    Log.d( TAG, "GetMusicPlayer()" );
 	  return mp;
   }
 
