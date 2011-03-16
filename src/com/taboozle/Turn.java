@@ -14,6 +14,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -250,7 +251,6 @@ public class Turn extends Activity
   {
     Log.d( TAG, "onCreateOptionsMenu()" );
     menu.add(0, R.string.menu_EndGame, 0, "End Game");
-    menu.add(0, R.string.menu_Score, 0, "Score");
     menu.add(0, R.string.menu_Rules, 0, "Rules");
 
     return true;
@@ -268,9 +268,6 @@ public class Turn extends Activity
     {
       case R.string.menu_EndGame:
         this.showDialog( DIALOG_GAMEOVER_ID );
-        return true;
-      case R.string.menu_Score:
-        //quit();
         return true;
       case R.string.menu_Rules:
         startActivity(new Intent(getApplication().getString( R.string.IntentRules ),
@@ -711,11 +708,10 @@ public class Turn extends Activity
   {
     Log.d( TAG, "setupViewReferences()");
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
-    //this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
     this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-    this.rightSoundId = this.soundPool.load( this, R.raw.wine_clink, 1);
-    this.swipeSoundId = this.soundPool.load( this, R.raw.swipe, 1);
-    this.wrongSoundId = this.soundPool.load( this, R.raw.wrong, 1);
+    this.rightSoundId = this.soundPool.load( this, R.raw.fx_right, 1);
+    this.swipeSoundId = this.soundPool.load( this, R.raw.fx_skip, 1);
+    this.wrongSoundId = this.soundPool.load( this, R.raw.fx_wrong, 1);
 
     TaboozleApplication application =
       (TaboozleApplication) this.getApplication();
@@ -829,7 +825,7 @@ public class Turn extends Activity
     this.setupUIProperties();
     
     this.showDialog( DIALOG_READY_ID );
-
+    
   }
 
   /**
@@ -933,7 +929,11 @@ public class Turn extends Activity
               public void onClick(DialogInterface dialog, int which) {
                 Turn.this.ShowCard();
                 Turn.this.isBack = true;
-                Turn.this.startTimer();                
+                Turn.this.startTimer();
+                
+                TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+                MediaPlayer mp = application.CreateMusicPlayer( Turn.this.getBaseContext(), R.raw.mus_round60);
+                mp.start();
               }
             })
             
@@ -959,6 +959,14 @@ public class Turn extends Activity
     this.isPaused = false;
     this.pauseOverlay.setVisibility( View.INVISIBLE );
     this.pauseTextLayout.setVisibility( View.INVISIBLE);
+    
+    // Resume Music
+    TaboozleApplication application = (TaboozleApplication) this.getApplication();
+    MediaPlayer mp = application.GetMusicPlayer();
+    if( !mp.isPlaying() )
+    {
+      mp.start();
+    }
     
     if(!this.turnIsOver)
     {
@@ -991,6 +999,11 @@ public class Turn extends Activity
     
     this.pauseTextLayout = (LinearLayout) this.findViewById( R.id.Turn_PauseTextGroup);
     pauseTextLayout.setVisibility( View.VISIBLE);
+    
+    // Stop music
+    TaboozleApplication application = (TaboozleApplication) this.getApplication();
+    MediaPlayer mp = application.GetMusicPlayer();
+    mp.pause();
     
     if(!this.turnIsOver)
     {    

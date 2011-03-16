@@ -7,8 +7,11 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -33,6 +36,15 @@ public class TurnSummary extends Activity
    * logging tag
    */
   public static String TAG = "TurnSummary";
+  
+  /*
+   * Reference to right, wrong, and skip sound resources (should be in GameManager)
+   */
+  private int cardSoundIds[];
+  /*
+   * SoundPool to manage card sounds
+   */
+  private SoundPool soundPool;
 
   private List<Card> cardList;
   private List<ImageView> cardViewList;
@@ -71,11 +83,22 @@ public class TurnSummary extends Activity
         {
           ImageView iv = (ImageView) v;
           int cardIndex = TurnSummary.this.cardViewList.indexOf( v );
-          Card curCard = TurnSummary.this.cardList.get( cardIndex );
-          curCard.cycleRws();
           Log.d( TAG, Integer.toString( cardIndex ) );
+          Card curCard = TurnSummary.this.cardList.get( cardIndex );
+          // Ammend the card
+          curCard.cycleRws();
+          // Set Card icon
           iv.setImageResource( curCard.getDrawableId() );
+          // Update the score to reflect the new value
           TurnSummary.this.UpdateScoreViews();
+          // Play sound for the new value
+          AudioManager mgr =
+            (AudioManager) TurnSummary.this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
+          float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
+          float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
+          float volume = streamVolumeCurrent / streamVolumeMax;
+          TurnSummary.this.soundPool.play( cardSoundIds[curCard.getRws()], volume, volume, 1, 0, 1.0f );
+
         }
     };
 
@@ -90,6 +113,13 @@ public class TurnSummary extends Activity
   	// Setup the view
   	this.setContentView(R.layout.turnsummary);
 
+  	// Load sounds (this should probably be done at GameManager creation
+    this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
+    this.cardSoundIds = new int[3];
+    this.cardSoundIds[0] = this.soundPool.load( this, R.raw.fx_right, 1);
+    this.cardSoundIds[1] = this.soundPool.load( this, R.raw.fx_wrong, 1);
+    this.cardSoundIds[2] = this.soundPool.load( this, R.raw.fx_skip, 1);
+  	
     TaboozleApplication application =
         (TaboozleApplication) this.getApplication();
     GameManager game = application.GetGameManager();
