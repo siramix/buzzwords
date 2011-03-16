@@ -689,7 +689,6 @@ public class Turn extends Activity
   {
     Log.d( TAG, "setupViewReferences()");
     this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
-    //this.buzzSoundId = this.soundPool.load( this, R.raw.buzzer, 1 );
     this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
     this.rightSoundId = this.soundPool.load( this, R.raw.fx_right, 1);
     this.swipeSoundId = this.soundPool.load( this, R.raw.fx_skip, 1);
