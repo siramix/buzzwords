@@ -8,7 +8,6 @@
   <string name="IntentGameSetup">com.taboozle.intent.action.GAMESETUP</string>
   <string name="IntentTurn">com.taboozle.intent.action.TURN</string>
   <string name="menu_EndGame">MENU_ENDGAME</string>
-  <string name="menu_Score">MENU_SCORE</string>
   <string name="menu_Rules">MENU_RULES</string>
   
   <!-- For end game dialog -->
