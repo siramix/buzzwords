@@ -6,16 +6,12 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.taboozle.TaboozleApplication;
@@ -45,116 +41,7 @@ public class GameEnd extends Activity
    * Resources to be retrieved throughout GameEnd display 
    */
   private Resources res;
-  
-  /**
-   * Set of awards to be iterated through on display.
-   */
-  private List<Award> awards;
-  
-  private class AwardTimer extends CountDownTimer
-  {
-    public AwardTimer(long millisInFuture, long countDownInterval)
-    {
-      super(millisInFuture, countDownInterval);
-      Log.d( TAG, "AwardTimer AwardTimer(" + millisInFuture + ", " + countDownInterval + ")" );
-    }
 
-    @Override
-    public void onFinish()
-    {
-      Log.d( TAG, "AwardTimer onFinish()" );
-      GameEnd.this.showNextAward();
-      GameEnd.this.startAwardTimer();
-    }
-
-    @Override
-    public void onTick(long millisUntilFinished)
-    {
-      //Log.d( TAG, "AwardTimer onTick(" + millisUntilFinished + ")");
-    }
-  };
-  
-  /**
-   * Instance of the timer used to cycle through awards
-   */
-  private AwardTimer cycleTimer;
-  private static final long TICK = 200;
-  
-  /**
-   * Tracks the currently displayed award
-   */
-  private int awardIndex = -1;
-  
-  /**
-   * Sets the icons to the right of the team to the correct award.
-   */
-  private void setSmallAwardImgs()
-  {    
-    Log.d( TAG, "setSmallAwardImgs()");    
-    GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
-    
-    ImageView smallaward1 = (ImageView) findViewById( R.id.EndGame_Score1_Award );
-    ImageView smallaward2 = (ImageView) findViewById( R.id.EndGame_Score2_Award );
-    ImageView smallaward3 = (ImageView) findViewById( R.id.EndGame_Score3_Award );
-    ImageView smallaward4 = (ImageView) findViewById( R.id.EndGame_Score4_Award );
-    ImageView smallawardAR[] = {smallaward1, smallaward2, smallaward3, smallaward4};
-    final int[] awardsIconIDs = new int[gm.GetTeams().size()];
-
-    for( int i = 0; i < awardsIconIDs.length; ++i )
-    {
-      awardsIconIDs[i] = this.awards.get( i ).getIconID();
-      Drawable d = getResources().getDrawable( awardsIconIDs[i] );
-      smallawardAR[i].setImageDrawable(d);
-      smallawardAR[i].setColorFilter( res.getColor(gm.GetTeams().get(i).getText()), Mode.MULTIPLY ); 
-    }  
-
-  }
-  
-  private void startAwardTimer()
-  {
-    Log.d( TAG, "startAwardTimer()");
-	  this.cycleTimer = new AwardTimer(3000, TICK);
-	  this.cycleTimer.start();
-  }
-  
-  /**
-   * Cycles the award display to the award for the next team (minimum of two teams)
-   */
-  private void showNextAward()
-  {
-    Log.d( TAG, "showNextAward()");
-    GameManager gm = ((TaboozleApplication)this.getApplication()).GetGameManager();
-    final String[] stringAwards = new String[gm.GetTeams().size()];
-    final String[] stringDescriptions = new String[gm.GetTeams().size()];
-    final int[] awardsIconIDs = new int[gm.GetTeams().size()];
-    final int[] colors = new int[gm.GetTeams().size()];
-    for( int i = 0; i < stringAwards.length; ++i )
-    {
-      stringAwards[i] = this.awards.get( i ).name;
-      stringDescriptions[i] = this.awards.get( i ).getExplanation();
-      awardsIconIDs[i] = this.awards.get( i ).getIconID();
-      colors[i] = gm.GetTeams().get(i).getText();
-    }
-    
-    //Award Showcase below
-    TextView awardName = (TextView) findViewById(R.id.EndGame_AwardShowcase_Name);
-    TextView awardDescription = (TextView) findViewById(R.id.EndGame_AwardShowcase_Subtext);
-//    TextView awardTeamName = (TextView) findViewById(R.id.EndGameAwardTeamName);
-    this.awardIndex = (this.awardIndex + 1) % curGameManager.GetNumTeams();
-    awardName.setText(stringAwards[this.awardIndex]);
-    awardDescription.setText(stringDescriptions[this.awardIndex]); 
-    
-    ImageView bigaward = (ImageView) findViewById( R.id.GameEnd_AwardShowcase_Icon );    
-    //smallaward.setImageDrawable( GetAwardIcon());
-    Drawable d = getResources().getDrawable( awardsIconIDs[this.awardIndex] );
-    //smallaward.setImageDrawable(adjust(d));
-    bigaward.setImageDrawable(d);
-    bigaward.setColorFilter( res.getColor(colors[this.awardIndex]), Mode.MULTIPLY );
-    
-//    awardTeamName.setText(curGameManager.GetTeams().get(this.awardIndex).getName());
-//    awardTeamName.setTextColor(this.getResources().getColor( TEAM_COLOR_IDS[this.awardIndex] ));
-  }
-  
   /**
    * Listener for the 'Main Menu' button. Sends user back to the main screen on click.
    */
@@ -226,10 +113,6 @@ public class GameEnd extends Activity
         // Ids for score values
   		final int[] TEAM_SCORE_IDS = new int[]{ R.id.EndGame_Score1_Score, R.id.EndGame_Score2_Score,
   												R.id.EndGame_Score3_Score, R.id.EndGame_Score4_Score};
-    	
-  		// Ids for award icons on team list
-  		/*final int[] TEAM_AWARD_IDS = new int[]{ R.id.EndGame_Score1_Award, R.id.EndGame_Score2_Award,
-            R.id.EndGame_Score3_Award, R.id.EndGame_Score4_Award};*/
 
   		// Display all team scores.  Iterate through all team groups.  Hide ranks that no team earned, 
   		// and set values on existing teams
@@ -256,18 +139,9 @@ public class GameEnd extends Activity
             text = (TextView) findViewById( TEAM_SCORE_IDS[i]);
             text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
             text.setText(Integer.toString(teams.get(teamIndex).getScore()));
-            //ImageView smallaward = (ImageView) findViewById( TEAM_AWARD_IDS[i]);
             
   		  }
   		}
-
-        //Display Awards
-        Awarder a = new Awarder();
-        a.setGameManager( curGameManager );
-        this.awards = a.calcAwards();
-        this.setSmallAwardImgs();
-        this.startAwardTimer();
-        this.showNextAward();
   		
         //Set onclick listeners for game end buttons
         Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
@@ -285,7 +159,6 @@ public class GameEnd extends Activity
    {
      super.onStop();
      Log.d( TAG, "onStop()" );
-     this.cycleTimer.cancel();
    }
 
    /**
@@ -296,7 +169,6 @@ public class GameEnd extends Activity
    {
      super.onDestroy();
      Log.d( TAG, "onDestroy()" );
-     this.cycleTimer.cancel();
    }    
     
     /**

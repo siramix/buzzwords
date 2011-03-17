@@ -389,20 +389,6 @@ public class GameManager implements Serializable
     return this.currentGameId;
   }
   
-  /**
-   * Game method that calls the database methods in Game and passes 
-   * on it's results.
-   * 
-   * @param awardID The ID of the award to be queried for.  IDs map to values in the XML constants.
-   * @param gameID The ID of the game 
-   * @return
-   */
-  public double[][] awardsQuery( int awardID, long gameID)
-  {
-    Log.d( TAG, "awardsQuery(" + awardID + ", " + gameID + ")" );
-    return this.game.awardsQuery(awardID, gameID);
-  }
-  
   public int GetNumberOfTurnsRemaining()
   {
     return this.numTurns-this.currentTurn;

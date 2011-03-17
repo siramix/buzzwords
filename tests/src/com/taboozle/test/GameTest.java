@@ -142,14 +142,6 @@ public class GameTest extends AndroidTestCase
   }
 
   /**
-   * Test method for {@link com.taboozle.Game#awardsQuery(int, long)}.
-   */
-  public void testAwardsQuery()
-  {
-    fail( "Not yet implemented" ); // TODO
-  }
-
-  /**
    * Test method for {@link com.taboozle.Game#onCreate(android.database.sqlite.SQLiteDatabase)}.
    */
   public void testOnCreateSQLiteDatabase()
