@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content" android:background="@drawable/bg_generic">
-	
-<View android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:layout_height="34dp" android:id="@+id/AboutUs"></View><View android:layout_width="fill_parent" android:background="#555555" android:layout_marginTop="1dp" android:layout_height="2dp" android:id="@+id/AboutUs_Header_Break" android:layout_below="@id/AboutUs"></View><TextView android:layout_height="wrap_content" android:textColor="@color/title" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:textSize="28dp" android:id="@+id/AboutUsTitle" android:text="About Us"></TextView>
-
-</RelativeLayout>

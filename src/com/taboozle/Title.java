@@ -3,6 +3,7 @@ package com.taboozle;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -87,10 +88,12 @@ public class Title extends Activity
     public void onClick(View v) 
     {
       Log.d( TAG, "AboutUsListener OnClick()" );
-      musicHandled = true;
-      startActivity(new Intent(getApplication().getString( R.string.IntentAboutUs ), 
-          getIntent().getData()));
+      musicHandled = false;
       
+      Uri uri = Uri.parse("http://www.rockandrowe.com/");  
+      Intent intent=new Intent(Intent.ACTION_VIEW,uri);
+      startActivity(intent);
+
     }
   }; // End AboutUsListener
 
