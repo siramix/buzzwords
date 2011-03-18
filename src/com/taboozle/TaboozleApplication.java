@@ -23,6 +23,11 @@ public class TaboozleApplication extends Application
   private GameManager gameManager;
 
   /**
+   * The SoundFXManager for all of taboozle
+   */
+  private SoundManager soundManager;
+  
+  /**
    * MediaPlayer for music
    */
   private MediaPlayer mp;
@@ -44,7 +49,7 @@ public class TaboozleApplication extends Application
     Log.d( TAG, "GetGameManager()" ); 
     return this.gameManager;
   }
-
+  
   /**
    * @param gm - a reference to the game manager
    */
@@ -53,6 +58,24 @@ public class TaboozleApplication extends Application
     Log.d( TAG, "SetGameManager()" );     
     this.gameManager = gm;
   }
+  
+  /**
+   * @return a reference to the sound manager
+   */
+  public SoundManager GetSoundManager()
+  {
+    Log.d( TAG, "GetSoundManager()" ); 
+    return this.soundManager;
+  }
+
+  
+  public SoundManager CreateSoundManager( Context context)
+  {
+    Log.d( TAG, "CreateSound Manager(" + context );
+      soundManager = new SoundManager( context ); 
+      return soundManager;
+  }
+
   
   public MediaPlayer CreateMusicPlayer( Context context, int id)
   {

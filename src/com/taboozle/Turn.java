@@ -13,9 +13,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -101,31 +99,6 @@ public class Turn extends Activity
    */
   private boolean AIsActive;
 
-  /**
-   * Sound pool for playing the buzz sound on a loop.
-   */
-  private SoundPool soundPool;
-
-  /**
-   * id of the buzz's stream within android's sound-pool framework
-   */
-  private int buzzStreamId;
-
-  /**
-   * id of the correct sound within the sound-pool framework
-   */
-  private int rightSoundId;
-
-  /**
-   * id of the wrong sound within the sound-pool framework
-   */
-  private int wrongSoundId;
-  
-  /**
-   * id of the swipe sound within the sound-pool framework
-   */
-  private int swipeSoundId;
-  
   /**
    * vibrator object to vibrate on buzz click
    */
@@ -494,11 +467,6 @@ public class Turn extends Activity
   protected void doCorrect() 
   {
     Log.d( TAG, "doCorrect()"); 
-    AudioManager mgr =
-      (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
-    float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
-    float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
-    float volume = streamVolumeCurrent / streamVolumeMax;
   
     ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
     
@@ -508,7 +476,11 @@ public class Turn extends Activity
     curGameManager.ProcessCard( GameData.RIGHT );
 
     //Only play sound once card has been processed so we don't confuse the user
-    soundPool.play( rightSoundId, volume, volume, 1, 0, 1.0f );
+    TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+    SoundManager sound = application.GetSoundManager();
+    sound.PlaySound( SoundManager.SOUND_RIGHT );
+    
+    
 
     ShowCard();    
   }
@@ -520,12 +492,7 @@ public class Turn extends Activity
   protected void doWrong()
   {
     Log.d( TAG, "doWrong()");
-    AudioManager mgr =
-      (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
-    float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
-    float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
-    float volume = streamVolumeCurrent / streamVolumeMax;
-    
+
     AIsActive = !AIsActive;
     ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
     flipper.showNext();
@@ -535,7 +502,9 @@ public class Turn extends Activity
     ShowCard();
 
     //Only play sound once card has been processed so we don't confuse the user
-    buzzStreamId = soundPool.play( wrongSoundId, volume, volume, 1, 0, 1.0f );
+    TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+    SoundManager sound = application.GetSoundManager();
+    sound.PlaySound( SoundManager.SOUND_WRONG );
   }
 
   /**
@@ -546,11 +515,7 @@ public class Turn extends Activity
   protected void doSkip()
   {
     Log.d( TAG, "doSkip()");
-    AudioManager mgr =
-      (AudioManager) this.getBaseContext().getSystemService( Context.AUDIO_SERVICE );
-    float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
-    float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
-    float volume = streamVolumeCurrent / streamVolumeMax;
+
  
     AIsActive = !AIsActive;
     this.viewFlipper.showNext();
@@ -558,7 +523,9 @@ public class Turn extends Activity
     this.curGameManager.ProcessCard( GameData.SKIP );
 
     //Only play sound once card has been processed so we don't confuse the user
-    soundPool.play( swipeSoundId, volume, volume, 1, 0, 1.0f );
+    TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+    SoundManager sound = application.GetSoundManager();
+    sound.PlaySound( SoundManager.SOUND_SKIP );
     
     ShowCard();    
   }
@@ -697,8 +664,6 @@ public class Turn extends Activity
   protected void OnTurnEnd( )
   {
     Log.d( TAG, "onTurnEnd()" );
-	  //Stop the sound if someone had the buzzer held down
-	  this.soundPool.stop( buzzStreamId );
 	  this.buzzVibrator.cancel();
 	  Intent newintent = new Intent( this, TurnSummary.class);
 	  startActivity(newintent);
@@ -707,11 +672,7 @@ public class Turn extends Activity
   protected void setupViewReferences()
   {
     Log.d( TAG, "setupViewReferences()");
-    this.soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
     this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-    this.rightSoundId = this.soundPool.load( this, R.raw.fx_right, 1);
-    this.swipeSoundId = this.soundPool.load( this, R.raw.fx_skip, 1);
-    this.wrongSoundId = this.soundPool.load( this, R.raw.fx_wrong, 1);
 
     TaboozleApplication application =
       (TaboozleApplication) this.getApplication();
@@ -824,7 +785,12 @@ public class Turn extends Activity
     
     this.setupUIProperties();
     
+//    TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+//    SoundManager sound = application.GetSoundManager();
+//    sound.PlaySound( SoundManager.SOUND_TEAMREADY );
+    
     this.showDialog( DIALOG_READY_ID );
+    
     
   }
 
@@ -920,6 +886,11 @@ public class Turn extends Activity
       dialog = builder.create();
       break;
     case DIALOG_READY_ID:
+      // Play team ready sound
+      TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+      SoundManager sound = application.GetSoundManager();
+      sound.PlaySound( SoundManager.SOUND_TEAMREADY );
+      
       String curTeam = this.curGameManager.GetActiveTeam().getName();
       builder = new AlertDialog.Builder(this);
       builder.setTitle( "Ready " + curTeam + "?" )
@@ -931,6 +902,7 @@ public class Turn extends Activity
                 Turn.this.isBack = true;
                 Turn.this.startTimer();
                 
+                // Start the turn music
                 TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
                 MediaPlayer mp = application.CreateMusicPlayer( Turn.this.getBaseContext(), R.raw.mus_round60);
                 mp.start();

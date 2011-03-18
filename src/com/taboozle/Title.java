@@ -45,6 +45,7 @@ public class Title extends Activity
         musicHandled = true;
         startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentGameSetup),
         		                 getIntent().getData()));
+        
       }
   };
   
@@ -196,6 +197,7 @@ public void onCreate( Bundle savedInstanceState )
   
   TaboozleApplication application = (TaboozleApplication) this.getApplication();
   MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
+  application.CreateSoundManager( this.getBaseContext() );
   mp.setLooping(true);
   mp.start();
   
@@ -240,7 +242,6 @@ public void onCreate( Bundle savedInstanceState )
   
   View title = (View) this.findViewById( R.id.Title_Title);
   title.startAnimation(this.ScrollTitle());
-
 
 }
 
