@@ -177,14 +177,14 @@ public class Turn extends Activity
       public void onFinish() 
       {
         Turn.this.OnTimeExpired();
-        Turn.this.countdownTxt.setText( ":0" );
+        Turn.this.countdownTxt.setText( "0" );
         Turn.this.turnIsOver = true;
       }
 
       @Override
       public void onTick()
       {
-        Turn.this.countdownTxt.setText( ":" + Long.toString(( counter.getTimeRemaining() / 1000 ) + 1 ));
+        Turn.this.countdownTxt.setText( Long.toString(( counter.getTimeRemaining() / 1000 ) + 1 ));
       }
     };
     this.lastCardTimerState = time;
