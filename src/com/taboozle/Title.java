@@ -120,10 +120,13 @@ public class Title extends Activity
   {
     Log.d( TAG, "TranslateButtons()" );
     
+    final int MOVETIME = 600;
+    
+    // Slide in from off-screen
     TranslateAnimation slideIn = new TranslateAnimation(
-        Animation.RELATIVE_TO_PARENT,  (-1.0f * buttonNum), Animation.RELATIVE_TO_PARENT,  0.0f,
-        Animation.RELATIVE_TO_PARENT,  (0.7f * buttonNum), Animation.RELATIVE_TO_PARENT,   0.0f );
-    slideIn.setDuration(600 + ( 200 * buttonNum) );
+        Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
+        Animation.RELATIVE_TO_PARENT,  ( -2.0f ), Animation.RELATIVE_TO_PARENT,   0.0f );
+    slideIn.setDuration(MOVETIME + ( 200 * buttonNum) );
     slideIn.setInterpolator(new DecelerateInterpolator());
     return slideIn;
   }
@@ -136,16 +139,16 @@ public class Title extends Activity
   {
     Log.d( TAG, "TranslateLabels()" );
 
-    final int MOVETIME = 300;
+    final int MOVETIME = 800;
     AnimationSet set = new AnimationSet(true);
 
     // Define the translate animation
     TranslateAnimation slideIn = new TranslateAnimation(
-        Animation.RELATIVE_TO_PARENT,  ( 1.0f * labelNum ), Animation.RELATIVE_TO_PARENT,  0.0f,
-        Animation.RELATIVE_TO_PARENT,  ( 0.7f * labelNum ), Animation.RELATIVE_TO_PARENT,   0.0f );
+        Animation.RELATIVE_TO_PARENT,  ( -1.0f * labelNum ), Animation.RELATIVE_TO_PARENT,  0.0f,
+        Animation.RELATIVE_TO_PARENT,  ( 0.0f ), Animation.RELATIVE_TO_PARENT,   0.0f );
     slideIn.setDuration( MOVETIME );
     slideIn.setInterpolator(new DecelerateInterpolator());
-    slideIn.setStartOffset( MOVETIME * (labelNum+1) );
+    slideIn.setStartOffset( 300 * (labelNum+1) );
 
     // Define Pulse anim
     ScaleAnimation pulse = new ScaleAnimation(1.0f, 1.05f, 1.0f, 1.05f, Animation.RELATIVE_TO_SELF,
@@ -219,29 +222,31 @@ public void onCreate( Bundle savedInstanceState )
   ImageButton buzzerButton = (ImageButton) this.findViewById( R.id.Title_BuzzButton );
   buzzerButton.setOnClickListener( BuzzerListener );
   
-  ImageButton aboutusButton = (ImageButton) this.findViewById( R.id.Title_AboutUs );
-  aboutusButton.setOnClickListener( AboutUsListener );
+//  ImageButton aboutusButton = (ImageButton) this.findViewById( R.id.Title_AboutUs );
+//  aboutusButton.setOnClickListener( AboutUsListener );
   
   View button = (View) this.findViewById( R.id.Title_PlayButton);
-  button.startAnimation(this.TranslateButtons(1));
-  button = (View) this.findViewById( R.id.Title_BuzzButton);
-  button.startAnimation(this.TranslateButtons(2));
-  button = (View) this.findViewById( R.id.Title_SettingsButton);
-  button.startAnimation(this.TranslateButtons(3));
-  button = (View) this.findViewById( R.id.Title_RulesButton);
   button.startAnimation(this.TranslateButtons(4));
+  button = (View) this.findViewById( R.id.Title_BuzzButton);
+  button.startAnimation(this.TranslateButtons(3));
+  button = (View) this.findViewById( R.id.Title_SettingsButton);
+  button.startAnimation(this.TranslateButtons(2));
+  button = (View) this.findViewById( R.id.Title_RulesButton);
+  button.startAnimation(this.TranslateButtons(1));
   
-  View label = (View) this.findViewById( R.id.Title_PlayButton_Label);
-  label.startAnimation(this.TranslateLabels(1));
-  label = (View) this.findViewById( R.id.Title_BuzzButton_Label);
-  label.startAnimation(this.TranslateLabels(2));
-  label = (View) this.findViewById( R.id.Title_SettingsButton_Label);
-  label.startAnimation(this.TranslateLabels(3));
-  label = (View) this.findViewById( R.id.Title_RulesButton_Label);
+  View label = (View) this.findViewById( R.id.Title_PlayText);
   label.startAnimation(this.TranslateLabels(4));
+  label = (View) this.findViewById( R.id.Title_BuzzText);
+  label.startAnimation(this.TranslateLabels(3));
+  label = (View) this.findViewById( R.id.Title_SettingsText);
+  label.startAnimation(this.TranslateLabels(2));
+  label = (View) this.findViewById( R.id.Title_RulesText);
+  label.startAnimation(this.TranslateLabels(1));
   
-  View title = (View) this.findViewById( R.id.Title_Title);
-  title.startAnimation(this.ScrollTitle());
+  // Animated title looks cheap.  commented out for now
+  //View title = (View) this.findViewById( R.id.Title_Title);
+  //title.startAnimation(this.ScrollTitle());
+
 
 }
 

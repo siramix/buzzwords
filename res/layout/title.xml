@@ -1,18 +1,42 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-	android:id="@+id/StartLayout" 
-	android:layout_height="fill_parent" android:layout_width="fill_parent" android:background="@drawable/title_bg">
-	
-	
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/StartLayout" android:layout_height="fill_parent"
+	android:layout_width="fill_parent" android:background="@drawable/bg_generic" android:clipChildren="false">
+
+
+
+
+
+
+
+
+	<ImageView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/Title_Title"
+		android:background="@drawable/title_title"
+		android:layout_alignParentRight="true" android:layout_marginTop="10dp"
+		android:layout_marginRight="50dp"></ImageView>
+	<TextView android:text="Play" android:id="@+id/Title_PlayText" android:textSize="42dp" android:textColor="@color/teamB_text" android:gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="100dp" android:layout_marginTop="120dp"></TextView><TextView android:textSize="42dp" android:text="Buzz" android:textColor="@color/teamC_text" android:id="@+id/Title_BuzzText" android:gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="100dp" android:layout_marginTop="200dp"></TextView><TextView android:textSize="42dp" android:id="@+id/Title_SettingsText" android:text="Settings" android:textColor="@color/teamD_text" android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="100dp" android:layout_marginTop="277dp"></TextView><TextView android:textSize="42dp" android:id="@+id/Title_RulesText" android:text="Rules" android:textColor="@color/teamA_text" android:gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="100dp" android:layout_marginTop="360dp"></TextView><LinearLayout android:layout_width="wrap_content"
+		android:orientation="horizontal" android:layout_height="fill_parent"
+		android:id="@+id/Title_Banner">
+		<View android:layout_height="wrap_content" android:background="@color/genericBG_trim"
+			android:id="@+id/Title_Banner_Trim1" android:layout_width="5dp"></View>
+		<View android:id="@+id/Title_Banner_BG" android:layout_height="fill_parent"
+			android:layout_width="60dp" android:background="@color/black"></View>
+		<View android:layout_height="wrap_content" android:background="@color/genericBG_trim"
+			android:id="@+id/Title_Banner_Trim2" android:layout_width="5dp"></View>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/Title_Menu" android:orientation="vertical"
+		android:paddingLeft="25dp"
+		android:layout_width="wrap_content" android:clipChildren="false" android:layout_height="fill_parent">
+		<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_PlayButton" android:background="@drawable/title_play_selector" android:layout_marginTop="100dp"></ImageButton>
 		
+		<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/title_buzzer_selector" android:id="@+id/Title_BuzzButton"></ImageButton>
+		<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/title_settings_selector" android:id="@+id/Title_SettingsButton"></ImageButton>
+		<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/title_rules_selector" android:id="@+id/Title_RulesButton"></ImageButton>
+	</LinearLayout>
 	
-		
-	
 
-<ImageView android:id="@+id/Title_Banner" android:background="@drawable/title_bg_banner" android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageView><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_Title" android:background="@drawable/title_title"></ImageView><RelativeLayout android:id="@+id/Title_MenuGroup" android:layout_height="fill_parent" android:layout_width="fill_parent"><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_PlayButton" android:background="@drawable/title_play_selector" android:layout_marginLeft="172dp" android:layout_marginTop="53dp"></ImageButton><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_PlayButton_Label" android:background="@drawable/title_play_label" android:layout_marginLeft="225dp" android:layout_marginTop="110dp"></ImageView><ImageButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/Title_BuzzButton" android:background="@drawable/title_buzzer_selector" android:layout_marginLeft="120dp" android:layout_marginTop="105dp"></ImageButton>
 
-<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/title_buzz_label" android:id="@+id/Title_BuzzButton_Label" android:layout_marginLeft="172dp" android:layout_marginTop="157dp"></ImageView><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_SettingsButton" android:background="@drawable/title_settings_selector" android:layout_marginLeft="62dp" android:layout_marginTop="154dp"></ImageButton><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/title_settings_label" android:id="@+id/Title_SettingsButton_Label" android:layout_marginTop="205dp" android:layout_marginLeft="115dp"></ImageView><ImageButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/Title_RulesButton" android:background="@drawable/title_rules_selector" android:layout_marginLeft="10dp" android:layout_marginTop="204dp"></ImageButton><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/title_rules_label" android:id="@+id/Title_RulesButton_Label" android:layout_marginLeft="65dp" android:layout_marginTop="255dp"></ImageView>itle_settings_label.png
 
-<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/logo_temp" android:id="@+id/Title_AboutUs" android:layout_alignParentRight="true" android:layout_alignParentBottom="true"></ImageButton></RelativeLayout>
 
 
 

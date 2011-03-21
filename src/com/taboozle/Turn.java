@@ -617,7 +617,7 @@ public class Turn extends Activity
   protected void OnTimeExpired( )
   {
     Log.d( TAG, "onTimeExpired()" );
-    resultsDelay = new PauseTimer(1000)
+    resultsDelay = new PauseTimer(1500)
     {
       @Override
       public void onFinish() 
