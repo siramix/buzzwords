@@ -222,8 +222,8 @@ public void onCreate( Bundle savedInstanceState )
   ImageButton buzzerButton = (ImageButton) this.findViewById( R.id.Title_BuzzButton );
   buzzerButton.setOnClickListener( BuzzerListener );
   
-//  ImageButton aboutusButton = (ImageButton) this.findViewById( R.id.Title_AboutUs );
-//  aboutusButton.setOnClickListener( AboutUsListener );
+  ImageButton aboutusButton = (ImageButton) this.findViewById( R.id.Title_AboutUs );
+  aboutusButton.setOnClickListener( AboutUsListener );
   
   View button = (View) this.findViewById( R.id.Title_PlayButton);
   button.startAnimation(this.TranslateButtons(4));

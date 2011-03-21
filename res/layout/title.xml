@@ -13,7 +13,7 @@
 		android:layout_height="wrap_content" android:id="@+id/Title_Title"
 		android:background="@drawable/title_title"
 		android:layout_alignParentRight="true" android:layout_marginTop="10dp"
-		android:layout_marginRight="50dp"></ImageView>
+		android:layout_marginRight="50dp"></ImageView><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_AboutUs" android:background="@drawable/logo_temp" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" android:layout_marginRight="5dp" android:layout_marginBottom="5dp"></ImageButton>
 	<TextView android:text="Play" android:id="@+id/Title_PlayText" android:textSize="42dp" android:textColor="@color/teamB_text" android:gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="100dp" android:layout_marginTop="120dp"></TextView><TextView android:textSize="42dp" android:text="Buzz" android:textColor="@color/teamC_text" android:id="@+id/Title_BuzzText" android:gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="100dp" android:layout_marginTop="200dp"></TextView><TextView android:textSize="42dp" android:id="@+id/Title_SettingsText" android:text="Settings" android:textColor="@color/teamD_text" android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="100dp" android:layout_marginTop="277dp"></TextView><TextView android:textSize="42dp" android:id="@+id/Title_RulesText" android:text="Rules" android:textColor="@color/teamA_text" android:gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="100dp" android:layout_marginTop="360dp"></TextView><LinearLayout android:layout_width="wrap_content"
 		android:orientation="horizontal" android:layout_height="fill_parent"
 		android:id="@+id/Title_Banner">
@@ -34,6 +34,7 @@
 		<ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/title_rules_selector" android:id="@+id/Title_RulesButton"></ImageButton>
 	</LinearLayout>
 	
+
 
 
 
