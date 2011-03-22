@@ -54,15 +54,23 @@ public class Buzzer extends Activity
       float streamVolumeCurrent = mgr.getStreamVolume( AudioManager.STREAM_MUSIC );
       float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
       float volume = streamVolumeCurrent / streamVolumeMax;
-        
+     
+      ImageButton buzzButton = (ImageButton) Buzzer.this.findViewById(R.id.BuzzerButton);
+      
       switch ( motion.getAction() ) 
       {
         case MotionEvent.ACTION_DOWN: 
           buzzStreamId = Buzzer.this.soundPool.play( 
                                       Buzzer.this.buzzSoundId, volume, volume, 1, -1, 1.0f );
+          // Spoof an onclick state
+          buzzButton.setBackgroundResource(R.drawable.buzzer_button_onclick);
+          
           break;
         case MotionEvent.ACTION_UP: 
           Buzzer.this.soundPool.stop( buzzStreamId );
+          
+          // Return from spoofed onclick state
+          buzzButton.setBackgroundResource(R.drawable.buzzer_button);
           break;
       }
       return true;
