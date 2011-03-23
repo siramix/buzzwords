@@ -10,7 +10,6 @@
                android:configChanges="keyboardHidden">
         <activity android:name=".SplashScreen"
                   android:label="@string/AppName"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

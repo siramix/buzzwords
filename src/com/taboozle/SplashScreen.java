@@ -6,6 +6,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 /**
  * This is the splash screen for the app's intro.  It should be started before the title
@@ -34,6 +42,23 @@ public class SplashScreen extends Activity
     
     super.onCreate(savedInstanceState);
     setContentView(R.layout.splashscreen);
+    
+    AlphaAnimation textfadein = new AlphaAnimation( 0, 1 );
+    AlphaAnimation ramfadein = new AlphaAnimation( 0, 1 ); 
+    
+    ImageView logotext = 
+      (ImageView) this.findViewById( R.id.logo_text );    
+    
+    ImageView logoram = 
+      (ImageView) this.findViewById( R.id.logo_ram );
+    
+    textfadein.setDuration(2000);
+    textfadein.setStartTime(1000);
+    ramfadein.setDuration(2000);
+    
+    logoram.startAnimation(ramfadein);
+    logotext.startAnimation(textfadein);
+    
     
     // Runnable exiting the splash screen and launching the menu
     exitRunnable = new Runnable() 
@@ -75,8 +100,24 @@ public class SplashScreen extends Activity
   private void exitSplash()
   {
     Log.d( TAG, "exitSplash()" );
+
+    AlphaAnimation fadeout = new AlphaAnimation( 0, 1 );
+     
+    ImageView logotext = 
+      (ImageView) this.findViewById( R.id.logo_text );
+
+    ImageView logoram = 
+      (ImageView) this.findViewById( R.id.logo_ram );
+    
+    fadeout.setDuration(500);
+    logotext.startAnimation(fadeout);
+    logoram.startAnimation(fadeout);
+    
+    logotext.setVisibility(View.GONE);
+    logoram.setVisibility(View.GONE);
     
     finish();
     startActivity(new Intent("com.taboozle.intent.action.TITLE"));
   }
+  
 }
