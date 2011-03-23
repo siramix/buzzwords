@@ -8,11 +8,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 /**
@@ -43,23 +38,9 @@ public class SplashScreen extends Activity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.splashscreen);
     
-    AlphaAnimation textfadein = new AlphaAnimation( 0, 1 );
-    AlphaAnimation ramfadein = new AlphaAnimation( 0, 1 ); 
-    
-    ImageView logotext = 
-      (ImageView) this.findViewById( R.id.logo_text );    
-    
-    ImageView logoram = 
-      (ImageView) this.findViewById( R.id.logo_ram );
-    
-    textfadein.setDuration(2000);
-    textfadein.setStartTime(1000);
-    ramfadein.setDuration(2000);
-    
-    logoram.startAnimation(ramfadein);
-    logotext.startAnimation(textfadein);
-    
-    
+    //Fade in the logo
+    this.fadeIn();
+        
     // Runnable exiting the splash screen and launching the menu
     exitRunnable = new Runnable() 
     {
@@ -100,9 +81,43 @@ public class SplashScreen extends Activity
   private void exitSplash()
   {
     Log.d( TAG, "exitSplash()" );
+    
+    this.fadeOut();
 
+    finish();
+    startActivity(new Intent("com.taboozle.intent.action.TITLE"));
+  }
+  
+  /**
+   * Retrieves the logo images and fades them in using AlphaAnimation.
+   */
+  private void fadeIn()
+  {
+    AlphaAnimation textfadein = new AlphaAnimation( 0, 1 );
+    AlphaAnimation ramfadein = new AlphaAnimation( 0, 1 ); 
+    
+    ImageView logotext = 
+      (ImageView) this.findViewById( R.id.logo_text );    
+    
+    ImageView logoram = 
+      (ImageView) this.findViewById( R.id.logo_ram );
+    
+    textfadein.setDuration(2000);
+    textfadein.setStartTime(1000);
+    ramfadein.setDuration(2000);
+    
+    logoram.startAnimation(ramfadein);
+    logotext.startAnimation(textfadein);    
+  }
+  
+  /**
+   * Retrieves the logo images and fades them out using AlphaAnimation.
+   */
+  private void fadeOut()
+  {
+    Log.d( TAG, "fadeOut()" );   
     AlphaAnimation fadeout = new AlphaAnimation( 0, 1 );
-     
+    
     ImageView logotext = 
       (ImageView) this.findViewById( R.id.logo_text );
 
@@ -114,10 +129,7 @@ public class SplashScreen extends Activity
     logoram.startAnimation(fadeout);
     
     logotext.setVisibility(View.GONE);
-    logoram.setVisibility(View.GONE);
-    
-    finish();
-    startActivity(new Intent("com.taboozle.intent.action.TITLE"));
+    logoram.setVisibility(View.GONE);    
   }
   
 }
