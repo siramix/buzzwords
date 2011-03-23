@@ -5,7 +5,7 @@
   android:layout_height="fill_parent" android:background="@drawable/bg_generic">
 
 
-<RelativeLayout android:layout_height="wrap_content" android:id="@+id/GameSetup_HeaderGroup" android:layout_width="fill_parent" android:layout_alignParentTop="true"><View android:id="@+id/View01" android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:layout_height="34dp"></View><View android:layout_width="fill_parent" android:id="@+id/View02" android:layout_below="@id/View01" android:background="#555555" android:layout_marginTop="1dp" android:layout_height="2dp"></View><TextView android:layout_height="wrap_content" android:id="@+id/GameSetupTitle" android:textColor="@color/title" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:textSize="28dp" android:text="Setup"></TextView>
+<RelativeLayout android:layout_height="wrap_content" android:id="@+id/GameSetup_HeaderGroup" android:layout_width="fill_parent" android:layout_alignParentTop="true"><View android:id="@+id/View01" android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:layout_height="34dp"></View><View android:layout_width="fill_parent" android:id="@+id/View02" android:layout_below="@id/View01" android:background="#555555" android:layout_marginTop="1dp" android:layout_height="2dp"></View><TextView android:layout_height="wrap_content" android:id="@+id/GameSetupTitle" android:textColor="@color/title" android:layout_centerHorizontal="true" android:layout_width="wrap_content" android:textSize="28dp" android:text="Setup" android:includeFontPadding="false"></TextView>
 </RelativeLayout>
 
 
