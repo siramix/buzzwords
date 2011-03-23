@@ -167,7 +167,13 @@ public class GameEnd extends Activity
         // set font
         Typeface antonFont = Typeface.createFromAsset(getAssets(), "fonts/Anton.ttf");
         text.setTypeface( antonFont );
-  		
+        
+        // Set font on GameOver text
+        text = (TextView) findViewById( R.id.GameEnd_GameOver_Game);
+        text.setTypeface( antonFont );
+        text = (TextView) findViewById( R.id.GameEnd_GameOver_Over);
+        text.setTypeface( antonFont );
+        
         //Set onclick listeners for game end buttons
         Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
         mainMenuButton.setOnClickListener( MainMenuListener );

@@ -13,9 +13,10 @@
 		<TextView android:layout_height="wrap_content"
 			android:textColor="@color/title" android:layout_centerHorizontal="true"
 			android:layout_width="wrap_content" android:textSize="28dp"
-			android:id="@+id/EndGame_Title" android:text="Final Standings" android:includeFontPadding="false"></TextView>
+			android:id="@+id/EndGame_Title" android:text="Final Standings"
+			android:includeFontPadding="false"></TextView>
 	</RelativeLayout>
-	
+
 	<Button android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true" android:text="Rematch"
@@ -25,44 +26,149 @@
 		android:layout_alignParentLeft="true" android:text="Main Menu"
 		android:id="@+id/EndGameMainMenu"></Button>
 
-	
 
-<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/EndGame_FinalStandings" android:orientation="vertical" android:layout_marginTop="1dp" android:layout_below="@id/EndGame_HeaderGroup"><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:background="@color/black"
-	android:layout_height="30dp" android:id="@+id/GameEnd_Scores_1">
 
-	<View android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:layout_marginBottom="1dp" android:layout_marginLeft="1dp"
-		android:layout_marginRight="1dp" android:id="@+id/GameEnd_Scores_1_BG" android:layout_marginTop="1dp" android:background="@color/teamB_text"></View>
-	<TextView android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:textColor="#FFFFFF" android:textSize="20dp"
-		android:layout_width="50dp" android:text="1st" android:id="@+id/GameEnd_Scores_1_place" android:layout_centerVertical="true"/><TextView android:layout_height="wrap_content" android:id="@+id/GameEnd_Scores_1_name" android:layout_toRightOf="@id/GameEnd_Scores_1_place" android:layout_width="80dp" android:layout_centerVertical="true" android:textSize="24dp" android:text="Green" android:textColor="@color/teamB_secondary"/>
+	<LinearLayout android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/EndGame_FinalStandings"
+		android:orientation="vertical" android:layout_marginTop="1dp"
+		android:layout_below="@id/EndGame_HeaderGroup">
+		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="fill_parent" android:background="@color/black"
+			android:layout_height="30dp" android:id="@+id/GameEnd_Scores_1">
 
-	<ImageView android:layout_alignParentRight="true"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GameEnd_Scores_1_End" android:background="@drawable/gameend_row_end"/><TextView android:layout_height="wrap_content" android:layout_alignParentRight="true" android:gravity="right" android:layout_width="50dp" android:layout_marginRight="5dp" android:textStyle="bold" android:textColor="@color/teamB_text" android:id="@+id/GameEnd_Scores_1_score" android:includeFontPadding="false" android:text="12" android:textSize="25dp"/>
+			<View android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:layout_marginBottom="1dp" android:layout_marginLeft="1dp"
+				android:layout_marginRight="1dp" android:id="@+id/GameEnd_Scores_1_BG"
+				android:layout_marginTop="1dp" android:background="@color/teamB_text"></View>
+			<TextView android:layout_height="wrap_content"
+				android:layout_marginLeft="5dp" android:textColor="#FFFFFF"
+				android:textSize="20dp" android:layout_width="50dp" android:text="1st"
+				android:id="@+id/GameEnd_Scores_1_place"
+				android:layout_centerVertical="true" />
+			<TextView android:layout_height="wrap_content" android:id="@+id/GameEnd_Scores_1_name"
+				android:layout_toRightOf="@id/GameEnd_Scores_1_place"
+				android:layout_width="80dp" android:layout_centerVertical="true"
+				android:textSize="24dp" android:text="Green" android:textColor="@color/teamB_secondary" />
 
-</RelativeLayout><RelativeLayout android:layout_width="fill_parent" android:background="@color/black" android:layout_height="30dp" android:id="@+id/GameEnd_Scores_2">
+			<ImageView android:layout_alignParentRight="true"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:id="@+id/GameEnd_Scores_1_End" android:background="@drawable/gameend_row_end" />
+			<TextView android:layout_height="wrap_content"
+				android:layout_alignParentRight="true" android:gravity="right"
+				android:layout_width="50dp" android:layout_marginRight="5dp"
+				android:textStyle="bold" android:textColor="@color/teamB_text"
+				android:id="@+id/GameEnd_Scores_1_score" android:includeFontPadding="false"
+				android:text="12" android:textSize="25dp" />
 
-	<View android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="1dp" android:layout_marginLeft="1dp" android:layout_marginRight="1dp" android:layout_marginTop="1dp" android:background="@color/teamA_text" android:id="@+id/GameEnd_Scores_2_BG"></View>
-	<TextView android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:textColor="#FFFFFF" android:textSize="20dp" android:layout_width="50dp" android:text="2nd" android:id="@+id/GameEnd_Scores_2_place" android:layout_centerVertical="true"/><TextView android:layout_height="wrap_content" android:layout_width="80dp" android:layout_centerVertical="true" android:textSize="24dp" android:text="Blue" android:textColor="@color/teamA_secondary" android:layout_toRightOf="@id/GameEnd_Scores_2_place" android:id="@+id/GameEnd_Scores_2_name"/>
+		</RelativeLayout>
+		<RelativeLayout android:layout_width="fill_parent"
+			android:background="@color/black" android:layout_height="30dp"
+			android:id="@+id/GameEnd_Scores_2">
 
-	<ImageView android:layout_alignParentRight="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/gameend_row_end" android:id="@+id/GameEnd_Scores_2_End"/><TextView android:layout_height="wrap_content" android:layout_alignParentRight="true" android:gravity="right" android:textColor="@color/teamA_text" android:textSize="25dp" android:layout_width="50dp" android:layout_marginRight="5dp" android:textStyle="bold" android:id="@+id/GameEnd_Scores_2_score" android:text="10" android:includeFontPadding="false"/>
+			<View android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:layout_marginBottom="1dp" android:layout_marginLeft="1dp"
+				android:layout_marginRight="1dp" android:layout_marginTop="1dp"
+				android:background="@color/teamA_text" android:id="@+id/GameEnd_Scores_2_BG"></View>
+			<TextView android:layout_height="wrap_content"
+				android:layout_marginLeft="5dp" android:textColor="#FFFFFF"
+				android:textSize="20dp" android:layout_width="50dp" android:text="2nd"
+				android:id="@+id/GameEnd_Scores_2_place"
+				android:layout_centerVertical="true" />
+			<TextView android:layout_height="wrap_content"
+				android:layout_width="80dp" android:layout_centerVertical="true"
+				android:textSize="24dp" android:text="Blue" android:textColor="@color/teamA_secondary"
+				android:layout_toRightOf="@id/GameEnd_Scores_2_place" android:id="@+id/GameEnd_Scores_2_name" />
 
-</RelativeLayout><RelativeLayout android:layout_width="fill_parent" android:background="@color/black" android:layout_height="30dp" android:id="@+id/GameEnd_Scores_3">
+			<ImageView android:layout_alignParentRight="true"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:background="@drawable/gameend_row_end" android:id="@+id/GameEnd_Scores_2_End" />
+			<TextView android:layout_height="wrap_content"
+				android:layout_alignParentRight="true" android:gravity="right"
+				android:textColor="@color/teamA_text" android:textSize="25dp"
+				android:layout_width="50dp" android:layout_marginRight="5dp"
+				android:textStyle="bold" android:id="@+id/GameEnd_Scores_2_score"
+				android:text="10" android:includeFontPadding="false" />
 
-	<View android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="1dp" android:layout_marginLeft="1dp" android:layout_marginRight="1dp" android:layout_marginTop="1dp" android:id="@+id/GameEnd_Scores_3_BG" android:background="@color/teamC_text"></View>
-	<TextView android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:textColor="#FFFFFF" android:textSize="20dp" android:layout_width="50dp" android:layout_centerVertical="true" android:id="@+id/GameEnd_Scores_3_place" android:text="3rd"/><TextView android:layout_height="wrap_content" android:layout_width="80dp" android:layout_centerVertical="true" android:textSize="24dp" android:text="Red" android:textColor="@color/teamC_secondary" android:id="@+id/GameEnd_Scores_3_name" android:layout_toRightOf="@id/GameEnd_Scores_3_place"/>
+		</RelativeLayout>
+		<RelativeLayout android:layout_width="fill_parent"
+			android:background="@color/black" android:layout_height="30dp"
+			android:id="@+id/GameEnd_Scores_3">
 
-	<ImageView android:layout_alignParentRight="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/gameend_row_end" android:id="@+id/GameEnd_Scores_3_End"/><TextView android:layout_height="wrap_content" android:layout_alignParentRight="true" android:gravity="right" android:textSize="25dp" android:layout_width="50dp" android:layout_marginRight="5dp" android:textStyle="bold" android:textColor="@color/teamC_text" android:text="6" android:id="@+id/GameEnd_Scores_3_score" android:includeFontPadding="false"/>
+			<View android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:layout_marginBottom="1dp" android:layout_marginLeft="1dp"
+				android:layout_marginRight="1dp" android:layout_marginTop="1dp"
+				android:id="@+id/GameEnd_Scores_3_BG" android:background="@color/teamC_text"></View>
+			<TextView android:layout_height="wrap_content"
+				android:layout_marginLeft="5dp" android:textColor="#FFFFFF"
+				android:textSize="20dp" android:layout_width="50dp"
+				android:layout_centerVertical="true" android:id="@+id/GameEnd_Scores_3_place"
+				android:text="3rd" />
+			<TextView android:layout_height="wrap_content"
+				android:layout_width="80dp" android:layout_centerVertical="true"
+				android:textSize="24dp" android:text="Red" android:textColor="@color/teamC_secondary"
+				android:id="@+id/GameEnd_Scores_3_name" android:layout_toRightOf="@id/GameEnd_Scores_3_place" />
 
-</RelativeLayout><RelativeLayout android:layout_width="fill_parent" android:background="@color/black" android:layout_height="30dp" android:id="@+id/GameEnd_Scores_4">
+			<ImageView android:layout_alignParentRight="true"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:background="@drawable/gameend_row_end" android:id="@+id/GameEnd_Scores_3_End" />
+			<TextView android:layout_height="wrap_content"
+				android:layout_alignParentRight="true" android:gravity="right"
+				android:textSize="25dp" android:layout_width="50dp"
+				android:layout_marginRight="5dp" android:textStyle="bold"
+				android:textColor="@color/teamC_text" android:text="6"
+				android:id="@+id/GameEnd_Scores_3_score" android:includeFontPadding="false" />
 
-	<View android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginBottom="1dp" android:layout_marginLeft="1dp" android:layout_marginRight="1dp" android:layout_marginTop="1dp" android:background="@color/teamD_text" android:id="@+id/GameEnd_Scores_4_BG"></View>
-	<TextView android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:textColor="#FFFFFF" android:textSize="20dp" android:layout_width="50dp" android:layout_centerVertical="true" android:id="@+id/GameEnd_Scores_4_place" android:text="4th"/><TextView android:layout_height="wrap_content" android:layout_width="80dp" android:layout_centerVertical="true" android:textSize="24dp" android:textColor="@color/teamD_secondary" android:text="Yellow" android:id="@+id/GameEnd_Scores_4_name" android:layout_toRightOf="@id/GameEnd_Scores_4_place"/>
+		</RelativeLayout>
+		<RelativeLayout android:layout_width="fill_parent"
+			android:background="@color/black" android:layout_height="30dp"
+			android:id="@+id/GameEnd_Scores_4">
 
-	<ImageView android:layout_alignParentRight="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/gameend_row_end" android:id="@+id/GameEnd_Scores_4_End"/><TextView android:layout_height="wrap_content" android:layout_alignParentRight="true" android:gravity="right" android:textSize="25dp" android:layout_width="50dp" android:layout_marginRight="5dp" android:textStyle="bold" android:id="@+id/GameEnd_Scores_4_score" android:text="3" android:textColor="@color/teamD_text" android:includeFontPadding="false"/>
+			<View android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:layout_marginBottom="1dp" android:layout_marginLeft="1dp"
+				android:layout_marginRight="1dp" android:layout_marginTop="1dp"
+				android:background="@color/teamD_text" android:id="@+id/GameEnd_Scores_4_BG"></View>
+			<TextView android:layout_height="wrap_content"
+				android:layout_marginLeft="5dp" android:textColor="#FFFFFF"
+				android:textSize="20dp" android:layout_width="50dp"
+				android:layout_centerVertical="true" android:id="@+id/GameEnd_Scores_4_place"
+				android:text="4th" />
+			<TextView android:layout_height="wrap_content"
+				android:layout_width="80dp" android:layout_centerVertical="true"
+				android:textSize="24dp" android:textColor="@color/teamD_secondary"
+				android:text="Yellow" android:id="@+id/GameEnd_Scores_4_name"
+				android:layout_toRightOf="@id/GameEnd_Scores_4_place" />
 
-</RelativeLayout><View android:layout_width="fill_parent" android:background="#555555" android:layout_marginTop="1dp" android:layout_height="2dp" android:id="@+id/EndGame_Header_Break" android:layout_below="@id/EndGame_Header_BG"></View>
+			<ImageView android:layout_alignParentRight="true"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:background="@drawable/gameend_row_end" android:id="@+id/GameEnd_Scores_4_End" />
+			<TextView android:layout_height="wrap_content"
+				android:layout_alignParentRight="true" android:gravity="right"
+				android:textSize="25dp" android:layout_width="50dp"
+				android:layout_marginRight="5dp" android:textStyle="bold"
+				android:id="@+id/GameEnd_Scores_4_score" android:text="3"
+				android:textColor="@color/teamD_text" android:includeFontPadding="false" />
 
-</LinearLayout><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/EndGame_FinalStandings" android:layout_centerHorizontal="true" android:id="@+id/GameEnd_WinnerText" android:text="Green Wins!" android:textSize="40dp" android:textColor="@color/teamB_text"></TextView><ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GameEnd_GameOver" android:background="@drawable/gameend_gameover" android:layout_centerHorizontal="true" android:layout_below="@id/GameEnd_WinnerText" android:layout_marginTop="10dp"></ImageView>
+		</RelativeLayout>
+		<View android:layout_width="fill_parent" android:background="#555555"
+			android:layout_marginTop="1dp" android:layout_height="2dp"
+			android:id="@+id/EndGame_Header_Break" android:layout_below="@id/EndGame_Header_BG"></View>
 
+	</LinearLayout>
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_below="@id/EndGame_FinalStandings"
+		android:layout_centerHorizontal="true" android:id="@+id/GameEnd_WinnerText"
+		android:text="Green Wins!" android:textSize="40dp" android:textColor="@color/teamB_text"></TextView>
+
+	<RelativeLayout android:layout_height="wrap_content" android:id="@+id/GameEnd_GameOverGroup"
+		android:layout_below="@id/GameEnd_WinnerText"
+		android:layout_centerInParent="true" android:orientation="vertical" android:layout_width="225dp">
+		<TextView android:layout_height="wrap_content" android:text="Game"
+			android:id="@+id/GameEnd_GameOver_Game" android:textSize="80dp"
+			android:textColor="@color/genericBG_trim" android:layout_centerHorizontal="true" android:gravity="center" android:layout_width="fill_parent"></TextView>
+		<View android:background="@color/genericBG_trim"
+			android:id="@+id/GameEnd_GameOver_Break"
+			android:layout_height="10dp" android:layout_alignTop="@id/GameEnd_GameOver_Game" android:layout_centerHorizontal="true" android:layout_marginTop="103dp" android:layout_width="140dp"></View>
+		<TextView android:layout_height="wrap_content" android:id="@+id/GameEnd_GameOver_Over"
+			android:text="Over!" android:textSize="80dp" android:textColor="@color/genericBG_trim" android:layout_centerHorizontal="true" android:layout_alignTop="@id/GameEnd_GameOver_Game" android:layout_marginTop="90dp" android:gravity="center" android:layout_width="fill_parent"></TextView>
+	</RelativeLayout>
 </RelativeLayout>
