@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -163,6 +164,9 @@ public class GameEnd extends Activity
   		TextView text = (TextView) findViewById( R.id.GameEnd_WinnerText);
         text.setTextColor( res.getColor( teams.get( winnerIndex ).getText() ));
         text.setText( teams.get( winnerIndex ).getName() + " Wins!");
+        // set font
+        Typeface antonFont = Typeface.createFromAsset(getAssets(), "fonts/Anton.ttf");
+        text.setTypeface( antonFont );
   		
         //Set onclick listeners for game end buttons
         Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );

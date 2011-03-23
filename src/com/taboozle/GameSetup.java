@@ -227,6 +227,7 @@ public void onCreate( Bundle savedInstanceState )
 	helpText.setAnimation(this.FadeInHelpText(1000));
 	helpText = (TextView) this.findViewById(R.id.GameSetup_HelpText_Turn);
 	helpText.setAnimation(this.FadeInHelpText(3000));
+
 }
 
   /**
