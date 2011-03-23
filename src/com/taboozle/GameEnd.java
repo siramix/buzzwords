@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.taboozle.TaboozleApplication;
 
@@ -99,49 +98,71 @@ public class GameEnd extends Activity
         Collections.sort( teams, (Team.TEAMA).new ScoreComparator() );
 
   	    // Ids for Scoreboard list rows (one per team).
-        final int[] TEAM_SCORE_GROUPS = new int[]{ R.id.EndGame_Team1Group, R.id.EndGame_Team2Group,
-            R.id.EndGame_Team3Group, R.id.EndGame_Team4Group};  	    
+        final int[] TEAM_SCORE_GROUPS = new int[]{ R.id.GameEnd_Scores_1, R.id.GameEnd_Scores_2,
+            R.id.GameEnd_Scores_3, R.id.GameEnd_Scores_4};  	    
   	    
   	    // Ids for score placement text views.  These should only be changed in the event of ties
-        final int[] TEAM_PLACE_IDS = new int[]{ R.id.EndGame_Score1_1st, R.id.EndGame_Score2_2nd,
-            R.id.EndGame_Score3_3rd, R.id.EndGame_Score4_4th};  	    
+        final int[] TEAM_PLACE_IDS = new int[]{ R.id.GameEnd_Scores_1_place, R.id.GameEnd_Scores_2_place,
+            R.id.GameEnd_Scores_3_place, R.id.GameEnd_Scores_4_place};  	    
   	    
         // Ids for team names
-        final int[] TEAM_NAME_IDS = new int[]{ R.id.EndGame_Score1_Name, R.id.EndGame_Score2_Name,
-            R.id.EndGame_Score3_Name, R.id.EndGame_Score4_Name};
+        final int[] TEAM_NAME_IDS = new int[]{ R.id.GameEnd_Scores_1_name, R.id.GameEnd_Scores_2_name,
+            R.id.GameEnd_Scores_3_name, R.id.GameEnd_Scores_4_name};
   	    
         // Ids for score values
-  		final int[] TEAM_SCORE_IDS = new int[]{ R.id.EndGame_Score1_Score, R.id.EndGame_Score2_Score,
-  												R.id.EndGame_Score3_Score, R.id.EndGame_Score4_Score};
+  		final int[] TEAM_SCORE_IDS = new int[]{ R.id.GameEnd_Scores_1_score, R.id.GameEnd_Scores_2_score,
+  												R.id.GameEnd_Scores_3_score, R.id.GameEnd_Scores_4_score};
+  		
+        // Ids for scoreboard backgrounds
+        final int[] TEAM_SCORE_BGS = new int[]{ R.id.GameEnd_Scores_1_BG, R.id.GameEnd_Scores_2_BG,
+                                                R.id.GameEnd_Scores_3_BG, R.id.GameEnd_Scores_4_BG};
 
-  		// Display all team scores.  Iterate through all team groups.  Hide ranks that no team earned, 
-  		// and set values on existing teams
+  		// Setup score displays.  Iterate through all team groups, setting scores for teams that played
+  		// and disabling the group for teams that did not play
   		for (int i = 0; i < TEAM_SCORE_GROUPS.length; i++)
   		{
   		  if(i >= teams.size())
   		  {
-  		    LinearLayout teamTotalScoreView = (LinearLayout) findViewById( TEAM_SCORE_GROUPS[i] );
-  		    teamTotalScoreView.setVisibility( View.GONE );
+  		    // Gray out rows for teams that didn't play
+            View bg = (View) findViewById( TEAM_SCORE_BGS[i]);
+            bg.setBackgroundResource( R.color.turnSummaryListItem);
+            // Hide place, Hide Name, Hide Score
+            TextView text = (TextView) findViewById( TEAM_PLACE_IDS[i]);
+            text.setVisibility(View.INVISIBLE);
+            text = (TextView) findViewById( TEAM_NAME_IDS[i]);
+            text.setVisibility(View.INVISIBLE);
+            text = (TextView) findViewById( TEAM_SCORE_IDS[i]);
+            text.setVisibility(View.INVISIBLE);
   		  }
   		  else
   		  {
-  		    // team list is sorted lowest score to highest, so we want to add them highest first.
-  		    int teamIndex = ( ( teams.size() - 1 ) - i );
+            // team list is sorted lowest score to highest, so we want to add them highest first.
+            int teamIndex = ( ( teams.size() - 1 ) - i );
+  		    
   		    // Set ranking
   		    TextView text = (TextView) findViewById( TEAM_PLACE_IDS[i]);
-  		    text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
+  		    //text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
   		    //text.setText( ToDo: GetTeamRank() -- Return 1 for multiple teams for tie)
   		    // Set team name and color
   		    text = (TextView) findViewById( TEAM_NAME_IDS[i]);
-            text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
+            text.setTextColor( res.getColor( teams.get( teamIndex ).getSecondaryColor() ));
             text.setText(teams.get(teamIndex).getName());
             // Set team score and color
             text = (TextView) findViewById( TEAM_SCORE_IDS[i]);
             text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
             text.setText(Integer.toString(teams.get(teamIndex).getScore()));
+            // Set background color
+            View bg = (View) findViewById( TEAM_SCORE_BGS[i]);
+            bg.setBackgroundResource( teams.get( teamIndex).getText());
             
   		  }
   		}
+  		
+  		// Set Winner text
+  		int winnerIndex = teams.size() - 1;
+  		TextView text = (TextView) findViewById( R.id.GameEnd_WinnerText);
+        text.setTextColor( res.getColor( teams.get( winnerIndex ).getText() ));
+        text.setText( teams.get( winnerIndex ).getName() + " Wins!");
   		
         //Set onclick listeners for game end buttons
         Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
