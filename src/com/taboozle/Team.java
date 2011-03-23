@@ -13,13 +13,17 @@ import java.util.Comparator;
 public enum Team
 {
   TEAMA( "Blue", R.color.teamA_BG, R.color.teamA_CardText, 
-         R.color.teamA_secondary, R.color.teamA_text, R.drawable.bg_bluegradient ),
+         R.color.teamA_secondary, R.color.teamA_text, R.drawable.bg_bluegradient,
+         R.drawable.gameend_row_end_blue),
   TEAMB( "Green", R.color.teamB_BG, R.color.teamB_CardText, 
-         R.color.teamB_secondary, R.color.teamB_text, R.drawable.bg_greengradient ),
+         R.color.teamB_secondary, R.color.teamB_text, R.drawable.bg_greengradient,
+         R.drawable.gameend_row_end_green),
   TEAMC( "Red", R.color.teamC_BG, R.color.teamC_CardText, 
-         R.color.teamC_secondary, R.color.teamC_text, R.drawable.bg_redgradient ),
+         R.color.teamC_secondary, R.color.teamC_text, R.drawable.bg_redgradient,
+         R.drawable.gameend_row_end_red),
   TEAMD( "Yellow", R.color.teamD_BG, R.color.teamD_CardText, 
-         R.color.teamD_secondary, R.color.teamD_text, R.drawable.bg_yellowgradient );
+         R.color.teamD_secondary, R.color.teamD_text, R.drawable.bg_yellowgradient,
+         R.drawable.gameend_row_end_yellow);
   
   
   private final String name;
@@ -28,11 +32,12 @@ public enum Team
   private final int secondary;
   private final int text;
   private final int gradient;
+  private final int gameend_bg;
 
 
   private int score;
   
-  private Team( String name, int bg, int cardText, int secondary, int text, int gradient)
+  private Team( String name, int bg, int cardText, int secondary, int text, int gradient, int gameend_bg)
   {
     this.name = name;
     this.bg = bg;
@@ -40,6 +45,7 @@ public enum Team
     this.secondary = secondary;
     this.text = text;
     this.gradient = gradient;
+    this.gameend_bg = gameend_bg;
     this.setScore( 0 );
   }
 
@@ -96,7 +102,15 @@ public enum Team
     return gradient;
   }
 
+  /**
+   * @return the end piece for a game end row
+   */
+  public int getGameEndPiece()
+  {
+    return gameend_bg;
+  }
 
+  
   public void setScore( int score )
   {
     this.score = score;

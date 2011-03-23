@@ -69,6 +69,9 @@
   <color name="genericBG_trimDark">
     #282828
   </color>
+    <color name="gameend_blankrow">
+    #555555
+  </color>
   <color name="buttonText">
     #FFFFFF
   </color>

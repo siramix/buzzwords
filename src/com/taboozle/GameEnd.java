@@ -7,12 +7,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.taboozle.TaboozleApplication;
 
@@ -117,7 +119,11 @@ public class GameEnd extends Activity
         // Ids for scoreboard backgrounds
         final int[] TEAM_SCORE_BGS = new int[]{ R.id.GameEnd_Scores_1_BG, R.id.GameEnd_Scores_2_BG,
                                                 R.id.GameEnd_Scores_3_BG, R.id.GameEnd_Scores_4_BG};
-
+        
+        // Ids for scoreboard background end elements
+        final int[] TEAM_SCORE_ENDS = new int[]{ R.id.GameEnd_Scores_1_end, R.id.GameEnd_Scores_2_end,
+                                                R.id.GameEnd_Scores_3_end, R.id.GameEnd_Scores_4_end};
+        
   		// Setup score displays.  Iterate through all team groups, setting scores for teams that played
   		// and disabling the group for teams that did not play
   		for (int i = 0; i < TEAM_SCORE_GROUPS.length; i++)
@@ -126,7 +132,7 @@ public class GameEnd extends Activity
   		  {
   		    // Gray out rows for teams that didn't play
             View bg = (View) findViewById( TEAM_SCORE_BGS[i]);
-            bg.setBackgroundResource( R.color.turnSummaryListItem);
+            bg.setBackgroundResource( R.color.gameend_blankrow);
             // Hide place, Hide Name, Hide Score
             TextView text = (TextView) findViewById( TEAM_PLACE_IDS[i]);
             text.setVisibility(View.INVISIBLE);
@@ -134,6 +140,10 @@ public class GameEnd extends Activity
             text.setVisibility(View.INVISIBLE);
             text = (TextView) findViewById( TEAM_SCORE_IDS[i]);
             text.setVisibility(View.INVISIBLE);
+            // Set background of end piece to gray
+            Drawable d = getResources().getDrawable(R.drawable.gameend_row_end_blank);
+            ImageView end = (ImageView) findViewById(TEAM_SCORE_ENDS[i]);
+            end.setImageDrawable(d);
   		  }
   		  else
   		  {
@@ -155,6 +165,10 @@ public class GameEnd extends Activity
             // Set background color
             View bg = (View) findViewById( TEAM_SCORE_BGS[i]);
             bg.setBackgroundResource( teams.get( teamIndex).getText());
+            // Set row end background color
+            ImageView end = (ImageView) findViewById(TEAM_SCORE_ENDS[i]);
+            Drawable d = getResources().getDrawable( teams.get( teamIndex).getGameEndPiece() );
+            end.setImageDrawable(d);
             
   		  }
   		}
