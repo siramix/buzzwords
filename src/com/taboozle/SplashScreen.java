@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 
 /**
@@ -77,13 +78,21 @@ public class SplashScreen extends Activity
   
   /**
    * called when exithandler is reached or a touch event occurs
+   * hides the images and then calls the title activity
    */
   private void exitSplash()
   {
     Log.d( TAG, "exitSplash()" );
     
-    this.fadeOut();
+    ImageView logotext = 
+      (ImageView) this.findViewById( R.id.logo_text );
 
+    ImageView logoram = 
+      (ImageView) this.findViewById( R.id.logo_ram );
+    
+    logotext.setVisibility(View.GONE);
+    logoram.setVisibility(View.GONE);
+    
     finish();
     startActivity(new Intent("com.taboozle.intent.action.TITLE"));
   }
@@ -95,6 +104,24 @@ public class SplashScreen extends Activity
   {
     AlphaAnimation textfadein = new AlphaAnimation( 0, 1 );
     AlphaAnimation ramfadein = new AlphaAnimation( 0, 1 ); 
+
+    textfadein.setDuration(1000);
+    textfadein.setStartOffset(500);
+    
+    ramfadein.setDuration(1000);
+
+    AlphaAnimation fadeout = new AlphaAnimation( 1, 0 );
+    fadeout.setDuration(500);
+    fadeout.setStartOffset(2500);
+    
+    AnimationSet ramset = new AnimationSet(true);
+    ramset.addAnimation( ramfadein );
+    ramset.addAnimation( fadeout );
+    
+    //staggered animation requires different animation set
+    AnimationSet textset = new AnimationSet(true);
+    textset.addAnimation( textfadein );
+    textset.addAnimation( fadeout );
     
     ImageView logotext = 
       (ImageView) this.findViewById( R.id.logo_text );    
@@ -102,34 +129,8 @@ public class SplashScreen extends Activity
     ImageView logoram = 
       (ImageView) this.findViewById( R.id.logo_ram );
     
-    textfadein.setDuration(2000);
-    textfadein.setStartTime(1000);
-    ramfadein.setDuration(2000);
-    
-    logoram.startAnimation(ramfadein);
-    logotext.startAnimation(textfadein);    
-  }
-  
-  /**
-   * Retrieves the logo images and fades them out using AlphaAnimation.
-   */
-  private void fadeOut()
-  {
-    Log.d( TAG, "fadeOut()" );   
-    AlphaAnimation fadeout = new AlphaAnimation( 0, 1 );
-    
-    ImageView logotext = 
-      (ImageView) this.findViewById( R.id.logo_text );
-
-    ImageView logoram = 
-      (ImageView) this.findViewById( R.id.logo_ram );
-    
-    fadeout.setDuration(500);
-    logotext.startAnimation(fadeout);
-    logoram.startAnimation(fadeout);
-    
-    logotext.setVisibility(View.GONE);
-    logoram.setVisibility(View.GONE);    
+    logoram.startAnimation( ramset);
+    logotext.startAnimation( textset );
   }
   
 }
