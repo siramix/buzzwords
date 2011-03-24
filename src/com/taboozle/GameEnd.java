@@ -13,8 +13,15 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.taboozle.TaboozleApplication;
 
@@ -44,6 +51,122 @@ public class GameEnd extends Activity
    */
   private Resources res;
 
+  /**
+   * Animates all views in GameEnd screen in an interesting sequence.
+   */
+  private void AnimateGameEnd(int numteams)
+  {
+    // Animate GameOver by sliding it down and fading to some semi-transparency value
+    AnimationSet animGameOver = new AnimationSet(false);
+    
+    TranslateAnimation transGameOver = new TranslateAnimation( 
+        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
+        Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+    transGameOver.setStartOffset( 1000 );
+    transGameOver.setDuration( 1000 );
+    
+    // Wait to Fade in Game Over - for drama.
+    AlphaAnimation fadeInGameOver = new AlphaAnimation( 0.0f, 1.0f);
+    fadeInGameOver.setStartOffset( 1000 );
+    fadeInGameOver.setDuration( 0 );
+    AlphaAnimation fadeOutGameOver = new AlphaAnimation(1.0f, 0.25f);
+    fadeOutGameOver.setStartOffset( 1000 );
+    fadeOutGameOver.setDuration( 1000 );
+
+    animGameOver.addAnimation(transGameOver);
+    animGameOver.addAnimation(fadeInGameOver);
+    animGameOver.addAnimation(fadeOutGameOver);
+    animGameOver.setFillAfter(true);
+    
+    RelativeLayout gameOverGroup = (RelativeLayout) this.findViewById( R.id.GameEnd_GameOverGroup);
+    gameOverGroup.startAnimation( animGameOver );
+    
+    
+    // Slide in header as GameOver comes to a stop
+    TranslateAnimation transHeader = new TranslateAnimation( 
+        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
+        Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+    transHeader.setStartOffset(1800);
+    transHeader.setDuration(200);
+    
+    RelativeLayout header = (RelativeLayout) this.findViewById( R.id.EndGame_HeaderGroup);
+    header.startAnimation( transHeader );
+    
+    
+    // Animate scoreboard to fade in once GameOver translates
+    AlphaAnimation fadeInScoreboard = new AlphaAnimation(0.0f, 1.0f);
+    fadeInScoreboard.setStartOffset( 2000 );
+    fadeInScoreboard.setDuration( 500 );
+    
+    LinearLayout scoreboard = (LinearLayout) this.findViewById(R.id.EndGame_FinalStandings);
+    scoreboard.startAnimation( fadeInScoreboard);
+    // Fade in buttons with scoreboard (should arguably be .invisible into .visible but I don't want timers)
+    Button tempButton = (Button) this.findViewById( R.id.EndGameMainMenu);
+    tempButton.startAnimation( fadeInScoreboard );
+    tempButton = (Button) this.findViewById( R.id.EndGameRematch);
+    tempButton.startAnimation( fadeInScoreboard );
+
+    
+    // Slide in panels one at a time ( could do this in some sort of loop... )
+    final int NUM_MISSING_TEAMS = 4 - numteams;
+    TranslateAnimation transPanel4 = new TranslateAnimation( 
+        Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
+        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+    transPanel4.setStartOffset( 3000 );
+    transPanel4.setDuration(250);
+    transPanel4.setFillBefore(true);
+    transPanel4.setInterpolator(new DecelerateInterpolator());
+    RelativeLayout panel4 = (RelativeLayout) this.findViewById( R.id.GameEnd_Scores_4);
+    if (numteams >= 4)
+    {
+      panel4.startAnimation( transPanel4 );
+    }
+    
+    TranslateAnimation transPanel3 = new TranslateAnimation( 
+        Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
+        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+    transPanel3.setStartOffset( 3750 - (750 * NUM_MISSING_TEAMS ));
+    transPanel3.setDuration(250);
+    transPanel3.setFillBefore(true);
+    transPanel3.setInterpolator(new DecelerateInterpolator());
+    RelativeLayout panel3 = (RelativeLayout) this.findViewById( R.id.GameEnd_Scores_3);
+    if (numteams >= 3)
+    {
+      panel3.startAnimation( transPanel3 );
+    }
+    
+    TranslateAnimation transPanel2 = new TranslateAnimation( 
+        Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
+        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+    transPanel2.setStartOffset( 4500 - (750 * NUM_MISSING_TEAMS ));
+    transPanel2.setDuration(250);
+    transPanel2.setFillBefore(true);
+    transPanel2.setInterpolator(new DecelerateInterpolator());
+    RelativeLayout panel2 = (RelativeLayout) this.findViewById( R.id.GameEnd_Scores_2);
+    panel2.startAnimation( transPanel2 );
+    
+    TranslateAnimation transPanel1 = new TranslateAnimation( 
+        Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
+        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+    transPanel1.setStartOffset( 5250 - (750 * NUM_MISSING_TEAMS ));
+    // Suspense on final animation
+    transPanel1.setDuration(250);
+    transPanel1.setFillBefore(true);
+    transPanel1.setInterpolator(new DecelerateInterpolator());
+    RelativeLayout panel1 = (RelativeLayout) this.findViewById( R.id.GameEnd_Scores_1);
+    panel1.startAnimation( transPanel1 );
+    
+    
+    // Show winner only at end
+    AlphaAnimation fadeInWinner = new AlphaAnimation(0.0f, 1.0f);
+    fadeInWinner.setStartOffset(5500 - (750 * NUM_MISSING_TEAMS ));
+    fadeInWinner.setDuration( 200 );
+    fadeInWinner.setFillBefore( true );
+    
+    TextView winner = (TextView) this.findViewById( R.id.GameEnd_WinnerText);
+    winner.startAnimation(fadeInWinner);
+  }
+  
   /**
    * Listener for the 'Main Menu' button. Sends user back to the main screen on click.
    */
@@ -194,6 +317,9 @@ public class GameEnd extends Activity
 
         Button rematchButton = (Button)this.findViewById( R.id.EndGameRematch );
         rematchButton.setOnClickListener( RematchListener );
+        
+        // Animate the whole thing
+        AnimateGameEnd(teams.size());
     }
     
     /**

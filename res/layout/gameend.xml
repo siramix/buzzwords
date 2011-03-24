@@ -156,14 +156,13 @@
 
 	<RelativeLayout android:layout_height="wrap_content" android:id="@+id/GameEnd_GameOverGroup"
 		android:layout_below="@id/GameEnd_WinnerText"
-		android:layout_centerInParent="true" android:orientation="vertical" android:layout_width="225dp">
+		android:layout_centerInParent="true" android:layout_width="225dp">
 		<TextView android:layout_height="wrap_content" android:text="Game"
 			android:id="@+id/GameEnd_GameOver_Game" android:textSize="80dp"
-			android:textColor="@color/genericBG_trim" android:layout_centerHorizontal="true" android:gravity="center" android:layout_width="fill_parent"></TextView>
-		<View android:background="@color/genericBG_trim"
-			android:id="@+id/GameEnd_GameOver_Break"
-			android:layout_height="10dp" android:layout_alignTop="@id/GameEnd_GameOver_Game" android:layout_centerHorizontal="true" android:layout_marginTop="103dp" android:layout_width="160dp"></View>
+			android:layout_centerHorizontal="true" android:gravity="center" android:layout_width="fill_parent" android:textColor="#FFFFFF"></TextView>
+		<View android:id="@+id/GameEnd_GameOver_Break"
+			android:layout_height="10dp" android:layout_alignTop="@id/GameEnd_GameOver_Game" android:layout_centerHorizontal="true" android:layout_marginTop="103dp" android:layout_width="160dp" android:background="#FFFFFF"></View>
 		<TextView android:layout_height="wrap_content" android:id="@+id/GameEnd_GameOver_Over"
-			android:text="Over!" android:textSize="80dp" android:textColor="@color/genericBG_trim" android:layout_centerHorizontal="true" android:layout_alignTop="@id/GameEnd_GameOver_Game" android:layout_marginTop="90dp" android:gravity="center" android:layout_width="fill_parent"></TextView>
+			android:text="Over!" android:textSize="80dp" android:layout_centerHorizontal="true" android:layout_alignTop="@id/GameEnd_GameOver_Game" android:layout_marginTop="90dp" android:gravity="center" android:layout_width="fill_parent" android:textColor="#FFFFFF"></TextView>
 	</RelativeLayout>
 </RelativeLayout>
