@@ -64,6 +64,7 @@ public class GameEnd extends Activity
         Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
     transGameOver.setStartOffset( 1000 );
     transGameOver.setDuration( 1000 );
+    transGameOver.setInterpolator( new DecelerateInterpolator());
     
     // Wait to Fade in Game Over - for drama.
     AlphaAnimation fadeInGameOver = new AlphaAnimation( 0.0f, 1.0f);
@@ -85,26 +86,28 @@ public class GameEnd extends Activity
     // Slide in header as GameOver comes to a stop
     TranslateAnimation transHeader = new TranslateAnimation( 
         Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
-        Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-    transHeader.setStartOffset(1800);
-    transHeader.setDuration(200);
+        Animation.RELATIVE_TO_PARENT, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+    transHeader.setStartOffset(1000);
+    transHeader.setDuration(1000);
+    transHeader.setInterpolator( new DecelerateInterpolator());
+    transHeader.setFillBefore(true);
     
     RelativeLayout header = (RelativeLayout) this.findViewById( R.id.EndGame_HeaderGroup);
     header.startAnimation( transHeader );
     
-    
-    // Animate scoreboard to fade in once GameOver translates
-    AlphaAnimation fadeInScoreboard = new AlphaAnimation(0.0f, 1.0f);
-    fadeInScoreboard.setStartOffset( 2000 );
-    fadeInScoreboard.setDuration( 500 );
-    
+    // Translate scoreboard with header
     LinearLayout scoreboard = (LinearLayout) this.findViewById(R.id.EndGame_FinalStandings);
-    scoreboard.startAnimation( fadeInScoreboard);
-    // Fade in buttons with scoreboard (should arguably be .invisible into .visible but I don't want timers)
+    scoreboard.startAnimation( transHeader);
+    
+    // Animate buttons to fade in as scoreboard translates
+    AlphaAnimation fadeInButtons = new AlphaAnimation(0.0f, 1.0f);
+    fadeInButtons.setStartOffset( 2000 );
+    fadeInButtons.setDuration( 500 );
+    // (should arguably be .invisible into .visible but I don't want timers)
     Button tempButton = (Button) this.findViewById( R.id.EndGameMainMenu);
-    tempButton.startAnimation( fadeInScoreboard );
+    tempButton.startAnimation( fadeInButtons );
     tempButton = (Button) this.findViewById( R.id.EndGameRematch);
-    tempButton.startAnimation( fadeInScoreboard );
+    tempButton.startAnimation( fadeInButtons );
 
     
     // Slide in panels one at a time ( could do this in some sort of loop... )

@@ -29,7 +29,7 @@
 
 	<LinearLayout android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:id="@+id/EndGame_FinalStandings"
-		android:orientation="vertical" android:layout_below="@id/EndGame_HeaderGroup" android:layout_marginTop="2dp">
+		android:orientation="vertical" android:layout_below="@id/EndGame_HeaderGroup" android:layout_marginTop="2dp" android:background="@color/genericBG_trimDark">
 		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="fill_parent" android:background="@color/black"
 			android:layout_height="30dp" android:id="@+id/GameEnd_Scores_1">
