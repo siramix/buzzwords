@@ -155,7 +155,6 @@ public class TurnSummary extends Activity
   	// Update numRounds
   	TextView rounds = (TextView) this.findViewById(R.id.TurnSumRounds);
   	rounds.setText("Round: " + game.GetCurrentRound() + "/"+ game.GetNumRounds());
-
   	
   	// Update Turn Order display
   	UpdateTurnOrderDisplay();
@@ -164,11 +163,16 @@ public class TurnSummary extends Activity
   	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
   	playGameButton.setOnClickListener( NextTurnListener );
   	
-  	// Change Next Game prompt to "Game Results" when the game is over.  Remove EndGame button
+  	// Handle activity changes for final turn
   	if ( game.GetNumberOfTurnsRemaining() == 0 )
   	{
+  	    // Change "Next Team" button
   		playGameButton.setText( "Game Results" );
+  		// Change round display
   		rounds.setText( "Game Over" );
+  	    // Hide scoreboard for suspense
+  		RelativeLayout scores = (RelativeLayout) this.findViewById(R.id.TurnSummary_ScoreGroup);
+  		scores.setVisibility(View.INVISIBLE);
   	}
   }
 
