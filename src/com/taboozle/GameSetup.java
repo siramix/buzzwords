@@ -35,7 +35,7 @@ public class GameSetup extends Activity
   private static final String TEAMB_PREFKEY = "teamB_enabled";
   private static final String TEAMC_PREFKEY = "teamC_enabled";
   private static final String TEAMD_PREFKEY = "teamD_enabled";
-  
+  private static final String RADIO_INDEX = "round_radio_index";
 
   /**
    * logging tag
@@ -58,26 +58,13 @@ public class GameSetup extends Activity
 	            return;
 	        }
 	        
+	        int rounds = getCheckedRadioValue();
+	        
 	        TaboozleApplication application =
 	          (TaboozleApplication) GameSetup.this.getApplication();
 	        GameManager gm = new GameManager(GameSetup.this);
 	        gm.PrepDeck();
-	        
-	        // Get number of rounds based on radio button selection
-	        final int[] ROUND_RADIO_BUTTONS = new int[] {R.id.GameSetupRounds1, R.id.GameSetupRounds5, R.id.GameSetupRounds10,
-	        		                          R.id.GameSetupRounds15,};
-	        final int[] ROUND_CHOICES = new int[] {1, 5, 10, 15,};
-	        int rounds = 0;
-	        for ( int i = 0; i < ROUND_RADIO_BUTTONS.length; i++)
-	        {
-	        	RadioButton test = (RadioButton) GameSetup.this.findViewById( ROUND_RADIO_BUTTONS[i]);
-	        	if (test.isChecked())
-	        	{
-	        		rounds = ROUND_CHOICES[i];
-	        		break;
-	        	}
-	        }
-	        
+        
 	        gm.StartGame( teamList, rounds );
 	        application.SetGameManager( gm );
 	        
@@ -221,6 +208,15 @@ public void onCreate( Bundle savedInstanceState )
 	GameSetup.gameSetupPrefs = getSharedPreferences(PREFS_NAME, 0 );	
 	GameSetup.gameSetupPrefEditor = GameSetup.gameSetupPrefs.edit();	
 
+  // Get the default radio button
+  int radio_default = GameSetup.gameSetupPrefs.getInt(GameSetup.RADIO_INDEX, 1);
+
+  int[] ROUND_RADIO_BUTTONS = new int[] {R.id.GameSetupRounds1, R.id.GameSetupRounds5, R.id.GameSetupRounds10,
+      R.id.GameSetupRounds15,};
+  
+  RadioButton radio = (RadioButton) this.findViewById( ROUND_RADIO_BUTTONS[radio_default] );
+  radio.setChecked(true);  
+  
 	// Bind view buttons
 	Button startGameButton = (Button)this.findViewById( R.id.StartGameButton );
 	startGameButton.setOnClickListener( StartGameListener );
@@ -241,7 +237,7 @@ public void onCreate( Bundle savedInstanceState )
 	// defaults appropriately
 	
 	// Set team A default selection
-	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMA_PREFKEY, true) )
+	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMA_PREFKEY, false) )
 	{
 	  teamList.add( Team.TEAMA );
 	}
@@ -263,7 +259,7 @@ public void onCreate( Bundle savedInstanceState )
   }
 	
 	//Set team C default selection
-	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMC_PREFKEY, true) )
+	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMC_PREFKEY, false) )
 	{ 
 	  teamList.add( Team.TEAMC );
 	} 	
@@ -291,6 +287,34 @@ public void onCreate( Bundle savedInstanceState )
 }
 
   /**
+   * Getter that returns the number of turns that matches the checked radio button.
+   * Called during onPause and StartGame to allow preferences to save.
+   * @return
+   */
+  private int getCheckedRadioValue()
+  {    
+    // Get number of rounds based on radio button selection
+    final int[] ROUND_RADIO_BUTTONS = new int[] {R.id.GameSetupRounds1, R.id.GameSetupRounds5, R.id.GameSetupRounds10,
+                                  R.id.GameSetupRounds15,};
+    final int[] ROUND_CHOICES = new int[] {1, 5, 10, 15,};
+    
+    int rounds = 0;
+    for ( int i = 0; i < ROUND_RADIO_BUTTONS.length; i++)
+    {
+      RadioButton test = (RadioButton) GameSetup.this.findViewById( ROUND_RADIO_BUTTONS[i]);
+      if (test.isChecked())
+      {
+        rounds = ROUND_CHOICES[i];
+        GameSetup.gameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX, i);
+        break;
+      }
+    }
+    
+    return rounds;
+    
+  }
+
+  /**
   * Handle creation of team warning dialog, used to prevent starting a game with too few teams.
   * returns Dialog object explaining team error
   */
@@ -306,7 +330,7 @@ public void onCreate( Bundle savedInstanceState )
      builder = new AlertDialog.Builder(this);
      builder.setMessage( "You must have at least two teams to start the game." )
             .setCancelable(false)
-            .setTitle("Team Error")
+            .setTitle("Need more teams!")
             .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
               public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
@@ -332,6 +356,7 @@ public void onCreate( Bundle savedInstanceState )
      MediaPlayer mp = application.GetMusicPlayer();
      mp.pause();
      
+     getCheckedRadioValue(); // Called before pref commit to save radio value     
      GameSetup.gameSetupPrefEditor.commit();
   }
 
@@ -351,6 +376,5 @@ public void onCreate( Bundle savedInstanceState )
      {
          mp.start();   
      }
-     GameSetup.gameSetupPrefEditor.commit();
   }
 }
