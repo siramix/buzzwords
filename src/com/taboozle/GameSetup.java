@@ -30,12 +30,20 @@ public class GameSetup extends Activity
   private LinkedList<Team> teamList = new LinkedList<Team>();  
   private static SharedPreferences gameSetupPrefs;
   private static SharedPreferences.Editor gameSetupPrefEditor;
-  public static final String PREFS_NAME = "gamesetupprefs";
-  private static final String TEAMA_PREFKEY = "teamA_enabled";
-  private static final String TEAMB_PREFKEY = "teamB_enabled";
-  private static final String TEAMC_PREFKEY = "teamC_enabled";
-  private static final String TEAMD_PREFKEY = "teamD_enabled";
-  private static final String RADIO_INDEX = "round_radio_index";
+  
+  //A two dimensional array to store the radioID/value pair.
+  private static final int[][] ROUND_RADIOS = new int[][] {
+            {R.id.GameSetupRounds0,4}, 
+            {R.id.GameSetupRounds1,8}, 
+            {R.id.GameSetupRounds2,12},
+            {R.id.GameSetupRounds3,16}};
+
+  public static final String PREFS_NAME = "gamesetupprefs";     //stored in data/data/taboozle/shared_preferences
+  private static final String TEAMA_PREFKEY = "teamA_enabled";  //StringID for Team A quadrant
+  private static final String TEAMB_PREFKEY = "teamB_enabled";  //StringID for Team B quadrant
+  private static final String TEAMC_PREFKEY = "teamC_enabled";  //StringID for Team C quadrant
+  private static final String TEAMD_PREFKEY = "teamD_enabled";  //StringID for Team D quadrant
+  private static final String RADIO_INDEX = "round_radio_index"; //Index of the selected round radio 0-3
 
   /**
    * logging tag
@@ -211,10 +219,15 @@ public void onCreate( Bundle savedInstanceState )
   // Get the default radio button
   int radio_default = GameSetup.gameSetupPrefs.getInt(GameSetup.RADIO_INDEX, 1);
 
-  int[] ROUND_RADIO_BUTTONS = new int[] {R.id.GameSetupRounds1, R.id.GameSetupRounds5, R.id.GameSetupRounds10,
-      R.id.GameSetupRounds15,};
+  RadioButton radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[0][0] );
   
-  RadioButton radio = (RadioButton) this.findViewById( ROUND_RADIO_BUTTONS[radio_default] );
+  for( int i=0; i<GameSetup.ROUND_RADIOS.length; ++i )
+  {
+    radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[i][0] );
+    radio.setText(String.valueOf(GameSetup.ROUND_RADIOS[i][1]));
+  }
+  
+  radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[radio_default][0] );
   radio.setChecked(true);  
   
 	// Bind view buttons
@@ -293,25 +306,22 @@ public void onCreate( Bundle savedInstanceState )
    */
   private int getCheckedRadioValue()
   {    
+    Log.d( TAG, "getCheckedRadioValue()" );
     // Get number of rounds based on radio button selection
-    final int[] ROUND_RADIO_BUTTONS = new int[] {R.id.GameSetupRounds1, R.id.GameSetupRounds5, R.id.GameSetupRounds10,
-                                  R.id.GameSetupRounds15,};
-    final int[] ROUND_CHOICES = new int[] {1, 5, 10, 15,};
     
     int rounds = 0;
-    for ( int i = 0; i < ROUND_RADIO_BUTTONS.length; i++)
+    for ( int i = 0; i < GameSetup.ROUND_RADIOS.length; i++)
     {
-      RadioButton test = (RadioButton) GameSetup.this.findViewById( ROUND_RADIO_BUTTONS[i]);
+      RadioButton test = (RadioButton) GameSetup.this.findViewById( GameSetup.ROUND_RADIOS[i][0]);
       if (test.isChecked())
       {
-        rounds = ROUND_CHOICES[i];
+        rounds = GameSetup.ROUND_RADIOS[i][1];
         GameSetup.gameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX, i);
         break;
       }
     }
     
-    return rounds;
-    
+    return rounds;  
   }
 
   /**
