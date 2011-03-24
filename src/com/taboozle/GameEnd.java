@@ -111,37 +111,43 @@ public class GameEnd extends Activity
 
     
     // Slide in panels one at a time ( could do this in some sort of loop... )
-    final int NUM_MISSING_TEAMS = 4 - numteams;
+    final int PANEL_DELAY = 500;
     TranslateAnimation transPanel4 = new TranslateAnimation( 
         Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
         Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-    transPanel4.setStartOffset( 3000 );
+    long offset = 2500;
+    transPanel4.setStartOffset( offset );
     transPanel4.setDuration(250);
     transPanel4.setFillBefore(true);
     transPanel4.setInterpolator(new DecelerateInterpolator());
     RelativeLayout panel4 = (RelativeLayout) this.findViewById( R.id.GameEnd_Scores_4);
-    if (numteams >= 4)
-    {
-      panel4.startAnimation( transPanel4 );
-    }
+    panel4.startAnimation( transPanel4 );
     
     TranslateAnimation transPanel3 = new TranslateAnimation( 
         Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
         Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-    transPanel3.setStartOffset( 3750 - (750 * NUM_MISSING_TEAMS ));
+    // set offset based on previous element
+    if (numteams >= 3)
+    {
+      offset += (transPanel4.getDuration() + PANEL_DELAY );
+    }
+    else
+    {
+      // Slide in with panel3 if this is an invalid team
+      offset = transPanel4.getStartOffset();
+    }
+    transPanel3.setStartOffset( offset );
     transPanel3.setDuration(250);
     transPanel3.setFillBefore(true);
     transPanel3.setInterpolator(new DecelerateInterpolator());
     RelativeLayout panel3 = (RelativeLayout) this.findViewById( R.id.GameEnd_Scores_3);
-    if (numteams >= 3)
-    {
-      panel3.startAnimation( transPanel3 );
-    }
+    panel3.startAnimation( transPanel3 );
     
     TranslateAnimation transPanel2 = new TranslateAnimation( 
         Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
         Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-    transPanel2.setStartOffset( 4500 - (750 * NUM_MISSING_TEAMS ));
+    offset = transPanel3.getStartOffset() + transPanel3.getDuration() + PANEL_DELAY;
+    transPanel2.setStartOffset( offset );
     transPanel2.setDuration(250);
     transPanel2.setFillBefore(true);
     transPanel2.setInterpolator(new DecelerateInterpolator());
@@ -151,7 +157,8 @@ public class GameEnd extends Activity
     TranslateAnimation transPanel1 = new TranslateAnimation( 
         Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
         Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-    transPanel1.setStartOffset( 5250 - (750 * NUM_MISSING_TEAMS ));
+    offset = transPanel2.getStartOffset() + transPanel2.getDuration() + PANEL_DELAY;
+    transPanel1.setStartOffset( offset );
     // Suspense on final animation
     transPanel1.setDuration(250);
     transPanel1.setFillBefore(true);
@@ -162,7 +169,8 @@ public class GameEnd extends Activity
     
     // Show winner only at end
     AlphaAnimation fadeInWinner = new AlphaAnimation(0.0f, 1.0f);
-    fadeInWinner.setStartOffset(5500 - (750 * NUM_MISSING_TEAMS ));
+    offset = transPanel1.getStartOffset() + transPanel1.getDuration() ;
+    fadeInWinner.setStartOffset( offset );
     fadeInWinner.setDuration( 200 );
     fadeInWinner.setFillBefore( true );
     
