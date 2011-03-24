@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,14 @@ public class GameSetup extends Activity
 
   static final int DIALOG_TEAMERROR = 0;
   private LinkedList<Team> teamList = new LinkedList<Team>();  
+  private static SharedPreferences gameSetupPrefs;
+  private static SharedPreferences.Editor gameSetupPrefEditor;
+  public static final String PREFS_NAME = "gamesetupprefs";
+  private static final String TEAMA_PREFKEY = "teamA_enabled";
+  private static final String TEAMB_PREFKEY = "teamB_enabled";
+  private static final String TEAMC_PREFKEY = "teamC_enabled";
+  private static final String TEAMD_PREFKEY = "teamD_enabled";
+  
 
   /**
    * logging tag
@@ -90,15 +99,17 @@ public class GameSetup extends Activity
            Button b = (Button) v;
            
            if( teamList.remove( Team.TEAMA ) )
-           {
+           {    
              b.setBackgroundResource( R.color.inactiveButton );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMA_PREFKEY, false);
            }
            else
            {
-             teamList.add( Team.TEAMA);
+             teamList.add( Team.TEAMA);             
              b.setBackgroundResource( R.color.teamA_text );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamA_secondary ) );
+             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMA_PREFKEY, true);
            }
          }
      };
@@ -117,12 +128,14 @@ public class GameSetup extends Activity
            {
              b.setBackgroundResource( R.color.inactiveButton );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMB_PREFKEY, false);
            }
            else
-           {
+           {             
              teamList.add( Team.TEAMB );
              b.setBackgroundResource( R.color.teamB_text );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamB_secondary ) );
+             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMB_PREFKEY, true);
            }
          }
      };
@@ -141,12 +154,14 @@ public class GameSetup extends Activity
             {
               b.setBackgroundResource( R.color.inactiveButton );
               b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMC_PREFKEY, false);              
             }
             else
             {
               teamList.add( Team.TEAMC);
               b.setBackgroundResource( R.color.teamC_text );
               b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamC_secondary ) );
+              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMC_PREFKEY, true);    
             }
 	      }
 	  };
@@ -165,12 +180,14 @@ public class GameSetup extends Activity
           {
             b.setBackgroundResource( R.color.inactiveButton );
             b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMD_PREFKEY, false);    
           }
           else
           {
             teamList.add( Team.TEAMD );
             b.setBackgroundResource( R.color.teamD_text );
             b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamD_secondary ) );
+            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMD_PREFKEY, true);    
           }
 	      }
 	  };
@@ -199,16 +216,20 @@ public void onCreate( Bundle savedInstanceState )
   
 	// Setup the view
 	this.setContentView(R.layout.gamesetup);
+	
+	// Get the current game setup preferences
+	GameSetup.gameSetupPrefs = getSharedPreferences(PREFS_NAME, 0 );	
+	GameSetup.gameSetupPrefEditor = GameSetup.gameSetupPrefs.edit();	
 
 	// Bind view buttons
 	Button startGameButton = (Button)this.findViewById( R.id.StartGameButton );
 	startGameButton.setOnClickListener( StartGameListener );
 	
 	Button teamAButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamA );
-    teamAButton.setOnClickListener( AddTeamAListener );
+  teamAButton.setOnClickListener( AddTeamAListener );
   
-    Button teamBButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamB );
-    teamBButton.setOnClickListener( AddTeamBListener );
+  Button teamBButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamB );
+  teamBButton.setOnClickListener( AddTeamBListener );
 	
 	Button teamCButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamC );
 	teamCButton.setOnClickListener( AddTeamCListener );
@@ -216,12 +237,52 @@ public void onCreate( Bundle savedInstanceState )
 	Button teamDButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamD );
 	teamDButton.setOnClickListener( AddTeamDListener );
   
-	teamList.add( Team.TEAMA );
-	teamList.add( Team.TEAMC );
-	teamBButton.setBackgroundResource( R.color.inactiveButton );
-	teamBButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-	teamDButton.setBackgroundResource( R.color.inactiveButton );
-	teamDButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+	// Look at the setup preferences at each team variable and set the team
+	// defaults appropriately
+	
+	// Set team A default selection
+	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMA_PREFKEY, true) )
+	{
+	  teamList.add( Team.TEAMA );
+	}
+	else
+	{
+	  teamAButton.setBackgroundResource( R.color.inactiveButton );
+	  teamAButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+	}
+	
+	// Set team B default selection
+	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMB_PREFKEY, false) )
+	{
+	  teamList.add( Team.TEAMB );
+	}
+	else
+  {
+    teamBButton.setBackgroundResource( R.color.inactiveButton );
+    teamBButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+  }
+	
+	//Set team C default selection
+	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMC_PREFKEY, true) )
+	{ 
+	  teamList.add( Team.TEAMC );
+	} 	
+	else
+  {
+    teamCButton.setBackgroundResource( R.color.inactiveButton );
+    teamCButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+  }
+	
+	//Set team D default selection
+	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMD_PREFKEY, false) )
+	{
+	  teamList.add( Team.TEAMD );
+	}
+	else
+  {
+    teamDButton.setBackgroundResource( R.color.inactiveButton );
+    teamDButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+  }
 	
 	TextView helpText = (TextView) this.findViewById(R.id.GameSetup_HelpText_Team);
 	helpText.setAnimation(this.FadeInHelpText(1000));
@@ -270,6 +331,8 @@ public void onCreate( Bundle savedInstanceState )
      TaboozleApplication application = (TaboozleApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      mp.pause();
+     
+     GameSetup.gameSetupPrefEditor.commit();
   }
 
   /**
@@ -288,5 +351,6 @@ public void onCreate( Bundle savedInstanceState )
      {
          mp.start();   
      }
+     GameSetup.gameSetupPrefEditor.commit();
   }
 }
