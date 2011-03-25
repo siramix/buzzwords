@@ -58,8 +58,9 @@ public class TurnSummary extends Activity
 	        else
 	        {
 	        	gm.NextTurn();
-	     	  	startActivity(new Intent(TurnSummary.this.getApplication().getString(R.string.IntentTurn),
-							getIntent().getData()));
+            Intent clearStackIntent = new Intent(getApplication().getString( R.string.IntentTurn ), getIntent().getData());
+            clearStackIntent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
+	     	  	startActivity( clearStackIntent );
 	        }
 
 	      }

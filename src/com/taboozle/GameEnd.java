@@ -213,9 +213,9 @@ public class GameEnd extends Activity
     public void onClick(View v)
     {
       Log.d( TAG, "MainMenuListener onClick()" );
-      Intent nobackintent = new Intent(getApplication().getString( R.string.IntentTitle ), getIntent().getData());
-      nobackintent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
-      startActivity( nobackintent );
+      Intent clearStackIntent = new Intent(getApplication().getString( R.string.IntentTitle ), getIntent().getData());
+      clearStackIntent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
+      startActivity( clearStackIntent );
     }
   }; // End MainMenuListener
 
@@ -237,7 +237,9 @@ public class GameEnd extends Activity
         newgm.StartGame( curgm.GetTeams(), curgm.GetNumRounds() );
         application.SetGameManager( newgm );
         
-        startActivity(new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()));        
+        Intent clearStackIntent = new Intent(getApplication().getString( R.string.IntentTurn ), getIntent().getData());
+        clearStackIntent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        startActivity( clearStackIntent );    
       }
   }; // End MainMenuListener
   
