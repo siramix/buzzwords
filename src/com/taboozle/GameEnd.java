@@ -213,8 +213,9 @@ public class GameEnd extends Activity
     public void onClick(View v)
     {
       Log.d( TAG, "MainMenuListener onClick()" );
-      startActivity(new Intent( getApplication().getString( R.string.IntentTitle ),
-                                 getIntent().getData()));
+      Intent nobackintent = new Intent(getApplication().getString( R.string.IntentTitle ), getIntent().getData());
+      nobackintent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
+      startActivity( nobackintent );
     }
   }; // End MainMenuListener
 

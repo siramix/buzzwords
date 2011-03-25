@@ -1058,7 +1058,7 @@ public class Turn extends Activity
   {
     Log.d( TAG, "onKeyUp()" );
 
-    // Make back do nothing on key-up instead of climb the action stack
+    // Back button should go to the previous card
     if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled() )
       {

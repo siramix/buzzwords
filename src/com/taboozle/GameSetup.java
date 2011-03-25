@@ -75,8 +75,8 @@ public class GameSetup extends Activity
         
 	        gm.StartGame( teamList, rounds );
 	        application.SetGameManager( gm );
-	        
-     	  	startActivity(new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()));
+
+     	  	startActivity( new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()) );
      	  	
      	  	MediaPlayer mp = application.GetMusicPlayer();
      	  	mp.stop();
