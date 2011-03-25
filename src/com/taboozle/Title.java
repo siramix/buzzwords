@@ -1,15 +1,11 @@
 package com.taboozle;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -37,8 +33,6 @@ public class Title extends Activity
    * flag used for stopping music OnStop() event.
    */
   private boolean musicHandled;
-  
-  private final int DIALOG_QUIT = 1;
   
   /**
   * PlayGameListener is used for the start game button.  It launches the next 
@@ -321,25 +315,6 @@ public void onCreate( Bundle savedInstanceState )
 }
 
 /**
- * Handler for key up events
- */
-@Override
-public boolean onKeyUp(int keyCode, KeyEvent event)
-{
-  Log.d( TAG, "onKeyUp()" );
-
-  // Back button will bring up a "Are you sure you want to quit" dialog
-  if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
-      && !event.isCanceled() )
-    {
-      this.showDialog( DIALOG_QUIT );
-      return true;
-    }
-
-  return super.onKeyUp(keyCode, event);
-}
-
-/**
  * Override onPause to prevent activity specific processes from running while app is in background
  */
 @Override
@@ -370,43 +345,6 @@ public void onResume()
    mp.start();   
    // set flag to let onStop handle music
    musicHandled = false;
-}
-
-/**
-*
-*/
-@Override
-protected Dialog onCreateDialog(int id)
-{
- Log.d( TAG, "onCreateDialog(" + id + ")" );
- Dialog dialog = null;
- AlertDialog.Builder builder = null;
- 
- switch(id) {
- case DIALOG_QUIT:
-   builder = new AlertDialog.Builder(this);
-   builder.setMessage( "Are you sure you to quit?" )
-          .setPositiveButton("Yes", new DialogInterface.OnClickListener() 
-            {
-            @Override
-            public void onClick(DialogInterface dialog, int id) 
-            {
-              // quit the app
-              Title.this.finish();
-            }
-            } )
-          .setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-              dialog.cancel();
-              }
-            });       
-   dialog = builder.create();
-   break;
- default:
-     dialog = null;
- }
- return dialog;
-
 }
 
 }
