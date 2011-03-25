@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -163,6 +164,8 @@ public class GameEnd extends Activity
     transPanel1.setDuration(250);
     transPanel1.setFillBefore(true);
     transPanel1.setInterpolator(new DecelerateInterpolator());
+    transPanel1.setAnimationListener( winnerListener );
+
     RelativeLayout panel1 = (RelativeLayout) this.findViewById( R.id.GameEnd_Scores_1);
     panel1.startAnimation( transPanel1 );
     
@@ -177,6 +180,30 @@ public class GameEnd extends Activity
     TextView winner = (TextView) this.findViewById( R.id.GameEnd_WinnerText);
     winner.startAnimation(fadeInWinner);
   }
+  
+  /**
+   * Setup the sounds to go with the animation
+   */
+  private final AnimationListener winnerListener = new AnimationListener()
+  {
+    @Override
+    public void onAnimationEnd( Animation animation )
+    { 
+      TaboozleApplication app = (TaboozleApplication) GameEnd.this.getApplication();
+      SoundManager sound = app.GetSoundManager();
+      sound.PlaySound( SoundManager.SOUND_WIN );
+    }
+
+    @Override
+    public void onAnimationRepeat( Animation animation )
+    { 
+    }
+
+    @Override
+    public void onAnimationStart( Animation animation )
+    {
+    }
+  };
   
   /**
    * Listener for the 'Main Menu' button. Sends user back to the main screen on click.
