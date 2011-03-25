@@ -88,7 +88,7 @@ public class Buzzer extends Activity
 
       //Only play sound once card has been processed so we don't confuse the user
       soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
-      buzzSoundId = soundPool.load(this, R.raw.fx_buzzer, 1);
+      buzzSoundId = soundPool.load(this, R.raw.fx_wrong, 1);
       
       this.setContentView(R.layout.buzzer);
       
