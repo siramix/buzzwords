@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 
 /**
@@ -28,6 +30,28 @@ public class SplashScreen extends Activity
   protected int SPLASHTIME = 3000; //length of time splash screen will show.
   protected Handler exitHandler = null; //will be used to delay the run of splash's exit
   protected Runnable exitRunnable = null; //will be called when splash is ready to close
+
+  /**
+   * Setup the sounds to go with the animation
+   */
+  private final AnimationListener fadeListener = new AnimationListener()
+  {
+    @Override
+    public void onAnimationEnd( Animation animation )
+    { 
+      SplashScreen.this.exitSplash();
+    }
+
+    @Override
+    public void onAnimationRepeat( Animation animation )
+    { 
+    }
+
+    @Override
+    public void onAnimationStart( Animation animation )
+    {
+    }
+  };
   
   /**
    * called on creation of splash screen activity
@@ -40,20 +64,7 @@ public class SplashScreen extends Activity
     setContentView(R.layout.splashscreen);
     
     //Fade in the logo
-    this.fadeIn();
-        
-    // Runnable exiting the splash screen and launching the menu
-    exitRunnable = new Runnable() 
-    {
-      public void run()
-      {
-        exitSplash();
-      }
-    };
-    
-    // Run the exitRunnable in in SPLASHTIME ms
-    exitHandler = new Handler();
-    exitHandler.postDelayed(exitRunnable, SPLASHTIME);
+    this.fadeIn();        
   }
   
   /**
@@ -65,10 +76,7 @@ public class SplashScreen extends Activity
     Log.d( TAG, "onTouchEvent()" );
     
     if (event.getAction() == MotionEvent.ACTION_DOWN)
-    {
-      // Remove the exitRunnable callback from the handler queue
-      exitHandler.removeCallbacks(exitRunnable);
-      
+    {    
       // Run the exit code manually
       exitSplash();
     }
@@ -121,7 +129,8 @@ public class SplashScreen extends Activity
     //staggered animation requires different animation set
     AnimationSet textset = new AnimationSet(true);
     textset.addAnimation( textfadein );
-    textset.addAnimation( fadeout );
+    textset.addAnimation( fadeout );    
+    textset.setAnimationListener( fadeListener ); //listener called to move to next activity
     
     ImageView logotext = 
       (ImageView) this.findViewById( R.id.logo_text );    
@@ -131,6 +140,6 @@ public class SplashScreen extends Activity
     
     logoram.startAnimation( ramset);
     logotext.startAnimation( textset );
+    
   }
-  
 }
