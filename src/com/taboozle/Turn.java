@@ -87,7 +87,7 @@ public class Turn extends Activity
    * Track when the game has paused.  This will prevents code from executing pointlessly if already
    * paused.
    */
-  private boolean isPaused = false;
+  private boolean isPaused = true;
   
   /**
    * This is a reference to the current game manager
@@ -170,24 +170,6 @@ public class Turn extends Activity
   {
     Log.d( TAG, "startTimer()" );
 
-    long time = this.curGameManager.GetTurnTime();
-    this.counter = new PauseTimer(time)
-    {
-      @Override
-      public void onFinish() 
-      {
-        Turn.this.OnTimeExpired();
-        Turn.this.countdownTxt.setText( "0" );
-        Turn.this.turnIsOver = true;
-      }
-
-      @Override
-      public void onTick()
-      {
-        Turn.this.countdownTxt.setText( Long.toString(( counter.getTimeRemaining() / 1000 ) + 1 ));
-      }
-    };
-    this.lastCardTimerState = time;
     this.counter.start();
     this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
   }
@@ -785,13 +767,27 @@ public class Turn extends Activity
     
     this.setupUIProperties();
     
-//    TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
-//    SoundManager sound = application.GetSoundManager();
-//    sound.PlaySound( SoundManager.SOUND_TEAMREADY );
-    
     this.showDialog( DIALOG_READY_ID );
     
-    
+    // Initialize the turn timer
+    long time = this.curGameManager.GetTurnTime();
+    this.counter = new PauseTimer(time)
+    {
+      @Override
+      public void onFinish() 
+      {
+        Turn.this.OnTimeExpired();
+        Turn.this.countdownTxt.setText( "0" );
+        Turn.this.turnIsOver = true;
+      }
+
+      @Override
+      public void onTick()
+      {
+        Turn.this.countdownTxt.setText( Long.toString(( counter.getTimeRemaining() / 1000 ) + 1 ));
+      }
+    };
+    this.lastCardTimerState = time;
   }
 
   /**
@@ -842,7 +838,10 @@ public class Turn extends Activity
   {
     super.onStop();
     Log.d( TAG, "onStop()" );
-    this.pauseGame();
+    if(!this.isPaused)
+    {
+      this.pauseGame();
+    }
   }
 
   /**
@@ -900,6 +899,7 @@ public class Turn extends Activity
               public void onClick(DialogInterface dialog, int which) {
                 Turn.this.ShowCard();
                 Turn.this.isBack = true;
+                Turn.this.isPaused = false;
                 Turn.this.startTimer();
                 
                 // Start the turn music
