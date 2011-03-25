@@ -110,6 +110,8 @@ public class SplashScreen extends Activity
    */
   private void fadeIn()
   {
+    Log.d( TAG, "fadeIn()" );
+    
     AlphaAnimation textfadein = new AlphaAnimation( 0, 1 );
     AlphaAnimation ramfadein = new AlphaAnimation( 0, 1 ); 
 
