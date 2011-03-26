@@ -187,17 +187,14 @@ public class GameEnd extends Activity
    */
   private final AnimationListener gameOverListener = new AnimationListener()
   {
-    @Override
     public void onAnimationEnd( Animation animation )
     {
     }
 
-    @Override
     public void onAnimationRepeat( Animation animation )
     { 
     }
 
-    @Override
     public void onAnimationStart( Animation animation )
     {
       // Play win sound
@@ -213,7 +210,6 @@ public class GameEnd extends Activity
    */
   private final AnimationListener buttonFadeListener = new AnimationListener()
   {
-    @Override
     public void onAnimationEnd( Animation animation )
     {
       // Make buttons usable
@@ -223,12 +219,10 @@ public class GameEnd extends Activity
       rematchButton.setClickable(true);
     }
 
-    @Override
     public void onAnimationRepeat( Animation animation )
     { 
     }
 
-    @Override
     public void onAnimationStart( Animation animation )
     {
     }

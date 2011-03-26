@@ -36,18 +36,15 @@ public class SplashScreen extends Activity
    */
   private final AnimationListener fadeListener = new AnimationListener()
   {
-    @Override
     public void onAnimationEnd( Animation animation )
     { 
       SplashScreen.this.exitSplash();
     }
 
-    @Override
     public void onAnimationRepeat( Animation animation )
     { 
     }
 
-    @Override
     public void onAnimationStart( Animation animation )
     {
     }
