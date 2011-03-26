@@ -80,7 +80,7 @@ public class GameEnd extends Activity
     animGameOver.addAnimation(fadeInGameOver);
     animGameOver.addAnimation(fadeOutGameOver);
     animGameOver.setFillAfter(true);
-    animGameOver.setAnimationListener( this.winnerListener );
+    animGameOver.setAnimationListener( this.gameOverListener );
     
     RelativeLayout gameOverGroup = (RelativeLayout) this.findViewById( R.id.GameEnd_GameOverGroup);
     gameOverGroup.startAnimation( animGameOver );
@@ -106,7 +106,7 @@ public class GameEnd extends Activity
     AlphaAnimation fadeInButtons = new AlphaAnimation(0.0f, 1.0f);
     fadeInButtons.setStartOffset( 1000 );
     fadeInButtons.setDuration( 500 );
-    // (should arguably be .invisible into .visible but I don't want timers)
+    fadeInButtons.setAnimationListener( this.buttonFadeListener);
     Button tempButton = (Button) this.findViewById( R.id.EndGameMainMenu);
     tempButton.startAnimation( fadeInButtons );
     tempButton = (Button) this.findViewById( R.id.EndGameRematch);
@@ -185,7 +185,7 @@ public class GameEnd extends Activity
   /**
    * Setup the sounds to go with the animation
    */
-  private final AnimationListener winnerListener = new AnimationListener()
+  private final AnimationListener gameOverListener = new AnimationListener()
   {
     @Override
     public void onAnimationEnd( Animation animation )
@@ -204,6 +204,33 @@ public class GameEnd extends Activity
       TaboozleApplication app = (TaboozleApplication) GameEnd.this.getApplication();
       SoundManager sound = app.GetSoundManager();
       sound.PlaySound( SoundManager.SOUND_WIN );
+    }
+  };
+
+  
+  /**
+   * Make buttons usable once faded in
+   */
+  private final AnimationListener buttonFadeListener = new AnimationListener()
+  {
+    @Override
+    public void onAnimationEnd( Animation animation )
+    {
+      // Make buttons usable
+      Button mainmenuButton = (Button) GameEnd.this.findViewById( R.id.EndGameMainMenu );
+      Button rematchButton = (Button) GameEnd.this.findViewById( R.id.EndGameRematch );
+      mainmenuButton.setClickable(true);
+      rematchButton.setClickable(true);
+    }
+
+    @Override
+    public void onAnimationRepeat( Animation animation )
+    { 
+    }
+
+    @Override
+    public void onAnimationStart( Animation animation )
+    {
     }
   };
   
@@ -354,12 +381,15 @@ public class GameEnd extends Activity
         text = (TextView) findViewById( R.id.GameEnd_GameOver_Over);
         text.setTypeface( antonFont );
         
-        //Set onclick listeners for game end buttons
+        // Set onclick listeners for game end buttons
         Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
-        mainMenuButton.setOnClickListener( MainMenuListener );
-
         Button rematchButton = (Button)this.findViewById( R.id.EndGameRematch );
+        mainMenuButton.setOnClickListener( MainMenuListener );
         rematchButton.setOnClickListener( RematchListener );
+        // buttons start disabled and get enabled once faded in
+        mainMenuButton.setClickable( false );
+        rematchButton.setClickable( false );
+
         
         // Animate the whole thing
         AnimateGameEnd(teams.size());
