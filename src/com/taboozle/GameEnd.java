@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -63,22 +64,23 @@ public class GameEnd extends Activity
     TranslateAnimation transGameOver = new TranslateAnimation( 
         Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
         Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-    transGameOver.setStartOffset( 1000 );
-    transGameOver.setDuration( 1000 );
-    transGameOver.setInterpolator( new DecelerateInterpolator());
+    transGameOver.setStartOffset( 500 );
+    transGameOver.setDuration( 500 );
+    transGameOver.setInterpolator( new AccelerateInterpolator());
     
     // Wait to Fade in Game Over - for drama.
     AlphaAnimation fadeInGameOver = new AlphaAnimation( 0.0f, 1.0f);
-    fadeInGameOver.setStartOffset( 1000 );
+    fadeInGameOver.setStartOffset( 500 );
     fadeInGameOver.setDuration( 0 );
     AlphaAnimation fadeOutGameOver = new AlphaAnimation(1.0f, 0.25f);
-    fadeOutGameOver.setStartOffset( 1000 );
+    fadeOutGameOver.setStartOffset( 500 );
     fadeOutGameOver.setDuration( 1000 );
 
     animGameOver.addAnimation(transGameOver);
     animGameOver.addAnimation(fadeInGameOver);
     animGameOver.addAnimation(fadeOutGameOver);
     animGameOver.setFillAfter(true);
+    animGameOver.setAnimationListener( this.winnerListener );
     
     RelativeLayout gameOverGroup = (RelativeLayout) this.findViewById( R.id.GameEnd_GameOverGroup);
     gameOverGroup.startAnimation( animGameOver );
@@ -88,9 +90,9 @@ public class GameEnd extends Activity
     TranslateAnimation transHeader = new TranslateAnimation( 
         Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
         Animation.RELATIVE_TO_PARENT, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
-    transHeader.setStartOffset(1000);
-    transHeader.setDuration(1000);
-    transHeader.setInterpolator( new DecelerateInterpolator());
+    transHeader.setStartOffset(500);
+    transHeader.setDuration(500);
+    transHeader.setInterpolator( new AccelerateInterpolator());
     transHeader.setFillBefore(true);
     
     RelativeLayout header = (RelativeLayout) this.findViewById( R.id.EndGame_HeaderGroup);
@@ -102,7 +104,7 @@ public class GameEnd extends Activity
     
     // Animate buttons to fade in as scoreboard translates
     AlphaAnimation fadeInButtons = new AlphaAnimation(0.0f, 1.0f);
-    fadeInButtons.setStartOffset( 2000 );
+    fadeInButtons.setStartOffset( 1000 );
     fadeInButtons.setDuration( 500 );
     // (should arguably be .invisible into .visible but I don't want timers)
     Button tempButton = (Button) this.findViewById( R.id.EndGameMainMenu);
@@ -112,11 +114,11 @@ public class GameEnd extends Activity
 
     
     // Slide in panels one at a time ( could do this in some sort of loop... )
-    final int PANEL_DELAY = 500;
+    final int PANEL_DELAY = 250;
     TranslateAnimation transPanel4 = new TranslateAnimation( 
         Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f, 
         Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-    long offset = 2500;
+    long offset = 1500;
     transPanel4.setStartOffset( offset );
     transPanel4.setDuration(250);
     transPanel4.setFillBefore(true);
@@ -164,7 +166,6 @@ public class GameEnd extends Activity
     transPanel1.setDuration(250);
     transPanel1.setFillBefore(true);
     transPanel1.setInterpolator(new DecelerateInterpolator());
-    transPanel1.setAnimationListener( winnerListener );
 
     RelativeLayout panel1 = (RelativeLayout) this.findViewById( R.id.GameEnd_Scores_1);
     panel1.startAnimation( transPanel1 );
@@ -188,10 +189,7 @@ public class GameEnd extends Activity
   {
     @Override
     public void onAnimationEnd( Animation animation )
-    { 
-      TaboozleApplication app = (TaboozleApplication) GameEnd.this.getApplication();
-      SoundManager sound = app.GetSoundManager();
-      sound.PlaySound( SoundManager.SOUND_WIN );
+    {
     }
 
     @Override
@@ -202,6 +200,10 @@ public class GameEnd extends Activity
     @Override
     public void onAnimationStart( Animation animation )
     {
+      // Play win sound
+      TaboozleApplication app = (TaboozleApplication) GameEnd.this.getApplication();
+      SoundManager sound = app.GetSoundManager();
+      sound.PlaySound( SoundManager.SOUND_WIN );
     }
   };
   
