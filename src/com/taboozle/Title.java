@@ -2,6 +2,7 @@ package com.taboozle;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
@@ -290,14 +292,21 @@ public void onCreate( Bundle savedInstanceState )
   button = (View) this.findViewById( R.id.Title_RulesButton);
   button.startAnimation(this.TranslateButtons(1));
   
-  View label = (View) this.findViewById( R.id.Title_PlayText);
+  // set font
+  Typeface antonFont = Typeface.createFromAsset(getAssets(), "fonts/Anton.ttf");
+
+  TextView label = (TextView) this.findViewById( R.id.Title_PlayText);
   label.startAnimation(this.TranslateLabels(4));
-  label = (View) this.findViewById( R.id.Title_BuzzText);
+  label.setTypeface(antonFont);
+  label = (TextView) this.findViewById( R.id.Title_BuzzText);
   label.startAnimation(this.TranslateLabels(3));
-  label = (View) this.findViewById( R.id.Title_SettingsText);
+  label.setTypeface(antonFont);
+  label = (TextView) this.findViewById( R.id.Title_SettingsText);
   label.startAnimation(this.TranslateLabels(2));
-  label = (View) this.findViewById( R.id.Title_RulesText);
+  label.setTypeface(antonFont);
+  label = (TextView) this.findViewById( R.id.Title_RulesText);
   label.startAnimation(this.TranslateLabels(1));
+  label.setTypeface(antonFont);
   
   // Animated title looks cheap.  commented out for now
   //View title = (View) this.findViewById( R.id.Title_Title);
