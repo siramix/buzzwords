@@ -261,18 +261,5 @@ public class Game
       }
     this.scores.put( teamId, prevScore + score);
   }
-
-  /**
-   * Adds a record of a played card to the database
-   * @param gameId - the game the card occurred in
-   * @param teamId - the team calling the card
-   * @param cardId - the card played
-   * @param turnScoreId - the turn the card was called in
-   * @param rws - whether the card was right, wrong or skipped
-   */
-  public void completeCard( long gameId, long teamId, long cardId,
-		  					long turnScoreId, long rws, long time )
-  {
-  }
   
 }
