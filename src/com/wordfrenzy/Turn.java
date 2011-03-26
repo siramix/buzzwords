@@ -524,7 +524,6 @@ public class Turn extends Activity
     
     this.AIsActive = !this.AIsActive;
 
-    //this.viewFlipper.setInAnimation(OutToLeftAnimation());    //Reverse animations temporarily
     this.viewFlipper.setInAnimation(BackInFromLeftAnimation());
     this.viewFlipper.setOutAnimation(BackOutToRightAnimation());
     

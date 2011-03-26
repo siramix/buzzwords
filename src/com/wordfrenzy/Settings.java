@@ -28,7 +28,7 @@ public class Settings extends PreferenceActivity
 		super.onCreate( savedInstanceState );
     Log.d( TAG, "onCreate()" ); 
 		
-		addPreferencesFromResource(R.xml.settings);
+		this.addPreferencesFromResource(R.xml.settings);
 		
 	}
 	

@@ -73,7 +73,6 @@ public class GameSetup extends Activity
 	        WordFrenzyApplication application =
 	          (WordFrenzyApplication) GameSetup.this.getApplication();
 	        GameManager gm = new GameManager(GameSetup.this);
-	        gm.prepDeck();
         
 	        gm.StartGame( teamList, rounds );
 	        application.SetGameManager( gm );

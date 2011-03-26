@@ -3,9 +3,11 @@ package com.wordfrenzy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,6 +22,7 @@ import com.wordfrenzy.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -52,29 +55,6 @@ public class GameManager
    * The position in the list of card ids (where we are in the "deck")
    */
   private int cardPosition;
-  
-  /**
-   * @return the cardPosition
-   */
-  public int getCardPosition()
-  {
-    return this.cardPosition;
-  }
-  
-  /**
-   * @param cardPosition the cardPosition to set
-   */
-  public void setCardPosition( int cardPosition )
-  {
-    this.cardPosition = cardPosition;
-  }
-  /**
-   * @return the arraylist of cards in your deck
-   */
-  public ArrayList<Card> getDeck()
-  {
-    return this.deck;
-  }
 
   /**
    * List of team objects
@@ -148,36 +128,6 @@ public class GameManager
     this.rws_value_rules[1] = -1; //Value for wrong cards
     this.rws_value_rules[2] = 0;  //set skip value to 0 if skip penalty is not on
   }
-  
-  /**
-   * Empties the current deck and instantiates a new ArrayList of cards.
-   */
-  public void clearDeck()
-  {
-    this.deck = new ArrayList<Card>();
-    this.cardPosition = -1;
-  }
-  
-  /**
-   * Kill all cards that came before
-   */
-  public void pruneDeck()
-  {
-    for( int i = 0; i < this.deck.size(); ++i )
-    {
-      if( this.deck.get( i ).getRws() != -1 )
-      {
-        this.deck.remove( i );
-        i--; // we removed so we need to hop back 
-      }
-      else
-      {
-        this.deck.remove( i );
-        break;
-      }
-    }
-    this.cardPosition = -1;
-  }
 
   /**
    * Query the database for all the cards it has. That query specifies a random
@@ -188,71 +138,88 @@ public class GameManager
   public void prepDeck()
   {
     Log.d( TAG, "prepDeck()" );
-  
-    this.deck = new ArrayList<Card>();
-    InputStream starterXML =
-        curContext.getResources().openRawResource(R.raw.starter);
-      DocumentBuilderFactory docBuilderFactory =
-        DocumentBuilderFactory.newInstance();
-      
-      Log.d( TAG, "Building DocBuilderFactory for card pack parsing from " + R.class.toString() );
-      try
-      {
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document doc = docBuilder.parse(starterXML);
-        NodeList cardNodes = doc.getElementsByTagName( "card" );
-        for(int i = 0; i < cardNodes.getLength(); i++)
+    
+    if( this.deck == null )
+    {
+      this.deck = new ArrayList<Card>();
+      InputStream starterXML =
+          curContext.getResources().openRawResource(R.raw.starter);
+        DocumentBuilderFactory docBuilderFactory =
+          DocumentBuilderFactory.newInstance();
+        
+        Log.d( TAG, "Building DocBuilderFactory for card pack parsing from " + R.class.toString() );
+        try
         {
-          NodeList titleWhiteAndBads = cardNodes.item( i ).getChildNodes();
-          Node titleNode = null;
-          Node badsNode = null;
-          for( int j = 0; j < titleWhiteAndBads.getLength(); j++ )
+          DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+          Document doc = docBuilder.parse(starterXML);
+          NodeList cardNodes = doc.getElementsByTagName( "card" );
+          for(int i = 0; i < cardNodes.getLength(); i++)
           {
-            String candidateName = titleWhiteAndBads.item( j ).getNodeName();
-            if( candidateName.equals( "title" ) )
+            NodeList titleWhiteAndBads = cardNodes.item( i ).getChildNodes();
+            Node titleNode = null;
+            Node badsNode = null;
+            for( int j = 0; j < titleWhiteAndBads.getLength(); j++ )
             {
-              titleNode = titleWhiteAndBads.item( j );
+              String candidateName = titleWhiteAndBads.item( j ).getNodeName();
+              if( candidateName.equals( "title" ) )
+              {
+                titleNode = titleWhiteAndBads.item( j );
+              }
+              else if( candidateName.equals( "bad-words" ) )
+              {
+                badsNode = titleWhiteAndBads.item( j );
+              }
+              else
+              {
+                continue; // We found some #text
+              }
             }
-            else if( candidateName.equals( "bad-words" ) )
+            String title = titleNode.getFirstChild().getNodeValue();
+            String badWords = "";
+            NodeList bads = badsNode.getChildNodes();
+            for( int j = 0; j < bads.getLength(); j++ )
             {
-              badsNode = titleWhiteAndBads.item( j );
+              String candidateName = bads.item( j ).getNodeName();
+              if( candidateName.equals( "word" ) )
+              {
+                badWords += bads.item( j ).getFirstChild().getNodeValue() + ",";
+              }
             }
-            else
-            {
-              continue; // We found some #text
-            }
+            // hack because I have a comma at the end
+            badWords = badWords.substring( 0, badWords.length() - 1 );
+  
+            Card card = new Card();
+            card.setTitle( title );
+            card.setBadWords( badWords );
+            this.deck.add( card );
           }
-          String title = titleNode.getFirstChild().getNodeValue();
-          String badWords = "";
-          NodeList bads = badsNode.getChildNodes();
-          for( int j = 0; j < bads.getLength(); j++ )
-          {
-            String candidateName = bads.item( j ).getNodeName();
-            if( candidateName.equals( "word" ) )
-            {
-              badWords += bads.item( j ).getFirstChild().getNodeValue() + ",";
-            }
-          }
-          // hack because I have a comma at the end
-          badWords = badWords.substring( 0, badWords.length() - 1 );
-
-          Card card = new Card();
-          card.setTitle( title );
-          card.setBadWords( badWords );
-          this.deck.add( card );
         }
+        catch( ParserConfigurationException e )
+        {
+          e.printStackTrace();
+        }
+        catch( SAXException e )
+        {
+          e.printStackTrace();
+        }
+        catch( IOException e )
+        {
+          e.printStackTrace();
+        }
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.curContext);
+        Random r = new Random();
+        int seed = sp.getInt( "deck_seed", r.nextInt() );
+        Editor editor = sp.edit();
+        editor.putInt( "deck_seed", seed );
+        editor.commit();
+        r = new Random(seed);
+        Collections.shuffle( this.deck, r );
+        this.cardPosition = sp.getInt( "deck_position", -1 );
+        Log.d( TAG, Integer.toString( sp.getInt( "deck_position", -1 ) ));
       }
-      catch( ParserConfigurationException e )
+    else
       {
-        e.printStackTrace();
-      }
-      catch( SAXException e )
-      {
-        e.printStackTrace();
-      }
-      catch( IOException e )
-      {
-        e.printStackTrace();
+      this.cleanDeck();
       }
   }
 
@@ -265,13 +232,18 @@ public class GameManager
   {
     Log.d( TAG, "getNextCard()" );
     // check deck bounds
-    if( this.cardPosition >= this.deck.size()-1 || this.cardPosition == -1 )
+    if( this.cardPosition >= this.deck.size()-1 )
     {
       this.prepDeck();
     }
 
     // return the card (it could be blank)
-    this.currentCard = this.deck.get( ++this.cardPosition ); 
+    this.currentCard = this.deck.get( ++this.cardPosition );
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.curContext);
+    Editor editor = sp.edit();
+    editor.putInt( "deck_position", this.cardPosition );
+    editor.commit();
+    
     return this.currentCard;
   }
 
@@ -314,7 +286,7 @@ public class GameManager
     this.numRounds = rounds;
     this.numTurns = this.teams.size()*this.numRounds;
     this.currentTurn++;
-    this.clearDeck();
+    this.prepDeck();
   }
 
   /**
@@ -327,8 +299,17 @@ public class GameManager
     int score = this.currentTeam.getScore() + GetTurnScore();
     this.currentTeam.setScore( score );
     this.incrementActiveTeamIndex();
-    this.currentCards = new LinkedList<Card>();
+    this.currentCards.clear();
     this.currentTurn++;
+  }
+  
+  public void cleanDeck()
+  {
+    for( Iterator<Card> itr = this.deck.iterator(); itr.hasNext(); )
+    {
+      itr.next().setRws( -1 );
+    }
+    this.cardPosition = -1;
   }
   
   public void incrementActiveTeamIndex()
@@ -364,7 +345,7 @@ public class GameManager
   {
     Log.d( TAG, "ProcessCard(" + rws + ")" );      
     this.currentCard.setRws( rws );
-    this.currentCards.add( this.currentCard );
+    this.currentCards.add( new Card(currentCard) );
   }
   
   /**
