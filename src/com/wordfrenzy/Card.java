@@ -1,12 +1,14 @@
-package com.taboozle;
+package com.wordfrenzy;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import com.wordfrenzy.R;
+
 import android.util.Log;
 
 /**
- * @author The Taboozle Team
+ * @author The WordFrenzy Team
  *
  * The Card class is a simple container class for storing the
  *

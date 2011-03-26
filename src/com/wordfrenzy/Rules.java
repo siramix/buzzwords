@@ -1,4 +1,6 @@
-package com.taboozle;
+package com.wordfrenzy;
+
+import com.wordfrenzy.R;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -9,8 +11,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 /**
- * @author The Taboozle Team
- * This activity class is responsible for displaying the rules of taboozle to the user.
+ * @author The WordFrenzy Team
+ * This activity class is responsible for displaying the rules of wordfrenzy to the user.
  */
 public class Rules extends Activity
 {
@@ -60,7 +62,7 @@ public class Rules extends Activity
   {
      Log.d( TAG, "onPause()" );   
      super.onPause();
-     TaboozleApplication application = (TaboozleApplication) this.getApplication();
+     WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      mp.pause();
   }
@@ -75,7 +77,7 @@ public class Rules extends Activity
      super.onResume();
      
      // Resume Title Music
-     TaboozleApplication application = (TaboozleApplication) this.getApplication();
+     WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      if( !mp.isPlaying())
      {

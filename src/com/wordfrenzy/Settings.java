@@ -1,4 +1,6 @@
-package com.taboozle;
+package com.wordfrenzy;
+
+import com.wordfrenzy.R;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -6,7 +8,7 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 
 /**
- * @author The Taboozle Team
+ * @author The WordFrenzy Team
  *
  * The Settings class handles the first screen of the Settings page.
  */
@@ -38,7 +40,7 @@ public class Settings extends PreferenceActivity
 	{
 	   Log.d( TAG, "onPause()" );   
 	   super.onPause();
-	   TaboozleApplication application = (TaboozleApplication) this.getApplication();
+	   WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
 	   MediaPlayer mp = application.GetMusicPlayer();
 	   mp.pause();
 	}
@@ -53,7 +55,7 @@ public class Settings extends PreferenceActivity
 	   super.onResume();
 	   
 	   // Resume Title Music
-	   TaboozleApplication application = (TaboozleApplication) this.getApplication();
+	   WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
 	   MediaPlayer mp = application.GetMusicPlayer();
 	   if( !mp.isPlaying())
 	   {

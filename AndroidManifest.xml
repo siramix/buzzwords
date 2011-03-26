@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.taboozle"
+      package="com.wordfrenzy"
       android:versionCode="1"
       android:versionName="1.0">
   <application android:icon="@drawable/icon" 
                android:label="@string/AppName" 
-               android:theme="@style/TaboozleTheme"
-               android:name=".TaboozleApplication"
+               android:theme="@style/WordFrenzyTheme"
+               android:name="com.wordfrenzy.WordFrenzyApplication"
                android:configChanges="keyboardHidden">
         <activity android:name=".SplashScreen"
                   android:label="@string/AppName"
@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.taboozle.intent.action.SPLASHSCREEN" />
+                <action android:name="com.wordfrenzy.intent.action.SPLASHSCREEN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>               
@@ -24,7 +24,7 @@
                   android:label="@string/AppName"
                   android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.taboozle.intent.action.TITLE" />
+                <action android:name="com.wordfrenzy.intent.action.TITLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -32,7 +32,7 @@
         		  android:label="@string/AppName"
         		  android:screenOrientation="portrait">
             <intent-filter>
-            	<action android:name="com.taboozle.intent.action.SETTINGS" />
+            	<action android:name="com.wordfrenzy.intent.action.SETTINGS" />
             	<category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>  
@@ -40,7 +40,7 @@
         		  android:label="@string/AppName"
         		  android:screenOrientation="portrait">
 			<intent-filter>
-				<action android:name="com.taboozle.intent.action.RULES" />
+				<action android:name="com.wordfrenzy.intent.action.RULES" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>        		  
         </activity>
@@ -48,7 +48,7 @@
         		  android:label="@string/AppName"
         		  android:screenOrientation="portrait">
 			<intent-filter>
-				<action android:name="com.taboozle.intent.action.BUZZER" />
+				<action android:name="com.wordfrenzy.intent.action.BUZZER" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>        		  
         </activity>
@@ -56,7 +56,7 @@
         		  android:label="@string/AppName"
         		  android:screenOrientation="portrait">
 			<intent-filter>
-				<action android:name="com.taboozle.intent.action.GAMESETUP" />
+				<action android:name="com.wordfrenzy.intent.action.GAMESETUP" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>        		  
         </activity>
@@ -64,7 +64,7 @@
                   android:label="@string/AppName"
                   android:screenOrientation="portrait">
             <intent-filter>
-         	   <action android:name="com.taboozle.intent.action.TURN"></action>
+         	   <action android:name="com.wordfrenzy.intent.action.TURN"></action>
          	   <category android:name="android.intent.category.DEFAULT" />
 			     </intent-filter>
         </activity>
@@ -76,7 +76,7 @@
              <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".TurnSummary"
+        <activity android:name="com.wordfrenzy.TurnSummary"
                   android:label="@string/AppName"
                   android:screenOrientation="portrait">
             <intent-filter>
@@ -88,5 +88,5 @@
 	<uses-sdk android:minSdkVersion="7" 
           android:targetSdkVersion="7"
           android:maxSdkVersion="7" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+   <uses-permission android:name="android.permission.VIBRATE" />
 </manifest> 

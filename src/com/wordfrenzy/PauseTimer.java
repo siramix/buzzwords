@@ -1,4 +1,4 @@
-package com.taboozle;
+package com.wordfrenzy;
 
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -7,7 +7,7 @@ import android.util.Log;
  * Adds pause and resume capabilities to CountDownTimer.  Requires implementation of abstract methods
  * for onFinish and onTick.  Assumes 200ms tick time.
  * 
- * @author The Taboozle Team
+ * @author The WordFrenzy Team
  */
 public abstract class PauseTimer
 {

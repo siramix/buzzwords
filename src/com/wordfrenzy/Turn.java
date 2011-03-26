@@ -1,4 +1,6 @@
-package com.taboozle;
+package com.wordfrenzy;
+
+import com.wordfrenzy.R;
 
 import android.app.*;
 import android.content.Context;
@@ -37,7 +39,7 @@ import android.util.Log;
  * This handles a single turn consisting of cards presented to a player for a
  * limited amount of time.
  *
- * @author The Taboozle Team
+ * @author The WordFrenzy Team
  */
 public class Turn extends Activity
 {
@@ -458,7 +460,7 @@ public class Turn extends Activity
     curGameManager.ProcessCard( GameData.RIGHT );
 
     //Only play sound once card has been processed so we don't confuse the user
-    TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+    WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
     SoundManager sound = application.GetSoundManager();
     sound.PlaySound( SoundManager.SOUND_RIGHT );
     
@@ -484,7 +486,7 @@ public class Turn extends Activity
     ShowCard();
 
     //Only play sound once card has been processed so we don't confuse the user
-    TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+    WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
     SoundManager sound = application.GetSoundManager();
     sound.PlaySound( SoundManager.SOUND_WRONG );
   }
@@ -505,7 +507,7 @@ public class Turn extends Activity
     this.curGameManager.ProcessCard( GameData.SKIP );
 
     //Only play sound once card has been processed so we don't confuse the user
-    TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+    WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
     SoundManager sound = application.GetSoundManager();
     sound.PlaySound( SoundManager.SOUND_SKIP );
     
@@ -656,8 +658,8 @@ public class Turn extends Activity
     Log.d( TAG, "setupViewReferences()");
     this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
-    TaboozleApplication application =
-      (TaboozleApplication) this.getApplication();
+    WordFrenzyApplication application =
+      (WordFrenzyApplication) this.getApplication();
     this.curGameManager = application.GetGameManager();
 
     this.pauseOverlay = (ImageView) this.findViewById( R.id.PauseImageView );
@@ -870,7 +872,7 @@ public class Turn extends Activity
       builder.setMessage( "Are you sure you want to end the current game?" )
              .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                public void onClick(DialogInterface dialog, int id) {
-                 TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+                 WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
                  GameManager gm = application.GetGameManager();
                  gm.EndGame();
                  startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
@@ -885,7 +887,7 @@ public class Turn extends Activity
       break;
     case DIALOG_READY_ID:
       // Play team ready sound
-      TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+      WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
       SoundManager sound = application.GetSoundManager();
       sound.PlaySound( SoundManager.SOUND_TEAMREADY );
       
@@ -902,7 +904,7 @@ public class Turn extends Activity
                 Turn.this.startTimer();
                 
                 // Start the turn music
-                TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
+                WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
                 GameManager gm = application.GetGameManager();
                 int musicId = R.raw.mus_round60;
                 switch ( gm.GetTurnTime())
@@ -947,7 +949,7 @@ public class Turn extends Activity
     this.pauseTextLayout.setVisibility( View.INVISIBLE);
     
     // Resume Music
-    TaboozleApplication application = (TaboozleApplication) this.getApplication();
+    WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
     MediaPlayer mp = application.GetMusicPlayer();
     if( !mp.isPlaying() )
     {
@@ -987,7 +989,7 @@ public class Turn extends Activity
     pauseTextLayout.setVisibility( View.VISIBLE);
     
     // Stop music
-    TaboozleApplication application = (TaboozleApplication) this.getApplication();
+    WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
     MediaPlayer mp = application.GetMusicPlayer();
     mp.pause();
     

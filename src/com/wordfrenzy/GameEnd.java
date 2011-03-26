@@ -1,4 +1,4 @@
-package com.taboozle;
+package com.wordfrenzy;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,14 +25,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.taboozle.TaboozleApplication;
+
+import com.wordfrenzy.R;
+import com.wordfrenzy.WordFrenzyApplication;
 
 /**
  * The GameEnd class is the final screen of the application, called
  * when either the number of turns is up, the time is up, the end game
  * button is clicked, or any other number of ways to end a game.
  *
- * @author Taboozle team
+ * @author WordFrenzy team
  *
  */
 public class GameEnd extends Activity
@@ -198,7 +200,7 @@ public class GameEnd extends Activity
     public void onAnimationStart( Animation animation )
     {
       // Play win sound
-      TaboozleApplication app = (TaboozleApplication) GameEnd.this.getApplication();
+      WordFrenzyApplication app = (WordFrenzyApplication) GameEnd.this.getApplication();
       SoundManager sound = app.GetSoundManager();
       sound.PlaySound( SoundManager.SOUND_WIN );
     }
@@ -251,8 +253,8 @@ public class GameEnd extends Activity
       {
         Log.d( TAG, "MainMenuListener onClick()" );
         
-        TaboozleApplication application =
-          (TaboozleApplication) GameEnd.this.getApplication();
+        WordFrenzyApplication application =
+          (WordFrenzyApplication) GameEnd.this.getApplication();
         
         GameManager curgm = application.GetGameManager();
         GameManager newgm = new GameManager(GameEnd.this);
@@ -278,8 +280,8 @@ public class GameEnd extends Activity
   		this.setContentView( R.layout.gameend );
   	    this.res = this.getResources();
   
-  		TaboozleApplication application =
-  			(TaboozleApplication) this.getApplication();
+  		WordFrenzyApplication application =
+  			(WordFrenzyApplication) this.getApplication();
   		curGameManager = application.GetGameManager();		
 
   	    List<Team> teams = curGameManager.GetTeams();

@@ -1,4 +1,4 @@
-package com.taboozle;
+package com.wordfrenzy;
 
 import android.app.Application;
 import android.content.Context;
@@ -6,24 +6,24 @@ import android.media.MediaPlayer;
 import android.util.Log;
 
 /**
- * @author The Taboozle Team
+ * @author The WordFrenzy Team
  * Class extending the standard android application. This allows us to refer
- * to one GameManager from every activity within taboozle.
+ * to one GameManager from every activity within WordFrenzy.
  */
-public class TaboozleApplication extends Application
+public class WordFrenzyApplication extends Application
 {
   /**
    * logging tag
    */
-  public static String TAG = "TaboozleApplication";
+  public static String TAG = "WordFrenzyApplication";
   
   /**
-   * The GameManager for all of taboozle
+   * The GameManager for all of WordFrenzy
    */
   private GameManager gameManager;
 
   /**
-   * The SoundFXManager for all of taboozle
+   * The SoundFXManager for all of WordFrenzy
    */
   private SoundManager soundManager;
   
@@ -35,10 +35,10 @@ public class TaboozleApplication extends Application
   /**
    * Default constructor
    */
-  public TaboozleApplication()
+  public WordFrenzyApplication()
   {
     super();
-    Log.d( TAG, "TaboozleApplication()" ); 
+    Log.d( TAG, "WordFrenzyApplication()" ); 
   }
 
   /**

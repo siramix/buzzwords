@@ -1,4 +1,6 @@
-package com.taboozle;
+package com.wordfrenzy;
+
+import com.wordfrenzy.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +14,7 @@ import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 
 /**
- * @author The Taboozle Team
+ * @author The WordFrenzy Team
  *
  * The Buzzer class is the activity for a simple image button that acts as a portable buzzer.
  * It plays a sound when held, and stops on release.

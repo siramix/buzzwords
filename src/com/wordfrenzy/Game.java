@@ -1,4 +1,4 @@
-package com.taboozle;
+package com.wordfrenzy;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +14,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.wordfrenzy.R;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -22,10 +24,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * @author The Taboozle Team
+ * @author The WordFrenzy Team
  *
  * The Game class is a database abstraction class that deals with the database
- * transaction necessary to care a game of taboozle forward. Game should only
+ * transaction necessary to care a game of wordfrenzy forward. Game should only
  * be used by game manager as a matter of design.
  */
 public class Game extends SQLiteOpenHelper

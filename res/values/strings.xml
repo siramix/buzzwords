@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="AppName">taboozle</string>
-  <string name="IntentTitle">com.taboozle.intent.action.TITLE</string>
-  <string name="IntentSettings">com.taboozle.intent.action.SETTINGS</string>
-  <string name="IntentRules">com.taboozle.intent.action.RULES</string>
-  <string name="IntentBuzzer">com.taboozle.intent.action.BUZZER</string>
-  <string name="IntentAboutUs">com.taboozle.intent.action.ABOUTUS</string>
-  <string name="IntentGameSetup">com.taboozle.intent.action.GAMESETUP</string>
-  <string name="IntentTurn">com.taboozle.intent.action.TURN</string>
+  <string name="AppName">wordfrenzy</string>
+  <string name="IntentTitle">com.wordfrenzy.intent.action.TITLE</string>
+  <string name="IntentSettings">com.wordfrenzy.intent.action.SETTINGS</string>
+  <string name="IntentRules">com.wordfrenzy.intent.action.RULES</string>
+  <string name="IntentBuzzer">com.wordfrenzy.intent.action.BUZZER</string>
+  <string name="IntentAboutUs">com.wordfrenzy.intent.action.ABOUTUS</string>
+  <string name="IntentGameSetup">com.wordfrenzy.intent.action.GAMESETUP</string>
+  <string name="IntentTurn">com.wordfrenzy.intent.action.TURN</string>
   <string name="menu_EndGame">MENU_ENDGAME</string>
   <string name="menu_Rules">MENU_RULES</string>
   

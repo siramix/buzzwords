@@ -1,4 +1,6 @@
-package com.taboozle;
+package com.wordfrenzy;
+
+import com.wordfrenzy.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,9 +22,9 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 
 /**
- * This is the activity class that kicks off Taboozle
+ * This is the activity class that kicks off WordFrenzy
  * 
- * @author The Taboozle Team
+ * @author The WordFrenzy Team
  */
 public class Title extends Activity
 {
@@ -256,7 +258,7 @@ public void onCreate( Bundle savedInstanceState )
 	super.onCreate( savedInstanceState );
   Log.d( TAG, "onCreate()" );               
   
-  TaboozleApplication application = (TaboozleApplication) this.getApplication();
+  WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
   MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
   application.CreateSoundManager( this.getBaseContext() );
   mp.setLooping(true);
@@ -333,7 +335,7 @@ public void onPause()
    super.onPause();
    if( !musicHandled )
    {
-     TaboozleApplication application = (TaboozleApplication) this.getApplication();
+     WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      mp.pause();
    }
@@ -349,7 +351,7 @@ public void onResume()
    super.onResume();
    
    // Resume Title Music
-   TaboozleApplication application = (TaboozleApplication) this.getApplication();
+   WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
    MediaPlayer mp = application.GetMusicPlayer();
    mp.start();   
    // set flag to let onStop handle music

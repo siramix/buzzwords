@@ -1,6 +1,8 @@
-package com.taboozle;
+package com.wordfrenzy;
 
 import java.util.LinkedList;
+
+import com.wordfrenzy.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,7 +21,7 @@ import android.widget.TextView;
 import android.view.animation.Animation;
 import android.view.animation.AlphaAnimation;
 /**
- * @author The Taboozle Team
+ * @author The WordFrenzy Team
  * This activity class is responsible for gathering game information before the
  * game starts such as number of teams and team names
  */
@@ -38,7 +40,7 @@ public class GameSetup extends Activity
             {R.id.GameSetupRounds2,12},
             {R.id.GameSetupRounds3,16}};
 
-  public static final String PREFS_NAME = "gamesetupprefs";     //stored in data/data/taboozle/shared_preferences
+  public static final String PREFS_NAME = "gamesetupprefs";     //stored in data/data/wordfrenzy/shared_preferences
   private static final String TEAMA_PREFKEY = "teamA_enabled";  //StringID for Team A quadrant
   private static final String TEAMB_PREFKEY = "teamB_enabled";  //StringID for Team B quadrant
   private static final String TEAMC_PREFKEY = "teamC_enabled";  //StringID for Team C quadrant
@@ -68,8 +70,8 @@ public class GameSetup extends Activity
 	        
 	        int rounds = getCheckedRadioValue();
 	        
-	        TaboozleApplication application =
-	          (TaboozleApplication) GameSetup.this.getApplication();
+	        WordFrenzyApplication application =
+	          (WordFrenzyApplication) GameSetup.this.getApplication();
 	        GameManager gm = new GameManager(GameSetup.this);
 	        gm.PrepDeck();
         
@@ -363,7 +365,7 @@ public void onCreate( Bundle savedInstanceState )
   {
      Log.d( TAG, "onPause()" );   
      super.onPause();
-     TaboozleApplication application = (TaboozleApplication) this.getApplication();
+     WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      mp.pause();
      
@@ -381,7 +383,7 @@ public void onCreate( Bundle savedInstanceState )
      super.onResume();
      
      // Resume Title Music
-     TaboozleApplication application = (TaboozleApplication) this.getApplication();
+     WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      if( !mp.isPlaying())
      {

@@ -1,9 +1,11 @@
-package com.taboozle;
+package com.wordfrenzy;
 
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.wordfrenzy.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,7 +13,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
- * @author The Taboozle Team
+ * @author The WordFrenzy Team
  *
  * The Game Manager is a class that will manage all aspects of the game scoring
  * and general bookkeeping. This is the go-to class for creating new games,
@@ -241,7 +243,7 @@ public class GameManager implements Serializable
 
   /**
    * Get the next card in our Game's "deck" and set a reference to it to
-   * currentCard. This is the virtual equivalent of placing the taboozle card
+   * currentCard. This is the virtual equivalent of placing the wordfrenzy card
    * on the staging area.
    * @return the card currently in play
    */

@@ -1,9 +1,11 @@
 /**
  * 
  */
-package com.taboozle;
+package com.wordfrenzy;
 
 import java.util.Comparator;
+
+import com.wordfrenzy.R;
 
 
 /**

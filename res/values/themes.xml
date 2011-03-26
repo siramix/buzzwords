@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <style name="TaboozleTheme" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
-        <item name="android:buttonStyle">@style/TaboozleButton</item>
-        <item name="android:radioButtonStyle">@style/TaboozleRadioButton</item>
+    <style name="WordFrenzyTheme" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <item name="android:buttonStyle">@style/WordFrenzyButton</item>
+        <item name="android:radioButtonStyle">@style/WordFrenzyRadioButton</item>
     </style>
 </resources>

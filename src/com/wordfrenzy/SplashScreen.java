@@ -1,4 +1,6 @@
-package com.taboozle;
+package com.wordfrenzy;
+
+import com.wordfrenzy.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,7 +19,7 @@ import android.widget.ImageView;
  * This is the splash screen for the app's intro.  It should be started before the title
  * and should actually start the music.
  * 
- * @author Taboozle Team
+ * @author WordFrenzy Team
  *
  */
 public class SplashScreen extends Activity
@@ -99,7 +101,7 @@ public class SplashScreen extends Activity
     logoram.setVisibility(View.GONE);
     
     finish();
-    startActivity(new Intent("com.taboozle.intent.action.TITLE"));
+    startActivity(new Intent("com.wordfrenzy.intent.action.TITLE"));
   }
   
   /**
