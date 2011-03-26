@@ -20,6 +20,10 @@ public class Card
    */
   private static final String TAG = "Card";
 
+  public static final int RIGHT = 0;
+  public static final int WRONG = 1;
+  public static final int SKIP = 2;
+  
   /**
    * The id of the card in the database
    */

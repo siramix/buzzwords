@@ -1,6 +1,5 @@
 package com.wordfrenzy;
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,17 +19,12 @@ import android.util.Log;
  * turns, and teams. The application shall also use this class for preparing
  * and retrieving cards from the virtual deck.
  */
-public class GameManager implements Serializable
+public class GameManager
 {
   /**
    * logging tag
    */
   public static String TAG = "GameManager";
-  
-  /**
-   *
-   */
-  private static final long serialVersionUID = 1L;
 
   /**
    * The game object used for database access
@@ -174,7 +168,6 @@ public class GameManager implements Serializable
     this.WriteTurnResults();
     int score = this.currentTeam.getScore() + GetTurnScore();
     this.currentTeam.setScore( score );
-    this.WriteGameResults();
     this.teamIterator = this.teams.iterator();
   }
 
@@ -186,39 +179,14 @@ public class GameManager implements Serializable
   private void WriteTurnResults()
   {
     Log.d( TAG, "WriteTurnResults()" );
-	  long scoreTotal = 0;
+	  int scoreTotal = 0;
 
 	  /* Iterate through cards and total the score for the round */
 	  scoreTotal = this.GetTurnScore();
 
-	  long currentTurnScoreID = game.newTurn( this.currentGameId,
-	                                          this.currentTeam.ordinal(),
-	                                          this.currentRound,
-	                                          scoreTotal );
+	  this.game.newTurn( this.currentTeam.ordinal(), scoreTotal );
 
-	  /* Once we've calculated the score and gotten the ID, write to DB */
-	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
-	  {
-	    Card card = it.next();
-	    game.completeCard( this.currentGameId, this.currentTeam.ordinal(),
-	                       card.getId(), currentTurnScoreID,
-	                       card.getRws(), card.getTime() );
-	  }
 	  this.game.pruneDeck();
-  }
-  /**
-   * Write the game results to the database.  Game results consist of an entry for
-   * each team in the game, including their score and ID.
-   */
-  private void WriteGameResults()
-  {
-    Log.d( TAG, "WriteGameResults()" );
-    Iterator<Team> iterator = this.teams.iterator();
-    while( iterator.hasNext() )
-    {
-      Team cur = iterator.next();
-      game.completeGame( this.currentGameId, cur.ordinal(), cur.getScore());
-    }
   }
 
   /**
@@ -315,18 +283,6 @@ public class GameManager implements Serializable
   {
     Log.d( TAG, "GetTeams()" );                  
 	  return this.teams;
-  }
-
-  /**
-   * Return an array of scores for each round for a given team.
-   * @return Array of longs with an element for the team's scores for every 
-   * round, first to last.
-   */
-  public int[] GetRoundScores(Team team)
-  {
-    Log.d( TAG, "GetRoundScores()" );                      
-    return this.game.getRoundScores( team.ordinal(), 
-                                     this.currentGameId );
   }
   
   /**

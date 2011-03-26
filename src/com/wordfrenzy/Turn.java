@@ -457,7 +457,7 @@ public class Turn extends Activity
     AIsActive = !AIsActive;   
     flipper.showNext();
     this.setCardTime();
-    curGameManager.ProcessCard( GameData.RIGHT );
+    curGameManager.ProcessCard( Card.RIGHT );
 
     //Only play sound once card has been processed so we don't confuse the user
     WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
@@ -482,7 +482,7 @@ public class Turn extends Activity
     flipper.showNext();
     
     Turn.this.setCardTime();
-    curGameManager.ProcessCard( GameData.WRONG );
+    curGameManager.ProcessCard( Card.WRONG );
     ShowCard();
 
     //Only play sound once card has been processed so we don't confuse the user
@@ -504,7 +504,7 @@ public class Turn extends Activity
     AIsActive = !AIsActive;
     this.viewFlipper.showNext();
     this.setCardTime();
-    this.curGameManager.ProcessCard( GameData.SKIP );
+    this.curGameManager.ProcessCard( Card.SKIP );
 
     //Only play sound once card has been processed so we don't confuse the user
     WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
