@@ -533,7 +533,7 @@ public class Turn extends Activity
     this.setActiveCard();
     ArrayAdapter<String> cardAdapter =
       new ArrayAdapter<String>( this, R.layout.word );
-    Card curCard = this.curGameManager.GetPreviousCard();
+    Card curCard = this.curGameManager.getPreviousCard();
     this.cardTitle.setText( curCard.getTitle() );
     for( int i = 0; i < curCard.getBadWords().size(); i++ )
     {
@@ -584,7 +584,7 @@ public class Turn extends Activity
 
     ArrayAdapter<String> cardAdapter =
     new ArrayAdapter<String>( this, R.layout.word );
-    Card curCard = this.curGameManager.GetNextCard();
+    Card curCard = this.curGameManager.getNextCard();
     this.cardTitle.setText( curCard.getTitle() );
     for( int i = 0; i < curCard.getBadWords().size(); i++ )
     {

@@ -258,7 +258,7 @@ public class GameEnd extends Activity
         
         GameManager curgm = application.GetGameManager();
         GameManager newgm = new GameManager(GameEnd.this);
-        newgm.PrepDeck();
+        newgm.prepDeck();
         newgm.StartGame( curgm.GetTeams(), curgm.GetNumRounds() );
         application.SetGameManager( newgm );
         

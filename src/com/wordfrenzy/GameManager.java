@@ -1,8 +1,20 @@
 package com.wordfrenzy;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.wordfrenzy.R;
 
@@ -25,16 +37,44 @@ public class GameManager
    * logging tag
    */
   public static String TAG = "GameManager";
+  
+  /**
+   * The current context (used for database creation and initialization)
+   */
+  private final Context curContext;
 
   /**
-   * The game object used for database access
+   * The list of cardIds that we pull from (our "deck" of cards)
    */
-  private final Game game;
+  private ArrayList<Card> deck;
 
   /**
-   * The id of the game currently being played
+   * The position in the list of card ids (where we are in the "deck")
    */
-  private int currentGameId;
+  private int cardPosition;
+  
+  /**
+   * @return the cardPosition
+   */
+  public int getCardPosition()
+  {
+    return this.cardPosition;
+  }
+  
+  /**
+   * @param cardPosition the cardPosition to set
+   */
+  public void setCardPosition( int cardPosition )
+  {
+    this.cardPosition = cardPosition;
+  }
+  /**
+   * @return the arraylist of cards in your deck
+   */
+  public ArrayList<Card> getDeck()
+  {
+    return this.deck;
+  }
 
   /**
    * List of team objects
@@ -88,23 +128,171 @@ public class GameManager
   public GameManager( Context context )
   {
     Log.d( TAG, "GameManager()" );
+ 
+    this.curContext = context;
+ 
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     
     this.currentRound = 0;
     this.currentTurn = 0;
     this.currentCards = new LinkedList<Card>();
-    this.game = new Game( context );
     this.rws_resourceIDs = new int[] {R.drawable.right, R.drawable.wrong, R.drawable.skip};
     
     this.turn_time = Integer.parseInt(sp.getString("turn_timer", "10")) * 1000;
     
-    System.out.println("Turn time is " + turn_time );    
+    Log.d( TAG, "Turn time is " + turn_time );    
     this.rws_value_rules = new int[3];
     
     //Set score values for game
     this.rws_value_rules[0] = 1;  //Value for correct cards
     this.rws_value_rules[1] = -1; //Value for wrong cards
     this.rws_value_rules[2] = 0;  //set skip value to 0 if skip penalty is not on
+  }
+  
+  /**
+   * Empties the current deck and instantiates a new ArrayList of cards.
+   */
+  public void clearDeck()
+  {
+    this.deck = new ArrayList<Card>();
+    this.cardPosition = -1;
+  }
+  
+  /**
+   * Kill all cards that came before
+   */
+  public void pruneDeck()
+  {
+    for( int i = 0; i < this.deck.size(); ++i )
+    {
+      if( this.deck.get( i ).getRws() != -1 )
+      {
+        this.deck.remove( i );
+        i--; // we removed so we need to hop back 
+      }
+      else
+      {
+        this.deck.remove( i );
+        break;
+      }
+    }
+    this.cardPosition = -1;
+  }
+
+  /**
+   * Query the database for all the cards it has. That query specifies a random
+   * order; thus, a cursor full of longs is returned. We push those longs into
+   * our newly initialized ArrayList, cardIds. Note the cardIdPosition is set
+   * to zero indicating the first card id in our "deck."
+   */
+  public void prepDeck()
+  {
+    Log.d( TAG, "prepDeck()" );
+  
+    this.deck = new ArrayList<Card>();
+    InputStream starterXML =
+        curContext.getResources().openRawResource(R.raw.starter);
+      DocumentBuilderFactory docBuilderFactory =
+        DocumentBuilderFactory.newInstance();
+      
+      Log.d( TAG, "Building DocBuilderFactory for card pack parsing from " + R.class.toString() );
+      try
+      {
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(starterXML);
+        NodeList cardNodes = doc.getElementsByTagName( "card" );
+        for(int i = 0; i < cardNodes.getLength(); i++)
+        {
+          NodeList titleWhiteAndBads = cardNodes.item( i ).getChildNodes();
+          Node titleNode = null;
+          Node badsNode = null;
+          for( int j = 0; j < titleWhiteAndBads.getLength(); j++ )
+          {
+            String candidateName = titleWhiteAndBads.item( j ).getNodeName();
+            if( candidateName.equals( "title" ) )
+            {
+              titleNode = titleWhiteAndBads.item( j );
+            }
+            else if( candidateName.equals( "bad-words" ) )
+            {
+              badsNode = titleWhiteAndBads.item( j );
+            }
+            else
+            {
+              continue; // We found some #text
+            }
+          }
+          String title = titleNode.getFirstChild().getNodeValue();
+          String badWords = "";
+          NodeList bads = badsNode.getChildNodes();
+          for( int j = 0; j < bads.getLength(); j++ )
+          {
+            String candidateName = bads.item( j ).getNodeName();
+            if( candidateName.equals( "word" ) )
+            {
+              badWords += bads.item( j ).getFirstChild().getNodeValue() + ",";
+            }
+          }
+          // hack because I have a comma at the end
+          badWords = badWords.substring( 0, badWords.length() - 1 );
+
+          Card card = new Card();
+          card.setTitle( title );
+          card.setBadWords( badWords );
+          this.deck.add( card );
+        }
+      }
+      catch( ParserConfigurationException e )
+      {
+        e.printStackTrace();
+      }
+      catch( SAXException e )
+      {
+        e.printStackTrace();
+      }
+      catch( IOException e )
+      {
+        e.printStackTrace();
+      }
+  }
+
+  /**
+   * Get the card indicated by the cardIdPosition. If we've dealt past the end
+   * of the deck, we should prep the deck.
+   * @return the card we want
+   */
+  public Card getNextCard()
+  {
+    Log.d( TAG, "getNextCard()" );
+    // check deck bounds
+    if( this.cardPosition >= this.deck.size()-1 || this.cardPosition == -1 )
+    {
+      this.prepDeck();
+    }
+
+    // return the card (it could be blank)
+    this.currentCard = this.deck.get( ++this.cardPosition ); 
+    return this.currentCard;
+  }
+
+  /**
+   * Return the previous card
+   * @return the previous card in the deck
+   */
+  public Card getPreviousCard()
+  {
+    Log.d( TAG, "getPreviousCard()" );
+    
+    if( this.cardPosition == 0 )
+    {
+      this.cardPosition = 1; 
+    }
+    this.currentCard = this.deck.get( --this.cardPosition );
+    if( !this.currentCards.isEmpty() )
+    {
+      this.currentCards.removeLast();
+    }
+    return this.currentCard;
   }
 
   /**
@@ -115,7 +303,6 @@ public class GameManager
   public void StartGame( List<Team> teams, int rounds )
   {
     Log.d( TAG, "StartGame()" );
-    this.currentGameId = this.game.newGame();
     this.teams = teams;
     Iterator<Team> itr = teams.iterator();
     for(itr = teams.iterator(); itr.hasNext();)
@@ -127,7 +314,7 @@ public class GameManager
     this.numRounds = rounds;
     this.numTurns = this.teams.size()*this.numRounds;
     this.currentTurn++;
-    this.game.clearDeck();
+    this.clearDeck();
   }
 
   /**
@@ -137,7 +324,6 @@ public class GameManager
   public void NextTurn()
   {
     Log.d( TAG, "NextTurn()" );
-    this.WriteTurnResults();
     int score = this.currentTeam.getScore() + GetTurnScore();
     this.currentTeam.setScore( score );
     this.incrementActiveTeamIndex();
@@ -165,28 +351,9 @@ public class GameManager
   public void EndGame()
   {
     Log.d( TAG, "EndGame()" );
-    this.WriteTurnResults();
     int score = this.currentTeam.getScore() + GetTurnScore();
     this.currentTeam.setScore( score );
     this.teamIterator = this.teams.iterator();
-  }
-
-  /**
-   * Write the results of a turn to the database.  Totals the score of all
-   * cards for a round, following any end-round modifications (if this is
-   * allowed.)  Also enters the results for each card.
-   */
-  private void WriteTurnResults()
-  {
-    Log.d( TAG, "WriteTurnResults()" );
-	  int scoreTotal = 0;
-
-	  /* Iterate through cards and total the score for the round */
-	  scoreTotal = this.GetTurnScore();
-
-	  this.game.newTurn( this.currentTeam.ordinal(), scoreTotal );
-
-	  this.game.pruneDeck();
   }
 
   /**
@@ -198,44 +365,6 @@ public class GameManager
     Log.d( TAG, "ProcessCard(" + rws + ")" );      
     this.currentCard.setRws( rws );
     this.currentCards.add( this.currentCard );
-  }
-
-  /**
-   * Prepare the deck to be dealt. Essentially a pass-through call to Game.
-   */
-  public void PrepDeck()
-  {
-    Log.d( TAG, "PrepDeck()" );          
-    this.game.prepDeck();
-  }
-
-  /**
-   * Get the next card in our Game's "deck" and set a reference to it to
-   * currentCard. This is the virtual equivalent of placing the wordfrenzy card
-   * on the staging area.
-   * @return the card currently in play
-   */
-  public Card GetNextCard()
-  {
-    Log.d( TAG, "GetNextCard()" );              
-    this.currentCard = this.game.getNextCard();
-    return this.currentCard;
-  }
-  
-  /**
-   * Get the previous card. This is like going back to a previously called
-   * card.
-   * @return the previously played card
-   */
-  public Card GetPreviousCard()
-  {
-    Log.d( TAG, "GetPreviousCard()" );
-    this.currentCard = this.game.getPreviousCard();
-    if( !this.currentCards.isEmpty() )
-    {
-      this.currentCards.removeLast();
-    }
-    return this.currentCard;
   }
   
   /**
@@ -335,16 +464,6 @@ public class GameManager
   {
     Log.d( TAG, "GetTurnTime()" );    
     return this.turn_time;
-  }
-  
-  /**
-   * Accessor for the game ID for the game in progress.
-   * @return long representing the database ID of the game in progress.
-   */
-  public long GetGameId()
-  {
-    Log.d( TAG, "GetGameId()" );
-    return this.currentGameId;
   }
   
   public int GetNumberOfTurnsRemaining()
