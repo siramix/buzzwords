@@ -868,7 +868,6 @@ public class Turn extends Activity
     case DIALOG_GAMEOVER_ID:
       builder = new AlertDialog.Builder(this);
       builder.setMessage( "Are you sure you want to end the current game?" )
-             .setTitle("Confirm End Game")
              .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                public void onClick(DialogInterface dialog, int id) {
                  TaboozleApplication application = (TaboozleApplication) Turn.this.getApplication();
@@ -892,7 +891,7 @@ public class Turn extends Activity
       
       String curTeam = this.curGameManager.GetActiveTeam().getName();
       builder = new AlertDialog.Builder(this);
-      builder.setTitle( "Ready " + curTeam + "?" )
+      builder.setMessage( "Ready " + curTeam + "?" )
              .setCancelable(false)
              .setPositiveButton("START!", new DialogInterface.OnClickListener() {
               

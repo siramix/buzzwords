@@ -226,7 +226,6 @@ public class TurnSummary extends Activity
    case DIALOG_GAMEOVER_ID:
      builder = new AlertDialog.Builder(this);
      builder.setMessage( "Are you sure you want to end the current game?" )
-            .setTitle("Confirm End Game")
             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
               public void onClick(DialogInterface dialog, int id) {
                 TaboozleApplication application = (TaboozleApplication) TurnSummary.this.getApplication();
