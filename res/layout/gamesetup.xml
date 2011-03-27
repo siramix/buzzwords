@@ -6,11 +6,10 @@
 	<RelativeLayout android:layout_height="wrap_content"
 		android:id="@+id/GameSetup_HeaderGroup" android:layout_width="fill_parent"
 		android:layout_alignParentTop="true">
-		<View android:id="@+id/View01" android:layout_width="fill_parent"
-			android:background="@color/genericBG_trim" android:layout_height="34dp"></View>
-		<View android:layout_width="fill_parent" android:id="@+id/View02"
-			android:layout_below="@id/View01" android:background="#555555"
-			android:layout_marginTop="1dp" android:layout_height="2dp"></View>
+		<View android:layout_width="fill_parent"
+			android:background="@color/genericBG_trim" android:layout_height="34dp" android:id="@+id/GameSetup_HeaderBG"></View>
+		<View android:layout_width="fill_parent" android:background="#555555"
+			android:layout_marginTop="1dp" android:layout_height="2dp" android:id="@+id/GameSetup_HeaderFoot" android:layout_below="@id/GameSetup_HeaderBG"></View>
 		<TextView android:layout_height="wrap_content" android:id="@+id/GameSetupTitle"
 			android:textColor="@color/title" android:layout_centerHorizontal="true"
 			android:layout_width="wrap_content" android:textSize="28dp"
@@ -77,9 +76,9 @@
 	</RelativeLayout>
 	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:id="@+id/GameSetup_HelpText_Team"
-		android:textSize="20dp" android:layout_below="@id/GameSetup_TeamGroup"
+		android:layout_below="@id/GameSetup_TeamGroup"
 		android:layout_centerHorizontal="true" android:width="300dp"
-		android:text="Tap on a team to add or remove it." android:textColor="#999999"></TextView>
+		android:textColor="#999999" android:textSize="18dp" android:text="Tap teams to add or remove them."></TextView>
 
 	<RelativeLayout android:layout_width="wrap_content"
 		android:id="@+id/GameSetup_TurnGroup" android:layout_height="fill_parent"
@@ -100,10 +99,9 @@
 				android:text="Turns" android:textColor="#FFFFFF"></TextView>
 
 		</RelativeLayout>
-		<RadioGroup android:id="@+id/RadioGroup01"
-			android:checkedButton="@+id/GameSetupRounds5" android:layout_width="fill_parent"
+		<RadioGroup android:checkedButton="@+id/GameSetupRounds5" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:orientation="horizontal"
-			android:layout_below="@+id/GameSetup_SubHeader_Turns">
+			android:layout_below="@+id/GameSetup_SubHeader_Turns" android:id="@+id/GameSetup_RadioGroup">
 			<RadioButton android:layout_height="wrap_content"
 				android:text="1" android:id="@+id/GameSetupRounds0"
 				android:textSize="28dp" android:layout_gravity="center_horizontal"
@@ -122,15 +120,14 @@
 				android:layout_width="fill_parent" android:textSize="28dp"></RadioButton>
 		</RadioGroup>
 		<TextView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:textSize="20dp"
-			android:layout_below="@id/RadioGroup01" android:id="@+id/GameSetup_HelpText_Turn"
+			android:layout_height="wrap_content" android:id="@+id/GameSetup_HelpText_Turn"
 			android:width="300dp" android:layout_centerHorizontal="true"
 			android:text="Select the number of turns each team will take."
-			android:textColor="#999999"></TextView>
+			android:textColor="#999999" android:layout_below="@id/GameSetup_RadioGroup" android:textSize="18dp"></TextView>
 	</RelativeLayout>
 	<Button android:layout_width="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true" android:text="Start Game"
-		android:id="@+id/StartGameButton" android:layout_height="wrap_content"></Button>
+		android:id="@+id/StartGameButton" android:layout_height="60dp"></Button>
 
 </RelativeLayout>
