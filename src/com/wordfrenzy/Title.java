@@ -130,7 +130,7 @@ public class Title extends Activity
     // Slide in from off-screen
     TranslateAnimation slideIn = new TranslateAnimation(
         Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
-        Animation.RELATIVE_TO_PARENT,  ( -2.0f ), Animation.RELATIVE_TO_PARENT,   0.0f );
+        Animation.ABSOLUTE,  ( -600f ), Animation.RELATIVE_TO_PARENT,   0.0f );
     slideIn.setDuration(MOVETIME + ( 200 * buttonNum) );
     slideIn.setInterpolator(new DecelerateInterpolator());
     return slideIn;
@@ -154,18 +154,9 @@ public class Title extends Activity
     slideIn.setDuration( MOVETIME );
     slideIn.setInterpolator(new DecelerateInterpolator());
     slideIn.setStartOffset( 300 * (labelNum+1) );
-
-    // Define Pulse anim
-    ScaleAnimation pulse = new ScaleAnimation(1.0f, 1.05f, 1.0f, 1.05f, Animation.RELATIVE_TO_SELF,
-        0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-    pulse.setDuration(500);
-    pulse.setInterpolator(new LinearInterpolator());
-    pulse.setRepeatCount(Animation.INFINITE);
-    pulse.setRepeatMode(Animation.REVERSE);
-    
+  
     // Create entire sequence
     set.addAnimation(slideIn);
-//    set.addAnimation(pulse);
     return set;
   }
 
