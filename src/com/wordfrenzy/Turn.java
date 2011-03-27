@@ -546,6 +546,9 @@ public class Turn extends Activity
     this.viewFlipper.setOutAnimation(OutToLeftAnimation());
   }
   
+  /**
+   * Updates references to reflect the A or B status of the current card
+   */
   protected void setActiveCard()
   {
     Log.d( TAG, "setActiveCard()");
@@ -625,14 +628,20 @@ public class Turn extends Activity
     RelativeLayout buttonGroup = (RelativeLayout) this.findViewById(R.id.lowbar);
     buttonGroup.startAnimation( this.ShowButtonsAnim( false));
     
+    
     TextView timer = (TextView) this.findViewById( R.id.Timer );
     timer.setVisibility( View.INVISIBLE );
     
-    // Hide card and disable buttons.
-    this.setActiveCard();
+    // Mark the current card as a skip so it can be amended later
+    this.setCardTime();
+    this.curGameManager.ProcessCard( Card.SKIP );
     
+    
+    // Hide card
+    this.setActiveCard();
     this.viewFlipper.setVisibility( View.INVISIBLE );
     
+    // turn off buttons
     this.buzzerButton.setEnabled( false );
     this.skipButton.setEnabled( false );
     this.nextButton.setEnabled( false );
