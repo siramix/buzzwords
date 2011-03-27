@@ -39,7 +39,7 @@
 	</ScrollView>
 	<ImageView android:background="@color/genericBG_trim"
 		android:layout_width="fill_parent" android:id="@+id/TurnSumSpacerB" android:layout_height="3dp"></ImageView>
-	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="32dp" android:id="@+id/TurnSummaryTurnScore" android:textStyle="bold" android:minWidth="130dp" android:text="Total: 0" android:layout_gravity="center"></TextView><RelativeLayout android:layout_width="wrap_content" android:id="@+id/TurnSummary_ScoreGroup" android:layout_marginBottom="5dp" android:layout_height="110dp">
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="32dp" android:id="@+id/TurnSummaryTurnScore" android:textStyle="bold" android:minWidth="130dp" android:text="Total: 0" android:layout_gravity="center" android:layout_marginTop="5dp" android:layout_marginBottom="5dp"></TextView><RelativeLayout android:layout_width="wrap_content" android:id="@+id/TurnSummary_ScoreGroup" android:layout_marginBottom="5dp" android:layout_height="110dp">
 		<LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_below="@id/GameSetupTitle" android:background="@color/genericBG_trim" android:id="@+id/GameSetup_TeamLayout" android:layout_height="fill_parent">
 			Background
 
@@ -147,7 +147,7 @@
 		</LinearLayout>
 		<Button android:id="@+id/TurnSumNextTurn"
 			android:layout_weight="1" android:layout_width="fill_parent"
-			android:textSize="12dp" android:text="Next Team" android:layout_height="50dp">
+			android:text="Next Team" android:layout_height="60dp">
 		</Button>
 
 
