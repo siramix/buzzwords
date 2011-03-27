@@ -17,13 +17,13 @@
 	</RelativeLayout>
 
 	<Button android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true" android:text="Rematch"
-		android:id="@+id/EndGameRematch"></Button>
+		android:id="@+id/EndGameRematch" android:layout_height="60dp"></Button>
 	<Button android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+		android:layout_alignParentBottom="true"
 		android:layout_alignParentLeft="true" android:text="Main Menu"
-		android:id="@+id/EndGameMainMenu"></Button>
+		android:id="@+id/EndGameMainMenu" android:layout_height="60dp"></Button>
 
 
 
