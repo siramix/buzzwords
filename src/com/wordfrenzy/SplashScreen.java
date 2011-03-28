@@ -40,6 +40,8 @@ public class SplashScreen extends Activity
   {
     public void onAnimationEnd( Animation animation )
     { 
+
+      Log.d( TAG, "onAnimEnd()" );
       SplashScreen.this.exitSplash();
     }
 
@@ -76,8 +78,15 @@ public class SplashScreen extends Activity
     
     if (event.getAction() == MotionEvent.ACTION_DOWN)
     {    
-      // Run the exit code manually
-      exitSplash();
+      // Clearing the animations causes animEnd event to fire
+      ImageView logotext = 
+        (ImageView) this.findViewById( R.id.logo_text );
+
+      ImageView logoram = 
+        (ImageView) this.findViewById( R.id.logo_ram );
+
+      logoram.clearAnimation();
+      logotext.clearAnimation();
     }
     
     return true;
@@ -96,7 +105,7 @@ public class SplashScreen extends Activity
 
     ImageView logoram = 
       (ImageView) this.findViewById( R.id.logo_ram );
-    
+
     logotext.setVisibility(View.GONE);
     logoram.setVisibility(View.GONE);
     
