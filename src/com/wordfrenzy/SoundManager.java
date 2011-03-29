@@ -17,6 +17,7 @@ public class SoundManager {
   public static final int SOUND_SKIP = 2;
   public static final int SOUND_TEAMREADY = 3;
   public static final int SOUND_WIN = 4;
+  public static final int SOUND_BACK = 5;
   
   enum Sounds
   {
@@ -40,12 +41,13 @@ public class SoundManager {
     
     // Load all sounds on creation of Sound Manager.  Could pull this into a separate function 
     // if we don't want these paired.
-    soundIds = new int[ 5 ];
+    soundIds = new int[ 6 ];
     soundIds[ SOUND_RIGHT ] = pool.load( baseContext, R.raw.fx_right, 1);
     soundIds[ SOUND_WRONG ] = pool.load( baseContext, R.raw.fx_wrong, 1);
     soundIds[ SOUND_SKIP ] = pool.load( baseContext, R.raw.fx_skip, 1);
     soundIds[ SOUND_TEAMREADY ] = pool.load( baseContext, R.raw.fx_teamready, 1);
     soundIds[ SOUND_WIN ] = pool.load( baseContext, R.raw.fx_win, 1);
+    soundIds[ SOUND_BACK ] = pool.load( baseContext, R.raw.fx_back, 1);
     
   }
   

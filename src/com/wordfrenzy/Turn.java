@@ -544,6 +544,11 @@ public class Turn extends Activity
     
     this.viewFlipper.setInAnimation(InFromRightAnimation());  //Reset animations
     this.viewFlipper.setOutAnimation(OutToLeftAnimation());
+    
+    // Play back sound
+    WordFrenzyApplication app = (WordFrenzyApplication) this.getApplication();
+    SoundManager snd = app.GetSoundManager();
+    snd.PlaySound(SoundManager.SOUND_BACK);
   }
   
   /**

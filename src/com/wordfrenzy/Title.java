@@ -50,9 +50,22 @@ public class Title extends Activity
         musicHandled = true;
         startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentGameSetup),
         		                 getIntent().getData()));
-        
       }
   };
+  
+  /**
+   * Listener to determine when the BuzzMode button is clicked
+   */
+  private OnClickListener BuzzerListener = new OnClickListener() 
+  {
+    public void onClick(View v) 
+    {
+      Log.d( TAG, "BuzzerListener OnClick()" );
+      musicHandled = false;
+      startActivity(new Intent(getApplication().getString( R.string.IntentBuzzer ), 
+          getIntent().getData()));
+    }
+  }; // End BuzzerListener 
   
   /**
    * Listener to determine when the settings button is clicked.  Includes an onClick function
@@ -84,7 +97,7 @@ public class Title extends Activity
       
     }
   }; // End RulesListener
-  
+
   /**
    * Listener to determine when the About Us button is clicked on the title screen.  Includes
    * an onClick method that will start the Rule activity.
@@ -102,20 +115,6 @@ public class Title extends Activity
 
     }
   }; // End AboutUsListener
-
-  /**
-   * Listener to determine when the BuzzMode button is clicked
-   */
-  private OnClickListener BuzzerListener = new OnClickListener() 
-  {
-    public void onClick(View v) 
-    {
-      Log.d( TAG, "BuzzerListener OnClick()" );
-      musicHandled = false;
-      startActivity(new Intent(getApplication().getString( R.string.IntentBuzzer ), 
-          getIntent().getData()));
-    }
-  }; // End BuzzerListener 
   
   /**
    * @return The animation that brings in the buttons
