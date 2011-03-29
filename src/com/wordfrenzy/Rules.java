@@ -21,6 +21,8 @@ public class Rules extends Activity
    */
   public static String TAG = "Rules";
   
+  private boolean isMusicPaused = false;
+  
   /**
   * onCreate - initializes the activity to display the rules.
   */
@@ -64,7 +66,14 @@ public class Rules extends Activity
      super.onPause();
      WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
-     mp.pause();
+     // If music is playing, we must pause it and flag to resume it onResume().
+     // This solves the problem where Rules was never playing music to begin with (which happens
+     // when entering Rules from Turn or TurnSummary
+     if(mp.isPlaying())
+     {
+       mp.pause();
+       this.isMusicPaused = true;
+     }
   }
 
   /**
@@ -76,12 +85,15 @@ public class Rules extends Activity
      Log.d( TAG, "onResume()" );   
      super.onResume();
      
-     // Resume Title Music
-     WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
-     MediaPlayer mp = application.GetMusicPlayer();
-     if( !mp.isPlaying())
+     // Resume Title Music -- Only do this if we paused DURING rules
+     if( this.isMusicPaused)
      {
-         mp.start();   
+       WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+       MediaPlayer mp = application.GetMusicPlayer();
+       if( !mp.isPlaying())
+       {
+           mp.start();   
+       }
      }
   }
 }

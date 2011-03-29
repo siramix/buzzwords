@@ -957,6 +957,7 @@ public class Turn extends Activity
   
   protected void resumeGame()
   {
+    Log.d( TAG, "resumeGameTurn()" );
     this.isPaused = false;
     this.pauseOverlay.setVisibility( View.INVISIBLE );
     this.pauseTextLayout.setVisibility( View.INVISIBLE);
@@ -995,6 +996,7 @@ public class Turn extends Activity
 
   protected void pauseGame()
   {
+    Log.d( TAG, "pauseGameTurn()" );
     this.isPaused = true;
     this.pauseOverlay.setVisibility( View.VISIBLE );
     
