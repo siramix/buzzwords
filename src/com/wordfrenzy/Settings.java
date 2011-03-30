@@ -2,9 +2,12 @@ package com.wordfrenzy;
 
 import com.wordfrenzy.R;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -14,6 +17,35 @@ import android.util.Log;
  */
 public class Settings extends PreferenceActivity 
 {
+  
+  /**
+   * Watch the settings to update any changes (like start up music, reset subtext, etc.)
+   */
+  private OnSharedPreferenceChangeListener ListenPrefs = new OnSharedPreferenceChangeListener()
+  {
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+        String key) {
+      if ( key.equals( "music_enabled"))
+      {
+        // start or stop the music
+        WordFrenzyApplication application = (WordFrenzyApplication) Settings.this.getApplication();
+        MediaPlayer mp = application.GetMusicPlayer();
+        if( sharedPreferences.getBoolean("music_enabled", true))
+        {
+            mp.start();
+        }
+        else
+        {
+          mp.pause();
+        }
+      }
+      
+    }
+    
+  };
+      
   /**
    * logging tag
    */
@@ -29,9 +61,11 @@ public class Settings extends PreferenceActivity
     Log.d( TAG, "onCreate()" ); 
 		
 		this.addPreferencesFromResource(R.xml.settings);
-		
+		// Register preference listener with SharedPreferences
+	    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+	    sp.registerOnSharedPreferenceChangeListener(this.ListenPrefs);
 	}
-	
+
 	/**
 	 * Override onPause to prevent activity specific processes from running while app is in background
 	 */
@@ -57,7 +91,8 @@ public class Settings extends PreferenceActivity
 	   // Resume Title Music
 	   WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
 	   MediaPlayer mp = application.GetMusicPlayer();
-	   if( !mp.isPlaying())
+	   SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+	   if( !mp.isPlaying() && sp.getBoolean("music_enabled", true))
 	   {
 	       mp.start();   
 	   }

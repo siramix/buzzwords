@@ -954,7 +954,11 @@ public class Turn extends Activity
                 }
                 
                 MediaPlayer mp = application.CreateMusicPlayer( Turn.this.getBaseContext(), musicId );
-                mp.start();
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Turn.this.getBaseContext());
+                if( sp.getBoolean("music_enabled", true))
+                {
+                  mp.start();
+                }
               }
             })
             
@@ -987,7 +991,11 @@ public class Turn extends Activity
       Turn.this.resumeGame();
 
       // Resume the music
-      mp.start();
+      SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Turn.this.getBaseContext());
+      if( sp.getBoolean("music_enabled", true))
+      {
+        mp.start();
+      }
     }
   }
   

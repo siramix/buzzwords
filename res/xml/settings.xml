@@ -1,40 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
-   
-   <PreferenceCategory android:title="Hardware">
-        <CheckBoxPreference
-                android:key="volume_settings"
-                android:title="Volume"
-                android:defaultValue="true"/>    
-        <CheckBoxPreference
-         		android:key="vibrate_pref"
-                android:title="Vibrate"
-                android:defaultValue="true"
-                android:summary="Enable vibrate on buzz"/>                   
-   </PreferenceCategory>
-   
-   <PreferenceCategory android:title="Game">
-   
-         <ListPreference 
-           android:key="turn_timer" 
-           android:title="Turn Timer Length"
-           android:entryValues="@array/turntime_values" 
-           android:entries="@array/turntimes" android:summary="" android:defaultValue="60"/>      
-		   
-		<CheckBoxPreference
-                android:key="allow_skip"
-                android:title="Allow Skipping"
-                android:defaultValue="true"
-                android:summary="If checked players may skip cards."/>          
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-</PreferenceCategory>
-   
-   <PreferenceCategory android:title="Accessibility">
-		<CheckBoxPreference
-		        android:key="read_aloud"
-                android:title="Read Words Aloud"
-                android:defaultValue="false"
-                android:summary="Outputs the guess word and bad words to headphones"/>                                                                                
-    </PreferenceCategory>
+	<PreferenceCategory android:title="Hardware">
+		<CheckBoxPreference android:key="volume_settings"
+			android:title="Volume" android:defaultValue="true" />
+		<CheckBoxPreference android:key="vibrate_pref"
+			android:title="Vibrate" android:defaultValue="true" android:summary="Enable vibrate on buzz" />
+		<CheckBoxPreference android:title="Music" android:summary="Enable all music"
+			android:defaultValue="true" android:key="music_enabled"></CheckBoxPreference>
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="Game">
+
+		<ListPreference android:key="turn_timer" android:title="Turn Timer Length"
+			android:entryValues="@array/turntime_values" android:entries="@array/turntimes"
+			android:summary="" android:defaultValue="60" />
+
+		<CheckBoxPreference android:key="allow_skip"
+			android:title="Allow Skipping" android:defaultValue="true"
+			android:summary="If checked players may skip cards." />
+
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="Accessibility">
+		<CheckBoxPreference android:key="read_aloud"
+			android:title="Read Words Aloud" android:defaultValue="false"
+			android:summary="Outputs the guess word and bad words to headphones" />
+	</PreferenceCategory>
 </PreferenceScreen>

@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -384,7 +385,8 @@ public void onCreate( Bundle savedInstanceState )
      // Resume Title Music
      WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
-     if( !mp.isPlaying())
+     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+     if( !mp.isPlaying() && sp.getBoolean("music_enabled", true))
      {
          mp.start();   
      }

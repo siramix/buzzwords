@@ -90,7 +90,8 @@ public class Rules extends Activity
      {
        WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
        MediaPlayer mp = application.GetMusicPlayer();
-       if( !mp.isPlaying())
+       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+       if( !mp.isPlaying() && sp.getBoolean("music_enabled", true))
        {
            mp.start();   
        }

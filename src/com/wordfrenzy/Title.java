@@ -4,10 +4,12 @@ import com.wordfrenzy.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -252,7 +254,11 @@ public void onCreate( Bundle savedInstanceState )
   MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
   application.CreateSoundManager( this.getBaseContext() );
   mp.setLooping(true);
-  mp.start();
+  SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+  if( sp.getBoolean("music_enabled", true))
+  {
+    mp.start();
+  }
   
   musicHandled = false;
   
@@ -300,10 +306,6 @@ public void onCreate( Bundle savedInstanceState )
   label.startAnimation(this.TranslateLabels(1));
   label.setTypeface(antonFont);
   
-  // Animated title looks cheap.  commented out for now
-  //View title = (View) this.findViewById( R.id.Title_Title);
-  //title.startAnimation(this.ScrollTitle());
-  
   ImageView letter = (ImageView) this.findViewById( R.id.Title_Word_W);
   letter.startAnimation(this.WiggleW());
   letter = (ImageView) this.findViewById( R.id.Title_Word_O);
@@ -343,7 +345,11 @@ public void onResume()
    // Resume Title Music
    WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
    MediaPlayer mp = application.GetMusicPlayer();
-   mp.start();   
+   SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+   if( sp.getBoolean("music_enabled", true))
+   {
+     mp.start();
+   }
    // set flag to let onStop handle music
    musicHandled = false;
 }
