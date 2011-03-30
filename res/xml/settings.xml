@@ -22,9 +22,5 @@
 
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="Accessibility">
-		<CheckBoxPreference android:key="read_aloud"
-			android:title="Read Words Aloud" android:defaultValue="false"
-			android:summary="Outputs the guess word and bad words to headphones" />
-	</PreferenceCategory>
+	
 </PreferenceScreen>
