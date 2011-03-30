@@ -16,6 +16,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnSeekCompleteListener;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -290,15 +291,34 @@ public class Turn extends Activity
   }; // End SkipListener
   
   /**
-   * Listener for the pause overlay. It unpauses the the game.
+   * Listener for the pause overlay. It unpauses the game.
    */
   private final OnClickListener PauseListener = new OnClickListener()
   {
       public void onClick(View v)
       {
         Log.d( TAG, "PauseListener OnClick()" );
-        Turn.this.resumeGame();
-        Turn.this.closeOptionsMenu();
+
+        // Todo: If turnIsOver OR !Settings.IsMusicEnabled(), resume immediately.  Else do this mess
+        if ( Turn.this.turnIsOver )
+        {
+          // Turn is over when timer reaches 0.  At that point, we should just not resume music
+          Turn.this.resumeGame();
+        }
+        else
+        {
+          // Resume must wait for music to seek back to the correct elapsed time
+          WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
+          MediaPlayer mp = application.GetMusicPlayer();
+          // Return to the elapsed time
+          int elapsedtime = Turn.this.curGameManager.GetTurnTime() - (int) Turn.this.counter.getTimeRemaining();
+          mp.seekTo( elapsedtime );
+          mp.setOnSeekCompleteListener( new TurnMusicListener());
+        }
+        
+        // Hide overlays here so that they can't report multiple OnClick'ed while music seeks
+        Turn.this.pauseOverlay.setVisibility( View.INVISIBLE );
+        Turn.this.pauseTextLayout.setVisibility( View.INVISIBLE);
       }
   }; // End CorrectListener
   
@@ -955,20 +975,26 @@ public class Turn extends Activity
 
   }
   
+  /**
+   *  Class tracks the seek time on the music realignment that happens on every resume.
+   */
+  private class TurnMusicListener implements OnSeekCompleteListener
+  {
+
+    @Override
+    public void onSeekComplete(MediaPlayer mp) {
+      // Resume the game on seek complete
+      Turn.this.resumeGame();
+
+      // Resume the music
+      mp.start();
+    }
+  }
+  
   protected void resumeGame()
   {
     Log.d( TAG, "resumeGameTurn()" );
     this.isPaused = false;
-    this.pauseOverlay.setVisibility( View.INVISIBLE );
-    this.pauseTextLayout.setVisibility( View.INVISIBLE);
-    
-    // Resume Music
-    WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
-    MediaPlayer mp = application.GetMusicPlayer();
-    if( !mp.isPlaying() )
-    {
-      mp.start();
-    }
     
     if(!this.turnIsOver)
     {
@@ -1092,4 +1118,5 @@ public class Turn extends Activity
   else
   return false;
   }
+
 }
