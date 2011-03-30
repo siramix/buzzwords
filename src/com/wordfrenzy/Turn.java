@@ -299,8 +299,9 @@ public class Turn extends Activity
       {
         Log.d( TAG, "PauseListener OnClick()" );
 
-        // Todo: If turnIsOver OR !Settings.IsMusicEnabled(), resume immediately.  Else do this mess
-        if ( Turn.this.turnIsOver )
+        // If music is disabled, just resume the game immediately (don't wait for music to seek) 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Turn.this.getBaseContext());
+        if ( Turn.this.turnIsOver || !sp.getBoolean("music_enabled", true))
         {
           // Turn is over when timer reaches 0.  At that point, we should just not resume music
           Turn.this.resumeGame();
