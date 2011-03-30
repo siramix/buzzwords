@@ -20,7 +20,7 @@
            android:key="turn_timer" 
            android:title="Turn Timer Length"
            android:entryValues="@array/turntime_values" 
-           android:entries="@array/turntimes" android:summary="60 seconds is recommended" android:defaultValue="60"/>      
+           android:entries="@array/turntimes" android:summary="" android:defaultValue="60"/>      
 		   
 		<CheckBoxPreference
                 android:key="allow_skip"

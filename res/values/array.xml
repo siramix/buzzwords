@@ -5,7 +5,7 @@
     	<item>5 seconds (DEBUG)</item>
     	<item>10 seconds (DEBUG)</item>
         <item>30 seconds</item>
-        <item>60 seconds</item>
+        <item>60 seconds (recommended)</item>
         <item>90 seconds</item>
     </string-array>
     
