@@ -940,17 +940,17 @@ public class Turn extends Activity
                 // Start the turn music
                 WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
                 GameManager gm = application.GetGameManager();
-                int musicId = R.raw.mus_round60;
+                int musicId = R.raw.mus_round_60;
                 switch ( gm.GetTurnTime())
                 {
                   case 30000:
-                    musicId = R.raw.mus_round30;
+                    musicId = R.raw.mus_round_30;
                     break;
                   case 60000:
-                    musicId = R.raw.mus_round60;
+                    musicId = R.raw.mus_round_60;
                     break;
                   case 90000:
-                    musicId = R.raw.mus_round90;
+                    musicId = R.raw.mus_round_90;
                     break;
                 }
                 
