@@ -41,22 +41,7 @@ public class Title extends Activity
    * flag used for stopping music OnStop() event.
    */
   private boolean musicHandled;
-  
-  /**
-  * PlayGameListener is used for the start game button.  It launches the next 
-  * activity.
-  */
-  private OnClickListener PlayGameListener = new OnClickListener() 
-  {
-      public void onClick(View v) 
-      {
-        Log.d( TAG, "PlayGameListener OnClick()" );
-        musicHandled = true;
-        startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentGameSetup),
-        		                 getIntent().getData()));
-      }
-  };
-  
+
   /**
    * PlayGameListener is used for the start game button.  It launches the next 
    * activity.
@@ -67,17 +52,12 @@ public class Title extends Activity
       @Override
       public boolean onTouch(View v, MotionEvent event) {
         
-     // Spoof the button click
-        //ImageButton playGameButton = 
-         // (ImageButton) Title.this.findViewById( R.id.Title_PlayButton );
-        //TextView label = (TextView) Title.this.findViewById( R.id.Title_PlayText);
-        
+     // Make this seem like a button OnClick for both the label and the button
         int action = event.getAction();
         if ( action == MotionEvent.ACTION_DOWN )
         {
-          highlightItem(v.getId(), true);
-
-          //label.startAnimation( Title.this.ScaleLabel( false ) );
+          highlightDelegateItems(v.getId(), true);
+          ScaleDelegateLabel( v.getId());
         }
         else if ( action == MotionEvent.ACTION_MOVE )
         {
@@ -87,16 +67,16 @@ public class Title extends Activity
           // If in bounds, we have to re-highlight in case we went out of bounds previously
           if ( bounds.contains( (int) event.getX(), (int) event.getY()) )
           {
-            highlightItem(v.getId(), true);
+            highlightDelegateItems(v.getId(), true);
           }
           else
           {
-            highlightItem(v.getId(), false);
+            highlightDelegateItems(v.getId(), false);
           }
         }
         else
         {
-          highlightItem(v.getId(), false);
+          highlightDelegateItems(v.getId(), false);
         }
         
         return false;
@@ -107,7 +87,7 @@ public class Title extends Activity
     * Helper function to highlight a view given its Id
     * @param id
     */
-   private void highlightItem( int id, boolean On )
+   private void highlightDelegateItems( int id, boolean On )
    {
      ImageButton button;
      TextView label;
@@ -171,7 +151,55 @@ public class Title extends Activity
        break;
      }
    }
-  
+   
+   /**
+    * Scale the label that corresponds to the given delegate ID
+    * @return
+    */
+   private void ScaleDelegateLabel( int Id)
+   {
+     // Define the scale animation
+     ScaleAnimation scale = 
+       new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+     scale.setDuration( 60 );
+     scale.setRepeatCount(1);
+     scale.setRepeatMode( Animation.REVERSE );
+     
+     // Find the label this delegate is associated with and animate it
+     TextView label = (TextView) Title.this.findViewById( R.id.Title_PlayText);;
+     switch(Id)
+     {
+     case R.id.Title_PlayDelegate:
+       label = (TextView) Title.this.findViewById( R.id.Title_PlayText);
+       break;
+     case R.id.Title_BuzzDelegate:
+       label = (TextView) Title.this.findViewById( R.id.Title_BuzzText);
+       break;
+     case R.id.Title_SettingsDelegate:
+       label = (TextView) Title.this.findViewById( R.id.Title_SettingsText);
+       break;
+     case R.id.Title_RulesDelegate:
+       label = (TextView) Title.this.findViewById( R.id.Title_RulesText);
+       break;
+     }
+     label.startAnimation( scale );
+   }
+   
+   /**
+   * PlayGameListener is used for the start game button.  It launches the next 
+   * activity.
+   */
+   private OnClickListener PlayGameListener = new OnClickListener() 
+   {
+       public void onClick(View v) 
+       {
+         Log.d( TAG, "PlayGameListener OnClick()" );
+         musicHandled = true;
+         startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentGameSetup),
+                                  getIntent().getData()));
+       }
+   };
+   
   /**
    * Listener to determine when the BuzzMode button is clicked
    */
@@ -234,33 +262,6 @@ public class Title extends Activity
 
     }
   }; // End AboutUsListener
-  
-  /**
-   * Scale the label 
-   * @return
-   */
-  private ScaleAnimation ScaleLabel(boolean reverse)
-  {
-    // 
-    float x0 = 1.0f;
-    float x1 = 1.1f;
-    float y0 = 1.0f;
-    float y1 = 1.1f;
-    ScaleAnimation scale;
-    if ( !reverse )
-    {
-      //scale = new ScaleAnimation(x0, x1, y0, y1, .5f, .5f);
-      scale = new ScaleAnimation(x0, x1, y0, y1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-    }
-    else
-    {
-      scale = new ScaleAnimation(x1, x0, y1, y0, .5f, .5f);
-    }
-    scale.setDuration( 60 );
-    scale.setRepeatCount(1);
-    scale.setRepeatMode( Animation.REVERSE );
-    return scale;
-  }
   
   /**
    * @return The animation that brings in the buttons
