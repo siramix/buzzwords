@@ -5,12 +5,14 @@ import com.wordfrenzy.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -54,6 +56,121 @@ public class Title extends Activity
         		                 getIntent().getData()));
       }
   };
+  
+  /**
+   * PlayGameListener is used for the start game button.  It launches the next 
+   * activity.
+   */
+   private View.OnTouchListener TouchPlayListener = new View.OnTouchListener() 
+   {
+
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        
+     // Spoof the button click
+        //ImageButton playGameButton = 
+         // (ImageButton) Title.this.findViewById( R.id.Title_PlayButton );
+        //TextView label = (TextView) Title.this.findViewById( R.id.Title_PlayText);
+        
+        int action = event.getAction();
+        if ( action == MotionEvent.ACTION_DOWN )
+        {
+          highlightItem(v.getId(), true);
+
+          //label.startAnimation( Title.this.ScaleLabel( false ) );
+        }
+        else if ( action == MotionEvent.ACTION_MOVE )
+        {
+          // Check if the move happened in the bounds of this view
+          Rect bounds = new Rect();
+          v.getHitRect(bounds);
+          // If in bounds, we have to re-highlight in case we went out of bounds previously
+          if ( bounds.contains( (int) event.getX(), (int) event.getY()) )
+          {
+            highlightItem(v.getId(), true);
+          }
+          else
+          {
+            highlightItem(v.getId(), false);
+          }
+        }
+        else
+        {
+          highlightItem(v.getId(), false);
+        }
+        
+        return false;
+      }
+   };
+   
+   /**
+    * Helper function to highlight a view given its Id
+    * @param id
+    */
+   private void highlightItem( int id, boolean On )
+   {
+     ImageButton button;
+     TextView label;
+     switch(id)
+     {
+     case R.id.Title_PlayDelegate:
+       button = (ImageButton) Title.this.findViewById( R.id.Title_PlayButton );
+       label = (TextView) Title.this.findViewById( R.id.Title_PlayText);
+       if( On)
+       {
+         button.setBackgroundResource(R.drawable.title_play_onclick);
+         label.setTextColor( Title.this.getResources().getColor(R.color.teamB_highlight ));
+       }
+       else
+       {
+         button.setBackgroundResource(R.drawable.title_play);
+         label.setTextColor( Title.this.getResources().getColor(R.color.teamB_text ));
+       }
+       break;
+     case R.id.Title_BuzzDelegate:
+       button = (ImageButton) Title.this.findViewById( R.id.Title_BuzzButton );
+       label = (TextView) Title.this.findViewById( R.id.Title_BuzzText);
+       if( On)
+       {
+         button.setBackgroundResource(R.drawable.title_buzzer_onclick);
+         label.setTextColor( Title.this.getResources().getColor(R.color.teamC_highlight ));
+       }
+       else
+       {
+         button.setBackgroundResource(R.drawable.title_buzzer);
+         label.setTextColor( Title.this.getResources().getColor(R.color.teamC_text ));
+       }
+       break;
+     case R.id.Title_SettingsDelegate:
+       button = (ImageButton) Title.this.findViewById( R.id.Title_SettingsButton );
+       label = (TextView) Title.this.findViewById( R.id.Title_SettingsText);
+       if( On)
+       {
+         button.setBackgroundResource(R.drawable.title_settings_onclick);
+         label.setTextColor( Title.this.getResources().getColor(R.color.teamD_highlight ));
+       }
+       else
+       {
+         button.setBackgroundResource(R.drawable.title_settings);
+         label.setTextColor( Title.this.getResources().getColor(R.color.teamD_text ));
+       }
+       break;
+     case R.id.Title_RulesDelegate:
+       button = (ImageButton) Title.this.findViewById( R.id.Title_RulesButton );
+       label = (TextView) Title.this.findViewById( R.id.Title_RulesText);
+       if( On)
+       {
+         button.setBackgroundResource(R.drawable.title_rules_onclick);
+         label.setTextColor( Title.this.getResources().getColor(R.color.teamA_highlight ));
+       }
+       else
+       {
+         button.setBackgroundResource(R.drawable.title_rules);
+         label.setTextColor( Title.this.getResources().getColor(R.color.teamA_text ));
+       }
+       break;
+     }
+   }
   
   /**
    * Listener to determine when the BuzzMode button is clicked
@@ -117,6 +234,33 @@ public class Title extends Activity
 
     }
   }; // End AboutUsListener
+  
+  /**
+   * Scale the label 
+   * @return
+   */
+  private ScaleAnimation ScaleLabel(boolean reverse)
+  {
+    // 
+    float x0 = 1.0f;
+    float x1 = 1.1f;
+    float y0 = 1.0f;
+    float y1 = 1.1f;
+    ScaleAnimation scale;
+    if ( !reverse )
+    {
+      //scale = new ScaleAnimation(x0, x1, y0, y1, .5f, .5f);
+      scale = new ScaleAnimation(x0, x1, y0, y1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+    }
+    else
+    {
+      scale = new ScaleAnimation(x1, x0, y1, y0, .5f, .5f);
+    }
+    scale.setDuration( 60 );
+    scale.setRepeatCount(1);
+    scale.setRepeatMode( Animation.REVERSE );
+    return scale;
+  }
   
   /**
    * @return The animation that brings in the buttons
@@ -265,12 +409,23 @@ public void onCreate( Bundle savedInstanceState )
 	// Setup the Main Title Screen view
 	this.setContentView(R.layout.title );
 
-  ImageButton playGameButton = 
-    (ImageButton) this.findViewById( R.id.Title_PlayButton );
-  playGameButton.setOnClickListener( PlayGameListener );
+  // Assign listeners to the delegate buttons
+  View delegate = (View) this.findViewById( R.id.Title_PlayDelegate);
+  delegate.setOnTouchListener( TouchPlayListener );
+  delegate.setOnClickListener( PlayGameListener);
   
-  ImageButton settingsButton = (ImageButton) this.findViewById( R.id.Title_SettingsButton );  
-  settingsButton.setOnClickListener( SettingsListener );
+  delegate = (View) this.findViewById( R.id.Title_BuzzDelegate );
+  delegate.setOnTouchListener( TouchPlayListener );
+  delegate.setOnClickListener( BuzzerListener);
+
+  delegate = (View) this.findViewById( R.id.Title_SettingsDelegate );
+  delegate.setOnTouchListener( TouchPlayListener );
+  delegate.setOnClickListener( SettingsListener);
+  
+  delegate = (View) this.findViewById( R.id.Title_RulesDelegate );
+  delegate.setOnTouchListener( TouchPlayListener );
+  delegate.setOnClickListener( RulesListener);
+  
   
   ImageButton rulesButton = (ImageButton) this.findViewById( R.id.Title_RulesButton );
   rulesButton.setOnClickListener( RulesListener );
