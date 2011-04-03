@@ -51,13 +51,16 @@ public class Title extends Activity
 
       @Override
       public boolean onTouch(View v, MotionEvent event) {
-        
+        // return out if views are not enabled
+        if ( !v.isEnabled() )
+        {
+          return true;
+        }
      // Make this seem like a button OnClick for both the label and the button
         int action = event.getAction();
         if ( action == MotionEvent.ACTION_DOWN )
         {
           highlightDelegateItems(v.getId(), true);
-          ScaleDelegateLabel( v.getId());
         }
         else if ( action == MotionEvent.ACTION_MOVE )
         {
@@ -89,8 +92,8 @@ public class Title extends Activity
     */
    private void highlightDelegateItems( int id, boolean On )
    {
-     ImageButton button;
-     TextView label;
+     ImageButton button = (ImageButton) Title.this.findViewById( R.id.Title_PlayButton );;
+     TextView label = (TextView) Title.this.findViewById( R.id.Title_PlayText);;
      switch(id)
      {
      case R.id.Title_PlayDelegate:
@@ -149,45 +152,19 @@ public class Title extends Activity
          label.setTextColor( Title.this.getResources().getColor(R.color.teamA_text ));
        }
        break;
-     }
-   }
-   
-   /**
-    * Scale the label that corresponds to the given delegate ID
-    * @return
-    */
-   private void ScaleDelegateLabel( int Id)
-   {
-     // Define the scale animation
-     ScaleAnimation scale = 
-       new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-     scale.setDuration( 60 );
-     scale.setRepeatCount(1);
-     scale.setRepeatMode( Animation.REVERSE );
-     
-     // Find the label this delegate is associated with and animate it
-     TextView label = (TextView) Title.this.findViewById( R.id.Title_PlayText);;
-     switch(Id)
+     } 
+     if( On)
      {
-     case R.id.Title_PlayDelegate:
-       label = (TextView) Title.this.findViewById( R.id.Title_PlayText);
-       break;
-     case R.id.Title_BuzzDelegate:
-       label = (TextView) Title.this.findViewById( R.id.Title_BuzzText);
-       break;
-     case R.id.Title_SettingsDelegate:
-       label = (TextView) Title.this.findViewById( R.id.Title_SettingsText);
-       break;
-     case R.id.Title_RulesDelegate:
-       label = (TextView) Title.this.findViewById( R.id.Title_RulesText);
-       break;
+       label.setTextSize( 45);
      }
-     label.startAnimation( scale );
+     else
+     {
+       label.setTextSize( 42);
+     }
    }
-   
+
    /**
-   * PlayGameListener is used for the start game button.  It launches the next 
-   * activity.
+   * PlayGameListener plays an animation on the view that will result in launching GameSetup
    */
    private OnClickListener PlayGameListener = new OnClickListener() 
    {
@@ -199,21 +176,21 @@ public class Title extends Activity
                                   getIntent().getData()));
        }
    };
-   
-  /**
-   * Listener to determine when the BuzzMode button is clicked
+
+   /**
+   * BuzzerListener plays an animation on the view that will result in launching Buzz Mode
    */
-  private OnClickListener BuzzerListener = new OnClickListener() 
-  {
-    public void onClick(View v) 
-    {
-      Log.d( TAG, "BuzzerListener OnClick()" );
-      musicHandled = false;
-      startActivity(new Intent(getApplication().getString( R.string.IntentBuzzer ), 
-          getIntent().getData()));
-    }
-  }; // End BuzzerListener 
-  
+   private OnClickListener BuzzerListener = new OnClickListener() 
+   {
+       public void onClick(View v) 
+       {
+         Log.d( TAG, "PlayGameListener OnClick()" );
+         musicHandled = false;
+         startActivity(new Intent(getApplication().getString( R.string.IntentBuzzer ), 
+             getIntent().getData()));
+       }
+   };
+   
   /**
    * Listener to determine when the settings button is clicked.  Includes an onClick function
    * that starts the settingsActivity.

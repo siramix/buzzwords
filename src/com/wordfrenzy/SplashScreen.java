@@ -34,7 +34,7 @@ public class SplashScreen extends Activity
   protected Runnable exitRunnable = null; //will be called when splash is ready to close
 
   /**
-   * Setup the sounds to go with the animation
+   * Listener that ends splash screen when it is done animating.
    */
   private final AnimationListener fadeListener = new AnimationListener()
   {
