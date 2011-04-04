@@ -1114,7 +1114,10 @@ public class Turn extends Activity
     if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled() )
       {
-      this.doBack();
+      if ( !this.isPaused )
+      {
+        this.doBack();
+      }
       return true;
       }
 
