@@ -3,5 +3,7 @@
     <style name="WordFrenzyTheme" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
         <item name="android:buttonStyle">@style/WordFrenzyButton</item>
         <item name="android:radioButtonStyle">@style/WordFrenzyRadioButton</item>
+        <item name="android:windowBackground">@drawable/bg_generic</item>
+		<item name="android:windowNoTitle">true</item>
     </style>
 </resources>
