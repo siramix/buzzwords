@@ -26,11 +26,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -61,7 +59,7 @@ public class Turn extends Activity
   private static final int SWIPE_MIN_DISTANCE = 120;
   private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
-  private ImageView pauseOverlay;
+  private View pauseOverlay;
   private ImageButton buzzerButton;
   private ImageButton nextButton;
   private ImageButton skipButton;
@@ -73,7 +71,7 @@ public class Turn extends Activity
   private ImageView timerfill;
   
   private TextView cardTitle;
-  private ListView cardWords;
+  private LinearLayout cardBadWords;
   private ImageView cardStatus;
   
   RelativeLayout timerGroup;
@@ -551,15 +549,10 @@ public class Turn extends Activity
     this.viewFlipper.showNext();
     
     this.setActiveCard();
-    ArrayAdapter<String> cardAdapter =
-      new ArrayAdapter<String>( this, R.layout.word );
     Card curCard = this.curGameManager.getPreviousCard();
     this.cardTitle.setText( curCard.getTitle() );
-    for( int i = 0; i < curCard.getBadWords().size(); i++ )
-    {
-      cardAdapter.add( curCard.getBadWords().get( i ) );
-    }
-    this.cardWords.setAdapter( cardAdapter );
+    // Update bad words
+    this.SetBadWords( this.cardBadWords, curCard, this.curGameManager.GetActiveTeam());
     this.cardStatus.setBackgroundResource( curCard.getDrawableIdForBack() );
     this.isBack = true;
     
@@ -584,18 +577,18 @@ public class Turn extends Activity
     if( this.AIsActive )
     {
       curTitle = R.id.CardTitleA;
-      curWords = R.id.CardWordsA;
+      curWords = R.id.CardA_BadWords;
       curStatus = R.id.StatusImageA;
     }
     else
     {
       curTitle = R.id.CardTitleB;
-      curWords = R.id.CardWordsB;
+      curWords = R.id.CardB_BadWords;
       curStatus = R.id.StatusImageB;
     }
 
     this.cardTitle = (TextView) this.findViewById( curTitle );
-    this.cardWords = (ListView) this.findViewById( curWords );
+    this.cardBadWords = (LinearLayout) this.findViewById( curWords );
     this.cardStatus = (ImageView) this.findViewById( curStatus );
     
   }
@@ -610,17 +603,27 @@ public class Turn extends Activity
     
     this.setActiveCard();
 
-    ArrayAdapter<String> cardAdapter =
-    new ArrayAdapter<String>( this, R.layout.word );
     Card curCard = this.curGameManager.getNextCard();
     this.cardTitle.setText( curCard.getTitle() );
-    for( int i = 0; i < curCard.getBadWords().size(); i++ )
-    {
-      cardAdapter.add( curCard.getBadWords().get( i ) );
-    }
-    this.cardWords.setAdapter( cardAdapter );
+    // Update the badwords
+    this.SetBadWords( this.cardBadWords, curCard, this.curGameManager.GetActiveTeam());
     this.cardStatus.setBackgroundResource( curCard.getDrawableId() );
     this.isBack = false;
+  }
+  
+  /**
+   * Sets the text in a layout to match a supplied StringArray of badWords.
+   * @param wordLayout - LinearLayout of textViews
+   * @param curCard - Card object to set badWords from
+   */
+  private void SetBadWords( LinearLayout wordLayout, Card curCard, Team curTeam)
+  {
+    for( int i = 0; i < wordLayout.getChildCount(); ++i)
+    {
+      TextView text = (TextView) wordLayout.getChildAt(i);
+      text.setText( curCard.getBadWords().get( i ));
+      text.setTextColor( this.getResources().getColor(curTeam.getSecondaryColor()) );
+    }
   }
   
   /**
@@ -648,10 +651,10 @@ public class Turn extends Activity
     // Hide timer bar and time
     ImageView timerFill = (ImageView) this.findViewById(R.id.TurnTimerFill);
     timerFill.setVisibility( View.INVISIBLE );
-    RelativeLayout timerGroup = (RelativeLayout) this.findViewById(R.id.actionbar);
+    RelativeLayout timerGroup = (RelativeLayout) this.findViewById(R.id.Turn_TimerBar);
     timerGroup.startAnimation( this.ShowTimerAnim( false));
     // Hide buttons
-    RelativeLayout buttonGroup = (RelativeLayout) this.findViewById(R.id.lowbar);
+    RelativeLayout buttonGroup = (RelativeLayout) this.findViewById(R.id.Turn_LowBar);
     buttonGroup.startAnimation( this.ShowButtonsAnim( false));
     
     
@@ -696,7 +699,7 @@ public class Turn extends Activity
       (WordFrenzyApplication) this.getApplication();
     this.curGameManager = application.GetGameManager();
 
-    this.pauseOverlay = (ImageView) this.findViewById( R.id.PauseImageView );
+    this.pauseOverlay = (View) this.findViewById( R.id.PauseImageView );
     this.countdownTxt = (TextView) findViewById( R.id.Timer );
     this.viewFlipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
     this.timesUpText = (TextView) this.findViewById(R.id.TurnTimesUp);
@@ -708,8 +711,8 @@ public class Turn extends Activity
     this.timerfill = (ImageView) this.findViewById(R.id.TurnTimerFill);
     this.pauseTextLayout = (LinearLayout) this.findViewById( R.id.Turn_PauseTextGroup);
     
-    this.timerGroup = (RelativeLayout) this.findViewById(R.id.actionbar);
-    this.buttonGroup = (RelativeLayout) this.findViewById(R.id.lowbar);
+    this.timerGroup = (RelativeLayout) this.findViewById(R.id.Turn_TimerBar);
+    this.buttonGroup = (RelativeLayout) this.findViewById(R.id.Turn_LowBar);
   }
   
   protected void setupUIProperties()
@@ -760,15 +763,13 @@ public class Turn extends Activity
         }
      };
     }
-    
-
-    
+   
     //Setup the "card" views to allow for skip gesture to be performed on top
     this.findViewById( R.id.CardTitleA ).setOnTouchListener( this.gestureListener );
-    this.findViewById( R.id.CardWordsA ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.CardA_BadWords ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.CardTitleB ).setOnTouchListener( this.gestureListener );
-    this.findViewById( R.id.CardWordsB ).setOnTouchListener( this.gestureListener );
-    this.findViewById( R.id.MultiCardLayout ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.CardB_BadWords ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.Turn_Root ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.ViewFlipper0 ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.CardLayoutA ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.CardLayoutB ).setOnTouchListener( this.gestureListener );
@@ -778,7 +779,7 @@ public class Turn extends Activity
     
     Team curTeam = this.curGameManager.GetActiveTeam();
     barFill.setImageResource( curTeam.getBg() );
-    this.findViewById( R.id.MultiCardLayout ).setBackgroundResource( curTeam.getGradient() );
+    this.findViewById( R.id.Turn_Root ).setBackgroundResource( curTeam.getGradient() );
     
   }
   
