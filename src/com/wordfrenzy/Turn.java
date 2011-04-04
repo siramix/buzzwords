@@ -721,7 +721,7 @@ public class Turn extends Activity
     this.pauseOverlay.setVisibility( View.INVISIBLE );
     this.pauseOverlay.setOnClickListener( PauseListener );
 
-    this.countdownTxt.setOnClickListener( this.TimerClickListener );
+    this.timerGroup.setOnClickListener( this.TimerClickListener );
     
     this.viewFlipper.setInAnimation(InFromRightAnimation());
     this.viewFlipper.setOutAnimation(OutToLeftAnimation());
