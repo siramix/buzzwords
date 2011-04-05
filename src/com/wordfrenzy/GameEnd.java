@@ -287,6 +287,28 @@ public class GameEnd extends Activity
   	    
         // Sort the list by scores to determine the winner(s)
         Collections.sort( teams, (Team.TEAMA).new ScoreComparator() );
+        
+        // Assign rankings to the teams (in worst to best, to match team list)
+        int[] rankings = new int[teams.size()];
+        int rank = 0;
+        rankings[teams.size()-1] = rank;
+        for( int i = teams.size()-2 ; i >= 0; --i)
+        {
+          // Continue to count up, regardless of ties.
+          // This gives results such as 1st, 1st, 3rd, 4th instead of 1st, 1st, 2nd, 3rd
+          rank++;
+          // Stomp rank of tying team with that of the team they tied with (the higher rank)
+          if (teams.get(i).getScore() == teams.get(i+1).getScore())
+          {
+            rankings[i] = rankings[i+1];
+          }
+          else
+          {
+            rankings[i] = rank;
+          }
+        }
+        // If the two highest ranks are the same, we have a tie on 1st place
+        boolean tieGame = (rankings[rankings.length-1] == rankings[rankings.length-2]);
 
   	    // Ids for Scoreboard list rows (one per team).
         final int[] TEAM_SCORE_GROUPS = new int[]{ R.id.GameEnd_Scores_1, R.id.GameEnd_Scores_2,
@@ -311,6 +333,8 @@ public class GameEnd extends Activity
         // Ids for scoreboard background end elements
         final int[] TEAM_SCORE_ENDS = new int[]{ R.id.GameEnd_Scores_1_end, R.id.GameEnd_Scores_2_end,
                                                 R.id.GameEnd_Scores_3_end, R.id.GameEnd_Scores_4_end};
+        
+        final String[] RANKS = new String[]{"1st", "2nd", "3rd", "4th"};
         
   		// Setup score displays.  Iterate through all team groups, setting scores for teams that played
   		// and disabling the group for teams that did not play
@@ -341,7 +365,7 @@ public class GameEnd extends Activity
   		    // Set ranking
   		    TextView text = (TextView) findViewById( TEAM_PLACE_IDS[i]);
   		    //text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
-  		    //text.setText( ToDo: GetTeamRank() -- Return 1 for multiple teams for tie)
+  		    text.setText( RANKS[rankings[teamIndex]] );
   		    // Set team name and color
   		    text = (TextView) findViewById( TEAM_NAME_IDS[i]);
             text.setTextColor( res.getColor( teams.get( teamIndex ).getSecondaryColor() ));
@@ -362,10 +386,21 @@ public class GameEnd extends Activity
   		}
   		
   		// Set Winner text
-  		int winnerIndex = teams.size() - 1;
+
   		TextView text = (TextView) findViewById( R.id.GameEnd_WinnerText);
-        text.setTextColor( res.getColor( teams.get( winnerIndex ).getText() ));
-        text.setText( teams.get( winnerIndex ).getName() + " Wins!");
+        if( tieGame)
+        {
+          // Set text to Tie game!
+          text.setTextColor( res.getColor( R.color.white ));
+          text.setText( "Tie Game!");
+        }
+        else
+        {
+          // Set text to Team X Wins!
+          int winnerIndex = teams.size() - 1;
+          text.setTextColor( res.getColor( teams.get( winnerIndex ).getText() ));
+          text.setText( teams.get( winnerIndex ).getName() + " Wins!");
+        }
         // set font
         Typeface antonFont = Typeface.createFromAsset(getAssets(), "fonts/Anton.ttf");
         text.setTypeface( antonFont );
