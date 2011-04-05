@@ -382,7 +382,7 @@
 					<View android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@color/genericBG" android:layout_margin="4dp" android:id="@+id/Rules_SubHeader_Example_Fill"></View>
 					<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:textSize="20dp" android:textColor="#FFFFFF" android:text="Example Game" android:id="@+id/Rules_SubHeader_Example_Text"></TextView>
 				</RelativeLayout>
-				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp" android:layout_below="@id/Rules_SubHeader_Example" android:id="@+id/ExampleText01" android:text="Finally, let's go through an example game to help get started."></TextView>
+				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp" android:layout_below="@id/Rules_SubHeader_Example" android:id="@+id/ExampleText01" android:text="Finally, let's go through an example game to help you get started."></TextView>
 				<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="10dp" android:layout_below="@id/ExampleText01" android:id="@+id/ExampleBullettedList">
 					<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ExampleText02" android:textColor="@color/text_subtext" android:layout_below="@id/ExampleBullettedList" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:text="Sally and three of her close friends are out camping and realize they forgot to bring any games.   But Sally comes to the rescue and pulls out her Android phone with WordFrenzy!   The group praises her foresight and excitedly divides up into two teams of two."></TextView>
 					<View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:id="@+id/ExampleBullet02" android:layout_below="@+id/ExampleBullettedList" android:layout_marginTop="5dp"></View>
@@ -399,7 +399,7 @@
 
 
 				</RelativeLayout>
-				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/ExampleBullettedList" android:id="@+id/ExampleText07" android:text="We hope you enjoy playing Word Frenzy!"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/ExampleText07" android:id="@+id/ExampleText08" android:text="If you have any more questions about the rules, please feel free to send us an email.  You can find our site by clicking the ram on the title page."></TextView>
+				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/ExampleBullettedList" android:id="@+id/ExampleText07" android:text="We hope you enjoy playing Word Frenzy!"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/ExampleText07" android:id="@+id/ExampleText08" android:text="If you have any more questions about the rules, please feel free to send us an email.  You can find our site by clicking the ram icon on the title page."></TextView>
 			</RelativeLayout>
 
 		</RelativeLayout>
