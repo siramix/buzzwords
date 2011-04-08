@@ -109,7 +109,18 @@ public class Turn extends Activity
    * Boolean for representing whether we've gone back or not
    */
   private boolean isBack;
-
+  
+  /**
+   * Boolean representing whether music is enabled or not.
+   * Reduces calls to getprefs
+   */
+  private boolean musicEnabled;
+  
+  /**
+   * Sound Manager stored as an instance variable to reduce calls to GetSoundManager
+   */
+  private SoundManager sound;
+  
   /**
    * Unique IDs for Options menu
    */
@@ -298,8 +309,7 @@ public class Turn extends Activity
         Log.d( TAG, "PauseListener OnClick()" );
 
         // If music is disabled, just resume the game immediately (don't wait for music to seek) 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Turn.this.getBaseContext());
-        if ( Turn.this.turnIsOver || !sp.getBoolean("music_enabled", true))
+        if ( Turn.this.turnIsOver || !musicEnabled )
         {
           // Turn is over when timer reaches 0.  At that point, we should just not resume music
           Turn.this.resumeGame();
@@ -479,11 +489,7 @@ public class Turn extends Activity
     curGameManager.ProcessCard( Card.RIGHT );
 
     //Only play sound once card has been processed so we don't confuse the user
-    WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
-    SoundManager sound = application.GetSoundManager();
-    sound.PlaySound( SoundManager.SOUND_RIGHT );
-    
-    
+    sound.PlaySound( SoundManager.SOUND_RIGHT );  
 
     ShowCard();    
   }
@@ -505,8 +511,6 @@ public class Turn extends Activity
     ShowCard();
 
     //Only play sound once card has been processed so we don't confuse the user
-    WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
-    SoundManager sound = application.GetSoundManager();
     sound.PlaySound( SoundManager.SOUND_WRONG );
   }
 
@@ -526,8 +530,6 @@ public class Turn extends Activity
     this.curGameManager.ProcessCard( Card.SKIP );
 
     //Only play sound once card has been processed so we don't confuse the user
-    WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
-    SoundManager sound = application.GetSoundManager();
     sound.PlaySound( SoundManager.SOUND_SKIP );
     
     ShowCard();    
@@ -793,6 +795,10 @@ public class Turn extends Activity
     super.onCreate( savedInstanceState );
     Log.d( TAG, "onCreate()" );
     
+    // Save sound manager as a local variable
+    WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
+    sound = application.GetSoundManager();
+    
     // set which card is active
     this.AIsActive = true;
     this.isBack = true;
@@ -806,10 +812,20 @@ public class Turn extends Activity
     
     this.showDialog( DIALOG_READY_ID );
     
+    // Capture our preference variable for music once
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Turn.this.getBaseContext());
+    if( sp.getBoolean("music_enabled", true))
+      this.musicEnabled = true;
+    else
+      this.musicEnabled = false;
+    
     // Initialize the turn timer
     long time = this.curGameManager.GetTurnTime();
     this.counter = new PauseTimer(time)
     {
+      private int btwncount = 5;
+      
+      
       @Override
       public void onFinish() 
       {
@@ -820,8 +836,31 @@ public class Turn extends Activity
 
       @Override
       public void onTick()
-      {
+      {            
+        Log.d( TAG , Long.toString( counter.getTimeRemaining() ) );
         Turn.this.countdownTxt.setText( Long.toString(( counter.getTimeRemaining() / 1000 ) + 1 ));
+        if ( !musicEnabled )
+        {
+        if ( counter.getTimeRemaining() <= 15000 )
+        {
+          if ( btwncount == 5 )
+          {
+            Log.d( TAG , "^^^^^1" );
+            btwncount = 0;
+            sound.PlaySound( SoundManager.SOUND_TICK );
+          }
+
+          if ( counter.getTimeRemaining() <= 10000 )
+          {
+            if ( btwncount == 2 )
+            {     
+              Log.d( TAG , "^^^^^0.5" );
+              sound.PlaySound( SoundManager.SOUND_TICK );
+            }            
+          }
+          btwncount++;
+        }
+        } 
       }
     };
     this.lastCardTimerState = time;
@@ -922,8 +961,6 @@ public class Turn extends Activity
       break;
     case DIALOG_READY_ID:
       // Play team ready sound
-      WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
-      SoundManager sound = application.GetSoundManager();
       sound.PlaySound( SoundManager.SOUND_TEAMREADY );
       
       String curTeam = this.curGameManager.GetActiveTeam().getName();
@@ -956,8 +993,7 @@ public class Turn extends Activity
                 }
                 
                 MediaPlayer mp = application.CreateMusicPlayer( Turn.this.getBaseContext(), musicId );
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Turn.this.getBaseContext());
-                if( sp.getBoolean("music_enabled", true))
+                if( musicEnabled )
                 {
                   mp.start();
                 }
@@ -993,8 +1029,7 @@ public class Turn extends Activity
       Turn.this.resumeGame();
 
       // Resume the music
-      SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Turn.this.getBaseContext());
-      if( sp.getBoolean("music_enabled", true))
+      if( musicEnabled )
       {
         mp.start();
       }
