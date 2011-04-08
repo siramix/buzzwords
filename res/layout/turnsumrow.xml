@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:background="@color/black"
-	android:layout_height="30dp">
+	android:layout_width="fill_parent" android:background="@color/black" android:layout_height="36dp">
 
 	<View android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:id="@+id/TurnSumRowBG" android:background="@color/turnSummaryListItem"
 		android:layout_marginBottom="1dp" android:layout_marginLeft="1dp"
 		android:layout_marginRight="1dp"></View>
-	<TextView android:id="@+id/TurnSum_CardTitle"
-		android:layout_height="wrap_content" android:text="TestCard"
-		android:layout_marginLeft="5dp" android:layout_gravity="center_vertical"
-		android:textColor="#FFFFFF" android:textSize="20dp"
-		android:layout_width="223dp" android:layout_marginTop="2dp" />
+	<TextView android:id="@+id/TurnSum_CardTitle" android:layout_height="wrap_content" android:text="TestCard" android:layout_marginLeft="5dp" android:layout_gravity="center_vertical" android:textColor="#FFFFFF" android:layout_marginTop="2dp" android:layout_centerVertical="true" android:textSize="24dp" android:layout_width="223dp" /><ImageView android:id="@+id/TurnSum_CardRWS" android:layout_alignParentRight="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/skip" />
 
-	<ImageView android:id="@+id/TurnSum_CardRWS"
-		android:background="@drawable/right" android:layout_alignParentRight="true"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	
 
 </RelativeLayout>
