@@ -238,6 +238,13 @@ public class GameEnd extends Activity
     public void onClick(View v)
     {
       Log.d( TAG, "MainMenuListener onClick()" );
+      
+      WordFrenzyApplication application = (WordFrenzyApplication) GameEnd.this.getApplication();
+      
+      // Play confirm sound
+      SoundManager sound = application.GetSoundManager();
+      sound.PlaySound( SoundManager.SOUND_CONFIRM );
+      
       Intent clearStackIntent = new Intent(getApplication().getString( R.string.IntentTitle ), getIntent().getData());
       clearStackIntent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
       startActivity( clearStackIntent );
@@ -255,6 +262,10 @@ public class GameEnd extends Activity
         
         WordFrenzyApplication application =
           (WordFrenzyApplication) GameEnd.this.getApplication();
+        
+        // Play confirm sound
+        SoundManager sound = application.GetSoundManager();
+        sound.PlaySound( SoundManager.SOUND_CONFIRM );
         
         GameManager curgm = application.GetGameManager();
         GameManager newgm = new GameManager(GameEnd.this);

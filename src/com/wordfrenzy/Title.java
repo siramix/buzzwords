@@ -171,7 +171,13 @@ public class Title extends Activity
        public void onClick(View v) 
        {
          Log.d( TAG, "PlayGameListener OnClick()" );
-         musicHandled = true;
+         musicHandled = true;      
+         
+         // play confirm sound
+         WordFrenzyApplication application = (WordFrenzyApplication) Title.this.getApplication();
+         SoundManager sound = application.GetSoundManager();
+         sound.PlaySound( SoundManager.SOUND_CONFIRM );
+         
          startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentGameSetup),
                                   getIntent().getData()));
        }
@@ -186,6 +192,12 @@ public class Title extends Activity
        {
          Log.d( TAG, "PlayGameListener OnClick()" );
          musicHandled = false;
+         
+         // play confirm sound
+         WordFrenzyApplication application = (WordFrenzyApplication) Title.this.getApplication();
+         SoundManager sound = application.GetSoundManager();
+         sound.PlaySound( SoundManager.SOUND_CONFIRM );
+         
          startActivity(new Intent(getApplication().getString( R.string.IntentBuzzer ), 
              getIntent().getData()));
        }
@@ -201,6 +213,12 @@ public class Title extends Activity
   	{
       Log.d( TAG, "SettingsListener OnClick()" );
       musicHandled = true;
+      
+      // play confirm sound
+      WordFrenzyApplication application = (WordFrenzyApplication) Title.this.getApplication();
+      SoundManager sound = application.GetSoundManager();
+      sound.PlaySound( SoundManager.SOUND_CONFIRM );
+      
   	  startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentSettings ), 
   	        getIntent().getData()));
   	}
@@ -216,6 +234,12 @@ public class Title extends Activity
     {
       Log.d( TAG, "RulesListener OnClick()" );
       musicHandled = true;
+      
+      // play confirm sound
+      WordFrenzyApplication application = (WordFrenzyApplication) Title.this.getApplication();
+      SoundManager sound = application.GetSoundManager();
+      sound.PlaySound( SoundManager.SOUND_CONFIRM );
+      
       startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 
           getIntent().getData()));
       
@@ -232,6 +256,11 @@ public class Title extends Activity
     {
       Log.d( TAG, "AboutUsListener OnClick()" );
       musicHandled = false;
+      
+      // play confirm sound
+      WordFrenzyApplication application = (WordFrenzyApplication) Title.this.getApplication();
+      SoundManager sound = application.GetSoundManager();
+      sound.PlaySound( SoundManager.SOUND_CONFIRM );
       
       Uri uri = Uri.parse("http://www.rockandrowe.com/");  
       Intent intent=new Intent(Intent.ACTION_VIEW,uri);
@@ -375,6 +404,7 @@ public void onCreate( Bundle savedInstanceState )
   WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
   MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
   application.CreateSoundManager( this.getBaseContext() );
+  
   mp.setLooping(true);
   SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
   if( sp.getBoolean("music_enabled", true))

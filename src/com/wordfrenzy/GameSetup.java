@@ -78,6 +78,10 @@ public class GameSetup extends Activity
 	        gm.StartGame( teamList, rounds );
 	        application.SetGameManager( gm );
 
+	        // Play confirm sound
+	        SoundManager sound = application.GetSoundManager();
+	        sound.PlaySound( SoundManager.SOUND_CONFIRM );
+	        
      	  	startActivity( new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()) );
      	  	
      	  	MediaPlayer mp = application.GetMusicPlayer();
@@ -94,12 +98,18 @@ public class GameSetup extends Activity
          {
            Log.d( TAG, "AddTeamAListener onClick()" );
            Button b = (Button) v;
+
+           // Play confirm sound
+           WordFrenzyApplication application =
+             (WordFrenzyApplication) GameSetup.this.getApplication();
+           SoundManager sound = application.GetSoundManager();
            
            if( teamList.remove( Team.TEAMA ) )
            {    
              b.setBackgroundResource( R.color.inactiveButton );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMA_PREFKEY, false);
+             sound.PlaySound( SoundManager.SOUND_BACK );
            }
            else
            {
@@ -107,6 +117,7 @@ public class GameSetup extends Activity
              b.setBackgroundResource( R.color.teamA_text );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamA_secondary ) );
              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMA_PREFKEY, true);
+             sound.PlaySound( SoundManager.SOUND_CONFIRM );
            }
          }
      };
@@ -121,11 +132,17 @@ public class GameSetup extends Activity
            Log.d( TAG, "AddTeamBListener onClick()" );
            Button b = (Button) v;
            
+           // Play confirm sound
+           WordFrenzyApplication application =
+             (WordFrenzyApplication) GameSetup.this.getApplication();
+           SoundManager sound = application.GetSoundManager();
+           
            if( teamList.remove( Team.TEAMB ) )
            {
              b.setBackgroundResource( R.color.inactiveButton );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMB_PREFKEY, false);
+             sound.PlaySound( SoundManager.SOUND_BACK );
            }
            else
            {             
@@ -133,6 +150,7 @@ public class GameSetup extends Activity
              b.setBackgroundResource( R.color.teamB_text );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamB_secondary ) );
              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMB_PREFKEY, true);
+             sound.PlaySound( SoundManager.SOUND_CONFIRM );
            }
          }
      };
@@ -147,19 +165,26 @@ public class GameSetup extends Activity
 	        Log.d( TAG, "AddTeamCListener onClick()" );
 	        Button b = (Button) v;
           
-            if( teamList.remove( Team.TEAMC ) )
-            {
-              b.setBackgroundResource( R.color.inactiveButton );
-              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMC_PREFKEY, false);              
-            }
-            else
-            {
-              teamList.add( Team.TEAMC);
-              b.setBackgroundResource( R.color.teamC_text );
-              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamC_secondary ) );
-              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMC_PREFKEY, true);    
-            }
+          // Play confirm sound
+          WordFrenzyApplication application =
+            (WordFrenzyApplication) GameSetup.this.getApplication();
+          SoundManager sound = application.GetSoundManager();
+	        
+          if( teamList.remove( Team.TEAMC ) )
+          {
+            b.setBackgroundResource( R.color.inactiveButton );
+            b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMC_PREFKEY, false);
+            sound.PlaySound( SoundManager.SOUND_BACK );
+          }
+          else
+          {
+            teamList.add( Team.TEAMC);
+            b.setBackgroundResource( R.color.teamC_text );
+            b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamC_secondary ) );
+            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMC_PREFKEY, true);    
+            sound.PlaySound( SoundManager.SOUND_CONFIRM );
+          }
 	      }
 	  };
 
@@ -173,18 +198,25 @@ public class GameSetup extends Activity
 	        Log.d( TAG, "AddTeamDListener onClick()" );
 	        Button b = (Button) v;
           
+          // Play confirm sound
+          WordFrenzyApplication application =
+            (WordFrenzyApplication) GameSetup.this.getApplication();
+          SoundManager sound = application.GetSoundManager();
+	        
           if( teamList.remove( Team.TEAMD ) )
           {
             b.setBackgroundResource( R.color.inactiveButton );
             b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMD_PREFKEY, false);    
+            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMD_PREFKEY, false);
+            sound.PlaySound( SoundManager.SOUND_BACK );
           }
           else
           {
             teamList.add( Team.TEAMD );
             b.setBackgroundResource( R.color.teamD_text );
             b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamD_secondary ) );
-            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMD_PREFKEY, true);    
+            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMD_PREFKEY, true);
+            sound.PlaySound( SoundManager.SOUND_CONFIRM );
           }
 	      }
 	  };
