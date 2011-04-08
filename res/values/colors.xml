@@ -25,7 +25,7 @@
   	#001b2b 
   </color>
   <color name="teamA_highlight">
-    #3b8eb3
+    #52a2c6
   </color>
   <color name="teamB_text">
     #6FA234
@@ -40,7 +40,7 @@
     #344b19
   </color>
   <color name="teamB_highlight">
-    #85c13f
+    #91c751
   </color>
   <color name="teamC_text">
     #AC2D20
@@ -55,7 +55,7 @@
     #470000
   </color>
   <color name="teamC_highlight">
-    #ce3626
+    #dc4c3c
   </color>
   <color name="teamD_text">
     #AC9B29
@@ -70,7 +70,7 @@
     #2e2e00
   </color>  
   <color name="teamD_highlight">
-    #ceba32
+    #d3c045
   </color>
   <color name="turnSummaryListItem">
     #282828
