@@ -77,10 +77,6 @@ public class GameSetup extends Activity
         
 	        gm.StartGame( teamList, rounds );
 	        application.SetGameManager( gm );
-
-	        // Play confirm sound
-	        SoundManager sound = application.GetSoundManager();
-	        sound.PlaySound( SoundManager.SOUND_CONFIRM );
 	        
      	  	startActivity( new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()) );
      	  	

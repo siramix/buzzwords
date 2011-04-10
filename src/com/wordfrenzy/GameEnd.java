@@ -282,14 +282,10 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
   {
       public void onClick(View v)
       {
-        Log.d( TAG, "MainMenuListener onClick()" );
+        Log.d( TAG, "RematchListener onClick()" );
         
         WordFrenzyApplication application =
           (WordFrenzyApplication) GameEnd.this.getApplication();
-        
-        // Play confirm sound
-        SoundManager sound = application.GetSoundManager();
-        sound.PlaySound( SoundManager.SOUND_CONFIRM );
         
         GameManager curgm = application.GetGameManager();
         GameManager newgm = new GameManager(GameEnd.this);
