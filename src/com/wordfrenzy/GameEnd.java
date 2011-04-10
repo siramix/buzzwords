@@ -2,6 +2,7 @@ package com.wordfrenzy;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,14 +39,29 @@ import com.wordfrenzy.WordFrenzyApplication;
  * @author WordFrenzy team
  *
  */
-public class GameEnd extends Activity
+public class GameEnd extends Activity implements TextToSpeech.OnInitListener
 {
 
   /**
    * logging tag
    */
-  public static String TAG = "GameEnd";
+  public static final String TAG = "GameEnd";
+  
+  /**
+   * code for checking Text to Speech capabilities
+   */
+  public static final int MY_DATA_CHECK_CODE = 1234;
 
+  /**
+   * Text to speech object to speak the team name
+   */
+  private TextToSpeech mTts;
+ 
+  /**
+   * Winning text to be said when TTS object is called
+   */
+  private String winningtext = "Tie game";
+  
   /**
    * This is a reference to the current game manager
    */
@@ -182,6 +199,7 @@ public class GameEnd extends Activity
     
     TextView winner = (TextView) this.findViewById( R.id.GameEnd_WinnerText);
     winner.startAnimation(fadeInWinner);
+        
   }
   
   /**
@@ -202,7 +220,7 @@ public class GameEnd extends Activity
       // Play win sound
       WordFrenzyApplication app = (WordFrenzyApplication) GameEnd.this.getApplication();
       SoundManager sound = app.GetSoundManager();
-      sound.PlaySound( SoundManager.SOUND_WIN );
+      sound.PlaySound( SoundManager.SOUND_WIN );     
     }
   };
 
@@ -213,7 +231,13 @@ public class GameEnd extends Activity
   private final AnimationListener buttonFadeListener = new AnimationListener()
   {
     public void onAnimationEnd( Animation animation )
-    {
+    {     
+      // Fire off an intent to check if a TTS engine is installed, it will 
+      // simultaneously speak the words outloud onInit
+      Intent checkIntent = new Intent();
+      checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+      startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
+      
       // Make buttons usable
       Button mainmenuButton = (Button) GameEnd.this.findViewById( R.id.EndGameMainMenu );
       Button rematchButton = (Button) GameEnd.this.findViewById( R.id.EndGameRematch );
@@ -285,7 +309,7 @@ public class GameEnd extends Activity
     @Override
     public void onCreate( Bundle savedInstanceState )
     {
-        Log.d( TAG, "onCreate()" );
+      Log.d( TAG, "onCreate()" );
   		super.onCreate(savedInstanceState);
   		this.setContentView( R.layout.gameend );
   	    this.res = this.getResources();
@@ -294,6 +318,7 @@ public class GameEnd extends Activity
   			(WordFrenzyApplication) this.getApplication();
   		curGameManager = application.GetGameManager();		
 
+		
   	    List<Team> teams = curGameManager.GetTeams();
   	    
         // Sort the list by scores to determine the winner(s)
@@ -395,15 +420,13 @@ public class GameEnd extends Activity
             
   		  }
   		}
-  		
-  		// Set Winner text
 
   		TextView text = (TextView) findViewById( R.id.GameEnd_WinnerText);
         if( tieGame)
         {
           // Set text to Tie game!
           text.setTextColor( res.getColor( R.color.white ));
-          text.setText( "Tie Game!");
+          text.setText( "Tie Game!");          
         }
         else
         {
@@ -411,6 +434,7 @@ public class GameEnd extends Activity
           int winnerIndex = teams.size() - 1;
           text.setTextColor( res.getColor( teams.get( winnerIndex ).getText() ));
           text.setText( teams.get( winnerIndex ).getName() + " Wins!");
+          this.winningtext = teams.get( winnerIndex ).getName() + " Wins!";
         }
         // set font
         Typeface antonFont = Typeface.createFromAsset(getAssets(), "fonts/Anton.ttf");
@@ -434,6 +458,7 @@ public class GameEnd extends Activity
         
         // Animate the whole thing
         AnimateGameEnd(teams.size());
+
     }
     
     /**
@@ -454,6 +479,12 @@ public class GameEnd extends Activity
    {
      super.onDestroy();
      Log.d( TAG, "onDestroy()" );
+     // Don't forget to shutdown!
+     if (mTts != null)
+     {
+         mTts.stop();
+         mTts.shutdown();
+     }
    }    
     
     /**
@@ -471,4 +502,43 @@ public class GameEnd extends Activity
 
       return super.onKeyUp(keyCode, event);
     }
+    
+    /**
+     * Executed when a new TTS is instantiated. 
+     * This is where the winner is announced.
+     * @param i
+     */
+    public void onInit(int i)
+    {
+      mTts.setLanguage(Locale.US);
+      mTts.speak(this.winningtext, TextToSpeech.QUEUE_FLUSH, null);
+    }
+    
+    /**
+     * This is the callback from the TTS engine check, if a TTS is installed we
+     * create a new TTS instance (which in turn calls onInit), if not then we will
+     * create an intent to go off and install a TTS engine
+     * @param requestCode int Request code returned from the check for TTS engine.
+     * @param resultCode int Result code returned from the check for TTS engine.
+     * @param data Intent Intent returned from the TTS check.
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == MY_DATA_CHECK_CODE)
+        {
+            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS)
+            {
+                // success, create the TTS instance
+                mTts = new TextToSpeech(this, this);                
+            }
+            // we don't want to worry about installing if their phone doesn't support TTS
+            else 
+            {
+              // Android docs included installation intent here.  I don't think we
+              // should bother for this one line.  Just don't play the text if their phone
+              // won't be able to.
+            }
+        }
+    }
+    
 }
