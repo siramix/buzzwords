@@ -506,8 +506,13 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
      */
     public void onInit(int i)
     {
-      mTts.setLanguage(Locale.US);
-      mTts.speak(this.winningtext, TextToSpeech.QUEUE_FLUSH, null);
+      if ( mTts.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_AVAILABLE || 
+           mTts.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_COUNTRY_AVAILABLE ||
+           mTts.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE )
+      {
+        mTts.setLanguage(Locale.getDefault());
+        mTts.speak(this.winningtext, TextToSpeech.QUEUE_FLUSH, null);
+      }
     }
     
     /**
