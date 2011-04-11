@@ -134,7 +134,13 @@ public class Turn extends Activity
   private SimpleOnGestureListener swipeListener = new SimpleOnGestureListener() {
 
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) 
+    {
+      // Do not let them do swipes while paused or time's up!
+      if ( Turn.this.isPaused || Turn.this.turnIsOver)
+      {
+        return false;
+      }
       if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
       {
         Turn.this.doSkip();
@@ -149,7 +155,8 @@ public class Turn extends Activity
       {
         return false;
       }
-     }    
+     
+    }    
   };
   
   /**
@@ -158,7 +165,13 @@ public class Turn extends Activity
   private SimpleOnGestureListener onlybackswipeListener = new SimpleOnGestureListener() {
 
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) 
+    {
+      // Do not let them do swipes while paused or time's up!
+      if ( Turn.this.isPaused || Turn.this.turnIsOver)
+      {
+        return false;
+      }
       if(e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
       {
         Turn.this.doBack();
