@@ -488,9 +488,14 @@ public class Turn extends Activity
     this.setCardTime();
     curGameManager.ProcessCard( Card.RIGHT );
 
-    //Only play sound once card has been processed so we don't confuse the user
+    // Only play sound once card has been processed so we don't confuse the user
     sound.PlaySound( SoundManager.SOUND_RIGHT );  
 
+    // Mark the card with an icon
+    this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.RIGHT) );
+    this.cardStatus.setVisibility( View.VISIBLE );
+    
+    // Show the next card
     ShowCard();    
   }
   
@@ -508,10 +513,16 @@ public class Turn extends Activity
     
     Turn.this.setCardTime();
     curGameManager.ProcessCard( Card.WRONG );
-    ShowCard();
 
+    // Mark the card with an icon
+    this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.WRONG) );    
+    this.cardStatus.setVisibility( View.VISIBLE );
+    
     //Only play sound once card has been processed so we don't confuse the user
     sound.PlaySound( SoundManager.SOUND_WRONG );
+    
+    // Show the next card
+    ShowCard();
   }
 
   /**
@@ -529,9 +540,14 @@ public class Turn extends Activity
     this.setCardTime();
     this.curGameManager.ProcessCard( Card.SKIP );
 
+    // Mark the card with an icon for SKIP
+    this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.SKIP) );
+    this.cardStatus.setVisibility( View.VISIBLE );
+    
     //Only play sound once card has been processed so we don't confuse the user
     sound.PlaySound( SoundManager.SOUND_SKIP );
     
+    // Show the next card
     ShowCard();    
   }
   
@@ -555,7 +571,6 @@ public class Turn extends Activity
     this.cardTitle.setText( curCard.getTitle() );
     // Update bad words
     this.SetBadWords( this.cardBadWords, curCard, this.curGameManager.GetActiveTeam());
-    this.cardStatus.setBackgroundResource( curCard.getDrawableIdForBack() );
     this.isBack = true;
     
     this.viewFlipper.setInAnimation(InFromRightAnimation());  //Reset animations
@@ -609,7 +624,8 @@ public class Turn extends Activity
     this.cardTitle.setText( curCard.getTitle() );
     // Update the badwords
     this.SetBadWords( this.cardBadWords, curCard, this.curGameManager.GetActiveTeam());
-    this.cardStatus.setBackgroundResource( curCard.getDrawableId() );
+    // Hide the card status until marked
+    this.cardStatus.setVisibility( View.INVISIBLE );
     this.isBack = false;
   }
   

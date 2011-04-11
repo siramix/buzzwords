@@ -83,8 +83,8 @@ public class TurnSummary extends Activity
           Card curCard = TurnSummary.this.cardList.get( cardIndex );
           // Ammend the card
           curCard.cycleRws();
-          // Set Card icon
-          iv.setImageResource( curCard.getDrawableId() );
+          // Set new Row End icon
+          iv.setImageResource( curCard.getRowEndDrawableId() );
           // Update the score to reflect the new value
           TurnSummary.this.UpdateScoreViews();
           
@@ -137,12 +137,14 @@ public class TurnSummary extends Activity
         background.setBackgroundResource(R.color.genericBG_trim);
       }
 
+      // Set Title
   	  TextView cardTitle = (TextView) realLine.getChildAt(1);
   	  cardTitle.setText(card.getTitle());
 
+  	  // Set Row end icon
   	  ImageView cardIcon = (ImageView) realLine.getChildAt(2);
   	  this.cardViewList.add( cardIcon );
-  	  cardIcon.setImageResource(card.getDrawableId());
+  	  cardIcon.setImageResource(card.getRowEndDrawableId());
   	  cardIcon.setOnClickListener( CardIconListener );
   	  count++;
   	}

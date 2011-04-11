@@ -203,9 +203,9 @@ public class Card
   /**
    * Get the resource ID for this card's right wrong skip icon
    */
-  public int getDrawableId()
+  public int getRowEndDrawableId()
   {
-    Log.d( TAG, "getDrawableId()" );
+    Log.d( TAG, "getRowEndDrawableId()" );
   	switch ( this.rws )
   	{
   	case 0:
@@ -219,26 +219,26 @@ public class Card
   	}
   }
   
-  /**
+/**
    * Get the resource ID for this card's right wrong skip icon Mid-turn (when user hits back).
    * These IDs must differ from those on Turn Result Screen.
-   */
-  public int getDrawableIdForBack()
+ */
+  public static int getCardMarkDrawableId(int cardRWS)
   {
-    Log.d( TAG, "getDrawableIdForBack()" );
-    switch ( this.rws )
+    Log.d( TAG, "getDrawableId()" );
+    switch ( cardRWS )
     {
-    case 0:
+    case RIGHT:
       return R.drawable.controls_right;
-    case 1:
+    case WRONG:
       return R.drawable.controls_wrong;
-    case 2:
+    case SKIP:
       return R.drawable.controls_skip;
     default:
       return 0;
     }
-  }  
-
+  }
+  
   /**
    * Cycle right/wrong/skip for the turn summary
    */
