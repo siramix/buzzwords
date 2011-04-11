@@ -14,6 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnSeekCompleteListener;
 import android.os.Bundle;
@@ -814,6 +815,9 @@ public class Turn extends Activity
   {
     super.onCreate( savedInstanceState );
     Log.d( TAG, "onCreate()" );
+    
+    //Force volume controls to affect Media volume
+    setVolumeControlStream(AudioManager.STREAM_MUSIC);
     
     // Save sound manager as a local variable
     WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();

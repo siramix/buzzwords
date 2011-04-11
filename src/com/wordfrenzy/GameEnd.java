@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
@@ -306,6 +307,10 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
     public void onCreate( Bundle savedInstanceState )
     {
       Log.d( TAG, "onCreate()" );
+
+      //Force volume controls to affect Media volume
+      setVolumeControlStream(AudioManager.STREAM_MUSIC);
+      
   		super.onCreate(savedInstanceState);
   		this.setContentView( R.layout.gameend );
   	    this.res = this.getResources();

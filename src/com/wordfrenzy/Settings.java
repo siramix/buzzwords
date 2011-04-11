@@ -4,6 +4,7 @@ import com.wordfrenzy.R;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -25,8 +26,8 @@ public class Settings extends PreferenceActivity
   {
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-        String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key) 
+    {
       if ( key.equals( "music_enabled"))
       {
         // start or stop the music
@@ -59,7 +60,10 @@ public class Settings extends PreferenceActivity
 	{
 		super.onCreate( savedInstanceState );
     Log.d( TAG, "onCreate()" ); 
-		
+
+    //Force volume controls to affect Media volume
+    setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    
 		this.addPreferencesFromResource(R.xml.settings);
 		// Register preference listener with SharedPreferences
 	    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());

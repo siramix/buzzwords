@@ -88,6 +88,9 @@ public class Buzzer extends Activity
 	  super.onCreate( savedInstanceState );
       Log.d( TAG, "onCreate()" );
 
+      //Force volume controls to affect Media volume
+      setVolumeControlStream(AudioManager.STREAM_MUSIC);
+      
       //Only play sound once card has been processed so we don't confuse the user
       soundPool = new SoundPool( 4, AudioManager.STREAM_MUSIC, 100 );
       buzzSoundId = soundPool.load(this, R.raw.fx_buzzer, 1);

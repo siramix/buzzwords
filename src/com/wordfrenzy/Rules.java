@@ -4,6 +4,7 @@ import com.wordfrenzy.R;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -31,6 +32,9 @@ public class Rules extends Activity
   {
     super.onCreate( savedInstanceState );
     Log.d( TAG, "onCreate()" ); 
+    
+    //Force volume controls to affect Media volume
+    setVolumeControlStream(AudioManager.STREAM_MUSIC);
     
     this.setContentView(R.layout.rules);
     

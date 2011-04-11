@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -102,7 +103,11 @@ public class TurnSummary extends Activity
   {
   	super.onCreate( savedInstanceState );
     Log.d( TAG, "onCreate()" );
-  	// Setup the view
+
+    //Force volume controls to affect Media volume
+    setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    
+    // Setup the view
   	this.setContentView(R.layout.turnsummary);
   	
     WordFrenzyApplication application =

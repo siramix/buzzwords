@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -239,6 +240,9 @@ public void onCreate( Bundle savedInstanceState )
 	super.onCreate( savedInstanceState );
 	Log.d( TAG, "onCreate()" );
   
+  //Force volume controls to affect Media volume
+  setVolumeControlStream(AudioManager.STREAM_MUSIC);
+	
 	// Setup the view
 	this.setContentView(R.layout.gamesetup);
 	

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -400,6 +401,9 @@ public void onCreate( Bundle savedInstanceState )
 {
 	super.onCreate( savedInstanceState );
   Log.d( TAG, "onCreate()" );               
+  
+  //Force volume controls to affect Media volume
+  setVolumeControlStream(AudioManager.STREAM_MUSIC);
   
   WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
   MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
