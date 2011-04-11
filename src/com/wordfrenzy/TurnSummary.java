@@ -52,11 +52,7 @@ public class TurnSummary extends Activity
 	        WordFrenzyApplication application =
 	          (WordFrenzyApplication) TurnSummary.this.getApplication();
 	        GameManager gm = application.GetGameManager();
-	        
-	         // Play confirm sound
-          SoundManager sound = application.GetSoundManager();
-          sound.PlaySound( SoundManager.SOUND_CONFIRM );
-	        
+
 	        if( gm.GetNumberOfTurnsRemaining() == 0 )
 	        {
 	        	gm.EndGame();
