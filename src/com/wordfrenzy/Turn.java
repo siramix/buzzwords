@@ -137,7 +137,7 @@ public class Turn extends Activity
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) 
     {
       // Do not let them do swipes while paused or time's up!
-      if ( Turn.this.isPaused || Turn.this.turnIsOver)
+      if ( Turn.this.isPaused || Turn.this.turnIsOver )
       {
         return false;
       }
@@ -168,7 +168,7 @@ public class Turn extends Activity
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) 
     {
       // Do not let them do swipes while paused or time's up!
-      if ( Turn.this.isPaused || Turn.this.turnIsOver)
+      if ( Turn.this.isPaused || Turn.this.turnIsOver )
       {
         return false;
       }
@@ -506,7 +506,6 @@ public class Turn extends Activity
 
     // Mark the card with an icon
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.RIGHT) );
-    this.cardStatus.setVisibility( View.VISIBLE );
     
     // Show the next card
     ShowCard();    
@@ -528,8 +527,7 @@ public class Turn extends Activity
     curGameManager.ProcessCard( Card.WRONG );
 
     // Mark the card with an icon
-    this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.WRONG) );    
-    this.cardStatus.setVisibility( View.VISIBLE );
+    this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.WRONG) );
     
     //Only play sound once card has been processed so we don't confuse the user
     sound.PlaySound( SoundManager.SOUND_WRONG );
@@ -555,7 +553,6 @@ public class Turn extends Activity
 
     // Mark the card with an icon for SKIP
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.SKIP) );
-    this.cardStatus.setVisibility( View.VISIBLE );
     
     //Only play sound once card has been processed so we don't confuse the user
     sound.PlaySound( SoundManager.SOUND_SKIP );
@@ -588,6 +585,9 @@ public class Turn extends Activity
     
     this.viewFlipper.setInAnimation(InFromRightAnimation());  //Reset animations
     this.viewFlipper.setOutAnimation(OutToLeftAnimation());
+    
+    // Show mark when going back
+    this.cardStatus.setVisibility( View.VISIBLE );
     
     // Play back sound
     WordFrenzyApplication app = (WordFrenzyApplication) this.getApplication();
@@ -1178,7 +1178,7 @@ public class Turn extends Activity
     if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled() )
       {
-      if ( !this.isPaused )
+      if ( !( Turn.this.isPaused || Turn.this.turnIsOver )  )
       {
         this.doBack();
       }
