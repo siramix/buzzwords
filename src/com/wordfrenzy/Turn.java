@@ -3,7 +3,6 @@ package com.wordfrenzy;
 import com.wordfrenzy.R;
 
 import android.app.*;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +17,6 @@ import android.view.animation.TranslateAnimation;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnSeekCompleteListener;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -100,11 +98,6 @@ public class Turn extends Activity
    */
   private boolean AIsActive;
 
-  /**
-   * vibrator object to vibrate on buzz click
-   */
-  private Vibrator buzzVibrator;
-  
   /**
    * Boolean for representing whether we've gone back or not
    */
@@ -716,15 +709,13 @@ public class Turn extends Activity
   protected void OnTurnEnd( )
   {
     Log.d( TAG, "onTurnEnd()" );
-	  this.buzzVibrator.cancel();
-	  Intent newintent = new Intent( this, TurnSummary.class);
-	  startActivity(newintent);
+	Intent newintent = new Intent( this, TurnSummary.class);
+	startActivity(newintent);
   }
 
   protected void setupViewReferences()
   {
     Log.d( TAG, "setupViewReferences()");
-    this.buzzVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
     WordFrenzyApplication application =
       (WordFrenzyApplication) this.getApplication();
