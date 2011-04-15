@@ -1047,7 +1047,6 @@ public class Turn extends Activity
   private class TurnMusicListener implements OnSeekCompleteListener
   {
 
-    @Override
     public void onSeekComplete(MediaPlayer mp) {
       // Resume the game on seek complete
       Turn.this.resumeGame();

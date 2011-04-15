@@ -50,7 +50,6 @@ public class Title extends Activity
    private View.OnTouchListener TouchPlayListener = new View.OnTouchListener() 
    {
 
-      @Override
       public boolean onTouch(View v, MotionEvent event) {
         // return out if views are not enabled
         if ( !v.isEnabled() )
