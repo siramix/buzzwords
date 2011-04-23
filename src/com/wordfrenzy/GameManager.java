@@ -1,28 +1,11 @@
 package com.wordfrenzy;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import com.wordfrenzy.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -49,7 +32,7 @@ public class GameManager
   /**
    * The list of cardIds that we pull from (our "deck" of cards)
    */
-  private ArrayList<Card> deck;
+  private Deck deck;
 
   /**
    * The position in the list of card ids (where we are in the "deck")
@@ -77,10 +60,12 @@ public class GameManager
   private int currentTurn;
 
   /**
-   * The id of the card in play
+   * The card in play
    */
   private Card currentCard;
 
+  
+  
   /**
    * The set of cards that have been activated in the latest turn
    */
@@ -127,100 +112,8 @@ public class GameManager
     this.rws_value_rules[0] = 1;  //Value for correct cards
     this.rws_value_rules[1] = -1; //Value for wrong cards
     this.rws_value_rules[2] = 0;  //set skip value to 0 if skip penalty is not on
-  }
-
-  /**
-   * Query the database for all the cards it has. That query specifies a random
-   * order; thus, a cursor full of longs is returned. We push those longs into
-   * our newly initialized ArrayList, cardIds. Note the cardIdPosition is set
-   * to zero indicating the first card id in our "deck."
-   */
-  public void prepDeck()
-  {
-    Log.d( TAG, "prepDeck()" );
     
-    if( this.deck == null )
-    {
-      this.deck = new ArrayList<Card>();
-      InputStream starterXML =
-          curContext.getResources().openRawResource(R.raw.starter);
-        DocumentBuilderFactory docBuilderFactory =
-          DocumentBuilderFactory.newInstance();
-        
-        Log.d( TAG, "Building DocBuilderFactory for card pack parsing from " + R.class.toString() );
-        try
-        {
-          DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-          Document doc = docBuilder.parse(starterXML);
-          NodeList cardNodes = doc.getElementsByTagName( "card" );
-          for(int i = 0; i < cardNodes.getLength(); i++)
-          {
-            NodeList titleWhiteAndBads = cardNodes.item( i ).getChildNodes();
-            Node titleNode = null;
-            Node badsNode = null;
-            for( int j = 0; j < titleWhiteAndBads.getLength(); j++ )
-            {
-              String candidateName = titleWhiteAndBads.item( j ).getNodeName();
-              if( candidateName.equals( "title" ) )
-              {
-                titleNode = titleWhiteAndBads.item( j );
-              }
-              else if( candidateName.equals( "bad-words" ) )
-              {
-                badsNode = titleWhiteAndBads.item( j );
-              }
-              else
-              {
-                continue; // We found some #text
-              }
-            }
-            String title = titleNode.getFirstChild().getNodeValue();
-            String badWords = "";
-            NodeList bads = badsNode.getChildNodes();
-            for( int j = 0; j < bads.getLength(); j++ )
-            {
-              String candidateName = bads.item( j ).getNodeName();
-              if( candidateName.equals( "word" ) )
-              {
-                badWords += bads.item( j ).getFirstChild().getNodeValue() + ",";
-              }
-            }
-            // hack because I have a comma at the end
-            badWords = badWords.substring( 0, badWords.length() - 1 );
-  
-            Card card = new Card();
-            card.setTitle( title );
-            card.setBadWords( badWords );
-            this.deck.add( card );
-          }
-        }
-        catch( ParserConfigurationException e )
-        {
-          e.printStackTrace();
-        }
-        catch( SAXException e )
-        {
-          e.printStackTrace();
-        }
-        catch( IOException e )
-        {
-          e.printStackTrace();
-        }
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.curContext);
-        Random r = new Random();
-        int seed = sp.getInt( "deck_seed", r.nextInt() );
-        Editor editor = sp.edit();
-        editor.putInt( "deck_seed", seed );
-        editor.commit();
-        r = new Random(seed);
-        Collections.shuffle( this.deck, r );
-        this.cardPosition = sp.getInt( "deck_position", -1 );
-        Log.d( TAG, Integer.toString( sp.getInt( "deck_position", -1 ) ));
-      }
-    else
-      {
-      this.cleanDeck();
-      }
+    this.deck = new Deck(context);
   }
 
   /**
@@ -231,19 +124,7 @@ public class GameManager
   public Card getNextCard()
   {
     Log.d( TAG, "getNextCard()" );
-    // check deck bounds
-    if( this.cardPosition >= this.deck.size()-1 )
-    {
-      this.prepDeck();
-    }
-
-    // return the card (it could be blank)
-    this.currentCard = this.deck.get( ++this.cardPosition );
-    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.curContext);
-    Editor editor = sp.edit();
-    editor.putInt( "deck_position", this.cardPosition );
-    editor.commit();
-    
+    this.currentCard = this.deck.getCard();
     return this.currentCard;
   }
 
@@ -259,7 +140,7 @@ public class GameManager
     {
       this.cardPosition = 1; 
     }
-    this.currentCard = this.deck.get( --this.cardPosition );
+    this.currentCard = this.currentCards.get(this.currentCards.size()-1);
     if( !this.currentCards.isEmpty() )
     {
       this.currentCards.removeLast();
@@ -286,7 +167,7 @@ public class GameManager
     this.numRounds = rounds;
     this.numTurns = this.teams.size()*this.numRounds;
     this.currentTurn++;
-    this.prepDeck();
+    this.deck.prepareForRound();
   }
 
   /**
@@ -301,15 +182,7 @@ public class GameManager
     this.incrementActiveTeamIndex();
     this.currentCards.clear();
     this.currentTurn++;
-  }
-  
-  public void cleanDeck()
-  {
-    for( Iterator<Card> itr = this.deck.iterator(); itr.hasNext(); )
-    {
-      itr.next().setRws( -1 );
-    }
-    this.cardPosition = -1;
+    this.deck.prepareForRound();
   }
   
   public void incrementActiveTeamIndex()

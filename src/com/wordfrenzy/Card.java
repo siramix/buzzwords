@@ -25,10 +25,10 @@ public class Card
   public static final int SKIP = 2;
   
   /**
-   * The id of the card in the database
+   * The db id of the card
    */
-  private long id;
-
+  private int id;
+  
   /**
    * The right,wrong,skip {0,1,2} state of the card
    */
@@ -38,11 +38,6 @@ public class Card
    * The title of the card, the word to be guessed
    */
   private String title;
-  
-  /**
-   * Time of the card;
-   */
-  private int time;
 
   /**
    * An array list of the words you cannot say
@@ -76,7 +71,7 @@ public class Card
   public Card()
   {
     Log.d( TAG, "Card()" );
-    this.init( -1, -1, "", new ArrayList<String>(), -1 );
+    this.init(-1, -1, "", new ArrayList<String>() );
   }
 
   /**
@@ -86,16 +81,21 @@ public class Card
   {
     Log.d( TAG, "Card( Card )" );
     ArrayList<String> bws = new ArrayList<String>( rhs.getBadWords() );
-    this.init( rhs.getId(), rhs.getRws(), rhs.getTitle(), bws, rhs.getTime() );
+    this.init( rhs.getId(), rhs.getRws(), rhs.getTitle(), bws );
   }
   
   /**
    * Standard Constructor
    */
-  public Card( long id, int rws, String title,
-               ArrayList<String> badWords, int time )
+  public Card( int id, int rws, String title,
+               ArrayList<String> badWords )
   {
-    this.init( id, rws, title, badWords, time );
+    this.init( id, rws, title, badWords );
+  }
+  
+  public Card( int id, String title, String badWords )
+  {
+    this.init( id, -1, title, Card.BustString(badWords));
   }
   
   @Override
@@ -117,37 +117,21 @@ public class Card
     }
     Card rhs = (Card) compareObj;
     return this.badWords.equals( rhs.getBadWords() ) && 
-      this.id == rhs.getId() && this.rws == rhs.getRws() &&
-      this.time == rhs.getTime() && this.title.equals( rhs.getTitle() );    
+      this.rws == rhs.getRws() &&
+      this.title.equals( rhs.getTitle() );    
   }
 
   /**
    * Function for initializing card state
    */
-  private void init( long id, int rws, String title,
-                     ArrayList<String> badWords, int time )
+  private void init( int id, int rws, String title,
+                     ArrayList<String> badWords )
   {
     Log.d( TAG, "init()" );
-    this.id = id;
     this.rws = rws;
     this.title = title;
     this.badWords = badWords;
-    this.time = time;
   }
-
-  public long getId()
-  {
-    Log.d( TAG, "getId()" );
-    return this.id;
-  }
-
-
-  public void setId( long id )
-  {
-    Log.d( TAG, "setId()" );
-    this.id = id;
-  }
-
 
   public int getRws()
   {
@@ -251,21 +235,19 @@ public class Card
       rws = 0;
     }
   }
-  
+
   /**
-   * Set the time
+   * @param id the id to set
    */
-  public void setTime( int time )
-  {
-    this.time = time;
+  public void setId(int id) {
+    this.id = id;
   }
-  
+
   /**
-   * Get the time
+   * @return the id
    */
-  public int getTime()
-  {
-    return this.time;
+  public int getId() {
+    return id;
   }
 
 }

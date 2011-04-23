@@ -25,7 +25,6 @@ public class Settings extends PreferenceActivity
   private OnSharedPreferenceChangeListener ListenPrefs = new OnSharedPreferenceChangeListener()
   {
 
-    
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key) 
     {
       if ( key.equals( "music_enabled"))

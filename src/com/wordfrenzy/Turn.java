@@ -76,8 +76,6 @@ public class Turn extends Activity
   RelativeLayout timerGroup;
   RelativeLayout buttonGroup;
   
-  private long lastCardTimerState;
-  
   /**
    * Tracks the current state of the Turn as a boolean.  Set to true when time has expired and
    * activity is showing the user "Time's up!"
@@ -492,7 +490,6 @@ public class Turn extends Activity
     
     AIsActive = !AIsActive;   
     flipper.showNext();
-    this.setCardTime();
     curGameManager.ProcessCard( Card.RIGHT );
 
     // Only play sound once card has been processed so we don't confuse the user
@@ -517,7 +514,6 @@ public class Turn extends Activity
     ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
     flipper.showNext();
     
-    Turn.this.setCardTime();
     curGameManager.ProcessCard( Card.WRONG );
 
     // Mark the card with an icon
@@ -542,7 +538,6 @@ public class Turn extends Activity
  
     AIsActive = !AIsActive;
     this.viewFlipper.showNext();
-    this.setCardTime();
     this.curGameManager.ProcessCard( Card.SKIP );
 
     // Mark the card with an icon for SKIP
@@ -687,7 +682,6 @@ public class Turn extends Activity
     timer.setVisibility( View.INVISIBLE );
     
     // Mark the current card as a skip so it can be amended later
-    this.setCardTime();
     this.curGameManager.ProcessCard( Card.SKIP );
     
     
@@ -887,7 +881,7 @@ public class Turn extends Activity
         } 
       }
     };
-    this.lastCardTimerState = time;
+
   }
 
   /**
@@ -1133,12 +1127,6 @@ public class Turn extends Activity
       this.pauseGame();
     }
     return true;
-  }
-  
-  public void setCardTime()
-  {
-    this.curGameManager.GetCurrentCard().setTime( (int)(this.lastCardTimerState - this.counter.getTimeRemaining()) );
-    this.lastCardTimerState = this.counter.getTimeRemaining();
   }
 
   /**
