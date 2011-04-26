@@ -23,11 +23,6 @@ public class GameManager
    * logging tag
    */
   public static String TAG = "GameManager";
-  
-  /**
-   * The current context (used for database creation and initialization)
-   */
-  private final Context curContext;
 
   /**
    * The list of cardIds that we pull from (our "deck" of cards)
@@ -93,8 +88,6 @@ public class GameManager
   public GameManager( Context context )
   {
     Log.d( TAG, "GameManager()" );
- 
-    this.curContext = context;
  
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     

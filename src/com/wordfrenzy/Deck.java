@@ -73,7 +73,7 @@ public class Deck {
         Editor editor = sp.edit();
         editor.putInt( "deck_seed", mSeed );
         editor.commit();
-        mPosition = sp.getInt( "deck_position", -1 );        
+        mPosition = sp.getInt( "deck_position", 0 );        
         mOrder = new ArrayList<Integer>(mDatabaseOpenHelper.countCards());
         for(int i = 0; i < mDatabaseOpenHelper.countCards(); ++i )
         {
@@ -162,15 +162,11 @@ public class Deck {
          * Starts a thread to load the database table with words
          */
         private void loadDeck() {
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        loadWords();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }).start();
+          try {
+            this.loadWords();            
+          } catch( IOException e) {
+            e.printStackTrace();
+          }             
         }
 
         private void loadWords() throws IOException {
@@ -221,7 +217,7 @@ public class Deck {
                   }
                   // hack because I have a comma at the end
                   badWords = badWords.substring( 0, badWords.length() - 1 );
-                  this.addWord(i, title, badWords);
+                  this.addWord(i, title, badWords, mDatabase);
                   
                 }
               }
@@ -245,13 +241,13 @@ public class Deck {
          * Add a word to the dictionary.
          * @return rowId or -1 if failed
          */
-        public long addWord(int id, String title, String badWords) {
+        public long addWord(int id, String title, String badWords, SQLiteDatabase db) {
             Log.d(TAG,"addWord()");
             ContentValues initialValues = new ContentValues();
             initialValues.put("id", id);
             initialValues.put("title", title);
             initialValues.put("badwords", badWords);
-            return this.getWritableDatabase().insert("cards", null, initialValues);
+            return db.insert("cards", null, initialValues);
         }
         
         public LinkedList<Card> getCards(String args )
@@ -267,6 +263,7 @@ public class Deck {
             ret.add( new Card(res.getInt(0),res.getString(1), res.getString(2)) );
             res.moveToNext();
           }
+          res.close();
           return ret;
         }
         
@@ -279,16 +276,17 @@ public class Deck {
             cacheString += itr.next().getId() + ",";
           }
           cacheString = cacheString.substring(0, cacheString.length()-1);
+          mDatabase = this.getWritableDatabase();
           ContentValues values = new ContentValues();
           values.put("id", 0);
           values.put("val", cacheString);
           if( this.countCaches() >= 1)
           {
-            return this.getWritableDatabase().update("cache", values,"",null);
+            return mDatabase.update("cache", values,"",null);
           }
           else
           {
-            return this.getWritableDatabase().insert("cache", null, values);
+            return mDatabase.insert("cache", null, values);
           }
         }
         
@@ -296,15 +294,18 @@ public class Deck {
         {
           Log.d(TAG,"loadCache()");
           Cursor res = this.getReadableDatabase().query("cache",CACHE_COLUMNS, "id in (0)", null, null, null, null);
+          LinkedList<Card> ret;
           if( res.getCount() == 0 )
           {
-            return new LinkedList<Card>();
+            ret = new LinkedList<Card>();
           }
           else
           {
             res.moveToFirst();
-            return getCards(res.getString(1));
+            ret = getCards(res.getString(1));
           }
+          res.close();
+          return ret;
             
         }
 
