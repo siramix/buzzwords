@@ -1,4 +1,4 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,15 +29,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.wordfrenzy.R;
-import com.wordfrenzy.WordFrenzyApplication;
+import com.buzzwords.R;
+import com.buzzwords.BuzzWordsApplication;
 
 /**
  * The GameEnd class is the final screen of the application, called
  * when either the number of turns is up, the time is up, the end game
  * button is clicked, or any other number of ways to end a game.
  *
- * @author WordFrenzy team
+ * @author BuzzWords team
  *
  */
 public class GameEnd extends Activity implements TextToSpeech.OnInitListener
@@ -219,7 +219,7 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
     public void onAnimationStart( Animation animation )
     {
       // Play win sound
-      WordFrenzyApplication app = (WordFrenzyApplication) GameEnd.this.getApplication();
+      BuzzWordsApplication app = (BuzzWordsApplication) GameEnd.this.getApplication();
       SoundManager sound = app.GetSoundManager();
       sound.PlaySound( SoundManager.SOUND_WIN );     
     }
@@ -264,7 +264,7 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
     {
       Log.d( TAG, "MainMenuListener onClick()" );
       
-      WordFrenzyApplication application = (WordFrenzyApplication) GameEnd.this.getApplication();
+      BuzzWordsApplication application = (BuzzWordsApplication) GameEnd.this.getApplication();
       
       // Play confirm sound
       SoundManager sound = application.GetSoundManager();
@@ -285,8 +285,8 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
       {
         Log.d( TAG, "RematchListener onClick()" );
         
-        WordFrenzyApplication application =
-          (WordFrenzyApplication) GameEnd.this.getApplication();
+        BuzzWordsApplication application =
+          (BuzzWordsApplication) GameEnd.this.getApplication();
         
         GameManager curgm = application.GetGameManager();
         GameManager newgm = new GameManager(GameEnd.this);
@@ -315,8 +315,8 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
   		this.setContentView( R.layout.gameend );
   	    this.res = this.getResources();
   
-  		WordFrenzyApplication application =
-  			(WordFrenzyApplication) this.getApplication();
+  		BuzzWordsApplication application =
+  			(BuzzWordsApplication) this.getApplication();
   		curGameManager = application.GetGameManager();		
 
 		

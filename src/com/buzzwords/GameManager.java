@@ -1,4 +1,4 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
- * @author The WordFrenzy Team
+ * @author The BuzzWords Team
  *
  * The Game Manager is a class that will manage all aspects of the game scoring
  * and general bookkeeping. This is the go-to class for creating new games,

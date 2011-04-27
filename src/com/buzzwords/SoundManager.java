@@ -1,6 +1,6 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
-import com.wordfrenzy.R;
+import com.buzzwords.R;
 
 import android.content.Context;
 import android.media.AudioManager;

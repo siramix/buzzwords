@@ -1,14 +1,14 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import com.wordfrenzy.R;
+import com.buzzwords.R;
 
 import android.util.Log;
 
 /**
- * @author The WordFrenzy Team
+ * @author The BuzzWords Team
  *
  * The Card class is a simple container class for storing the
  *

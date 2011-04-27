@@ -1,6 +1,6 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
-import com.wordfrenzy.R;
+import com.buzzwords.R;
 
 import android.app.*;
 import android.content.DialogInterface;
@@ -37,7 +37,7 @@ import android.util.Log;
  * This handles a single turn consisting of cards presented to a player for a
  * limited amount of time.
  *
- * @author The WordFrenzy Team
+ * @author The BuzzWords Team
  */
 public class Turn extends Activity
 {
@@ -322,7 +322,7 @@ public class Turn extends Activity
         else
         {
           // Resume must wait for music to seek back to the correct elapsed time
-          WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
+          BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
           MediaPlayer mp = application.GetMusicPlayer();
           // Return to the elapsed time
           int elapsedtime = Turn.this.curGameManager.GetTurnTime() - (int) Turn.this.counter.getTimeRemaining();
@@ -579,7 +579,7 @@ public class Turn extends Activity
     this.cardStatus.setVisibility( View.VISIBLE );
     
     // Play back sound
-    WordFrenzyApplication app = (WordFrenzyApplication) this.getApplication();
+    BuzzWordsApplication app = (BuzzWordsApplication) this.getApplication();
     SoundManager snd = app.GetSoundManager();
     snd.PlaySound(SoundManager.SOUND_BACK);
   }
@@ -712,8 +712,8 @@ public class Turn extends Activity
   {
     Log.d( TAG, "setupViewReferences()");
 
-    WordFrenzyApplication application =
-      (WordFrenzyApplication) this.getApplication();
+    BuzzWordsApplication application =
+      (BuzzWordsApplication) this.getApplication();
     this.curGameManager = application.GetGameManager();
 
     this.pauseOverlay = (View) this.findViewById( R.id.PauseImageView );
@@ -814,7 +814,7 @@ public class Turn extends Activity
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
     
     // Save sound manager as a local variable
-    WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
+    BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
     sound = application.GetSoundManager();
     
     // set which card is active
@@ -964,7 +964,7 @@ public class Turn extends Activity
       builder.setMessage( "Are you sure you want to end the current game?" )
              .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                public void onClick(DialogInterface dialog, int id) {
-                 WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
+                 BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
                  GameManager gm = application.GetGameManager();
                  gm.EndGame();
                  startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
@@ -994,7 +994,7 @@ public class Turn extends Activity
                 Turn.this.startTimer();
                 
                 // Start the turn music
-                WordFrenzyApplication application = (WordFrenzyApplication) Turn.this.getApplication();
+                BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
                 GameManager gm = application.GetGameManager();
                 int musicId = R.raw.mus_round_60;
                 switch ( gm.GetTurnTime())
@@ -1092,7 +1092,7 @@ public class Turn extends Activity
     pauseTextLayout.setVisibility( View.VISIBLE);
     
     // Stop music
-    WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+    BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
     MediaPlayer mp = application.GetMusicPlayer();
     mp.pause();
     

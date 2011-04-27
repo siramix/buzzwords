@@ -1,8 +1,8 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
 import java.util.LinkedList;
 
-import com.wordfrenzy.R;
+import com.buzzwords.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.view.animation.Animation;
 import android.view.animation.AlphaAnimation;
 /**
- * @author The WordFrenzy Team
+ * @author The BuzzWords Team
  * This activity class is responsible for gathering game information before the
  * game starts such as number of teams and team names
  */
@@ -42,7 +42,7 @@ public class GameSetup extends Activity
             {R.id.GameSetupRounds2,12},
             {R.id.GameSetupRounds3,16}};
 
-  public static final String PREFS_NAME = "gamesetupprefs";     //stored in data/data/wordfrenzy/shared_preferences
+  public static final String PREFS_NAME = "gamesetupprefs";     //stored in data/data/buzzwords/shared_preferences
   private static final String TEAMA_PREFKEY = "teamA_enabled";  //StringID for Team A quadrant
   private static final String TEAMB_PREFKEY = "teamB_enabled";  //StringID for Team B quadrant
   private static final String TEAMC_PREFKEY = "teamC_enabled";  //StringID for Team C quadrant
@@ -72,8 +72,8 @@ public class GameSetup extends Activity
 	        
 	        int rounds = getCheckedRadioValue();
 	        
-	        WordFrenzyApplication application =
-	          (WordFrenzyApplication) GameSetup.this.getApplication();
+	        BuzzWordsApplication application =
+	          (BuzzWordsApplication) GameSetup.this.getApplication();
 	        GameManager gm = new GameManager(GameSetup.this);
         
 	        gm.StartGame( teamList, rounds );
@@ -97,8 +97,8 @@ public class GameSetup extends Activity
            Button b = (Button) v;
 
            // Play confirm sound
-           WordFrenzyApplication application =
-             (WordFrenzyApplication) GameSetup.this.getApplication();
+           BuzzWordsApplication application =
+             (BuzzWordsApplication) GameSetup.this.getApplication();
            SoundManager sound = application.GetSoundManager();
            
            if( teamList.remove( Team.TEAMA ) )
@@ -130,8 +130,8 @@ public class GameSetup extends Activity
            Button b = (Button) v;
            
            // Play confirm sound
-           WordFrenzyApplication application =
-             (WordFrenzyApplication) GameSetup.this.getApplication();
+           BuzzWordsApplication application =
+             (BuzzWordsApplication) GameSetup.this.getApplication();
            SoundManager sound = application.GetSoundManager();
            
            if( teamList.remove( Team.TEAMB ) )
@@ -163,8 +163,8 @@ public class GameSetup extends Activity
 	        Button b = (Button) v;
           
           // Play confirm sound
-          WordFrenzyApplication application =
-            (WordFrenzyApplication) GameSetup.this.getApplication();
+          BuzzWordsApplication application =
+            (BuzzWordsApplication) GameSetup.this.getApplication();
           SoundManager sound = application.GetSoundManager();
 	        
           if( teamList.remove( Team.TEAMC ) )
@@ -196,8 +196,8 @@ public class GameSetup extends Activity
 	        Button b = (Button) v;
           
           // Play confirm sound
-          WordFrenzyApplication application =
-            (WordFrenzyApplication) GameSetup.this.getApplication();
+          BuzzWordsApplication application =
+            (BuzzWordsApplication) GameSetup.this.getApplication();
           SoundManager sound = application.GetSoundManager();
 	        
           if( teamList.remove( Team.TEAMD ) )
@@ -397,7 +397,7 @@ public void onCreate( Bundle savedInstanceState )
   {
      Log.d( TAG, "onPause()" );   
      super.onPause();
-     WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+     BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      mp.pause();
      
@@ -415,7 +415,7 @@ public void onCreate( Bundle savedInstanceState )
      super.onResume();
      
      // Resume Title Music
-     WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+     BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
      if( !mp.isPlaying() && sp.getBoolean("music_enabled", true))

@@ -12,7 +12,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-package com.wordfrenzy;
+package com.buzzwords;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,7 +30,7 @@ import android.widget.ImageView;
  * This is the splash screen for the app's introduction. It should be started
  * before the title and be interruptible before the title activity.
  * 
- * @author WordFrenzy Team
+ * @author BuzzWords Team
  */
 public class SplashScreen extends Activity {
   /**
@@ -105,7 +105,7 @@ public class SplashScreen extends Activity {
     logoram.setVisibility(View.GONE);
 
     finish();
-    startActivity(new Intent("com.wordfrenzy.intent.action.TITLE"));
+    startActivity(new Intent("com.buzzwords.intent.action.TITLE"));
   }
 
   /**

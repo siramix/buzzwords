@@ -1,6 +1,6 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
-import com.wordfrenzy.R;
+import com.buzzwords.R;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -12,7 +12,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
- * @author The WordFrenzy Team
+ * @author The BuzzWords Team
  *
  * The Settings class handles the first screen of the Settings page.
  */
@@ -30,7 +30,7 @@ public class Settings extends PreferenceActivity
       if ( key.equals( "music_enabled"))
       {
         // start or stop the music
-        WordFrenzyApplication application = (WordFrenzyApplication) Settings.this.getApplication();
+        BuzzWordsApplication application = (BuzzWordsApplication) Settings.this.getApplication();
         MediaPlayer mp = application.GetMusicPlayer();
         if( sharedPreferences.getBoolean("music_enabled", true))
         {
@@ -77,7 +77,7 @@ public class Settings extends PreferenceActivity
 	{
 	   Log.d( TAG, "onPause()" );   
 	   super.onPause();
-	   WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+	   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
 	   MediaPlayer mp = application.GetMusicPlayer();
 	   mp.pause();
 	}
@@ -92,7 +92,7 @@ public class Settings extends PreferenceActivity
 	   super.onResume();
 	   
 	   // Resume Title Music
-	   WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+	   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
 	   MediaPlayer mp = application.GetMusicPlayer();
 	   SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
 	   if( !mp.isPlaying() && sp.getBoolean("music_enabled", true))

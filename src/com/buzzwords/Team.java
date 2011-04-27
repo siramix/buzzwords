@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.wordfrenzy;
+package com.buzzwords;
 
 import java.util.Comparator;
 
-import com.wordfrenzy.R;
+import com.buzzwords.R;
 
 
 /**

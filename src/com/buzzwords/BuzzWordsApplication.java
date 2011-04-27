@@ -1,4 +1,4 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
 import android.app.Application;
 import android.content.Context;
@@ -6,24 +6,24 @@ import android.media.MediaPlayer;
 import android.util.Log;
 
 /**
- * @author The WordFrenzy Team
+ * @author The BuzzWords Team
  * Class extending the standard android application. This allows us to refer
- * to one GameManager from every activity within WordFrenzy.
+ * to one GameManager from every activity within BuzzWords.
  */
-public class WordFrenzyApplication extends Application
+public class BuzzWordsApplication extends Application
 {
   /**
    * logging tag
    */
-  public static String TAG = "WordFrenzyApplication";
+  public static String TAG = "BuzzWordsApplication";
   
   /**
-   * The GameManager for all of WordFrenzy
+   * The GameManager for all of BuzzWords
    */
   private GameManager gameManager;
 
   /**
-   * The SoundFXManager for all of WordFrenzy
+   * The SoundFXManager for all of BuzzWords
    */
   private SoundManager soundManager;
   
@@ -35,10 +35,10 @@ public class WordFrenzyApplication extends Application
   /**
    * Default constructor
    */
-  public WordFrenzyApplication()
+  public BuzzWordsApplication()
   {
     super();
-    Log.d( TAG, "WordFrenzyApplication()" ); 
+    Log.d( TAG, "BuzzWordsApplication()" ); 
   }
 
   /**

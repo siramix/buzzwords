@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="WordFrenzyButton" parent="@android:style/Widget.Button">
+  <style name="BuzzWordsButton" parent="@android:style/Widget.Button">
     <item name="android:textColor">@color/buttonText</item>
     <item name="android:background">@drawable/wordfrenzy_button</item>
   </style>
-  <style name="WordFrenzyRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+  <style name="BuzzWordsRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
     <item name="android:button">@drawable/radio</item>
   </style>
 </resources>

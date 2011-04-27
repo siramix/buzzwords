@@ -1,6 +1,6 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
-import com.wordfrenzy.R;
+import com.buzzwords.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,9 +27,9 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 
 /**
- * This is the activity class that kicks off WordFrenzy
+ * This is the activity class that kicks off BuzzWords
  * 
- * @author The WordFrenzy Team
+ * @author The BuzzWords Team
  */
 public class Title extends Activity
 {
@@ -174,7 +174,7 @@ public class Title extends Activity
          musicHandled = true;      
          
          // play confirm sound
-         WordFrenzyApplication application = (WordFrenzyApplication) Title.this.getApplication();
+         BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
          SoundManager sound = application.GetSoundManager();
          sound.PlaySound( SoundManager.SOUND_CONFIRM );
          
@@ -194,7 +194,7 @@ public class Title extends Activity
          musicHandled = false;
          
          // play confirm sound
-         WordFrenzyApplication application = (WordFrenzyApplication) Title.this.getApplication();
+         BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
          SoundManager sound = application.GetSoundManager();
          sound.PlaySound( SoundManager.SOUND_CONFIRM );
          
@@ -215,7 +215,7 @@ public class Title extends Activity
       musicHandled = true;
       
       // play confirm sound
-      WordFrenzyApplication application = (WordFrenzyApplication) Title.this.getApplication();
+      BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
       SoundManager sound = application.GetSoundManager();
       sound.PlaySound( SoundManager.SOUND_CONFIRM );
       
@@ -236,7 +236,7 @@ public class Title extends Activity
       musicHandled = true;
       
       // play confirm sound
-      WordFrenzyApplication application = (WordFrenzyApplication) Title.this.getApplication();
+      BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
       SoundManager sound = application.GetSoundManager();
       sound.PlaySound( SoundManager.SOUND_CONFIRM );
       
@@ -258,7 +258,7 @@ public class Title extends Activity
       musicHandled = false;
       
       // play confirm sound
-      WordFrenzyApplication application = (WordFrenzyApplication) Title.this.getApplication();
+      BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
       SoundManager sound = application.GetSoundManager();
       sound.PlaySound( SoundManager.SOUND_CONFIRM );
       
@@ -404,7 +404,7 @@ public void onCreate( Bundle savedInstanceState )
   //Force volume controls to affect Media volume
   setVolumeControlStream(AudioManager.STREAM_MUSIC);
   
-  WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+  BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
   MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
   application.CreateSoundManager( this.getBaseContext() );
   
@@ -493,7 +493,7 @@ public void onPause()
    super.onPause();
    if( !musicHandled )
    {
-     WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+     BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      mp.pause();
    }
@@ -509,7 +509,7 @@ public void onResume()
    super.onResume();
    
    // Resume Title Music
-   WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
    MediaPlayer mp = application.GetMusicPlayer();
    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
    if( sp.getBoolean("music_enabled", true))

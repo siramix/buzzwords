@@ -1,6 +1,6 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
-import com.wordfrenzy.R;
+import com.buzzwords.R;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -12,8 +12,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 /**
- * @author The WordFrenzy Team
- * This activity class is responsible for displaying the rules of wordfrenzy to the user.
+ * @author The BuzzWords Team
+ * This activity class is responsible for displaying the rules of buzzwords to the user.
  */
 public class Rules extends Activity
 {
@@ -68,7 +68,7 @@ public class Rules extends Activity
   {
      Log.d( TAG, "onPause()" );   
      super.onPause();
-     WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+     BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      // If music is playing, we must pause it and flag to resume it onResume().
      // This solves the problem where Rules was never playing music to begin with (which happens
@@ -92,7 +92,7 @@ public class Rules extends Activity
      // Resume Title Music -- Only do this if we paused DURING rules
      if( this.isMusicPaused)
      {
-       WordFrenzyApplication application = (WordFrenzyApplication) this.getApplication();
+       BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
        MediaPlayer mp = application.GetMusicPlayer();
        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
        if( !mp.isPlaying() && sp.getBoolean("music_enabled", true))

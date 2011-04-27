@@ -1,4 +1,4 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
 import java.io.IOException;
 import java.io.InputStream;

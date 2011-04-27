@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="AppName">wordfrenzy</string>
-  <string name="IntentTitle">com.wordfrenzy.intent.action.TITLE</string>
-  <string name="IntentSettings">com.wordfrenzy.intent.action.SETTINGS</string>
-  <string name="IntentRules">com.wordfrenzy.intent.action.RULES</string>
-  <string name="IntentBuzzer">com.wordfrenzy.intent.action.BUZZER</string>
-  <string name="IntentAboutUs">com.wordfrenzy.intent.action.ABOUTUS</string>
-  <string name="IntentGameSetup">com.wordfrenzy.intent.action.GAMESETUP</string>
-  <string name="IntentTurn">com.wordfrenzy.intent.action.TURN</string>
+  <string name="AppName">buzzwords</string>
+  <string name="IntentTitle">com.buzzwords.intent.action.TITLE</string>
+  <string name="IntentSettings">com.buzzwords.intent.action.SETTINGS</string>
+  <string name="IntentRules">com.buzzwords.intent.action.RULES</string>
+  <string name="IntentBuzzer">com.buzzwords.intent.action.BUZZER</string>
+  <string name="IntentAboutUs">com.buzzwords.intent.action.ABOUTUS</string>
+  <string name="IntentGameSetup">com.buzzwords.intent.action.GAMESETUP</string>
+  <string name="IntentTurn">com.buzzwords.intent.action.TURN</string>
   <string name="menu_EndGame">MENU_ENDGAME</string>
   <string name="menu_Rules">MENU_RULES</string>
   

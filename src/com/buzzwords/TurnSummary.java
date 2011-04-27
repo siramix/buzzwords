@@ -1,10 +1,10 @@
-package com.wordfrenzy;
+package com.buzzwords;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.wordfrenzy.R;
+import com.buzzwords.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,7 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 /**
- * @author The WordFrenzy Team
+ * @author The BuzzWords Team
  * This activity class is responsible for summarizing the turn and the hand-off
  * into the next turn or game end.
  */
@@ -50,8 +50,8 @@ public class TurnSummary extends Activity
 	      public void onClick(View v)
 	      {
 	        Log.d( TAG, "NextTurnListener OnClick()" );
-	        WordFrenzyApplication application =
-	          (WordFrenzyApplication) TurnSummary.this.getApplication();
+	        BuzzWordsApplication application =
+	          (BuzzWordsApplication) TurnSummary.this.getApplication();
 	        GameManager gm = application.GetGameManager();
 
 	        if( gm.GetNumberOfTurnsRemaining() == 0 )
@@ -88,8 +88,8 @@ public class TurnSummary extends Activity
           // Play sound for the new value
           final int[] rwsSounds = {SoundManager.SOUND_RIGHT, SoundManager.SOUND_WRONG, 
               SoundManager.SOUND_SKIP };
-          WordFrenzyApplication application =
-            (WordFrenzyApplication) TurnSummary.this.getApplication();
+          BuzzWordsApplication application =
+            (BuzzWordsApplication) TurnSummary.this.getApplication();
           SoundManager sound = application.GetSoundManager();
           sound.PlaySound(rwsSounds[ curCard.getRws()]);
         }
@@ -110,8 +110,8 @@ public class TurnSummary extends Activity
     // Setup the view
   	this.setContentView(R.layout.turnsummary);
   	
-    WordFrenzyApplication application =
-        (WordFrenzyApplication) this.getApplication();
+    BuzzWordsApplication application =
+        (BuzzWordsApplication) this.getApplication();
     GameManager game = application.GetGameManager();
 
   	// Populate and display list of cards
@@ -229,7 +229,7 @@ public class TurnSummary extends Activity
      builder.setMessage( "Are you sure you want to end the current game?" )
             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
               public void onClick(DialogInterface dialog, int id) {
-                WordFrenzyApplication application = (WordFrenzyApplication) TurnSummary.this.getApplication();
+                BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this.getApplication();
                 GameManager gm = application.GetGameManager();
                 gm.EndGame();
                 startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
@@ -255,8 +255,8 @@ public class TurnSummary extends Activity
   private void UpdateScoreViews()
   {
     Log.d( TAG, "UpdateScoreViews()" );
-    WordFrenzyApplication application =
-          (WordFrenzyApplication) this.getApplication();
+    BuzzWordsApplication application =
+          (BuzzWordsApplication) this.getApplication();
     GameManager game = application.GetGameManager();
     List<Team> teams = game.GetTeams();
     
@@ -337,8 +337,8 @@ public class TurnSummary extends Activity
   private void UpdateTurnOrderDisplay()
   {
     Log.d( TAG, "UpdateTurnOrderDisplay()" );
-    WordFrenzyApplication application =
-          (WordFrenzyApplication) this.getApplication();
+    BuzzWordsApplication application =
+          (BuzzWordsApplication) this.getApplication();
     GameManager game = application.GetGameManager();
     List<Team> teams = game.GetTeams();
     
