@@ -3,25 +3,12 @@
 	android:layout_width="fill_parent" android:background="@drawable/bg_generic"
 	android:clipChildren="false">
 
-
-
-
-
-
-
-
-	
-	
 	<ImageButton android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:id="@+id/Title_AboutUs"
 		android:layout_alignParentRight="true"
 		android:layout_alignParentBottom="true" android:layout_marginRight="5dp"
 		android:layout_marginBottom="5dp" android:background="@drawable/title_logo_mini_selector"></ImageButton>
 
-
-
-
-	
 	<LinearLayout android:layout_width="wrap_content"
 		android:orientation="horizontal" android:layout_height="fill_parent"
 		android:id="@+id/Title_Banner">
@@ -32,39 +19,92 @@
 		<View android:layout_height="wrap_content" android:background="@color/genericBG_trim"
 			android:id="@+id/Title_Banner_Trim2" android:layout_width="5dp"></View>
 	</LinearLayout>
-	<LinearLayout android:id="@+id/Title_Menu" android:orientation="vertical" android:clipChildren="false" android:layout_width="fill_parent" android:layout_marginLeft="30dp" android:layout_centerVertical="true" android:layout_height="fill_parent"><LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_Word" android:orientation="horizontal" android:layout_marginTop="10dp" android:layout_centerHorizontal="true" android:layout_weight="0" android:layout_gravity="center">
-		<ImageView android:layout_alignParentRight="true" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/title_word_w" android:id="@+id/Title_Word_W"></ImageView>
-		<ImageView android:layout_alignParentRight="true" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/title_word_o" android:id="@+id/Title_Word_O"></ImageView>
-		<ImageView android:layout_alignParentRight="true" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/title_word_r" android:id="@+id/Title_Word_R"></ImageView>
-		<ImageView android:layout_alignParentRight="true" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/title_word_d" android:id="@+id/Title_Word_D" android:layout_marginTop="-7dp"></ImageView>
-	</LinearLayout><ImageView android:id="@+id/Title_Title" android:layout_height="wrap_content" android:layout_width="wrap_content" android:background="@drawable/title_frenzy" android:layout_below="@id/Title_Word" android:layout_centerHorizontal="true" android:layout_weight="0" android:layout_gravity="center"></ImageView>
-		<RelativeLayout android:id="@+id/Title_Menu_1" android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="wrap_content">
-			<TextView android:text="Play" android:id="@+id/Title_PlayText" android:textColor="@color/teamB_text" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="80dp" android:layout_marginTop="10dp" android:gravity="center" android:textSize="42dp" android:layout_centerVertical="true"></TextView><ImageButton android:id="@+id/Title_PlayButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/title_play" android:layout_centerVertical="true"></ImageButton>
-			
-		<View android:layout_height="fill_parent" android:id="@+id/Title_PlayDelegate" android:layout_width="180dp"></View>
-</RelativeLayout>
-		<RelativeLayout android:id="@+id/Title_Menu_2" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1">
-			<TextView android:textSize="42dp" android:text="Buzz" android:textColor="@color/teamC_text" android:id="@+id/Title_BuzzText" android:gravity="center_vertical" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="80dp" android:layout_marginTop="10dp" android:layout_centerVertical="true"></TextView><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_BuzzButton" android:background="@drawable/title_buzzer" android:layout_centerVertical="true"></ImageButton><View android:layout_height="fill_parent" android:layout_width="200dp" android:id="@+id/Title_BuzzDelegate"></View>
-			
-		</RelativeLayout>
-		<RelativeLayout android:id="@+id/Title_Menu_3" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1">
-			<TextView android:textSize="42dp" android:id="@+id/Title_SettingsText" android:text="Settings" android:textColor="@color/teamD_text" android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="80dp" android:layout_marginTop="10dp" android:layout_centerVertical="true"></TextView><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_SettingsButton" android:background="@drawable/title_settings" android:layout_centerVertical="true"></ImageButton><View android:id="@+id/Title_SettingsDelegate" android:layout_width="240dp" android:layout_height="fill_parent"></View>
-			
-		</RelativeLayout>
-		<RelativeLayout android:id="@+id/Title_Menu_4" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1">
-			<TextView android:textSize="42dp" android:id="@+id/Title_RulesText" android:text="Rules" android:textColor="@color/teamA_text" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_marginLeft="80dp" android:gravity="center_vertical" android:layout_marginTop="10dp" android:layout_centerVertical="true"></TextView><ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Title_RulesButton" android:background="@drawable/title_rules" android:layout_centerVertical="true"></ImageButton><View android:layout_height="fill_parent" android:id="@+id/Title_RulesDelegate" android:layout_width="200dp"></View>
-			
-		</RelativeLayout>
-
-
-
-
-
-	
-</LinearLayout><LinearLayout android:layout_width="wrap_content" android:orientation="horizontal" android:layout_height="fill_parent" android:id="@+id/Title_Banner_Hider">
-		<View android:layout_height="wrap_content" android:background="@color/genericBG_trim" android:layout_width="5dp" android:id="@+id/Title_Banner_Hider_Trim1"></View>
-		<View android:layout_height="fill_parent" android:background="@color/black" android:id="@+id/Title_Banner_Hider_BG" android:layout_width="40dp"></View>
+	<LinearLayout android:id="@+id/Title_Menu"
+		android:orientation="vertical" android:clipChildren="false"
+		android:layout_width="fill_parent" android:layout_marginLeft="30dp"
+		android:layout_centerVertical="true" android:layout_height="fill_parent">
 		
+		<ImageView android:id="@+id/Title_Title"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:background="@drawable/title_title" android:layout_gravity="center" android:layout_marginTop="20dp" android:layout_marginBottom="15dp"></ImageView>
+		<RelativeLayout android:id="@+id/Title_Menu_1"
+			android:layout_height="fill_parent" android:layout_weight="1"
+			android:layout_width="wrap_content">
+			<TextView android:text="Play" android:id="@+id/Title_PlayText"
+				android:textColor="@color/teamB_text" android:layout_height="wrap_content"
+				android:layout_width="wrap_content" android:layout_marginLeft="80dp"
+				android:layout_marginTop="10dp" android:gravity="center"
+				android:textSize="42dp" android:layout_centerVertical="true"></TextView>
+			<ImageButton android:id="@+id/Title_PlayButton"
+				android:background="@drawable/title_play"
+				android:layout_centerVertical="true" android:layout_height="wrap_content" android:layout_width="wrap_content"></ImageButton>
+
+			<View android:layout_height="fill_parent" android:id="@+id/Title_PlayDelegate"
+				android:layout_width="180dp"></View>
+		</RelativeLayout>
+		<RelativeLayout android:id="@+id/Title_Menu_2"
+			android:clipChildren="false" android:layout_width="fill_parent"
+			android:layout_height="fill_parent" android:layout_weight="1">
+			<TextView android:textSize="42dp" android:text="Buzz"
+				android:textColor="@color/teamC_text" android:id="@+id/Title_BuzzText"
+				android:gravity="center_vertical" android:layout_height="wrap_content"
+				android:layout_width="wrap_content" android:layout_marginLeft="80dp"
+				android:layout_marginTop="10dp" android:layout_centerVertical="true"></TextView>
+			<ImageButton android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:id="@+id/Title_BuzzButton"
+				android:background="@drawable/title_buzzer"
+				android:layout_centerVertical="true"></ImageButton>
+			<View android:layout_height="fill_parent" android:layout_width="200dp"
+				android:id="@+id/Title_BuzzDelegate"></View>
+
+		</RelativeLayout>
+		<RelativeLayout android:id="@+id/Title_Menu_3"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:layout_weight="1">
+			<TextView android:textSize="42dp" android:id="@+id/Title_SettingsText"
+				android:text="Settings" android:textColor="@color/teamD_text"
+				android:gravity="center_vertical" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_marginLeft="80dp"
+				android:layout_marginTop="10dp" android:layout_centerVertical="true"></TextView>
+			<ImageButton android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:id="@+id/Title_SettingsButton"
+				android:background="@drawable/title_settings"
+				android:layout_centerVertical="true"></ImageButton>
+			<View android:id="@+id/Title_SettingsDelegate"
+				android:layout_width="240dp" android:layout_height="fill_parent"></View>
+
+		</RelativeLayout>
+		<RelativeLayout android:id="@+id/Title_Menu_4"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:layout_weight="1">
+			<TextView android:textSize="42dp" android:id="@+id/Title_RulesText"
+				android:text="Rules" android:textColor="@color/teamA_text"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_marginLeft="80dp" android:gravity="center_vertical"
+				android:layout_marginTop="10dp" android:layout_centerVertical="true"></TextView>
+			<ImageButton android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:id="@+id/Title_RulesButton"
+				android:background="@drawable/title_rules"
+				android:layout_centerVertical="true"></ImageButton>
+			<View android:layout_height="fill_parent" android:id="@+id/Title_RulesDelegate"
+				android:layout_width="200dp"></View>
+
+		</RelativeLayout>
+
+
+
+
+
+
+	</LinearLayout>
+	<LinearLayout android:layout_width="wrap_content"
+		android:orientation="horizontal" android:layout_height="fill_parent"
+		android:id="@+id/Title_Banner_Hider">
+		<View android:layout_height="wrap_content" android:background="@color/genericBG_trim"
+			android:layout_width="5dp" android:id="@+id/Title_Banner_Hider_Trim1"></View>
+		<View android:layout_height="fill_parent" android:background="@color/black"
+			android:id="@+id/Title_Banner_Hider_BG" android:layout_width="25dp"></View>
+
 	</LinearLayout>
 	
 

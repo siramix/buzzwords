@@ -312,86 +312,6 @@ public class Title extends Activity
     return set;
   }
 
-  /**
-   * @return The animation that wiggles the W in the title
-   */
-  private Animation WiggleW()
-  {
-    Log.d( TAG, "WiggleW()" );
-    
-    TranslateAnimation scroll = new TranslateAnimation(
-        Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  -0.05f,
-        Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,   -0.1f );
-    scroll.setDuration(800);
-    scroll.setInterpolator(new LinearInterpolator());
-    scroll.setRepeatCount(Animation.INFINITE);
-    scroll.setRepeatMode( Animation.REVERSE);
-    
-    ScaleAnimation pulse = new ScaleAnimation(1.0f, 1.05f, 1.0f, 1.05f, Animation.RELATIVE_TO_SELF,
-        0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-    pulse.setDuration(500);
-    pulse.setInterpolator(new LinearInterpolator());
-    pulse.setRepeatCount(Animation.INFINITE);
-    pulse.setRepeatMode(Animation.REVERSE);
-    
-    return scroll;
-  }
-
-  /**
-   * @return The animation that wiggles the O in the title
-   */
-  private Animation WiggleO()
-  {
-    Log.d( TAG, "WiggleO()" );
-    
-    TranslateAnimation scroll = new TranslateAnimation(
-        Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.025f,
-        Animation.RELATIVE_TO_SELF,  0.05f, Animation.RELATIVE_TO_SELF,   -0.05f );
-    scroll.setDuration(500);
-    scroll.setInterpolator(new LinearInterpolator());
-    scroll.setRepeatCount(Animation.INFINITE);
-    scroll.setRepeatMode( Animation.REVERSE);
-
-    return scroll;
-  }
-
-
-  /**
-   * @return The animation that wiggles the R in the title
-   */
-  private Animation WiggleR()
-  {
-    Log.d( TAG, "WiggleR()" );
-    
-    TranslateAnimation scroll = new TranslateAnimation(
-        Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.05f,
-        Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,   0.025f );
-    scroll.setDuration(400);
-    scroll.setInterpolator(new LinearInterpolator());
-    scroll.setRepeatCount(Animation.INFINITE);
-    scroll.setRepeatMode( Animation.REVERSE);
-
-    return scroll;
-  }
-
-  /**
-   * @return The animation that wiggles the D in the title
-   */
-  private Animation WiggleD()
-  {
-    Log.d( TAG, "WiggleD()" );
-    
-    TranslateAnimation scroll = new TranslateAnimation(
-        Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,  0.05f,
-        Animation.RELATIVE_TO_SELF,  0.0f, Animation.RELATIVE_TO_SELF,   -0.05f );
-    scroll.setDuration(750);
-    scroll.setInterpolator(new LinearInterpolator());
-    scroll.setRepeatCount(Animation.INFINITE);
-    scroll.setRepeatMode( Animation.REVERSE);
-
-    return scroll;
-  }
-  
 /**
 * onCreate - initializes a welcome screen that starts the game.
 */
@@ -471,15 +391,6 @@ public void onCreate( Bundle savedInstanceState )
   label = (TextView) this.findViewById( R.id.Title_RulesText);
   label.startAnimation(this.TranslateLabels(1));
   label.setTypeface(antonFont);
-  
-  ImageView letter = (ImageView) this.findViewById( R.id.Title_Word_W);
-  letter.startAnimation(this.WiggleW());
-  letter = (ImageView) this.findViewById( R.id.Title_Word_O);
-  letter.startAnimation(this.WiggleO());
-  letter = (ImageView) this.findViewById( R.id.Title_Word_R);
-  letter.startAnimation(this.WiggleR());
-  letter = (ImageView) this.findViewById( R.id.Title_Word_D);
-  letter.startAnimation(this.WiggleD());
   
 }
 
