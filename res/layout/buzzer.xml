@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:background="@drawable/bg_generic" android:layout_height="fill_parent" android:layout_width="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@drawable/bg_generic" android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent">
 	<ImageView android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:id="@+id/Buzzer_Word"
-		android:background="@drawable/buzzer_word"
-		android:layout_centerHorizontal="true" android:layout_marginTop="2dp"></ImageView>
+		android:layout_gravity="center" android:layout_marginTop="20dp" android:background="@drawable/buzzer_title"></ImageView>
 	<ImageButton android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_marginTop="2dp" android:id="@+id/BuzzerButton" android:layout_centerInParent="true" android:background="@drawable/buzzer_button"></ImageButton>
-	<ImageView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_centerHorizontal="true"
-		android:background="@drawable/buzzer_frenzy" android:id="@+id/Buzzer_Frenzy"
-		android:layout_alignParentBottom="true" android:layout_marginBottom="2dp"></ImageView>
+		android:id="@+id/BuzzerButton" android:background="@drawable/buzzer_button" android:layout_gravity="center" android:layout_marginTop="10dp" android:layout_height="wrap_content"></ImageButton>
+	
 
-</RelativeLayout>
+</LinearLayout>
