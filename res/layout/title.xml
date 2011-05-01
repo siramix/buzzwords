@@ -21,15 +21,14 @@
 	</LinearLayout>
 	<LinearLayout android:id="@+id/Title_Menu"
 		android:orientation="vertical" android:clipChildren="false"
-		android:layout_width="fill_parent" android:layout_marginLeft="30dp"
-		android:layout_centerVertical="true" android:layout_height="fill_parent">
+		android:layout_width="fill_parent" android:layout_centerVertical="true" android:layout_height="fill_parent">
 		
 		<ImageView android:id="@+id/Title_Title"
 			android:layout_height="wrap_content" android:layout_width="wrap_content"
 			android:background="@drawable/title_title" android:layout_gravity="center" android:layout_marginTop="20dp" android:layout_marginBottom="15dp"></ImageView>
 		<RelativeLayout android:id="@+id/Title_Menu_1"
 			android:layout_height="fill_parent" android:layout_weight="1"
-			android:layout_width="wrap_content">
+			android:layout_width="wrap_content" android:layout_marginLeft="30dp">
 			<TextView android:text="Play" android:id="@+id/Title_PlayText"
 				android:textColor="@color/teamB_text" android:layout_height="wrap_content"
 				android:layout_width="wrap_content" android:layout_marginLeft="80dp"
@@ -44,7 +43,7 @@
 		</RelativeLayout>
 		<RelativeLayout android:id="@+id/Title_Menu_2"
 			android:clipChildren="false" android:layout_width="fill_parent"
-			android:layout_height="fill_parent" android:layout_weight="1">
+			android:layout_height="fill_parent" android:layout_weight="1" android:layout_marginLeft="30dp">
 			<TextView android:textSize="42dp" android:text="Buzz"
 				android:textColor="@color/teamC_text" android:id="@+id/Title_BuzzText"
 				android:gravity="center_vertical" android:layout_height="wrap_content"
@@ -60,7 +59,7 @@
 		</RelativeLayout>
 		<RelativeLayout android:id="@+id/Title_Menu_3"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
-			android:layout_weight="1">
+			android:layout_weight="1" android:layout_marginLeft="30dp">
 			<TextView android:textSize="42dp" android:id="@+id/Title_SettingsText"
 				android:text="Settings" android:textColor="@color/teamD_text"
 				android:gravity="center_vertical" android:layout_width="wrap_content"
@@ -73,10 +72,11 @@
 			<View android:id="@+id/Title_SettingsDelegate"
 				android:layout_width="240dp" android:layout_height="fill_parent"></View>
 
-		</RelativeLayout>
+		
+</RelativeLayout>
 		<RelativeLayout android:id="@+id/Title_Menu_4"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
-			android:layout_weight="1">
+			android:layout_weight="1" android:layout_marginLeft="30dp">
 			<TextView android:textSize="42dp" android:id="@+id/Title_RulesText"
 				android:text="Rules" android:textColor="@color/teamA_text"
 				android:layout_height="wrap_content" android:layout_width="wrap_content"
