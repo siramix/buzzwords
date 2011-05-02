@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:background="@drawable/bg_generic" android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent">
-	<ImageView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:id="@+id/Buzzer_Word"
-		android:layout_marginTop="20dp" android:background="@drawable/buzzer_title" android:layout_gravity="center"></ImageView>
-	
-	
 
-<RelativeLayout android:layout_height="fill_parent" android:layout_width="fill_parent"><ImageButton android:layout_width="wrap_content" android:id="@+id/BuzzerButton" android:background="@drawable/buzzer_button" android:layout_height="wrap_content" android:layout_centerInParent="true"></ImageButton></RelativeLayout>
+<!-- 
+/*****************************************************************************
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
+ -->
+ 
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@drawable/bg_generic" 
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+	
+	<!--  The Buzzer Mode label -->
+	<ImageView 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_marginTop="20dp" 
+		android:background="@drawable/buzzer_title"
+		android:layout_gravity="center"
+		/>
+		
+	<!--  Relative layout allows button to be centered -->
+	<RelativeLayout 
+		android:layout_height="fill_parent"
+		android:layout_width="fill_parent">
+		
+		<ImageButton android:id="@+id/BuzzerButton"
+			android:background="@drawable/buzzer_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_centerInParent="true"
+			/>
+			
+	</RelativeLayout>
+	
 </LinearLayout>
