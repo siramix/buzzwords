@@ -38,7 +38,7 @@
 		android:layout_height="fill_parent"
 		android:layout_width="fill_parent">
 		
-		<ImageButton android:id="@+id/BuzzerButton"
+		<ImageButton android:id="@+id/Buzzer_Button"
 			android:background="@drawable/buzzer_button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 

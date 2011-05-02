@@ -57,7 +57,7 @@ public class Buzzer extends Activity
       float streamVolumeMax = mgr.getStreamMaxVolume( AudioManager.STREAM_MUSIC );
       float volume = streamVolumeCurrent / streamVolumeMax;
      
-      ImageButton buzzButton = (ImageButton) Buzzer.this.findViewById(R.id.BuzzerButton);
+      ImageButton buzzButton = (ImageButton) Buzzer.this.findViewById(R.id.Buzzer_Button);
       
       switch ( motion.getAction() ) 
       {
@@ -97,7 +97,7 @@ public class Buzzer extends Activity
       
       this.setContentView(R.layout.buzzer);
       
-      ImageButton buzzButton = (ImageButton) this.findViewById(R.id.BuzzerButton);
+      ImageButton buzzButton = (ImageButton) this.findViewById(R.id.Buzzer_Button);
       buzzButton.setOnTouchListener( this.BuzzTouch );
 	}
 
