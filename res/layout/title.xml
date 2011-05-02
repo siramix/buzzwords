@@ -209,10 +209,9 @@
 		android:layout_width="wrap_content"
 		android:orientation="horizontal" 
 		android:layout_height="fill_parent"
-		android:layout_alignLeft="@id/Title_Banner" 
-		android:layout_marginLeft="5dp">
+		android:layout_alignLeft="@id/Title_Banner">
 		
-		<View android:id="@+id/Title_Banner_Hider_BG" 
+		<View android:id="@+id/Title_Banner_Hider_BG" android:layout_height="wrap_content" android:background="@color/genericBG_trim" android:layout_width="5dp"/><View android:id="@+id/Title_Banner_Hider_BG" 
 			android:background="@color/black" 
 			android:layout_width="25dp" 
 			android:layout_height="wrap_content"
