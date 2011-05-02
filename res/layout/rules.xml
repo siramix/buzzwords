@@ -1,407 +1,966 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+/*****************************************************************************
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
+ -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content" android:layout_height="wrap_content"
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content"
 	android:background="@drawable/bg_generic">
 
-	<View android:layout_width="fill_parent" android:background="@color/genericBG_trim"
-		android:layout_height="34dp" android:id="@+id/Rules_Header_BG"></View>
-	<View android:layout_width="fill_parent" android:background="#555555"
-		android:layout_marginTop="1dp" android:layout_height="2dp"
-		android:id="@+id/Rules_Header_Break" android:layout_below="@id/Rules_Header_BG"></View>
-	<TextView android:layout_height="wrap_content"
-		android:textColor="@color/title" android:layout_centerHorizontal="true"
-		android:layout_width="wrap_content" android:textSize="28dp"
-		android:id="@+id/RulesTitle" android:text="Rules"></TextView>
-	<ScrollView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_below="@+id/RulesTitle"
-		android:id="@+id/Scrollable">
-		<RelativeLayout android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:id="@+id/ScrollBody"
+	<View android:id="@+id/Rules_Header_BG"
+		android:layout_width="fill_parent" 
+		android:background="@color/genericBG_trim"
+		android:layout_height="34dp" 
+		/>
+		
+	<View android:id="@+id/Rules_Header_Break" 
+		android:layout_width="fill_parent"
+		android:layout_height="2dp" 
+		android:background="#555555"
+		android:layout_marginTop="1dp" 
+		android:layout_below="@id/Rules_Header_BG"
+		/>
+		
+	<TextView android:id="@+id/RulesTitle"
+		android:text="Rules"
+		android:textColor="@color/title" 
+		android:textSize="28dp"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content" 
+		android:layout_centerHorizontal="true"
+		/>
+		
+	<ScrollView 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_below="@+id/RulesTitle">
+		
+		<RelativeLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
 			android:padding="5dp">
 
-			<RelativeLayout android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:id="@+id/Rules_Section_Basics"
+			<RelativeLayout android:id="@+id/Rules_Section_Basics"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
 				android:layout_below="@+id/RulesTitle">
-				<RelativeLayout android:layout_height="35dp"
-					android:layout_width="100dp" android:id="@+id/Rules_SubHeader_Basics"
+				
+				<RelativeLayout android:id="@+id/Rules_SubHeader_Basics"
+					android:layout_height="35dp"
+					android:layout_width="100dp" 
 					android:layout_below="@id/Rules_Section_Basics"
 					android:layout_marginTop="7dp">
-					<View android:background="@color/genericBG_trim"
-						android:layout_width="fill_parent" android:layout_height="fill_parent"
-						android:id="@+id/Rules_SubHeader_Basics_BG"></View>
-					<View android:layout_width="fill_parent"
-						android:layout_height="fill_parent" android:background="@color/genericBG"
-						android:id="@+id/Rules_SubHeader_Basics_Fill"
-						android:layout_margin="4dp"></View>
-					<TextView android:layout_width="wrap_content"
+					
+					<View android:id="@+id/Rules_SubHeader_Basics_BG"
+						android:background="@color/genericBG_trim"
+						android:layout_width="fill_parent" 
+						android:layout_height="fill_parent"
+						/>
+						
+					<View android:id="@+id/Rules_SubHeader_Basics_Fill"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent" 
+						android:background="@color/genericBG"
+						android:layout_margin="4dp"
+						/>
+						
+					<TextView android:id="@+id/Rules_SubHeader_Basics_Text"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_centerInParent="true" android:textSize="20dp"
-						android:id="@+id/Rules_SubHeader_Basics_Text" android:text="Basics"
-						android:textColor="#FFFFFF"></TextView>
+						android:layout_centerInParent="true" 
+						android:textSize="20dp"
+						android:text="Basics"
+						android:textColor="#FFFFFF"
+						/>
+						
 				</RelativeLayout>
 
-				<TextView android:layout_below="@id/Rules_SubHeader_Basics"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:id="@+id/BasicText01"
-					android:padding="8dp" android:text="At its core, Word Frenzy is a team game that pits friends against friends in cutthroat wordplay action. Here are the basics:"></TextView>
-				<RelativeLayout android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:layout_below="@id/BasicText01"
-					android:id="@+id/BullettedList" android:paddingLeft="10dp">
-					<TextView android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/BasicText02"
+				<TextView android:id="@+id/BasicText01"
+					android:layout_below="@id/Rules_SubHeader_Basics"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content"
+					android:padding="8dp" 
+					android:text="At its core, Word Frenzy is a team game that pits friends against friends in cutthroat wordplay action. Here are the basics:"
+					/>
+
+				<RelativeLayout android:id="@+id/BullettedList"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" 
+					android:layout_below="@id/BasicText01"
+					android:paddingLeft="10dp">
+					
+					<TextView android:id="@+id/BasicText02"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" 
 						android:text="Divide all players into teams of two or more."
 						android:textColor="@color/text_subtext" android:layout_below="@id/BullettedList"
 						android:paddingLeft="10dp" android:paddingRight="10dp"
-						android:paddingBottom="10dp"></TextView>
+						android:paddingBottom="10dp"
+						/>
+						
 					<View android:layout_gravity="center_vertical"
 						android:background="#ccc" android:layout_height="6dp"
 						android:layout_width="6dp" android:id="@+id/Bullet02"
 						android:layout_below="@+id/BullettedList"
-						android:layout_marginTop="5dp"></View>
+						android:layout_marginTop="5dp"
+						/>
+						
 					<TextView android:layout_below="@id/BasicText02"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
 						android:id="@+id/BasicText03"
 						android:text="Each turn, a team assigns a presenter who must try to get their team to guess as many secret words as possible without saying certain words."
 						android:textColor="@color/text_subtext" android:paddingLeft="10dp"
-						android:paddingRight="10dp" android:paddingBottom="10dp"></TextView>
-					<View android:layout_gravity="center_vertical"
-						android:background="#ccc" android:layout_height="6dp"
-						android:layout_width="6dp" android:layout_marginTop="5dp"
-						android:layout_below="@+id/BasicText02" android:id="@+id/Bullet03"></View>
-					<TextView android:layout_below="@id/BasicText03"
-						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:id="@+id/BasicText04" android:textColor="@color/text_subtext"
-						android:paddingLeft="10dp" android:paddingRight="10dp"
-						android:paddingBottom="10dp"
-						android:text="An opposing player enforces the list of forbidden words."></TextView>
-					<View android:layout_gravity="center_vertical"
-						android:background="#ccc" android:layout_height="6dp"
-						android:layout_width="6dp" android:layout_marginTop="5dp"
-						android:layout_below="@+id/BasicText03" android:id="@+id/Bullet04"></View>
-					<TextView android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:textColor="@color/text_subtext"
-						android:paddingLeft="10dp" android:paddingRight="10dp"
-						android:paddingBottom="10dp" android:layout_below="@id/BasicText04"
-						android:id="@+id/BasicText05"
-						android:text="Points are awarded for each successfully guessed word."></TextView>
-					<View android:layout_gravity="center_vertical"
-						android:background="#ccc" android:layout_height="6dp"
-						android:layout_width="6dp" android:layout_marginTop="5dp"
-						android:layout_below="@+id/BasicText04" android:id="@+id/Bullet05"></View>
-					<TextView android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="The team that has the most points at the end of the game wins!"
-						android:textColor="@color/text_subtext" android:paddingLeft="10dp"
 						android:paddingRight="10dp" android:paddingBottom="10dp"
-						android:layout_below="@id/BasicText05" android:id="@+id/BasicText06"></TextView>
-					<View android:layout_gravity="center_vertical"
-						android:background="#ccc" android:layout_height="6dp"
-						android:layout_width="6dp" android:layout_marginTop="5dp"
-						android:layout_below="@+id/BasicText05" android:id="@+id/Bullet06"></View>
+						/>
+						
+					<View android:id="@+id/Bullet03" 
+						android:background="#ccc" 
+						android:layout_gravity="center_vertical"
+						android:layout_height="6dp"
+						android:layout_width="6dp" 
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/BasicText02"
+						/>
+						
+					<TextView android:id="@+id/BasicText04" 
+						android:layout_below="@id/BasicText03"
+						android:layout_width="wrap_content" 
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp" 
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:text="An opposing player enforces the list of forbidden words."
+						/>
+						
+					<View android:id="@+id/Bullet04"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc" 
+						android:layout_height="6dp"
+						android:layout_width="6dp" 
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/BasicText03"
+						/>
+						
+					<TextView android:id="@+id/BasicText05"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" 
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp" 
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp" 
+						android:layout_below="@id/BasicText04"
+						android:text="Points are awarded for each successfully guessed word."
+						/>
+						
+					<View android:id="@+id/Bullet05"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/BasicText04" 
+						/>
+						
+					<TextView android:id="@+id/BasicText06"
+						android:text="The team that has the most points at the end of the game wins!"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext" 
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp" 
+						android:paddingBottom="10dp"
+						android:layout_below="@id/BasicText05"
+						/>
+						
+					<View android:id="@+id/Bullet06"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/BasicText05" 
+						/>
 
 				</RelativeLayout>
 
-				<TextView android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:id="@+id/RulesPreferencesHeader"
-					android:layout_below="@id/Rules_SubHeader_Basics" android:text="House Rules: "
-					android:visibility="gone"></TextView>
-				<TextView android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:layout_marginLeft="10dip"
-					android:id="@+id/RulesPreferences" android:layout_below="@id/RulesPreferencesHeader"
+				<TextView android:id="@+id/RulesPreferencesHeader"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/Rules_SubHeader_Basics" 
+					android:text="House Rules: "
+					android:visibility="gone"
+					/>
+					
+				<TextView android:id="@+id/RulesPreferences"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="10dip"
+					android:layout_below="@id/RulesPreferencesHeader"
 					android:text="CURRENT SETTINGS LIKE RWS, SKIP PENALTY, ROUND TIME GO HERE"
-					android:visibility="gone"></TextView>
-
+					android:visibility="gone"
+					/>
 
 			</RelativeLayout>
 
-			<RelativeLayout android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:id="@+id/Rules_Section_Gameplay"
+			<RelativeLayout android:id="@+id/Rules_Section_Gameplay"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
 				android:layout_below="@id/Rules_Section_Basics"
 				android:layout_marginTop="7dp">
-				<RelativeLayout android:layout_height="35dp"
-					android:id="@+id/Rules_SubHeader_Gameplay" android:layout_below="@+id/Rules_Section_Gameplay"
+				
+				<RelativeLayout android:id="@+id/Rules_SubHeader_Gameplay"
+					android:layout_height="35dp"
+					android:layout_below="@+id/Rules_Section_Gameplay"
 					android:layout_width="125dp">
-					<View android:background="@color/genericBG_trim"
-						android:layout_width="fill_parent" android:layout_height="fill_parent"
-						android:id="@+id/Rules_SubHeader_Buzzing_BG"></View>
-					<View android:layout_width="fill_parent"
-						android:layout_height="fill_parent" android:background="@color/genericBG"
-						android:id="@+id/Rules_SubHeader_Buzzing_Fill"
-						android:layout_margin="4dp"></View>
-					<TextView android:layout_width="wrap_content"
+					
+					<View android:id="@+id/Rules_SubHeader_Buzzing_BG"
+						android:background="@color/genericBG_trim"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent"
+						/>
+						
+					<View android:id="@+id/Rules_SubHeader_Buzzing_Fill"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent" 
+						android:background="@color/genericBG"
+						android:layout_margin="4dp"
+						/>
+						
+					<TextView android:id="@+id/Rules_SubHeader_Buzzing_Text"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_centerInParent="true" android:textSize="20dp"
-						android:id="@+id/Rules_SubHeader_Buzzing_Text" android:text="Gameplay"
-						android:textColor="#FFFFFF"></TextView>
+						android:text="Gameplay"
+						android:textColor="#FFFFFF"
+						/>
+						
 				</RelativeLayout>
 
-				<TextView android:layout_below="@id/Rules_SubHeader_Gameplay"
-					android:layout_width="wrap_content" android:layout_height="wrap_content"
-					android:id="@+id/GameplayText01"
+				<TextView android:id="@+id/GameplayText01"
+					android:layout_below="@id/Rules_SubHeader_Gameplay"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
 					android:text="Let's take a look at the buttons you'll encounter while playing."
-					android:padding="8dp"></TextView>
-				<RelativeLayout android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:id="@+id/Gameplay_IconsDescriptions"
-					android:padding="10dp" android:layout_below="@id/GameplayText01">
+					android:padding="8dp"
+					/>
+					
+				<RelativeLayout android:id="@+id/Gameplay_IconsDescriptions"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" 
+					android:padding="10dp" 
+					android:layout_below="@id/GameplayText01">
 
-					<LinearLayout android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/RightIconCouple"
+					<LinearLayout android:id="@+id/RightIconCouple"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" 
 						android:layout_below="@+id/Gameplay_IconsDescriptions"
 						android:padding="5dp">
+						
 						<ImageView android:id="@+id/Gameplay_RightButton"
-							android:layout_width="wrap_content" android:layout_height="wrap_content"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
 							android:background="@drawable/controls_right"
-							android:contentDescription="Right button icon" android:scaleType="centerCrop"></ImageView>
-						<TextView android:layout_width="wrap_content"
-							android:layout_height="wrap_content" android:id="@+id/GameplayText02"
+							android:contentDescription="Right button icon"
+							android:scaleType="centerCrop"
+							/>
+							
+						<TextView android:id="@+id/GameplayText02"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content" 
 							android:text="Right Button:  For when your team guesses the card correctly. +1 Point."
-							android:layout_toRightOf="@+id/Gameplay_RightButton"
-							android:padding="8dp"></TextView>
+							android:padding="8dp"
+							/>
+							
 					</LinearLayout>
 
-					<LinearLayout android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/SkipIconCouple"
-						android:layout_below="@+id/RightIconCouple" android:padding="5dp">
+					<LinearLayout android:id="@+id/SkipIconCouple"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" 
+						android:layout_below="@+id/RightIconCouple" 
+						android:padding="5dp">
+						
 						<ImageView android:id="@+id/Gameplay_SkipButton"
-							android:layout_below="@+id/SkipIconCouple" android:layout_width="wrap_content"
-							android:layout_height="wrap_content" android:background="@drawable/controls_skip"></ImageView>
-						<TextView android:layout_below="@+id/GameplayText02"
-							android:layout_width="wrap_content" android:layout_height="wrap_content"
-							android:id="@+id/GameplayText03"
+							android:layout_below="@+id/SkipIconCouple"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:background="@drawable/controls_skip"
+							/>
+							
+						<TextView android:id="@+id/GameplayText03"
+							android:layout_below="@+id/GameplayText02"
+							android:layout_width="wrap_content" 
+							android:layout_height="wrap_content"
 							android:text="Skip Button:  For when you are not up to the challenge of the current word. No penalty."
 							android:layout_toRightOf="@+id/Gameplay_SkipButton"
-							android:padding="8dp">></TextView>
+							android:padding="8dp"
+							/>
+							
 					</LinearLayout>
 
-					<LinearLayout android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/WrongIconCouple"
-						android:layout_below="@+id/SkipIconCouple" android:padding="5dp">
+					<LinearLayout android:id="@+id/WrongIconCouple"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@+id/SkipIconCouple"
+						android:padding="5dp">
+						
 						<ImageView android:id="@+id/Gameplay_WrongButton"
-							android:layout_below="@+id/WrongIconCouple" android:layout_width="wrap_content"
-							android:layout_height="wrap_content" android:background="@drawable/controls_wrong"></ImageView>
-						<TextView android:layout_below="@+id/GameplayText03"
-							android:layout_width="wrap_content" android:layout_height="wrap_content"
-							android:id="@+id/GameplayText04"
+							android:layout_below="@+id/WrongIconCouple"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:background="@drawable/controls_wrong"
+							/>
+							
+						<TextView android:id="@+id/GameplayText04"
+							android:layout_below="@+id/GameplayText03"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
 							android:text="Wrong Button:  For when you get called out by the other team for using a forbidden word. -1 Point."
 							android:layout_toRightOf="@+id/Gameplay_WrongButton"
-							android:padding="8dp">></TextView>
+							android:padding="8dp"
+							/>
+							
 					</LinearLayout>
+					
 				</RelativeLayout>
 
-
-
-				<TextView android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:id="@+id/GameplayTextPausing"
+				<TextView android:id="@+id/GameplayTextPausing"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" 
 					android:text="The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don't worry, it will pause if anyone calls and interrupts your awesome game of Word Frenzy."
-					android:padding="8dp" android:layout_below="@+id/Gameplay_IconsDescriptions"></TextView>
-
+					android:padding="8dp"
+					android:layout_below="@+id/Gameplay_IconsDescriptions"
+					/>
 
 			</RelativeLayout>
-			<RelativeLayout android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:layout_marginTop="7dp"
-				android:layout_below="@id/Rules_Section_Gameplay" android:id="@+id/Rules_Section_Screens">
-				<RelativeLayout android:layout_height="35dp"
-					android:id="@+id/Rules_SubHeader_Screens" android:layout_below="@+id/Rules_Section_Screens"
+			
+			<RelativeLayout android:id="@+id/Rules_Section_Screens"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="7dp"
+				android:layout_below="@id/Rules_Section_Gameplay">
+				
+				<RelativeLayout android:id="@+id/Rules_SubHeader_Screens" 
+					android:layout_height="35dp"
+					android:layout_below="@+id/Rules_Section_Screens"
 					android:layout_width="160dp">
-					<View android:background="@color/genericBG_trim"
-						android:layout_width="fill_parent" android:layout_height="fill_parent"
-						android:id="@+id/Rules_SubHeader_Screens_BG"></View>
-					<View android:layout_width="fill_parent"
-						android:layout_height="fill_parent" android:background="@color/genericBG"
-						android:layout_margin="4dp" android:id="@+id/Rules_SubHeader_Screens_Fill"></View>
-					<TextView android:layout_width="wrap_content"
+					
+					<View android:id="@+id/Rules_SubHeader_Screens_BG"
+						android:background="@color/genericBG_trim"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent"
+						/>
+						
+					<View android:id="@+id/Rules_SubHeader_Screens_Fill"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent"
+						android:background="@color/genericBG"
+						android:layout_margin="4dp" 
+						/>
+						
+					<TextView android:id="@+id/Rules_SubHeader_Screens_Text"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_centerInParent="true" android:textSize="20dp"
-						android:textColor="#FFFFFF" android:id="@+id/Rules_SubHeader_Screens_Text"
-						android:text="Sample Screens"></TextView>
+						android:layout_centerInParent="true"
+						android:textSize="20dp"
+						android:textColor="#FFFFFF" 
+						android:text="Sample Screens"
+						/>
+						
 				</RelativeLayout>
 
-				<TextView android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:padding="8dp"
+				<TextView android:id="@+id/ScreensText01"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:padding="8dp"
 					android:text="Now let's take a look at the screens you'll encounter while playing."
-					android:layout_below="@id/Rules_SubHeader_Screens" android:id="@+id/ScreensText01"></TextView>
-				<RelativeLayout android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:layout_below="@id/ScreensText01" android:id="@+id/Screens_ScreenDescriptions" android:padding="5dp">
+					android:layout_below="@id/Rules_SubHeader_Screens"
+					/>
+					
+				<RelativeLayout android:id="@+id/Screens_ScreenDescriptions" 
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/ScreensText01" 
+					android:padding="5dp">
 
-					<LinearLayout android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:padding="5dp"
-						android:id="@+id/SetupCouple" android:layout_below="@+id/Screens_ScreenDescriptions"
+					<LinearLayout android:id="@+id/SetupCouple" 
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:padding="5dp"
+						android:layout_below="@+id/Screens_ScreenDescriptions"
 						android:orientation="horizontal">
-						<TextView android:layout_height="wrap_content"
-							android:padding="8dp" android:id="@+id/ScreensText02"
+						
+						<TextView  android:id="@+id/ScreensText02"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
 							android:text="Setup Screen: Here you choose which teams will play.  You then select how many turns each team will present.  4 teams with 4 turns a piece means 16 times presenting."
-							android:layout_weight="1" android:layout_width="150dp"></TextView>
-						<ImageView android:layout_width="wrap_content"
-							android:layout_height="wrap_content" android:background="@drawable/rules_setup_ss"
-							android:contentDescription="Setup Screen Image" android:id="@+id/Screens_Setup"
-							android:layout_weight="1"></ImageView>
+							android:layout_weight="1"
+							android:layout_width="150dp"
+							/>
+							
+						<ImageView android:id="@+id/Screens_Setup"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:background="@drawable/rules_setup_ss"
+							android:contentDescription="Setup Screen Image"
+							android:layout_weight="1"
+							/>
 
 					</LinearLayout>
 
-					<LinearLayout android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:padding="5dp"
-						android:layout_below="@+id/SetupCouple" android:id="@+id/TurnCouple">
-						<ImageView android:layout_width="wrap_content"
-							android:layout_height="wrap_content" android:id="@+id/Screens_BlueTurn"
-							android:background="@drawable/rules_blueturn_ss" android:layout_marginTop="30dp"></ImageView>
-						<TextView android:layout_width="wrap_content"
-							android:layout_height="wrap_content" android:padding="8dp"
-							android:id="@+id/ScreensText03" android:text="Turn Screen:  This is where the fun happens.  At the top of the screen is the word you want people to guess.  Below that are the five words that you may not use.  Have someone police you and make you hit the wrong button if you miss one.  If your team guesses the word, hit the green check mark and get a new word.">></TextView>
+					<LinearLayout android:id="@+id/TurnCouple"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:padding="5dp"
+						android:layout_below="@+id/SetupCouple">
+						
+						<ImageView android:id="@+id/Screens_BlueTurn"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content" 
+							android:background="@drawable/rules_blueturn_ss"
+							android:layout_marginTop="30dp"
+							/>
+							
+						<TextView android:id="@+id/ScreensText03"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
+							android:text="Turn Screen:  This is where the fun happens.  At the top of the screen is the word you want people to guess.  Below that are the five words that you may not use.  Have someone police you and make you hit the wrong button if you miss one.  If your team guesses the word, hit the green check mark and get a new word."
+							/>
+							
 					</LinearLayout>
 
-					<LinearLayout android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:padding="5dp"
-						android:id="@+id/TurnSumCouple" android:layout_below="@+id/TurnCouple">
-						<TextView android:layout_width="wrap_content"
-							android:layout_height="wrap_content" android:padding="8dp"
-							android:id="@+id/Screens_Text04"
-							android:text="Turn Results:  Touch the right, wrong, or skip icons next to each word to correct the results.  Click Next Team when you are ready to pass the phone." android:layout_weight="1">></TextView>
-						<ImageView android:layout_width="wrap_content"
-							android:layout_height="wrap_content" android:background="@drawable/rules_turnsum_ss"
-							android:id="@+id/Screens_TurnSum"></ImageView>
+					<LinearLayout android:id="@+id/TurnSumCouple" 
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:padding="5dp"
+						android:layout_below="@+id/TurnCouple">
+						
+						<TextView android:id="@+id/Screens_Text04"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
+							android:text="Turn Results:  Touch the right, wrong, or skip icons next to each word to correct the results.  Click Next Team when you are ready to pass the phone." android:layout_weight="1"
+							/>
+							
+						<ImageView android:id="@+id/Screens_TurnSum"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content" 
+							android:background="@drawable/rules_turnsum_ss"
+							/>
 						
 					</LinearLayout>
-					<LinearLayout android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/BuzzmodeCouple"
-						android:layout_below="@+id/TurnSumCouple" android:padding="5dp">
-						<ImageView android:layout_width="wrap_content"
-							android:layout_height="wrap_content" android:background="@drawable/rules_buzzer_ss"
+					
+					<LinearLayout android:id="@+id/BuzzmodeCouple"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" 
+						android:layout_below="@+id/TurnSumCouple" 
+						android:padding="5dp">
+						
+						<ImageView android:id="@+id/Screens_Buzzmode"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:background="@drawable/rules_buzzer_ss"
 							android:layout_below="@+id/GameplayIconsDescriptions"
-							android:padding="3dp" android:id="@+id/Screens_Buzzmode"></ImageView>
-						<TextView android:layout_width="wrap_content"
+							android:padding="3dp"
+							/>
+							
+						<TextView android:id="@+id/Screens_Text05"
+							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:text="Buzz Mode: If you have a second phone you can use it as a buzzer to aid in calling out the opponent.  Just run the second phone in buzz mode and when a foul is committed, buzz ruthlessly."
-							android:padding="8dp" android:id="@+id/Screens_Text05"></TextView>
+							android:padding="8dp" 
+							/>
 					</LinearLayout>
 				</RelativeLayout>
 
-
-
-
-
-
 			</RelativeLayout>
-			<RelativeLayout android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:id="@+id/Rules_Section_Buzzing"
-				android:layout_marginTop="7dp" android:layout_below="@id/Rules_Section_Screens">
-				<RelativeLayout android:layout_height="35dp"
-					android:layout_width="125dp" android:id="@+id/Rules_SubHeader_Buzzing"
+			
+			<RelativeLayout android:id="@+id/Rules_Section_Buzzing"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="7dp"
+				android:layout_below="@id/Rules_Section_Screens">
+				
+				<RelativeLayout android:id="@+id/Rules_SubHeader_Buzzing"
+					android:layout_height="35dp"
+					android:layout_width="125dp"
 					android:layout_below="@+id/Rules_Section_Buzzing">
-					<View android:background="@color/genericBG_trim"
-						android:layout_width="fill_parent" android:layout_height="fill_parent"
-						android:id="@+id/Rules_SubHeader_Buzzing_BG"></View>
-					<View android:layout_width="fill_parent"
-						android:layout_height="fill_parent" android:background="@color/genericBG"
-						android:id="@+id/Rules_SubHeader_Buzzing_Fill"
-						android:layout_margin="4dp"></View>
-					<TextView android:layout_width="wrap_content"
+					
+					<View android:id="@+id/Rules_SubHeader_Buzzing_BG"
+						android:background="@color/genericBG_trim"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent"
+						/>
+						
+					<View android:id="@+id/Rules_SubHeader_Buzzing_Fill"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent"
+						android:background="@color/genericBG"
+						android:layout_margin="4dp"/>
+						
+					<TextView android:id="@+id/Rules_SubHeader_Buzzing_Text"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_centerInParent="true" android:textSize="20dp"
-						android:id="@+id/Rules_SubHeader_Buzzing_Text" android:textColor="#FFFFFF"
-						android:text="Buzzing"></TextView>
+						android:textColor="#FFFFFF"
+						android:text="Buzzing"
+						/>
+						
 				</RelativeLayout>
-				<TextView android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:layout_below="@id/Rules_SubHeader_Buzzing"
-					android:id="@+id/BuzzingText01" android:padding="8dp"
-					android:text="This is where the game gets contentious.  To keep the peace, here are some recommended 'buzz worthy' offenses."></TextView>
-				<RelativeLayout android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:id="@+id/BuzzingBullettedList"
-					android:paddingLeft="10dp" android:layout_below="@id/BuzzingText01">
-					<TextView android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:id="@+id/BuzzingText02"
-						android:textColor="@color/text_subtext" android:layout_below="@id/BuzzingBullettedList"
-						android:paddingLeft="10dp" android:paddingRight="10dp"
+				
+				<TextView android:id="@+id/BuzzingText01" 
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/Rules_SubHeader_Buzzing"
+					android:padding="8dp"
+					android:text="This is where the game gets contentious.  To keep the peace, here are some recommended 'buzz worthy' offenses."
+					/>
+					
+				<RelativeLayout android:id="@+id/BuzzingBullettedList"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" 
+					android:paddingLeft="10dp"
+					android:layout_below="@id/BuzzingText01">
+					
+					<TextView android:id="@+id/BuzzingText02"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" 
+						android:textColor="@color/text_subtext"
+						android:layout_below="@id/BuzzingBullettedList"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
 						android:paddingBottom="10dp"
-						android:text="Explicitly rhyming or phonetically hinting towards any forbidden word.  If you're saying &quot;rhymes with&quot; or &quot;sounds like&quot;, you're heading to buzz city."></TextView>
-					<View android:layout_gravity="center_vertical"
-						android:background="#ccc" android:layout_height="6dp"
-						android:layout_width="6dp" android:id="@+id/BuzzingBullet02"
+						android:text="Explicitly rhyming or phonetically hinting towards any forbidden word.  If you're saying &quot;rhymes with&quot; or &quot;sounds like&quot;, you're heading to buzz city."
+						/>
+						
+					<View android:id="@+id/BuzzingBullet02"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
 						android:layout_below="@+id/BuzzingBullettedList"
-						android:layout_marginTop="5dp"></View>
-					<TextView android:layout_below="@id/BuzzingText02"
+						android:layout_marginTop="5dp"
+						/>
+						
+					<TextView android:id="@+id/BuzzingText03" 
+						android:layout_below="@id/BuzzingText02"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:text='Hinting at the spelling or form of the word in any way.  "Starts with," "has x syllables," "short/long word" are all phrases that should be avoided.'
+						/>
+						
+					<View android:id="@+id/BuzzingBullet03"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/BuzzingText02"
+						/>
+						
+					<TextView android:id="@+id/BuzzingText04" 
+						android:layout_below="@id/BuzzingText03"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:text="Saying enough of a bad word for people to know what you were going to say."
+						/>
+						
+					<View android:id="@+id/BuzzingBullet04"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/BuzzingText03" 
+						/>
+						
+					<TextView android:id="@+id/BuzzingText05" 
+						android:layout_below="@id/BuzzingText04"
 						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:id="@+id/BuzzingText03" android:textColor="@color/text_subtext"
+						android:textColor="@color/text_subtext"
 						android:paddingLeft="10dp" android:paddingRight="10dp"
 						android:paddingBottom="10dp"
-						android:text='Hinting at the spelling or form of the word in any way.  "Starts with," "has x syllables," "short/long word" are all phrases that should be avoided.'></TextView>
-					<View android:layout_gravity="center_vertical"
-						android:background="#ccc" android:layout_height="6dp"
-						android:layout_width="6dp" android:layout_marginTop="5dp"
-						android:layout_below="@+id/BuzzingText02" android:id="@+id/BuzzingBullet03"></View>
-					<TextView android:layout_below="@id/BuzzingText03"
-						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:id="@+id/BuzzingText04" android:textColor="@color/text_subtext"
-						android:paddingLeft="10dp" android:paddingRight="10dp"
+						android:text="Speaking forbidden words in another language."
+						/>
+						
+					<View android:id="@+id/BuzzingBullet05"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/BuzzingText04"
+						/>
+					<TextView android:id="@+id/BuzzingText06"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
 						android:paddingBottom="10dp"
-						android:text="Saying enough of a bad word for people to know what you were going to say."></TextView>
-					<View android:layout_gravity="center_vertical"
-						android:background="#ccc" android:layout_height="6dp"
-						android:layout_width="6dp" android:layout_marginTop="5dp"
-						android:layout_below="@+id/BuzzingText03" android:id="@+id/BuzzingBullet04"></View>
-					<TextView android:layout_below="@id/BuzzingText04"
-						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:id="@+id/BuzzingText05" android:textColor="@color/text_subtext"
-						android:paddingLeft="10dp" android:paddingRight="10dp"
-						android:paddingBottom="10dp"
-						android:text="Speaking forbidden words in another language."></TextView>
-					<View android:layout_gravity="center_vertical"
-						android:background="#ccc" android:layout_height="6dp"
-						android:layout_width="6dp" android:layout_marginTop="5dp"
-						android:layout_below="@+id/BuzzingText04" android:id="@+id/BuzzingBullet05"></View>
-					<TextView android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:textColor="@color/text_subtext"
-						android:paddingLeft="10dp" android:paddingRight="10dp"
-						android:paddingBottom="10dp" android:id="@+id/BuzzingText06"
 						android:layout_below="@id/BuzzingText05"
-						android:text="Saying any tense of a forbidden word.  For example saying &quot;ate&quot; when &quot;eat&quot; is a forbidden word."></TextView>
-					<View android:layout_gravity="center_vertical"
-						android:background="#ccc" android:layout_height="6dp"
-						android:layout_width="6dp" android:layout_marginTop="5dp"
-						android:layout_below="@+id/BuzzingText05" android:id="@+id/BuzzingBullet06"></View>
-					<TextView android:layout_width="wrap_content"
-						android:layout_height="wrap_content" android:textColor="@color/text_subtext"
-						android:paddingLeft="10dp" android:paddingRight="10dp"
-						android:paddingBottom="10dp" android:id="@+id/BuzzingText07"
+						android:text="Saying any tense of a forbidden word.  For example saying &quot;ate&quot; when &quot;eat&quot; is a forbidden word."
+						/>
+						
+					<View android:id="@+id/BuzzingBullet06"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/BuzzingText05"
+						/>
+						
+					<TextView android:id="@+id/BuzzingText07"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
 						android:layout_below="@id/BuzzingText06"
-						android:text="Using your body in any way.  This includes pointing, grabbing objects, eye rollings, or dancing.  "></TextView>
-					<View android:layout_gravity="center_vertical"
+						android:text="Using your body in any way.  This includes pointing, grabbing objects, eye rollings, or dancing.  "
+						/>
+						
+					<View android:id="@+id/BuzzingBullet07"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/BuzzingText06"
+						/>
+
+				</RelativeLayout>
+				
+				<TextView android:id="@+id/BuzzingText07"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/BuzzingBullettedList"
+					android:text="Singing and humming are encouraged, provided you don't sing a bad word or gesture."
+					/>
+				<TextView android:id="@+id/BuzzingText08" 
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/BuzzingText07" 
+					android:text="If your team uses any of the restricted words, you are then free to use that word yourself."
+					/>
+					
+			</RelativeLayout>
+			
+			<RelativeLayout android:id="@+id/Rules_Section_Example"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/Rules_Section_Buzzing"
+				android:layout_marginTop="10dp">
+				
+				<RelativeLayout android:id="@+id/Rules_SubHeader_Example" 
+					android:layout_height="35dp"
+					android:layout_below="@+id/Rules_Section_Example" 
+					android:layout_width="150dp">
+					
+					<View android:id="@+id/Rules_SubHeader_Example_BG"
+						android:background="@color/genericBG_trim"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent"
+						/>
+						
+					<View android:id="@+id/Rules_SubHeader_Example_Fill"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent" 
+						android:background="@color/genericBG"
+						android:layout_margin="4dp"
+						/>
+						
+					<TextView android:id="@+id/Rules_SubHeader_Example_Text"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_centerInParent="true"
+						android:textSize="20dp"
+						android:textColor="#FFFFFF"
+						android:text="Example Game"
+						/>
+						
+				</RelativeLayout>
+				
+				<TextView android:id="@+id/ExampleText01"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:padding="8dp"
+					android:layout_below="@id/Rules_SubHeader_Example"
+					android:text="Finally, let's go through an example game to help you get started."
+					/>
+					
+				<RelativeLayout android:id="@+id/ExampleBullettedList"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:paddingLeft="10dp"
+					android:layout_below="@id/ExampleText01">
+					
+					<TextView android:id="@+id/ExampleText02"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:layout_below="@id/ExampleBullettedList"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:text="Sally and three of her close friends are out camping and realize they forgot to bring any games.   But Sally comes to the rescue and pulls out her Android phone with WordFrenzy!   The group praises her foresight and excitedly divides up into two teams of two."
+						/>
+						
+					<View android:id="@+id/ExampleBullet02" 
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_below="@+id/ExampleBullettedList"
+						android:layout_marginTop="5dp"
+						/>
+						
+					<TextView
+						android:layout_below="@id/ExampleText02" 
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:id="@+id/ExampleText03"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:text="Sally opens the app and taps Play to enter the Game Setup screen.  The group divides into two teams, yellow and green, and Sally highlights those colors."
+						/>
+						
+					<View android:id="@+id/ExampleBullet03"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/ExampleText02"
+						/>
+						
+					<TextView android:id="@+id/ExampleText04"
+						android:layout_below="@id/ExampleText03"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:text="Since they want to each play 4 times they set it to 8 rounds (#teams X #rounds = #turns).  Sally taps Start Game to play!"
+						/>
+						
+					<View android:id="@+id/ExampleBullet04"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc" 
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/ExampleText03"
+						/>
+						
+					<TextView android:id="@+id/ExampleText05"
+						android:layout_below="@id/ExampleText04"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp" 
+						android:text="Sally starts off presenting for the Yellow Team and Rob, sitting to her left, monitors Sally on behalf of the Green Team.  Sally's first word to present is Sandwich, which includes the forbidden words bread, butter, eat, lunch, and sub.  She starts by saying,"
+						/>
+						
+					<View android:id="@+id/ExampleBullet05"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/ExampleText04"
+						/>
+						
+					<TextView android:id="@+id/ExampleText06" 
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:layout_below="@id/ExampleText05"
+						android:text="'OK...this is something you eat for lunch.'"
+						/>
+						
+					<View android:id="@+id/ExampleBullet06"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc" 
+						android:layout_height="6dp" 
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/ExampleText05"
+						/>
+						
+					<TextView android:id="@+id/ExampleText07"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:layout_below="@id/ExampleText06"
+						android:text="Rob, who is an astute buzzer, calls her out on her multiple transgressions and Sally is forced to hit the X button."
+						/>
+						
+					<View
+						android:layout_gravity="center_vertical"
+						android:background="#ccc" 
+						android:layout_height="6dp" 
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/ExampleText06" 
+						android:id="@+id/ExampleBullet07"
+						/>
+						
+					<TextView android:id="@+id/ExampleText08"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext" 
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:layout_below="@id/ExampleText07"
+						android:text="Sally unfortunately can't get her team to guess the next word and time runs up.  Her turn totals an embarassing -1 points."
+						/>
+						
+					<View android:id="@+id/ExampleBullet08"
+						android:layout_gravity="center_vertical"
 						android:background="#ccc" android:layout_height="6dp"
-						android:layout_width="6dp" android:layout_marginTop="5dp"
-						android:layout_below="@+id/BuzzingText06" android:id="@+id/BuzzingBullet07"></View>
-
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/ExampleText07"
+						/>
+						
+					<TextView android:id="@+id/ExampleText09"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:layout_below="@id/ExampleText08"
+						android:text="But Sally is given a chance for redemption.  She passes the phone to her right, to Zack on the Green team and then looks over his shoulder to call him out."
+						/>
+						
+					<View android:id="@+id/ExampleBullet09"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/ExampleText08"
+						/>
+						
+					<TextView android:id="@+id/ExampleText10" 
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" 
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp" 
+						android:paddingBottom="10dp"
+						android:layout_below="@id/ExampleText09"
+						android:text="She's so on top of it that Zack ends up with -3 points.  The group decides to cut him a break and on the Turn Results screen they change one word to a &quot;skip&quot;, making him only lose his team 2 points."
+						/>
+						
+					<View android:id="@+id/ExampleBullet10"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp" 
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/ExampleText09"						
+						/>
+						
+					<TextView android:id="@+id/ExampleText11"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:layout_below="@id/ExampleText10"
+						android:text="Zack passes the phone to his right and assumes the monitoring role, eager to exact his revenge."
+						/>
+						
+					<View android:id="@+id/ExampleBullet11"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/ExampleText10"
+						/>
+						
+					<TextView android:id="@+id/ExampleText12"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/text_subtext"
+						android:paddingLeft="10dp"
+						android:paddingRight="10dp"
+						android:paddingBottom="10dp"
+						android:layout_below="@id/ExampleText11"
+						android:text="And the excitement continues until the friends see the glimmer of dawn and realize they've had WAY TOO MUCH FUN!"
+						/>
+						
+					<View android:id="@+id/ExampleBullet12"
+						android:layout_gravity="center_vertical"
+						android:background="#ccc"
+						android:layout_height="6dp"
+						android:layout_width="6dp"
+						android:layout_marginTop="5dp"
+						android:layout_below="@+id/ExampleText11" />
 
 				</RelativeLayout>
-				<TextView android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:layout_below="@id/BuzzingBullettedList"
-					android:id="@+id/BuzzingText07"
-					android:text="Singing and humming are encouraged, provided you don't sing a bad word or gesture."></TextView><TextView android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:layout_below="@id/BuzzingText07" android:id="@+id/BuzzingText08" android:text="If your team uses any of the restricted words, you are then free to use that word yourself."></TextView>
-			</RelativeLayout><RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/Rules_Section_Buzzing" android:id="@+id/Rules_Section_Example" android:layout_marginTop="10dp">
-				<RelativeLayout android:layout_height="35dp" android:layout_below="@+id/Rules_Section_Example" android:id="@+id/Rules_SubHeader_Example" android:layout_width="150dp">
-					<View android:background="@color/genericBG_trim" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/Rules_SubHeader_Example_BG"></View>
-					<View android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@color/genericBG" android:layout_margin="4dp" android:id="@+id/Rules_SubHeader_Example_Fill"></View>
-					<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" android:textSize="20dp" android:textColor="#FFFFFF" android:text="Example Game" android:id="@+id/Rules_SubHeader_Example_Text"></TextView>
-				</RelativeLayout>
-				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp" android:layout_below="@id/Rules_SubHeader_Example" android:id="@+id/ExampleText01" android:text="Finally, let's go through an example game to help you get started."></TextView>
-				<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="10dp" android:layout_below="@id/ExampleText01" android:id="@+id/ExampleBullettedList">
-					<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ExampleText02" android:textColor="@color/text_subtext" android:layout_below="@id/ExampleBullettedList" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:text="Sally and three of her close friends are out camping and realize they forgot to bring any games.   But Sally comes to the rescue and pulls out her Android phone with WordFrenzy!   The group praises her foresight and excitedly divides up into two teams of two."></TextView>
-					<View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:id="@+id/ExampleBullet02" android:layout_below="@+id/ExampleBullettedList" android:layout_marginTop="5dp"></View>
-					<TextView android:layout_below="@id/ExampleText02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ExampleText03" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:text="Sally opens the app and taps Play to enter the Game Setup screen.  The group divides into two teams, yellow and green, and Sally highlights those colors."></TextView>
-					<View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/ExampleText02" android:id="@+id/ExampleBullet03"></View>
-					<TextView android:layout_below="@id/ExampleText03" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ExampleText04" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:text="Since they want to each play 4 times they set it to 8 rounds (#teams X #rounds = #turns).  Sally taps Start Game to play!"></TextView>
-					<View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/ExampleText03" android:id="@+id/ExampleBullet04"></View>
-					<TextView android:layout_below="@id/ExampleText04" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ExampleText05" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:text="Sally starts off presenting for the Yellow Team and Rob, sitting to her left, monitors Sally on behalf of the Green Team.  Sally's first word to present is Sandwich, which includes the forbidden words bread, butter, eat, lunch, and sub.  She starts by saying,"></TextView>
-					<View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/ExampleText04" android:id="@+id/ExampleBullet05"></View>
-					<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:id="@+id/ExampleText06" android:layout_below="@id/ExampleText05" android:text="'OK...this is something you eat for lunch.'"></TextView>
-					<View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/ExampleText05" android:id="@+id/ExampleBullet06"></View>
-					<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:id="@+id/ExampleText07" android:layout_below="@id/ExampleText06" android:text="Rob, who is an astute buzzer, calls her out on her multiple transgressions and Sally is forced to hit the X button."></TextView>
-					<View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/ExampleText06" android:id="@+id/ExampleBullet07"></View><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:layout_below="@id/ExampleText07" android:id="@+id/ExampleText08" android:text="Sally unfortunately can't get her team to guess the next word and time runs up.  Her turn totals an embarassing -1 points."></TextView><View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/ExampleText07" android:id="@+id/ExampleBullet08"></View><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:layout_below="@id/ExampleText08" android:id="@+id/ExampleText09" android:text="But Sally is given a chance for redemption.  She passes the phone to her right, to Zack on the Green team and then looks over his shoulder to call him out."></TextView><View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/ExampleText08" android:id="@+id/ExampleBullet09"></View><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:layout_below="@id/ExampleText09" android:id="@+id/ExampleText10" android:text="She's so on top of it that Zack ends up with -3 points.  The group decides to cut him a break and on the Turn Results screen they change one word to a &quot;skip&quot;, making him only lose his team 2 points."></TextView><View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/ExampleText09" android:id="@+id/ExampleBullet10"></View><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:layout_below="@id/ExampleText10" android:id="@+id/ExampleText11" android:text="Zack passes the phone to his right and assumes the monitoring role, eager to exact his revenge."></TextView><View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/ExampleText10" android:id="@+id/ExampleBullet11"></View><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_subtext" android:paddingLeft="10dp" android:paddingRight="10dp" android:paddingBottom="10dp" android:layout_below="@id/ExampleText11" android:id="@+id/ExampleText12" android:text="And the excitement continues until the friends see the glimmer of dawn and realize they've had WAY TOO MUCH FUN!"></TextView><View android:layout_gravity="center_vertical" android:background="#ccc" android:layout_height="6dp" android:layout_width="6dp" android:layout_marginTop="5dp" android:layout_below="@+id/ExampleText11" android:id="@+id/ExampleBullet12"></View>
-
-
-				</RelativeLayout>
-				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/ExampleBullettedList" android:id="@+id/ExampleText07" android:text="We hope you enjoy playing Word Frenzy!"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/ExampleText07" android:id="@+id/ExampleText08" android:text="If you have any more questions about the rules, please feel free to send us an email.  You can find our site by clicking the ram icon on the title page."></TextView>
+				
+				<TextView android:id="@+id/ExampleText07" 
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/ExampleBullettedList"
+					android:text="We hope you enjoy playing Word Frenzy!"
+					/>
+					
+				<TextView android:id="@+id/ExampleText08"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/ExampleText07"
+					android:text="If you have any more questions about the rules, please feel free to send us an email.  You can find our site by clicking the ram icon on the title page."
+					/>
+					
 			</RelativeLayout>
 
 		</RelativeLayout>
+		
 	</ScrollView>
+	
 </RelativeLayout>
