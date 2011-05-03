@@ -86,5 +86,4 @@
   </application>
 	<uses-sdk android:minSdkVersion="3"
 			  android:targetSdkVersion="7" />
-   <uses-permission android:name="android.permission.VIBRATE" />
 </manifest> 
