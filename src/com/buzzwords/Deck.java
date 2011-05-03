@@ -162,11 +162,15 @@ public class Deck {
          * Starts a thread to load the database table with words
          */
         private void loadDeck() {
-          try {
-            this.loadWords();            
-          } catch( IOException e) {
-            e.printStackTrace();
-          }             
+          new Thread(new Runnable() {
+            public void run() {
+              try {
+                loadWords();
+              } catch(IOException e) {
+                 throw new RuntimeException(e);
+              }
+            }
+          }).start();          
         }
 
         private void loadWords() throws IOException {
@@ -233,7 +237,7 @@ public class Deck {
               {
                 e.printStackTrace();
               }
-
+            mDatabase.close();
             Log.d(TAG, "DONE loading words.");
         }
 

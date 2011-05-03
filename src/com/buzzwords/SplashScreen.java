@@ -68,6 +68,11 @@ public class SplashScreen extends Activity {
 
     super.onCreate(savedInstanceState);
     setContentView(R.layout.splashscreen);
+    
+    // Create a Deck so we load the cards into the SQL DB on first run
+    // this operation will occur in a threaded manner (hot, I know).
+    Deck tempDeck = new Deck(this);
+    Log.d(TAG,tempDeck.toString());
 
     // Fade in the logo
     this.fadeIn();
