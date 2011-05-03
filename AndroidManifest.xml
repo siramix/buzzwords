@@ -71,7 +71,7 @@
                   android:label="@string/AppName"
                   android:screenOrientation="portrait">
             <intent-filter>
-             <action android:name="android.intent.action.CALL"></action>
+             <action android:name="com.buzzwords.intent.action.GAMEEND"></action>
              <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -79,8 +79,8 @@
                   android:label="@string/AppName"
                   android:screenOrientation="portrait">
             <intent-filter>
-         	   <action android:name="android.intent.action.SEND"></action>
-         	   <category android:name="android.intent.category.INFO"/>
+              <action android:name="com.buzzwords.intent.action.TURNSUMMARY"></action>
+              <category android:name="android.intent.category.DEFAULT"/>
 			</intent-filter>
         </activity>
   </application>

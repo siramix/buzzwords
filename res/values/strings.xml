@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+  <!-- Application Name -->
   <string name="AppName">buzzwords</string>
+
+  <!-- Intent Designations -->
   <string name="IntentTitle">com.buzzwords.intent.action.TITLE</string>
   <string name="IntentSettings">com.buzzwords.intent.action.SETTINGS</string>
   <string name="IntentRules">com.buzzwords.intent.action.RULES</string>
@@ -8,22 +12,26 @@
   <string name="IntentAboutUs">com.buzzwords.intent.action.ABOUTUS</string>
   <string name="IntentGameSetup">com.buzzwords.intent.action.GAMESETUP</string>
   <string name="IntentTurn">com.buzzwords.intent.action.TURN</string>
+  <string name="IntentTurnSummary">com.buzzwords.intent.action.TURNSUMMARY</string>
+  <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
+
+ <!-- Menu Designations -->
   <string name="menu_EndGame">MENU_ENDGAME</string>
   <string name="menu_Rules">MENU_RULES</string>
-  
+
   <!-- For end game dialog -->
   <string name="endGameDialog_title">Confirm End Game</string>
   <string name="endGameDialog_text">Are you sure you want to end the current game?</string>
-  
+
   <!-- For end game dialog -->
   <string name="pauseGameDialog_title">Game Paused</string>
   <string name="pauseGameDialog_text">Paused</string>
-  
+
   <!-- Team names -->
   <string name="teamnameA">Blue</string>
   <string name="teamnameB">Green</string>
   <string name="teamnameC">Red</string>
   <string name="teamnameD">Yellow</string>
-  
-  
+
+
 </resources>

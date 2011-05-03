@@ -105,7 +105,7 @@ public class SplashScreen extends Activity {
     logoram.setVisibility(View.GONE);
 
     finish();
-    startActivity(new Intent("com.buzzwords.intent.action.TITLE"));
+    startActivity(new Intent(getString(R.string.IntentTitle)));
   }
 
   /**

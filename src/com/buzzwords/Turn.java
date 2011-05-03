@@ -242,7 +242,7 @@ public class Turn extends Activity
         this.showDialog( DIALOG_GAMEOVER_ID );
         return true;
       case R.string.menu_Rules:
-        startActivity(new Intent(getApplication().getString( R.string.IntentRules ),
+        startActivity(new Intent(getString( R.string.IntentRules ),
             getIntent().getData()));
         return true;
       default:
@@ -704,8 +704,7 @@ public class Turn extends Activity
   protected void OnTurnEnd( )
   {
     Log.d( TAG, "onTurnEnd()" );
-	Intent newintent = new Intent( this, TurnSummary.class);
-	startActivity(newintent);
+	  startActivity( new Intent(getString(R.string.IntentTurnSummary), getIntent().getData()) );
   }
 
   protected void setupViewReferences()
@@ -967,7 +966,7 @@ public class Turn extends Activity
                  BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
                  GameManager gm = application.GetGameManager();
                  gm.EndGame();
-                 startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
+                 startActivity(new Intent( getString(R.string.IntentEndGame), getIntent().getData()));
                  }
                })
              .setNegativeButton("No", new DialogInterface.OnClickListener() {
