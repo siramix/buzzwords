@@ -37,10 +37,10 @@ public class GameSetup extends Activity
   
   //A two dimensional array to store the radioID/value pair.
   private static final int[][] ROUND_RADIOS = new int[][] {
-            {R.id.GameSetupRounds0,4}, 
-            {R.id.GameSetupRounds1,8}, 
-            {R.id.GameSetupRounds2,12},
-            {R.id.GameSetupRounds3,16}};
+            {R.id.GameSetup_Rounds0,4}, 
+            {R.id.GameSetup_Rounds1,8}, 
+            {R.id.GameSetup_Rounds2,12},
+            {R.id.GameSetup_Rounds3,16}};
 
   public static final String PREFS_NAME = "gamesetupprefs";     //stored in data/data/buzzwords/shared_preferences
   private static final String TEAMA_PREFKEY = "teamA_enabled";  //StringID for Team A quadrant
@@ -240,9 +240,9 @@ public void onCreate( Bundle savedInstanceState )
 	super.onCreate( savedInstanceState );
 	Log.d( TAG, "onCreate()" );
   
-  //Force volume controls to affect Media volume
-  setVolumeControlStream(AudioManager.STREAM_MUSIC);
-	
+    //Force volume controls to affect Media volume
+    setVolumeControlStream(AudioManager.STREAM_MUSIC);
+  	
 	// Setup the view
 	this.setContentView(R.layout.gamesetup);
 	
@@ -250,29 +250,29 @@ public void onCreate( Bundle savedInstanceState )
 	GameSetup.gameSetupPrefs = getSharedPreferences(PREFS_NAME, 0 );	
 	GameSetup.gameSetupPrefEditor = GameSetup.gameSetupPrefs.edit();	
 
-  // Get the default radio button
-  int radio_default = GameSetup.gameSetupPrefs.getInt(GameSetup.RADIO_INDEX, 1);
-
-  RadioButton radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[0][0] );
+    // Get the default radio button
+    int radio_default = GameSetup.gameSetupPrefs.getInt(GameSetup.RADIO_INDEX, 1);
   
-  for( int i=0; i<GameSetup.ROUND_RADIOS.length; ++i )
-  {
-    radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[i][0] );
-    radio.setText(String.valueOf(GameSetup.ROUND_RADIOS[i][1]));
-  }
+    RadioButton radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[0][0] );
+    
+    for( int i=0; i<GameSetup.ROUND_RADIOS.length; ++i )
+    {
+      radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[i][0] );
+      radio.setText(String.valueOf(GameSetup.ROUND_RADIOS[i][1]));
+    }
   
-  radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[radio_default][0] );
-  radio.setChecked(true);  
+    radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[radio_default][0] );
+    radio.setChecked(true);  
   
 	// Bind view buttons
-	Button startGameButton = (Button)this.findViewById( R.id.StartGameButton );
+	Button startGameButton = (Button)this.findViewById( R.id.GameSetup_StartGameButton );
 	startGameButton.setOnClickListener( StartGameListener );
 	
 	Button teamAButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamA );
-  teamAButton.setOnClickListener( AddTeamAListener );
+    teamAButton.setOnClickListener( AddTeamAListener );
   
-  Button teamBButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamB );
-  teamBButton.setOnClickListener( AddTeamBListener );
+    Button teamBButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamB );
+    teamBButton.setOnClickListener( AddTeamBListener );
 	
 	Button teamCButton = (Button) this.findViewById( R.id.GameSetup_ButtonTeamC );
 	teamCButton.setOnClickListener( AddTeamCListener );
@@ -300,10 +300,10 @@ public void onCreate( Bundle savedInstanceState )
 	  teamList.add( Team.TEAMB );
 	}
 	else
-  {
-    teamBButton.setBackgroundResource( R.color.inactiveButton );
-    teamBButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-  }
+    {
+      teamBButton.setBackgroundResource( R.color.inactiveButton );
+      teamBButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+    }
 	
 	//Set team C default selection
 	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMC_PREFKEY, false) )
@@ -311,10 +311,10 @@ public void onCreate( Bundle savedInstanceState )
 	  teamList.add( Team.TEAMC );
 	} 	
 	else
-  {
-    teamCButton.setBackgroundResource( R.color.inactiveButton );
-    teamCButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-  }
+    {
+      teamCButton.setBackgroundResource( R.color.inactiveButton );
+      teamCButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+    }
 	
 	//Set team D default selection
 	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMD_PREFKEY, false) )
@@ -322,11 +322,11 @@ public void onCreate( Bundle savedInstanceState )
 	  teamList.add( Team.TEAMD );
 	}
 	else
-  {
-    teamDButton.setBackgroundResource( R.color.inactiveButton );
-    teamDButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-  }
-	
+    {
+      teamDButton.setBackgroundResource( R.color.inactiveButton );
+      teamDButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+    }
+  	
 	TextView helpText = (TextView) this.findViewById(R.id.GameSetup_HelpText_Team);
 	helpText.setAnimation(this.FadeInHelpText(1000));
 	helpText = (TextView) this.findViewById(R.id.GameSetup_HelpText_Turn);

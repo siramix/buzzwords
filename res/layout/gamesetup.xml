@@ -41,7 +41,7 @@
 			android:layout_below="@id/GameSetup_HeaderBG"
 			/>
 			
-		<TextView android:id="@+id/GameSetupTitle"
+		<TextView android:id="@+id/GameSetup_Title"
 			android:layout_height="wrap_content"
 			android:textColor="@color/title"
 			android:layout_centerHorizontal="true"
@@ -60,11 +60,11 @@
 		android:paddingTop="8dp">
 		
 		<!--  Linear layout for each set of teams,  -->
-		<LinearLayout android:id="@+id/TeamLayout"
+		<LinearLayout android:id="@+id/GameSetup_TeamLayout"
 			android:layout_width="fill_parent"
 			android:orientation="vertical"
 			android:layout_height="150dp"
-			android:layout_below="@id/GameSetupTitle"
+			android:layout_below="@id/GameSetup_Title"
 			android:background="@color/genericBG_trim">
 
 			<!--  Top two teams, laid out horizontally -->
@@ -224,13 +224,13 @@
 		
 		<!--  Round selection -->
 		<RadioGroup android:id="@+id/GameSetup_RadioGroup"
-			android:checkedButton="@+id/GameSetupRounds5"
+			android:checkedButton="@+id/GameSetup_Rounds5"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
 			android:layout_below="@+id/GameSetup_SubHeader_Turns" >
 			
-			<RadioButton android:id="@+id/GameSetupRounds0"
+			<RadioButton android:id="@+id/GameSetup_Rounds0"
 				android:layout_height="wrap_content"
 				android:text="1"
 				android:textSize="28dp"
@@ -239,7 +239,7 @@
 				android:layout_width="fill_parent"
 				/>
 				
-			<RadioButton android:id="@+id/GameSetupRounds1"
+			<RadioButton android:id="@+id/GameSetup_Rounds1"
 				android:layout_height="wrap_content"
 				android:text="5"
 				android:layout_gravity="center_horizontal"
@@ -248,7 +248,7 @@
 				android:textSize="28dp"
 				/>
 				
-			<RadioButton android:id="@+id/GameSetupRounds2"
+			<RadioButton android:id="@+id/GameSetup_Rounds2"
 				android:layout_height="wrap_content"
 				android:text="10"
 				android:layout_gravity="center_horizontal"
@@ -257,7 +257,7 @@
 				android:textSize="28dp"
 				/>
 				
-			<RadioButton android:id="@+id/GameSetupRounds3"
+			<RadioButton android:id="@+id/GameSetup_Rounds3"
 				android:layout_height="wrap_content"
 				android:text="15"
 				android:layout_gravity="center_horizontal"
@@ -280,7 +280,7 @@
 			
 	</RelativeLayout>
 	
-	<Button android:id="@+id/StartGameButton"
+	<Button android:id="@+id/GameSetup_StartGameButton"
 		android:layout_width="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"

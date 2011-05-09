@@ -23,7 +23,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/bg_bluegradient">
 
-    <TextView android:id="@+id/TurnTimesUp"
+    <TextView android:id="@+id/Turn_TimesUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -43,7 +43,7 @@
         android:layout_centerInParent="true"
         android:visibility="invisible">
 
-        <TextView android:id="@+id/TurnPausedText"
+        <TextView android:id="@+id/Turn_PausedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="60dp"
@@ -53,7 +53,7 @@
             android:textColor="@color/white"
             />
 
-        <TextView android:id="@+id/TurnPausedSubText"
+        <TextView android:id="@+id/Turn_PausedSubText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -73,21 +73,21 @@
             android:layout_width="wrap_content"
             android:layout_height="35dp">
             
-            <ImageView android:id="@+id/TurnTimerBG"
+            <ImageView android:id="@+id/Turn_TimerBG"
                 android:background="@color/genericBG"
                 android:layout_width="fill_parent"
                 android:layout_height="25dp"
                 />
 
-            <View android:id="@+id/TurnTimerTrim"
+            <View android:id="@+id/Turn_TimerTrim"
                 android:layout_height="10dp"
                 android:layout_width="fill_parent"
                 android:background="@color/genericBG_trim"
-                android:layout_below="@id/TurnTimerBG"
+                android:layout_below="@id/Turn_TimerBG"
                 />
 
-            <ImageView android:id="@+id/TurnTimerFill"
-                android:layout_below="@+id/TurnTimerBG"
+            <ImageView android:id="@+id/Turn_TimerFill"
+                android:layout_below="@+id/Turn_TimerBG"
                 android:layout_alignParentTop="true"
                 android:background="@color/teamA_text"
                 android:layout_height="23dp"
@@ -103,7 +103,7 @@
                 android:layout_alignParentRight="true"
                 />
                 
-            <TextView android:id="@+id/Timer"
+            <TextView android:id="@+id/Turn_Timer"
                 android:layout_width="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textColor="#FFFFFF"
@@ -122,25 +122,25 @@
             android:layout_weight="1"
             android:layout_height="fill_parent">
 
-            <RelativeLayout android:id="@+id/CardLayoutA"
+            <RelativeLayout android:id="@+id/Turn_CardLayoutA"
                 android:layout_width="fill_parent"
                 android:layout_gravity="center"
                 android:layout_height="fill_parent">
                 
-                <ImageView android:id="@+id/StatusImageA"
+                <ImageView android:id="@+id/Turn_StatusImageA"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     />
 
-                <LinearLayout android:id="@+id/CardA_Words"
+                <LinearLayout android:id="@+id/Turn_CardA_Words"
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
                     android:layout_centerInParent="true"
                     android:layout_height="wrap_content">
                     
-                    <TextView android:id="@+id/CardTitleA"
+                    <TextView android:id="@+id/Turn_CardTitleA"
                         android:gravity="center"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -153,13 +153,13 @@
                         android:layout_centerHorizontal="true"
                         />
                         
-                    <LinearLayout android:id="@+id/CardA_BadWords"
+                    <LinearLayout android:id="@+id/Turn_CardA_BadWords"
                         android:layout_width="fill_parent"
                         android:orientation="vertical"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/CardTitleA">
+                        android:layout_below="@id/Turn_CardTitleA">
                         
-                        <TextView android:id="@+id/CardA_BadWord0"
+                        <TextView android:id="@+id/Turn_CardA_BadWord0"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textSize="34dp"
@@ -170,7 +170,7 @@
                             android:layout_gravity="center_horizontal"
                             />
                             
-                        <TextView android:id="@+id/CardA_BadWord1"
+                        <TextView android:id="@+id/Turn_CardA_BadWord1"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textSize="34dp"
@@ -181,7 +181,7 @@
                             android:layout_gravity="center_horizontal"
                             />
                             
-                        <TextView android:id="@+id/CardA_BadWord2"
+                        <TextView android:id="@+id/Turn_CardA_BadWord2"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textSize="34dp"
@@ -192,7 +192,7 @@
                             android:layout_gravity="center_horizontal"
                             />
                             
-                        <TextView android:id="@+id/CardA_BadWord3"
+                        <TextView android:id="@+id/Turn_CardA_BadWord3"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textSize="34dp"
@@ -203,7 +203,7 @@
                             android:layout_gravity="center_horizontal"
                             />
                             
-                        <TextView android:id="@+id/CardA_BadWord4"
+                        <TextView android:id="@+id/Turn_CardA_BadWord4"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textSize="34dp"
@@ -220,25 +220,25 @@
                 
             </RelativeLayout>
 
-            <RelativeLayout android:id="@+id/CardLayoutB"
+            <RelativeLayout android:id="@+id/Turn_CardLayoutB"
                 android:layout_width="fill_parent"
                 android:layout_gravity="center"
                 android:layout_height="fill_parent">
                 
-                <ImageView android:id="@+id/StatusImageB"
+                <ImageView android:id="@+id/Turn_StatusImageB"
                     android:layout_alignParentTop="true"
                     android:layout_height="50dip"
                     android:layout_width="50dip"
                     android:layout_alignParentRight="true"
                     />
 
-                <LinearLayout android:id="@+id/CardB_Words"
+                <LinearLayout android:id="@+id/Turn_CardB_Words"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:orientation="vertical">
                     
-                    <TextView android:id="@+id/CardTitleB"
+                    <TextView android:id="@+id/Turn_CardTitleB"
                         android:gravity="center"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -252,13 +252,13 @@
                         android:layout_centerInParent="true"
                     	/>
                         
-                    <LinearLayout android:id="@+id/CardB_BadWords"
+                    <LinearLayout android:id="@+id/Turn_CardB_BadWords"
                         android:layout_width="fill_parent"
                         android:orientation="vertical"
                         android:layout_gravity="center"
                         android:layout_height="wrap_content">
                         
-                        <TextView android:id="@+id/CardB_BadWord0"
+                        <TextView android:id="@+id/Turn_CardB_BadWord0"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textSize="34dp"
@@ -269,7 +269,7 @@
                             android:layout_gravity="center_horizontal"
                             />
                             
-                        <TextView android:id="@+id/CardB_BadWord1"
+                        <TextView android:id="@+id/Turn_CardB_BadWord1"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textSize="34dp"
@@ -280,7 +280,7 @@
                             android:layout_gravity="center_horizontal"
                             />
                             
-                        <TextView android:id="@+id/CardB_BadWord2"
+                        <TextView android:id="@+id/Turn_CardB_BadWord2"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textSize="34dp"
@@ -291,7 +291,7 @@
                             android:layout_gravity="center_horizontal"
                             />
                             
-                        <TextView android:id="@+id/CardB_BadWord3"
+                        <TextView android:id="@+id/Turn_CardB_BadWord3"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textSize="34dp"
@@ -302,7 +302,7 @@
                             android:layout_gravity="center_horizontal"
                             />
                             
-                        <TextView android:id="@+id/CardB_BadWord4"
+                        <TextView android:id="@+id/Turn_CardB_BadWord4"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textSize="34dp"
@@ -326,7 +326,7 @@
             android:layout_width="fill_parent"
             android:layout_height="90dp">
 
-            <View android:id="@+id/TurnLowBarBG"
+            <View android:id="@+id/Turn_LowBarBG"
                 android:layout_width="fill_parent"
                 android:background="@color/genericBG"
                 android:layout_marginTop="40dp"
@@ -334,14 +334,14 @@
                 android:layout_height="45dp"
                 />
                  
-            <View android:id="@+id/TurnLowBarTrim"
+            <View android:id="@+id/Turn_LowBarTrim"
                 android:layout_height="10dp"
                 android:layout_width="fill_parent"
                 android:background="@color/genericBG_trim"
-                android:layout_alignTop="@id/TurnLowBarBG"
+                android:layout_alignTop="@id/Turn_LowBarBG"
                 />
 
-            <ImageButton android:id="@+id/ButtonSkip"
+            <ImageButton android:id="@+id/Turn_ButtonSkip"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:background="@drawable/controls_skip_selector"
@@ -349,21 +349,21 @@
                 android:layout_centerVertical="true"
                 />
                 
-            <ImageButton android:id="@+id/ButtonWrong"
+            <ImageButton android:id="@+id/Turn_ButtonWrong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="99dp"
-                android:layout_alignRight="@id/ButtonSkip"
+                android:layout_alignRight="@id/Turn_ButtonSkip"
                 android:background="@drawable/controls_wrong_selector"
                 />
                 
-            <ImageButton android:id="@+id/ButtonCorrect"
+            <ImageButton android:id="@+id/Turn_ButtonCorrect"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"
                 android:background="@drawable/controls_right_selector"
-                android:layout_alignLeft="@id/ButtonSkip"
+                android:layout_alignLeft="@id/Turn_ButtonSkip"
                 android:layout_marginLeft="99dp"
                 />
                 
@@ -372,7 +372,7 @@
     </LinearLayout>
 
     <!--  View to unpause game on touch -->
-    <View android:id="@+id/PauseImageView"
+    <View android:id="@+id/Turn_PauseImageView"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_width="fill_parent"

@@ -41,9 +41,7 @@ public class Settings extends PreferenceActivity
           mp.pause();
         }
       }
-      
     }
-    
   };
       
   /**

@@ -56,7 +56,7 @@ public class Rules extends Activity
     {
       prefBuilder.append("\nAllow Skipping: Players can not skip words.");
     }
-    TextView rulePrefs = (TextView) this.findViewById(R.id.RulesPreferences);
+    TextView rulePrefs = (TextView) this.findViewById(R.id.Rules_Preferences);
     rulePrefs.setText(prefBuilder);
   }
    

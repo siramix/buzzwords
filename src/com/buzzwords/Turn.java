@@ -595,15 +595,15 @@ public class Turn extends Activity
     int curStatus;
     if( this.AIsActive )
     {
-      curTitle = R.id.CardTitleA;
-      curWords = R.id.CardA_BadWords;
-      curStatus = R.id.StatusImageA;
+      curTitle = R.id.Turn_CardTitleA;
+      curWords = R.id.Turn_CardA_BadWords;
+      curStatus = R.id.Turn_StatusImageA;
     }
     else
     {
-      curTitle = R.id.CardTitleB;
-      curWords = R.id.CardB_BadWords;
-      curStatus = R.id.StatusImageB;
+      curTitle = R.id.Turn_CardTitleB;
+      curWords = R.id.Turn_CardB_BadWords;
+      curStatus = R.id.Turn_StatusImageB;
     }
 
     this.cardTitle = (TextView) this.findViewById( curTitle );
@@ -669,7 +669,7 @@ public class Turn extends Activity
     resultsDelay.start();
     
     // Hide timer bar and time
-    ImageView timerFill = (ImageView) this.findViewById(R.id.TurnTimerFill);
+    ImageView timerFill = (ImageView) this.findViewById(R.id.Turn_TimerFill);
     timerFill.setVisibility( View.INVISIBLE );
     RelativeLayout timerGroup = (RelativeLayout) this.findViewById(R.id.Turn_TimerBar);
     timerGroup.startAnimation( this.ShowTimerAnim( false));
@@ -678,7 +678,7 @@ public class Turn extends Activity
     buttonGroup.startAnimation( this.ShowButtonsAnim( false));
     
     
-    TextView timer = (TextView) this.findViewById( R.id.Timer );
+    TextView timer = (TextView) this.findViewById( R.id.Turn_Timer );
     timer.setVisibility( View.INVISIBLE );
     
     // Mark the current card as a skip so it can be amended later
@@ -694,7 +694,7 @@ public class Turn extends Activity
     this.skipButton.setEnabled( false );
     this.nextButton.setEnabled( false );
     
-    TextView timesUpView = (TextView) this.findViewById(R.id.TurnTimesUp);
+    TextView timesUpView = (TextView) this.findViewById(R.id.Turn_TimesUp);
     timesUpView.setVisibility( View.VISIBLE);
   }
   
@@ -715,16 +715,16 @@ public class Turn extends Activity
       (BuzzWordsApplication) this.getApplication();
     this.curGameManager = application.GetGameManager();
 
-    this.pauseOverlay = (View) this.findViewById( R.id.PauseImageView );
-    this.countdownTxt = (TextView) findViewById( R.id.Timer );
+    this.pauseOverlay = (View) this.findViewById( R.id.Turn_PauseImageView );
+    this.countdownTxt = (TextView) findViewById( R.id.Turn_Timer );
     this.viewFlipper = (ViewFlipper) this.findViewById( R.id.Turn_ViewFlipper );
-    this.timesUpText = (TextView) this.findViewById(R.id.TurnTimesUp);
+    this.timesUpText = (TextView) this.findViewById(R.id.Turn_TimesUp);
     
-    this.buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
-    this.nextButton = (ImageButton) this.findViewById( R.id.ButtonCorrect );
-    this.skipButton = (ImageButton) this.findViewById( R.id.ButtonSkip );
+    this.buzzerButton = (ImageButton) this.findViewById( R.id.Turn_ButtonWrong );
+    this.nextButton = (ImageButton) this.findViewById( R.id.Turn_ButtonCorrect );
+    this.skipButton = (ImageButton) this.findViewById( R.id.Turn_ButtonSkip );
     
-    this.timerfill = (ImageView) this.findViewById(R.id.TurnTimerFill);
+    this.timerfill = (ImageView) this.findViewById(R.id.Turn_TimerFill);
     this.pauseTextLayout = (LinearLayout) this.findViewById( R.id.Turn_PauseTextGroup);
     
     this.timerGroup = (RelativeLayout) this.findViewById(R.id.Turn_TimerBar);
@@ -781,17 +781,17 @@ public class Turn extends Activity
     }
    
     //Setup the "card" views to allow for skip gesture to be performed on top
-    this.findViewById( R.id.CardTitleA ).setOnTouchListener( this.gestureListener );
-    this.findViewById( R.id.CardA_BadWords ).setOnTouchListener( this.gestureListener );
-    this.findViewById( R.id.CardTitleB ).setOnTouchListener( this.gestureListener );
-    this.findViewById( R.id.CardB_BadWords ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.Turn_CardTitleA ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.Turn_CardA_BadWords ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.Turn_CardTitleB ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.Turn_CardB_BadWords ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.Turn_Root ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.Turn_ViewFlipper ).setOnTouchListener( this.gestureListener );
-    this.findViewById( R.id.CardLayoutA ).setOnTouchListener( this.gestureListener );
-    this.findViewById( R.id.CardLayoutB ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.Turn_CardLayoutA ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.Turn_CardLayoutB ).setOnTouchListener( this.gestureListener );
     
     //Change views to appropriate team color
-    ImageView barFill = (ImageView) this.findViewById( R.id.TurnTimerFill );
+    ImageView barFill = (ImageView) this.findViewById( R.id.Turn_TimerFill );
     
     Team curTeam = this.curGameManager.GetActiveTeam();
     barFill.setImageResource( curTeam.getBg() );
