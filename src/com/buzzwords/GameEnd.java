@@ -115,11 +115,11 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
     transHeader.setInterpolator( new AccelerateInterpolator());
     transHeader.setFillBefore(true);
     
-    RelativeLayout header = (RelativeLayout) this.findViewById( R.id.EndGame_HeaderGroup);
+    RelativeLayout header = (RelativeLayout) this.findViewById( R.id.GameEnd_HeaderGroup);
     header.startAnimation( transHeader );
     
     // Translate scoreboard with header
-    LinearLayout scoreboard = (LinearLayout) this.findViewById(R.id.EndGame_FinalStandings);
+    LinearLayout scoreboard = (LinearLayout) this.findViewById(R.id.GameEnd_FinalStandings);
     scoreboard.startAnimation( transHeader);
     
     // Animate buttons to fade in as scoreboard translates
@@ -127,9 +127,9 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
     fadeInButtons.setStartOffset( 1000 );
     fadeInButtons.setDuration( 500 );
     fadeInButtons.setAnimationListener( this.buttonFadeListener);
-    Button tempButton = (Button) this.findViewById( R.id.EndGameMainMenu);
+    Button tempButton = (Button) this.findViewById( R.id.GameEnd_MainMenu);
     tempButton.startAnimation( fadeInButtons );
-    tempButton = (Button) this.findViewById( R.id.EndGameRematch);
+    tempButton = (Button) this.findViewById( R.id.GameEnd_Rematch);
     tempButton.startAnimation( fadeInButtons );
 
     
@@ -240,8 +240,8 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
       startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
       
       // Make buttons usable
-      Button mainmenuButton = (Button) GameEnd.this.findViewById( R.id.EndGameMainMenu );
-      Button rematchButton = (Button) GameEnd.this.findViewById( R.id.EndGameRematch );
+      Button mainmenuButton = (Button) GameEnd.this.findViewById( R.id.GameEnd_MainMenu );
+      Button rematchButton = (Button) GameEnd.this.findViewById( R.id.GameEnd_Rematch );
       mainmenuButton.setClickable(true);
       rematchButton.setClickable(true);
     }
@@ -448,8 +448,8 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
         text.setTypeface( antonFont );
         
         // Set onclick listeners for game end buttons
-        Button mainMenuButton = (Button)this.findViewById( R.id.EndGameMainMenu );
-        Button rematchButton = (Button)this.findViewById( R.id.EndGameRematch );
+        Button mainMenuButton = (Button)this.findViewById( R.id.GameEnd_MainMenu );
+        Button rematchButton = (Button)this.findViewById( R.id.GameEnd_Rematch );
         mainMenuButton.setOnClickListener( MainMenuListener );
         rematchButton.setOnClickListener( RematchListener );
         // buttons start disabled and get enabled once faded in
