@@ -115,7 +115,7 @@ public class TurnSummary extends Activity
     GameManager game = application.GetGameManager();
 
   	// Populate and display list of cards
-  	ScrollView list = (ScrollView) findViewById(R.id.TurnSumCardList);
+  	ScrollView list = (ScrollView) findViewById(R.id.TurnSummary_CardList);
   	LinearLayout layout = new LinearLayout(this.getBaseContext());
   	layout.setOrientation(LinearLayout.VERTICAL);
 
@@ -155,14 +155,14 @@ public class TurnSummary extends Activity
   	UpdateScoreViews();
 
   	// Update numRounds
-  	TextView rounds = (TextView) this.findViewById(R.id.TurnSumRounds);
+  	TextView rounds = (TextView) this.findViewById(R.id.TurnSummary_Rounds);
   	rounds.setText("Round: " + game.GetCurrentRound() + "/"+ game.GetNumRounds());
   	
   	// Update Turn Order display
   	UpdateTurnOrderDisplay();
   	
   	// Bind Next button
-  	Button playGameButton = (Button)this.findViewById( R.id.TurnSumNextTurn );
+  	Button playGameButton = (Button)this.findViewById( R.id.TurnSummary_NextTurn );
   	playGameButton.setOnClickListener( NextTurnListener );
   	
   	// Handle activity changes for final turn
@@ -263,7 +263,7 @@ public class TurnSummary extends Activity
   	int turnscore = game.GetTurnScore();
 
   	// Display total score for the current team
-  	TextView scoreview = (TextView) findViewById(R.id.TurnSummaryTurnScore);
+  	TextView scoreview = (TextView) findViewById(R.id.TurnSummary_TurnScore);
   	scoreview.setText("Total: " + Long.toString(turnscore));
 
   	// References to Scoreboard team scores
@@ -325,7 +325,7 @@ public class TurnSummary extends Activity
   	}
 
   	// Color activity views according to team
-    View curTeamHeader = (View) findViewById(R.id.TurnSummaryTitle_BG);
+    View curTeamHeader = (View) findViewById(R.id.TurnSummary_TitleBG);
 	int teamColor = this.getResources().getColor( game.GetActiveTeam().getText() );
 	curTeamHeader.setBackgroundColor( teamColor );
     

@@ -486,7 +486,7 @@ public class Turn extends Activity
   {
     Log.d( TAG, "doCorrect()"); 
   
-    ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
+    ViewFlipper flipper = (ViewFlipper) findViewById( R.id.Turn_ViewFlipper );
     
     AIsActive = !AIsActive;   
     flipper.showNext();
@@ -511,7 +511,7 @@ public class Turn extends Activity
     Log.d( TAG, "doWrong()");
 
     AIsActive = !AIsActive;
-    ViewFlipper flipper = (ViewFlipper) findViewById( R.id.ViewFlipper0 );
+    ViewFlipper flipper = (ViewFlipper) findViewById( R.id.Turn_ViewFlipper );
     flipper.showNext();
     
     curGameManager.ProcessCard( Card.WRONG );
@@ -717,7 +717,7 @@ public class Turn extends Activity
 
     this.pauseOverlay = (View) this.findViewById( R.id.PauseImageView );
     this.countdownTxt = (TextView) findViewById( R.id.Timer );
-    this.viewFlipper = (ViewFlipper) this.findViewById( R.id.ViewFlipper0 );
+    this.viewFlipper = (ViewFlipper) this.findViewById( R.id.Turn_ViewFlipper );
     this.timesUpText = (TextView) this.findViewById(R.id.TurnTimesUp);
     
     this.buzzerButton = (ImageButton) this.findViewById( R.id.ButtonWrong );
@@ -786,7 +786,7 @@ public class Turn extends Activity
     this.findViewById( R.id.CardTitleB ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.CardB_BadWords ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.Turn_Root ).setOnTouchListener( this.gestureListener );
-    this.findViewById( R.id.ViewFlipper0 ).setOnTouchListener( this.gestureListener );
+    this.findViewById( R.id.Turn_ViewFlipper ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.CardLayoutA ).setOnTouchListener( this.gestureListener );
     this.findViewById( R.id.CardLayoutB ).setOnTouchListener( this.gestureListener );
     

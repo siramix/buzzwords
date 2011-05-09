@@ -18,7 +18,7 @@
  -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:background="@drawable/bg_generic" 
+    android:background="@drawable/bg_generic" 
 	android:layout_height="fill_parent" 
 	android:layout_width="fill_parent">
 
