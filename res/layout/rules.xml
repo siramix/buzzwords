@@ -252,7 +252,8 @@
 					<TextView android:id="@+id/Rules_SubHeader_Buzzing_Text"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_centerInParent="true" android:textSize="20dp"
+						android:layout_centerInParent="true"
+                        android:textSize="20dp"
 						android:text="Gameplay"
 						android:textColor="#FFFFFF"
 						/>
@@ -323,7 +324,7 @@
 					<LinearLayout android:id="@+id/Rules_WrongIconCouple"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_below="@+id/SkipIconCouple"
+						android:layout_below="@+id/Rules_SkipIconCouple"
 						android:padding="5dp">
 						
 						<ImageView android:id="@+id/Rules_Gameplay_WrongButton"
