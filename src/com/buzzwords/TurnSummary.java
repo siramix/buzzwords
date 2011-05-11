@@ -232,7 +232,7 @@ public class TurnSummary extends Activity
                 BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this.getApplication();
                 GameManager gm = application.GetGameManager();
                 gm.EndGame();
-                startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
+                startActivity(new Intent(getString( R.string.IntentEndGame ), getIntent().getData()));
                 }
               })
             .setNegativeButton("No", new DialogInterface.OnClickListener() {
