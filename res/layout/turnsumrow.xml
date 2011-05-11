@@ -35,15 +35,13 @@
     <!-- Card Title -->
     <TextView
         android:layout_height="wrap_content"
-        android:text="TestCard"
         android:layout_marginLeft="5dp"
         android:layout_gravity="center_vertical"
         android:textColor="#FFFFFF"
         android:layout_marginTop="2dp"
         android:layout_centerVertical="true"
         android:textSize="24dp"
-        android:layout_width="223dp" 
-        />
+        android:layout_width="223dp" android:lines="1" android:text="TestWord"/>
     
     <!-- Card RWS Status -->    
     <ImageView
