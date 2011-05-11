@@ -55,8 +55,12 @@ public class Turn extends Activity
   static final int TIMERANIM_RESUME_ID = 1;
   static final int TIMERANIM_START_ID = 2;
 
-  private static final int SWIPE_MIN_DISTANCE = 120;
-  private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+  // Gesture thresholds expressed in dp
+  private static final int SWIPE_MIN_DISTANCE_DP = 90;
+  private static final int SWIPE_THRESHOLD_VELOCITY_DP = 150;
+  // Convert DP thresholds to pixels for this phone (add .5f to round to nearest pixel)
+  private int gestureThreshold;
+  private int gestureVelocityThreshold;
 
   private View pauseOverlay;
   private ImageButton buzzerButton;
@@ -133,12 +137,12 @@ public class Turn extends Activity
       {
         return false;
       }
-      if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
+      if(e1.getX() - e2.getX() > gestureThreshold && Math.abs(velocityX) > gestureVelocityThreshold) 
       {
         Turn.this.doSkip();
         return true;
       }
-      else if(e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
+      else if(e2.getX() - e1.getX() > gestureThreshold && Math.abs(velocityX) > gestureVelocityThreshold) 
       {
         Turn.this.doBack();
         return true;
@@ -164,7 +168,7 @@ public class Turn extends Activity
       {
         return false;
       }
-      if(e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) 
+      if(e2.getX() - e1.getX() > gestureThreshold && Math.abs(velocityX) > gestureVelocityThreshold) 
       {
         Turn.this.doBack();
         return true;
@@ -808,6 +812,10 @@ public class Turn extends Activity
   {
     super.onCreate( savedInstanceState );
     Log.d( TAG, "onCreate()" );
+
+    final float scale = Turn.this.getResources().getDisplayMetrics().density;
+    gestureThreshold = (int) (SWIPE_MIN_DISTANCE_DP * scale + 0.5f );
+    gestureVelocityThreshold = (int) (SWIPE_THRESHOLD_VELOCITY_DP * scale + 0.5f );
     
     //Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
