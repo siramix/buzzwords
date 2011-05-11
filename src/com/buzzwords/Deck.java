@@ -138,6 +138,7 @@ public class Deck {
         DeckOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             mHelperContext = context;
+            mDatabase = this.getWritableDatabase();
         }
 
         @Override
@@ -150,12 +151,12 @@ public class Deck {
         
         public int countCards()
         {
-          return (int)DatabaseUtils.queryNumEntries(this.getReadableDatabase(), "cards");
+          return (int)DatabaseUtils.queryNumEntries(mDatabase, "cards");
         }
         
         private int countCaches()
         {
-          return (int)DatabaseUtils.queryNumEntries(this.getReadableDatabase(), "cache");
+          return (int)DatabaseUtils.queryNumEntries(mDatabase, "cache");
         }
 
         /**
@@ -237,7 +238,6 @@ public class Deck {
               {
                 e.printStackTrace();
               }
-            mDatabase.close();
             Log.d(TAG, "DONE loading words.");
         }
 
@@ -258,7 +258,7 @@ public class Deck {
         {
           Log.d(TAG,"getCards()");
           Log.d(TAG,args);
-          Cursor res = this.getReadableDatabase().query("cards", CARD_COLUMNS, "id in ("+args+")", null, null, null, null);
+          Cursor res = mDatabase.query("cards", CARD_COLUMNS, "id in ("+args+")", null, null, null, null);
           res.moveToFirst();
           LinkedList<Card> ret = new LinkedList<Card>();
           while(!res.isAfterLast())
@@ -280,24 +280,26 @@ public class Deck {
             cacheString += itr.next().getId() + ",";
           }
           cacheString = cacheString.substring(0, cacheString.length()-1);
-          mDatabase = this.getWritableDatabase();
           ContentValues values = new ContentValues();
           values.put("id", 0);
           values.put("val", cacheString);
+          long ret;
           if( this.countCaches() >= 1)
           {
-            return mDatabase.update("cache", values,"",null);
+            ret = mDatabase.update("cache", values,"",null);
           }
           else
-          {
-            return mDatabase.insert("cache", null, values);
+          {            
+            ret = mDatabase.insert("cache", null, values);
           }
+          return ret;
+          
         }
         
         public LinkedList<Card> loadCache()
         {
           Log.d(TAG,"loadCache()");
-          Cursor res = this.getReadableDatabase().query("cache",CACHE_COLUMNS, "id in (0)", null, null, null, null);
+          Cursor res = mDatabase.query("cache",CACHE_COLUMNS, "id in (0)", null, null, null, null);
           LinkedList<Card> ret;
           if( res.getCount() == 0 )
           {
