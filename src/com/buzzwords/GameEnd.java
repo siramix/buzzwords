@@ -11,7 +11,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -40,7 +39,7 @@ import com.buzzwords.BuzzWordsApplication;
  * @author BuzzWords team
  *
  */
-public class GameEnd extends Activity implements TextToSpeech.OnInitListener
+public class GameEnd extends Activity
 {
 
   /**
@@ -53,11 +52,6 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
    */
   public static final int MY_DATA_CHECK_CODE = 1234;
 
-  /**
-   * Text to speech object to speak the team name
-   */
-  private TextToSpeech mTts;
- 
   /**
    * Winning text to be said when TTS object is called
    */
@@ -233,12 +227,6 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
   {
     public void onAnimationEnd( Animation animation )
     {     
-      // Fire off an intent to check if a TTS engine is installed, it will 
-      // simultaneously speak the words outloud onInit
-      Intent checkIntent = new Intent();
-      checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-      startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
-      
       // Make buttons usable
       Button mainmenuButton = (Button) GameEnd.this.findViewById( R.id.GameEnd_MainMenu );
       Button rematchButton = (Button) GameEnd.this.findViewById( R.id.GameEnd_Rematch );
@@ -480,12 +468,6 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
    {
      super.onDestroy();
      Log.d( TAG, "onDestroy()" );
-     // Don't forget to shutdown!
-     if (mTts != null)
-     {
-         mTts.stop();
-         mTts.shutdown();
-     }
    }    
     
     /**
@@ -503,48 +485,4 @@ public class GameEnd extends Activity implements TextToSpeech.OnInitListener
 
       return super.onKeyUp(keyCode, event);
     }
-    
-    /**
-     * Executed when a new TTS is instantiated. 
-     * This is where the winner is announced.
-     * @param i
-     */
-    public void onInit(int i)
-    {
-      if ( mTts.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_AVAILABLE || 
-           mTts.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_COUNTRY_AVAILABLE ||
-           mTts.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE )
-      {
-        mTts.setLanguage(Locale.getDefault());
-        mTts.speak(this.winningtext, TextToSpeech.QUEUE_FLUSH, null);
-      }
-    }
-    
-    /**
-     * This is the callback from the TTS engine check, if a TTS is installed we
-     * create a new TTS instance (which in turn calls onInit), if not then we will
-     * create an intent to go off and install a TTS engine
-     * @param requestCode int Request code returned from the check for TTS engine.
-     * @param resultCode int Result code returned from the check for TTS engine.
-     * @param data Intent Intent returned from the TTS check.
-     */
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == MY_DATA_CHECK_CODE)
-        {
-            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS)
-            {
-                // success, create the TTS instance
-                mTts = new TextToSpeech(this, this);                
-            }
-            // we don't want to worry about installing if their phone doesn't support TTS
-            else 
-            {
-              // Android docs included installation intent here.  I don't think we
-              // should bother for this one line.  Just don't play the text if their phone
-              // won't be able to.
-            }
-        }
-    }
-    
 }
