@@ -4,9 +4,12 @@ import com.buzzwords.R;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -22,7 +25,7 @@ public class Settings extends PreferenceActivity
   /**
    * Watch the settings to update any changes (like start up music, reset subtext, etc.)
    */
-  private OnSharedPreferenceChangeListener ListenPrefs = new OnSharedPreferenceChangeListener()
+  private OnSharedPreferenceChangeListener PrefListener = new OnSharedPreferenceChangeListener()
   {
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key) 
@@ -41,8 +44,15 @@ public class Settings extends PreferenceActivity
           mp.pause();
         }
       }
-    }
-  };
+      
+      else if ( key.equals( "turn_timer" ))
+      {
+        // when turn timer is changed, update the caption
+        ListPreference lp = (ListPreference) findPreference( "turn_timer" );
+        lp.setSummary( "Currently set to " + lp.getValue() + " seconds." ); 
+      }
+    }    
+  };    
       
   /**
    * logging tag
@@ -63,8 +73,24 @@ public class Settings extends PreferenceActivity
     
 		this.addPreferencesFromResource(R.xml.settings);
 		// Register preference listener with SharedPreferences
-	    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
-	    sp.registerOnSharedPreferenceChangeListener(this.ListenPrefs);
+	  SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+	  sp.registerOnSharedPreferenceChangeListener(this.PrefListener);
+	  
+    // when turn timer is loaded, update the caption
+    ListPreference lp = (ListPreference) findPreference( "turn_timer" );
+    lp.setSummary( "Currently set to " + lp.getValue() + " seconds." );	  
+    
+    // update the version preference caption to the existing app version
+    Preference version = findPreference( "app_version" );
+    try {
+      version.setTitle( this.getString( R.string.AppName ) );
+      version.setSummary(" Version " + this.getPackageManager().getPackageInfo( this.getPackageName(), 0).versionName );
+    } 
+    catch (NameNotFoundException e) {
+      e.printStackTrace();
+      Log.e ( TAG, e.getMessage() );
+    }
+    
 	}
 
 	/**

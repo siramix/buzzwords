@@ -2,7 +2,7 @@
 <resources>
 
   <!-- Application Name -->
-  <string name="AppName">buzzwords</string>
+  <string name="AppName">BuzzWords</string>
 
   <!-- Intent Designations -->
   <string name="IntentTitle">com.buzzwords.intent.action.TITLE</string>

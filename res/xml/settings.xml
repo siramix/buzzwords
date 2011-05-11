@@ -19,20 +19,8 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<PreferenceCategory android:title="Hardware">
+	<PreferenceCategory android:title="Audio">
 	
-		<CheckBoxPreference 
-			android:key="volume_settings"
-			android:title="Volume" 
-			android:defaultValue="true" 
-			/>
-		<CheckBoxPreference 
-			android:key="vibrate_pref"
-			android:title="Vibrate" 
-			android:defaultValue="true" 
-			android:summary="Enable vibrate on buzz" 
-			/>
-			
 		<CheckBoxPreference 
 			android:title="Music"
 			android:summary="Enable all music"
@@ -60,5 +48,16 @@
 			/>
 
 	</PreferenceCategory>
+
+  <PreferenceCategory android:title="App Info">
+      
+    <Preference 
+      android:key="app_version" 
+      android:title="Version" 
+      android:selectable="false" 
+      android:enabled="false">
+    </Preference>
+    
+  </PreferenceCategory>
 
 </PreferenceScreen>
