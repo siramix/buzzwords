@@ -1,5 +1,7 @@
 package com.buzzwords;
 
+import java.util.ArrayList;
+
 import com.buzzwords.R;
 
 import android.app.*;
@@ -523,7 +525,7 @@ public class Turn extends Activity
     // Mark the card with an icon
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.WRONG) );
     
-    //Only play sound once card has been processed so we don't confuse the user
+    // Only play sound once card has been processed so we don't confuse the user
     sound.PlaySound( SoundManager.SOUND_WRONG );
     
     // Show the next card
@@ -539,7 +541,6 @@ public class Turn extends Activity
   {
     Log.d( TAG, "doSkip()");
 
- 
     AIsActive = !AIsActive;
     this.viewFlipper.showNext();
     this.curGameManager.ProcessCard( Card.SKIP );
@@ -564,6 +565,7 @@ public class Turn extends Activity
     
     this.AIsActive = !this.AIsActive;
 
+    // Reassign view to animate backwords
     this.viewFlipper.setInAnimation(BackInFromLeftAnimation());
     this.viewFlipper.setOutAnimation(BackOutToRightAnimation());
     
@@ -576,7 +578,8 @@ public class Turn extends Activity
     this.SetBadWords( this.cardBadWords, curCard, this.curGameManager.GetActiveTeam());
     this.isBack = true;
     
-    this.viewFlipper.setInAnimation(InFromRightAnimation());  //Reset animations
+    // Restore animations for future actions
+    this.viewFlipper.setInAnimation(InFromRightAnimation());
     this.viewFlipper.setOutAnimation(OutToLeftAnimation());
     
     // Show mark when going back
@@ -642,11 +645,15 @@ public class Turn extends Activity
    */
   private void SetBadWords( LinearLayout wordLayout, Card curCard, Team curTeam)
   {
+    TextView text;
+    int color = this.getResources().getColor(curTeam.getSecondaryColor());
+    ArrayList<String> badwords = curCard.getBadWords();
+    
     for( int i = 0; i < wordLayout.getChildCount(); ++i)
     {
-      TextView text = (TextView) wordLayout.getChildAt(i);
-      text.setText( curCard.getBadWords().get( i ));
-      text.setTextColor( this.getResources().getColor(curTeam.getSecondaryColor()) );
+      text = (TextView) wordLayout.getChildAt(i);
+      text.setText( badwords.get( i ));
+      text.setTextColor( color );
     }
   }
   
