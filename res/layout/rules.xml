@@ -95,7 +95,7 @@
 					android:layout_width="wrap_content" 
 					android:layout_height="wrap_content"
 					android:padding="8dp" 
-					android:text="At its core, Word Frenzy is a team game that pits friends against friends in cutthroat wordplay action. Here are the basics:"
+					android:text="At its core, Buzzwords is a team game that pits friends against friends in cutthroat wordplay action. Here are the basics:"
 					/>
 
 				<RelativeLayout android:id="@+id/Rules_BullettedList"
@@ -128,7 +128,7 @@
                         android:layout_below="@id/Rules_BasicText02"
 						android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-						android:text="Each turn, a team assigns a presenter who must try to get their team to guess as many secret words as possible without saying certain words."
+						android:text="Each turn, a team assigns a presenter who must try to get their team to guess as many secret words as possible without saying certain 'buzz' words."
 						android:textColor="@color/text_subtext"
                         android:paddingLeft="10dp"
 						android:paddingRight="10dp"
@@ -152,7 +152,7 @@
 						android:paddingLeft="10dp" 
 						android:paddingRight="10dp"
 						android:paddingBottom="10dp"
-						android:text="An opposing player enforces the list of forbidden words."
+						android:text="An opposing player enforces the list of 'buzz' words."
 						/>
 						
 					<View android:id="@+id/Rules_Bullet04"
@@ -338,7 +338,7 @@
 							android:layout_below="@+id/Rules_GameplayText03"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:text="Wrong Button:  For when you get called out by the other team for using a forbidden word. -1 Point."
+							android:text="Wrong Button:  For when you get called out by the other team for using a 'buzz' word. -1 Point."
 							android:layout_toRightOf="@+id/Rules_Gameplay_WrongButton"
 							android:padding="8dp"
 							/>
@@ -350,7 +350,7 @@
 				<TextView android:id="@+id/Rules_GameplayTextPausing"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" 
-					android:text="The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don't worry, it will pause if anyone calls and interrupts your awesome game of Word Frenzy."
+					android:text="The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don't worry, it will pause if anyone calls and interrupts your awesome game of Buzzwords."
 					android:padding="8dp"
 					android:layout_below="@+id/Rules_Gameplay_IconsDescriptions"
 					/>
@@ -554,7 +554,7 @@
 						android:paddingLeft="10dp"
 						android:paddingRight="10dp"
 						android:paddingBottom="10dp"
-						android:text="Explicitly rhyming or phonetically hinting towards any forbidden word.  If you're saying &quot;rhymes with&quot; or &quot;sounds like&quot;, you're heading to buzz city."
+						android:text="Explicitly rhyming or phonetically hinting towards any 'buzz' word.  If you're saying &quot;rhymes with&quot; or &quot;sounds like&quot;, you're heading to buzz city."
 						/>
 						
 					<View android:id="@+id/Rules_BuzzingBullet02"
@@ -614,7 +614,7 @@
 						android:paddingLeft="10dp"
                         android:paddingRight="10dp"
 						android:paddingBottom="10dp"
-						android:text="Speaking forbidden words in another language."
+						android:text="Speaking 'buzz' words in another language."
 						/>
 						
 					<View android:id="@+id/Rules_BuzzingBullet05"
@@ -634,7 +634,7 @@
 						android:paddingRight="10dp"
 						android:paddingBottom="10dp"
 						android:layout_below="@id/Rules_BuzzingText05"
-						android:text="Saying any tense of a forbidden word.  For example saying &quot;ate&quot; when &quot;eat&quot; is a forbidden word."
+						android:text="Saying any tense of a 'buzz' word.  For example saying &quot;ate&quot; when &quot;eat&quot; is a 'buzz' word."
 						/>
 						
 					<View android:id="@+id/Rules_BuzzingBullet06"
@@ -740,7 +740,7 @@
 						android:paddingLeft="10dp"
 						android:paddingRight="10dp"
 						android:paddingBottom="10dp"
-						android:text="Sally and three of her close friends are out camping and realize they forgot to bring any games.   But Sally comes to the rescue and pulls out her Android phone with WordFrenzy!   The group praises her foresight and excitedly divides up into two teams of two."
+						android:text="Sally and three of her close friends are out camping and realize they forgot to bring any games.   But Sally comes to the rescue and pulls out her Android phone with Buzzwords!   The group praises her foresight and excitedly divides up into two teams of two."
 						/>
 						
 					<View android:id="@+id/Rules_ExampleBullet02" 
@@ -801,7 +801,7 @@
 						android:paddingLeft="10dp"
 						android:paddingRight="10dp"
 						android:paddingBottom="10dp" 
-						android:text="Sally starts off presenting for the Yellow Team and Rob, sitting to her left, monitors Sally on behalf of the Green Team.  Sally's first word to present is Sandwich, which includes the forbidden words bread, butter, eat, lunch, and sub.  She starts by saying,"
+						android:text="Sally starts off presenting for the Yellow Team and Rob, sitting to her left, monitors Sally on behalf of the Green Team.  Sally's first word to present is Sandwich, which includes the 'buzz' words bread, butter, eat, lunch, and sub.  She starts by saying,"
 						/>
 						
 					<View android:id="@+id/Rules_ExampleBullet05"
@@ -957,14 +957,14 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/Rules_ExampleBullettedList"
-					android:text="We hope you enjoy playing Word Frenzy!"
+					android:text="We hope you enjoy playing Buzzwords!"
 					/>
 					
 				<TextView android:id="@+id/Rules_ExampleText08"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/Rules_ExampleText07"
-					android:text="If you have any more questions about the rules, please feel free to send us an email.  You can find our site by clicking the ram icon on the title page."
+					android:text="If you have any more questions about the rules, we want to hear from you!  You can find our site by clicking the ram icon on the title page.  Or email us at siramix"
 					/>
 					
 			</RelativeLayout>

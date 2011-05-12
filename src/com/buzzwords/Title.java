@@ -259,7 +259,7 @@ public class Title extends Activity
       SoundManager sound = application.GetSoundManager();
       sound.PlaySound( SoundManager.SOUND_CONFIRM );
       
-      Uri uri = Uri.parse("http://www.rockandrowe.com/");  
+      Uri uri = Uri.parse("http://www.siramix.com/");  
       Intent intent=new Intent(Intent.ACTION_VIEW,uri);
       startActivity(intent);
 
