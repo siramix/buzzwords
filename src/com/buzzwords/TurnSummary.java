@@ -57,7 +57,7 @@ public class TurnSummary extends Activity
 	        if( gm.GetNumberOfTurnsRemaining() == 0 )
 	        {
 	        	gm.EndGame();
-	        	startActivity(new Intent(Intent.ACTION_CALL, getIntent().getData()));
+	        	startActivity(new Intent(getApplication().getString(R.string.IntentEndGame), getIntent().getData()));
 	        }
 	        else
 	        {
