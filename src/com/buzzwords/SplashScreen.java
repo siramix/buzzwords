@@ -40,25 +40,9 @@ public class SplashScreen extends Activity {
 
   // Length of time splash screen will show.
   protected int SPLASHTIME = 3000;
-
-  /**
-   * Listener that ends splash screen when it is done animating.
-   */
-  private final AnimationListener fadeListener = new AnimationListener() {
-    public void onAnimationEnd(Animation animation) {
-      Log.d(TAG, "onAnimEnd()");
-      SplashScreen.this.exitSplash();
-    }
-
-    /**
-     * Implementation required by AnimationListener.
-     */
-    public void onAnimationRepeat(Animation animation) {
-    }
-
-    public void onAnimationStart(Animation animation) {
-    }
-  };
+  
+  // Flag prevents double calls to open the next activity
+  private boolean SplashDone = false;
 
   /**
    * Called on creation of splash screen activity
@@ -84,24 +68,61 @@ public class SplashScreen extends Activity {
   public boolean onTouchEvent(MotionEvent event) {
     Log.d(TAG, "onTouchEvent()");
 
-    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+    if (event.getAction() == MotionEvent.ACTION_DOWN) 
+    {
+      Log.d(TAG, "onTouchEvent->ActionDown()");
       // Clearing the animations causes animEnd event to fire
       ImageView logotext = (ImageView) this.findViewById(R.id.Splash_LogoText);
       ImageView logoram = (ImageView) this.findViewById(R.id.Splash_LogoRam);
 
       logoram.clearAnimation();
       logotext.clearAnimation();
+      
+      // Workaround for HTC - Hero firmware version 2.1
+      //   For some reason, clearing the animation does not call EndAnimation listener on this
+      //   platform.  We'd like to rely on that event to call exitSplash().  
+      SplashScreen.this.exitSplash();
+      return true;
     }
-
-    return true;
+    else
+    {
+      return false;
+    }
   }
 
+  /**
+   * Listener that ends splash screen when it is done animating.
+   */
+  private final AnimationListener fadeListener = new AnimationListener() {
+    public void onAnimationEnd(Animation animation) {
+      Log.d(TAG, "onAnimEnd()");
+      SplashScreen.this.exitSplash();
+    }
+
+    /**
+     * Implementation required by AnimationListener.
+     */
+    public void onAnimationRepeat(Animation animation) {
+    }
+
+    public void onAnimationStart(Animation animation) {
+    }
+  };
+  
   /**
    * Called when exitHandler is reached or a touch event occurs. This hides
    * the images and then calls the title activity.
    */
-  private void exitSplash() {
+  synchronized private void exitSplash() {
     Log.d(TAG, "exitSplash()");
+    
+    // Do nothing if the splash has already been cancelled once
+    if(this.SplashDone)
+    {
+      return;
+    }
+    // Setting boolean prevents the endAnimation from calling exitSplash a second time.
+    this.SplashDone = true;
 
     ImageView logotext = (ImageView) this.findViewById(R.id.Splash_LogoText);
     ImageView logoram = (ImageView) this.findViewById(R.id.Splash_LogoRam);
