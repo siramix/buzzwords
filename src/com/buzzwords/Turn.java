@@ -936,6 +936,10 @@ public class Turn extends Activity
   {
     super.onPause();
     Log.d( TAG, "onPause()" );
+    if(!this.isPaused && !this.turnIsOver)
+    {
+      this.pauseGame();
+    }
   }
 
   /**
@@ -946,10 +950,6 @@ public class Turn extends Activity
   {
     super.onStop();
     Log.d( TAG, "onStop()" );
-    if(!this.isPaused)
-    {
-      this.pauseGame();
-    }
   }
 
   /**
