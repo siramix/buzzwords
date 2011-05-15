@@ -138,35 +138,35 @@ public class Deck {
         DeckOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             mHelperContext = context;
-            mDatabase = this.getWritableDatabase();
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            mDatabase = db;
-            mDatabase.execSQL(CARD_TABLE_CREATE);
-            mDatabase.execSQL(CACHE_TABLE_CREATE);
-            loadDeck();
+            db.execSQL(CARD_TABLE_CREATE);
+            db.execSQL(CACHE_TABLE_CREATE);
+            loadDeck(db);
         }
         
         public int countCards()
         {
+          mDatabase = getWritableDatabase();
           return (int)DatabaseUtils.queryNumEntries(mDatabase, "cards");
         }
         
         private int countCaches()
         {
+          mDatabase = getWritableDatabase();
           return (int)DatabaseUtils.queryNumEntries(mDatabase, "cache");
         }
 
         /**
          * Starts a thread to load the database table with words
          */
-        private void loadDeck() {
+        private void loadDeck(final SQLiteDatabase db) {
           new Thread(new Runnable() {
             public void run() {
               try {
-                loadWords();
+                loadWords(db);
               } catch(IOException e) {
                  throw new RuntimeException(e);
               }
@@ -174,7 +174,7 @@ public class Deck {
           }).start();          
         }
 
-        private void loadWords() throws IOException {
+        private void loadWords(SQLiteDatabase db) throws IOException {
             Log.d(TAG, "Loading words...");
             
             InputStream starterXML =
@@ -222,7 +222,7 @@ public class Deck {
                   }
                   // hack because I have a comma at the end
                   badWords = badWords.substring( 0, badWords.length() - 1 );
-                  this.addWord(i, title, badWords, mDatabase);
+                  this.addWord(i, title, badWords, db);
                   
                 }
               }
@@ -238,6 +238,7 @@ public class Deck {
               {
                 e.printStackTrace();
               }
+            
             Log.d(TAG, "DONE loading words.");
         }
 
@@ -256,6 +257,7 @@ public class Deck {
         
         public LinkedList<Card> getCards(String args )
         {
+          mDatabase = getWritableDatabase();
           Log.d(TAG,"getCards()");
           Log.d(TAG,args);
           Cursor res = mDatabase.query("cards", CARD_COLUMNS, "id in ("+args+")", null, null, null, null);
@@ -273,6 +275,7 @@ public class Deck {
         
         public long saveCache( LinkedList<Card> cache)
         {
+          mDatabase = getWritableDatabase();
           Log.d(TAG,"saveCache()");
           String cacheString = "";
           for( Iterator<Card> itr = cache.iterator(); itr.hasNext(); )
@@ -298,6 +301,7 @@ public class Deck {
         
         public LinkedList<Card> loadCache()
         {
+          mDatabase = getWritableDatabase();
           Log.d(TAG,"loadCache()");
           Cursor res = mDatabase.query("cache",CACHE_COLUMNS, "id in (0)", null, null, null, null);
           LinkedList<Card> ret;
