@@ -19,8 +19,7 @@ public class SoundManager {
   public static final int SOUND_WIN = 4;
   public static final int SOUND_BACK = 5;
   public static final int SOUND_CONFIRM = 6;
-  public static final int SOUND_TICK = 7;
-  public static final int SOUND_GONG = 8;
+  public static final int SOUND_GONG = 7;
   
   private int[] soundIds;
   
@@ -43,7 +42,6 @@ public class SoundManager {
     soundIds[ SOUND_WIN ] = pool.load( baseContext, R.raw.fx_win, 1);
     soundIds[ SOUND_BACK ] = pool.load( baseContext, R.raw.fx_back, 1);
     soundIds[ SOUND_CONFIRM ] = pool.load( baseContext, R.raw.fx_confirm, 1);  
-    soundIds[ SOUND_TICK ] = pool.load( baseContext, R.raw.fx_countdown_tick, 1);
     soundIds[ SOUND_GONG ] = pool.load( baseContext, R.raw.fx_countdown_gong, 1);
   }
   

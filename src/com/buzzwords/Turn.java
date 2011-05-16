@@ -115,6 +115,11 @@ public class Turn extends Activity
   private boolean musicEnabled;
   
   /**
+   * Boolean representing whether the countdown ticking has already been started.
+   */
+  private boolean isTicking = false;
+  
+  /**
    * Sound Manager stored as an instance variable to reduce calls to GetSoundManager
    */
   private SoundManager sound;
@@ -188,7 +193,7 @@ public class Turn extends Activity
 
   private PauseTimer counter;
   private PauseTimer resultsDelay;
-
+  
   private void startTimer()
   {
     Log.d( TAG, "startTimer()" );
@@ -304,7 +309,6 @@ public class Turn extends Activity
   {
     public void onClick(View v)
     {
-      Log.d( TAG, "SkipListener OnClick()" );
       
       Turn.this.doSkip();
     }
@@ -698,7 +702,6 @@ public class Turn extends Activity
     // Mark the current card as a skip so it can be amended later
     this.curGameManager.ProcessCard( Card.SKIP );
     
-    
     // Hide card
     this.setActiveCard();
     this.viewFlipper.setVisibility( View.INVISIBLE );
@@ -857,10 +860,7 @@ public class Turn extends Activity
     // Initialize the turn timer
     long time = this.curGameManager.GetTurnTime();
     this.counter = new PauseTimer(time)
-    {
-      private int btwncount = 5;
-      
-      
+    {      
       @Override
       public void onFinish() 
       {
@@ -873,30 +873,23 @@ public class Turn extends Activity
       public void onTick()
       {            
         Log.d( TAG , Long.toString( counter.getTimeRemaining() ) );
+        // Update our text each second
         Turn.this.countdownTxt.setText( Long.toString(( counter.getTimeRemaining() / 1000 ) + 1 ));
+        
+        // When music is not enabled, use the 
         if ( !musicEnabled )
         {
-        if ( counter.getTimeRemaining() <= 15000 )
-        {
-          if ( btwncount == 5 )
-          {
-            Log.d( TAG , "^^^^^1" );
-            btwncount = 0;
-            sound.PlaySound( SoundManager.SOUND_TICK );
-          }
-
-          if ( counter.getTimeRemaining() <= 10000 )
-          {
-            if ( btwncount == 2 )
-            {     
-              Log.d( TAG , "^^^^^0.5" );
-              sound.PlaySound( SoundManager.SOUND_TICK );
-            }            
-          }
-          btwncount++;
-        }
+          if ( counter.getTimeRemaining() <= 10000 && !Turn.this.isTicking )
+          {    
+            Log.d( TAG , "Queue tick 'music' " );
+            Turn.this.isTicking = true;
+            BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
+            MediaPlayer mp = application.CreateMusicPlayer( Turn.this.getBaseContext(), R.raw.mus_countdown );
+            mp.start();
+          }            
         } 
       }
+      
     };
 
   }
