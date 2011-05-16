@@ -687,7 +687,10 @@ public class Turn extends Activity
     // Hide buttons
     RelativeLayout buttonGroup = (RelativeLayout) this.findViewById(R.id.Turn_LowBar);
     buttonGroup.startAnimation( this.ShowButtonsAnim( false));
-    
+
+    // Only play gong if music is off
+    if (!this.musicEnabled)
+      sound.PlaySound( SoundManager.SOUND_GONG );
     
     TextView timer = (TextView) this.findViewById( R.id.Turn_Timer );
     timer.setVisibility( View.INVISIBLE );
@@ -715,7 +718,7 @@ public class Turn extends Activity
   protected void OnTurnEnd( )
   {
     Log.d( TAG, "onTurnEnd()" );
-	  startActivity( new Intent(getString(R.string.IntentTurnSummary), getIntent().getData()) );
+	startActivity( new Intent(getString(R.string.IntentTurnSummary), getIntent().getData()) );
   }
 
   protected void setupViewReferences()
