@@ -1104,7 +1104,10 @@ public class Turn extends Activity
     // Stop music
     BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
     MediaPlayer mp = application.GetMusicPlayer();
-    mp.pause();
+    if(mp.isPlaying())
+    {
+      mp.pause();  
+    }
     
     if(!this.turnIsOver)
     {    

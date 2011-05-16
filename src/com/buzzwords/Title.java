@@ -403,7 +403,11 @@ public void onPause()
    {
      BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
-     mp.pause();
+     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+     if (mp.isPlaying() && sp.getBoolean("music_enabled", true))
+     {
+       mp.pause();
+     }
    }
 }
 
@@ -422,7 +426,10 @@ public void onResume()
    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
    if( sp.getBoolean("music_enabled", true))
    {
-     mp.start();
+     if (!mp.isPlaying())
+     {
+       mp.start();
+     }
    }
    // set flag to let onStop handle music
    musicHandled = false;

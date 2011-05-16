@@ -37,7 +37,7 @@ public class Settings extends PreferenceActivity
         MediaPlayer mp = application.GetMusicPlayer();
         if( sharedPreferences.getBoolean("music_enabled", true))
         {
-            mp.start();
+          mp.start();
         }
         else
         {
@@ -103,7 +103,10 @@ public class Settings extends PreferenceActivity
 	   super.onPause();
 	   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
 	   MediaPlayer mp = application.GetMusicPlayer();
-	   mp.pause();
+	   if ( mp.isPlaying())
+	   {
+	     mp.pause();	     
+	   }
 	}
 
 	/**
