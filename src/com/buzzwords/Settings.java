@@ -30,6 +30,7 @@ public class Settings extends PreferenceActivity
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key) 
     {
+      Log.d( TAG, "onSharedPreferencesChanged()" );
       if ( key.equals( "music_enabled"))
       {
         // start or stop the music
@@ -37,11 +38,17 @@ public class Settings extends PreferenceActivity
         MediaPlayer mp = application.GetMusicPlayer();
         if( sharedPreferences.getBoolean("music_enabled", true))
         {
-          mp.start();
+          if( !mp.isPlaying())
+          {
+            mp.start();
+          }
         }
         else
         {
-          mp.pause();
+          if( mp.isPlaying())
+          {
+            mp.pause();
+          }
         }
       }
       
@@ -101,6 +108,12 @@ public class Settings extends PreferenceActivity
 	{
 	   Log.d( TAG, "onPause()" );   
 	   super.onPause();
+	   
+	   //Unregister settings listeners
+	   SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+	   sp.unregisterOnSharedPreferenceChangeListener( PrefListener );	   
+	   
+	   // Pause music
 	   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
 	   MediaPlayer mp = application.GetMusicPlayer();
 	   if ( mp.isPlaying())
