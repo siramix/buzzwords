@@ -48,7 +48,7 @@
 	<ScrollView 
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
-		android:layout_below="@+id/Rules_Title">
+		android:layout_below="@id/Rules_Title">
 		
 		<RelativeLayout
 			android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
 			<RelativeLayout android:id="@+id/Rules_Section_Basics"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content" 
-				android:layout_below="@+id/Rules_Title">
+				android:layout_below="@id/Rules_Title">
 				
 				<RelativeLayout android:id="@+id/Rules_SubHeader_Basics"
 					android:layout_height="35dp"
@@ -120,7 +120,7 @@
 						android:background="#ccc"
                         android:layout_height="6dp"
 						android:layout_width="6dp" 
-						android:layout_below="@+id/Rules_BullettedList"
+						android:layout_below="@id/Rules_BullettedList"
 						android:layout_marginTop="5dp"
 						/>
 						
@@ -141,7 +141,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp" 
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_BasicText02"
+						android:layout_below="@id/Rules_BasicText02"
 						/>
 						
 					<TextView android:id="@+id/Rules_BasicText04" 
@@ -161,7 +161,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp" 
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_BasicText03"
+						android:layout_below="@id/Rules_BasicText03"
 						/>
 						
 					<TextView android:id="@+id/Rules_BasicText05"
@@ -181,7 +181,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_BasicText04" 
+						android:layout_below="@id/Rules_BasicText04" 
 						/>
 						
 					<TextView android:id="@+id/Rules_BasicText06"
@@ -201,7 +201,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_BasicText05" 
+						android:layout_below="@id/Rules_BasicText05" 
 						/>
 
 				</RelativeLayout>
@@ -233,7 +233,7 @@
 				
 				<RelativeLayout android:id="@+id/Rules_SubHeader_Gameplay"
 					android:layout_height="35dp"
-					android:layout_below="@+id/Rules_Section_Gameplay"
+					android:layout_below="@id/Rules_Section_Gameplay"
 					android:layout_width="125dp">
 					
 					<View android:id="@+id/Rules_SubHeader_Buzzing_BG"
@@ -277,7 +277,7 @@
 					<LinearLayout android:id="@+id/Rules_RightIconCouple"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content" 
-						android:layout_below="@+id/Rules_Gameplay_IconsDescriptions"
+						android:layout_below="@id/Rules_Gameplay_IconsDescriptions"
 						android:padding="5dp">
 						
 						<ImageView android:id="@+id/Rules_Gameplay_RightButton"
@@ -300,18 +300,18 @@
 					<LinearLayout android:id="@+id/Rules_SkipIconCouple"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content" 
-						android:layout_below="@+id/Rules_RightIconCouple" 
+						android:layout_below="@id/Rules_RightIconCouple" 
 						android:padding="5dp">
 						
 						<ImageView android:id="@+id/Rules_Gameplay_SkipButton"
-							android:layout_below="@+id/Rules_SkipIconCouple"
+							android:layout_below="@id/Rules_SkipIconCouple"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:background="@drawable/controls_skip"
 							/>
 							
 						<TextView android:id="@+id/Rules_GameplayText03"
-							android:layout_below="@+id/Rules_GameplayText02"
+							android:layout_below="@id/Rules_GameplayText02"
 							android:layout_width="wrap_content" 
 							android:layout_height="wrap_content"
 							android:text="Skip Button:  For when you are not up to the challenge of the current word. No penalty."
@@ -324,18 +324,18 @@
 					<LinearLayout android:id="@+id/Rules_WrongIconCouple"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_below="@+id/Rules_SkipIconCouple"
+						android:layout_below="@id/Rules_SkipIconCouple"
 						android:padding="5dp">
 						
 						<ImageView android:id="@+id/Rules_Gameplay_WrongButton"
-							android:layout_below="@+id/Rules_WrongIconCouple"
+							android:layout_below="@id/Rules_WrongIconCouple"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:background="@drawable/controls_wrong"
 							/>
 							
 						<TextView android:id="@+id/Rules_GameplayText04"
-							android:layout_below="@+id/Rules_GameplayText03"
+							android:layout_below="@id/Rules_GameplayText03"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:text="Wrong Button:  For when you get called out by the other team for using a 'buzz' word. -1 Point."
@@ -352,7 +352,7 @@
 					android:layout_height="wrap_content" 
 					android:text="The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don't worry, it will pause if anyone calls and interrupts your awesome game of Buzzwords."
 					android:padding="8dp"
-					android:layout_below="@+id/Rules_Gameplay_IconsDescriptions"
+					android:layout_below="@id/Rules_Gameplay_IconsDescriptions"
 					/>
 
 			</RelativeLayout>
@@ -365,7 +365,7 @@
 				
 				<RelativeLayout android:id="@+id/Rules_SubHeader_Screens" 
 					android:layout_height="35dp"
-					android:layout_below="@+id/Rules_Section_Screens"
+					android:layout_below="@id/Rules_Section_Screens"
 					android:layout_width="160dp">
 					
 					<View android:id="@+id/Rules_SubHeader_Screens_BG"
@@ -410,7 +410,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:padding="5dp"
-						android:layout_below="@+id/Rules_Screens_ScreenDescriptions"
+						android:layout_below="@id/Rules_Screens_ScreenDescriptions"
 						android:orientation="horizontal">
 						
 						<TextView  android:id="@+id/Rules_ScreensText02"
@@ -435,7 +435,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:padding="5dp"
-						android:layout_below="@+id/Rules_SetupCouple">
+						android:layout_below="@id/Rules_SetupCouple">
 						
 						<ImageView android:id="@+id/Rules_Screens_BlueTurn"
 							android:layout_width="wrap_content"
@@ -457,7 +457,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:padding="5dp"
-						android:layout_below="@+id/Rules_TurnCouple">
+						android:layout_below="@id/Rules_TurnCouple">
 						
 						<TextView android:id="@+id/Rules_Screens_Text04"
 							android:layout_width="wrap_content"
@@ -477,14 +477,14 @@
 					<LinearLayout android:id="@+id/Rules_BuzzmodeCouple"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content" 
-						android:layout_below="@+id/Rules_TurnSumCouple" 
+						android:layout_below="@id/Rules_TurnSumCouple" 
 						android:padding="5dp">
 						
 						<ImageView android:id="@+id/Rules_Screens_Buzzmode"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:background="@drawable/rules_buzzer_ss"
-							android:layout_below="@+id/Rules_GameplayIconsDescriptions"
+							android:layout_below="@id/Rules_BuzzmodeCouple"
 							android:padding="3dp"
 							/>
 							
@@ -508,7 +508,7 @@
 				<RelativeLayout android:id="@+id/Rules_SubHeader_Buzzing"
 					android:layout_height="35dp"
 					android:layout_width="125dp"
-					android:layout_below="@+id/Rules_Section_Buzzing">
+					android:layout_below="@id/Rules_Section_Buzzing">
 					
 					<View android:id="@+id/Rules_SubHeader_Buzzing_BG"
 						android:background="@color/genericBG_trim"
@@ -562,7 +562,7 @@
 						android:background="#ccc"
 						android:layout_height="6dp"
 						android:layout_width="6dp"
-						android:layout_below="@+id/Rules_BuzzingBullettedList"
+						android:layout_below="@id/Rules_BuzzingBullettedList"
 						android:layout_marginTop="5dp"
 						/>
 						
@@ -583,7 +583,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_BuzzingText02"
+						android:layout_below="@id/Rules_BuzzingText02"
 						/>
 						
 					<TextView android:id="@+id/Rules_BuzzingText04" 
@@ -603,7 +603,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_BuzzingText03" 
+						android:layout_below="@id/Rules_BuzzingText03" 
 						/>
 						
 					<TextView android:id="@+id/Rules_BuzzingText05" 
@@ -623,7 +623,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_BuzzingText04"
+						android:layout_below="@id/Rules_BuzzingText04"
 						/>
                         
 					<TextView android:id="@+id/Rules_BuzzingText06"
@@ -643,7 +643,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_BuzzingText05"
+						android:layout_below="@id/Rules_BuzzingText05"
 						/>
 						
 					<TextView android:id="@+id/Rules_BuzzingText07"
@@ -663,7 +663,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_BuzzingText06"
+						android:layout_below="@id/Rules_BuzzingText06"
 						/>
 
 				</RelativeLayout>
@@ -691,7 +691,7 @@
 				
 				<RelativeLayout android:id="@+id/Rules_SubHeader_Example" 
 					android:layout_height="35dp"
-					android:layout_below="@+id/Rules_Section_Example" 
+					android:layout_below="@id/Rules_Section_Example" 
 					android:layout_width="150dp">
 					
 					<View android:id="@+id/Rules_SubHeader_Example_BG"
@@ -748,7 +748,7 @@
 						android:background="#ccc"
 						android:layout_height="6dp"
 						android:layout_width="6dp"
-						android:layout_below="@+id/Rules_ExampleBullettedList"
+						android:layout_below="@id/Rules_ExampleBullettedList"
 						android:layout_marginTop="5dp"
 						/>
 						
@@ -770,7 +770,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_ExampleText02"
+						android:layout_below="@id/Rules_ExampleText02"
 						/>
 						
 					<TextView android:id="@+id/Rules_ExampleText04"
@@ -790,7 +790,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_ExampleText03"
+						android:layout_below="@id/Rules_ExampleText03"
 						/>
 						
 					<TextView android:id="@+id/Rules_ExampleText05"
@@ -810,7 +810,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_ExampleText04"
+						android:layout_below="@id/Rules_ExampleText04"
 						/>
 						
 					<TextView android:id="@+id/Rules_ExampleText06" 
@@ -830,7 +830,7 @@
 						android:layout_height="6dp" 
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_ExampleText05"
+						android:layout_below="@id/Rules_ExampleText05"
 						/>
 						
 					<TextView android:id="@+id/Rules_ExampleText07"
@@ -850,7 +850,7 @@
 						android:layout_height="6dp" 
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_ExampleText06" 
+						android:layout_below="@id/Rules_ExampleText06" 
 						/>
 						
 					<TextView android:id="@+id/Rules_ExampleText08"
@@ -869,7 +869,7 @@
 						android:background="#ccc" android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_ExampleText07"
+						android:layout_below="@id/Rules_ExampleText07"
 						/>
 						
 					<TextView android:id="@+id/Rules_ExampleText09"
@@ -889,7 +889,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_ExampleText08"
+						android:layout_below="@id/Rules_ExampleText08"
 						/>
 						
 					<TextView android:id="@+id/Rules_ExampleText10" 
@@ -909,7 +909,7 @@
 						android:layout_height="6dp" 
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_ExampleText09"						
+						android:layout_below="@id/Rules_ExampleText09"						
 						/>
 						
 					<TextView android:id="@+id/Rules_ExampleText11"
@@ -929,7 +929,7 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_ExampleText10"
+						android:layout_below="@id/Rules_ExampleText10"
 						/>
 						
 					<TextView android:id="@+id/Rules_ExampleText12"
@@ -949,22 +949,58 @@
 						android:layout_height="6dp"
 						android:layout_width="6dp"
 						android:layout_marginTop="5dp"
-						android:layout_below="@+id/Rules_ExampleText11" />
+						android:layout_below="@id/Rules_ExampleText11" />
 
 				</RelativeLayout>
 				
-				<TextView android:id="@+id/Rules_ExampleText07" 
+			</RelativeLayout>
+
+			<RelativeLayout android:id="@+id/Rules_Section_FinalThoughts"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/Rules_Section_Example"
+				android:layout_marginTop="10dp">
+				
+				<RelativeLayout android:id="@+id/Rules_SubHeader_FinalThoughts" 
+					android:layout_height="35dp"
+					android:layout_below="@id/Rules_Section_FinalThoughts" 
+					android:layout_width="150dp">
+					
+				<View android:id="@+id/Rules_SubHeader_FinalThoughts_BG"
+					android:background="@color/genericBG_trim"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					/>
+						
+				<View android:id="@+id/Rules_SubHeader_FinalThoughts_Fill"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent" 
+					android:background="@color/genericBG"
+					android:layout_margin="4dp"
+					/>
+						
+				<TextView android:id="@+id/Rules_SubHeader_FinalThoughts_Text"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_below="@id/Rules_ExampleBullettedList"
+					android:layout_centerInParent="true"
+					android:textSize="20dp"
+					android:textColor="#FFFFFF"
+					android:text="Final Thoughts"
+					/>
+			</RelativeLayout>
+				
+				<TextView android:id="@+id/Rules_FinalThoughts_Text01" 
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/Rules_SubHeader_FinalThoughts"
 					android:text="We hope you enjoy playing Buzzwords!"
 					/>
 					
-				<TextView android:id="@+id/Rules_ExampleText08"
+				<TextView android:id="@+id/Rules_FinalThoughts_Text02"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_below="@id/Rules_ExampleText07"
-					android:text="If you have any more questions about the rules, we want to hear from you!  You can find our site by clicking the ram icon on the title page.  Or email us at siramix"
+					android:layout_below="@id/Rules_FinalThoughts_Text01"
+					android:text="If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or by clicking the ram icon on the title page.  Or email us at buzzwords@siramix.com or tweet @siramixlabs."
 					/>
 					
 			</RelativeLayout>
