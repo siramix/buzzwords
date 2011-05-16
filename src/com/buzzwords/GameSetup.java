@@ -399,7 +399,10 @@ public void onCreate( Bundle savedInstanceState )
      super.onPause();
      BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
-     mp.pause();
+     if( mp.isPlaying())
+     {
+       mp.pause();
+     }
      
      getCheckedRadioValue(); // Called before pref commit to save radio value     
      GameSetup.gameSetupPrefEditor.commit();
