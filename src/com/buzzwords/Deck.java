@@ -56,7 +56,7 @@ public class Deck {
   private Context mContext;
     	
 
-  private final DeckOpenHelper mDatabaseOpenHelper;
+  private DeckOpenHelper mDatabaseOpenHelper;
 
     /**
      * Constructor
@@ -81,10 +81,12 @@ public class Deck {
         }
         Collections.shuffle(mOrder, r);
         mDeck = mDatabaseOpenHelper.loadCache();
+        mDatabaseOpenHelper.close();
     }
     
     public void prepareForRound()
     {
+      mDatabaseOpenHelper = new DeckOpenHelper(mContext);
       int lack = DECK_SIZE - mDeck.size();
       String ids = "";
       for(int i = 0; i < lack; ++i )
@@ -110,6 +112,7 @@ public class Deck {
       mDeck.addAll(mDatabaseOpenHelper.getCards(ids));
       Collections.shuffle(mDeck);
       mDatabaseOpenHelper.saveCache(mDeck);
+      mDatabaseOpenHelper.close();
     }
    
     
@@ -150,13 +153,15 @@ public class Deck {
         public int countCards()
         {
           mDatabase = getWritableDatabase();
-          return (int)DatabaseUtils.queryNumEntries(mDatabase, "cards");
+          int ret = (int)DatabaseUtils.queryNumEntries(mDatabase, "cards");
+          return ret;
         }
         
         private int countCaches()
         {
           mDatabase = getWritableDatabase();
-          return (int)DatabaseUtils.queryNumEntries(mDatabase, "cache");
+          int ret = (int)DatabaseUtils.queryNumEntries(mDatabase, "cache");
+          return ret;
         }
 
         /**
@@ -326,6 +331,14 @@ public class Deck {
             db.execSQL("DROP TABLE IF EXISTS cards;");
             db.execSQL("DROP TABLE IF EXISTS cache;");
             onCreate(db);
+        }
+        
+        @Override
+        public void close() {
+          super.close();
+          if(mDatabase != null) {
+            mDatabase.close();
+          }
         }
     }
 
