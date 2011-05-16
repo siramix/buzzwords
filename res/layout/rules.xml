@@ -781,7 +781,7 @@
 						android:paddingLeft="10dp"
 						android:paddingRight="10dp"
 						android:paddingBottom="10dp"
-						android:text="Since they want to each play 4 times they set it to 8 rounds (#teams X #rounds = #turns).  Sally taps Start Game to play!"
+						android:text="Since they want to each play 4 times they set it to 8 turns (#teams X #times for each player = #turns).  Sally taps Start Game to play!"
 						/>
 						
 					<View android:id="@+id/Rules_ExampleBullet04"
