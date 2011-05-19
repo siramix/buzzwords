@@ -16,7 +16,7 @@ public abstract class PauseTimer
    */
   private static final String TAG = "PauseTimer";
   
-  private static final int TICK = 200;
+  private static final int TICK = 50;
   private boolean timerActive = false;
   private long timeRemaining;
   private CountDownTimer timer;

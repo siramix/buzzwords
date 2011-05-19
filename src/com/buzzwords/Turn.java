@@ -1,5 +1,6 @@
 package com.buzzwords;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.buzzwords.R;
@@ -118,6 +119,11 @@ public class Turn extends Activity
    * Boolean representing whether the countdown ticking has already been started.
    */
   private boolean isTicking = false;
+  
+  /**
+   * The time in miliseconds left when the ticking music began.
+   */
+  private int tickingStart;
   
   /**
    * Sound Manager stored as an instance variable to reduce calls to GetSoundManager
@@ -323,21 +329,31 @@ public class Turn extends Activity
       {
         Log.d( TAG, "PauseListener OnClick()" );
 
-        // If music is disabled, just resume the game immediately (don't wait for music to seek) 
-        if ( Turn.this.turnIsOver || !musicEnabled )
+        // If music is disabled, just resume the game immediately (don't wait for music to seek unless it's begun) 
+        if ( Turn.this.turnIsOver || ( !musicEnabled && !Turn.this.isTicking ) )
         {
           // Turn is over when timer reaches 0.  At that point, we should just not resume music
           Turn.this.resumeGame();
         }
-        else
+        else if ( musicEnabled || Turn.this.isTicking )
         {
+          Log.d( TAG, "unpause_OnClick ()" );
           // Resume must wait for music to seek back to the correct elapsed time
           BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
           MediaPlayer mp = application.GetMusicPlayer();
+          int elapsedtime;
+          if( musicEnabled )
+          {
+            elapsedtime = Turn.this.curGameManager.GetTurnTime() - (int) Turn.this.counter.getTimeRemaining();
+          }
+          else
+          {
+            elapsedtime = 10000 - (int) Turn.this.counter.getTimeRemaining(); 
+            Log.d( TAG, "Resume ticking at " + elapsedtime );
+          }
           // Return to the elapsed time
-          int elapsedtime = Turn.this.curGameManager.GetTurnTime() - (int) Turn.this.counter.getTimeRemaining();
           mp.seekTo( elapsedtime );
-          mp.setOnSeekCompleteListener( new TurnMusicListener());
+          mp.setOnSeekCompleteListener( new TurnMusicListener());      
         }
         
         // Hide overlays here so that they can't report multiple OnClick'ed while music seeks
@@ -874,17 +890,20 @@ public class Turn extends Activity
       {            
         Log.d( TAG , Long.toString( counter.getTimeRemaining() ) );
         // Update our text each second
-        Turn.this.countdownTxt.setText( Long.toString(( counter.getTimeRemaining() / 1000 ) + 1 ));
+        long shownTime = ( counter.getTimeRemaining() / 1000 ) + 1;
+        Turn.this.countdownTxt.setText( Long.toString( shownTime ) );
         
-        // When music is not enabled, use the 
-        if ( !musicEnabled )
+        // When music is not enabled, use the ticking sound
+        if ( !musicEnabled && !Turn.this.isTicking )
         {
-          if ( counter.getTimeRemaining() <= 10000 && !Turn.this.isTicking )
+          if ( shownTime == 10 )
           {    
             Log.d( TAG , "Queue tick 'music' " );
+            // Used for seeking accurately on resume
+            Turn.this.tickingStart = (int) Turn.this.counter.getTimeRemaining();
             Turn.this.isTicking = true;
-            BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
-            MediaPlayer mp = application.CreateMusicPlayer( Turn.this.getBaseContext(), R.raw.mus_countdown );
+            BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();            
+            MediaPlayer mp = application.GetMusicPlayer();
             mp.start();
           }            
         } 
@@ -1006,25 +1025,32 @@ public class Turn extends Activity
                 // Start the turn music
                 BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
                 GameManager gm = application.GetGameManager();
-                int musicId = R.raw.mus_round_60;
-                switch ( gm.GetTurnTime())
+                
+                int musicId = R.raw.mus_countdown;
+                // If music is enabled, select the appropriate track
+                if( musicEnabled )
                 {
-                  case 30000:
-                    musicId = R.raw.mus_round_30;
-                    break;
-                  case 60000:
-                    musicId = R.raw.mus_round_60;
-                    break;
-                  case 90000:
-                    musicId = R.raw.mus_round_90;
-                    break;
+                   switch ( gm.GetTurnTime())
+                   {
+                    case 30000:
+                      musicId = R.raw.mus_round_30;
+                      break;
+                    case 60000:
+                      musicId = R.raw.mus_round_60;
+                      break;
+                    case 90000:
+                      musicId = R.raw.mus_round_90;
+                      break;
+                   }
                 }
                 
                 MediaPlayer mp = application.CreateMusicPlayer( Turn.this.getBaseContext(), musicId );
+                // If music is not enabled, it will start the countdown track at 10 seconds
                 if( musicEnabled )
                 {
                   mp.start();
                 }
+                
               }
             })
             
@@ -1050,13 +1076,14 @@ public class Turn extends Activity
    */
   private class TurnMusicListener implements OnSeekCompleteListener
   {
-
     public void onSeekComplete(MediaPlayer mp) {
+
+      Log.d( TAG, "onSeekComplete" );
       // Resume the game on seek complete
       Turn.this.resumeGame();
 
       // Resume the music
-      if( musicEnabled )
+      if( musicEnabled || (!musicEnabled && Turn.this.isTicking ))
       {
         mp.start();
       }
