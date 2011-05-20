@@ -19,12 +19,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 /**
  * @author The BuzzWords Team
  * This activity class is responsible for summarizing the turn and the hand-off
@@ -94,6 +96,26 @@ public class TurnSummary extends Activity
           sound.PlaySound(rwsSounds[ curCard.getRws()]);
         }
     };
+    
+    private final OnLongClickListener EmailWordListener = new OnLongClickListener()
+    {
+      public boolean onLongClick(View v) {
+        String word = ((TextView)v).getText().toString();
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"siramixlabs@gmail.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Problem With: " + word);
+        i.putExtra(Intent.EXTRA_TEXT   , word);
+        i.setType("message/rfc822");
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(TurnSummary.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+        return true;
+      }
+      
+    };
 
   /**
   * onCreate - initializes the activity to display the results of the turn.
@@ -141,6 +163,8 @@ public class TurnSummary extends Activity
       // Set Title
   	  TextView cardTitle = (TextView) realLine.getChildAt(1);
   	  cardTitle.setText(card.getTitle());
+  	  cardTitle.setLongClickable(true);
+  	  cardTitle.setOnLongClickListener( EmailWordListener );
 
   	  // Set Row end icon
   	  ImageView cardIcon = (ImageView) realLine.getChildAt(2);
