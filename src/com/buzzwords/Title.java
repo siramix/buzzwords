@@ -38,7 +38,7 @@ public class Title extends Activity
   /**
    * flag used for stopping music OnStop() event.
    */
-  private boolean musicHandled;
+  private boolean continueMusic;
 
   /**
    * PlayGameListener is used for the start game button.  It launches the next 
@@ -168,7 +168,7 @@ public class Title extends Activity
        public void onClick(View v) 
        {
          Log.d( TAG, "PlayGameListener OnClick()" );
-         musicHandled = true;      
+         continueMusic = true;      
          
          // play confirm sound
          BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
@@ -188,7 +188,7 @@ public class Title extends Activity
        public void onClick(View v) 
        {
          Log.d( TAG, "PlayGameListener OnClick()" );
-         musicHandled = false;
+         continueMusic = false;
          
          // play confirm sound
          BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
@@ -209,7 +209,7 @@ public class Title extends Activity
   	public void onClick(View v) 
   	{
       Log.d( TAG, "SettingsListener OnClick()" );
-      musicHandled = true;
+      continueMusic = true;
       
       // play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
@@ -230,7 +230,7 @@ public class Title extends Activity
     public void onClick(View v) 
     {
       Log.d( TAG, "RulesListener OnClick()" );
-      musicHandled = true;
+      continueMusic = true;
       
       // play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
@@ -252,7 +252,7 @@ public class Title extends Activity
     public void onClick(View v) 
     {
       Log.d( TAG, "AboutUsListener OnClick()" );
-      musicHandled = false;
+      continueMusic = false;
       
       // play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
@@ -332,7 +332,7 @@ public void onCreate( Bundle savedInstanceState )
     mp.start();
   }
   
-  musicHandled = false;
+  continueMusic = false;
   
 	// Setup the Main Title Screen view
 	this.setContentView(R.layout.title );
@@ -399,7 +399,7 @@ public void onPause()
 {
    Log.d( TAG, "onPause()" );   
    super.onPause();
-   if( !musicHandled )
+   if( !continueMusic )
    {
      BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
@@ -432,7 +432,7 @@ public void onResume()
      }
    }
    // set flag to let onStop handle music
-   musicHandled = false;
+   continueMusic = false;
 }
 
 }

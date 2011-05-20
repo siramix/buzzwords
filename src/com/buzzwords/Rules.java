@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 /**
@@ -23,6 +24,7 @@ public class Rules extends Activity
   public static String TAG = "Rules";
   
   private boolean isMusicPaused = false;
+  private boolean continueMusic = false;
   
   /**
   * onCreate - initializes the activity to display the rules.
@@ -32,6 +34,8 @@ public class Rules extends Activity
   {
     super.onCreate( savedInstanceState );
     Log.d( TAG, "onCreate()" ); 
+    
+    continueMusic = false;
     
     //Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -59,6 +63,24 @@ public class Rules extends Activity
     TextView rulePrefs = (TextView) this.findViewById(R.id.Rules_Preferences);
     rulePrefs.setText(prefBuilder);
   }
+  
+  /**
+   * Override back button to carry music on back to the Title activity
+   */
+  @Override
+  public boolean onKeyUp(int keyCode, KeyEvent event)
+  {
+    if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+        && !event.isCanceled() )
+      {
+        Log.d( TAG, "BackKeyUp()" );
+        // Flag to keep music playing
+        Rules.this.continueMusic = true;
+      }
+    
+    return super.onKeyUp(keyCode, event);
+  }
+    
    
   /**
    * Override onPause to prevent activity specific processes from running while app is in background
@@ -73,7 +95,7 @@ public class Rules extends Activity
      // If music is playing, we must pause it and flag to resume it onResume().
      // This solves the problem where Rules was never playing music to begin with (which happens
      // when entering Rules from Turn or TurnSummary
-     if(mp.isPlaying())
+     if( !continueMusic && mp.isPlaying())
      {
        mp.pause();
        this.isMusicPaused = true;
@@ -100,5 +122,7 @@ public class Rules extends Activity
            mp.start();   
        }
      }
+     
+     continueMusic = false;
   }
 }
