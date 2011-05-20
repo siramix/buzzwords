@@ -13,6 +13,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 
 /**
  * @author The BuzzWords Team
@@ -21,6 +22,8 @@ import android.util.Log;
  */
 public class Settings extends PreferenceActivity 
 {
+  
+  private boolean continueMusic = false;
   
   /**
    * Watch the settings to update any changes (like start up music, reset subtext, etc.)
@@ -38,13 +41,16 @@ public class Settings extends PreferenceActivity
         MediaPlayer mp = application.GetMusicPlayer();
         if( sharedPreferences.getBoolean("music_enabled", true))
         {
+          Log.d( TAG, "Music ON" );
           if( !mp.isPlaying())
           {
+            Log.d( TAG, "it's Not Playing()  -- PLAY" );
             mp.start();
           }
         }
         else
         {
+          Log.d( TAG, "Music OFF" );
           if( mp.isPlaying())
           {
             mp.pause();
@@ -74,14 +80,13 @@ public class Settings extends PreferenceActivity
 	{
 		super.onCreate( savedInstanceState );
     Log.d( TAG, "onCreate()" ); 
+    
+    continueMusic = false;
 
     //Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
     
 		this.addPreferencesFromResource(R.xml.settings);
-		// Register preference listener with SharedPreferences
-	  SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
-	  sp.registerOnSharedPreferenceChangeListener(this.PrefListener);
 	  
     // when turn timer is loaded, update the caption
     ListPreference lp = (ListPreference) findPreference( "turn_timer" );
@@ -100,6 +105,24 @@ public class Settings extends PreferenceActivity
     
 	}
 
+  /**
+   * Override back button to carry music on back to the Title activity
+   */
+  @Override
+  public boolean onKeyUp(int keyCode, KeyEvent event)
+  {
+    if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+        && !event.isCanceled() )
+      {
+        Log.d( TAG, "BackKeyUp()" );
+        // Flag to keep music playing
+        Settings.this.continueMusic = true;
+      }
+    
+    return super.onKeyUp(keyCode, event);
+  }
+  	
+	
 	/**
 	 * Override onPause to prevent activity specific processes from running while app is in background
 	 */
@@ -116,7 +139,7 @@ public class Settings extends PreferenceActivity
 	   // Pause music
 	   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
 	   MediaPlayer mp = application.GetMusicPlayer();
-	   if ( mp.isPlaying())
+	   if ( !Settings.this.continueMusic && mp.isPlaying())
 	   {
 	     mp.pause();	     
 	   }
@@ -139,5 +162,10 @@ public class Settings extends PreferenceActivity
 	   {
 	       mp.start();   
 	   }
+	   
+	    // Register preference listener with SharedPreferences
+	    sp.registerOnSharedPreferenceChangeListener(Settings.this.PrefListener);
+	   
+	   continueMusic = false;
 	}
 }

@@ -15,6 +15,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -48,6 +49,8 @@ public class GameSetup extends Activity
   private static final String TEAMC_PREFKEY = "teamC_enabled";  //StringID for Team C quadrant
   private static final String TEAMD_PREFKEY = "teamD_enabled";  //StringID for Team D quadrant
   private static final String RADIO_INDEX = "round_radio_index"; //Index of the selected round radio 0-3
+  
+  private boolean continueMusic = false;
 
   /**
    * logging tag
@@ -240,8 +243,10 @@ public void onCreate( Bundle savedInstanceState )
 	super.onCreate( savedInstanceState );
 	Log.d( TAG, "onCreate()" );
   
-    //Force volume controls to affect Media volume
-    setVolumeControlStream(AudioManager.STREAM_MUSIC);
+  continueMusic = false;
+	
+  //Force volume controls to affect Media volume
+  setVolumeControlStream(AudioManager.STREAM_MUSIC);
   	
 	// Setup the view
 	this.setContentView(R.layout.gamesetup);
@@ -388,6 +393,23 @@ public void onCreate( Bundle savedInstanceState )
    }
    return dialog;
   }
+
+  /**
+   * Override back button to carry music on back to the Title activity
+   */
+  @Override
+  public boolean onKeyUp(int keyCode, KeyEvent event)
+  {
+    if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+        && !event.isCanceled() )
+      {
+        Log.d( TAG, "BackKeyUp()" );
+        // Flag to keep music playing
+        GameSetup.this.continueMusic = true;
+      }
+    
+    return super.onKeyUp(keyCode, event);
+  }
   
   /**
    * Override onPause to prevent activity specific processes from running while app is in background
@@ -399,8 +421,8 @@ public void onCreate( Bundle savedInstanceState )
      super.onPause();
      BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
-     if( mp.isPlaying())
-     {
+     if( !continueMusic && mp.isPlaying())
+     { 
        mp.pause();
      }
      
@@ -425,5 +447,7 @@ public void onCreate( Bundle savedInstanceState )
      {
          mp.start();   
      }
+     
+     continueMusic = false;
   }
 }
