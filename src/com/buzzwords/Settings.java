@@ -102,7 +102,6 @@ public class Settings extends PreferenceActivity
       e.printStackTrace();
       Log.e ( TAG, e.getMessage() );
     }
-    
 	}
 
   /**
