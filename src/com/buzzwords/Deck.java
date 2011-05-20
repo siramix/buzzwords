@@ -81,7 +81,7 @@ public class Deck {
         }
         Collections.shuffle(mOrder, r);
         mDeck = mDatabaseOpenHelper.loadCache();
-        mDatabaseOpenHelper.close();
+        //mDatabaseOpenHelper.close();
     }
     
     public void prepareForRound()
@@ -167,11 +167,12 @@ public class Deck {
         /**
          * Starts a thread to load the database table with words
          */
-        private void loadDeck(final SQLiteDatabase db) {
+        private void loadDeck(SQLiteDatabase db) {
+          mDatabase = db;
           new Thread(new Runnable() {
             public void run() {
               try {
-                loadWords(db);
+                loadWords();
               } catch(IOException e) {
                  throw new RuntimeException(e);
               }
@@ -179,7 +180,7 @@ public class Deck {
           }).start();          
         }
 
-        private void loadWords(SQLiteDatabase db) throws IOException {
+        private void loadWords() throws IOException {
             Log.d(TAG, "Loading words...");
             
             InputStream starterXML =
@@ -227,7 +228,7 @@ public class Deck {
                   }
                   // hack because I have a comma at the end
                   badWords = badWords.substring( 0, badWords.length() - 1 );
-                  this.addWord(i, title, badWords, db);
+                  this.addWord(i, title, badWords, mDatabase);
                   
                 }
               }
