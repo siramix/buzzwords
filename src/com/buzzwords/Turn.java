@@ -1,6 +1,5 @@
 package com.buzzwords;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.buzzwords.R;
@@ -123,7 +122,7 @@ public class Turn extends Activity
   /**
    * The time in miliseconds left when the ticking music began.
    */
-  private int tickingStart;
+  //private int tickingStart;
   
   /**
    * Sound Manager stored as an instance variable to reduce calls to GetSoundManager
@@ -899,8 +898,6 @@ public class Turn extends Activity
           if ( shownTime == 10 )
           {    
             Log.d( TAG , "Queue tick 'music' " );
-            // Used for seeking accurately on resume
-            Turn.this.tickingStart = (int) Turn.this.counter.getTimeRemaining();
             Turn.this.isTicking = true;
             BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();            
             MediaPlayer mp = application.GetMusicPlayer();

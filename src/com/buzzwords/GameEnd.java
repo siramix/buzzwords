@@ -2,7 +2,6 @@ package com.buzzwords;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -52,11 +51,6 @@ public class GameEnd extends Activity
    */
   public static final int MY_DATA_CHECK_CODE = 1234;
 
-  /**
-   * Winning text to be said when TTS object is called
-   */
-  private String winningtext = "Tie game";
-  
   /**
    * This is a reference to the current game manager
    */
@@ -423,7 +417,6 @@ public class GameEnd extends Activity
           int winnerIndex = teams.size() - 1;
           text.setTextColor( res.getColor( teams.get( winnerIndex ).getText() ));
           text.setText( teams.get( winnerIndex ).getName() + " Wins!");
-          this.winningtext = teams.get( winnerIndex ).getName() + " Wins!";
         }
         // set font
         Typeface antonFont = Typeface.createFromAsset(getAssets(), "fonts/Anton.ttf");
