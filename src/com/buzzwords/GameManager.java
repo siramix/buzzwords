@@ -96,7 +96,7 @@ public class GameManager
     this.currentCards = new LinkedList<Card>();
     this.rws_resourceIDs = new int[] {R.drawable.right, R.drawable.wrong, R.drawable.skip};
     
-    this.turn_time = Integer.parseInt(sp.getString("turn_timer", "10")) * 1000;
+    this.turn_time = Integer.parseInt(sp.getString("turn_timer", "60")) * 1000;
     
     Log.d( TAG, "Turn time is " + turn_time );    
     this.rws_value_rules = new int[3];
