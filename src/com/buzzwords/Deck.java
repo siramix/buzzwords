@@ -81,7 +81,7 @@ public class Deck {
         }
         Collections.shuffle(mOrder, r);
         mDeck = mDatabaseOpenHelper.loadCache();
-        //mDatabaseOpenHelper.close();
+        mDatabaseOpenHelper.close();
     }
     
     public void prepareForRound()
@@ -133,7 +133,7 @@ public class Deck {
     /**
      * This creates/opens the database.
      */
-    private static class DeckOpenHelper extends SQLiteOpenHelper {
+    public static class DeckOpenHelper extends SQLiteOpenHelper {
 
         private final Context mHelperContext;
         private SQLiteDatabase mDatabase;
@@ -169,15 +169,11 @@ public class Deck {
          */
         private void loadDeck(SQLiteDatabase db) {
           mDatabase = db;
-          new Thread(new Runnable() {
-            public void run() {
-              try {
-                loadWords();
-              } catch(IOException e) {
-                 throw new RuntimeException(e);
-              }
-            }
-          }).start();          
+          try {
+            loadWords();
+          } catch( IOException e ) {
+            throw new RuntimeException(e);
+          }
         }
 
         private void loadWords() throws IOException {
@@ -191,6 +187,7 @@ public class Deck {
               Log.d( TAG, "Building DocBuilderFactory for card pack parsing from " + R.class.toString() );
               try
               {
+                mDatabase.beginTransaction();
                 DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
                 Document doc = docBuilder.parse(starterXML);
                 NodeList cardNodes = doc.getElementsByTagName( "card" );
@@ -231,6 +228,7 @@ public class Deck {
                   this.addWord(i, title, badWords, mDatabase);
                   
                 }
+                mDatabase.setTransactionSuccessful();
               }
               catch( ParserConfigurationException e )
               {
@@ -243,6 +241,10 @@ public class Deck {
               catch( IOException e )
               {
                 e.printStackTrace();
+              }
+              finally
+              {
+                mDatabase.endTransaction();
               }
             
             Log.d(TAG, "DONE loading words.");
@@ -265,7 +267,6 @@ public class Deck {
         {
           mDatabase = getWritableDatabase();
           Log.d(TAG,"getCards()");
-          Log.d(TAG,args);
           Cursor res = mDatabase.query("cards", CARD_COLUMNS, "id in ("+args+")", null, null, null, null);
           res.moveToFirst();
           LinkedList<Card> ret = new LinkedList<Card>();

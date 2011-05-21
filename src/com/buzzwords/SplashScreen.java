@@ -43,6 +43,8 @@ public class SplashScreen extends Activity {
   
   // Flag prevents double calls to open the next activity
   private boolean SplashDone = false;
+  
+  private Thread mInstallThread;
 
   /**
    * Called on creation of splash screen activity
@@ -55,8 +57,14 @@ public class SplashScreen extends Activity {
     
     // Create a Deck so we load the cards into the SQL DB on first run
     // this operation will occur in a threaded manner (hot, I know).
-    Deck tempDeck = new Deck(this);
-    Log.d(TAG,tempDeck.toString());
+    mInstallThread = new Thread(new Runnable() {
+      public void run() {
+        Deck.DeckOpenHelper helper = new Deck.DeckOpenHelper(SplashScreen.this);
+        helper.countCards();
+        helper.close();
+      }
+    });
+    mInstallThread.start();
 
     // Fade in the logo
     this.fadeIn();
@@ -131,6 +139,7 @@ public class SplashScreen extends Activity {
     logoram.setVisibility(View.GONE);
 
     finish();
+
     startActivity(new Intent(getString(R.string.IntentTitle)));
   }
 
