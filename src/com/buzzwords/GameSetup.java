@@ -44,7 +44,7 @@ import android.view.animation.AlphaAnimation;
 /**
  * @author The BuzzWords Team
  * This activity class is responsible for gathering game information before the
- * game starts such as number of teams and team names
+ * game starts such as number of teams and turns
  */
 public class GameSetup extends Activity
 { 
@@ -71,8 +71,8 @@ public class GameSetup extends Activity
   private boolean continueMusic = false; // Flag to play music into the next Activity
 
   /**
-  * logging tag
-  */
+   * logging tag
+   */
   public static String TAG = "GameSetup";
   
 	  /**
