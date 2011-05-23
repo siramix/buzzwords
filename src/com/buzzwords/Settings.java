@@ -74,9 +74,7 @@ public class Settings extends PreferenceActivity
       else if ( key.equals( "turn_timer" ))
       {
         // When turn timer is changed, update the caption
-        ListPreference lp = (ListPreference) findPreference( "turn_timer" );
-        //lp.setSummary( "Currently set to " + lp.getValue() + " seconds." );
-        lp.setSummary( lp.getValue() + " seconds" );
+        Settings.this.UpdateTimerLabel( );
       }
     }    
   };    
@@ -103,8 +101,7 @@ public class Settings extends PreferenceActivity
 	this.addPreferencesFromResource(R.xml.settings);
 	  
     // When turn timer is loaded, update the caption
-    ListPreference lp = (ListPreference) findPreference( "turn_timer" );
-    lp.setSummary( "Currently set to " + lp.getValue() + " seconds." );	  
+    this.UpdateTimerLabel( );
     
     // Update the version preference caption to the existing app version
     Preference version = findPreference( "app_version" );
@@ -120,6 +117,16 @@ public class Settings extends PreferenceActivity
     }
   }
 
+  /**
+   * Updates the timer label by checking the preference for the current time
+   */
+  private void UpdateTimerLabel()
+  {
+    // When turn timer is loaded, update the caption
+    ListPreference lp = (ListPreference) findPreference( "turn_timer" );
+    lp.setSummary( lp.getValue() + " seconds" );     
+  }
+  
   /**
    * Override back button to carry music on back to the Title activity
    */
