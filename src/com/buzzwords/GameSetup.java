@@ -56,10 +56,10 @@ public class GameSetup extends Activity
   
   //A two dimensional array to store the radioID/value pair.
   private static final int[][] ROUND_RADIOS = new int[][] {
-            {R.id.GameSetup_Rounds0,4}, 
-            {R.id.GameSetup_Rounds1,6}, 
-            {R.id.GameSetup_Rounds2,8},
-            {R.id.GameSetup_Rounds3,10}};
+            {R.id.GameSetup_Rounds0,2}, 
+            {R.id.GameSetup_Rounds1,4}, 
+            {R.id.GameSetup_Rounds2,6},
+            {R.id.GameSetup_Rounds3,8}};
 
   public static final String PREFS_NAME = "gamesetupprefs";     //stored in data/data/buzzwords/shared_preferences
   private static final String PREFKEY_TEAMA = "teamA_enabled";  //StringID for Team A quadrant
