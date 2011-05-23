@@ -1,3 +1,20 @@
+/*****************************************************************************
+ *  Buzzwords is a family friendly word game for mobile phones.
+ *  Copyright (C) 2011 Siramix Team
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
 package com.buzzwords;
 
 import java.util.LinkedList;
@@ -23,6 +40,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.view.animation.Animation;
 import android.view.animation.AlphaAnimation;
+
 /**
  * @author The BuzzWords Team
  * This activity class is responsible for gathering game information before the
@@ -39,25 +57,25 @@ public class GameSetup extends Activity
   //A two dimensional array to store the radioID/value pair.
   private static final int[][] ROUND_RADIOS = new int[][] {
             {R.id.GameSetup_Rounds0,4}, 
-            {R.id.GameSetup_Rounds1,8}, 
-            {R.id.GameSetup_Rounds2,12},
-            {R.id.GameSetup_Rounds3,16}};
+            {R.id.GameSetup_Rounds1,6}, 
+            {R.id.GameSetup_Rounds2,8},
+            {R.id.GameSetup_Rounds3,10}};
 
   public static final String PREFS_NAME = "gamesetupprefs";     //stored in data/data/buzzwords/shared_preferences
-  private static final String TEAMA_PREFKEY = "teamA_enabled";  //StringID for Team A quadrant
-  private static final String TEAMB_PREFKEY = "teamB_enabled";  //StringID for Team B quadrant
-  private static final String TEAMC_PREFKEY = "teamC_enabled";  //StringID for Team C quadrant
-  private static final String TEAMD_PREFKEY = "teamD_enabled";  //StringID for Team D quadrant
+  private static final String PREFKEY_TEAMA = "teamA_enabled";  //StringID for Team A quadrant
+  private static final String PREFKEY_TEAMB = "teamB_enabled";  //StringID for Team B quadrant
+  private static final String PREFKEY_TEAMC = "teamC_enabled";  //StringID for Team C quadrant
+  private static final String PREFKEY_TEAMD = "teamD_enabled";  //StringID for Team D quadrant
   private static final String RADIO_INDEX = "round_radio_index"; //Index of the selected round radio 0-3
   
-  private boolean continueMusic = false;
+  private boolean continueMusic = false; // Flag to play music into the next Activity
 
   /**
-   * logging tag
-   */
+  * logging tag
+  */
   public static String TAG = "GameSetup";
   
-	/**
+	  /**
 	  * Watches the button that handles hand-off to the Turn activity.
 	  */
 	  private final OnClickListener StartGameListener = new OnClickListener()
@@ -73,24 +91,29 @@ public class GameSetup extends Activity
 	            return;
 	        }
 	        
-	        int rounds = getCheckedRadioValue();
-	        
+            // Store off game's attributes as preferences
+            GameSetup.gameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX,
+                                                      GameSetup.this.getCheckedRadioIndex());
+            GameSetup.gameSetupPrefEditor.commit();
+            
+            // Create a GameManager to manage attributes about the current game
 	        BuzzWordsApplication application =
 	          (BuzzWordsApplication) GameSetup.this.getApplication();
 	        GameManager gm = new GameManager(GameSetup.this);
-        
-	        gm.StartGame( teamList, rounds );
+	        gm.StartGame( teamList, ROUND_RADIOS[GameSetup.this.getCheckedRadioIndex()][1] );
 	        application.SetGameManager( gm );
 	        
+            // Launch into Turn activity	        
      	  	startActivity( new Intent(getApplication().getString(R.string.IntentTurn), getIntent().getData()) );
      	  	
+     	  	// Stop the music
      	  	MediaPlayer mp = application.GetMusicPlayer();
      	  	mp.stop();
 	      }
 	  };
 	  
-	  /**
-     * Watches the button that adds the third team to the list
+	 /**
+     * Watches the button that adds the first team to the list
      */    
      private final OnClickListener AddTeamAListener = new OnClickListener()
      {
@@ -108,7 +131,7 @@ public class GameSetup extends Activity
            {    
              b.setBackgroundResource( R.color.inactiveButton );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMA_PREFKEY, false);
+             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMA, false);
              sound.PlaySound( SoundManager.SOUND_BACK );
            }
            else
@@ -116,14 +139,14 @@ public class GameSetup extends Activity
              teamList.add( Team.TEAMA);             
              b.setBackgroundResource( R.color.teamA_text );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamA_secondary ) );
-             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMA_PREFKEY, true);
+             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMA, true);
              sound.PlaySound( SoundManager.SOUND_CONFIRM );
            }
          }
      };
 
      /**
-     * Watches the button that adds the fourth team to the list
+     * Watches the button that adds the second team to the list
      */    
      private final OnClickListener AddTeamBListener = new OnClickListener()
      {
@@ -141,7 +164,7 @@ public class GameSetup extends Activity
            {
              b.setBackgroundResource( R.color.inactiveButton );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMB_PREFKEY, false);
+             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMB, false);
              sound.PlaySound( SoundManager.SOUND_BACK );
            }
            else
@@ -149,13 +172,13 @@ public class GameSetup extends Activity
              teamList.add( Team.TEAMB );
              b.setBackgroundResource( R.color.teamB_text );
              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamB_secondary ) );
-             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMB_PREFKEY, true);
+             GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMB, true);
              sound.PlaySound( SoundManager.SOUND_CONFIRM );
            }
          }
      };
 	  
-    /**
+      /**
 	  * Watches the button that adds the third team to the list
 	  */	  
 	  private final OnClickListener AddTeamCListener = new OnClickListener()
@@ -165,26 +188,26 @@ public class GameSetup extends Activity
 	        Log.d( TAG, "AddTeamCListener onClick()" );
 	        Button b = (Button) v;
           
-          // Play confirm sound
-          BuzzWordsApplication application =
-            (BuzzWordsApplication) GameSetup.this.getApplication();
-          SoundManager sound = application.GetSoundManager();
-	        
-          if( teamList.remove( Team.TEAMC ) )
-          {
-            b.setBackgroundResource( R.color.inactiveButton );
-            b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMC_PREFKEY, false);
-            sound.PlaySound( SoundManager.SOUND_BACK );
-          }
-          else
-          {
-            teamList.add( Team.TEAMC);
-            b.setBackgroundResource( R.color.teamC_text );
-            b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamC_secondary ) );
-            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMC_PREFKEY, true);    
-            sound.PlaySound( SoundManager.SOUND_CONFIRM );
-          }
+            // Play confirm sound
+            BuzzWordsApplication application =
+              (BuzzWordsApplication) GameSetup.this.getApplication();
+            SoundManager sound = application.GetSoundManager();
+  	        
+            if( teamList.remove( Team.TEAMC ) )
+            {
+              b.setBackgroundResource( R.color.inactiveButton );
+              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMC, false);
+              sound.PlaySound( SoundManager.SOUND_BACK );
+            }
+            else
+            {
+              teamList.add( Team.TEAMC);
+              b.setBackgroundResource( R.color.teamC_text );
+              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamC_secondary ) );
+              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMC, true);    
+              sound.PlaySound( SoundManager.SOUND_CONFIRM );
+            }
 	      }
 	  };
 
@@ -198,30 +221,29 @@ public class GameSetup extends Activity
 	        Log.d( TAG, "AddTeamDListener onClick()" );
 	        Button b = (Button) v;
           
-          // Play confirm sound
-          BuzzWordsApplication application =
-            (BuzzWordsApplication) GameSetup.this.getApplication();
-          SoundManager sound = application.GetSoundManager();
-	        
-          if( teamList.remove( Team.TEAMD ) )
-          {
-            b.setBackgroundResource( R.color.inactiveButton );
-            b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
-            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMD_PREFKEY, false);
-            sound.PlaySound( SoundManager.SOUND_BACK );
-          }
-          else
-          {
-            teamList.add( Team.TEAMD );
-            b.setBackgroundResource( R.color.teamD_text );
-            b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamD_secondary ) );
-            GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.TEAMD_PREFKEY, true);
-            sound.PlaySound( SoundManager.SOUND_CONFIRM );
-          }
+            // Play confirm sound
+            BuzzWordsApplication application =
+              (BuzzWordsApplication) GameSetup.this.getApplication();
+            SoundManager sound = application.GetSoundManager();
+  	        
+            if( teamList.remove( Team.TEAMD ) )
+            {
+              b.setBackgroundResource( R.color.inactiveButton );
+              b.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
+              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMD, false);
+              sound.PlaySound( SoundManager.SOUND_BACK );
+            }
+            else
+            {
+              teamList.add( Team.TEAMD );
+              b.setBackgroundResource( R.color.teamD_text );
+              b.setTextColor( GameSetup.this.getResources().getColor( R.color.teamD_secondary ) );
+              GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMD, true);
+              sound.PlaySound( SoundManager.SOUND_CONFIRM );
+            }
 	      }
 	  };
-	  
-	  
+	   
 	  /**
 	   * @return The animation that fades in helper text
 	   * screen
@@ -243,10 +265,11 @@ public void onCreate( Bundle savedInstanceState )
 	super.onCreate( savedInstanceState );
 	Log.d( TAG, "onCreate()" );
   
-  continueMusic = false;
+	// Initialize flag to carry music from one activity to the next
+	continueMusic = false;
 	
-  //Force volume controls to affect Media volume
-  setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    //Force volume controls to affect Media volume
+    setVolumeControlStream(AudioManager.STREAM_MUSIC);
   	
 	// Setup the view
 	this.setContentView(R.layout.gamesetup);
@@ -255,19 +278,18 @@ public void onCreate( Bundle savedInstanceState )
 	GameSetup.gameSetupPrefs = getSharedPreferences(PREFS_NAME, 0 );	
 	GameSetup.gameSetupPrefEditor = GameSetup.gameSetupPrefs.edit();	
 
-    // Get the default radio button
-    int radio_default = GameSetup.gameSetupPrefs.getInt(GameSetup.RADIO_INDEX, 1);
-  
+	// Setup radio buttons
     RadioButton radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[0][0] );
-    
+    // Set radio button labels
     for( int i=0; i<GameSetup.ROUND_RADIOS.length; ++i )
     {
       radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[i][0] );
       radio.setText(String.valueOf(GameSetup.ROUND_RADIOS[i][1]));
     }
-  
+    // Set the radio button to the previous preference
+    int radio_default = GameSetup.gameSetupPrefs.getInt(GameSetup.RADIO_INDEX, 1);
     radio = (RadioButton) this.findViewById( GameSetup.ROUND_RADIOS[radio_default][0] );
-    radio.setChecked(true);  
+    radio.setChecked(true);
   
 	// Bind view buttons
 	Button startGameButton = (Button)this.findViewById( R.id.GameSetup_StartGameButton );
@@ -289,7 +311,7 @@ public void onCreate( Bundle savedInstanceState )
 	// defaults appropriately
 	
 	// Set team A default selection
-	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMA_PREFKEY, false) )
+	if ( GameSetup.gameSetupPrefs.getBoolean(PREFKEY_TEAMA, false) )
 	{
 	  teamList.add( Team.TEAMA );
 	}
@@ -300,7 +322,7 @@ public void onCreate( Bundle savedInstanceState )
 	}
 	
 	// Set team B default selection
-	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMB_PREFKEY, false) )
+	if ( GameSetup.gameSetupPrefs.getBoolean(PREFKEY_TEAMB, false) )
 	{
 	  teamList.add( Team.TEAMB );
 	}
@@ -311,7 +333,7 @@ public void onCreate( Bundle savedInstanceState )
     }
 	
 	//Set team C default selection
-	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMC_PREFKEY, false) )
+	if ( GameSetup.gameSetupPrefs.getBoolean(PREFKEY_TEAMC, false) )
 	{ 
 	  teamList.add( Team.TEAMC );
 	} 	
@@ -322,7 +344,7 @@ public void onCreate( Bundle savedInstanceState )
     }
 	
 	//Set team D default selection
-	if ( GameSetup.gameSetupPrefs.getBoolean(TEAMD_PREFKEY, false) )
+	if ( GameSetup.gameSetupPrefs.getBoolean(PREFKEY_TEAMD, false) )
 	{
 	  teamList.add( Team.TEAMD );
 	}
@@ -332,36 +354,34 @@ public void onCreate( Bundle savedInstanceState )
       teamDButton.setTextColor( GameSetup.this.getResources().getColor( R.color.genericBG ) );
     }
   	
+	// Do helper text animations
 	TextView helpText = (TextView) this.findViewById(R.id.GameSetup_HelpText_Team);
 	helpText.setAnimation(this.FadeInHelpText(1000));
 	helpText = (TextView) this.findViewById(R.id.GameSetup_HelpText_Turn);
 	helpText.setAnimation(this.FadeInHelpText(3000));
-
 }
 
   /**
-   * Getter that returns the number of turns that matches the checked radio button.
-   * Called during onPause and StartGame to allow preferences to save.
-   * @return
+   * Getter that returns the index of the checked radio button.
+   * @return index of the checked radio button (-1 if none found)
    */
-  private int getCheckedRadioValue()
+  private int getCheckedRadioIndex()
   {    
     Log.d( TAG, "getCheckedRadioValue()" );
-    // Get number of rounds based on radio button selection
-    
-    int rounds = 0;
+
+    int checkedRadioIndex = -1;
+    // Iterate through radio buttons to find the one that is checked and return it.
     for ( int i = 0; i < GameSetup.ROUND_RADIOS.length; i++)
     {
       RadioButton test = (RadioButton) GameSetup.this.findViewById( GameSetup.ROUND_RADIOS[i][0]);
       if (test.isChecked())
       {
-        rounds = GameSetup.ROUND_RADIOS[i][1];
-        GameSetup.gameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX, i);
+        checkedRadioIndex = i;
         break;
       }
     }
-    
-    return rounds;  
+
+    return checkedRadioIndex;
   }
 
   /**
@@ -419,6 +439,8 @@ public void onCreate( Bundle savedInstanceState )
   {
      Log.d( TAG, "onPause()" );   
      super.onPause();
+     
+     // Pause the music unless going to an Activity where it is supposed to continue through
      BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
      MediaPlayer mp = application.GetMusicPlayer();
      if( !continueMusic && mp.isPlaying())
@@ -426,7 +448,10 @@ public void onCreate( Bundle savedInstanceState )
        mp.pause();
      }
      
-     getCheckedRadioValue(); // Called before pref commit to save radio value     
+     // Store off game's attributes as preferences.  This is done in Pause to maintain selections
+     // when they press "back" to main title then return.
+     GameSetup.gameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX,
+                                               GameSetup.this.getCheckedRadioIndex());
      GameSetup.gameSetupPrefEditor.commit();
   }
 
