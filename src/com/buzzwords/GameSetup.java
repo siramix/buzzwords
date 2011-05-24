@@ -45,7 +45,7 @@ import android.view.animation.AlphaAnimation;
  * This activity class is responsible for gathering game information before the
  * game starts such as number of teams and turns
  * 
- * @author The BuzzWords Team
+ * @author Siramix Labs
  */
 public class GameSetup extends Activity {
 
@@ -103,14 +103,14 @@ public class GameSetup extends Activity {
       GameManager gm = new GameManager(GameSetup.this);
       gm.StartGame(teamList,
           ROUND_RADIOS[GameSetup.this.getCheckedRadioIndex()][1]);
-      application.SetGameManager(gm);
+      application.setGameManager(gm);
 
       // Launch into Turn activity
       startActivity(new Intent(getApplication().getString(R.string.IntentTurn),
           getIntent().getData()));
 
       // Stop the music
-      MediaPlayer mp = application.GetMusicPlayer();
+      MediaPlayer mp = application.getMusicPlayer();
       mp.stop();
     }
   };
@@ -128,7 +128,7 @@ public class GameSetup extends Activity {
       // Play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
           .getApplication();
-      SoundManager sound = application.GetSoundManager();
+      SoundManager sound = application.getSoundManager();
 
       if (teamList.remove(Team.TEAMA)) {
         b.setBackgroundResource(R.color.inactiveButton);
@@ -136,14 +136,14 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.gameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMA, false);
-        sound.PlaySound(SoundManager.SOUND_BACK);
+        sound.PlaySound(SoundManager.Sound.BACK);
       } else {
         teamList.add(Team.TEAMA);
         b.setBackgroundResource(R.color.teamA_text);
         b.setTextColor(GameSetup.this.getResources().getColor(
             R.color.teamA_secondary));
         GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMA, true);
-        sound.PlaySound(SoundManager.SOUND_CONFIRM);
+        sound.PlaySound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -161,7 +161,7 @@ public class GameSetup extends Activity {
       // Play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
           .getApplication();
-      SoundManager sound = application.GetSoundManager();
+      SoundManager sound = application.getSoundManager();
 
       if (teamList.remove(Team.TEAMB)) {
         b.setBackgroundResource(R.color.inactiveButton);
@@ -169,14 +169,14 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.gameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMB, false);
-        sound.PlaySound(SoundManager.SOUND_BACK);
+        sound.PlaySound(SoundManager.Sound.BACK);
       } else {
         teamList.add(Team.TEAMB);
         b.setBackgroundResource(R.color.teamB_text);
         b.setTextColor(GameSetup.this.getResources().getColor(
             R.color.teamB_secondary));
         GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMB, true);
-        sound.PlaySound(SoundManager.SOUND_CONFIRM);
+        sound.PlaySound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -194,7 +194,7 @@ public class GameSetup extends Activity {
       // Play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
           .getApplication();
-      SoundManager sound = application.GetSoundManager();
+      SoundManager sound = application.getSoundManager();
 
       if (teamList.remove(Team.TEAMC)) {
         b.setBackgroundResource(R.color.inactiveButton);
@@ -202,14 +202,14 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.gameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMC, false);
-        sound.PlaySound(SoundManager.SOUND_BACK);
+        sound.PlaySound(SoundManager.Sound.BACK);
       } else {
         teamList.add(Team.TEAMC);
         b.setBackgroundResource(R.color.teamC_text);
         b.setTextColor(GameSetup.this.getResources().getColor(
             R.color.teamC_secondary));
         GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMC, true);
-        sound.PlaySound(SoundManager.SOUND_CONFIRM);
+        sound.PlaySound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -227,7 +227,7 @@ public class GameSetup extends Activity {
       // Play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
           .getApplication();
-      SoundManager sound = application.GetSoundManager();
+      SoundManager sound = application.getSoundManager();
 
       if (teamList.remove(Team.TEAMD)) {
         b.setBackgroundResource(R.color.inactiveButton);
@@ -235,14 +235,14 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.gameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMD, false);
-        sound.PlaySound(SoundManager.SOUND_BACK);
+        sound.PlaySound(SoundManager.Sound.BACK);
       } else {
         teamList.add(Team.TEAMD);
         b.setBackgroundResource(R.color.teamD_text);
         b.setTextColor(GameSetup.this.getResources().getColor(
             R.color.teamD_secondary));
         GameSetup.gameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMD, true);
-        sound.PlaySound(SoundManager.SOUND_CONFIRM);
+        sound.PlaySound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -444,7 +444,7 @@ public class GameSetup extends Activity {
     // continue through
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.GetMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer();
     if (!continueMusic && mp.isPlaying()) {
       mp.pause();
     }
@@ -470,7 +470,7 @@ public class GameSetup extends Activity {
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.GetMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer();
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
     if (!mp.isPlaying() && sp.getBoolean("music_enabled", true)) {

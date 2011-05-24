@@ -26,7 +26,7 @@ import android.view.animation.TranslateAnimation;
 /**
  * This is the activity class that kicks off BuzzWords
  * 
- * @author The BuzzWords Team
+ * @author Siramix Labs
  */
 public class Title extends Activity
 {
@@ -167,13 +167,13 @@ public class Title extends Activity
    {
        public void onClick(View v) 
        {
-         Log.d( TAG, "PlayGameListener OnClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "PlayGameListener OnClick()" );  }
          continueMusic = true;      
          
          // play confirm sound
          BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
-         SoundManager sound = application.GetSoundManager();
-         sound.PlaySound( SoundManager.SOUND_CONFIRM );
+         SoundManager sound = application.getSoundManager();
+         sound.PlaySound( SoundManager.Sound.CONFIRM );
          
          startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentGameSetup),
                                   getIntent().getData()));
@@ -187,13 +187,13 @@ public class Title extends Activity
    {
        public void onClick(View v) 
        {
-         Log.d( TAG, "PlayGameListener OnClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "PlayGameListener OnClick()" );  }
          continueMusic = false;
          
          // play confirm sound
          BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
-         SoundManager sound = application.GetSoundManager();
-         sound.PlaySound( SoundManager.SOUND_CONFIRM );
+         SoundManager sound = application.getSoundManager();
+         sound.PlaySound( SoundManager.Sound.CONFIRM );
          
          startActivity(new Intent(getApplication().getString( R.string.IntentBuzzer ), 
              getIntent().getData()));
@@ -208,13 +208,13 @@ public class Title extends Activity
   {
   	public void onClick(View v) 
   	{
-      Log.d( TAG, "SettingsListener OnClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "SettingsListener OnClick()" );  }
       continueMusic = true;
       
       // play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
-      SoundManager sound = application.GetSoundManager();
-      sound.PlaySound( SoundManager.SOUND_CONFIRM );
+      SoundManager sound = application.getSoundManager();
+      sound.PlaySound( SoundManager.Sound.CONFIRM );
       
   	  startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentSettings ), 
   	        getIntent().getData()));
@@ -229,13 +229,13 @@ public class Title extends Activity
   {
     public void onClick(View v) 
     {
-      Log.d( TAG, "RulesListener OnClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "RulesListener OnClick()" );  }
       continueMusic = true;
       
       // play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
-      SoundManager sound = application.GetSoundManager();
-      sound.PlaySound( SoundManager.SOUND_CONFIRM );
+      SoundManager sound = application.getSoundManager();
+      sound.PlaySound( SoundManager.Sound.CONFIRM );
       
       startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 
           getIntent().getData()));
@@ -251,13 +251,13 @@ public class Title extends Activity
   {
     public void onClick(View v) 
     {
-      Log.d( TAG, "AboutUsListener OnClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "AboutUsListener OnClick()" );  }
       continueMusic = false;
       
       // play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
-      SoundManager sound = application.GetSoundManager();
-      sound.PlaySound( SoundManager.SOUND_CONFIRM );
+      SoundManager sound = application.getSoundManager();
+      sound.PlaySound( SoundManager.Sound.CONFIRM );
       
       Uri uri = Uri.parse("http://www.siramix.com/");  
       Intent intent=new Intent(Intent.ACTION_VIEW,uri);
@@ -272,7 +272,7 @@ public class Title extends Activity
    */
   private Animation TranslateButtons(int buttonNum)
   {
-    Log.d( TAG, "TranslateButtons()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "TranslateButtons()" );  }
     
     final int MOVETIME = 600;
     
@@ -291,7 +291,7 @@ public class Title extends Activity
    */
   private AnimationSet TranslateLabels(int labelNum)
   {
-    Log.d( TAG, "TranslateLabels()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "TranslateLabels()" );  }
 
     final int MOVETIME = 800;
     AnimationSet set = new AnimationSet(true);
@@ -316,14 +316,14 @@ public class Title extends Activity
 public void onCreate( Bundle savedInstanceState )
 {
 	super.onCreate( savedInstanceState );
-  Log.d( TAG, "onCreate()" );               
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreate()" );  }
   
   //Force volume controls to affect Media volume
   setVolumeControlStream(AudioManager.STREAM_MUSIC);
   
   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
-  MediaPlayer mp = application.CreateMusicPlayer(this.getBaseContext(), R.raw.mus_title);
-  application.CreateSoundManager( this.getBaseContext() );
+  MediaPlayer mp = application.createMusicPlayer(this.getBaseContext(), R.raw.mus_title);
+  application.createSoundManager( this.getBaseContext() );
   
   mp.setLooping(true);
   SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
@@ -397,12 +397,12 @@ public void onCreate( Bundle savedInstanceState )
 @Override
 public void onPause()
 {
-   Log.d( TAG, "onPause()" );   
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onPause()" );  }
    super.onPause();
    if( !continueMusic )
    {
      BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
-     MediaPlayer mp = application.GetMusicPlayer();
+     MediaPlayer mp = application.getMusicPlayer();
      SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
      if (mp.isPlaying() && sp.getBoolean("music_enabled", true))
      {
@@ -417,12 +417,12 @@ public void onPause()
 @Override
 public void onResume()
 {
-   Log.d( TAG, "onResume()" );   
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onResume()" );  }
    super.onResume();
    
    // Resume Title Music
    BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
-   MediaPlayer mp = application.GetMusicPlayer();
+   MediaPlayer mp = application.getMusicPlayer();
    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
    if( sp.getBoolean("music_enabled", true))
    {

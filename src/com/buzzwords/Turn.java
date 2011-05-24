@@ -39,7 +39,7 @@ import android.util.Log;
  * This handles a single turn consisting of cards presented to a player for a
  * limited amount of time.
  *
- * @author The BuzzWords Team
+ * @author Siramix Labs
  */
 public class Turn extends Activity
 {
@@ -201,7 +201,7 @@ public class Turn extends Activity
   
   private void startTimer()
   {
-    Log.d( TAG, "startTimer()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "startTimer()" );  }
 
     this.counter.start();
     this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_START_ID));
@@ -209,11 +209,11 @@ public class Turn extends Activity
 
   private void stopTurnTimer()
   {
-    Log.d( TAG, "stopTimer()" );
-    Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "stopTimer()" );  }
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );  }
     if(!this.turnIsOver && this.counter.isActive())
     {
-      Log.d( TAG, "Do the Pause." );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "Do the Pause." );  }
       this.counter.pause();
       this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_PAUSE_ID));
     }
@@ -221,11 +221,11 @@ public class Turn extends Activity
 
   private void resumeTurnTimer()
   {
-    Log.d( TAG, "resumeTimer()" );
-    Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "resumeTimer()" );  }
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, Long.toString( this.counter.getTimeRemaining() ) );  }
     if(!this.turnIsOver && !this.counter.isActive())
     {
-      Log.d( TAG, "Do the Resume." );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "Do the Resume." );  }
       this.counter.resume();
       this.timerfill.startAnimation(TimerAnimation(Turn.TIMERANIM_RESUME_ID));
     }
@@ -237,7 +237,7 @@ public class Turn extends Activity
   @Override
   public boolean onCreateOptionsMenu(Menu menu)
   {
-    Log.d( TAG, "onCreateOptionsMenu()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreateOptionsMenu()" );  }
     menu.add(0, R.string.menu_EndGame, 0, "End Game");
     menu.add(0, R.string.menu_Rules, 0, "Rules");
 
@@ -250,7 +250,7 @@ public class Turn extends Activity
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
   {
-    Log.d( TAG, "onOptionsItemSelected()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onOptionsItemSelected()" );  }
     // Handle item selection
     switch (item.getItemId())
     {
@@ -273,7 +273,7 @@ public class Turn extends Activity
   {
     public void onClick( View v)
     {
-      Log.d( TAG, "TimerClickListener OnClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "TimerClickListener OnClick()" );  }
       Turn.this.pauseGame();
     }
   };
@@ -286,7 +286,7 @@ public class Turn extends Activity
   {
     public void onClick(View v)
     {
-      Log.d( TAG, "CorrectListener OnClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "CorrectListener OnClick()" );  }
       
       Turn.this.doCorrect();
     }
@@ -300,7 +300,7 @@ public class Turn extends Activity
   {
     public void onClick(View v)
     {
-      Log.d( TAG, "WrongListener OnClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "WrongListener OnClick()" );  }
       
       Turn.this.doWrong();
     }
@@ -326,7 +326,7 @@ public class Turn extends Activity
   {
       public void onClick(View v)
       {
-        Log.d( TAG, "PauseListener OnClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "PauseListener OnClick()" );  }
 
         // If music is disabled, just resume the game immediately (don't wait for music to seek unless it's begun) 
         if ( Turn.this.turnIsOver || ( !musicEnabled && !Turn.this.isTicking ) )
@@ -336,10 +336,10 @@ public class Turn extends Activity
         }
         else if ( musicEnabled || Turn.this.isTicking )
         {
-          Log.d( TAG, "unpause_OnClick ()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "unpause_OnClick ()" );  }
           // Resume must wait for music to seek back to the correct elapsed time
           BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
-          MediaPlayer mp = application.GetMusicPlayer();
+          MediaPlayer mp = application.getMusicPlayer();
           int elapsedtime;
           if( musicEnabled )
           {
@@ -348,7 +348,7 @@ public class Turn extends Activity
           else
           {
             elapsedtime = 10000 - (int) Turn.this.counter.getTimeRemaining(); 
-            Log.d( TAG, "Resume ticking at " + elapsedtime );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "Resume ticking at " + elapsedtime );  }
           }
           // Return to the elapsed time
           mp.seekTo( elapsedtime );
@@ -367,7 +367,7 @@ public class Turn extends Activity
    */
   private Animation InFromRightAnimation ()
   {
-    Log.d( TAG, "InFromRightAnimation()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "InFromRightAnimation()" );  }
     Animation inFromRight = new TranslateAnimation(
 		  	Animation.RELATIVE_TO_PARENT,  1.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
@@ -381,7 +381,7 @@ public class Turn extends Activity
    */
   private Animation OutToLeftAnimation ()
   {
-    Log.d( TAG, "OutToLeftAnimation()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "OutToLeftAnimation()" );  }
     Animation outToLeft = new TranslateAnimation(
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,  -1.0f,
 		  	Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
@@ -391,7 +391,7 @@ public class Turn extends Activity
   
   private Animation BackInFromLeftAnimation ()
   {
-    Log.d( TAG, "BackInFromLeftAnimation()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "BackInFromLeftAnimation()" );  }
     Animation outToLeft = new TranslateAnimation(
         Animation.RELATIVE_TO_PARENT,  -1.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
         Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
@@ -401,7 +401,7 @@ public class Turn extends Activity
   
   private Animation BackOutToRightAnimation ()
   {
-    Log.d( TAG, "BackOutToRightAnimation()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "BackOutToRightAnimation()" );  }
     Animation inFromRight = new TranslateAnimation(
         Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,  1.0f,
         Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
@@ -480,7 +480,7 @@ public class Turn extends Activity
    */
   private Animation TimerAnimation (int timerCommand)
   {
-    Log.d( TAG, "TimerAnimation()");
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "TimerAnimation()");  }
     
     float percentTimeLeft = ((float) this.counter.getTimeRemaining() / this.curGameManager.GetTurnTime());
     int duration = this.curGameManager.GetTurnTime();
@@ -509,7 +509,7 @@ public class Turn extends Activity
    */
   protected void doCorrect() 
   {
-    Log.d( TAG, "doCorrect()"); 
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doCorrect()");  }
   
     ViewFlipper flipper = (ViewFlipper) findViewById( R.id.Turn_ViewFlipper );
     
@@ -518,7 +518,7 @@ public class Turn extends Activity
     curGameManager.ProcessCard( Card.RIGHT );
 
     // Only play sound once card has been processed so we don't confuse the user
-    sound.PlaySound( SoundManager.SOUND_RIGHT );  
+    sound.PlaySound( SoundManager.Sound.RIGHT );  
 
     // Mark the card with an icon
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.RIGHT) );
@@ -533,7 +533,7 @@ public class Turn extends Activity
    */
   protected void doWrong()
   {
-    Log.d( TAG, "doWrong()");
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doWrong()");  }
 
     AIsActive = !AIsActive;
     ViewFlipper flipper = (ViewFlipper) findViewById( R.id.Turn_ViewFlipper );
@@ -545,7 +545,7 @@ public class Turn extends Activity
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.WRONG) );
     
     // Only play sound once card has been processed so we don't confuse the user
-    sound.PlaySound( SoundManager.SOUND_WRONG );
+    sound.PlaySound( SoundManager.Sound.WRONG );
     
     // Show the next card
     ShowCard();
@@ -558,7 +558,7 @@ public class Turn extends Activity
    */
   protected void doSkip()
   {
-    Log.d( TAG, "doSkip()");
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doSkip()");  }
 
     AIsActive = !AIsActive;
     this.viewFlipper.showNext();
@@ -568,7 +568,7 @@ public class Turn extends Activity
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.SKIP) );
     
     //Only play sound once card has been processed so we don't confuse the user
-    sound.PlaySound( SoundManager.SOUND_SKIP );
+    sound.PlaySound( SoundManager.Sound.SKIP );
     
     // Show the next card
     ShowCard();    
@@ -576,7 +576,7 @@ public class Turn extends Activity
   
   protected void doBack()
   {
-    Log.d( TAG, "doBack()");
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doBack()");  }
     if( this.isBack )
     {
       return;
@@ -606,8 +606,8 @@ public class Turn extends Activity
     
     // Play back sound
     BuzzWordsApplication app = (BuzzWordsApplication) this.getApplication();
-    SoundManager snd = app.GetSoundManager();
-    snd.PlaySound(SoundManager.SOUND_BACK);
+    SoundManager snd = app.getSoundManager();
+    snd.PlaySound(SoundManager.Sound.BACK);
   }
   
   /**
@@ -615,7 +615,7 @@ public class Turn extends Activity
    */
   protected void setActiveCard()
   {
-    Log.d( TAG, "setActiveCard()");
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "setActiveCard()");  }
     int curTitle;
     int curWords;
     int curStatus;
@@ -644,7 +644,7 @@ public class Turn extends Activity
    */
   protected void ShowCard()
   {
-    Log.d( TAG, "ShowCard()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "ShowCard()" );  }
     
     this.setActiveCard();
 
@@ -681,7 +681,7 @@ public class Turn extends Activity
    */
   protected void OnTimeExpired( )
   {
-    Log.d( TAG, "onTimeExpired()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onTimeExpired()" );  }
     resultsDelay = new PauseTimer(1500)
     {
       @Override
@@ -709,7 +709,7 @@ public class Turn extends Activity
 
     // Only play gong if music is off
     if (!this.musicEnabled)
-      sound.PlaySound( SoundManager.SOUND_GONG );
+      sound.PlaySound( SoundManager.Sound.GONG );
     
     TextView timer = (TextView) this.findViewById( R.id.Turn_Timer );
     timer.setVisibility( View.INVISIBLE );
@@ -735,17 +735,17 @@ public class Turn extends Activity
    */
   protected void OnTurnEnd( )
   {
-    Log.d( TAG, "onTurnEnd()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onTurnEnd()" );  }
 	startActivity( new Intent(getString(R.string.IntentTurnSummary), getIntent().getData()) );
   }
 
   protected void setupViewReferences()
   {
-    Log.d( TAG, "setupViewReferences()");
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "setupViewReferences()");  }
 
     BuzzWordsApplication application =
       (BuzzWordsApplication) this.getApplication();
-    this.curGameManager = application.GetGameManager();
+    this.curGameManager = application.getGameManager();
 
     this.pauseOverlay = (View) this.findViewById( R.id.Turn_PauseImageView );
     this.countdownTxt = (TextView) findViewById( R.id.Turn_Timer );
@@ -765,7 +765,7 @@ public class Turn extends Activity
   
   protected void setupUIProperties()
   {
-    Log.d( TAG, "setupUIProperties()");
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "setupUIProperties()");  }
     this.pauseOverlay.setVisibility( View.INVISIBLE );
     this.pauseOverlay.setOnClickListener( PauseListener );
 
@@ -839,7 +839,7 @@ public class Turn extends Activity
   public void onCreate( Bundle savedInstanceState )
   {
     super.onCreate( savedInstanceState );
-    Log.d( TAG, "onCreate()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreate()" );  }
 
     final float scale = Turn.this.getResources().getDisplayMetrics().density;
     gestureThreshold = (int) (SWIPE_MIN_DISTANCE_DP * scale + 0.5f );
@@ -850,7 +850,7 @@ public class Turn extends Activity
     
     // Save sound manager as a local variable
     BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
-    sound = application.GetSoundManager();
+    sound = application.getSoundManager();
     
     // set which card is active
     this.AIsActive = true;
@@ -887,7 +887,7 @@ public class Turn extends Activity
       @Override
       public void onTick()
       {            
-        Log.d( TAG , Long.toString( counter.getTimeRemaining() ) );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG , Long.toString( counter.getTimeRemaining() ) );  }
         // Update our text each second
         long shownTime = ( counter.getTimeRemaining() / 1000 ) + 1;
         Turn.this.countdownTxt.setText( Long.toString( shownTime ) );
@@ -897,10 +897,10 @@ public class Turn extends Activity
         {
           if ( shownTime == 10 )
           {    
-            Log.d( TAG , "Queue tick 'music' " );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG , "Queue tick 'music' " );  }
             Turn.this.isTicking = true;
             BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();            
-            MediaPlayer mp = application.GetMusicPlayer();
+            MediaPlayer mp = application.getMusicPlayer();
             mp.start();
           }            
         } 
@@ -917,7 +917,7 @@ public class Turn extends Activity
   public void onRestart()
   {
     super.onRestart();
-    Log.d( TAG, "onRestart()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onRestart()" );  }
   }
 
   /**
@@ -927,7 +927,7 @@ public class Turn extends Activity
   public void onStart()
   {
     super.onStart();
-    Log.d( TAG, "onStart()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onStart()" );  }
   }
 
   /**
@@ -937,7 +937,7 @@ public class Turn extends Activity
   public void onResume()
   {
     super.onResume();
-    Log.d( TAG, "onResume()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onResume()" );  }
   }
 
   /**
@@ -947,7 +947,7 @@ public class Turn extends Activity
   public void onPause()
   {
     super.onPause();
-    Log.d( TAG, "onPause()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onPause()" );  }
     if(!this.isPaused && !this.turnIsOver)
     {
       this.pauseGame();
@@ -961,7 +961,7 @@ public class Turn extends Activity
   public void onStop()
   {
     super.onStop();
-    Log.d( TAG, "onStop()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onStop()" );  }
   }
 
   /**
@@ -971,7 +971,7 @@ public class Turn extends Activity
   public void onDestroy()
   {
     super.onDestroy();
-    Log.d( TAG, "onDestroy()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onDestroy()" );  }
   }
 
   /**
@@ -980,7 +980,7 @@ public class Turn extends Activity
   @Override
   protected Dialog onCreateDialog(int id)
   {
-    Log.d( TAG, "onCreateDialog(" + id + ")" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreateDialog(" + id + ")" );  }
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
     
@@ -991,7 +991,7 @@ public class Turn extends Activity
              .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                public void onClick(DialogInterface dialog, int id) {
                  BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
-                 GameManager gm = application.GetGameManager();
+                 GameManager gm = application.getGameManager();
                  gm.EndGame();
                  startActivity(new Intent( getString(R.string.IntentEndGame), getIntent().getData()));
                  }
@@ -1005,7 +1005,7 @@ public class Turn extends Activity
       break;
     case DIALOG_READY_ID:
       // Play team ready sound
-      sound.PlaySound( SoundManager.SOUND_TEAMREADY );
+      sound.PlaySound( SoundManager.Sound.TEAMREADY );
       
       String curTeam = this.curGameManager.GetActiveTeam().getName();
       builder = new AlertDialog.Builder(this);
@@ -1021,7 +1021,7 @@ public class Turn extends Activity
                 
                 // Start the turn music
                 BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
-                GameManager gm = application.GetGameManager();
+                GameManager gm = application.getGameManager();
                 
                 int musicId = R.raw.mus_countdown;
                 // If music is enabled, select the appropriate track
@@ -1041,7 +1041,7 @@ public class Turn extends Activity
                    }
                 }
                 
-                MediaPlayer mp = application.CreateMusicPlayer( Turn.this.getBaseContext(), musicId );
+                MediaPlayer mp = application.createMusicPlayer( Turn.this.getBaseContext(), musicId );
                 // If music is not enabled, it will start the countdown track at 10 seconds
                 if( musicEnabled )
                 {
@@ -1075,7 +1075,7 @@ public class Turn extends Activity
   {
     public void onSeekComplete(MediaPlayer mp) {
 
-      Log.d( TAG, "onSeekComplete" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onSeekComplete" );  }
       // Resume the game on seek complete
       Turn.this.resumeGame();
 
@@ -1089,7 +1089,7 @@ public class Turn extends Activity
   
   protected void resumeGame()
   {
-    Log.d( TAG, "resumeGameTurn()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "resumeGameTurn()" );  }
     this.isPaused = false;
     
     if(!this.turnIsOver)
@@ -1118,7 +1118,7 @@ public class Turn extends Activity
 
   protected void pauseGame()
   {
-    Log.d( TAG, "pauseGameTurn()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "pauseGameTurn()" );  }
     this.isPaused = true;
     this.pauseOverlay.setVisibility( View.VISIBLE );
     
@@ -1127,7 +1127,7 @@ public class Turn extends Activity
     
     // Stop music
     BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
-    MediaPlayer mp = application.GetMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer();
     if(mp.isPlaying())
     {
       mp.pause();  
@@ -1172,7 +1172,7 @@ public class Turn extends Activity
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event)
   {
-    Log.d( TAG, "onKeyDown()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onKeyDown()" );  }
 
     // Handle the back button
     if( keyCode == KeyEvent.KEYCODE_BACK
@@ -1191,7 +1191,7 @@ public class Turn extends Activity
   @Override
   public boolean onKeyUp(int keyCode, KeyEvent event)
   {
-    Log.d( TAG, "onKeyUp()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onKeyUp()" );  }
 
     // Back button should go to the previous card
     if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()

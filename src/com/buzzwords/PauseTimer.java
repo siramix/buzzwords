@@ -7,7 +7,7 @@ import android.util.Log;
  * Adds pause and resume capabilities to CountDownTimer.  Requires implementation of abstract methods
  * for onFinish and onTick.  Assumes 200ms tick time.
  * 
- * @author The BuzzWords Team
+ * @author Siramix Labs
  */
 public abstract class PauseTimer
 {
@@ -36,7 +36,7 @@ public abstract class PauseTimer
     @Override
     public void onFinish() 
     {
-      Log.d( TAG, "onFinish()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onFinish()" );  }
       PauseTimer.this.onFinish();
       PauseTimer.this.timerActive = false;
     }
@@ -44,7 +44,7 @@ public abstract class PauseTimer
     @Override
     public void onTick(long millisUntilFinished) 
     {
-      //Log.d( TAG, "onTick(" + millisUntilFinished + ")" ); //ticks often, commenting out for cleaner debug output
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onTick(" + millisUntilFinished + ")" );  }
       PauseTimer.this.timeRemaining = millisUntilFinished;
       PauseTimer.this.onTick();
     }
@@ -55,7 +55,7 @@ public abstract class PauseTimer
    */
   public PauseTimer(long timeToCount) 
   {
-    Log.d( TAG, "PauseTimer(" + timeToCount + ")" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "PauseTimer(" + timeToCount + ")" );  }
     this.timer = new InternalTimer(timeToCount, TICK);
     this.timeRemaining = timeToCount;
   }
@@ -74,7 +74,7 @@ public abstract class PauseTimer
    */
   public void start()
   {
-    Log.d( TAG, "start()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "start()" );  }
     this.timer.start();
     this.timerActive = true;
   }
@@ -84,7 +84,7 @@ public abstract class PauseTimer
    */
   public void pause()
   {
-    Log.d( TAG, "pause()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "pause()" );  }
     if(this.timerActive)
     {
       this.timerActive = false;
@@ -97,7 +97,7 @@ public abstract class PauseTimer
    */  	
   public void resume()
   {
-    Log.d( TAG, "resume()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "resume()" );  }
     if(!this.timerActive)
     {
       this.timer = new InternalTimer(timeRemaining, TICK);
@@ -112,7 +112,7 @@ public abstract class PauseTimer
    */   
   public boolean isActive()
   {
-    Log.d( TAG, "isActive()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "isActive()" );  }
     return this.timerActive;
   }
   
@@ -122,7 +122,7 @@ public abstract class PauseTimer
    */   
   public long getTimeRemaining()
   {
-    //Log.d( TAG, "getTimeRemaining()" ); //ticks often, commenting out for cleaner debug output
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "getTimeRemaining()" );  }
     return this.timeRemaining;
   }
 }

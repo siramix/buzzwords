@@ -45,11 +45,6 @@ public class GameEnd extends Activity
    * logging tag
    */
   public static final String TAG = "GameEnd";
-  
-  /**
-   * code for checking Text to Speech capabilities
-   */
-  public static final int MY_DATA_CHECK_CODE = 1234;
 
   /**
    * This is a reference to the current game manager
@@ -208,8 +203,8 @@ public class GameEnd extends Activity
     {
       // Play win sound
       BuzzWordsApplication app = (BuzzWordsApplication) GameEnd.this.getApplication();
-      SoundManager sound = app.GetSoundManager();
-      sound.PlaySound( SoundManager.SOUND_WIN );     
+      SoundManager sound = app.getSoundManager();
+      sound.PlaySound( SoundManager.Sound.WIN );     
     }
   };
 
@@ -244,13 +239,13 @@ public class GameEnd extends Activity
   {
     public void onClick(View v)
     {
-      Log.d( TAG, "MainMenuListener onClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "MainMenuListener onClick()" );  }
       
       BuzzWordsApplication application = (BuzzWordsApplication) GameEnd.this.getApplication();
       
       // Play confirm sound
-      SoundManager sound = application.GetSoundManager();
-      sound.PlaySound( SoundManager.SOUND_CONFIRM );
+      SoundManager sound = application.getSoundManager();
+      sound.PlaySound( SoundManager.Sound.CONFIRM );
       
       Intent clearStackIntent = new Intent(getApplication().getString( R.string.IntentTitle ), getIntent().getData());
       clearStackIntent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
@@ -265,15 +260,15 @@ public class GameEnd extends Activity
   {
       public void onClick(View v)
       {
-        Log.d( TAG, "RematchListener onClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "RematchListener onClick()" );  }
         
         BuzzWordsApplication application =
           (BuzzWordsApplication) GameEnd.this.getApplication();
         
-        GameManager curgm = application.GetGameManager();
+        GameManager curgm = application.getGameManager();
         GameManager newgm = new GameManager(GameEnd.this);
         newgm.StartGame( curgm.GetTeams(), curgm.GetNumRounds() );
-        application.SetGameManager( newgm );
+        application.setGameManager( newgm );
         
         Intent clearStackIntent = new Intent(getApplication().getString( R.string.IntentTurn ), getIntent().getData());
         clearStackIntent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
@@ -288,7 +283,7 @@ public class GameEnd extends Activity
     @Override
     public void onCreate( Bundle savedInstanceState )
     {
-      Log.d( TAG, "onCreate()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreate()" );  }
 
       //Force volume controls to affect Media volume
       setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -299,7 +294,7 @@ public class GameEnd extends Activity
   
   		BuzzWordsApplication application =
   			(BuzzWordsApplication) this.getApplication();
-  		curGameManager = application.GetGameManager();		
+  		curGameManager = application.getGameManager();		
 
 		
   	    List<Team> teams = curGameManager.GetTeams();
@@ -450,7 +445,7 @@ public class GameEnd extends Activity
    public void onStop()
    {
      super.onStop();
-     Log.d( TAG, "onStop()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onStop()" );  }
    }
 
    /**
@@ -460,7 +455,7 @@ public class GameEnd extends Activity
    public void onDestroy()
    {
      super.onDestroy();
-     Log.d( TAG, "onDestroy()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onDestroy()" );  }
    }    
     
     /**

@@ -33,7 +33,7 @@ import android.widget.ImageView;
  * This is the splash screen for the app's introduction. It should be started
  * before the title and be interruptible before the title activity.
  * 
- * @author The BuzzWords Team
+ * @author Siramix Labs
  */
 public class SplashScreen extends Activity {
 

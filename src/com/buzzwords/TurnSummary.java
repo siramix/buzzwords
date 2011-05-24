@@ -28,7 +28,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
- * @author The BuzzWords Team
+ * @author Siramix Labs
  * This activity class is responsible for summarizing the turn and the hand-off
  * into the next turn or game end.
  */
@@ -51,10 +51,10 @@ public class TurnSummary extends Activity
 	  {
 	      public void onClick(View v)
 	      {
-	        Log.d( TAG, "NextTurnListener OnClick()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "NextTurnListener OnClick()" );  }
 	        BuzzWordsApplication application =
 	          (BuzzWordsApplication) TurnSummary.this.getApplication();
-	        GameManager gm = application.GetGameManager();
+	        GameManager gm = application.getGameManager();
 
 	        if( gm.GetNumberOfTurnsRemaining() == 0 )
 	        {
@@ -78,7 +78,7 @@ public class TurnSummary extends Activity
         {
           ImageView iv = (ImageView) v;
           int cardIndex = TurnSummary.this.cardViewList.indexOf( v );
-          Log.d( TAG, Integer.toString( cardIndex ) );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, Integer.toString( cardIndex ) );  }
           Card curCard = TurnSummary.this.cardList.get( cardIndex );
           // Ammend the card
           curCard.cycleRws();
@@ -88,11 +88,11 @@ public class TurnSummary extends Activity
           TurnSummary.this.UpdateScoreViews();
           
           // Play sound for the new value
-          final int[] rwsSounds = {SoundManager.SOUND_RIGHT, SoundManager.SOUND_WRONG, 
-              SoundManager.SOUND_SKIP };
+          final SoundManager.Sound[] rwsSounds = {SoundManager.Sound.RIGHT, SoundManager.Sound.WRONG, 
+              SoundManager.Sound.SKIP };
           BuzzWordsApplication application =
             (BuzzWordsApplication) TurnSummary.this.getApplication();
-          SoundManager sound = application.GetSoundManager();
+          SoundManager sound = application.getSoundManager();
           sound.PlaySound(rwsSounds[ curCard.getRws()]);
         }
     };
@@ -124,7 +124,7 @@ public class TurnSummary extends Activity
   public void onCreate( Bundle savedInstanceState )
   {
   	super.onCreate( savedInstanceState );
-    Log.d( TAG, "onCreate()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreate()" );  }
 
     //Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -134,7 +134,7 @@ public class TurnSummary extends Activity
   	
     BuzzWordsApplication application =
         (BuzzWordsApplication) this.getApplication();
-    GameManager game = application.GetGameManager();
+    GameManager game = application.getGameManager();
 
   	// Populate and display list of cards
   	ScrollView list = (ScrollView) findViewById(R.id.TurnSummary_CardList);
@@ -208,7 +208,7 @@ public class TurnSummary extends Activity
   @Override
   public boolean onCreateOptionsMenu(Menu menu)
   {
-    Log.d( TAG, "onCreateOptionsMenu()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreateOptionsMenu()" );  }
     menu.add(0, R.string.menu_EndGame, 0, "End Game");
     menu.add(0, R.string.menu_Rules, 0, "Rules");
 
@@ -221,7 +221,7 @@ public class TurnSummary extends Activity
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
   {
-    Log.d( TAG, "onOptionsItemSelected()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onOptionsItemSelected()" );  }
     // Handle item selection
     switch (item.getItemId())
     {
@@ -243,7 +243,7 @@ public class TurnSummary extends Activity
  @Override
  protected Dialog onCreateDialog(int id)
  {
-   Log.d( TAG, "onCreateDialog(" + id + ")" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreateDialog(" + id + ")" );  }
    Dialog dialog = null;
    AlertDialog.Builder builder = null;
    
@@ -254,7 +254,7 @@ public class TurnSummary extends Activity
             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
               public void onClick(DialogInterface dialog, int id) {
                 BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this.getApplication();
-                GameManager gm = application.GetGameManager();
+                GameManager gm = application.getGameManager();
                 gm.EndGame();
                 startActivity(new Intent(getString( R.string.IntentEndGame ), getIntent().getData()));
                 }
@@ -278,10 +278,10 @@ public class TurnSummary extends Activity
    */
   private void UpdateScoreViews()
   {
-    Log.d( TAG, "UpdateScoreViews()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "UpdateScoreViews()" );  }
     BuzzWordsApplication application =
           (BuzzWordsApplication) this.getApplication();
-    GameManager game = application.GetGameManager();
+    GameManager game = application.getGameManager();
     List<Team> teams = game.GetTeams();
     
   	int turnscore = game.GetTurnScore();
@@ -360,10 +360,10 @@ public class TurnSummary extends Activity
    */
   private void UpdateTurnOrderDisplay()
   {
-    Log.d( TAG, "UpdateTurnOrderDisplay()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "UpdateTurnOrderDisplay()" );  }
     BuzzWordsApplication application =
           (BuzzWordsApplication) this.getApplication();
-    GameManager game = application.GetGameManager();
+    GameManager game = application.getGameManager();
     List<Team> teams = game.GetTeams();
     
     // References to Scoreboard team Groups

@@ -26,7 +26,7 @@ import android.util.Log;
  * Class extending the standard android application. This allows us to refer to
  * one GameManager from every activity within BuzzWords.
  * 
- * @author The BuzzWords Team
+ * @author Siramix Labs
  */
 public class BuzzWordsApplication extends Application {
   /**
@@ -42,17 +42,17 @@ public class BuzzWordsApplication extends Application {
   /**
    * The GameManager for all of BuzzWords
    */
-  private GameManager gameManager;
+  private GameManager mGameManager;
 
   /**
    * The SoundFXManager for all of BuzzWords
    */
-  private SoundManager soundManager;
+  private SoundManager mSoundManager;
 
   /**
    * MediaPlayer for music
    */
-  private MediaPlayer mediaPlayer;
+  private MediaPlayer mMediaPlayer;
 
   /**
    * Default constructor
@@ -67,32 +67,32 @@ public class BuzzWordsApplication extends Application {
   /**
    * @return a reference to the game manager
    */
-  public GameManager GetGameManager() {
+  public GameManager getGameManager() {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetGameManager()");
     }
-    return this.gameManager;
+    return this.mGameManager;
   }
 
   /**
    * @param gm
    *          - a reference to the game manager
    */
-  public void SetGameManager(GameManager gm) {
+  public void setGameManager(GameManager gm) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "SetGameManager()");
     }
-    this.gameManager = gm;
+    this.mGameManager = gm;
   }
 
   /**
    * @return a reference to the sound manager
    */
-  public SoundManager GetSoundManager() {
+  public SoundManager getSoundManager() {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetSoundManager()");
     }
-    return this.soundManager;
+    return this.mSoundManager;
   }
 
   /**
@@ -100,12 +100,12 @@ public class BuzzWordsApplication extends Application {
    * @param context, the context in which to create the sound manager
    * @return the sound manager 
    */
-  public SoundManager CreateSoundManager(Context context) {
+  public SoundManager createSoundManager(Context context) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "CreateSound Manager(" + context);
     }
-    soundManager = new SoundManager(context);
-    return soundManager;
+    mSoundManager = new SoundManager(context);
+    return mSoundManager;
   }
 
   /**
@@ -113,22 +113,22 @@ public class BuzzWordsApplication extends Application {
    * @param id of the music to play
    * @return a reference to the media player
    */
-  public MediaPlayer CreateMusicPlayer(Context context, int id) {
+  public MediaPlayer createMusicPlayer(Context context, int id) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "CreateMusicPlayer(" + context + "," + id + ")");
     }
-    mediaPlayer = MediaPlayer.create(context, id);
-    return mediaPlayer;
+    mMediaPlayer = MediaPlayer.create(context, id);
+    return mMediaPlayer;
   }
 
   /**
    * @return a reference to the current media player
    */
-  public MediaPlayer GetMusicPlayer() {
+  public MediaPlayer getMusicPlayer() {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetMusicPlayer()");
     }
-    return mediaPlayer;
+    return mMediaPlayer;
   }
 
 }

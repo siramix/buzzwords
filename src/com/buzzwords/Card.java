@@ -8,210 +8,76 @@ import com.buzzwords.R;
 import android.util.Log;
 
 /**
- * @author The BuzzWords Team
- *
- * The Card class is a simple container class for storing the
- *
+ * The Card class is a simple container class for storing data associated with
+ * cards
+ * 
+ * @author Siramix Labs
  */
-public class Card
-{
+public class Card {
   /**
    * Static string used to refer to this class, in debug output for example.
    */
   private static final String TAG = "Card";
 
+  /**
+   * R-W-S Constants
+   */
   public static final int RIGHT = 0;
   public static final int WRONG = 1;
   public static final int SKIP = 2;
-  
+
   /**
    * The db id of the card
    */
-  private int id;
-  
+  private int mId;
+
   /**
    * The right,wrong,skip {0,1,2} state of the card
    */
-  private int rws;
+  private int mRws;
 
   /**
    * The title of the card, the word to be guessed
    */
-  private String title;
+  private String mTitle;
 
   /**
    * An array list of the words you cannot say
    */
-  private ArrayList<String> badWords;
+  private ArrayList<String> mBadWords;
 
   /**
    * Function for breaking a string into an array list of strings based on the
    * presence of commas. The bad words are stored in the database as a comma
    * separated list for each card.
-   * @param commaSeparated - a comma separated string
+   * 
+   * @param commaSeparated
+   *          - a comma separated string
    * @return an array list of the substrings
    */
-  public static ArrayList<String> BustString( String commaSeparated )
-  {
-    Log.d( TAG, "BustString()" );
+  public static ArrayList<String> bustString(String commaSeparated) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "BustString()");
+    }
     ArrayList<String> ret = new ArrayList<String>();
-    StringTokenizer tok = new StringTokenizer( commaSeparated );
+    StringTokenizer tok = new StringTokenizer(commaSeparated);
 
-    while( tok.hasMoreTokens() )
-    {
-      ret.add( tok.nextToken( "," ).toUpperCase() );
+    while (tok.hasMoreTokens()) {
+      ret.add(tok.nextToken(",").toUpperCase());
     }
 
     return ret;
   }
 
   /**
-   * Default constructor
+   * Get the resource ID for this card's right wrong skip icon Mid-turn (when
+   * user hits back). These IDs must differ from those on Turn Result Screen.
    */
-  public Card()
-  {
-    Log.d( TAG, "Card()" );
-    this.init(-1, -1, "", new ArrayList<String>() );
-  }
-
-  /**
-   * Copy Constructor
-   */
-  public Card( Card rhs )
-  {
-    Log.d( TAG, "Card( Card )" );
-    ArrayList<String> bws = new ArrayList<String>( rhs.getBadWords() );
-    this.init( rhs.getId(), rhs.getRws(), rhs.getTitle(), bws );
-  }
-  
-  /**
-   * Standard Constructor
-   */
-  public Card( int id, int rws, String title,
-               ArrayList<String> badWords )
-  {
-    this.init( id, rws, title, badWords );
-  }
-  
-  public Card( int id, String title, String badWords )
-  {
-    this.init( id, -1, title, Card.BustString(badWords));
-  }
-  
-  @Override
-  public boolean equals(Object compareObj)
-  {
-    if(this == compareObj)
-    {
-      return true;
+  public static int getCardMarkDrawableId(int cardRWS) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getDrawableId()");
     }
-   
-    if(compareObj == null)
-    {
-      return false;
-    }
-   
-    if(!(compareObj instanceof Card))
-    {
-      return false;
-    }
-    Card rhs = (Card) compareObj;
-    return this.badWords.equals( rhs.getBadWords() ) && 
-      this.rws == rhs.getRws() &&
-      this.title.equals( rhs.getTitle() );    
-  }
-
-  /**
-   * Function for initializing card state
-   */
-  private void init( int id, int rws, String title,
-                     ArrayList<String> badWords )
-  {
-    Log.d( TAG, "init()" );
-    this.rws = rws;
-    this.title = title;
-    this.badWords = badWords;
-  }
-
-  public int getRws()
-  {
-    Log.d( TAG, "getRws()" );
-    return this.rws;
-  }
-
-
-  public void setRws( int rws )
-  {
-    Log.d( TAG, "setRws()" );
-    this.rws = rws;
-  }
-
-
-  public String getTitle()
-  {
-    Log.d( TAG, "getTitle()" );
-    return this.title;
-  }
-
-
-  public void setTitle( String title )
-  {
-    Log.d( TAG, "setTitle()" );
-    this.title = title;
-  }
-
-
-  public ArrayList<String> getBadWords()
-  {
-    Log.d( TAG, "getBadWords()" );
-    return this.badWords;
-  }
-
-
-  public void setBadWords( ArrayList<String> badWords )
-  {
-    Log.d( TAG, "setBadWords(ArrayList<String>)" );
-    this.badWords = badWords;
-  }
-
-  /**
-   * Override setter for a comma-separated string
-   * @param commaSeparated
-   */
-  public void setBadWords( String commaSeparated )
-  {
-    Log.d( TAG, "setBadWords(String)" );
-    this.badWords = Card.BustString( commaSeparated );
-  }
-
-  /**
-   * Get the resource ID for this card's right wrong skip icon
-   */
-  public int getRowEndDrawableId()
-  {
-    Log.d( TAG, "getRowEndDrawableId()" );
-  	switch ( this.rws )
-  	{
-  	case 0:
-  	  return R.drawable.right;
-  	case 1:
-  	  return R.drawable.wrong;
-  	case 2:
-  	  return R.drawable.skip;
-  	default:
-  	  return 0;
-  	}
-  }
-  
-/**
-   * Get the resource ID for this card's right wrong skip icon Mid-turn (when user hits back).
-   * These IDs must differ from those on Turn Result Screen.
- */
-  public static int getCardMarkDrawableId(int cardRWS)
-  {
-    Log.d( TAG, "getDrawableId()" );
-    switch ( cardRWS )
-    {
+    switch (cardRWS) {
     case RIGHT:
       return R.drawable.controls_right;
     case WRONG:
@@ -222,32 +88,214 @@ public class Card
       return 0;
     }
   }
-  
+
   /**
-   * Cycle right/wrong/skip for the turn summary
+   * Default constructor
    */
-  public void cycleRws()
-  {
-    Log.d( TAG, "cycleRws()" );
-    this.rws++;
-    if( rws == 3 )
-    {
-      rws = 0;
+  public Card() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "Card()");
+    }
+    this.init(-1, -1, "", new ArrayList<String>());
+  }
+
+  /**
+   * Copy Constructor
+   */
+  public Card(Card rhs) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "Card( Card )");
+    }
+    ArrayList<String> bws = new ArrayList<String>(rhs.getBadWords());
+    this.init(rhs.getId(), rhs.getRws(), rhs.getTitle(), bws);
+  }
+
+  /**
+   * Standard constructor accepting all members as their native types
+   * 
+   * @param id
+   * @param rws
+   * @param title
+   * @param badWords
+   */
+  public Card(int id, int rws, String title, ArrayList<String> badWords) {
+    this.init(id, rws, title, badWords);
+  }
+
+  /**
+   * Shortcut constructor for comma-separated bad word entry
+   * 
+   * @param id
+   * @param title
+   * @param badWords
+   */
+  public Card(int id, String title, String badWords) {
+    this.init(id, -1, title, Card.bustString(badWords));
+  }
+
+  /**
+   * Equals function for comparison
+   */
+  @Override
+  public boolean equals(Object compareObj) {
+    if (this == compareObj) {
+      return true;
+    }
+
+    if (compareObj == null) {
+      return false;
+    }
+
+    if (!(compareObj instanceof Card)) {
+      return false;
+    }
+    Card rhs = (Card) compareObj;
+    return mBadWords.equals(rhs.getBadWords()) && mRws == rhs.getRws()
+        && mTitle.equals(rhs.getTitle());
+  }
+
+  /**
+   * Function for initializing card state
+   */
+  private void init(int id, int rws, String title, ArrayList<String> badWords) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "init()");
+    }
+    mRws = rws;
+    mTitle = title;
+    mBadWords = badWords;
+  }
+
+  /**
+   * Get the right/wrong/skip state as an integer
+   * 
+   * @return
+   */
+  public int getRws() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getRws()");
+    }
+    return mRws;
+  }
+
+  /**
+   * Set the right/wrong/skip state as an integer
+   * 
+   * @param rws
+   */
+  public void setRws(int rws) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "setRws()");
+    }
+    mRws = rws;
+  }
+
+  /**
+   * Get a reference to the title string
+   * 
+   * @return
+   */
+  public String getTitle() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getTitle()");
+    }
+    return mTitle;
+  }
+
+  /**
+   * Set the title as a string
+   * 
+   * @param title
+   */
+  public void setTitle(String title) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "setTitle()");
+    }
+    mTitle = title;
+  }
+
+  /**
+   * Get the bad words as an ArrayList reference
+   * 
+   * @return an array list of bad words
+   */
+  public ArrayList<String> getBadWords() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getBadWords()");
+    }
+    return mBadWords;
+  }
+
+  /**
+   * Set the bad words as an array list of strings
+   * 
+   * @param badWords
+   */
+  public void setBadWords(ArrayList<String> badWords) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "setBadWords(ArrayList<String>)");
+    }
+    mBadWords = badWords;
+  }
+
+  /**
+   * Override setter for a comma-separated string
+   * 
+   * @param commaSeparated
+   */
+  public void setBadWords(String commaSeparated) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "setBadWords(String)");
+    }
+    mBadWords = Card.bustString(commaSeparated);
+  }
+
+  /**
+   * Get the resource ID for this card's right wrong skip icon
+   */
+  public int getRowEndDrawableId() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getRowEndDrawableId()");
+    }
+    switch (mRws) {
+    case 0:
+      return R.drawable.right;
+    case 1:
+      return R.drawable.wrong;
+    case 2:
+      return R.drawable.skip;
+    default:
+      return 0;
     }
   }
 
   /**
-   * @param id the id to set
+   * Cycle right/wrong/skip for the turn summary
    */
-  public void setId(int id) {
-    this.id = id;
+  public void cycleRws() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "cycleRws()");
+    }
+    mRws++;
+    if (mRws == 3) {
+      mRws = 0;
+    }
   }
 
   /**
-   * @return the id
+   * Sets a card's id (from DB)
+   * 
+   * @param id
+   */
+  public void setId(int id) {
+    mId = id;
+  }
+
+  /**
+   * @return the id (DB)
    */
   public int getId() {
-    return id;
+    return mId;
   }
 
 }

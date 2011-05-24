@@ -34,7 +34,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 /**
- * @author The BuzzWords Team
+ * @author Siramix Labs
  * The Settings class handles the setting of exposed prefences
  */
 public class Settings extends PreferenceActivity 
@@ -49,12 +49,12 @@ public class Settings extends PreferenceActivity
   {
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key) 
     {
-      Log.d( TAG, "onSharedPreferencesChanged()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onSharedPreferencesChanged()" );  }
       if ( key.equals( "music_enabled"))
       {
         // Start or stop the music
         BuzzWordsApplication application = (BuzzWordsApplication) Settings.this.getApplication();
-        MediaPlayer mp = application.GetMusicPlayer();
+        MediaPlayer mp = application.getMusicPlayer();
         if( sharedPreferences.getBoolean("music_enabled", true))
         {
           if( !mp.isPlaying())
@@ -91,7 +91,7 @@ public class Settings extends PreferenceActivity
   public void onCreate( Bundle savedInstanceState )
   {
 	super.onCreate( savedInstanceState );
-    Log.d( TAG, "onCreate()" ); 
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreate()" );  }
 
     continueMusic = false;
 
@@ -136,7 +136,7 @@ public class Settings extends PreferenceActivity
     if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled() )
       {
-        Log.d( TAG, "BackKeyUp()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "BackKeyUp()" );  }
         // Keep music playing
         Settings.this.continueMusic = true;
       }
@@ -151,7 +151,7 @@ public class Settings extends PreferenceActivity
 	@Override
 	public void onPause()
 	{
-	   Log.d( TAG, "onPause()" );   
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onPause()" );  }
 	   super.onPause();
 	   
 	   //Unregister settings listeners
@@ -160,7 +160,7 @@ public class Settings extends PreferenceActivity
 	   
 	   // Pause music
 	   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
-	   MediaPlayer mp = application.GetMusicPlayer();
+	   MediaPlayer mp = application.getMusicPlayer();
 	   if ( !Settings.this.continueMusic && mp.isPlaying())
 	   {
 	     mp.pause();	     
@@ -173,12 +173,12 @@ public class Settings extends PreferenceActivity
 	@Override
 	public void onResume()
 	{
-	   Log.d( TAG, "onResume()" );   
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onResume()" );  }
 	   super.onResume();
 	   
 	   // Resume Title Music
 	   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
-	   MediaPlayer mp = application.GetMusicPlayer();
+	   MediaPlayer mp = application.getMusicPlayer();
 	   SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
 	   if( !mp.isPlaying() && sp.getBoolean("music_enabled", true))
 	   {

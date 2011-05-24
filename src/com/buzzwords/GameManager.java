@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
- * @author The BuzzWords Team
+ * @author Siramix Labs
  *
  * The Game Manager is a class that will manage all aspects of the game scoring
  * and general bookkeeping. This is the go-to class for creating new games,
@@ -87,7 +87,7 @@ public class GameManager
    */
   public GameManager( Context context )
   {
-    Log.d( TAG, "GameManager()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GameManager()" );  }
  
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     
@@ -98,7 +98,7 @@ public class GameManager
     
     this.turn_time = Integer.parseInt(sp.getString("turn_timer", "60")) * 1000;
     
-    Log.d( TAG, "Turn time is " + turn_time );    
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "Turn time is " + turn_time );  }
     this.rws_value_rules = new int[3];
     
     //Set score values for game
@@ -116,7 +116,7 @@ public class GameManager
    */
   public Card getNextCard()
   {
-    Log.d( TAG, "getNextCard()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "getNextCard()" );  }
     this.currentCard = this.deck.getCard();
     return this.currentCard;
   }
@@ -127,7 +127,7 @@ public class GameManager
    */
   public Card getPreviousCard()
   {
-    Log.d( TAG, "getPreviousCard()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "getPreviousCard()" );  }
     
     if( this.cardPosition == 0 )
     {
@@ -148,7 +148,7 @@ public class GameManager
    */
   public void StartGame( List<Team> teams, int rounds )
   {
-    Log.d( TAG, "StartGame()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "StartGame()" );  }
     this.teams = teams;
     Iterator<Team> itr = teams.iterator();
     for(itr = teams.iterator(); itr.hasNext();)
@@ -169,7 +169,7 @@ public class GameManager
    */
   public void NextTurn()
   {
-    Log.d( TAG, "NextTurn()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "NextTurn()" );  }
     int score = this.currentTeam.getScore() + GetTurnScore();
     this.currentTeam.setScore( score );
     this.incrementActiveTeamIndex();
@@ -197,7 +197,7 @@ public class GameManager
    */
   public void EndGame()
   {
-    Log.d( TAG, "EndGame()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "EndGame()" );  }
     int score = this.currentTeam.getScore() + GetTurnScore();
     this.currentTeam.setScore( score );
     this.teamIterator = this.teams.iterator();
@@ -209,7 +209,7 @@ public class GameManager
    */
   public void ProcessCard( int rws )
   {
-    Log.d( TAG, "ProcessCard(" + rws + ")" );      
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "ProcessCard(" + rws + ")" );  }
     this.currentCard.setRws( rws );
     this.currentCards.add( new Card(currentCard) );
   }
@@ -220,7 +220,7 @@ public class GameManager
    */
   public Card GetCurrentCard()
   {
-    Log.d( TAG, "GetCurrentCard()" );
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetCurrentCard()" );  }
     return this.currentCard;
   }
 
@@ -230,7 +230,7 @@ public class GameManager
    */
   public LinkedList<Card> GetCurrentCards()
   {   
-    Log.d( TAG, "GetCurrentCards()" );              
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetCurrentCards()" );  }
 	  return this.currentCards;
   }
 
@@ -241,7 +241,7 @@ public class GameManager
    */
   public int GetTurnScore()
   {
-    Log.d( TAG, "GetTurnScore()" );              
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetTurnScore()" );  }
     int ret = 0;
 	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
 	  {
@@ -257,7 +257,7 @@ public class GameManager
    */
   public List<Team> GetTeams()
   {
-    Log.d( TAG, "GetTeams()" );                  
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetTeams()" );  }
 	  return this.teams;
   }
   
@@ -267,7 +267,7 @@ public class GameManager
    */
   public Team GetActiveTeam()
   {
-    Log.d( TAG, "GetActiveTeamIndex()" );                      
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetActiveTeamIndex()" );  }
     return this.currentTeam;
   }
   
@@ -278,7 +278,7 @@ public class GameManager
    */
   public int GetNumTeams()
   {
-    Log.d( TAG, "GetNumTeams()" );                          
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetNumTeams()" );  }
 	  return this.teams.size();
   }
   
@@ -288,7 +288,7 @@ public class GameManager
    */
   public int GetCurrentRound()
   {
-    Log.d( TAG, "GetCurrentRound()" );                          
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetCurrentRound()" );  }
     return this.currentRound+1;
   }
 
@@ -298,7 +298,7 @@ public class GameManager
    */
   public int GetNumRounds()
   {
-    Log.d( TAG, "GetNumRounds()" );                          
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetNumRounds()" );  }
     return this.numRounds;
   }
   
@@ -309,7 +309,7 @@ public class GameManager
    */
   public int GetTurnTime()
   {
-    Log.d( TAG, "GetTurnTime()" );    
+if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetTurnTime()" );  }
     return this.turn_time;
   }
   
