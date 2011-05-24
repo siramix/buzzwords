@@ -46,12 +46,15 @@ public class SplashScreen extends Activity {
   protected int SPLASHTIME = 3000;
 
   // Flag prevents double calls to open the next activity
-  private boolean SplashDone = false;
+  private boolean mSplashDone = false;
 
   private Thread mInstallThread;
 
   /**
    * Called on creation of splash screen activity
+   * 
+   * @param savedInstanceState
+   *          Bundle of saved state used for re-creation
    */
   public void onCreate(Bundle savedInstanceState) {
     if (BuzzWordsApplication.DEBUG) {
@@ -78,7 +81,9 @@ public class SplashScreen extends Activity {
   }
 
   /**
-   * Handle interrupts to splash screen
+   * Handle interupts to the spash screen
+   * 
+   * @return true if the event was consumed
    */
   public boolean onTouchEvent(MotionEvent event) {
     if (BuzzWordsApplication.DEBUG) {
@@ -111,7 +116,7 @@ public class SplashScreen extends Activity {
   /**
    * Listener that ends splash screen when it is done animating.
    */
-  private final AnimationListener fadeListener = new AnimationListener() {
+  private final AnimationListener mFadeListener = new AnimationListener() {
 
     public void onAnimationEnd(Animation animation) {
       if (BuzzWordsApplication.DEBUG) {
@@ -120,9 +125,6 @@ public class SplashScreen extends Activity {
       SplashScreen.this.exitSplash();
     }
 
-    /**
-     * Implementation required by AnimationListener.
-     */
     public void onAnimationRepeat(Animation animation) {
     }
 
@@ -140,12 +142,12 @@ public class SplashScreen extends Activity {
     }
 
     // Do nothing if the splash has already been cancelled once
-    if (this.SplashDone) {
+    if (this.mSplashDone) {
       return;
     }
     // Setting boolean prevents the endAnimation from calling exitSplash a
     // second time.
-    this.SplashDone = true;
+    this.mSplashDone = true;
 
     ImageView logotext = (ImageView) this.findViewById(R.id.Splash_LogoText);
     ImageView logoram = (ImageView) this.findViewById(R.id.Splash_LogoRam);
@@ -189,7 +191,7 @@ public class SplashScreen extends Activity {
     textset.addAnimation(fadeout);
 
     // Listener called to move to next activity
-    textset.setAnimationListener(fadeListener);
+    textset.setAnimationListener(mFadeListener);
 
     ImageView logotext = (ImageView) this.findViewById(R.id.Splash_LogoText);
     ImageView logoram = (ImageView) this.findViewById(R.id.Splash_LogoRam);
