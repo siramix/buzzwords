@@ -1,128 +1,157 @@
+/*****************************************************************************
+ *  Buzzwords is a family friendly word game for mobile phones.
+ *  Copyright (C) 2011 Siramix Team
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
 package com.buzzwords;
 
 import android.os.CountDownTimer;
 import android.util.Log;
 
-/* 
- * Adds pause and resume capabilities to CountDownTimer.  Requires implementation of abstract methods
- * for onFinish and onTick.  Assumes 200ms tick time.
+/**
+ * Adds pause and resume capabilities to CountDownTimer. Requires implementation
+ * of abstract methods for onFinish and onTick. Assumes 200ms tick time.
  * 
  * @author Siramix Labs
  */
-public abstract class PauseTimer
-{
+public abstract class PauseTimer {
   /**
    * Static string used to refer to this class, in debug output for example.
    */
   private static final String TAG = "PauseTimer";
-  
+
+  /**
+   * Tick frequencey of the timer
+   */
   private static final int TICK = 200;
-  private boolean timerActive = false;
-  private long timeRemaining;
-  private CountDownTimer timer;
-  
+  private boolean mTimerActive = false;
+  private long mTimeRemaining;
+  private CountDownTimer mTimer;
+
   /*
    * The underlying timer
    */
-  private class InternalTimer extends CountDownTimer
-  {
-  
-    public InternalTimer(long millisInFuture, long countDownInterval)
-    {
+  private class InternalTimer extends CountDownTimer {
+
+    public InternalTimer(long millisInFuture, long countDownInterval) {
       super(millisInFuture, countDownInterval);
-      Log.d ( TAG, "InternalTimer(" + millisInFuture + "," + countDownInterval + ")" );
+      Log.d(TAG, "InternalTimer(" + millisInFuture + "," + countDownInterval
+          + ")");
     }
-    
+
     @Override
-    public void onFinish() 
-    {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onFinish()" );  }
+    public void onFinish() {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "onFinish()");
+      }
       PauseTimer.this.onFinish();
-      PauseTimer.this.timerActive = false;
+      PauseTimer.this.mTimerActive = false;
     }
-    
+
     @Override
-    public void onTick(long millisUntilFinished) 
-    {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onTick(" + millisUntilFinished + ")" );  }
-      PauseTimer.this.timeRemaining = millisUntilFinished;
+    public void onTick(long millisUntilFinished) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "onTick(" + millisUntilFinished + ")");
+      }
+      PauseTimer.this.mTimeRemaining = millisUntilFinished;
       PauseTimer.this.onTick();
     }
   }
 
-  /*
-   * Create a timer with pause capabilities.  Must be manually started by calling .start()
+  /**
+   * Create a timer with pause capabilities. Must be manually started by calling
+   * .start()
    */
-  public PauseTimer(long timeToCount) 
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "PauseTimer(" + timeToCount + ")" );  }
-    this.timer = new InternalTimer(timeToCount, TICK);
-    this.timeRemaining = timeToCount;
+  public PauseTimer(long timeToCount) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "PauseTimer(" + timeToCount + ")");
+    }
+    this.mTimer = new InternalTimer(timeToCount, TICK);
+    this.mTimeRemaining = timeToCount;
   }
-     
-  /*
+
+  /**
    * Called when internal timer finishes
    */
   abstract public void onFinish();
-  /*
+
+  /**
    * Called when internal timer updates
    */
-  abstract public void onTick(); 
-  
-  /*
+  abstract public void onTick();
+
+  /**
    * Start the timer countdown from the initialized time
    */
-  public void start()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "start()" );  }
-    this.timer.start();
-    this.timerActive = true;
-  }
-  
-  /*
-   * Pause an active timer.  Use resume() to resume.
-   */
-  public void pause()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "pause()" );  }
-    if(this.timerActive)
-    {
-      this.timerActive = false;
-      this.timer.cancel();
+  public void start() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "start()");
     }
+    this.mTimer.start();
+    this.mTimerActive = true;
   }
-  
-  /*
-   * Resume the timer from the time when last paused.
-   */  	
-  public void resume()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "resume()" );  }
-    if(!this.timerActive)
-    {
-      this.timer = new InternalTimer(timeRemaining, TICK);
-      this.timer.start();
-      this.timerActive = true;
+
+  /**
+   * Pause an active timer. Use resume() to resume.
+   */
+  public void pause() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "pause()");
+    }
+    if (this.mTimerActive) {
+      this.mTimerActive = false;
+      this.mTimer.cancel();
     }
   }
 
-  /*
-   * Check if a timer is currently counting down or paused.
-   * @return true if timer is counting down (paused).  returns false if paused or already expired
-   */   
-  public boolean isActive()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "isActive()" );  }
-    return this.timerActive;
+  /**
+   * Resume the timer from the time when last paused.
+   */
+  public void resume() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "resume()");
+    }
+    if (!this.mTimerActive) {
+      this.mTimer = new InternalTimer(mTimeRemaining, TICK);
+      this.mTimer.start();
+      this.mTimerActive = true;
+    }
   }
-  
-  /*
+
+  /**
+   * Check if a timer is currently counting down or paused.
+   * 
+   * @return true if timer is counting down (paused). returns false if paused or
+   * already expired
+   */
+  public boolean isActive() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "isActive()");
+    }
+    return this.mTimerActive;
+  }
+
+  /**
    * Get the time left before this timer expires and calls onFinished()
+   * 
    * @return long representing milliseconds remaining
-   */   
-  public long getTimeRemaining()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "getTimeRemaining()" );  }
-    return this.timeRemaining;
+   */
+  public long getTimeRemaining() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getTimeRemaining()");
+    }
+    return this.mTimeRemaining;
   }
 }
