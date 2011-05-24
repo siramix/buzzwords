@@ -9,7 +9,7 @@ import com.buzzwords.R;
 
 
 /**
- * @author cpatrick
+ * @author Siramix Labs
  *
  */
 public enum Team
