@@ -116,25 +116,25 @@ public class GameManager {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(context);
 
-    this.mCurrentRound = 0;
-    this.mCurrentTurn = 0;
-    this.mCurrentCards = new LinkedList<Card>();
-    this.mRwsResourceIds = new int[] { R.drawable.right, R.drawable.wrong,
+    mCurrentRound = 0;
+    mCurrentTurn = 0;
+    mCurrentCards = new LinkedList<Card>();
+    mRwsResourceIds = new int[] { R.drawable.right, R.drawable.wrong,
         R.drawable.skip };
 
-    this.mTurnTime = Integer.parseInt(sp.getString("turn_timer", "60")) * 1000;
+    mTurnTime = Integer.parseInt(sp.getString("turn_timer", "60")) * 1000;
 
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "Turn time is " + mTurnTime);
     }
-    this.mRwsValueRules = new int[3];
+    mRwsValueRules = new int[3];
 
     // Set score values for game
-    this.mRwsValueRules[0] = 1; // Value for correct cards
-    this.mRwsValueRules[1] = -1; // Value for wrong cards
-    this.mRwsValueRules[2] = 0; // set skip value to 0 if skip penalty is not on
+    mRwsValueRules[0] = 1; // Value for correct cards
+    mRwsValueRules[1] = -1; // Value for wrong cards
+    mRwsValueRules[2] = 0; // set skip value to 0 if skip penalty is not on
 
-    this.mDeck = new Deck(context);
+    mDeck = new Deck(context);
   }
 
   /**
@@ -147,8 +147,8 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "getNextCard()");
     }
-    this.mCurrentCard = this.mDeck.getCard();
-    return this.mCurrentCard;
+    mCurrentCard = mDeck.getCard();
+    return mCurrentCard;
   }
 
   /**
@@ -161,14 +161,14 @@ public class GameManager {
       Log.d(TAG, "getPreviousCard()");
     }
 
-    if (this.mCardPosition == 0) {
-      this.mCardPosition = 1;
+    if (mCardPosition == 0) {
+      mCardPosition = 1;
     }
-    this.mCurrentCard = this.mCurrentCards.get(this.mCurrentCards.size() - 1);
-    if (!this.mCurrentCards.isEmpty()) {
-      this.mCurrentCards.removeLast();
+    mCurrentCard = mCurrentCards.get(mCurrentCards.size() - 1);
+    if (!mCurrentCards.isEmpty()) {
+      mCurrentCards.removeLast();
     }
-    return this.mCurrentCard;
+    return mCurrentCard;
   }
 
   /**
@@ -184,17 +184,17 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "StartGame()");
     }
-    this.mTeams = teams;
+    mTeams = teams;
     Iterator<Team> itr = teams.iterator();
     for (itr = teams.iterator(); itr.hasNext();) {
       itr.next().setScore(0);
     }
-    this.mTeamIterator = teams.iterator();
-    this.mCurrentTeam = mTeamIterator.next();
-    this.mNumRounds = rounds;
-    this.mNumTurns = this.mTeams.size() * this.mNumRounds;
-    this.mCurrentTurn++;
-    this.mDeck.prepareForRound();
+    mTeamIterator = teams.iterator();
+    mCurrentTeam = mTeamIterator.next();
+    mNumRounds = rounds;
+    mNumTurns = mTeams.size() * mNumRounds;
+    mCurrentTurn++;
+    mDeck.prepareForRound();
   }
 
   /**
@@ -205,21 +205,21 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "NextTurn()");
     }
-    int score = this.mCurrentTeam.getScore() + getTurnScore();
-    this.mCurrentTeam.setScore(score);
+    int score = mCurrentTeam.getScore() + getTurnScore();
+    mCurrentTeam.setScore(score);
     this.incrementActiveTeamIndex();
-    this.mCurrentCards.clear();
-    this.mCurrentTurn++;
-    this.mDeck.prepareForRound();
+    mCurrentCards.clear();
+    mCurrentTurn++;
+    mDeck.prepareForRound();
   }
 
   public void incrementActiveTeamIndex() {
-    if (this.mTeamIterator.hasNext()) {
-      this.mCurrentTeam = this.mTeamIterator.next();
+    if (mTeamIterator.hasNext()) {
+      mCurrentTeam = mTeamIterator.next();
     } else {
-      this.mTeamIterator = this.mTeams.iterator();
-      this.mCurrentTeam = this.mTeamIterator.next();
-      this.mCurrentRound++;
+      mTeamIterator = mTeams.iterator();
+      mCurrentTeam = mTeamIterator.next();
+      mCurrentRound++;
     }
   }
 
@@ -230,9 +230,9 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "EndGame()");
     }
-    int score = this.mCurrentTeam.getScore() + getTurnScore();
-    this.mCurrentTeam.setScore(score);
-    this.mTeamIterator = this.mTeams.iterator();
+    int score = mCurrentTeam.getScore() + getTurnScore();
+    mCurrentTeam.setScore(score);
+    mTeamIterator = mTeams.iterator();
   }
 
   /**
@@ -245,8 +245,8 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "ProcessCard(" + rws + ")");
     }
-    this.mCurrentCard.setRws(rws);
-    this.mCurrentCards.add(new Card(mCurrentCard));
+    mCurrentCard.setRws(rws);
+    mCurrentCards.add(new Card(mCurrentCard));
   }
 
   /**
@@ -258,7 +258,7 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetCurrentCard()");
     }
-    return this.mCurrentCard;
+    return mCurrentCard;
   }
 
   /**
@@ -270,7 +270,7 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetCurrentCards()");
     }
-    return this.mCurrentCards;
+    return mCurrentCards;
   }
 
   /**
@@ -300,7 +300,7 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetTeams()");
     }
-    return this.mTeams;
+    return mTeams;
   }
 
   /**
@@ -312,7 +312,7 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetActiveTeamIndex()");
     }
-    return this.mCurrentTeam;
+    return mCurrentTeam;
   }
 
   /**
@@ -325,7 +325,7 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetNumTeams()");
     }
-    return this.mTeams.size();
+    return mTeams.size();
   }
 
   /**
@@ -338,7 +338,7 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetCurrentRound()");
     }
-    return this.mCurrentRound + 1;
+    return mCurrentRound + 1;
   }
 
   /**
@@ -350,7 +350,7 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetNumRounds()");
     }
-    return this.mNumRounds;
+    return mNumRounds;
   }
 
   /**
@@ -362,10 +362,10 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetTurnTime()");
     }
-    return this.mTurnTime;
+    return mTurnTime;
   }
 
   public int getNumberOfTurnsRemaining() {
-    return this.mNumTurns - this.mCurrentTurn;
+    return mNumTurns - mCurrentTurn;
   }
 }

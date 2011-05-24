@@ -99,7 +99,7 @@ public class GameEnd extends Activity {
     animGameOver.addAnimation(fadeInGameOver);
     animGameOver.addAnimation(fadeOutGameOver);
     animGameOver.setFillAfter(true);
-    animGameOver.setAnimationListener(this.mGameOverListener);
+    animGameOver.setAnimationListener(mGameOverListener);
 
     RelativeLayout gameOverGroup = (RelativeLayout) this
         .findViewById(R.id.GameEnd_GameOverGroup);
@@ -127,7 +127,7 @@ public class GameEnd extends Activity {
     AlphaAnimation fadeInButtons = new AlphaAnimation(0.0f, 1.0f);
     fadeInButtons.setStartOffset(1000);
     fadeInButtons.setDuration(500);
-    fadeInButtons.setAnimationListener(this.mButtonFadeListener);
+    fadeInButtons.setAnimationListener(mButtonFadeListener);
     Button tempButton = (Button) this.findViewById(R.id.GameEnd_MainMenu);
     tempButton.startAnimation(fadeInButtons);
     tempButton = (Button) this.findViewById(R.id.GameEnd_Rematch);
@@ -303,7 +303,7 @@ public class GameEnd extends Activity {
 
     super.onCreate(savedInstanceState);
     this.setContentView(R.layout.gameend);
-    this.mResources = this.getResources();
+    mResources = this.getResources();
 
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
