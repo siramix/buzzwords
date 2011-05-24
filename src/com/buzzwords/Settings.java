@@ -15,7 +15,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-
 package com.buzzwords;
 
 import com.buzzwords.R;
@@ -34,160 +33,161 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 /**
- * @author Siramix Labs
  * The Settings class handles the setting of exposed prefences
+ * 
+ * @author Siramix Labs
  */
-public class Settings extends PreferenceActivity 
-{
-  
-  private boolean continueMusic = false; // Flag to continue music across Activities
-  
+public class Settings extends PreferenceActivity {
+
+  private boolean mContinueMusic = false; // Flag to continue music across
+                                          // Activities
+
   /**
-   * Watch the settings to update any changes (like start up music, reset subtext, etc.)
+   * Watch the settings to update any changes (like start up music, reset
+   * subtext, etc.)
    */
-  private OnSharedPreferenceChangeListener PrefListener = new OnSharedPreferenceChangeListener()
-  {
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key) 
-    {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onSharedPreferencesChanged()" );  }
-      if ( key.equals( "music_enabled"))
-      {
+  private OnSharedPreferenceChangeListener mPrefListener = new OnSharedPreferenceChangeListener() {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+        String key) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "onSharedPreferencesChanged()");
+      }
+      if (key.equals("music_enabled")) {
         // Start or stop the music
-        BuzzWordsApplication application = (BuzzWordsApplication) Settings.this.getApplication();
+        BuzzWordsApplication application = (BuzzWordsApplication) Settings.this
+            .getApplication();
         MediaPlayer mp = application.getMusicPlayer();
-        if( sharedPreferences.getBoolean("music_enabled", true))
-        {
-          if( !mp.isPlaying())
-          {
+        if (sharedPreferences.getBoolean("music_enabled", true)) {
+          if (!mp.isPlaying()) {
             mp.start();
           }
-        }
-        else
-        {
-          if( mp.isPlaying())
-          {
+        } else {
+          if (mp.isPlaying()) {
             mp.pause();
           }
         }
       }
-      
-      else if ( key.equals( "turn_timer" ))
-      {
+
+      else if (key.equals("turn_timer")) {
         // When turn timer is changed, update the caption
-        Settings.this.UpdateTimerLabel( );
+        Settings.this.updateTimerLabel();
       }
-    }    
-  };    
-      
+    }
+  };
+
   /**
    * logging tag
    */
   public static String TAG = "Settings";
-  
+
   /**
    * onCreate - initializes a settings screen
    */
   @Override
-  public void onCreate( Bundle savedInstanceState )
-  {
-	super.onCreate( savedInstanceState );
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreate()" );  }
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onCreate()");
+    }
 
-    continueMusic = false;
+    mContinueMusic = false;
 
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
-    
-	this.addPreferencesFromResource(R.xml.settings);
-	  
+
+    this.addPreferencesFromResource(R.xml.settings);
+
     // When turn timer is loaded, update the caption
-    this.UpdateTimerLabel( );
-    
+    this.updateTimerLabel();
+
     // Update the version preference caption to the existing app version
-    Preference version = findPreference( "app_version" );
-    try
-    {
-      version.setTitle( this.getString( R.string.AppName ) );
-      version.setSummary(" Version " + this.getPackageManager().getPackageInfo( this.getPackageName(), 0).versionName );
-    } 
-    catch (NameNotFoundException e)
-    {
+    Preference version = findPreference("app_version");
+    try {
+      version.setTitle(this.getString(R.string.AppName));
+      version
+          .setSummary(" Version "
+              + this.getPackageManager().getPackageInfo(this.getPackageName(),
+                  0).versionName);
+    } catch (NameNotFoundException e) {
       e.printStackTrace();
-      Log.e ( TAG, e.getMessage() );
+      Log.e(TAG, e.getMessage());
     }
   }
 
   /**
    * Updates the timer label by checking the preference for the current time
    */
-  private void UpdateTimerLabel()
-  {
+  private void updateTimerLabel() {
     // When turn timer is loaded, update the caption
-    ListPreference lp = (ListPreference) findPreference( "turn_timer" );
-    lp.setSummary( lp.getValue() + " seconds" );     
+    ListPreference lp = (ListPreference) findPreference("turn_timer");
+    lp.setSummary(lp.getValue() + " seconds");
   }
-  
+
   /**
    * Override back button to carry music on back to the Title activity
    */
   @Override
-  public boolean onKeyUp(int keyCode, KeyEvent event)
-  {
-    if( keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
-        && !event.isCanceled() )
-      {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "BackKeyUp()" );  }
-        // Keep music playing
-        Settings.this.continueMusic = true;
+  public boolean onKeyUp(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+        && !event.isCanceled()) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "BackKeyUp()");
       }
-    
+      // Keep music playing
+      mContinueMusic = true;
+    }
+
     return super.onKeyUp(keyCode, event);
   }
-  	
-	
-	/**
-	 * Override onPause to prevent activity specific processes from running while app is in background
-	 */
-	@Override
-	public void onPause()
-	{
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onPause()" );  }
-	   super.onPause();
-	   
-	   //Unregister settings listeners
-	   SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
-	   sp.unregisterOnSharedPreferenceChangeListener( PrefListener );	   
-	   
-	   // Pause music
-	   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
-	   MediaPlayer mp = application.getMusicPlayer();
-	   if ( !Settings.this.continueMusic && mp.isPlaying())
-	   {
-	     mp.pause();	     
-	   }
-	}
 
-	/**
-	 * Override OnResume to resume activity specific processes
-	 */
-	@Override
-	public void onResume()
-	{
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onResume()" );  }
-	   super.onResume();
-	   
-	   // Resume Title Music
-	   BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
-	   MediaPlayer mp = application.getMusicPlayer();
-	   SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
-	   if( !mp.isPlaying() && sp.getBoolean("music_enabled", true))
-	   {
-	       mp.start();   
-	   }
-	   
-	    // Register preference listener with SharedPreferences
-	    sp.registerOnSharedPreferenceChangeListener(Settings.this.PrefListener);
-	   
-	   continueMusic = false;
-	}
+  /**
+   * Override onPause to prevent activity specific processes from running while
+   * app is in background
+   */
+  @Override
+  public void onPause() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onPause()");
+    }
+    super.onPause();
+
+    // Unregister settings listeners
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
+        .getBaseContext());
+    sp.unregisterOnSharedPreferenceChangeListener(mPrefListener);
+
+    // Pause music
+    BuzzWordsApplication application = (BuzzWordsApplication) this
+        .getApplication();
+    MediaPlayer mp = application.getMusicPlayer();
+    if (!mContinueMusic && mp.isPlaying()) {
+      mp.pause();
+    }
+  }
+
+  /**
+   * Override OnResume to resume activity specific processes
+   */
+  @Override
+  public void onResume() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onResume()");
+    }
+    super.onResume();
+
+    // Resume Title Music
+    BuzzWordsApplication application = (BuzzWordsApplication) this
+        .getApplication();
+    MediaPlayer mp = application.getMusicPlayer();
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
+        .getBaseContext());
+    if (!mp.isPlaying() && sp.getBoolean("music_enabled", true)) {
+      mp.start();
+    }
+
+    // Register preference listener with SharedPreferences
+    sp.registerOnSharedPreferenceChangeListener(mPrefListener);
+
+    mContinueMusic = false;
+  }
 }
