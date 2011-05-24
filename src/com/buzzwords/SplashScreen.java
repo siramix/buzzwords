@@ -142,12 +142,12 @@ public class SplashScreen extends Activity {
     }
 
     // Do nothing if the splash has already been cancelled once
-    if (this.mSplashDone) {
+    if (mSplashDone) {
       return;
     }
     // Setting boolean prevents the endAnimation from calling exitSplash a
     // second time.
-    this.mSplashDone = true;
+    mSplashDone = true;
 
     ImageView logotext = (ImageView) this.findViewById(R.id.Splash_LogoText);
     ImageView logoram = (ImageView) this.findViewById(R.id.Splash_LogoRam);
