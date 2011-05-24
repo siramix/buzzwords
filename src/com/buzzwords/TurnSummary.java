@@ -93,7 +93,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, Integer.toString( cardIndex ) );  
           BuzzWordsApplication application =
             (BuzzWordsApplication) TurnSummary.this.getApplication();
           SoundManager sound = application.getSoundManager();
-          sound.PlaySound(rwsSounds[ curCard.getRws()]);
+          sound.playSound(rwsSounds[ curCard.getRws()]);
         }
     };
     

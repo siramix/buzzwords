@@ -173,7 +173,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "PlayGameListener OnClick()" );  }
          // play confirm sound
          BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
          SoundManager sound = application.getSoundManager();
-         sound.PlaySound( SoundManager.Sound.CONFIRM );
+         sound.playSound( SoundManager.Sound.CONFIRM );
          
          startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentGameSetup),
                                   getIntent().getData()));
@@ -193,7 +193,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "PlayGameListener OnClick()" );  }
          // play confirm sound
          BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
          SoundManager sound = application.getSoundManager();
-         sound.PlaySound( SoundManager.Sound.CONFIRM );
+         sound.playSound( SoundManager.Sound.CONFIRM );
          
          startActivity(new Intent(getApplication().getString( R.string.IntentBuzzer ), 
              getIntent().getData()));
@@ -214,7 +214,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "SettingsListener OnClick()" );  }
       // play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
       SoundManager sound = application.getSoundManager();
-      sound.PlaySound( SoundManager.Sound.CONFIRM );
+      sound.playSound( SoundManager.Sound.CONFIRM );
       
   	  startActivity(new Intent(Title.this.getApplication().getString( R.string.IntentSettings ), 
   	        getIntent().getData()));
@@ -235,7 +235,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "RulesListener OnClick()" );  }
       // play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
       SoundManager sound = application.getSoundManager();
-      sound.PlaySound( SoundManager.Sound.CONFIRM );
+      sound.playSound( SoundManager.Sound.CONFIRM );
       
       startActivity(new Intent(getApplication().getString( R.string.IntentRules ), 
           getIntent().getData()));
@@ -257,7 +257,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "AboutUsListener OnClick()" );  }
       // play confirm sound
       BuzzWordsApplication application = (BuzzWordsApplication) Title.this.getApplication();
       SoundManager sound = application.getSoundManager();
-      sound.PlaySound( SoundManager.Sound.CONFIRM );
+      sound.playSound( SoundManager.Sound.CONFIRM );
       
       Uri uri = Uri.parse("http://www.siramix.com/");  
       Intent intent=new Intent(Intent.ACTION_VIEW,uri);

@@ -136,7 +136,7 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMA,
             false);
-        sound.PlaySound(SoundManager.Sound.BACK);
+        sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMA);
         b.setBackgroundResource(R.color.teamA_text);
@@ -144,7 +144,7 @@ public class GameSetup extends Activity {
             R.color.teamA_secondary));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMA, true);
-        sound.PlaySound(SoundManager.Sound.CONFIRM);
+        sound.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -170,7 +170,7 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMB,
             false);
-        sound.PlaySound(SoundManager.Sound.BACK);
+        sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMB);
         b.setBackgroundResource(R.color.teamB_text);
@@ -178,7 +178,7 @@ public class GameSetup extends Activity {
             R.color.teamB_secondary));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMB, true);
-        sound.PlaySound(SoundManager.Sound.CONFIRM);
+        sound.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -204,7 +204,7 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMC,
             false);
-        sound.PlaySound(SoundManager.Sound.BACK);
+        sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMC);
         b.setBackgroundResource(R.color.teamC_text);
@@ -212,7 +212,7 @@ public class GameSetup extends Activity {
             R.color.teamC_secondary));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMC, true);
-        sound.PlaySound(SoundManager.Sound.CONFIRM);
+        sound.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -238,7 +238,7 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMD,
             false);
-        sound.PlaySound(SoundManager.Sound.BACK);
+        sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMD);
         b.setBackgroundResource(R.color.teamD_text);
@@ -246,7 +246,7 @@ public class GameSetup extends Activity {
             R.color.teamD_secondary));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMD, true);
-        sound.PlaySound(SoundManager.Sound.CONFIRM);
+        sound.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };

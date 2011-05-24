@@ -59,13 +59,13 @@ public class Buzzer extends Activity {
 
       switch (motion.getAction()) {
       case MotionEvent.ACTION_DOWN:
-        buzzStreamId = sm.PlayLoop(SoundManager.Sound.BUZZ);
+        buzzStreamId = sm.playLoop(SoundManager.Sound.BUZZ);
         // Spoof an onclick state
         buzzButton.setBackgroundResource(R.drawable.buzzer_button_onclick);
 
         break;
       case MotionEvent.ACTION_UP:
-        sm.StopSound(buzzStreamId);
+        sm.stopSound(buzzStreamId);
 
         // Return from spoofed onclick state
         buzzButton.setBackgroundResource(R.drawable.buzzer_button);

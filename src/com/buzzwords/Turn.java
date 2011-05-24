@@ -518,7 +518,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doCorrect()");  }
     curGameManager.processCard( Card.RIGHT );
 
     // Only play sound once card has been processed so we don't confuse the user
-    sound.PlaySound( SoundManager.Sound.RIGHT );  
+    sound.playSound( SoundManager.Sound.RIGHT );  
 
     // Mark the card with an icon
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.RIGHT) );
@@ -545,7 +545,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doWrong()");  }
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.WRONG) );
     
     // Only play sound once card has been processed so we don't confuse the user
-    sound.PlaySound( SoundManager.Sound.WRONG );
+    sound.playSound( SoundManager.Sound.WRONG );
     
     // Show the next card
     ShowCard();
@@ -568,7 +568,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doSkip()");  }
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.SKIP) );
     
     //Only play sound once card has been processed so we don't confuse the user
-    sound.PlaySound( SoundManager.Sound.SKIP );
+    sound.playSound( SoundManager.Sound.SKIP );
     
     // Show the next card
     ShowCard();    
@@ -607,7 +607,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doBack()");  }
     // Play back sound
     BuzzWordsApplication app = (BuzzWordsApplication) this.getApplication();
     SoundManager snd = app.getSoundManager();
-    snd.PlaySound(SoundManager.Sound.BACK);
+    snd.playSound(SoundManager.Sound.BACK);
   }
   
   /**
@@ -709,7 +709,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onTimeExpired()" );  }
 
     // Only play gong if music is off
     if (!this.musicEnabled)
-      sound.PlaySound( SoundManager.Sound.GONG );
+      sound.playSound( SoundManager.Sound.GONG );
     
     TextView timer = (TextView) this.findViewById( R.id.Turn_Timer );
     timer.setVisibility( View.INVISIBLE );
@@ -1005,7 +1005,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreateDialog(" + id + ")" );  }
       break;
     case DIALOG_READY_ID:
       // Play team ready sound
-      sound.PlaySound( SoundManager.Sound.TEAMREADY );
+      sound.playSound( SoundManager.Sound.TEAMREADY );
       
       String curTeam = this.curGameManager.getActiveTeam().getName();
       builder = new AlertDialog.Builder(this);

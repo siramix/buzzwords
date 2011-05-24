@@ -219,7 +219,7 @@ public class GameEnd extends Activity {
       // Play win sound
       BuzzWordsApplication app = (BuzzWordsApplication) getApplication();
       SoundManager sound = app.getSoundManager();
-      sound.PlaySound(SoundManager.Sound.WIN);
+      sound.playSound(SoundManager.Sound.WIN);
     }
   };
 
@@ -256,7 +256,7 @@ public class GameEnd extends Activity {
 
       // Play confirm sound
       SoundManager sound = application.getSoundManager();
-      sound.PlaySound(SoundManager.Sound.CONFIRM);
+      sound.playSound(SoundManager.Sound.CONFIRM);
 
       Intent clearStackIntent = new Intent(getApplication().getString(
           R.string.IntentTitle), getIntent().getData());
