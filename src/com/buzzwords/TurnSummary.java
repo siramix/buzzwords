@@ -56,14 +56,14 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "NextTurnListener OnClick()" );  }
 	          (BuzzWordsApplication) TurnSummary.this.getApplication();
 	        GameManager gm = application.getGameManager();
 
-	        if( gm.GetNumberOfTurnsRemaining() == 0 )
+	        if( gm.getNumberOfTurnsRemaining() == 0 )
 	        {
-	        	gm.EndGame();
+	        	gm.endGame();
 	        	startActivity(new Intent(getApplication().getString(R.string.IntentEndGame), getIntent().getData()));
 	        }
 	        else
 	        {
-	        	gm.NextTurn();
+	        	gm.nextTurn();
             Intent clearStackIntent = new Intent(getApplication().getString( R.string.IntentTurn ), getIntent().getData());
             clearStackIntent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
 	     	  	startActivity( clearStackIntent );
@@ -143,7 +143,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreate()" );  }
 
 	// iterate through all completed cards and set layout accordingly
     this.cardViewList = new LinkedList<ImageView>();
-  	this.cardList = game.GetCurrentCards();
+  	this.cardList = game.getCurrentCards();
   	Card card = null;
   	int count = 0;
     
@@ -180,7 +180,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreate()" );  }
 
   	// Update numRounds
   	TextView rounds = (TextView) this.findViewById(R.id.TurnSummary_Rounds);
-  	rounds.setText("Round: " + game.GetCurrentRound() + "/"+ game.GetNumRounds());
+  	rounds.setText("Round: " + game.getCurrentRound() + "/"+ game.getNumRounds());
   	
   	// Update Turn Order display
   	UpdateTurnOrderDisplay();
@@ -190,7 +190,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreate()" );  }
   	playGameButton.setOnClickListener( NextTurnListener );
   	
   	// Handle activity changes for final turn
-  	if ( game.GetNumberOfTurnsRemaining() == 0 )
+  	if ( game.getNumberOfTurnsRemaining() == 0 )
   	{
   	    // Change "Next Team" button
   		playGameButton.setText( "Game Results" );
@@ -255,7 +255,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreateDialog(" + id + ")" );  }
               public void onClick(DialogInterface dialog, int id) {
                 BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this.getApplication();
                 GameManager gm = application.getGameManager();
-                gm.EndGame();
+                gm.endGame();
                 startActivity(new Intent(getString( R.string.IntentEndGame ), getIntent().getData()));
                 }
               })
@@ -282,9 +282,9 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "UpdateScoreViews()" );  }
     BuzzWordsApplication application =
           (BuzzWordsApplication) this.getApplication();
     GameManager game = application.getGameManager();
-    List<Team> teams = game.GetTeams();
+    List<Team> teams = game.getTeams();
     
-  	int turnscore = game.GetTurnScore();
+  	int turnscore = game.getTurnScore();
 
   	// Display total score for the current team
   	TextView scoreview = (TextView) findViewById(R.id.TurnSummary_TurnScore);
@@ -339,7 +339,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "UpdateScoreViews()" );  }
       TextView teamTotalScoreView = (TextView) findViewById( SCORE_VIEW_IDS[team.ordinal()] );
       int score = team.getScore();
       // if this is the current team's score, add in the temp score from the turn
-      if(game.GetActiveTeam().ordinal() == team.ordinal())
+      if(game.getActiveTeam().ordinal() == team.ordinal())
       {
         score += turnscore;
       }
@@ -350,7 +350,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "UpdateScoreViews()" );  }
 
   	// Color activity views according to team
     View curTeamHeader = (View) findViewById(R.id.TurnSummary_TitleBG);
-	int teamColor = this.getResources().getColor( game.GetActiveTeam().getText() );
+	int teamColor = this.getResources().getColor( game.getActiveTeam().getText() );
 	curTeamHeader.setBackgroundColor( teamColor );
     
   }
@@ -364,7 +364,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "UpdateTurnOrderDisplay()" );  }
     BuzzWordsApplication application =
           (BuzzWordsApplication) this.getApplication();
     GameManager game = application.getGameManager();
-    List<Team> teams = game.GetTeams();
+    List<Team> teams = game.getTeams();
     
     // References to Scoreboard team Groups
     final int[] TURNORDER_GROUPS = new int[]{R.id.TurnSummary_TurnOrder_TeamA,
@@ -406,7 +406,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "UpdateTurnOrderDisplay()" );  }
       
       // Update Marker position
       ImageView marker = (ImageView) findViewById( TURNORDER_MARKERS[i] );
-      if( teams.indexOf(game.GetActiveTeam()) == i)
+      if( teams.indexOf(game.getActiveTeam()) == i)
       {
         marker.setVisibility(View.VISIBLE);
       }

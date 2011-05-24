@@ -1,3 +1,20 @@
+/*****************************************************************************
+ *  Buzzwords is a family friendly word game for mobile phones.
+ *  Copyright (C) 2011 Siramix Team
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
 package com.buzzwords;
 
 import java.util.Collections;
@@ -261,7 +278,7 @@ public class GameEnd extends Activity {
 
       GameManager curgm = application.getGameManager();
       GameManager newgm = new GameManager(GameEnd.this);
-      newgm.StartGame(curgm.GetTeams(), curgm.GetNumRounds());
+      newgm.startGame(curgm.getTeams(), curgm.getNumRounds());
       application.setGameManager(newgm);
 
       Intent clearStackIntent = new Intent(getApplication().getString(
@@ -292,7 +309,7 @@ public class GameEnd extends Activity {
         .getApplication();
     mGameManager = application.getGameManager();
 
-    List<Team> teams = mGameManager.GetTeams();
+    List<Team> teams = mGameManager.getTeams();
 
     // Sort the list by scores to determine the winner(s)
     Collections.sort(teams, (Team.TEAMA).new ScoreComparator());

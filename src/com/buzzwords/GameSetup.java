@@ -101,7 +101,7 @@ public class GameSetup extends Activity {
       BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
           .getApplication();
       GameManager gm = new GameManager(GameSetup.this);
-      gm.StartGame(teamList,
+      gm.startGame(teamList,
           ROUND_RADIOS[GameSetup.this.getCheckedRadioIndex()][1]);
       application.setGameManager(gm);
 

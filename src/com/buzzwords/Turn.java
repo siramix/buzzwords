@@ -343,7 +343,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "unpause_OnClick ()" );  }
           int elapsedtime;
           if( musicEnabled )
           {
-            elapsedtime = Turn.this.curGameManager.GetTurnTime() - (int) Turn.this.counter.getTimeRemaining();
+            elapsedtime = Turn.this.curGameManager.getTurnTime() - (int) Turn.this.counter.getTimeRemaining();
           }
           else
           {
@@ -482,8 +482,8 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "BackOutToRightAnimation()" );  }
   {
 if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "TimerAnimation()");  }
     
-    float percentTimeLeft = ((float) this.counter.getTimeRemaining() / this.curGameManager.GetTurnTime());
-    int duration = this.curGameManager.GetTurnTime();
+    float percentTimeLeft = ((float) this.counter.getTimeRemaining() / this.curGameManager.getTurnTime());
+    int duration = this.curGameManager.getTurnTime();
     
     if (timerCommand == Turn.TIMERANIM_RESUME_ID)
     {
@@ -515,7 +515,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doCorrect()");  }
     
     AIsActive = !AIsActive;   
     flipper.showNext();
-    curGameManager.ProcessCard( Card.RIGHT );
+    curGameManager.processCard( Card.RIGHT );
 
     // Only play sound once card has been processed so we don't confuse the user
     sound.PlaySound( SoundManager.Sound.RIGHT );  
@@ -539,7 +539,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doWrong()");  }
     ViewFlipper flipper = (ViewFlipper) findViewById( R.id.Turn_ViewFlipper );
     flipper.showNext();
     
-    curGameManager.ProcessCard( Card.WRONG );
+    curGameManager.processCard( Card.WRONG );
 
     // Mark the card with an icon
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.WRONG) );
@@ -562,7 +562,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doSkip()");  }
 
     AIsActive = !AIsActive;
     this.viewFlipper.showNext();
-    this.curGameManager.ProcessCard( Card.SKIP );
+    this.curGameManager.processCard( Card.SKIP );
 
     // Mark the card with an icon for SKIP
     this.cardStatus.setBackgroundResource( Card.getCardMarkDrawableId(Card.SKIP) );
@@ -594,7 +594,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "doBack()");  }
     Card curCard = this.curGameManager.getPreviousCard();
     this.cardTitle.setText( curCard.getTitle() );
     // Update bad words
-    this.SetBadWords( this.cardBadWords, curCard, this.curGameManager.GetActiveTeam());
+    this.SetBadWords( this.cardBadWords, curCard, this.curGameManager.getActiveTeam());
     this.isBack = true;
     
     // Restore animations for future actions
@@ -651,7 +651,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "ShowCard()" );  }
     Card curCard = this.curGameManager.getNextCard();
     this.cardTitle.setText( curCard.getTitle() );
     // Update the badwords
-    this.SetBadWords( this.cardBadWords, curCard, this.curGameManager.GetActiveTeam());
+    this.SetBadWords( this.cardBadWords, curCard, this.curGameManager.getActiveTeam());
     // Hide the card status until marked
     this.cardStatus.setVisibility( View.INVISIBLE );
     this.isBack = false;
@@ -715,7 +715,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onTimeExpired()" );  }
     timer.setVisibility( View.INVISIBLE );
     
     // Mark the current card as a skip so it can be amended later
-    this.curGameManager.ProcessCard( Card.SKIP );
+    this.curGameManager.processCard( Card.SKIP );
     
     // Hide card
     this.setActiveCard();
@@ -825,7 +825,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "setupUIProperties()");  }
     //Change views to appropriate team color
     ImageView barFill = (ImageView) this.findViewById( R.id.Turn_TimerFill );
     
-    Team curTeam = this.curGameManager.GetActiveTeam();
+    Team curTeam = this.curGameManager.getActiveTeam();
     barFill.setImageResource( curTeam.getBg() );
     this.findViewById( R.id.Turn_Root ).setBackgroundResource( curTeam.getGradient() );
     
@@ -873,7 +873,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreate()" );  }
       this.musicEnabled = false;
     
     // Initialize the turn timer
-    long time = this.curGameManager.GetTurnTime();
+    long time = this.curGameManager.getTurnTime();
     this.counter = new PauseTimer(time)
     {      
       @Override
@@ -992,7 +992,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreateDialog(" + id + ")" );  }
                public void onClick(DialogInterface dialog, int id) {
                  BuzzWordsApplication application = (BuzzWordsApplication) Turn.this.getApplication();
                  GameManager gm = application.getGameManager();
-                 gm.EndGame();
+                 gm.endGame();
                  startActivity(new Intent( getString(R.string.IntentEndGame), getIntent().getData()));
                  }
                })
@@ -1007,7 +1007,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreateDialog(" + id + ")" );  }
       // Play team ready sound
       sound.PlaySound( SoundManager.Sound.TEAMREADY );
       
-      String curTeam = this.curGameManager.GetActiveTeam().getName();
+      String curTeam = this.curGameManager.getActiveTeam().getName();
       builder = new AlertDialog.Builder(this);
       builder.setMessage( "Ready " + curTeam + " Team?" )
              .setCancelable(false)
@@ -1027,7 +1027,7 @@ if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "onCreateDialog(" + id + ")" );  }
                 // If music is enabled, select the appropriate track
                 if( musicEnabled )
                 {
-                   switch ( gm.GetTurnTime())
+                   switch ( gm.getTurnTime())
                    {
                     case 30000:
                       musicId = R.raw.mus_round_30;

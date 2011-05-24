@@ -1,3 +1,20 @@
+/*****************************************************************************
+ *  Buzzwords is a family friendly word game for mobile phones.
+ *  Copyright (C) 2011 Siramix Team
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
 package com.buzzwords;
 
 import java.util.Iterator;
@@ -11,14 +28,13 @@ import android.util.Log;
 
 /**
  * @author Siramix Labs
- *
- * The Game Manager is a class that will manage all aspects of the game scoring
- * and general bookkeeping. This is the go-to class for creating new games,
- * turns, and teams. The application shall also use this class for preparing
- * and retrieving cards from the virtual deck.
+ * 
+ *         The Game Manager is a class that will manage all aspects of the game
+ *         scoring and general bookkeeping. This is the go-to class for creating
+ *         new games, turns, and teams. The application shall also use this
+ *         class for preparing and retrieving cards from the virtual deck.
  */
-public class GameManager
-{
+public class GameManager {
   /**
    * logging tag
    */
@@ -27,294 +43,329 @@ public class GameManager
   /**
    * The list of cardIds that we pull from (our "deck" of cards)
    */
-  private Deck deck;
+  private Deck mDeck;
 
   /**
    * The position in the list of card ids (where we are in the "deck")
    */
-  private int cardPosition;
+  private int mCardPosition;
 
   /**
    * List of team objects
    */
-  private List<Team> teams; 
-  private Iterator<Team> teamIterator;
-  private Team currentTeam;
-  
+  private List<Team> mTeams;
+  private Iterator<Team> mTeamIterator;
+  private Team mCurrentTeam;
+
   /**
    * The maximum number of rounds for this game
    */
-  private int numRounds;
-  
+  private int mNumRounds;
+
   /**
    * The index of the round being played
    */
-  private int currentRound;
-  
-  private int numTurns;
-  private int currentTurn;
+  private int mCurrentRound;
+
+  /**
+   * Number of turns to play
+   */
+  private int mNumTurns;
+
+  /**
+   * Index of the current turn
+   */
+  private int mCurrentTurn;
 
   /**
    * The card in play
    */
-  private Card currentCard;
+  private Card mCurrentCard;
 
-  
-  
   /**
    * The set of cards that have been activated in the latest turn
    */
-  private LinkedList<Card> currentCards;
+  private LinkedList<Card> mCurrentCards;
 
   /**
    * An array indicating scoring for right, wrong, and skip (in that order)
    */
-  private int[] rws_value_rules;
-  
+  private int[] mRwsValueRules;
+
   /**
    * An array of resource IDs to each right, wrong, skip sprite
    */
-  public final int[] rws_resourceIDs;
-  
+  public final int[] mRwsResourceIds;
+
   /**
-   * Time for the Timer in miliseconds
+   * Time for the Timer in milliseconds
    */
-  private int turn_time;
+  private int mTurnTime;
 
   /**
    * Standard Constructor
-   * @param context - required for game to instantiate the database
+   * 
+   * @param context
+   *          required for game to instantiate the database
    */
-  public GameManager( Context context )
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GameManager()" );  }
- 
-    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-    
-    this.currentRound = 0;
-    this.currentTurn = 0;
-    this.currentCards = new LinkedList<Card>();
-    this.rws_resourceIDs = new int[] {R.drawable.right, R.drawable.wrong, R.drawable.skip};
-    
-    this.turn_time = Integer.parseInt(sp.getString("turn_timer", "60")) * 1000;
-    
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "Turn time is " + turn_time );  }
-    this.rws_value_rules = new int[3];
-    
-    //Set score values for game
-    this.rws_value_rules[0] = 1;  //Value for correct cards
-    this.rws_value_rules[1] = -1; //Value for wrong cards
-    this.rws_value_rules[2] = 0;  //set skip value to 0 if skip penalty is not on
-    
-    this.deck = new Deck(context);
+  public GameManager(Context context) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "GameManager()");
+    }
+
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(context);
+
+    this.mCurrentRound = 0;
+    this.mCurrentTurn = 0;
+    this.mCurrentCards = new LinkedList<Card>();
+    this.mRwsResourceIds = new int[] { R.drawable.right, R.drawable.wrong,
+        R.drawable.skip };
+
+    this.mTurnTime = Integer.parseInt(sp.getString("turn_timer", "60")) * 1000;
+
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "Turn time is " + mTurnTime);
+    }
+    this.mRwsValueRules = new int[3];
+
+    // Set score values for game
+    this.mRwsValueRules[0] = 1; // Value for correct cards
+    this.mRwsValueRules[1] = -1; // Value for wrong cards
+    this.mRwsValueRules[2] = 0; // set skip value to 0 if skip penalty is not on
+
+    this.mDeck = new Deck(context);
   }
 
   /**
    * Get the card indicated by the cardIdPosition. If we've dealt past the end
    * of the deck, we should prep the deck.
+   * 
    * @return the card we want
    */
-  public Card getNextCard()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "getNextCard()" );  }
-    this.currentCard = this.deck.getCard();
-    return this.currentCard;
+  public Card getNextCard() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getNextCard()");
+    }
+    this.mCurrentCard = this.mDeck.getCard();
+    return this.mCurrentCard;
   }
 
   /**
    * Return the previous card
+   * 
    * @return the previous card in the deck
    */
-  public Card getPreviousCard()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "getPreviousCard()" );  }
-    
-    if( this.cardPosition == 0 )
-    {
-      this.cardPosition = 1; 
+  public Card getPreviousCard() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getPreviousCard()");
     }
-    this.currentCard = this.currentCards.get(this.currentCards.size()-1);
-    if( !this.currentCards.isEmpty() )
-    {
-      this.currentCards.removeLast();
+
+    if (this.mCardPosition == 0) {
+      this.mCardPosition = 1;
     }
-    return this.currentCard;
+    this.mCurrentCard = this.mCurrentCards.get(this.mCurrentCards.size() - 1);
+    if (!this.mCurrentCards.isEmpty()) {
+      this.mCurrentCards.removeLast();
+    }
+    return this.mCurrentCard;
   }
 
   /**
-   * Start the game given a set of team names. This creates both a game and
-   * a set of teams in the database
-   * @param teams - a string array of team names
+   * Start the game given a set of team names. This creates both a game and a
+   * set of teams in the database
+   * 
+   * @param teams
+   *          a string array of team names
+   * @param rounds
+   *          the number of rounds to play
    */
-  public void StartGame( List<Team> teams, int rounds )
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "StartGame()" );  }
-    this.teams = teams;
-    Iterator<Team> itr = teams.iterator();
-    for(itr = teams.iterator(); itr.hasNext();)
-    {
-      itr.next().setScore( 0 );
+  public void startGame(List<Team> teams, int rounds) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "StartGame()");
     }
-    this.teamIterator = teams.iterator();
-    this.currentTeam = teamIterator.next();
-    this.numRounds = rounds;
-    this.numTurns = this.teams.size()*this.numRounds;
-    this.currentTurn++;
-    this.deck.prepareForRound();
+    this.mTeams = teams;
+    Iterator<Team> itr = teams.iterator();
+    for (itr = teams.iterator(); itr.hasNext();) {
+      itr.next().setScore(0);
+    }
+    this.mTeamIterator = teams.iterator();
+    this.mCurrentTeam = mTeamIterator.next();
+    this.mNumRounds = rounds;
+    this.mNumTurns = this.mTeams.size() * this.mNumRounds;
+    this.mCurrentTurn++;
+    this.mDeck.prepareForRound();
   }
 
   /**
    * Starts a new turn incrementing the round and/or team index as necessary.
    * This function also empties the collection of active cards.
    */
-  public void NextTurn()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "NextTurn()" );  }
-    int score = this.currentTeam.getScore() + GetTurnScore();
-    this.currentTeam.setScore( score );
-    this.incrementActiveTeamIndex();
-    this.currentCards.clear();
-    this.currentTurn++;
-    this.deck.prepareForRound();
-  }
-  
-  public void incrementActiveTeamIndex()
-  {
-    if( this.teamIterator.hasNext() )
-    {
-      this.currentTeam = this.teamIterator.next();
+  public void nextTurn() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "NextTurn()");
     }
-    else
-    {
-      this.teamIterator = this.teams.iterator();
-      this.currentTeam = this.teamIterator.next();
-      this.currentRound++;
+    int score = this.mCurrentTeam.getScore() + getTurnScore();
+    this.mCurrentTeam.setScore(score);
+    this.incrementActiveTeamIndex();
+    this.mCurrentCards.clear();
+    this.mCurrentTurn++;
+    this.mDeck.prepareForRound();
+  }
+
+  public void incrementActiveTeamIndex() {
+    if (this.mTeamIterator.hasNext()) {
+      this.mCurrentTeam = this.mTeamIterator.next();
+    } else {
+      this.mTeamIterator = this.mTeams.iterator();
+      this.mCurrentTeam = this.mTeamIterator.next();
+      this.mCurrentRound++;
     }
   }
 
   /**
    * Write turn and game relevant data to the database.
    */
-  public void EndGame()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "EndGame()" );  }
-    int score = this.currentTeam.getScore() + GetTurnScore();
-    this.currentTeam.setScore( score );
-    this.teamIterator = this.teams.iterator();
+  public void endGame() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "EndGame()");
+    }
+    int score = this.mCurrentTeam.getScore() + getTurnScore();
+    this.mCurrentTeam.setScore(score);
+    this.mTeamIterator = this.mTeams.iterator();
   }
 
   /**
    * Adds the current card to the active cards
-   * @param rws - the right, wrong, skip status
+   * 
+   * @param rws
+   *          the right, wrong, skip status
    */
-  public void ProcessCard( int rws )
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "ProcessCard(" + rws + ")" );  }
-    this.currentCard.setRws( rws );
-    this.currentCards.add( new Card(currentCard) );
+  public void processCard(int rws) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "ProcessCard(" + rws + ")");
+    }
+    this.mCurrentCard.setRws(rws);
+    this.mCurrentCards.add(new Card(mCurrentCard));
   }
-  
+
   /**
    * Return the card currently in play without moving through the deck
+   * 
    * @return the card currently in play
    */
-  public Card GetCurrentCard()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetCurrentCard()" );  }
-    return this.currentCard;
+  public Card getCurrentCard() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "GetCurrentCard()");
+    }
+    return this.mCurrentCard;
   }
 
   /**
    * Get a list of all cards that have been acted on in a given turn.
-   * @return list of all cards
+   * 
+   * @return list of all cards from the current turn
    */
-  public LinkedList<Card> GetCurrentCards()
-  {   
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetCurrentCards()" );  }
-	  return this.currentCards;
+  public LinkedList<Card> getCurrentCards() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "GetCurrentCards()");
+    }
+    return this.mCurrentCards;
   }
 
   /**
-   * Iterate through through all cards for the current turn and return the
-   * total score
+   * Iterate through through all cards for the current turn and return the total
+   * score
+   * 
    * @return score for the round
    */
-  public int GetTurnScore()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetTurnScore()" );  }
+  public int getTurnScore() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "GetTurnScore()");
+    }
     int ret = 0;
-	  for( Iterator<Card> it = currentCards.iterator(); it.hasNext(); )
-	  {
-	    Card card = it.next();
-	    ret += rws_value_rules[card.getRws()];
-	  }
-	  return ret;
+    for (Iterator<Card> it = mCurrentCards.iterator(); it.hasNext();) {
+      Card card = it.next();
+      ret += mRwsValueRules[card.getRws()];
+    }
+    return ret;
   }
 
   /**
-   * Return an array of scores representing a running score total.
-   * @return Array of longs with an element for each team's latest total score.
+   * Return a list of the currently playing team objects
+   * 
+   * @return a list of the currently playing team objects
    */
-  public List<Team> GetTeams()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetTeams()" );  }
-	  return this.teams;
+  public List<Team> getTeams() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "GetTeams()");
+    }
+    return this.mTeams;
   }
-  
+
   /**
-   * Return the index of the team currently in play.
-   * @return integer representing the index of the current team starting at 0.
+   * Return a reference to the team currently playing
+   * 
+   * @return a reference to the team currently playing
    */
-  public Team GetActiveTeam()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetActiveTeamIndex()" );  }
-    return this.currentTeam;
+  public Team getActiveTeam() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "GetActiveTeamIndex()");
+    }
+    return this.mCurrentTeam;
   }
-  
+
   /**
    * Return the number of teams set up by the game manager.
-   * @return integer representing the number of teams ie. the length of 
-   * teamIds[]
+   * 
+   * @return integer representing the number of teams ie. the length of
+   *         teamIds[]
    */
-  public int GetNumTeams()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetNumTeams()" );  }
-	  return this.teams.size();
+  public int getNumTeams() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "GetNumTeams()");
+    }
+    return this.mTeams.size();
   }
-  
+
   /**
-   * Return the number of rounds that have fully taken place
-   * @return int representing the number of rounds thus far in a game 
+   * Return the number of rounds that have fully taken place. We add one since
+   * we, like good computer scientists, start counting at zero
+   * 
+   * @return int representing the number of rounds thus far in a game
    */
-  public int GetCurrentRound()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetCurrentRound()" );  }
-    return this.currentRound+1;
+  public int getCurrentRound() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "GetCurrentRound()");
+    }
+    return this.mCurrentRound + 1;
   }
 
   /**
    * Return the maximum number of rounds in this game
-   * @return int representing the maximum number of rounds in this game
+   * 
+   * @return the maximum number of rounds in this game
    */
-  public int GetNumRounds()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetNumRounds()" );  }
-    return this.numRounds;
+  public int getNumRounds() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "GetNumRounds()");
+    }
+    return this.mNumRounds;
   }
-  
-  
+
   /**
    * Accessor to return the amount of time in each turn.
+   * 
    * @return integer representing the number of miliseconds in each turn.
    */
-  public int GetTurnTime()
-  {
-if( BuzzWordsApplication.DEBUG) { Log.d( TAG, "GetTurnTime()" );  }
-    return this.turn_time;
+  public int getTurnTime() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "GetTurnTime()");
+    }
+    return this.mTurnTime;
   }
-  
-  public int GetNumberOfTurnsRemaining()
-  {
-    return this.numTurns-this.currentTurn;
-  }  
+
+  public int getNumberOfTurnsRemaining() {
+    return this.mNumTurns - this.mCurrentTurn;
+  }
 }
