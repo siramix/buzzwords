@@ -33,9 +33,10 @@ import android.widget.ImageView;
  * This is the splash screen for the app's introduction. It should be started
  * before the title and be interruptible before the title activity.
  * 
- * @author BuzzWords Team
+ * @author The BuzzWords Team
  */
 public class SplashScreen extends Activity {
+
   /**
    * Logging tag
    */
@@ -43,24 +44,27 @@ public class SplashScreen extends Activity {
 
   // Length of time splash screen will show.
   protected int SPLASHTIME = 3000;
-  
+
   // Flag prevents double calls to open the next activity
   private boolean SplashDone = false;
-  
+
   private Thread mInstallThread;
 
   /**
    * Called on creation of splash screen activity
    */
   public void onCreate(Bundle savedInstanceState) {
-    Log.d(TAG, "onCreate()");
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onCreate()");
+    }
 
     super.onCreate(savedInstanceState);
     setContentView(R.layout.splashscreen);
-    
+
     // Create a Deck so we load the cards into the SQL DB on first run
     // this operation will occur in a threaded manner (hot, I know).
     mInstallThread = new Thread(new Runnable() {
+
       public void run() {
         Deck.DeckOpenHelper helper = new Deck.DeckOpenHelper(SplashScreen.this);
         helper.countCards();
@@ -77,26 +81,29 @@ public class SplashScreen extends Activity {
    * Handle interrupts to splash screen
    */
   public boolean onTouchEvent(MotionEvent event) {
-    Log.d(TAG, "onTouchEvent()");
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onTouchEvent()");
+    }
 
-    if (event.getAction() == MotionEvent.ACTION_DOWN) 
-    {
-      Log.d(TAG, "onTouchEvent->ActionDown()");
+    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "onTouchEvent->ActionDown()");
+      }
       // Clearing the animations causes animEnd event to fire
       ImageView logotext = (ImageView) this.findViewById(R.id.Splash_LogoText);
       ImageView logoram = (ImageView) this.findViewById(R.id.Splash_LogoRam);
 
       logoram.clearAnimation();
       logotext.clearAnimation();
-      
+
       // Workaround for HTC - Hero firmware version 2.1
-      //   For some reason, clearing the animation does not call EndAnimation listener on this
-      //   platform.  We'd like to rely on that event to call exitSplash().  
+      // For some reason, clearing the animation does not call
+      // EndAnimation
+      // listener on this
+      // platform. We'd like to rely on that event to call exitSplash().
       SplashScreen.this.exitSplash();
       return true;
-    }
-    else
-    {
+    } else {
       return false;
     }
   }
@@ -105,8 +112,11 @@ public class SplashScreen extends Activity {
    * Listener that ends splash screen when it is done animating.
    */
   private final AnimationListener fadeListener = new AnimationListener() {
+
     public void onAnimationEnd(Animation animation) {
-      Log.d(TAG, "onAnimEnd()");
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "onAnimEnd()");
+      }
       SplashScreen.this.exitSplash();
     }
 
@@ -119,20 +129,22 @@ public class SplashScreen extends Activity {
     public void onAnimationStart(Animation animation) {
     }
   };
-  
+
   /**
-   * Called when exitHandler is reached or a touch event occurs. This hides
-   * the images and then calls the title activity.
+   * Called when exitHandler is reached or a touch event occurs. This hides the
+   * images and then calls the title activity.
    */
   synchronized private void exitSplash() {
-    Log.d(TAG, "exitSplash()");
-    
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "exitSplash()");
+    }
+
     // Do nothing if the splash has already been cancelled once
-    if(this.SplashDone)
-    {
+    if (this.SplashDone) {
       return;
     }
-    // Setting boolean prevents the endAnimation from calling exitSplash a second time.
+    // Setting boolean prevents the endAnimation from calling exitSplash a
+    // second time.
     this.SplashDone = true;
 
     ImageView logotext = (ImageView) this.findViewById(R.id.Splash_LogoText);
@@ -150,8 +162,10 @@ public class SplashScreen extends Activity {
    * Retrieves the logo images and fades them in using AlphaAnimation.
    */
   private void fadeIn() {
-    Log.d(TAG, "fadeIn()");
-    
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "fadeIn()");
+    }
+
     // Build animation for text and logo images
     AlphaAnimation textfadein = new AlphaAnimation(0, 1);
     AlphaAnimation ramfadein = new AlphaAnimation(0, 1);
@@ -173,13 +187,13 @@ public class SplashScreen extends Activity {
     AnimationSet textset = new AnimationSet(true);
     textset.addAnimation(textfadein);
     textset.addAnimation(fadeout);
-    
+
     // Listener called to move to next activity
     textset.setAnimationListener(fadeListener);
-   
+
     ImageView logotext = (ImageView) this.findViewById(R.id.Splash_LogoText);
     ImageView logoram = (ImageView) this.findViewById(R.id.Splash_LogoRam);
-    
+
     logotext.startAnimation(textset);
     logoram.startAnimation(ramset);
   }
