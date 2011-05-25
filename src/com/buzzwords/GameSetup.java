@@ -139,9 +139,8 @@ public class GameSetup extends Activity {
         sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMA);
-        b.setBackgroundResource(R.color.teamA_primary);
-        b.setTextColor(GameSetup.this.getResources().getColor(
-            R.color.teamA_secondary));
+        b.setBackgroundResource(Team.TEAMA.getPrimaryColor());
+        b.setTextColor(Team.TEAMA.getSecondaryColor());
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMA, true);
         sound.playSound(SoundManager.Sound.CONFIRM);
@@ -173,9 +172,8 @@ public class GameSetup extends Activity {
         sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMB);
-        b.setBackgroundResource(R.color.teamB_primary);
-        b.setTextColor(GameSetup.this.getResources().getColor(
-            R.color.teamB_secondary));
+        b.setBackgroundResource(Team.TEAMB.getPrimaryColor());
+        b.setTextColor(Team.TEAMB.getSecondaryColor());
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMB, true);
         sound.playSound(SoundManager.Sound.CONFIRM);
@@ -207,9 +205,8 @@ public class GameSetup extends Activity {
         sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMC);
-        b.setBackgroundResource(R.color.teamC_primary);
-        b.setTextColor(GameSetup.this.getResources().getColor(
-            R.color.teamC_secondary));
+        b.setBackgroundResource(Team.TEAMC.getPrimaryColor());
+        b.setTextColor(Team.TEAMC.getSecondaryColor());
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMC, true);
         sound.playSound(SoundManager.Sound.CONFIRM);
@@ -241,9 +238,8 @@ public class GameSetup extends Activity {
         sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMD);
-        b.setBackgroundResource(R.color.teamD_primary);
-        b.setTextColor(GameSetup.this.getResources().getColor(
-            R.color.teamD_secondary));
+        b.setBackgroundResource(Team.TEAMD.getPrimaryColor());
+        b.setTextColor(Team.TEAMD.getSecondaryColor());
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMD, true);
         sound.playSound(SoundManager.Sound.CONFIRM);

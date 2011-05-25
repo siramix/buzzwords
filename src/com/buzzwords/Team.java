@@ -63,7 +63,7 @@ public enum Team {
     mPrimary = primary;
     mGradient = gradient;
     mGameEndBackground = gameend_bg;
-    setScore(0);
+    this.setScore(0);
   }
 
   /**
@@ -80,7 +80,7 @@ public enum Team {
    * 
    * @return the background color
    */
-  public int getBg() {
+  public int getBackground() {
     return mBackground;
   }
 
@@ -98,7 +98,7 @@ public enum Team {
    * 
    * @return the primary color
    */
-  public int getPrimary() {
+  public int getPrimaryColor() {
     return mPrimary;
   }
 

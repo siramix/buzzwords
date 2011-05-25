@@ -399,11 +399,11 @@ public class GameEnd extends Activity {
         text.setText(teams.get(i).getName());
         // Set team score and color
         text = (TextView) findViewById(TEAM_SCORE_IDS[i]);
-        text.setTextColor(mResources.getColor(teams.get(i).getPrimary()));
+        text.setTextColor(mResources.getColor(teams.get(i).getPrimaryColor()));
         text.setText(Integer.toString(teams.get(i).getScore()));
         // Set background color
         View bg = (View) findViewById(TEAM_SCORE_BGS[i]);
-        bg.setBackgroundResource(teams.get(i).getPrimary());
+        bg.setBackgroundResource(teams.get(i).getPrimaryColor());
         // Set row end background color
         ImageView end = (ImageView) findViewById(TEAM_SCORE_ENDS[i]);
         Drawable d = getResources().getDrawable(teams.get(i).getGameEndPiece());
@@ -419,7 +419,7 @@ public class GameEnd extends Activity {
       text.setText("Tie Game!");
     } else {
       // Set text to Team X Wins!
-      text.setTextColor(mResources.getColor(teams.get(0).getPrimary()));
+      text.setTextColor(mResources.getColor(teams.get(0).getPrimaryColor()));
       text.setText(teams.get(0).getName() + " Wins!");
     }
     // set font

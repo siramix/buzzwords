@@ -380,7 +380,7 @@ public class TurnSummary extends Activity {
     // Color activity views according to team
     View curTeamHeader = (View) findViewById(R.id.TurnSummary_TitleBG);
     int teamColor = this.getResources()
-        .getColor(game.getActiveTeam().getPrimary());
+        .getColor(game.getActiveTeam().getPrimaryColor());
     curTeamHeader.setBackgroundColor(teamColor);
 
   }
@@ -429,7 +429,7 @@ public class TurnSummary extends Activity {
       } else {
         View turnView = (View) findViewById(TURNORDER_ICONS[i]);
         turnView.setBackgroundColor(this.getResources().getColor(
-            teams.get(i).getPrimary()));
+            teams.get(i).getPrimaryColor()));
       }
 
       // Update Marker position
