@@ -89,7 +89,7 @@
             <ImageView android:id="@+id/Turn_TimerFill"
                 android:layout_below="@+id/Turn_TimerBG"
                 android:layout_alignParentTop="true"
-                android:background="@color/teamA_text"
+                android:background="@color/teamA_primary"
                 android:layout_height="23dp"
                 android:layout_marginTop="1dp"
                 android:layout_alignParentLeft="true"

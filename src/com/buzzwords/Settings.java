@@ -33,7 +33,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 /**
- * The Settings class handles the setting of exposed prefences
+ * The Settings class handles the setting of exposed preferences
  * 
  * @author Siramix Labs
  */

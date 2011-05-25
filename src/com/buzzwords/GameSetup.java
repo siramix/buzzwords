@@ -139,7 +139,7 @@ public class GameSetup extends Activity {
         sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMA);
-        b.setBackgroundResource(R.color.teamA_text);
+        b.setBackgroundResource(R.color.teamA_primary);
         b.setTextColor(GameSetup.this.getResources().getColor(
             R.color.teamA_secondary));
         GameSetup.mGameSetupPrefEditor
@@ -173,7 +173,7 @@ public class GameSetup extends Activity {
         sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMB);
-        b.setBackgroundResource(R.color.teamB_text);
+        b.setBackgroundResource(R.color.teamB_primary);
         b.setTextColor(GameSetup.this.getResources().getColor(
             R.color.teamB_secondary));
         GameSetup.mGameSetupPrefEditor
@@ -207,7 +207,7 @@ public class GameSetup extends Activity {
         sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMC);
-        b.setBackgroundResource(R.color.teamC_text);
+        b.setBackgroundResource(R.color.teamC_primary);
         b.setTextColor(GameSetup.this.getResources().getColor(
             R.color.teamC_secondary));
         GameSetup.mGameSetupPrefEditor
@@ -241,7 +241,7 @@ public class GameSetup extends Activity {
         sound.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMD);
-        b.setBackgroundResource(R.color.teamD_text);
+        b.setBackgroundResource(R.color.teamD_primary);
         b.setTextColor(GameSetup.this.getResources().getColor(
             R.color.teamD_secondary));
         GameSetup.mGameSetupPrefEditor

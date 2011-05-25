@@ -29,7 +29,7 @@
         
         <View android:id="@+id/TurnSummary_TitleBG"
             android:layout_width="wrap_content"
-            android:background="@color/teamA_text"
+            android:background="@color/teamA_primary"
             android:layout_height="20dp"
             />
             
@@ -134,7 +134,7 @@
                     
                     <TextView android:id="@+id/TurnSummary_Scores_TeamANum"
                         android:text="8"
-                        android:textColor="@color/teamA_text"
+                        android:textColor="@color/teamA_primary"
                         android:layout_height="fill_parent"
                         android:layout_width="fill_parent"
                         android:layout_weight="1"
@@ -145,7 +145,7 @@
                         />
                         
                     <TextView android:id="@+id/TurnSummary_Scores_TeamAName"
-                        android:textColor="@color/teamA_text"
+                        android:textColor="@color/teamA_primary"
                         android:text="Blue"
                         android:layout_height="fill_parent"
                         android:layout_width="80dp"
@@ -170,7 +170,7 @@
                     <TextView android:id="@+id/TurnSummary_Scores_TeamBName"
                         android:layout_height="fill_parent"
                         android:text="Green"
-                        android:textColor="@color/teamB_text"
+                        android:textColor="@color/teamB_primary"
                         android:layout_weight="0"
                         android:textSize="24dp"
                         android:gravity="top|center_horizontal"
@@ -182,7 +182,7 @@
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:layout_gravity="top"
-                        android:textColor="@color/teamB_text"
+                        android:textColor="@color/teamB_primary"
                         android:layout_width="fill_parent"
                         android:text="12"
                         android:includeFontPadding="false"
@@ -215,7 +215,7 @@
                         android:layout_weight="1"
                         android:layout_gravity="top"
                         android:text="4"
-                        android:textColor="@color/teamC_text"
+                        android:textColor="@color/teamC_primary"
                         android:includeFontPadding="false"
                         android:gravity="center_vertical|center_horizontal"
                         android:textSize="45dp"
@@ -225,7 +225,7 @@
                         android:layout_height="fill_parent"
                         android:layout_width="80dp"
                         android:layout_weight="0"
-                        android:textColor="@color/teamC_text"
+                        android:textColor="@color/teamC_primary"
                         android:text="Red"
                         android:textSize="24dp"
                         android:gravity="bottom|center_horizontal"
@@ -249,7 +249,7 @@
                         android:layout_weight="0"
                         android:gravity="bottom|center_horizontal"
                         android:text="Yellow"
-                        android:textColor="@color/teamD_text"
+                        android:textColor="@color/teamD_primary"
                         android:layout_width="80dp"
                         android:textSize="24dp"
                         android:paddingBottom="7dp"
@@ -260,7 +260,7 @@
                         android:layout_width="fill_parent"
                         android:layout_weight="1"
                         android:layout_gravity="top"
-                        android:textColor="@color/teamD_text"
+                        android:textColor="@color/teamD_primary"
                         android:text="10"
                         android:includeFontPadding="false"
                         android:gravity="center_vertical|center_horizontal"
@@ -331,7 +331,7 @@
                 android:layout_gravity="center_vertical">
                 
                 <View android:id="@+id/TurnSummary_TurnOrder_TeamAc"
-                    android:background="@color/teamA_text"
+                    android:background="@color/teamA_primary"
                     android:layout_gravity="center_vertical"
                     android:layout_height="15dp"
                     android:layout_width="15dp"
@@ -364,7 +364,7 @@
                     android:layout_height="15dp"
                     android:layout_width="15dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/teamB_text"
+                    android:background="@color/teamB_primary"
                     />
                     
                 <ImageView android:id="@+id/TurnSummary_TurnOrder_TeamBmark"
@@ -394,7 +394,7 @@
                     android:layout_height="15dp"
                     android:layout_width="15dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/teamC_text"
+                    android:background="@color/teamC_primary"
                     />
                     
                 <ImageView android:id="@+id/TurnSummary_TurnOrder_TeamCmark"
@@ -424,7 +424,7 @@
                     android:layout_height="15dp"
                     android:layout_width="15dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/teamD_text"
+                    android:background="@color/teamD_primary"
                     />
                     
                 <ImageView android:id="@+id/TurnSummary_TurnOrder_TeamDmark"

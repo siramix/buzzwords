@@ -12,7 +12,7 @@
   <color name="text_subtext">
   	#999999
   </color>
-  <color name="teamA_text">
+  <color name="teamA_primary">
     #317695
   </color>
   <color name="teamA_secondary">
@@ -24,7 +24,7 @@
   <color name="teamA_highlight">
     #52a2c6
   </color>
-  <color name="teamB_text">
+  <color name="teamB_primary">
     #6FA234
   </color>
   <color name="teamB_secondary">
@@ -36,7 +36,7 @@
   <color name="teamB_highlight">
     #91c751
   </color>
-  <color name="teamC_text">
+  <color name="teamC_primary">
     #AC2D20
   </color>
   <color name="teamC_secondary">
@@ -48,7 +48,7 @@
   <color name="teamC_highlight">
     #dc4c3c
   </color>
-  <color name="teamD_text">
+  <color name="teamD_primary">
     #AC9B29
   </color>
   <color name="teamD_secondary">

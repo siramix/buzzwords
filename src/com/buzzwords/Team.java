@@ -21,136 +21,146 @@ import java.util.Comparator;
 
 import com.buzzwords.R;
 
-
 /**
- * Team is a data representation of a Team in buzzwords.  It mainly consists of
- * getters and setters, and contains references to various team specific attributes
+ * Team is a data representation of a Team in buzzwords. It mainly consists of
+ * getters and setters, and contains the ids of various team specific attributes
  * like colors.
  * 
  * @author BuzzWords team
- *
+ * 
  */
-public enum Team
-{
-  TEAMA( "Blue", R.color.teamA_BG,  
-         R.color.teamA_secondary, R.color.teamA_text, R.drawable.bg_bluegradient,
-         R.drawable.gameend_row_end_blue),
-  TEAMB( "Green", R.color.teamB_BG, 
-         R.color.teamB_secondary, R.color.teamB_text, R.drawable.bg_greengradient,
-         R.drawable.gameend_row_end_green),
-  TEAMC( "Red", R.color.teamC_BG,  
-         R.color.teamC_secondary, R.color.teamC_text, R.drawable.bg_redgradient,
-         R.drawable.gameend_row_end_red),
-  TEAMD( "Yellow", R.color.teamD_BG,     R.color.teamD_secondary, R.color.teamD_text, R.drawable.bg_yellowgradient,
-         R.drawable.gameend_row_end_yellow);
-  
-  
-  private final String name;
-  private final int bg;
-  private final int secondary;
-  private final int text;
-  private final int gradient;
-  private final int gameend_bg;
+public enum Team {
+  TEAMA("Blue", R.color.teamA_BG, R.color.teamA_secondary,
+      R.color.teamA_primary, R.drawable.bg_bluegradient,
+      R.drawable.gameend_row_end_blue), TEAMB("Green", R.color.teamB_BG,
+      R.color.teamB_secondary, R.color.teamB_primary,
+      R.drawable.bg_greengradient, R.drawable.gameend_row_end_green), TEAMC(
+      "Red", R.color.teamC_BG, R.color.teamC_secondary, R.color.teamC_primary,
+      R.drawable.bg_redgradient, R.drawable.gameend_row_end_red), TEAMD(
+      "Yellow", R.color.teamD_BG, R.color.teamD_secondary,
+      R.color.teamD_primary, R.drawable.bg_yellowgradient,
+      R.drawable.gameend_row_end_yellow);
 
+  // Team name
+  private final String mName;
+  // Team colors
+  private final int mPrimary;
+  private final int mSecondary;
+  private final int mBackground;
+  private final int mGradient;
+  private final int mGameEndBackground;
+  // The team's running score
+  private int mScore;
 
-  private int score;
-  
-  private Team( String name, int bg, int secondary, int text, int gradient, int gameend_bg)
-  {
-    this.name = name;
-    this.bg = bg;
-    this.secondary = secondary;
-    this.text = text;
-    this.gradient = gradient;
-    this.gameend_bg = gameend_bg;
-    this.setScore( 0 );
+  /*
+   * Construct a Team
+   */
+  private Team(String name, int bg, int secondary, int primary, int gradient,
+      int gameend_bg) {
+    mName = name;
+    mBackground = bg;
+    mSecondary = secondary;
+    mPrimary = primary;
+    mGradient = gradient;
+    mGameEndBackground = gameend_bg;
+    setScore(0);
   }
 
-  
   /**
+   * Returns the Team's name as a String
+   * 
    * @return the name
    */
-  public String getName()
-  {
-    return name;
+  public String getName() {
+    return mName;
   }
 
-  
   /**
+   * Returns the id of the Team's background color
+   * 
    * @return the background color
    */
-  public int getBg()
-  {
-    return bg;
+  public int getBg() {
+    return mBackground;
   }
-  
+
   /**
+   * Returns the id of the Team's secondary color
+   * 
    * @return the secondary color
    */
-  public int getSecondaryColor()
-  {
-    return secondary;
+  public int getSecondaryColor() {
+    return mSecondary;
   }
 
-  
   /**
+   * Returns the id of the Team's primary color
+   * 
    * @return the primary color
    */
-  public int getText()
-  {
-    return text;
+  public int getPrimary() {
+    return mPrimary;
   }
-  
+
   /**
+   * Returns the id of the Team's gradient resource
+   * 
    * @return the gradient
    */
-  public int getGradient()
-  {
-    return gradient;
+  public int getGradient() {
+    return mGradient;
   }
 
   /**
+   * Returns the id of the drawable that caps the end of a team themed row
+   * 
    * @return the end piece for a game end row
    */
-  public int getGameEndPiece()
-  {
-    return gameend_bg;
+  public int getGameEndPiece() {
+    return mGameEndBackground;
   }
 
-  
-  public void setScore( int score )
-  {
-    this.score = score;
+  /**
+   * Set the Team's running score total
+   * 
+   * @param score
+   */
+  public void setScore(int score) {
+    this.mScore = score;
   }
 
-
-  public int getScore()
-  {
-    return score;
+  /**
+   * Returns the Team's running score
+   * 
+   * @return score
+   */
+  public int getScore() {
+    return mScore;
   }
-  
-  class ScoreComparator implements Comparator<Team>
-  {
-    
-    public int compare(Team team1, Team team2)
-    {
- 
-        int s1 = team1.score;
-        int s2 = team2.score;
-       
-        if(s1 > s2)
-        {
-          return 1;
-        }
-        else if(s1 < s2)
-        {
-          return -1;
-        }
-        else
-        {
-          return 0;
-        }
+
+  /**
+   * Basic Comparator for the Team enum. Handles comparison between Team objects
+   * 
+   */
+  class ScoreComparator implements Comparator<Team> {
+
+    /**
+     * Compare two teams and return which is greater Return 1 if team1 is
+     * greater, -1 if team2 is greater, and 0 if even
+     */
+    public int compare(Team team1, Team team2) {
+
+      int s1 = team1.mScore;
+      int s2 = team2.mScore;
+
+      if (s1 > s2) {
+        return 1;
+      } else if (s1 < s2) {
+        return -1;
+      } else {
+        return 0;
+      }
     }
   }
-  
+
 }

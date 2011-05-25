@@ -112,7 +112,7 @@ public class Title extends Activity {
       } else {
         button.setBackgroundResource(R.drawable.title_play);
         label.setTextColor(Title.this.getResources().getColor(
-            R.color.teamB_text));
+            R.color.teamB_primary));
       }
       break;
     case R.id.Title_BuzzDelegate:
@@ -125,7 +125,7 @@ public class Title extends Activity {
       } else {
         button.setBackgroundResource(R.drawable.title_buzzer);
         label.setTextColor(Title.this.getResources().getColor(
-            R.color.teamC_text));
+            R.color.teamC_primary));
       }
       break;
     case R.id.Title_SettingsDelegate:
@@ -138,7 +138,7 @@ public class Title extends Activity {
       } else {
         button.setBackgroundResource(R.drawable.title_settings);
         label.setTextColor(Title.this.getResources().getColor(
-            R.color.teamD_text));
+            R.color.teamD_primary));
       }
       break;
     case R.id.Title_RulesDelegate:
@@ -151,7 +151,7 @@ public class Title extends Activity {
       } else {
         button.setBackgroundResource(R.drawable.title_rules);
         label.setTextColor(Title.this.getResources().getColor(
-            R.color.teamA_text));
+            R.color.teamA_primary));
       }
       break;
     }

@@ -90,7 +90,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
-                android:background="@color/teamB_text"
+                android:background="@color/teamB_primary"
                 />
                 
             <TextView android:id="@+id/GameEnd_Scores_1_place"
@@ -127,7 +127,7 @@
                 android:layout_width="50dp"
                 android:layout_marginRight="5dp"
                 android:textStyle="bold"
-                android:textColor="@color/teamB_text"
+                android:textColor="@color/teamB_primary"
                 android:includeFontPadding="false"
                 android:text="12"
                 android:textSize="25dp"
@@ -147,7 +147,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
-                android:background="@color/teamA_text"
+                android:background="@color/teamA_primary"
                 />
                 
             <TextView android:id="@+id/GameEnd_Scores_2_place"
@@ -181,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="right"
-                android:textColor="@color/teamA_text"
+                android:textColor="@color/teamA_primary"
                 android:textSize="25dp"
                 android:layout_width="50dp"
                 android:layout_marginRight="5dp"
@@ -204,7 +204,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
-                android:background="@color/teamC_text"
+                android:background="@color/teamC_primary"
                 />
                 
             <TextView android:id="@+id/GameEnd_Scores_3_place"
@@ -242,7 +242,7 @@
                 android:layout_width="50dp"
                 android:layout_marginRight="5dp"
                 android:textStyle="bold"
-                android:textColor="@color/teamC_text"
+                android:textColor="@color/teamC_primary"
                 android:text="6"
                 android:includeFontPadding="false"
                 />
@@ -261,7 +261,7 @@
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:layout_marginTop="1dp"
-                android:background="@color/teamD_text"
+                android:background="@color/teamD_primary"
                 />
                 
             <TextView android:id="@+id/GameEnd_Scores_4_place"
@@ -300,7 +300,7 @@
                 android:layout_marginRight="5dp"
                 android:textStyle="bold"
                 android:text="3"
-                android:textColor="@color/teamD_text"
+                android:textColor="@color/teamD_primary"
                 android:includeFontPadding="false" 
                 />
 
@@ -323,7 +323,7 @@
         android:layout_centerHorizontal="true"
         android:text="Green Wins!"
         android:textSize="40dp"
-        android:textColor="@color/teamB_text"
+        android:textColor="@color/teamB_primary"
         />
 
     <RelativeLayout android:id="@+id/GameEnd_GameOverGroup"
