@@ -350,7 +350,7 @@
 				<TextView android:id="@+id/Rules_GameplayTextPausing"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" 
-					android:text="The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don't worry, it will pause if anyone calls and interrupts your awesome game of Buzzwords."
+					android:text="The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don't worry, it will pause if anyone calls and interrupts your intense game of Buzzwords."
 					android:padding="8dp"
 					android:layout_below="@id/Rules_Gameplay_IconsDescriptions"
 					/>
@@ -537,7 +537,7 @@
 					android:layout_height="wrap_content"
 					android:layout_below="@id/Rules_SubHeader_Buzzing"
 					android:padding="8dp"
-					android:text="This is where the game gets contentious.  To keep the peace, here are some recommended 'buzz worthy' offenses."
+					android:text="This is where the game gets contentious.  Simply put, using part of any word on the list of buzz-words or a related form of the word is a buzzable offense.  Once a 'buzz' word has been guessed by anyone on the team, it is free for use by the presenter.  To keep the peace, here are some recommended 'buzz worthy' offenses."
 					/>
 					
 				<RelativeLayout android:id="@+id/Rules_BuzzingBullettedList"
@@ -672,13 +672,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/Rules_BuzzingBullettedList"
-					android:text="Singing and humming are encouraged, provided you don't sing a bad word or gesture."
-					/>
-				<TextView android:id="@+id/Rules_BuzzingText08" 
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_below="@id/Rules_BuzzingText07" 
-					android:text="If your team uses any of the restricted words, you are then free to use that word yourself."
+					android:text="Singing and humming are encouraged, provided you don't sing a 'buzz' word or gesture.  Remember, if your team uses any of the 'buzz' words, you are then free to use that word yourself."
 					/>
 					
 			</RelativeLayout>
