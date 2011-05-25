@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-package com.buzzwords;
+package com.buzzwordslite;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +33,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.buzzwordslite.R;
 
 import android.content.ContentValues;
 import android.content.Context;

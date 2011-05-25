@@ -15,13 +15,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-package com.buzzwords;
+package com.buzzwordslite;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.buzzwords.R;
+import com.buzzwordslite.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -1,9 +1,9 @@
-package com.buzzwords;
+package com.buzzwordslite;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import com.buzzwords.R;
+import com.buzzwordslite.R;
 
 import android.util.Log;
 

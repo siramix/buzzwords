@@ -2,18 +2,18 @@
 <resources>
 
   <!-- Application Name -->
-  <string name="AppName">Buzzwords</string>
+  <string name="AppName">Buzzwords Lite</string>
 
   <!-- Intent Designations -->
-  <string name="IntentTitle">com.buzzwords.intent.action.TITLE</string>
-  <string name="IntentSettings">com.buzzwords.intent.action.SETTINGS</string>
-  <string name="IntentRules">com.buzzwords.intent.action.RULES</string>
-  <string name="IntentBuzzer">com.buzzwords.intent.action.BUZZER</string>
-  <string name="IntentAboutUs">com.buzzwords.intent.action.ABOUTUS</string>
-  <string name="IntentGameSetup">com.buzzwords.intent.action.GAMESETUP</string>
-  <string name="IntentTurn">com.buzzwords.intent.action.TURN</string>
-  <string name="IntentTurnSummary">com.buzzwords.intent.action.TURNSUMMARY</string>
-  <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
+  <string name="IntentTitle">com.buzzwordslite.intent.action.TITLE</string>
+  <string name="IntentSettings">com.buzzwordslite.intent.action.SETTINGS</string>
+  <string name="IntentRules">com.buzzwordslite.intent.action.RULES</string>
+  <string name="IntentBuzzer">com.buzzwordslite.intent.action.BUZZER</string>
+  <string name="IntentAboutUs">com.buzzwordslite.intent.action.ABOUTUS</string>
+  <string name="IntentGameSetup">com.buzzwordslite.intent.action.GAMESETUP</string>
+  <string name="IntentTurn">com.buzzwordslite.intent.action.TURN</string>
+  <string name="IntentTurnSummary">com.buzzwordslite.intent.action.TURNSUMMARY</string>
+  <string name="IntentEndGame">com.buzzwordslite.intent.action.GAMEEND</string>
 
  <!-- Menu Designations -->
   <string name="menu_EndGame">MENU_ENDGAME</string>

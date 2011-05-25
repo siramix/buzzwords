@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionCode="1" android:versionName="1.0" package="com.buzzwords">
+	android:versionCode="1" android:versionName="1.0" package="com.buzzwordslite">
 
 	<application android:icon="@drawable/icon" android:label="@string/AppName"
-		android:theme="@style/BuzzWordsTheme" android:name="com.buzzwords.BuzzWordsApplication"
+		android:theme="@style/BuzzWordsTheme" android:name="com.buzzwordslite.BuzzWordsApplication"
 		android:configChanges="keyboardHidden">
 
 		<activity android:name=".SplashScreen" android:label="@string/AppName"
@@ -15,7 +15,7 @@
 			</intent-filter>
 
 			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.SPLASHSCREEN" />
+				<action android:name="com.buzzwordslite.intent.action.SPLASHSCREEN" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 
@@ -25,7 +25,7 @@
 			android:screenOrientation="portrait">
 
 			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.TITLE" />
+				<action android:name="com.buzzwordslite.intent.action.TITLE" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 
@@ -36,7 +36,7 @@
 			android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
 
 			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.SETTINGS" />
+				<action android:name="com.buzzwordslite.intent.action.SETTINGS" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 
@@ -46,7 +46,7 @@
 			android:screenOrientation="portrait">
 
 			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.RULES" />
+				<action android:name="com.buzzwordslite.intent.action.RULES" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 
@@ -56,7 +56,7 @@
 			android:screenOrientation="portrait">
 
 			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.BUZZER" />
+				<action android:name="com.buzzwordslite.intent.action.BUZZER" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 
@@ -66,7 +66,7 @@
 			android:screenOrientation="portrait">
 			
 			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.GAMESETUP" />
+				<action android:name="com.buzzwordslite.intent.action.GAMESETUP" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 
@@ -76,7 +76,7 @@
 			android:screenOrientation="portrait">
 			
 			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.TURN"></action>
+				<action android:name="com.buzzwordslite.intent.action.TURN"></action>
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 			
@@ -86,7 +86,7 @@
 			android:screenOrientation="portrait">
 			
 			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.GAMEEND"></action>
+				<action android:name="com.buzzwordslite.intent.action.GAMEEND"></action>
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 			
@@ -96,7 +96,7 @@
 			android:screenOrientation="portrait">
 			
 			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.TURNSUMMARY"></action>
+				<action android:name="com.buzzwordslite.intent.action.TURNSUMMARY"></action>
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 			

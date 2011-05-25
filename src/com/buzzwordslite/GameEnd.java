@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-package com.buzzwords;
+package com.buzzwordslite;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,8 +48,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.buzzwords.R;
-import com.buzzwords.BuzzWordsApplication;
+import com.buzzwordslite.R;
+import com.buzzwordslite.BuzzWordsApplication;
 
 /**
  * The GameEnd class is the final screen of the application, called when either
