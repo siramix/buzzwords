@@ -52,7 +52,7 @@ import com.buzzwords.BuzzWordsApplication;
  * the number of turns is up, the time is up, the end game button is clicked, or
  * any other number of ways to end a game.
  * 
- * @author BuzzWords team
+ * @author Siramix Labs
  * 
  */
 public class GameEnd extends Activity {
