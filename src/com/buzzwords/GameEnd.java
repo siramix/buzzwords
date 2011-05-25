@@ -21,11 +21,15 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -61,6 +65,16 @@ public class GameEnd extends Activity {
    * logging tag
    */
   public static final String TAG = "GameEnd";
+
+  /**
+   * Dialog constants
+   */
+  static final int DIALOG_BUYFULL_ID = 0;
+
+  /**
+   * Whether to rematch after the dialog
+   */
+  private boolean mRematch = false;
 
   /**
    * This is a reference to the current game manager
@@ -252,16 +266,9 @@ public class GameEnd extends Activity {
         Log.d(TAG, "MainMenuListener onClick()");
       }
 
-      BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+      mRematch = false;
+      showDialog(DIALOG_BUYFULL_ID);
 
-      // Play confirm sound
-      SoundManager sound = application.getSoundManager();
-      sound.playSound(SoundManager.Sound.CONFIRM);
-
-      Intent clearStackIntent = new Intent(getApplication().getString(
-          R.string.IntentTitle), getIntent().getData());
-      clearStackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-      startActivity(clearStackIntent);
     }
   }; // End MainMenuListener
 
@@ -273,18 +280,8 @@ public class GameEnd extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "RematchListener onClick()");
       }
-
-      BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
-
-      GameManager curgm = application.getGameManager();
-      GameManager newgm = new GameManager(GameEnd.this);
-      newgm.startGame(curgm.getTeams(), curgm.getNumRounds());
-      application.setGameManager(newgm);
-
-      Intent clearStackIntent = new Intent(getApplication().getString(
-          R.string.IntentTurn), getIntent().getData());
-      clearStackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-      startActivity(clearStackIntent);
+      mRematch = true;
+      showDialog(DIALOG_BUYFULL_ID);
     }
   }; // End MainMenuListener
 
@@ -395,7 +392,8 @@ public class GameEnd extends Activity {
         text.setText(RANKS[rankings[i]]);
         // Set team name and color
         text = (TextView) findViewById(TEAM_NAME_IDS[i]);
-        text.setTextColor(mResources.getColor(teams.get(i).getSecondaryColor()));
+        text
+            .setTextColor(mResources.getColor(teams.get(i).getSecondaryColor()));
         text.setText(teams.get(i).getName());
         // Set team score and color
         text = (TextView) findViewById(TEAM_SCORE_IDS[i]);
@@ -470,6 +468,47 @@ public class GameEnd extends Activity {
   }
 
   /**
+   * Create game over and ready dialogs using builders
+   */
+  @Override
+  protected Dialog onCreateDialog(int id) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onCreateDialog(" + id + ")");
+    }
+    Dialog dialog = null;
+    AlertDialog.Builder builder = null;
+
+    switch (id) {
+    case DIALOG_BUYFULL_ID:
+      builder = new AlertDialog.Builder(this);
+      builder
+          .setMessage(
+              "Want the full BuzzWords experience with a full deck of 1000 Words? Buy the full version today!")
+          .setPositiveButton("Yeah!", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              Uri uri = Uri.parse("http://www.siramix.com/buzzwordsappstore");
+              Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+              startActivity(intent);
+            }
+          }).setNegativeButton("Not Yet",
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                  if (mRematch) {
+                    initiateRematch();
+                  } else {
+                    goToMenu();
+                  }
+                }
+              });
+      dialog = builder.create();
+      break;
+    default:
+      dialog = null;
+    }
+    return dialog;
+  }
+
+  /**
    * Handler for key up events
    */
   @Override
@@ -481,5 +520,38 @@ public class GameEnd extends Activity {
     }
 
     return super.onKeyUp(keyCode, event);
+  }
+
+  /**
+   * Clear the teams and start a rematch after clearing the activity stack
+   */
+  private void initiateRematch() {
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+
+    GameManager curgm = application.getGameManager();
+    GameManager newgm = new GameManager(GameEnd.this);
+    newgm.startGame(curgm.getTeams(), curgm.getNumRounds());
+    application.setGameManager(newgm);
+
+    Intent clearStackIntent = new Intent(getApplication().getString(
+        R.string.IntentTurn), getIntent().getData());
+    clearStackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    startActivity(clearStackIntent);
+  }
+
+  /**
+   * Go to the main menu after clearing the activity stack
+   */
+  private void goToMenu() {
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+
+    // Play confirm sound
+    SoundManager sound = application.getSoundManager();
+    sound.playSound(SoundManager.Sound.CONFIRM);
+
+    Intent clearStackIntent = new Intent(getApplication().getString(
+        R.string.IntentTitle), getIntent().getData());
+    clearStackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    startActivity(clearStackIntent);
   }
 }
