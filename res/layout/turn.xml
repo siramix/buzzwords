@@ -141,17 +141,7 @@
                     android:layout_height="wrap_content">
                     
                     <TextView android:id="@+id/Turn_CardTitleA"
-                        android:gravity="center"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:typeface="serif"
-                        android:textSize="40dp"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:textColor="#FFFFFF"
-                        android:layout_centerHorizontal="true"
-                        />
+                        style="@style/CardTitle"/>
                         
                     <LinearLayout android:id="@+id/Turn_CardA_BadWords"
                         android:layout_width="fill_parent"
@@ -160,59 +150,19 @@
                         android:layout_below="@id/Turn_CardTitleA">
                         
                         <TextView android:id="@+id/Turn_CardA_BadWord0"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="34dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/teamA_CardText"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_horizontal"
-                            />
+                            style="@style/BadWordText"/>
                             
                         <TextView android:id="@+id/Turn_CardA_BadWord1"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="34dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/teamA_CardText"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_horizontal"
-                            />
+                            style="@style/BadWordText"/>
                             
                         <TextView android:id="@+id/Turn_CardA_BadWord2"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="34dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/teamA_CardText"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_horizontal"
-                            />
+                            style="@style/BadWordText"/>
                             
                         <TextView android:id="@+id/Turn_CardA_BadWord3"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="34dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/teamA_CardText"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_horizontal"
-                            />
+                            style="@style/BadWordText"/>
                             
                         <TextView android:id="@+id/Turn_CardA_BadWord4"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="34dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/teamA_CardText"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_horizontal"
-                            />
+                            style="@style/BadWordText"/>
                             
                     </LinearLayout>
                     
@@ -239,17 +189,7 @@
                     android:orientation="vertical">
                     
                     <TextView android:id="@+id/Turn_CardTitleB"
-                        android:gravity="center"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:textColor="#FFF"
-                        android:textStyle="bold"
-                        android:typeface="serif"
-                        android:textSize="40dp"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:layout_centerInParent="true"
+                        style="@style/CardTitle"
                     	/>
                         
                     <LinearLayout android:id="@+id/Turn_CardB_BadWords"
@@ -259,58 +199,23 @@
                         android:layout_height="wrap_content">
                         
                         <TextView android:id="@+id/Turn_CardB_BadWord0"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="34dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/teamA_CardText"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/BadWordText"
                             />
                             
                         <TextView android:id="@+id/Turn_CardB_BadWord1"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="34dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/teamA_CardText"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/BadWordText"
                             />
                             
                         <TextView android:id="@+id/Turn_CardB_BadWord2"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="34dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/teamA_CardText"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/BadWordText"
                             />
                             
                         <TextView android:id="@+id/Turn_CardB_BadWord3"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="34dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/teamA_CardText"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/BadWordText"
                             />
                             
                         <TextView android:id="@+id/Turn_CardB_BadWord4"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:textSize="34dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/teamA_CardText"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_horizontal"
+                            style="@style/BadWordText"
                             />
                             
                     </LinearLayout>

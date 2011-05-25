@@ -21,9 +21,6 @@
   <color name="teamA_BG">
     #317695
   </color>
-  <color name="teamA_CardText">
-  	#001b2b 
-  </color>
   <color name="teamA_highlight">
     #52a2c6
   </color>
@@ -36,9 +33,6 @@
   <color name="teamB_BG">
     #6FA234
   </color> 
-  <color name="teamB_CardText">
-    #344b19
-  </color>
   <color name="teamB_highlight">
     #91c751
   </color>
@@ -51,9 +45,6 @@
   <color name="teamC_BG">
     #AC2D20
   </color>   
-  <color name="teamC_CardText">
-    #470000
-  </color>
   <color name="teamC_highlight">
     #dc4c3c
   </color>
@@ -65,10 +56,7 @@
   </color>
   <color name="teamD_BG">
     #AC9B29
-  </color>   
-  <color name="teamD_CardText">
-    #2e2e00
-  </color>  
+  </color>
   <color name="teamD_highlight">
     #d3c045
   </color>
