@@ -224,5 +224,14 @@
 			/>
 
 	</LinearLayout>
+	
+	<ImageView android:id="@+id/Title_Lite_Banner"
+	  android:layout_width="wrap_content" 
+	  android:layout_height="wrap_content"
+	  android:background="@drawable/title_lite_banner" 
+	  android:layout_alignParentRight="true" 
+	  android:layout_alignParentTop="true"
+	  />
+
 
 </RelativeLayout>
