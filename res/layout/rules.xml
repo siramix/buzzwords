@@ -666,13 +666,33 @@
 						android:layout_below="@id/Rules_BuzzingText06"
 						/>
 
+          <TextView android:id="@+id/Rules_BuzzingText08"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_subtext"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:layout_below="@id/Rules_BuzzingText07"
+            android:text="Changing a word into an acronym or saying the words that an acronym stands for.  For example saying 'Central Intelligence Agency' for 'CIA'."
+            />
+            
+          <View android:id="@+id/Rules_BuzzingBullet08"
+            android:layout_gravity="center_vertical"
+            android:background="#ccc"
+            android:layout_height="6dp"
+            android:layout_width="6dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/Rules_BuzzingText07"
+            />
+
 				</RelativeLayout>
 				
 				<TextView android:id="@+id/Rules_BuzzingText07"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/Rules_BuzzingBullettedList"
-					android:text="Singing and humming are encouraged, provided you don't sing a 'buzz' word or gesture.  Remember, if your team uses any of the 'buzz' words, you are then free to use that word yourself."
+					android:text="Singing and humming are encouraged, provided you don't sing a 'buzz' word or gesture.  Substituting unrelated words, even 'blank', for 'buzz' words is appropriate as well.  Remember, if your team uses any of the 'buzz' words, you are then free to use that word yourself."
 					/>
 					
 			</RelativeLayout>
