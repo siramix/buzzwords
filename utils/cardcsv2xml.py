@@ -1,12 +1,13 @@
 from xml.dom.minidom import getDOMImplementation
 import sys
 import re
+import codecs
 
 if len(sys.argv) != 3:
   print "Usage: %s <csv input> <xml output>" % sys.argv[0]
   sys.exit()
 
-f = open(sys.argv[1],'r')
+f = codecs.open(sys.argv[1],'r','utf-8')
 
 impl = getDOMImplementation()
 
@@ -43,7 +44,7 @@ for line in f.readlines():
   cardEl.appendChild(badWordsEl)
   top.appendChild(cardEl)
 
-outfile = open(sys.argv[2], 'w')
+outfile = codecs.open(sys.argv[2], 'w','utf-8')
 uglyXml = newdoc.toprettyxml(indent='  ')
 text_re = re.compile('>\n\s+([^<>\s].*?)\n\s+</', re.DOTALL)    
 prettyXml = text_re.sub('>\g<1></', uglyXml)
