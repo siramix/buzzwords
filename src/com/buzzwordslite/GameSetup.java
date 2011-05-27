@@ -27,6 +27,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -97,13 +98,23 @@ public class GameSetup extends Activity {
           GameSetup.this.getCheckedRadioIndex());
       GameSetup.mGameSetupPrefEditor.commit();
 
-      // Create a GameManager to manage attributes about the current game
+      // Create a GameManager to manage attributes about the current game.
+      // the while loop around the try-catch block makes sure the database
+      // has loaded before actually starting the game.
       BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
           .getApplication();
-      GameManager gm = new GameManager(GameSetup.this);
-      gm.startGame(mTeamList,
-          ROUND_RADIOS[GameSetup.this.getCheckedRadioIndex()][1]);
-      application.setGameManager(gm);
+      boolean keepLooping = true;
+      while (keepLooping) {
+        try {
+          GameManager gm = new GameManager(GameSetup.this);
+          gm.startGame(mTeamList,
+              ROUND_RADIOS[GameSetup.this.getCheckedRadioIndex()][1]);
+          application.setGameManager(gm);
+          keepLooping = false;
+        } catch (SQLiteException e) {
+          keepLooping = true;
+        }
+      }
 
       // Launch into Turn activity
       startActivity(new Intent(getApplication().getString(R.string.IntentTurn),
