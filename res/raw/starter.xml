@@ -2,14 +2,14 @@
 <pack>
   <card>
     <pack-name>starter</pack-name>
-    <title>Black</title>
+    <title>Harvard University</title>
     <categories>starter</categories>
     <bad-words>
-      <word>COLOR</word>
-      <word>NIGHT</word>
-      <word>DARK</word>
-      <word>WHITE</word>
-      <word>BERRY</word>
+      <word>IVY LEAGUE</word>
+      <word>SCHOOL</word>
+      <word>CRIMSON</word>
+      <word>CAMBRIDGE</word>
+      <word>YALE</word>
     </bad-words>
   </card>
   <card>
@@ -206,19 +206,19 @@
   </card>
   <card>
     <pack-name>starter</pack-name>
-    <title>Blind Melon</title>
+    <title>Illiterate</title>
     <categories>starter</categories>
     <bad-words>
-      <word>BAND</word>
-      <word>NO RAIN</word>
-      <word>BUMBLE BEE</word>
-      <word>90S</word>
-      <word>SAY</word>
+      <word>READ</word>
+      <word>WRITE</word>
+      <word>WORD</word>
+      <word>SCHOOL</word>
+      <word>EDUCATE</word>
     </bad-words>
   </card>
   <card>
     <pack-name>starter</pack-name>
-    <title>Beat-Box</title>
+    <title>Beatbox</title>
     <categories>starter</categories>
     <bad-words>
       <word>RHYTHM</word>
@@ -254,14 +254,14 @@
   </card>
   <card>
     <pack-name>starter</pack-name>
-    <title>Jackalope</title>
+    <title>Bigfoot</title>
     <categories>starter</categories>
     <bad-words>
-      <word>RABBIT</word>
-      <word>ANTELOPE</word>
-      <word>ANTLER</word>
-      <word>FICTIONAL</word>
-      <word>MYTHICAL</word>
+      <word>SASQUATCH</word>
+      <word>YETI</word>
+      <word>HAIRY</word>
+      <word>MONSTER</word>
+      <word>LEGEND</word>
     </bad-words>
   </card>
   <card>
@@ -530,14 +530,14 @@
   </card>
   <card>
     <pack-name>starter</pack-name>
-    <title>Bach</title>
+    <title>Elvis Presley</title>
     <categories>starter</categories>
     <bad-words>
-      <word>BAROQUE</word>
-      <word>COMPOSER</word>
-      <word>ORGAN</word>
-      <word>CONCERTO</word>
-      <word>CLASSICAL</word>
+      <word>GRACELAND</word>
+      <word>HOUND DOG</word>
+      <word>SING</word>
+      <word>ROCK N' ROLL</word>
+      <word>KING</word>
     </bad-words>
   </card>
   <card>
