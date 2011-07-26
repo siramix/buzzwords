@@ -20,6 +20,7 @@ package com.buzzwords;
 import java.util.ArrayList;
 
 import com.buzzwords.R;
+import com.buzzwords.SoundManager.Sound;
 
 import android.app.*;
 import android.content.DialogInterface;
@@ -1061,13 +1062,16 @@ public class Turn extends Activity {
               Turn.this.showCard();
               mIsBack = true;
               mIsPaused = false;
-              Turn.this.startTimer();
-
+              Turn.this.startTimer();              
+              
+              // Play confirmation sound
+              mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+              
               // Start the turn music
               BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
                   .getApplication();
               GameManager gm = application.getGameManager();
-
+              
               int musicId = R.raw.mus_countdown;
               // If music is enabled, select the appropriate track
               if (mMusicEnabled) {
@@ -1148,7 +1152,12 @@ public class Turn extends Activity {
 
       this.setActiveCard();
 
+      // If music is off play sound to confirm resume to audience
+      if (!mMusicEnabled)
+        mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+      
       mViewFlipper.setVisibility(View.VISIBLE);
+      
       mBuzzerButton.setEnabled(true);
       mSkipButton.setEnabled(true);
       mNextButton.setEnabled(true);
