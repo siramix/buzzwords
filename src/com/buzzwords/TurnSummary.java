@@ -59,6 +59,12 @@ public class TurnSummary extends Activity {
 
   private List<Card> mCardList;
   private List<ImageView> mCardViewList;
+  
+  /**
+   * Sound Manager stored as an instance variable to reduce calls to
+   * GetSoundManager
+   */
+  private SoundManager mSoundManager;  
 
   /**
    * Watches the button that handles hand-off to the next turn activity.
@@ -136,6 +142,9 @@ public class TurnSummary extends Activity {
         .getApplication();
     GameManager game = application.getGameManager();
 
+    // Save sound manager as a local variable
+    mSoundManager = application.getSoundManager();
+    
     // Populate and display list of cards
     ScrollView list = (ScrollView) findViewById(R.id.TurnSummary_CardList);
     LinearLayout layout = new LinearLayout(this.getBaseContext());
@@ -224,12 +233,17 @@ public class TurnSummary extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onOptionsItemSelected()");
     }
+    
     // Handle item selection
     switch (item.getItemId()) {
     case R.string.menu_EndGame:
+      // Play confirmation sound              
+      mSoundManager.playSound(SoundManager.Sound.CONFIRM);
       this.showDialog(DIALOG_GAMEOVER_ID);
       return true;
     case R.string.menu_Rules:
+      // Play confirmation sound              
+      mSoundManager.playSound(SoundManager.Sound.CONFIRM);
       startActivity(new Intent(
           getApplication().getString(R.string.IntentRules), getIntent()
               .getData()));
@@ -256,6 +270,8 @@ public class TurnSummary extends Activity {
       builder.setMessage("Are you sure you want to end the current game?")
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+              // Play confirmation sound              
+              mSoundManager.playSound(SoundManager.Sound.CONFIRM);              
               BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this
                   .getApplication();
               GameManager gm = application.getGameManager();
@@ -265,6 +281,8 @@ public class TurnSummary extends Activity {
             }
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+              // Play confirmation sound              
+              mSoundManager.playSound(SoundManager.Sound.CONFIRM);
               dialog.cancel();
             }
           });
