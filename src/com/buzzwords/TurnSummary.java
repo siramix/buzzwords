@@ -93,26 +93,18 @@ public class TurnSummary extends Activity {
    */
   private final OnClickListener mCardIconListener = new OnClickListener() {
     public void onClick(View v) {
-      ImageView iv = (ImageView) v;
       int cardIndex = mCardViewList.indexOf(v);
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, Integer.toString(cardIndex));
       }
+      
       Card curCard = mCardList.get(cardIndex);
-      // Ammend the card
-      curCard.cycleRws();
-      // Set new Row End icon
-      iv.setImageResource(curCard.getRowEndDrawableId());
-      // Update the score to reflect the new value
-      TurnSummary.this.updateScoreViews();
-
-      // Play sound for the new value
-      final SoundManager.Sound[] rwsSounds = { SoundManager.Sound.RIGHT,
-          SoundManager.Sound.WRONG, SoundManager.Sound.SKIP };
-      BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this
-          .getApplication();
-      SoundManager sound = application.getSoundManager();
-      sound.playSound(rwsSounds[curCard.getRws()]);
+      
+      Intent cardReviewIntent = new Intent(getString(R.string.IntentCardReview),
+        getIntent().getData());
+      cardReviewIntent.putExtra(getString(R.string.cardIndexBundleKey), cardIndex);
+      cardReviewIntent.putExtra(getString(R.string.cardBundleKey), curCard);
+      startActivityForResult(cardReviewIntent, 1);
     }
   };
 
@@ -413,6 +405,39 @@ public class TurnSummary extends Activity {
         marker.setVisibility(View.GONE);
       }
     }
+  }
+  
+  /**
+   * Resume the activity when it comes to the foreground. If the calling
+   * Intent bundles a new card index and state the card in question is
+   * update accordingly.
+   */
+  @Override
+  protected void onResume() {
+
+    super.onResume();
+    
+  }
+  
+  
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+ 
+    Bundle curBundle = data.getExtras();
+    if(curBundle != null &&
+       curBundle.containsKey(getString(R.string.cardIndexBundleKey)) &&
+       curBundle.containsKey(getString(R.string.cardStateBundleKey))) {
+      int curCardIndex = curBundle.getInt(getString(R.string.cardIndexBundleKey));
+      int curCardState = curBundle.getInt(getString(R.string.cardStateBundleKey));
+      Card curCard = mCardList.get(curCardIndex);
+      curCard.setRws(curCardState);
+      ImageView curImageView = mCardViewList.get(curCardIndex);
+      curImageView.setImageResource(curCard.getRowEndDrawableId());
+      TurnSummary.this.updateScoreViews();
+    }
+    
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   /**
