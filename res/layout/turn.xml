@@ -88,7 +88,17 @@
 
             
                 
-            <ImageView android:id="@+id/Turn_TimerFill" android:layout_alignParentTop="true" android:background="@color/teamA_primary" android:layout_height="23dp" android:layout_marginTop="1dp" android:layout_alignParentLeft="true" android:layout_width="fill_parent" android:layout_marginRight="40dp"/><View android:id="@+id/Turn_TimerFrame"
+            <ImageView android:id="@+id/Turn_TimerFill"
+                android:layout_alignParentTop="true"
+                android:background="@color/teamA_primary"
+                android:layout_height="23dp"
+                android:layout_marginTop="1dp"
+                android:layout_alignParentLeft="true"
+                android:layout_width="fill_parent"
+                android:layout_marginRight="40dp"
+                />
+            
+            <View android:id="@+id/Turn_TimerFrame"
                 android:layout_height="25dp"
                 android:background="@drawable/turn_timer_frame"
                 android:layout_width="70dp"
