@@ -81,4 +81,7 @@
   <color name="inactiveButton">
   	#646464
   </color>
+  <color name="cardreview_WordText">
+  	#141414
+  </color>
 </resources>
