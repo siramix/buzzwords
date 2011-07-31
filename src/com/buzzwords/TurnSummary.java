@@ -56,6 +56,8 @@ public class TurnSummary extends Activity {
   public static String TAG = "TurnSummary";
 
   static final int DIALOG_GAMEOVER_ID = 0;
+  
+  static final int CARDREVIEW_REQUEST_CODE = 1;
 
   private List<Card> mCardList;
   private List<ImageView> mCardViewList;
@@ -104,7 +106,7 @@ public class TurnSummary extends Activity {
         getIntent().getData());
       cardReviewIntent.putExtra(getString(R.string.cardIndexBundleKey), cardIndex);
       cardReviewIntent.putExtra(getString(R.string.cardBundleKey), curCard);
-      startActivityForResult(cardReviewIntent, 1);
+      startActivityForResult(cardReviewIntent, CARDREVIEW_REQUEST_CODE);
     }
   };
 
@@ -419,13 +421,18 @@ public class TurnSummary extends Activity {
     
   }
   
-  
-
+  /**
+   * When the card review activity finishes, this function is called. Well,
+   * actually, any activity called with a request code will invoke this
+   * function. If the card review activity returns, we use the result to
+   * change the card state indicated by the result intent stored in data. 
+   */
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
  
     Bundle curBundle = data.getExtras();
-    if(curBundle != null &&
+    if(requestCode == CARDREVIEW_REQUEST_CODE &&
+       curBundle != null &&
        curBundle.containsKey(getString(R.string.cardIndexBundleKey)) &&
        curBundle.containsKey(getString(R.string.cardStateBundleKey))) {
       int curCardIndex = curBundle.getInt(getString(R.string.cardIndexBundleKey));

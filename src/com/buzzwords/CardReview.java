@@ -28,7 +28,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 /**
- * This handles reviewing a card to adjust its right-wrong-skip state.
+ * This handles reviewing a card to adjust its right-wrong-skip state. When
+ * complete it sends its results back to TurnSummary by finishing.
  * 
  * @author Siramix Labs
  */
@@ -124,17 +125,28 @@ public class CardReview extends Activity {
     
   }
   
+  /**
+   * Setup the button OnClickListeners
+   */
   private void setupListeners() {
     mCorrectButton.setOnClickListener(mCorrectClickListener);
     mWrongButton.setOnClickListener(mWrongClickListener);
     mSkipButton.setOnClickListener(mSkipClickListener);
   }
   
+  /**
+   * Get the sound manager reference and store it
+   */
   private void setupSoundManager() {
     BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
     mSoundManager = application.getSoundManager();
   }
   
+  /**
+   * Reset the background selectors of the right-wrong-skip image buttons on
+   * the card. Then, set the selector of the passed state. 
+   * @param state - indicates the requested "lit" button
+   */
   private void setCardState(int state) {
     
     mCorrectButton.setBackgroundResource(R.drawable.controls_review_right_selector);
@@ -149,13 +161,16 @@ public class CardReview extends Activity {
       mWrongButton.setBackgroundResource(R.drawable.controls_wrong_selector);
       break;
     case Card.SKIP:
-      mSkipButton.setBackgroundResource(R.drawable.controls_skip_selector);
-      break;
     default:
+      mSkipButton.setBackgroundResource(R.drawable.controls_skip_selector);
       break;
     }
   }
   
+  /**
+   * Display the specified card in the dialog
+   * @param card - the card to be displayed  
+   */
   private void displayCard(Card card) {
     mTitleView.setText(card.getTitle());
     for(int i = 0; i < card.getBadWords().size(); ++i) {
@@ -164,6 +179,11 @@ public class CardReview extends Activity {
     this.setCardState(card.getRws());
   }
   
+  /**
+   * Finish the current activity and return the new card state and index
+   * to the calling activity.
+   * @param state - the right-wrong-skip state of the card
+   */
   private void goBackToTurnSummary(int state)
   {
     Intent curIntent = new Intent();
@@ -174,8 +194,7 @@ public class CardReview extends Activity {
   }
   
   /**
-   * Initializes the activity to display the word you have to cause your team
-   * mates to say with the words you cannot say below.
+   * Create the activity and display the card bundled in the intent.
    */
   @Override
   public void onCreate(Bundle savedInstanceState) {
