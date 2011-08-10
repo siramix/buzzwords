@@ -22,11 +22,13 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -309,6 +311,15 @@ public class GameEnd extends Activity {
         .getApplication();
     mGameManager = application.getGameManager();
 
+    // Capture our preference variable for playcounter
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    
+    // Increment our playcount by 1
+    SharedPreferences.Editor prefEditor = sp.edit();
+    prefEditor.putInt(Title.PREFKEY_PLAYCOUNT, sp.getInt(Title.PREFKEY_PLAYCOUNT, 0)+1);
+    prefEditor.commit();
+    
     List<Team> teams = mGameManager.getTeams();
 
     // Sort the list by scores to determine the winner(s)
