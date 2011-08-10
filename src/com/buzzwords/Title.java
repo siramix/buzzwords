@@ -18,8 +18,12 @@
 package com.buzzwords;
 
 import com.buzzwords.R;
+import com.buzzwords.SoundManager.Sound;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
@@ -48,6 +52,7 @@ import android.view.animation.TranslateAnimation;
  * @author Siramix Labs
  */
 public class Title extends Activity {
+  
   /**
    * logging tag
    */
@@ -58,6 +63,27 @@ public class Title extends Activity {
    */
   private boolean mContinueMusic;
 
+  /**
+   * Dialog constants
+   */
+  static final int DIALOG_RATEUS_ID = 0;
+    
+  /**
+   *  Preference key for rate us
+   */
+  private static final String PREFKEY_PLAYCOUNT = "playcount";
+
+  /**
+   *  Preference key for muting the rate us reminder
+   */
+  private static final String PREFKEY_MUTEREMINDER = "mutereminder";
+    
+  /**
+   * Preference editor to be used for turning on and off the mute reminder and 
+   * changing other preference values.
+   */
+  private static SharedPreferences.Editor mTitlePrefEditor;
+  
   /**
    * PlayGameListener is used for the start game button. It launches the next
    * activity.
@@ -350,6 +376,11 @@ public class Title extends Activity {
       mp.start();
     }
 
+    // Capture our playcount to decide whether to show the Rate Us dialog
+    int playcount = sp.getInt(PREFKEY_PLAYCOUNT, 0);
+    if (playcount == 0 && !sp.getBoolean(PREFKEY_MUTEREMINDER, false))
+        showDialog(DIALOG_RATEUS_ID);
+    
     mContinueMusic = false;
 
     // Setup the Main Title Screen view
@@ -459,4 +490,63 @@ public class Title extends Activity {
     mContinueMusic = false;
   }
 
+  /**
+   * Sets the boolean preference for muting the Rate Us dialog to true.
+   */
+  private void muteRateReminder()
+  {
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+    
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
+    Title.mTitlePrefEditor = sp.edit();   
+    mTitlePrefEditor.putBoolean(PREFKEY_MUTEREMINDER, true);
+    mTitlePrefEditor.commit();    
+  }
+  
+  /**
+   * Create rate us dialog on X number of playthroughs
+   */
+  @Override
+  protected Dialog onCreateDialog(int id) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onCreateDialog(" + id + ")");
+    }
+    Dialog dialog = null;
+    AlertDialog.Builder builder = null;
+
+    switch (id) {
+    case DIALOG_RATEUS_ID:
+      builder = new AlertDialog.Builder(this);
+      builder
+          .setTitle(
+              "We want your feedback!")
+          .setMessage(
+              "It looks like you've played a few games.  Would you mind taking a minute to provide some feedback?")
+          .setPositiveButton("Rate!", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {              
+              Uri uri = Uri.parse("http://www.siramix.com/buzzwordsliteappstore");
+              Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+              startActivity(intent);
+              muteRateReminder();
+            }
+          }).setNeutralButton("Not Yet",
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {                    
+                  }
+                }
+              ).setNegativeButton("Never!", 
+                  new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                      muteRateReminder();
+                    }
+                  })
+              ;
+      dialog = builder.create();
+      break;
+    default:
+      dialog = null;
+    }
+    return dialog;
+  }
+  
 }
