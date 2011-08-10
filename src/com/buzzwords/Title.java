@@ -64,25 +64,19 @@ public class Title extends Activity {
   private boolean mContinueMusic;
 
   /**
-   * Dialog constants
+   * Dialog constant for Rate Us
    */
   static final int DIALOG_RATEUS_ID = 0;
     
   /**
    *  Preference key for rate us
    */
-  private static final String PREFKEY_PLAYCOUNT = "playcount";
+  public static final String PREFKEY_PLAYCOUNT = "playcount";
 
   /**
    *  Preference key for muting the rate us reminder
    */
-  private static final String PREFKEY_MUTEREMINDER = "mutereminder";
-    
-  /**
-   * Preference editor to be used for turning on and off the mute reminder and 
-   * changing other preference values.
-   */
-  private static SharedPreferences.Editor mTitlePrefEditor;
+  public static final String PREFKEY_MUTEREMINDER = "mutereminder";   
   
   /**
    * PlayGameListener is used for the start game button. It launches the next
@@ -378,7 +372,9 @@ public class Title extends Activity {
 
     // Capture our playcount to decide whether to show the Rate Us dialog
     int playcount = sp.getInt(PREFKEY_PLAYCOUNT, 0);
-    if (playcount == 0 && !sp.getBoolean(PREFKEY_MUTEREMINDER, false))
+    
+    // If a multiple of 3 plays have been done and reminder is not muted, show dialog
+    if (playcount != 0 && playcount % 3 == 0 && !sp.getBoolean(PREFKEY_MUTEREMINDER, false))
         showDialog(DIALOG_RATEUS_ID);
     
     mContinueMusic = false;
@@ -495,16 +491,17 @@ public class Title extends Activity {
    */
   private void muteRateReminder()
   {
-    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
-    
+    // Prepare to edit preference for mute reminder bool
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();    
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
-    Title.mTitlePrefEditor = sp.edit();   
-    mTitlePrefEditor.putBoolean(PREFKEY_MUTEREMINDER, true);
-    mTitlePrefEditor.commit();    
+    SharedPreferences.Editor prefEditor = sp.edit();   
+    
+    prefEditor.putBoolean(PREFKEY_MUTEREMINDER, true);
+    prefEditor.commit();    
   }
   
   /**
-   * Create rate us dialog on X number of playthroughs
+   * Custom create Dialogs
    */
   @Override
   protected Dialog onCreateDialog(int id) {
@@ -515,6 +512,10 @@ public class Title extends Activity {
     AlertDialog.Builder builder = null;
 
     switch (id) {
+    /**
+     * When players have played X times, show a dialog asking them to rate us or put it
+     * off until later.  We will provide a 'Never' option as well.
+     */
     case DIALOG_RATEUS_ID:
       builder = new AlertDialog.Builder(this);
       builder
@@ -531,7 +532,8 @@ public class Title extends Activity {
             }
           }).setNeutralButton("Not Yet",
               new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {                    
+                public void onClick(DialogInterface dialog, int id) {
+                  // Do nothing
                   }
                 }
               ).setNegativeButton("Never!", 
