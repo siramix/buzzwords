@@ -61,6 +61,7 @@ public class TurnSummary extends Activity {
 
   private List<Card> mCardList;
   private List<ImageView> mCardViewList;
+  private List<View> mCardLineList;
 
   /**
    * Watches the button that handles hand-off to the next turn activity.
@@ -95,7 +96,7 @@ public class TurnSummary extends Activity {
    */
   private final OnClickListener mCardIconListener = new OnClickListener() {
     public void onClick(View v) {
-      int cardIndex = mCardViewList.indexOf(v);
+      int cardIndex = mCardLineList.indexOf(v);
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, Integer.toString(cardIndex));
       }
@@ -137,6 +138,7 @@ public class TurnSummary extends Activity {
 
     // iterate through all completed cards and set layout accordingly
     mCardViewList = new LinkedList<ImageView>();
+    mCardLineList = new LinkedList<View>();
     mCardList = game.getCurrentCards();
     Card card = null;
     int count = 0;
@@ -156,13 +158,13 @@ public class TurnSummary extends Activity {
       // Set Title
       TextView cardTitle = (TextView) realLine.getChildAt(1);
       cardTitle.setText(card.getTitle());
-      cardTitle.setLongClickable(true);
 
       // Set Row end icon
       ImageView cardIcon = (ImageView) realLine.getChildAt(2);
       mCardViewList.add(cardIcon);
+      mCardLineList.add(realLine);
       cardIcon.setImageResource(card.getRowEndDrawableId());
-      cardIcon.setOnClickListener(mCardIconListener);
+      realLine.setOnClickListener(mCardIconListener);
       count++;
     }
     list.addView(layout);
