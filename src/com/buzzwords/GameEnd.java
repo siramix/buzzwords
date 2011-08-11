@@ -314,10 +314,24 @@ public class GameEnd extends Activity {
     // Capture our preference variable for playcounter
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
-    
-    // Increment our playcount by 1
+
+    // Initialize our preference Editor
     SharedPreferences.Editor prefEditor = sp.edit();
-    prefEditor.putInt(Title.PREFKEY_PLAYCOUNT, sp.getInt(Title.PREFKEY_PLAYCOUNT, 0)+1);
+    
+    // Get our play count preference title string 
+    String playCountKey = this.getResources().getString(R.string.PREFKEY_PLAYCOUNT); 
+    String showReminderKey = this.getResources().getString(R.string.PREFKEY_SHOWREMINDER);
+    
+    // Get number of plays
+    int playCount = sp.getInt(playCountKey, 0);
+    
+    // When we hit 3 or 6 playthroughs, trigger the reminder
+    // If they've rated us, playCount will never hit 3 or 6 (it gets set to 7)
+    if (playCount == 3 || playCount == 6) {
+    	prefEditor.putBoolean(showReminderKey, true);
+    }
+    
+    prefEditor.putInt(playCountKey, playCount+1);
     prefEditor.commit();
     
     List<Team> teams = mGameManager.getTeams();
