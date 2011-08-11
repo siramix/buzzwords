@@ -367,7 +367,7 @@ public class Title extends Activity {
 
     // Capture our play count to decide whether to show the Rate Us dialog
     int playCount = sp.getInt(getResources().getString(R.string.PREFKEY_PLAYCOUNT), 0);
-    boolean showReminder = sp.getBoolean(getResources().getString(R.string.PREFKEY_SHOWREMINDER), true);
+    boolean showReminder = sp.getBoolean(getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
     
     // If 3 plays have been done and reminder is not muted, show dialog
     if (showReminder) {
