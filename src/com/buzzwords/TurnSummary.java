@@ -429,8 +429,10 @@ public class TurnSummary extends Activity {
    */
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
- 
-    Bundle curBundle = data.getExtras();
+    Bundle curBundle = null;
+    if(data != null) {
+      curBundle = data.getExtras(); 
+    }
     if(requestCode == CARDREVIEW_REQUEST_CODE &&
        curBundle != null &&
        curBundle.containsKey(getString(R.string.cardIndexBundleKey)) &&
