@@ -568,11 +568,12 @@ public class Turn extends Activity {
     flipper.showNext();
     mGameManager.processCard(Card.RIGHT);
 
-    // Only play sound once card has been processed so we don't confuse the user
-    mSoundManager.playSound(SoundManager.Sound.RIGHT);
-
     // Mark the card with an icon
     mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.RIGHT));
+    mCardStatus.setVisibility(View.VISIBLE);
+    
+    // Only play sound once card has been processed so we don't confuse the user
+    mSoundManager.playSound(SoundManager.Sound.RIGHT);
 
     // Show the next card
     showCard();
@@ -596,6 +597,7 @@ public class Turn extends Activity {
 
     // Mark the card with an icon
     mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.WRONG));
+    mCardStatus.setVisibility(View.VISIBLE);
 
     // Only play sound once card has been processed so we don't confuse the user
     mSoundManager.playSound(SoundManager.Sound.WRONG);
@@ -620,6 +622,7 @@ public class Turn extends Activity {
 
     // Mark the card with an icon for SKIP
     mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.SKIP));
+    mCardStatus.setVisibility(View.VISIBLE);
 
     // Only play sound once card has been processed so we don't confuse the user
     mSoundManager.playSound(SoundManager.Sound.SKIP);

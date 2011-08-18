@@ -79,11 +79,11 @@ public class Card {
     }
     switch (cardRWS) {
     case RIGHT:
-      return R.drawable.controls_right;
+      return R.drawable.stamp_right;
     case WRONG:
-      return R.drawable.controls_wrong;
+      return R.drawable.stamp_wrong;
     case SKIP:
-      return R.drawable.controls_skip;
+      return R.drawable.stamp_skip;
     default:
       return 0;
     }
