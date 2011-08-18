@@ -48,6 +48,7 @@
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/right"/>
+        android:background="@drawable/right"
+        android:layout_marginBottom="1dp"/>
         
 </RelativeLayout>
