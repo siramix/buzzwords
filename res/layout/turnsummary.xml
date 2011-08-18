@@ -78,13 +78,18 @@
         android:layout_height="3dp"
         android:layout_marginTop="5dp"
         />
+        
+    <ImageView android:id="@+id/TurnSummary_SpacerC" 
+        android:layout_width="fill_parent"
+        android:background="@color/black"
+        android:layout_height="1dp"
+        />
 
     <ScrollView android:id="@+id/TurnSummary_CardList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp">
+        android:layout_marginBottom="2dp" android:layout_marginTop="0dp">
 
     </ScrollView>
     
