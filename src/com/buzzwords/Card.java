@@ -1,5 +1,6 @@
 package com.buzzwords;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -13,7 +14,12 @@ import android.util.Log;
  * 
  * @author Siramix Labs
  */
-public class Card {
+public class Card implements Serializable {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -5094548104192852941L;
+
   /**
    * Static string used to refer to this class, in debug output for example.
    */

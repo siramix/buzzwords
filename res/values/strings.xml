@@ -14,6 +14,7 @@
   <string name="IntentTurn">com.buzzwords.intent.action.TURN</string>
   <string name="IntentTurnSummary">com.buzzwords.intent.action.TURNSUMMARY</string>
   <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
+  <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
 
  <!-- Menu Designations -->
   <string name="menu_EndGame">MENU_ENDGAME</string>
@@ -32,6 +33,13 @@
   <string name="teamnameB">Green</string>
   <string name="teamnameC">Red</string>
   <string name="teamnameD">Yellow</string>
+  
+  <!-- Bundle Keys -->
+  <string name="cardBundleKey">com.buzzwords.card</string>
+  <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
+  <string name="cardStateBundleKey">com.buzzwords.cardState</string>
+  <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
+  <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
 
 
 </resources>

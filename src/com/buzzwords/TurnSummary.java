@@ -56,9 +56,12 @@ public class TurnSummary extends Activity {
   public static String TAG = "TurnSummary";
 
   static final int DIALOG_GAMEOVER_ID = 0;
+  
+  static final int CARDREVIEW_REQUEST_CODE = 1;
 
   private List<Card> mCardList;
   private List<ImageView> mCardViewList;
+  private List<View> mCardLineList;
 
   /**
    * Watches the button that handles hand-off to the next turn activity.
@@ -93,26 +96,18 @@ public class TurnSummary extends Activity {
    */
   private final OnClickListener mCardIconListener = new OnClickListener() {
     public void onClick(View v) {
-      ImageView iv = (ImageView) v;
-      int cardIndex = mCardViewList.indexOf(v);
+      int cardIndex = mCardLineList.indexOf(v);
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, Integer.toString(cardIndex));
       }
+      
       Card curCard = mCardList.get(cardIndex);
-      // Ammend the card
-      curCard.cycleRws();
-      // Set new Row End icon
-      iv.setImageResource(curCard.getRowEndDrawableId());
-      // Update the score to reflect the new value
-      TurnSummary.this.updateScoreViews();
-
-      // Play sound for the new value
-      final SoundManager.Sound[] rwsSounds = { SoundManager.Sound.RIGHT,
-          SoundManager.Sound.WRONG, SoundManager.Sound.SKIP };
-      BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this
-          .getApplication();
-      SoundManager sound = application.getSoundManager();
-      sound.playSound(rwsSounds[curCard.getRws()]);
+      
+      Intent cardReviewIntent = new Intent(getString(R.string.IntentCardReview),
+        getIntent().getData());
+      cardReviewIntent.putExtra(getString(R.string.cardIndexBundleKey), cardIndex);
+      cardReviewIntent.putExtra(getString(R.string.cardBundleKey), curCard);
+      startActivityForResult(cardReviewIntent, CARDREVIEW_REQUEST_CODE);
     }
   };
 
@@ -143,6 +138,7 @@ public class TurnSummary extends Activity {
 
     // iterate through all completed cards and set layout accordingly
     mCardViewList = new LinkedList<ImageView>();
+    mCardLineList = new LinkedList<View>();
     mCardList = game.getCurrentCards();
     Card card = null;
     int count = 0;
@@ -162,13 +158,13 @@ public class TurnSummary extends Activity {
       // Set Title
       TextView cardTitle = (TextView) realLine.getChildAt(1);
       cardTitle.setText(card.getTitle());
-      cardTitle.setLongClickable(true);
 
       // Set Row end icon
       ImageView cardIcon = (ImageView) realLine.getChildAt(2);
       mCardViewList.add(cardIcon);
+      mCardLineList.add(realLine);
       cardIcon.setImageResource(card.getRowEndDrawableId());
-      cardIcon.setOnClickListener(mCardIconListener);
+      realLine.setOnClickListener(mCardIconListener);
       count++;
     }
     list.addView(layout);
@@ -413,6 +409,46 @@ public class TurnSummary extends Activity {
         marker.setVisibility(View.GONE);
       }
     }
+  }
+  
+  /**
+   * Resume the activity when it comes to the foreground. If the calling
+   * Intent bundles a new card index and state the card in question is
+   * update accordingly.
+   */
+  @Override
+  protected void onResume() {
+
+    super.onResume();
+    
+  }
+  
+  /**
+   * When the card review activity finishes, this function is called. Well,
+   * actually, any activity called with a request code will invoke this
+   * function. If the card review activity returns, we use the result to
+   * change the card state indicated by the result intent stored in data. 
+   */
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    Bundle curBundle = null;
+    if(data != null) {
+      curBundle = data.getExtras(); 
+    }
+    if(requestCode == CARDREVIEW_REQUEST_CODE &&
+       curBundle != null &&
+       curBundle.containsKey(getString(R.string.cardIndexBundleKey)) &&
+       curBundle.containsKey(getString(R.string.cardStateBundleKey))) {
+      int curCardIndex = curBundle.getInt(getString(R.string.cardIndexBundleKey));
+      int curCardState = curBundle.getInt(getString(R.string.cardStateBundleKey));
+      Card curCard = mCardList.get(curCardIndex);
+      curCard.setRws(curCardState);
+      ImageView curImageView = mCardViewList.get(curCardIndex);
+      curImageView.setImageResource(curCard.getRowEndDrawableId());
+      TurnSummary.this.updateScoreViews();
+    }
+    
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   /**
