@@ -459,11 +459,19 @@
 						android:padding="5dp"
 						android:layout_below="@id/Rules_TurnCouple">
 						
+						<TextView android:id="@+id/Rules_Screens_Text04New"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:padding="8dp"
+							android:text="NEW!" 
+							android:textColor="#FFFFFF"
+							/>
+						
 						<TextView android:id="@+id/Rules_Screens_Text04"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:padding="8dp"
-							android:text="Turn Results:  Touch the right, wrong, or skip icons next to each word to correct the results.  Click Next Team when you are ready to pass the phone." android:layout_weight="1"
+							android:text="Turn Results:  Touch any word to review a card's buzzwords and correct the results.  Click Next Team when you are ready to pass the phone." android:layout_weight="1"
 							/>
 							
 						<ImageView android:id="@+id/Rules_Screens_TurnSum"
