@@ -272,7 +272,8 @@ public class Turn extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreateOptionsMenu()");
-    }
+    }   
+    
     menu.add(0, R.string.menu_EndGame, 0, "End Game");
     menu.add(0, R.string.menu_Rules, 0, "Rules");
 
@@ -287,12 +288,17 @@ public class Turn extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onOptionsItemSelected()");
     }
+
     // Handle item selection
     switch (item.getItemId()) {
     case R.string.menu_EndGame:
+      // Play confirmation sound              
+      mSoundManager.playSound(SoundManager.Sound.CONFIRM);
       this.showDialog(DIALOG_GAMEOVER_ID);
       return true;
     case R.string.menu_Rules:
+      // Play confirmation sound              
+      mSoundManager.playSound(SoundManager.Sound.CONFIRM);
       startActivity(new Intent(getString(R.string.IntentRules), getIntent()
           .getData()));
       return true;
@@ -1034,6 +1040,9 @@ public class Turn extends Activity {
       builder.setMessage("Are you sure you want to end the current game?")
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+              // Play confirmation sound              
+              mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+              
               BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
                   .getApplication();
               GameManager gm = application.getGameManager();
@@ -1042,7 +1051,10 @@ public class Turn extends Activity {
                   getIntent().getData()));
             }
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+            public void onClick(DialogInterface dialog, int id) {             
+              // Play confirmation sound              
+              mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+              
               dialog.cancel();
             }
           });
@@ -1061,13 +1073,16 @@ public class Turn extends Activity {
               Turn.this.showCard();
               mIsBack = true;
               mIsPaused = false;
-              Turn.this.startTimer();
-
+              Turn.this.startTimer();              
+              
+              // Play back sound to differentiate from normal clicks
+              mSoundManager.playSound(SoundManager.Sound.BACK);
+              
               // Start the turn music
               BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
                   .getApplication();
               GameManager gm = application.getGameManager();
-
+              
               int musicId = R.raw.mus_countdown;
               // If music is enabled, select the appropriate track
               if (mMusicEnabled) {
@@ -1148,7 +1163,11 @@ public class Turn extends Activity {
 
       this.setActiveCard();
 
+      // Play resume sound
+      mSoundManager.playSound(SoundManager.Sound.BACK);
+      
       mViewFlipper.setVisibility(View.VISIBLE);
+      
       mBuzzerButton.setEnabled(true);
       mSkipButton.setEnabled(true);
       mNextButton.setEnabled(true);
@@ -1176,8 +1195,8 @@ public class Turn extends Activity {
 
     mPauseTextLayout = (LinearLayout) this
         .findViewById(R.id.Turn_PauseTextGroup);
-    mPauseTextLayout.setVisibility(View.VISIBLE);
-
+    mPauseTextLayout.setVisibility(View.VISIBLE);    
+    
     // Stop music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
@@ -1185,6 +1204,10 @@ public class Turn extends Activity {
     if (mp.isPlaying()) {
       mp.pause();
     }
+        
+    // Play ready sound since it indicates a wait.  
+    // This is the menu method that is called on every menu push
+    mSoundManager.playSound(SoundManager.Sound.TEAMREADY);    
 
     if (!mTurnIsOver) {
       this.stopTurnTimer();
@@ -1214,6 +1237,7 @@ public class Turn extends Activity {
     if (!mIsPaused) {
       this.pauseGame();
     }
+    
     return true;
   }
 
