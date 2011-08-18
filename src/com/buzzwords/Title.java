@@ -20,6 +20,9 @@ package com.buzzwords;
 import com.buzzwords.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
@@ -48,6 +51,7 @@ import android.view.animation.TranslateAnimation;
  * @author Siramix Labs
  */
 public class Title extends Activity {
+  
   /**
    * logging tag
    */
@@ -58,6 +62,16 @@ public class Title extends Activity {
    */
   private boolean mContinueMusic;
 
+  /**
+   * Dialog constant for first Rate Us message
+   */
+  static final int DIALOG_RATEUS_FIRST = 0;
+ 
+  /**
+   * Dialog constant for second Rate Us message
+   */
+  static final int DIALOG_RATEUS_SECOND = 1;
+    
   /**
    * PlayGameListener is used for the start game button. It launches the next
    * activity.
@@ -350,6 +364,20 @@ public class Title extends Activity {
       mp.start();
     }
 
+    // Capture our play count to decide whether to show the Rate Us dialog
+    int playCount = sp.getInt(getResources().getString(R.string.PREFKEY_PLAYCOUNT), 0);
+    boolean showReminder = sp.getBoolean(getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
+    
+    // If 3 plays have been done and reminder is not muted, show dialog
+    if (showReminder) {
+      if (playCount < 6) {
+        showDialog(DIALOG_RATEUS_FIRST);
+      }
+      else {
+        showDialog(DIALOG_RATEUS_SECOND);
+      }
+    }
+
     mContinueMusic = false;
 
     // Setup the Main Title Screen view
@@ -459,4 +487,115 @@ public class Title extends Activity {
     mContinueMusic = false;
   }
 
+  /**
+   * Sets the boolean preference for muting the Rate Us dialog to true.
+   */
+  private void delayRateReminder()
+  {
+	if (BuzzWordsApplication.DEBUG) {
+		Log.d(TAG, "muteRateReminder()");
+	}
+    // Prepare to edit preference for mute reminder bool
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();    
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
+    SharedPreferences.Editor prefEditor = sp.edit();   
+    
+    prefEditor.putBoolean(this.getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
+    prefEditor.commit();    
+  }
+  
+  /**
+   * Sets the boolean preference for muting the Rate Us dialog to true.
+   */
+  private void muteRateReminder()
+  {
+	if (BuzzWordsApplication.DEBUG) {
+		Log.d(TAG, "muteRateReminder()");
+	}
+    // Prepare to edit preference for mute reminder bool
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();    
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
+    SharedPreferences.Editor prefEditor = sp.edit();   
+    
+    // 7 and false will mean the user has seen the second dialog and muted it 
+    prefEditor.putInt(this.getResources().getString(R.string.PREFKEY_PLAYCOUNT),7);
+    prefEditor.putBoolean(this.getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
+    
+    prefEditor.commit();    
+  }
+  
+  /**
+   * Custom create Dialogs
+   */
+  @Override
+  protected Dialog onCreateDialog(int id) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onCreateDialog(" + id + ")");
+    }
+    Dialog dialog = null;
+    AlertDialog.Builder builder = null;
+
+    switch (id) {
+    /**
+     * When players have played X times, show a dialog asking them to rate us or put it
+     * off until later.  We will provide a 'Never' option as well.
+     */
+    case DIALOG_RATEUS_FIRST:
+      builder = new AlertDialog.Builder(this);
+      builder
+          .setTitle(
+              getResources().getString(R.string.rateUsFirstDialog_title))
+          .setMessage(     		  
+        	  getResources().getString(R.string.rateUsFirstDialog_text))
+          .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
+        		  new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int id) {              
+	                  Uri uri = Uri.parse(getResources().getString(R.string.rateUs_URI));
+	                  Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+	                  startActivity(intent);
+	                  muteRateReminder();
+	        }
+          }).setNegativeButton(getResources().getString(R.string.rateUsDialog_neutralBtn),
+	              new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int id) {
+	                  delayRateReminder();
+	                }
+	        }
+            );
+      dialog = builder.create();
+      break;
+    
+    /**
+     * The second more urgent dialog shows after 6 plays
+     */
+    case DIALOG_RATEUS_SECOND:
+        builder = new AlertDialog.Builder(this);
+        builder
+            .setTitle(
+                getResources().getString(R.string.rateUsSecondDialog_title))
+            .setMessage(
+            	getResources().getString(R.string.rateUsSecondDialog_text))
+            .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
+            	  new DialogInterface.OnClickListener() {
+		            public void onClick(DialogInterface dialog, int id) {              
+		              Uri uri = Uri.parse(getResources().getString(R.string.rateUs_URI));
+		              Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		              startActivity(intent);
+		              muteRateReminder();
+              }
+            }).setNegativeButton(getResources().getString(R.string.rateUsDialog_negativeBtn), 
+                  new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                      muteRateReminder();
+              }
+            });
+      dialog = builder.create();
+      break;
+      
+    default:
+      dialog = null;
+    }
+    return dialog;
+  }
+  
 }
