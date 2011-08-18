@@ -327,7 +327,7 @@ public class GameEnd extends Activity {
     
     // When we hit 3 or 6 playthroughs, trigger the reminder
     // If they've rated us, playCount will never hit 3 or 6 (it gets set to 7)
-    if (playCount == 3 || playCount == 6) {
+    if (playCount == 2 || playCount == 5) {
     	prefEditor.putBoolean(showReminderKey, true);
     }
     
