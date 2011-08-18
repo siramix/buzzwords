@@ -46,6 +46,13 @@
 			android:defaultValue="true"
 			android:summary="If checked players may skip cards."
 			/>
+			
+		<CheckBoxPreference 
+			android:key="allow_gestures"
+			android:title="Allow Gestures"
+			android:defaultValue="true"
+			android:summary="Swipe up for correct, down for wrong, left for skip, and right for back."
+			/>			
 
 	</PreferenceCategory>
 

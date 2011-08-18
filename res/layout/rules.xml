@@ -347,12 +347,36 @@
 					
 				</RelativeLayout>
 
+				<TextView android:id="@+id/Rules_GameplayTextBack"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" 
+					android:text="Back Button (phone):  You can use the back button on your Android device to go back one card.  Don't worry if you messed up more than once.  You can always fix the results on Turn Summary."
+					android:padding="8dp"
+					android:layout_below="@id/Rules_Gameplay_IconsDescriptions"
+					/>
+
+				<TextView android:id="@+id/Rules_GameplayTextGesturesNew"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" 
+					android:text="NEW!"
+					android:layout_below="@id/Rules_GameplayTextBack"
+					android:textColor="#FFFFFF" android:textStyle="bold" android:paddingLeft="8dp" android:paddingTop="8dp"/>
+
+				<TextView android:id="@+id/Rules_GameplayTextGestures"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" 
+					android:text="Gestures can now be used perform actions.  Swipe up for right (think thumbs up), down for wrong (thumbs down), left for skip, and right for back."
+					android:paddingLeft="8dp"
+					android:paddingRight="8dp"
+                    android:paddingBottom="8dp" 
+                    android:layout_below="@id/Rules_GameplayTextGesturesNew"/>
+
 				<TextView android:id="@+id/Rules_GameplayTextPausing"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" 
 					android:text="The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don't worry, it will pause if anyone calls and interrupts your intense game of Buzzwords."
 					android:padding="8dp"
-					android:layout_below="@id/Rules_Gameplay_IconsDescriptions"
+					android:layout_below="@id/Rules_GameplayTextGestures"
 					/>
 
 			</RelativeLayout>
