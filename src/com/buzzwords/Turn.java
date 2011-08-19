@@ -649,6 +649,7 @@ public class Turn extends Activity {
     mViewFlipper.showNext();
 
     this.setActiveCard();
+    mGameManager.processCard(Card.SKIP);
     Card curCard = mGameManager.getPreviousCard();
     mCardTitle.setText(curCard.getTitle());
     // Update bad words
@@ -1058,6 +1059,7 @@ public class Turn extends Activity {
           .setPositiveButton("START!", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
+              dialog.dismiss();
               Turn.this.showCard();
               mIsBack = true;
               mIsPaused = false;
