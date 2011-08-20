@@ -28,6 +28,7 @@ public class Card implements Serializable {
   /**
    * R-W-S Constants
    */
+  public static final int NOTSET = -1;
   public static final int RIGHT = 0;
   public static final int WRONG = 1;
   public static final int SKIP = 2;
@@ -102,7 +103,7 @@ public class Card implements Serializable {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "Card()");
     }
-    this.init(-1, -1, "", new ArrayList<String>());
+    this.init(NOTSET, NOTSET, "", new ArrayList<String>());
   }
 
   /**
@@ -136,7 +137,7 @@ public class Card implements Serializable {
    * @param badWords
    */
   public Card(int id, String title, String badWords) {
-    this.init(id, -1, title, Card.bustString(badWords));
+    this.init(id, NOTSET, title, Card.bustString(badWords));
   }
 
   /**

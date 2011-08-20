@@ -118,6 +118,7 @@ public class GameManager {
 
     mCurrentRound = 0;
     mCurrentTurn = 0;
+    mCardPosition = -1;
     mCurrentCards = new LinkedList<Card>();
     mRwsResourceIds = new int[] { R.drawable.right, R.drawable.wrong,
         R.drawable.skip };
@@ -147,7 +148,14 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "getNextCard()");
     }
-    mCurrentCard = mDeck.getCard();
+    ++mCardPosition;
+    if(mCardPosition >= mCurrentCards.size()) {
+      mCurrentCard = mDeck.getCard(); 
+      mCurrentCards.addLast(mCurrentCard);
+    }
+    else {
+      mCurrentCard = mCurrentCards.get(mCardPosition);
+    }
     return mCurrentCard;
   }
 
@@ -161,13 +169,11 @@ public class GameManager {
       Log.d(TAG, "getPreviousCard()");
     }
 
-    if (mCardPosition == 0) {
-      mCardPosition = 1;
+    --mCardPosition;
+    if (mCardPosition < 0) {
+      mCardPosition = 0;
     }
-    mCurrentCard = mCurrentCards.get(mCurrentCards.size() - 1);
-    if (!mCurrentCards.isEmpty()) {
-      mCurrentCards.removeLast();
-    }
+    mCurrentCard = mCurrentCards.get(mCardPosition);
     return mCurrentCard;
   }
 
@@ -246,7 +252,6 @@ public class GameManager {
       Log.d(TAG, "ProcessCard(" + rws + ")");
     }
     mCurrentCard.setRws(rws);
-    mCurrentCards.add(new Card(mCurrentCard));
   }
 
   /**
@@ -286,6 +291,13 @@ public class GameManager {
     int ret = 0;
     for (Iterator<Card> it = mCurrentCards.iterator(); it.hasNext();) {
       Card card = it.next();
+
+      // If the card's rws value is not set we default it to SKIP
+      if(card.getRws() == Card.NOTSET)
+      {
+        card.setRws(Card.SKIP);
+      }
+
       ret += mRwsValueRules[card.getRws()];
     }
     return ret;
