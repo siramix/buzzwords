@@ -291,6 +291,13 @@ public class GameManager {
     int ret = 0;
     for (Iterator<Card> it = mCurrentCards.iterator(); it.hasNext();) {
       Card card = it.next();
+
+      // If the card's rws value is not set we default it to SKIP
+      if(card.getRws() == Card.NOTSET)
+      {
+        card.setRws(Card.SKIP);
+      }
+
       ret += mRwsValueRules[card.getRws()];
     }
     return ret;
