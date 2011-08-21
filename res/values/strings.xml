@@ -14,11 +14,11 @@
   <string name="IntentTurn">com.buzzwordslite.intent.action.TURN</string>
   <string name="IntentTurnSummary">com.buzzwordslite.intent.action.TURNSUMMARY</string>
   <string name="IntentEndGame">com.buzzwordslite.intent.action.GAMEEND</string>
-  <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
+  <string name="IntentCardReview">com.buzzwordslite.intent.action.CARDREVIEW</string>
 
   <!-- Global Prefkey IDs -->
-  <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
-  <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
+  <string name="PREFKEY_SHOWREMINDER">com.buzzwordslite.prefkey.SHOWREMINDER</string>
+  <string name="PREFKEY_PLAYCOUNT">com.buzzwordslite.prefkey.PREFKEY_PLAYCOUNT</string>
 
   <!-- Menu Designations -->
   <string name="menu_EndGame">MENU_ENDGAME</string>
@@ -39,11 +39,11 @@
   <string name="pauseGameDialog_text">Paused</string>
 
   <!-- Bundle Keys -->
-  <string name="cardBundleKey">com.buzzwords.card</string>
-  <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
-  <string name="cardStateBundleKey">com.buzzwords.cardState</string>
-  <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
-  <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
+  <string name="cardBundleKey">com.buzzwordslite.card</string>
+  <string name="cardIndexBundleKey">com.buzzwordslite.cardIndex</string>
+  <string name="cardStateBundleKey">com.buzzwordslite.cardState</string>
+  <string name="scrollXBundleKey">com.buzzwordslite.scrollY</string>
+  <string name="scrollYBundleKey">com.buzzwordslite.scrollY</string>
 
   <!-- Rate Us dialogs -->
   <string name="rateUsFirstDialog_title">We want your feedback!</string>
@@ -59,6 +59,6 @@
   <string name="rateUsDialog_negativeBtn">Never</string>
   
   <!--  Rate Us URI for app store -->
-  <string name="rateUs_URI">http://www.siramix.com/buzzwordsappstore</string>
+  <string name="rateUs_URI">http://www.siramix.com/buzzwordsappstore/lite</string>
   
 </resources>

@@ -109,7 +109,7 @@
 			android:screenOrientation="portrait">
 		
 			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.CARDREVIEW"></action>
+				<action android:name="com.buzzwordslite.intent.action.CARDREVIEW"></action>
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 			
