@@ -47,8 +47,10 @@ public abstract class PauseTimer {
 
     public InternalTimer(long millisInFuture, long countDownInterval) {
       super(millisInFuture, countDownInterval);
-      Log.d(TAG, "InternalTimer(" + millisInFuture + "," + countDownInterval
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "InternalTimer(" + millisInFuture + "," + countDownInterval
           + ")");
+      }
     }
 
     @Override

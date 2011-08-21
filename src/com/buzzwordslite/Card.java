@@ -1,5 +1,6 @@
 package com.buzzwordslite;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -13,7 +14,12 @@ import android.util.Log;
  * 
  * @author Siramix Labs
  */
-public class Card {
+public class Card implements Serializable {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -5094548104192852941L;
+
   /**
    * Static string used to refer to this class, in debug output for example.
    */
@@ -22,6 +28,7 @@ public class Card {
   /**
    * R-W-S Constants
    */
+  public static final int NOTSET = -1;
   public static final int RIGHT = 0;
   public static final int WRONG = 1;
   public static final int SKIP = 2;
@@ -79,11 +86,11 @@ public class Card {
     }
     switch (cardRWS) {
     case RIGHT:
-      return R.drawable.controls_right;
+      return R.drawable.stamp_right;
     case WRONG:
-      return R.drawable.controls_wrong;
+      return R.drawable.stamp_wrong;
     case SKIP:
-      return R.drawable.controls_skip;
+      return R.drawable.stamp_skip;
     default:
       return 0;
     }
@@ -96,7 +103,7 @@ public class Card {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "Card()");
     }
-    this.init(-1, -1, "", new ArrayList<String>());
+    this.init(NOTSET, NOTSET, "", new ArrayList<String>());
   }
 
   /**
@@ -130,7 +137,7 @@ public class Card {
    * @param badWords
    */
   public Card(int id, String title, String badWords) {
-    this.init(id, -1, title, Card.bustString(badWords));
+    this.init(id, NOTSET, title, Card.bustString(badWords));
   }
 
   /**

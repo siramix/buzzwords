@@ -81,8 +81,9 @@ public class Buzzer extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Log.d(TAG, "onCreate()");
-
+    if (BuzzWordsApplication.DEBUG) {
+    	Log.d(TAG, "onCreate()");
+    }
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 

@@ -25,12 +25,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -306,6 +308,29 @@ public class GameEnd extends Activity {
         .getApplication();
     mGameManager = application.getGameManager();
 
+    // Capture our preference variable for playcounter
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+
+    // Initialize our preference Editor
+    SharedPreferences.Editor prefEditor = sp.edit();
+    
+    // Get our play count preference title string 
+    String playCountKey = this.getResources().getString(R.string.PREFKEY_PLAYCOUNT); 
+    String showReminderKey = this.getResources().getString(R.string.PREFKEY_SHOWREMINDER);
+    
+    // Get number of plays
+    int playCount = sp.getInt(playCountKey, 0);
+    
+    // When we hit 3 or 6 playthroughs, trigger the reminder
+    // If they've rated us, playCount will never hit 3 or 6 (it gets set to 7)
+    if (playCount == 2 || playCount == 5) {
+    	prefEditor.putBoolean(showReminderKey, true);
+    }
+    
+    prefEditor.putInt(playCountKey, playCount+1);
+    prefEditor.commit();
+    
     List<Team> teams = mGameManager.getTeams();
 
     // Sort the list by scores to determine the winner(s)

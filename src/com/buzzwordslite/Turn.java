@@ -75,7 +75,7 @@ public class Turn extends Activity {
   static final int TIMERANIM_START_ID = 2;
 
   // Gesture thresholds expressed in dp
-  private static final int SWIPE_MIN_DISTANCE_DP = 90;
+  private static final int SWIPE_MIN_DISTANCE_DP = 80;
   private static final int SWIPE_THRESHOLD_VELOCITY_DP = 150;
   // Convert DP thresholds to pixels for this phone (add .5f to round to nearest
   // pixel)
@@ -131,7 +131,19 @@ public class Turn extends Activity {
    * getprefs
    */
   private boolean mMusicEnabled;
+  
+  /**
+   * Boolean representing whether gestures are enabled or not. Reduces calls to
+   * getprefs
+   */
+  private boolean mGesturesEnabled;
 
+  /**
+   * Boolean representing whether skip is enabled or not. Reduces calls to
+   * getprefs
+   */
+  private boolean mSkipEnabled;
+  
   /**
    * Boolean representing whether the countdown ticking has already been
    * started.
@@ -157,7 +169,7 @@ public class Turn extends Activity {
   protected static final int MENU_RULES = 2;
 
   /**
-   * Swipe to skip or go back
+   * Swipe left for skip, right for back, up for right, and down for wrong.
    */
   private SimpleOnGestureListener mSwipeListener = new SimpleOnGestureListener() {
 
@@ -167,42 +179,32 @@ public class Turn extends Activity {
       // Do not let them do swipes while paused or time's up!
       if (mIsPaused || mTurnIsOver) {
         return false;
+      }      
+      
+      // Detect swipes in order of least to most harmful to a game -- ie if 
+      // a "correct" swipe is confused as a "skip" its not as bad as a skip being
+      // interpreted as a correct or wrong
+      if (mGesturesEnabled) {
+        if (mSkipEnabled && e1.getX() - e2.getX() > mGestureThreshold
+            && Math.abs(velocityX) > mGestureVelocityThreshold) {
+          Turn.this.doSkip();
+          return true;
+        } else if (e2.getX() - e1.getX() > mGestureThreshold
+            && Math.abs(velocityX) > mGestureVelocityThreshold) {
+          Turn.this.doBack();
+          return true;
+        } else if (e1.getY() - e2.getY() > mGestureThreshold
+    	    && Math.abs(velocityY) > mGestureVelocityThreshold) {
+    	  Turn.this.doCorrect();
+          return true;
+        } else if (e2.getY() - e1.getY() > mGestureThreshold
+    	    && Math.abs(velocityY) > mGestureVelocityThreshold) {
+    	  Turn.this.doWrong();
+    	  return true;
+        }
       }
-      if (e1.getX() - e2.getX() > mGestureThreshold
-          && Math.abs(velocityX) > mGestureVelocityThreshold) {
-        Turn.this.doSkip();
-        return true;
-      } else if (e2.getX() - e1.getX() > mGestureThreshold
-          && Math.abs(velocityX) > mGestureVelocityThreshold) {
-        Turn.this.doBack();
-        return true;
-      } else {
-        return false;
-      }
-
-    }
-  };
-
-  /**
-   * Swipe to go back only (this is useful if they're playing under a rule set
-   * that does not allow for the skipping of cards.
-   */
-  private SimpleOnGestureListener mOnlyBackSwipeListener = new SimpleOnGestureListener() {
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-        float velocityY) {
-      // Do not let them do swipes while paused or time's up!
-      if (mIsPaused || mTurnIsOver) {
-        return false;
-      }
-      if (e2.getX() - e1.getX() > mGestureThreshold
-          && Math.abs(velocityX) > mGestureVelocityThreshold) {
-        Turn.this.doBack();
-        return true;
-      } else {
-        return false;
-      }
+      
+      return false;
     }
   };
 
@@ -270,7 +272,8 @@ public class Turn extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreateOptionsMenu()");
-    }
+    }   
+    
     menu.add(0, R.string.menu_EndGame, 0, "End Game");
     menu.add(0, R.string.menu_Rules, 0, "Rules");
 
@@ -285,12 +288,17 @@ public class Turn extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onOptionsItemSelected()");
     }
+
     // Handle item selection
     switch (item.getItemId()) {
     case R.string.menu_EndGame:
+      // Play confirmation sound              
+      mSoundManager.playSound(SoundManager.Sound.CONFIRM);
       this.showDialog(DIALOG_GAMEOVER_ID);
       return true;
     case R.string.menu_Rules:
+      // Play confirmation sound              
+      mSoundManager.playSound(SoundManager.Sound.CONFIRM);
       startActivity(new Intent(getString(R.string.IntentRules), getIntent()
           .getData()));
       return true;
@@ -568,11 +576,12 @@ public class Turn extends Activity {
     flipper.showNext();
     mGameManager.processCard(Card.RIGHT);
 
-    // Only play sound once card has been processed so we don't confuse the user
-    mSoundManager.playSound(SoundManager.Sound.RIGHT);
-
     // Mark the card with an icon
     mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.RIGHT));
+    mCardStatus.setVisibility(View.VISIBLE);
+    
+    // Only play sound once card has been processed so we don't confuse the user
+    mSoundManager.playSound(SoundManager.Sound.RIGHT);
 
     // Show the next card
     showCard();
@@ -596,6 +605,7 @@ public class Turn extends Activity {
 
     // Mark the card with an icon
     mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.WRONG));
+    mCardStatus.setVisibility(View.VISIBLE);
 
     // Only play sound once card has been processed so we don't confuse the user
     mSoundManager.playSound(SoundManager.Sound.WRONG);
@@ -620,6 +630,7 @@ public class Turn extends Activity {
 
     // Mark the card with an icon for SKIP
     mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.SKIP));
+    mCardStatus.setVisibility(View.VISIBLE);
 
     // Only play sound once card has been processed so we don't confuse the user
     mSoundManager.playSound(SoundManager.Sound.SKIP);
@@ -649,6 +660,7 @@ public class Turn extends Activity {
     mViewFlipper.showNext();
 
     this.setActiveCard();
+    mGameManager.processCard(Card.SKIP);
     Card curCard = mGameManager.getPreviousCard();
     mCardTitle.setText(curCard.getTitle());
     // Update bad words
@@ -847,41 +859,26 @@ public class Turn extends Activity {
     // this.buzzerButton.setOnTouchListener( BuzzListener );
     mBuzzerButton.setOnClickListener(mWrongListener);
     mNextButton.setOnClickListener(mCorrectListener);
-
-    // Only show skipButton and set listener if preference is enabled
-    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
-        .getBaseContext());
-    if (sp.getBoolean("allow_skip", true)) {
+ 
+    // Set visibility and control of Skip Button
+    if (mSkipEnabled) {
       mSkipButton.setOnClickListener(mSkipListener);
       mSkipButton.setVisibility(View.VISIBLE);
-
-      // Only listen for backs and swipes (swipeListener) if skip pref is on
-      mSwipeDetector = new GestureDetector(mSwipeListener);
-      mGestureListener = new OnTouchListener() {
-        public boolean onTouch(View v, MotionEvent event) {
-          if (mSwipeDetector.onTouchEvent(event)) {
-            return true;
-          }
-          return true; // prevents highlighting badwords by consuming even if
-                       // not detected as a swipe
-        }
-      };
     } else {
       mSkipButton.setVisibility(View.INVISIBLE);
-
-      // If skip pref is off, set up gestureListener to only listen to back
-      // swipes
-      mSwipeDetector = new GestureDetector(mOnlyBackSwipeListener);
-      mGestureListener = new OnTouchListener() {
-        public boolean onTouch(View v, MotionEvent event) {
-          if (mSwipeDetector.onTouchEvent(event)) {
-            return true;
-          }
-          return true; // prevents highlighting badwords by consuming even if
-                       // not detected as a swipe
-        }
-      };
     }
+    
+    // Listen for all gestures
+    mSwipeDetector = new GestureDetector(mSwipeListener);
+    mGestureListener = new OnTouchListener() {
+      public boolean onTouch(View v, MotionEvent event) {
+        if (mSwipeDetector.onTouchEvent(event)) {
+          return true;
+        }
+        return true; // prevents highlighting badwords by consuming even if
+                     // not detected as a swipe
+      }
+    };
 
     // Setup the "card" views to allow for skip gesture to be performed on top
     this.findViewById(R.id.Turn_CardTitleA)
@@ -969,6 +966,27 @@ public class Turn extends Activity {
     mGestureThreshold = (int) (SWIPE_MIN_DISTANCE_DP * scale + 0.5f);
     mGestureVelocityThreshold = (int) (SWIPE_THRESHOLD_VELOCITY_DP * scale + 0.5f);
 
+    // Capture our preference variable for music, skip, and gestures once
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    
+    if (sp.getBoolean("music_enabled", true))
+      mMusicEnabled = true;
+    else
+      mMusicEnabled = false;
+
+    // Set local variable for skip preference to reduce calls to get
+    if (sp.getBoolean("allow_skip", true))
+      mSkipEnabled = true;     
+    else
+      mSkipEnabled = false;
+    
+    // Set local variable for allowing gesture preference to reduce get calls
+    if (sp.getBoolean("allow_gestures", true))
+      mGesturesEnabled = true;
+    else
+      mGesturesEnabled = false;
+        
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -989,14 +1007,6 @@ public class Turn extends Activity {
     this.setupUIProperties();
 
     this.showDialog(DIALOG_READY_ID);
-
-    // Capture our preference variable for music once
-    SharedPreferences sp = PreferenceManager
-        .getDefaultSharedPreferences(getBaseContext());
-    if (sp.getBoolean("music_enabled", true))
-      mMusicEnabled = true;
-    else
-      mMusicEnabled = false;
 
     this.mCounter = setupTurnTimer();
 
@@ -1034,6 +1044,9 @@ public class Turn extends Activity {
       builder.setMessage("Are you sure you want to end the current game?")
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+              // Play confirmation sound              
+              mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+              
               BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
                   .getApplication();
               GameManager gm = application.getGameManager();
@@ -1042,7 +1055,10 @@ public class Turn extends Activity {
                   getIntent().getData()));
             }
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+            public void onClick(DialogInterface dialog, int id) {             
+              // Play confirmation sound              
+              mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+              
               dialog.cancel();
             }
           });
@@ -1058,16 +1074,20 @@ public class Turn extends Activity {
           .setPositiveButton("START!", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
+              dialog.dismiss();
               Turn.this.showCard();
               mIsBack = true;
               mIsPaused = false;
-              Turn.this.startTimer();
-
+              Turn.this.startTimer();              
+              
+              // Play back sound to differentiate from normal clicks
+              mSoundManager.playSound(SoundManager.Sound.BACK);
+              
               // Start the turn music
               BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
                   .getApplication();
               GameManager gm = application.getGameManager();
-
+              
               int musicId = R.raw.mus_countdown;
               // If music is enabled, select the appropriate track
               if (mMusicEnabled) {
@@ -1148,7 +1168,11 @@ public class Turn extends Activity {
 
       this.setActiveCard();
 
+      // Play resume sound
+      mSoundManager.playSound(SoundManager.Sound.BACK);
+      
       mViewFlipper.setVisibility(View.VISIBLE);
+      
       mBuzzerButton.setEnabled(true);
       mSkipButton.setEnabled(true);
       mNextButton.setEnabled(true);
@@ -1176,8 +1200,8 @@ public class Turn extends Activity {
 
     mPauseTextLayout = (LinearLayout) this
         .findViewById(R.id.Turn_PauseTextGroup);
-    mPauseTextLayout.setVisibility(View.VISIBLE);
-
+    mPauseTextLayout.setVisibility(View.VISIBLE);    
+    
     // Stop music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
@@ -1185,6 +1209,10 @@ public class Turn extends Activity {
     if (mp.isPlaying()) {
       mp.pause();
     }
+        
+    // Play ready sound since it indicates a wait.  
+    // This is the menu method that is called on every menu push
+    mSoundManager.playSound(SoundManager.Sound.TEAMREADY);    
 
     if (!mTurnIsOver) {
       this.stopTurnTimer();
@@ -1214,6 +1242,7 @@ public class Turn extends Activity {
     if (!mIsPaused) {
       this.pauseGame();
     }
+    
     return true;
   }
 

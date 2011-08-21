@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+/*****************************************************************************
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
+ -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_cardreviewgradient" android:id="@+id/CardReview_Root">
+
+    <LinearLayout android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="vertical" android:id="@+id/CardReview_MasterLayout">
+        <RelativeLayout android:layout_gravity="center" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:id="@+id/CardReview_CardLayout">
+            <LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:layout_centerInParent="true" android:id="@+id/CardReivew_Card_Words" android:layout_width="fill_parent">
+                <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/CardReview_CardTitle" android:text="Trouble" android:layout_gravity="center" style="@style/CardTitleReview"></TextView>
+                <LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/CardReview_Card_BadWords" android:layout_width="fill_parent">
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/CardReview_Card_BadWord0" android:textColor="@color/cardreview_WordText" android:text="Difficulty" style="@style/BadWordTextReview"></TextView>
+                    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/CardReview_Card_BadWord1" android:textColor="@color/cardreview_WordText" android:maxLines="1" android:text="Mischievious" style="@style/BadWordTextReview"></TextView>
+                    <TextView android:text="TextView" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/CardReview_Card_BadWord2" android:textColor="@color/cardreview_WordText" style="@style/BadWordTextReview"></TextView>
+                    <TextView android:text="TextView" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/CardReview_Card_BadWord3" android:textColor="@color/cardreview_WordText" style="@style/BadWordTextReview"></TextView>
+                    <TextView android:text="TextView" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/CardReview_Card_BadWord4" android:textColor="@color/cardreview_WordText" style="@style/BadWordTextReview"></TextView>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+        
+        <!-- Grouping for buttons on the bottom -->
+        <RelativeLayout android:layout_height="90dp" android:layout_width="fill_parent" android:id="@+id/CardReview_LowBar">
+            <View android:layout_height="45dp" android:layout_alignParentBottom="true" android:layout_marginTop="40dp" android:layout_width="fill_parent" android:background="@color/genericBG" android:id="@+id/CardReview_LowBarBG"></View>
+            <View android:layout_height="10dp" android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:layout_alignTop="@id/CardReview_LowBarBG" android:id="@+id/CardReview_LowBarTrim"></View>
+            <ImageButton android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_width="wrap_content" android:id="@+id/CardReview_ButtonSkip" android:background="@drawable/controls_skip_desaturated"></ImageButton>
+            <ImageButton android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginRight="99dp" android:layout_alignRight="@id/CardReview_ButtonSkip" android:layout_width="wrap_content" android:id="@+id/CardReview_ButtonWrong" android:background="@drawable/controls_wrong_desaturated"></ImageButton>
+            <ImageButton android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginLeft="99dp" android:layout_width="wrap_content" android:id="@+id/CardReview_ButtonCorrect" android:layout_alignLeft="@id/CardReview_ButtonSkip" android:background="@drawable/controls_right_desaturated"></ImageButton>
+        </RelativeLayout>
+        
+    </LinearLayout>
+
+</RelativeLayout>
