@@ -152,7 +152,7 @@ public class GameManager {
     }
     ++mCardPosition;
     if(mCardPosition >= mCurrentCards.size()) {
-      mCurrentCard = mDeck.getCard(); 
+      mCurrentCard = mDeck.getCard();
       mCurrentCards.addLast(mCurrentCard);
     }
     else {
@@ -217,6 +217,7 @@ public class GameManager {
     mCurrentTeam.setScore(score);
     this.incrementActiveTeamIndex();
     mCurrentCards.clear();
+    mCardPosition = -1;
     mCurrentTurn++;
     mDeck.prepareForRound();
   }
