@@ -240,6 +240,7 @@ public class GameManager {
     int score = mCurrentTeam.getScore() + getTurnScore();
     mCurrentTeam.setScore(score);
     mTeamIterator = mTeams.iterator();
+    mDeck.prepareForRound();
   }
 
   /**

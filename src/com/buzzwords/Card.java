@@ -168,6 +168,7 @@ public class Card implements Serializable {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "init()");
     }
+    mId = id;
     mRws = rws;
     mTitle = title;
     mBadWords = badWords;
