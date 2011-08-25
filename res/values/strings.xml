@@ -16,9 +16,26 @@
   <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
   <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
 
- <!-- Menu Designations -->
+  <!-- Global Prefkey IDs -->
+  <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
+  <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
+
+  <!-- Menu Designations -->
   <string name="menu_EndGame">MENU_ENDGAME</string>
   <string name="menu_Rules">MENU_RULES</string>
+
+  <!-- Team names -->
+  <string name="teamnameA">Blue</string>
+  <string name="teamnameB">Green</string>
+  <string name="teamnameC">Red</string>
+  <string name="teamnameD">Yellow</string>
+
+  <!-- Bundle Keys -->
+  <string name="cardBundleKey">com.buzzwords.card</string>
+  <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
+  <string name="cardStateBundleKey">com.buzzwords.cardState</string>
+  <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
+  <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
 
   <!-- For end game dialog -->
   <string name="endGameDialog_title">Confirm End Game</string>
@@ -28,18 +45,20 @@
   <string name="pauseGameDialog_title">Game Paused</string>
   <string name="pauseGameDialog_text">Paused</string>
 
-  <!-- Team names -->
-  <string name="teamnameA">Blue</string>
-  <string name="teamnameB">Green</string>
-  <string name="teamnameC">Red</string>
-  <string name="teamnameD">Yellow</string>
+  <!-- Rate Us dialogs -->
+  <string name="rateUsFirstDialog_title">We want your feedback!</string>
+  <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
+     Would you mind taking a minute to provide some feedback?</string>
   
-  <!-- Bundle Keys -->
-  <string name="cardBundleKey">com.buzzwords.card</string>
-  <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
-  <string name="cardStateBundleKey">com.buzzwords.cardState</string>
-  <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
-  <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
-
+  <string name="rateUsSecondDialog_title">We still want your feedback!</string>
+  <string name="rateUsSecondDialog_text">Wow you\'ve played a LOT, which means your opinion is especially valuable to us!
+     We won\'t bug you again but would you mind providing some feedback?</string>
+  
+  <string name="rateUsDialog_positiveBtn">Rate</string>
+  <string name="rateUsDialog_neutralBtn">Later</string>
+  <string name="rateUsDialog_negativeBtn">Never</string>
+  
+  <!--  Rate Us URI for app store -->
+  <string name="rateUs_URI">http://www.siramix.com/buzzwordsappstore</string>
 
 </resources>
