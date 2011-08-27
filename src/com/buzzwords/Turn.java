@@ -784,9 +784,6 @@ public class Turn extends Activity {
     TextView timer = (TextView) this.findViewById(R.id.Turn_Timer);
     timer.setVisibility(View.INVISIBLE);
 
-    // Mark the current card as a skip so it can be amended later
-    mGameManager.processCard(Card.SKIP);
-
     // Hide card
     this.setActiveCard();
     mViewFlipper.setVisibility(View.INVISIBLE);
