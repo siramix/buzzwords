@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	android:versionCode="2" android:versionName="1.1" package="com.buzzwordslite">
+	android:versionCode="2" android:versionName="1.1" package="com.buzzwords">
 
   <uses-permission android:name="android.permission.GET_TASKS" />
 
@@ -119,4 +120,4 @@
 	
 	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="7" />
 
-</manifest> 
+</manifest>

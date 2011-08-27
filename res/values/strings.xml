@@ -30,6 +30,13 @@
   <string name="teamnameC">Red</string>
   <string name="teamnameD">Yellow</string>
 
+  <!-- Bundle Keys -->
+  <string name="cardBundleKey">com.buzzwordslite.card</string>
+  <string name="cardIndexBundleKey">com.buzzwordslite.cardIndex</string>
+  <string name="cardStateBundleKey">com.buzzwordslite.cardState</string>
+  <string name="scrollXBundleKey">com.buzzwordslite.scrollY</string>
+  <string name="scrollYBundleKey">com.buzzwordslite.scrollY</string>
+
   <!-- For end game dialog -->
   <string name="endGameDialog_title">Confirm End Game</string>
   <string name="endGameDialog_text">Are you sure you want to end the current game?</string>
@@ -38,13 +45,15 @@
   <string name="pauseGameDialog_title">Game Paused</string>
   <string name="pauseGameDialog_text">Paused</string>
 
-  <!-- Bundle Keys -->
-  <string name="cardBundleKey">com.buzzwordslite.card</string>
-  <string name="cardIndexBundleKey">com.buzzwordslite.cardIndex</string>
-  <string name="cardStateBundleKey">com.buzzwordslite.cardState</string>
-  <string name="scrollXBundleKey">com.buzzwordslite.scrollY</string>
-  <string name="scrollYBundleKey">com.buzzwordslite.scrollY</string>
-
+  <!-- Rate Us dialogs -->
+  <string name="rateUsFirstDialog_title">We want your feedback!</string>
+  <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
+     Would you mind taking a minute to provide some feedback?</string>
+  
+  <string name="rateUsSecondDialog_title">We still want your feedback!</string>
+  <string name="rateUsSecondDialog_text">Wow you\'ve played a LOT, which means your opinion is especially valuable to us!
+     We won\'t bug you again but would you mind providing some feedback?</string>
+  
   <!-- Rate Us dialogs -->
   <string name="rateUsFirstDialog_title">We want your feedback!</string>
   <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
