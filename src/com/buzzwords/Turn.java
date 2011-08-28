@@ -951,11 +951,16 @@ public class Turn extends Activity {
         // can poll for is buzzing
         //BuzzerService bs = BuzzerService.getInstance();		
 		if(BuzzerService.getBuzzing("it1ll")) {
+		    Log.d(TAG,"REMOTE BUZZ");
 	      // Get instance of Vibrator from current Context
 	      Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);			 
 		  // Vibrate for 300 milliseconds
 		  v.vibrate(200);
 		}
+		  else {
+		    Log.d(TAG,"FAIL");
+		  }
+		
       }
 
     };

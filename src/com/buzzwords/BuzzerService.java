@@ -89,9 +89,9 @@ public class BuzzerService {
   
   }
   
-  public static boolean getBuzzing(String gameToken) {
+  public static boolean getBuzzing(String token) {
     if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getBuzz(" + gameToken + ")");
+      Log.d(TAG, "getBuzz(" + token + ")");
     }		
 
     HttpClient httpClient = new DefaultHttpClient();
@@ -99,18 +99,16 @@ public class BuzzerService {
 
     try {
       List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-      nameValuePairs.add(new BasicNameValuePair("gameToken", gameToken));      
+      nameValuePairs.add(new BasicNameValuePair("token", token));      
       httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
       HttpResponse response = httpClient.execute(httpPost); 
-      if (checkResponseStatus(response)) {
-    	isBuzzing = true;
+      if (checkBuzzStatus(response)) {        
         return true;
       }      
     } catch (Exception e) {
         Log.v("ioexception", e.toString());
     }
-    
-    isBuzzing = false;
+
     return false;	  
   }
 
@@ -156,9 +154,9 @@ public class BuzzerService {
       nameValuePairs.add(new BasicNameValuePair("gameToken", gameToken));      
       httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
       HttpResponse response = httpClient.execute(httpPost); 
-      if (checkResponseStatus(response)) {
+      /*if (checkResponseStatus(response)) {
         return true;
-      }      
+      }*/     
     } catch (Exception e) {
       Log.v("ioexception", e.toString());
     }
@@ -189,7 +187,7 @@ public class BuzzerService {
       httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
       HttpResponse response = httpClient.execute(httpPost);
-      checkResponseStatus(response); // stub status check
+      //checkResponseStatus(response); // stub status check
       } catch (Exception e) {
         Log.v("ioexception", e.toString());
       }
@@ -218,7 +216,7 @@ public class BuzzerService {
       httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
       HttpResponse response = httpClient.execute(httpPost);
-      checkResponseStatus(response); // stub status check
+      //checkResponseStatus(response); // stub status check
       } catch (Exception e) {
         Log.v("ioexception", e.toString());
       }
@@ -229,15 +227,16 @@ public class BuzzerService {
    * @param response
    * @return
    */
-  private static boolean checkResponseStatus(HttpResponse response) {
+  private static boolean checkBuzzStatus(HttpResponse response) {
 	try {
 	  BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
       String json = reader.readLine();
       JSONTokener tokener = new JSONTokener(json);
       JSONObject finalResult = new JSONObject(tokener);
       int status = Integer.parseInt(finalResult.getString("status"));
+      int buzzing = Integer.parseInt(finalResult.getString("buzzing"));
       
-      if (status == 1) {
+      if (status == 1 && buzzing == 1) {
     	  return true;
       }
 	} catch (Exception e) {
