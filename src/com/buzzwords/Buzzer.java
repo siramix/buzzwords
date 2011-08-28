@@ -27,6 +27,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 /**
  * The Buzzer class is the activity for a simple image button that acts as a
@@ -92,6 +93,15 @@ public class Buzzer extends Activity {
     ImageButton buzzButton = (ImageButton) this
         .findViewById(R.id.Buzzer_Button);
     buzzButton.setOnTouchListener(mBuzzTouch);
+
+    BuzzerService bs = new BuzzerService();
+    TextView tv = (TextView) findViewById(R.id.DEBUGTXT);
+    bs.setToken();
+    tv.setText(bs.getLocaltoken());
+    Log.d("*************", Boolean.toString(BuzzerService.getBuzzing(bs.getLocaltoken())));
+    bs.setBuzzing(bs.getLocaltoken());
+    Log.d("*************", Boolean.toString(bs.getLocalisBuzzing()));
+    //bs.unsetBuzzing(bs.getLocaltoken());
   }
 
 }

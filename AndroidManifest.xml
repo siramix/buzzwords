@@ -3,6 +3,8 @@
 	android:versionCode="2" android:versionName="1.1" package="com.buzzwords">
 
   <uses-permission android:name="android.permission.GET_TASKS" />
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.VIBRATE"/>
 
 	<application android:icon="@drawable/icon" android:label="@string/AppName"
 		android:theme="@style/BuzzWordsTheme" android:name="com.buzzwords.BuzzWordsApplication"

@@ -37,6 +37,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnSeekCompleteListener;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -945,6 +946,16 @@ public class Turn extends Activity {
             mp.start();
           }
         }
+
+        //TODO: Fix this code later, temporarily here to see if the timer 
+        // can poll for is buzzing
+        //BuzzerService bs = BuzzerService.getInstance();		
+		if(BuzzerService.getBuzzing("it1ll")) {
+	      // Get instance of Vibrator from current Context
+	      Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);			 
+		  // Vibrate for 300 milliseconds
+		  v.vibrate(200);
+		}
       }
 
     };
