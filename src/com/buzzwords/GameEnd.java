@@ -219,9 +219,7 @@ public class GameEnd extends Activity {
 
     public void onAnimationStart(Animation animation) {
       // Play win sound
-      BuzzWordsApplication app = (BuzzWordsApplication) getApplication();
-      SoundManager sound = app.getSoundManager();
-      sound.playSound(SoundManager.Sound.WIN);
+      SoundManager.playSound(SoundManager.Sound.WIN);
     }
   };
 
@@ -253,12 +251,8 @@ public class GameEnd extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "MainMenuListener onClick()");
       }
-
-      BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
-
       // Play confirm sound
-      SoundManager sound = application.getSoundManager();
-      sound.playSound(SoundManager.Sound.CONFIRM);
+      SoundManager.playSound(SoundManager.Sound.CONFIRM);
 
       Intent clearStackIntent = new Intent(getApplication().getString(
           R.string.IntentTitle), getIntent().getData());

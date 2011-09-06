@@ -153,13 +153,6 @@ public class Turn extends Activity {
   /**
    * The time in miliseconds left when the ticking music began.
    */
-  // private int tickingStart;
-
-  /**
-   * Sound Manager stored as an instance variable to reduce calls to
-   * GetSoundManager
-   */
-  private SoundManager mSoundManager;
 
   /**
    * Unique IDs for Options menu
@@ -293,12 +286,12 @@ public class Turn extends Activity {
     switch (item.getItemId()) {
     case R.string.menu_EndGame:
       // Play confirmation sound              
-      mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+      SoundManager.playSound(SoundManager.Sound.CONFIRM);
       this.showDialog(DIALOG_GAMEOVER_ID);
       return true;
     case R.string.menu_Rules:
       // Play confirmation sound              
-      mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+      SoundManager.playSound(SoundManager.Sound.CONFIRM);
       startActivity(new Intent(getString(R.string.IntentRules), getIntent()
           .getData()));
       return true;
@@ -581,7 +574,7 @@ public class Turn extends Activity {
     mCardStatus.setVisibility(View.VISIBLE);
     
     // Only play sound once card has been processed so we don't confuse the user
-    mSoundManager.playSound(SoundManager.Sound.RIGHT);
+    SoundManager.playSound(SoundManager.Sound.RIGHT);
 
     // Show the next card
     showCard();
@@ -608,7 +601,7 @@ public class Turn extends Activity {
     mCardStatus.setVisibility(View.VISIBLE);
 
     // Only play sound once card has been processed so we don't confuse the user
-    mSoundManager.playSound(SoundManager.Sound.WRONG);
+    SoundManager.playSound(SoundManager.Sound.WRONG);
 
     // Show the next card
     showCard();
@@ -633,7 +626,7 @@ public class Turn extends Activity {
     mCardStatus.setVisibility(View.VISIBLE);
 
     // Only play sound once card has been processed so we don't confuse the user
-    mSoundManager.playSound(SoundManager.Sound.SKIP);
+    SoundManager.playSound(SoundManager.Sound.SKIP);
 
     // Show the next card
     showCard();
@@ -675,9 +668,7 @@ public class Turn extends Activity {
     mCardStatus.setVisibility(View.VISIBLE);
 
     // Play back sound
-    BuzzWordsApplication app = (BuzzWordsApplication) this.getApplication();
-    SoundManager snd = app.getSoundManager();
-    snd.playSound(SoundManager.Sound.BACK);
+    SoundManager.playSound(SoundManager.Sound.BACK);
   }
 
   /**
@@ -779,7 +770,7 @@ public class Turn extends Activity {
 
     // Only play gong if music is off
     if (!mMusicEnabled)
-      mSoundManager.playSound(SoundManager.Sound.GONG);
+    	SoundManager.playSound(SoundManager.Sound.GONG);
 
     TextView timer = (TextView) this.findViewById(R.id.Turn_Timer);
     timer.setVisibility(View.INVISIBLE);
@@ -989,12 +980,7 @@ public class Turn extends Activity {
         
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-    // Save sound manager as a local variable
-    BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
-        .getApplication();
-    mSoundManager = application.getSoundManager();
-
+    
     // set which card is active
     mAIsActive = true;
     mIsBack = true;
@@ -1045,7 +1031,7 @@ public class Turn extends Activity {
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound              
-              mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+              SoundManager.playSound(SoundManager.Sound.CONFIRM);
               
               BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
                   .getApplication();
@@ -1057,7 +1043,7 @@ public class Turn extends Activity {
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {             
               // Play confirmation sound              
-              mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+              SoundManager.playSound(SoundManager.Sound.CONFIRM);
               
               dialog.cancel();
             }
@@ -1066,7 +1052,7 @@ public class Turn extends Activity {
       break;
     case DIALOG_READY_ID:
       // Play team ready sound
-      mSoundManager.playSound(SoundManager.Sound.TEAMREADY);
+      SoundManager.playSound(SoundManager.Sound.TEAMREADY);
 
       String curTeam = mGameManager.getActiveTeam().getName();
       builder = new AlertDialog.Builder(this);
@@ -1081,7 +1067,7 @@ public class Turn extends Activity {
               Turn.this.startTimer();              
               
               // Play back sound to differentiate from normal clicks
-              mSoundManager.playSound(SoundManager.Sound.BACK);
+              SoundManager.playSound(SoundManager.Sound.BACK);
               
               // Start the turn music
               BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
@@ -1169,7 +1155,7 @@ public class Turn extends Activity {
       this.setActiveCard();
 
       // Play resume sound
-      mSoundManager.playSound(SoundManager.Sound.BACK);
+      SoundManager.playSound(SoundManager.Sound.BACK);
       
       mViewFlipper.setVisibility(View.VISIBLE);
       
@@ -1212,7 +1198,7 @@ public class Turn extends Activity {
         
     // Play ready sound since it indicates a wait.  
     // This is the menu method that is called on every menu push
-    mSoundManager.playSound(SoundManager.Sound.TEAMREADY);    
+    SoundManager.playSound(SoundManager.Sound.TEAMREADY);    
 
     if (!mTurnIsOver) {
       this.stopTurnTimer();
