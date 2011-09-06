@@ -137,17 +137,13 @@ public class GameSetup extends Activity {
       Button b = (Button) v;
 
       // Play confirm sound
-      BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
-          .getApplication();
-      SoundManager sound = application.getSoundManager();
-
       if (mTeamList.remove(Team.TEAMA)) {
         b.setBackgroundResource(R.color.inactiveButton);
         b.setTextColor(GameSetup.this.getResources()
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMA,
             false);
-        sound.playSound(SoundManager.Sound.BACK);
+        SoundManager.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMA);
         b.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
@@ -155,7 +151,7 @@ public class GameSetup extends Activity {
             .getColor(mTeamList.getLast().getSecondaryColor()));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMA, true);
-        sound.playSound(SoundManager.Sound.CONFIRM);
+        SoundManager.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -171,17 +167,13 @@ public class GameSetup extends Activity {
       Button b = (Button) v;
 
       // Play confirm sound
-      BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
-          .getApplication();
-      SoundManager sound = application.getSoundManager();
-
       if (mTeamList.remove(Team.TEAMB)) {
         b.setBackgroundResource(R.color.inactiveButton);
         b.setTextColor(GameSetup.this.getResources()
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMB,
             false);
-        sound.playSound(SoundManager.Sound.BACK);
+        SoundManager.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMB);
         b.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
@@ -189,7 +181,7 @@ public class GameSetup extends Activity {
             .getColor(mTeamList.getLast().getSecondaryColor()));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMB, true);
-        sound.playSound(SoundManager.Sound.CONFIRM);
+        SoundManager.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -205,17 +197,13 @@ public class GameSetup extends Activity {
       Button b = (Button) v;
 
       // Play confirm sound
-      BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
-          .getApplication();
-      SoundManager sound = application.getSoundManager();
-
       if (mTeamList.remove(Team.TEAMC)) {
         b.setBackgroundResource(R.color.inactiveButton);
         b.setTextColor(GameSetup.this.getResources()
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMC,
             false);
-        sound.playSound(SoundManager.Sound.BACK);
+        SoundManager.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMC);
         b.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
@@ -223,7 +211,7 @@ public class GameSetup extends Activity {
             .getColor(mTeamList.getLast().getSecondaryColor()));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMC, true);
-        sound.playSound(SoundManager.Sound.CONFIRM);
+        SoundManager.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -239,17 +227,13 @@ public class GameSetup extends Activity {
       Button b = (Button) v;
 
       // Play confirm sound
-      BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
-          .getApplication();
-      SoundManager sound = application.getSoundManager();
-
       if (mTeamList.remove(Team.TEAMD)) {
         b.setBackgroundResource(R.color.inactiveButton);
         b.setTextColor(GameSetup.this.getResources()
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMD,
             false);
-        sound.playSound(SoundManager.Sound.BACK);
+        SoundManager.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMD);
         b.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
@@ -257,7 +241,7 @@ public class GameSetup extends Activity {
             .getColor(mTeamList.getLast().getSecondaryColor()));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMD, true);
-        sound.playSound(SoundManager.Sound.CONFIRM);
+        SoundManager.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };

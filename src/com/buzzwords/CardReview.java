@@ -57,11 +57,6 @@ public class CardReview extends Activity {
    * Holder for the index of the card in the TurnSummary caller of this activity
    */
   private int mCardIndex;
-  
-  /**
-   * Sound manager reference for playing right-wrong-skip sounds
-   */
-  private SoundManager mSoundManager;
 
   /**
    * Listener for correct button
@@ -72,7 +67,7 @@ public class CardReview extends Activity {
         Log.d(TAG, "CorrectClickListener OnClick()");
       }
       setCardState(Card.RIGHT);
-      mSoundManager.playSound(SoundManager.Sound.RIGHT);
+      SoundManager.playSound(SoundManager.Sound.RIGHT);
       goBackToTurnSummary(Card.RIGHT);
     }
   };
@@ -86,7 +81,7 @@ public class CardReview extends Activity {
         Log.d(TAG, "WrongClickListener OnClick()");
       }
       setCardState(Card.WRONG);
-      mSoundManager.playSound(SoundManager.Sound.WRONG);
+      SoundManager.playSound(SoundManager.Sound.WRONG);
       goBackToTurnSummary(Card.WRONG);
     }
   };
@@ -100,7 +95,7 @@ public class CardReview extends Activity {
         Log.d(TAG, "SkipClickListener OnClick()");
       }
       setCardState(Card.SKIP);
-      mSoundManager.playSound(SoundManager.Sound.SKIP);
+      SoundManager.playSound(SoundManager.Sound.SKIP);
       goBackToTurnSummary(Card.SKIP);
     }
   };
@@ -133,15 +128,7 @@ public class CardReview extends Activity {
     mWrongButton.setOnClickListener(mWrongClickListener);
     mSkipButton.setOnClickListener(mSkipClickListener);
   }
-  
-  /**
-   * Get the sound manager reference and store it
-   */
-  private void setupSoundManager() {
-    BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
-    mSoundManager = application.getSoundManager();
-  }
-  
+
   /**
    * Reset the background selectors of the right-wrong-skip image buttons on
    * the card. Then, set the selector of the passed state. 
@@ -208,8 +195,6 @@ public class CardReview extends Activity {
     this.setContentView(R.layout.cardreview);
     
     this.setupViewReferences();
-    
-    this.setupSoundManager();
     
     this.setupListeners();
     

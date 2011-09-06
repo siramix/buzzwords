@@ -85,6 +85,11 @@ public class SplashScreen extends Activity {
       });
       mInstallThread.start();
 
+      // Initialize the soundManager during splash
+      SoundManager.getInstance();
+      SoundManager.initSoundManager( this.getBaseContext() );
+      SoundManager.loadSounds();
+      
       // Fade in the logo
       this.fadeIn();
     } else {

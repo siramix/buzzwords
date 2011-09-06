@@ -45,11 +45,6 @@ public class BuzzWordsApplication extends Application {
   private GameManager mGameManager;
 
   /**
-   * The SoundFXManager for all of BuzzWords
-   */
-  private SoundManager mSoundManager;
-
-  /**
    * MediaPlayer for music
    */
   private MediaPlayer mMediaPlayer;
@@ -61,6 +56,7 @@ public class BuzzWordsApplication extends Application {
     super();
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "BuzzWordsApplication()");
+    
     }
   }
 
@@ -83,29 +79,6 @@ public class BuzzWordsApplication extends Application {
       Log.d(TAG, "SetGameManager()");
     }
     this.mGameManager = gm;
-  }
-
-  /**
-   * @return a reference to the sound manager
-   */
-  public SoundManager getSoundManager() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetSoundManager()");
-    }
-    return this.mSoundManager;
-  }
-
-  /**
-   * Create a SoundManager object
-   * @param context, the context in which to create the sound manager
-   * @return the sound manager 
-   */
-  public SoundManager createSoundManager(Context context) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "CreateSound Manager(" + context);
-    }
-    mSoundManager = new SoundManager(context);
-    return mSoundManager;
   }
 
   /**

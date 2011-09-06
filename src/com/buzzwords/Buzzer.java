@@ -51,21 +51,18 @@ public class Buzzer extends Activity {
     private int buzzStreamId;
 
     public boolean onTouch(View yourButton, MotionEvent motion) {
-      SoundManager sm = ((BuzzWordsApplication) getApplication())
-          .getSoundManager();
-
       ImageButton buzzButton = (ImageButton) Buzzer.this
           .findViewById(R.id.Buzzer_Button);
 
       switch (motion.getAction()) {
       case MotionEvent.ACTION_DOWN:
-        buzzStreamId = sm.playLoop(SoundManager.Sound.BUZZ);
+        buzzStreamId = SoundManager.playLoop(SoundManager.Sound.BUZZ);
         // Spoof an onclick state
         buzzButton.setBackgroundResource(R.drawable.buzzer_button_onclick);
 
         break;
       case MotionEvent.ACTION_UP:
-        sm.stopSound(buzzStreamId);
+    	SoundManager.stopSound(buzzStreamId);
 
         // Return from spoofed onclick state
         buzzButton.setBackgroundResource(R.drawable.buzzer_button);
