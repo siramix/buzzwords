@@ -32,7 +32,7 @@ public class BuzzWordsApplication extends Application {
   /**
    * Global Debug constant
    */
-  public static final boolean DEBUG = false;
+  public static final boolean DEBUG = true;
 
   /**
    * logging tag
@@ -56,7 +56,7 @@ public class BuzzWordsApplication extends Application {
     super();
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "BuzzWordsApplication()");
-    
+
     }
   }
 
@@ -82,13 +82,20 @@ public class BuzzWordsApplication extends Application {
   }
 
   /**
-   * @param context in which to create the media player
-   * @param id of the music to play
+   * @param context
+   *          in which to create the media player
+   * @param id
+   *          of the music to play
    * @return a reference to the media player
    */
   public MediaPlayer createMusicPlayer(Context context, int id) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "CreateMusicPlayer(" + context + "," + id + ")");
+    }
+    // Clean up resources. This fixed a leak issue caused by starting many games
+    // over and over.
+    if (mMediaPlayer != null) {
+      mMediaPlayer.release();
     }
     mMediaPlayer = MediaPlayer.create(context, id);
     return mMediaPlayer;

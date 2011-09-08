@@ -131,7 +131,7 @@ public class Turn extends Activity {
    * getprefs
    */
   private boolean mMusicEnabled;
-  
+
   /**
    * Boolean representing whether gestures are enabled or not. Reduces calls to
    * getprefs
@@ -143,7 +143,7 @@ public class Turn extends Activity {
    * getprefs
    */
   private boolean mSkipEnabled;
-  
+
   /**
    * Boolean representing whether the countdown ticking has already been
    * started.
@@ -172,10 +172,11 @@ public class Turn extends Activity {
       // Do not let them do swipes while paused or time's up!
       if (mIsPaused || mTurnIsOver) {
         return false;
-      }      
-      
-      // Detect swipes in order of least to most harmful to a game -- ie if 
-      // a "correct" swipe is confused as a "skip" its not as bad as a skip being
+      }
+
+      // Detect swipes in order of least to most harmful to a game -- ie if
+      // a "correct" swipe is confused as a "skip" its not as bad as a skip
+      // being
       // interpreted as a correct or wrong
       if (mGesturesEnabled) {
         if (mSkipEnabled && e1.getX() - e2.getX() > mGestureThreshold
@@ -187,16 +188,16 @@ public class Turn extends Activity {
           Turn.this.doBack();
           return true;
         } else if (e1.getY() - e2.getY() > mGestureThreshold
-    	    && Math.abs(velocityY) > mGestureVelocityThreshold) {
-    	  Turn.this.doCorrect();
+            && Math.abs(velocityY) > mGestureVelocityThreshold) {
+          Turn.this.doCorrect();
           return true;
         } else if (e2.getY() - e1.getY() > mGestureThreshold
-    	    && Math.abs(velocityY) > mGestureVelocityThreshold) {
-    	  Turn.this.doWrong();
-    	  return true;
+            && Math.abs(velocityY) > mGestureVelocityThreshold) {
+          Turn.this.doWrong();
+          return true;
         }
       }
-      
+
       return false;
     }
   };
@@ -265,8 +266,8 @@ public class Turn extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreateOptionsMenu()");
-    }   
-    
+    }
+
     menu.add(0, R.string.menu_EndGame, 0, "End Game");
     menu.add(0, R.string.menu_Rules, 0, "Rules");
 
@@ -281,17 +282,17 @@ public class Turn extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onOptionsItemSelected()");
     }
-
+    SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     // Handle item selection
     switch (item.getItemId()) {
     case R.string.menu_EndGame:
-      // Play confirmation sound              
-      SoundManager.playSound(SoundManager.Sound.CONFIRM);
+      // Play confirmation sound
+      sm.playSound(SoundManager.Sound.CONFIRM);
       this.showDialog(DIALOG_GAMEOVER_ID);
       return true;
     case R.string.menu_Rules:
-      // Play confirmation sound              
-      SoundManager.playSound(SoundManager.Sound.CONFIRM);
+      // Play confirmation sound
+      sm.playSound(SoundManager.Sound.CONFIRM);
       startActivity(new Intent(getString(R.string.IntentRules), getIntent()
           .getData()));
       return true;
@@ -572,9 +573,10 @@ public class Turn extends Activity {
     // Mark the card with an icon
     mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.RIGHT));
     mCardStatus.setVisibility(View.VISIBLE);
-    
+
     // Only play sound once card has been processed so we don't confuse the user
-    SoundManager.playSound(SoundManager.Sound.RIGHT);
+    SoundManager sm = SoundManager.getInstance(this.getBaseContext());
+    sm.playSound(SoundManager.Sound.RIGHT);
 
     // Show the next card
     showCard();
@@ -601,7 +603,8 @@ public class Turn extends Activity {
     mCardStatus.setVisibility(View.VISIBLE);
 
     // Only play sound once card has been processed so we don't confuse the user
-    SoundManager.playSound(SoundManager.Sound.WRONG);
+    SoundManager sm = SoundManager.getInstance(this.getBaseContext());
+    sm.playSound(SoundManager.Sound.WRONG);
 
     // Show the next card
     showCard();
@@ -626,7 +629,8 @@ public class Turn extends Activity {
     mCardStatus.setVisibility(View.VISIBLE);
 
     // Only play sound once card has been processed so we don't confuse the user
-    SoundManager.playSound(SoundManager.Sound.SKIP);
+    SoundManager sm = SoundManager.getInstance(this.getBaseContext());
+    sm.playSound(SoundManager.Sound.SKIP);
 
     // Show the next card
     showCard();
@@ -668,7 +672,8 @@ public class Turn extends Activity {
     mCardStatus.setVisibility(View.VISIBLE);
 
     // Play back sound
-    SoundManager.playSound(SoundManager.Sound.BACK);
+    SoundManager sm = SoundManager.getInstance(this.getBaseContext());
+    sm.playSound(SoundManager.Sound.BACK);
   }
 
   /**
@@ -769,8 +774,10 @@ public class Turn extends Activity {
     buttonGroup.startAnimation(this.showButtonsAnim(false));
 
     // Only play gong if music is off
-    if (!mMusicEnabled)
-    	SoundManager.playSound(SoundManager.Sound.GONG);
+    if (!mMusicEnabled) {
+      SoundManager sm = SoundManager.getInstance(this.getBaseContext());
+      sm.playSound(SoundManager.Sound.GONG);
+    }
 
     TextView timer = (TextView) this.findViewById(R.id.Turn_Timer);
     timer.setVisibility(View.INVISIBLE);
@@ -850,7 +857,7 @@ public class Turn extends Activity {
     // this.buzzerButton.setOnTouchListener( BuzzListener );
     mBuzzerButton.setOnClickListener(mWrongListener);
     mNextButton.setOnClickListener(mCorrectListener);
- 
+
     // Set visibility and control of Skip Button
     if (mSkipEnabled) {
       mSkipButton.setOnClickListener(mSkipListener);
@@ -858,7 +865,7 @@ public class Turn extends Activity {
     } else {
       mSkipButton.setVisibility(View.INVISIBLE);
     }
-    
+
     // Listen for all gestures
     mSwipeDetector = new GestureDetector(mSwipeListener);
     mGestureListener = new OnTouchListener() {
@@ -867,7 +874,7 @@ public class Turn extends Activity {
           return true;
         }
         return true; // prevents highlighting badwords by consuming even if
-                     // not detected as a swipe
+        // not detected as a swipe
       }
     };
 
@@ -960,7 +967,7 @@ public class Turn extends Activity {
     // Capture our preference variable for music, skip, and gestures once
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
-    
+
     if (sp.getBoolean("music_enabled", true))
       mMusicEnabled = true;
     else
@@ -968,19 +975,19 @@ public class Turn extends Activity {
 
     // Set local variable for skip preference to reduce calls to get
     if (sp.getBoolean("allow_skip", true))
-      mSkipEnabled = true;     
+      mSkipEnabled = true;
     else
       mSkipEnabled = false;
-    
+
     // Set local variable for allowing gesture preference to reduce get calls
     if (sp.getBoolean("allow_gestures", true))
       mGesturesEnabled = true;
     else
       mGesturesEnabled = false;
-        
+
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
-    
+
     // set which card is active
     mAIsActive = true;
     mIsBack = true;
@@ -1030,9 +1037,11 @@ public class Turn extends Activity {
       builder.setMessage("Are you sure you want to end the current game?")
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-              // Play confirmation sound              
-              SoundManager.playSound(SoundManager.Sound.CONFIRM);
-              
+              // Play confirmation sound
+              SoundManager sm = SoundManager.getInstance(Turn.this
+                  .getBaseContext());
+              sm.playSound(SoundManager.Sound.CONFIRM);
+
               BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
                   .getApplication();
               GameManager gm = application.getGameManager();
@@ -1041,10 +1050,12 @@ public class Turn extends Activity {
                   getIntent().getData()));
             }
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {             
-              // Play confirmation sound              
-              SoundManager.playSound(SoundManager.Sound.CONFIRM);
-              
+            public void onClick(DialogInterface dialog, int id) {
+              // Play confirmation sound
+              SoundManager sm = SoundManager.getInstance(Turn.this
+                  .getBaseContext());
+              sm.playSound(SoundManager.Sound.CONFIRM);
+
               dialog.cancel();
             }
           });
@@ -1052,7 +1063,8 @@ public class Turn extends Activity {
       break;
     case DIALOG_READY_ID:
       // Play team ready sound
-      SoundManager.playSound(SoundManager.Sound.TEAMREADY);
+      SoundManager sm = SoundManager.getInstance(Turn.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.TEAMREADY);
 
       String curTeam = mGameManager.getActiveTeam().getName();
       builder = new AlertDialog.Builder(this);
@@ -1064,16 +1076,18 @@ public class Turn extends Activity {
               Turn.this.showCard();
               mIsBack = true;
               mIsPaused = false;
-              Turn.this.startTimer();              
-              
+              Turn.this.startTimer();
+
               // Play back sound to differentiate from normal clicks
-              SoundManager.playSound(SoundManager.Sound.BACK);
-              
+              SoundManager sm = SoundManager.getInstance(Turn.this
+                  .getBaseContext());
+              sm.playSound(SoundManager.Sound.BACK);
+
               // Start the turn music
               BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
                   .getApplication();
               GameManager gm = application.getGameManager();
-              
+
               int musicId = R.raw.mus_countdown;
               // If music is enabled, select the appropriate track
               if (mMusicEnabled) {
@@ -1090,8 +1104,8 @@ public class Turn extends Activity {
                 }
               }
 
-              MediaPlayer mp = application.createMusicPlayer(
-                  Turn.this.getBaseContext(), musicId);
+              MediaPlayer mp = application.createMusicPlayer(Turn.this
+                  .getBaseContext(), musicId);
               // If music is not enabled, it will start the countdown track at
               // 10 seconds
               if (mMusicEnabled) {
@@ -1155,10 +1169,11 @@ public class Turn extends Activity {
       this.setActiveCard();
 
       // Play resume sound
-      SoundManager.playSound(SoundManager.Sound.BACK);
-      
+      SoundManager sm = SoundManager.getInstance(this.getBaseContext());
+      sm.playSound(SoundManager.Sound.BACK);
+
       mViewFlipper.setVisibility(View.VISIBLE);
-      
+
       mBuzzerButton.setEnabled(true);
       mSkipButton.setEnabled(true);
       mNextButton.setEnabled(true);
@@ -1186,8 +1201,8 @@ public class Turn extends Activity {
 
     mPauseTextLayout = (LinearLayout) this
         .findViewById(R.id.Turn_PauseTextGroup);
-    mPauseTextLayout.setVisibility(View.VISIBLE);    
-    
+    mPauseTextLayout.setVisibility(View.VISIBLE);
+
     // Stop music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
@@ -1195,10 +1210,11 @@ public class Turn extends Activity {
     if (mp.isPlaying()) {
       mp.pause();
     }
-        
-    // Play ready sound since it indicates a wait.  
+
+    // Play ready sound since it indicates a wait.
     // This is the menu method that is called on every menu push
-    SoundManager.playSound(SoundManager.Sound.TEAMREADY);    
+    SoundManager sm = SoundManager.getInstance(this.getBaseContext());
+    sm.playSound(SoundManager.Sound.TEAMREADY);
 
     if (!mTurnIsOver) {
       this.stopTurnTimer();
@@ -1228,7 +1244,7 @@ public class Turn extends Activity {
     if (!mIsPaused) {
       this.pauseGame();
     }
-    
+
     return true;
   }
 

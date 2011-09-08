@@ -51,18 +51,22 @@ public class Buzzer extends Activity {
     private int buzzStreamId;
 
     public boolean onTouch(View yourButton, MotionEvent motion) {
+
+      SoundManager mSoundManager = SoundManager.getInstance(Buzzer.this
+          .getBaseContext());
       ImageButton buzzButton = (ImageButton) Buzzer.this
           .findViewById(R.id.Buzzer_Button);
 
       switch (motion.getAction()) {
       case MotionEvent.ACTION_DOWN:
-        buzzStreamId = SoundManager.playLoop(SoundManager.Sound.BUZZ);
+
+        buzzStreamId = mSoundManager.playLoop(SoundManager.Sound.BUZZ);
         // Spoof an onclick state
         buzzButton.setBackgroundResource(R.drawable.buzzer_button_onclick);
 
         break;
       case MotionEvent.ACTION_UP:
-    	SoundManager.stopSound(buzzStreamId);
+        mSoundManager.stopSound(buzzStreamId);
 
         // Return from spoofed onclick state
         buzzButton.setBackgroundResource(R.drawable.buzzer_button);
@@ -79,7 +83,7 @@ public class Buzzer extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (BuzzWordsApplication.DEBUG) {
-    	Log.d(TAG, "onCreate()");
+      Log.d(TAG, "onCreate()");
     }
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
