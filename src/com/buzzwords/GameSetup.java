@@ -107,8 +107,8 @@ public class GameSetup extends Activity {
       while (keepLooping) {
         try {
           GameManager gm = new GameManager(GameSetup.this);
-          gm.startGame(mTeamList,
-              ROUND_RADIOS[GameSetup.this.getCheckedRadioIndex()][1]);
+          gm.startGame(mTeamList, ROUND_RADIOS[GameSetup.this
+              .getCheckedRadioIndex()][1]);
           application.setGameManager(gm);
           keepLooping = false;
         } catch (SQLiteException e) {
@@ -135,7 +135,8 @@ public class GameSetup extends Activity {
         Log.d(TAG, "AddTeamAListener onClick()");
       }
       Button b = (Button) v;
-
+      SoundManager sm = SoundManager.getInstance(GameSetup.this
+          .getBaseContext());
       // Play confirm sound
       if (mTeamList.remove(Team.TEAMA)) {
         b.setBackgroundResource(R.color.inactiveButton);
@@ -143,15 +144,15 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMA,
             false);
-        SoundManager.playSound(SoundManager.Sound.BACK);
+        sm.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMA);
         b.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
-        b.setTextColor(GameSetup.this.getResources()
-            .getColor(mTeamList.getLast().getSecondaryColor()));
+        b.setTextColor(GameSetup.this.getResources().getColor(
+            mTeamList.getLast().getSecondaryColor()));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMA, true);
-        SoundManager.playSound(SoundManager.Sound.CONFIRM);
+        sm.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -166,6 +167,8 @@ public class GameSetup extends Activity {
       }
       Button b = (Button) v;
 
+      SoundManager sm = SoundManager.getInstance(GameSetup.this
+          .getBaseContext());
       // Play confirm sound
       if (mTeamList.remove(Team.TEAMB)) {
         b.setBackgroundResource(R.color.inactiveButton);
@@ -173,15 +176,15 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMB,
             false);
-        SoundManager.playSound(SoundManager.Sound.BACK);
+        sm.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMB);
         b.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
-        b.setTextColor(GameSetup.this.getResources()
-            .getColor(mTeamList.getLast().getSecondaryColor()));
+        b.setTextColor(GameSetup.this.getResources().getColor(
+            mTeamList.getLast().getSecondaryColor()));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMB, true);
-        SoundManager.playSound(SoundManager.Sound.CONFIRM);
+        sm.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -196,6 +199,8 @@ public class GameSetup extends Activity {
       }
       Button b = (Button) v;
 
+      SoundManager sm = SoundManager.getInstance(GameSetup.this
+          .getBaseContext());
       // Play confirm sound
       if (mTeamList.remove(Team.TEAMC)) {
         b.setBackgroundResource(R.color.inactiveButton);
@@ -203,15 +208,15 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMC,
             false);
-        SoundManager.playSound(SoundManager.Sound.BACK);
+        sm.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMC);
         b.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
-        b.setTextColor(GameSetup.this.getResources()
-            .getColor(mTeamList.getLast().getSecondaryColor()));
+        b.setTextColor(GameSetup.this.getResources().getColor(
+            mTeamList.getLast().getSecondaryColor()));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMC, true);
-        SoundManager.playSound(SoundManager.Sound.CONFIRM);
+        sm.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };
@@ -226,6 +231,8 @@ public class GameSetup extends Activity {
       }
       Button b = (Button) v;
 
+      SoundManager sm = SoundManager.getInstance(GameSetup.this
+          .getBaseContext());
       // Play confirm sound
       if (mTeamList.remove(Team.TEAMD)) {
         b.setBackgroundResource(R.color.inactiveButton);
@@ -233,21 +240,22 @@ public class GameSetup extends Activity {
             .getColor(R.color.genericBG));
         GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMD,
             false);
-        SoundManager.playSound(SoundManager.Sound.BACK);
+        sm.playSound(SoundManager.Sound.BACK);
       } else {
         mTeamList.add(Team.TEAMD);
         b.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
-        b.setTextColor(GameSetup.this.getResources()
-            .getColor(mTeamList.getLast().getSecondaryColor()));
+        b.setTextColor(GameSetup.this.getResources().getColor(
+            mTeamList.getLast().getSecondaryColor()));
         GameSetup.mGameSetupPrefEditor
             .putBoolean(GameSetup.PREFKEY_TEAMD, true);
-        SoundManager.playSound(SoundManager.Sound.CONFIRM);
+        sm.playSound(SoundManager.Sound.CONFIRM);
       }
     }
   };
 
   /**
    * Creates the animation that fades in the helper text
+   * 
    * @return the animation that fades in the helper text
    */
   private Animation fadeInHelpText(long delay) {
@@ -399,12 +407,12 @@ public class GameSetup extends Activity {
     case DIALOG_TEAMERROR:
       builder = new AlertDialog.Builder(this);
       builder.setMessage("You must have at least two teams to start the game.")
-          .setCancelable(false).setTitle("Need more teams!")
-          .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-              dialog.cancel();
-            }
-          });
+          .setCancelable(false).setTitle("Need more teams!").setPositiveButton(
+              "Okay", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                  dialog.cancel();
+                }
+              });
       dialog = builder.create();
       break;
     default:
@@ -457,8 +465,8 @@ public class GameSetup extends Activity {
     // Store off game's attributes as preferences. This is done in Pause to
     // maintain selections
     // when they press "back" to main title then return.
-    GameSetup.mGameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX,
-        GameSetup.this.getCheckedRadioIndex());
+    GameSetup.mGameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX, GameSetup.this
+        .getCheckedRadioIndex());
     GameSetup.mGameSetupPrefEditor.commit();
   }
 

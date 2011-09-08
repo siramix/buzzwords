@@ -219,7 +219,8 @@ public class GameEnd extends Activity {
 
     public void onAnimationStart(Animation animation) {
       // Play win sound
-      SoundManager.playSound(SoundManager.Sound.WIN);
+      SoundManager sm = SoundManager.getInstance(GameEnd.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.WIN);
     }
   };
 
@@ -252,7 +253,8 @@ public class GameEnd extends Activity {
         Log.d(TAG, "MainMenuListener onClick()");
       }
       // Play confirm sound
-      SoundManager.playSound(SoundManager.Sound.CONFIRM);
+      SoundManager sm = SoundManager.getInstance(GameEnd.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
 
       Intent clearStackIntent = new Intent(getApplication().getString(
           R.string.IntentTitle), getIntent().getData());
@@ -311,23 +313,25 @@ public class GameEnd extends Activity {
 
     // Initialize our preference Editor
     SharedPreferences.Editor prefEditor = sp.edit();
-    
-    // Get our play count preference title string 
-    String playCountKey = this.getResources().getString(R.string.PREFKEY_PLAYCOUNT); 
-    String showReminderKey = this.getResources().getString(R.string.PREFKEY_SHOWREMINDER);
-    
+
+    // Get our play count preference title string
+    String playCountKey = this.getResources().getString(
+        R.string.PREFKEY_PLAYCOUNT);
+    String showReminderKey = this.getResources().getString(
+        R.string.PREFKEY_SHOWREMINDER);
+
     // Get number of plays
     int playCount = sp.getInt(playCountKey, 0);
-    
+
     // When we hit 3 or 6 playthroughs, trigger the reminder
     // If they've rated us, playCount will never hit 3 or 6 (it gets set to 7)
     if (playCount == 2 || playCount == 5) {
-    	prefEditor.putBoolean(showReminderKey, true);
+      prefEditor.putBoolean(showReminderKey, true);
     }
-    
-    prefEditor.putInt(playCountKey, playCount+1);
+
+    prefEditor.putInt(playCountKey, playCount + 1);
     prefEditor.commit();
-    
+
     List<Team> teams = mGameManager.getTeams();
 
     // Sort the list by scores to determine the winner(s)
@@ -414,7 +418,8 @@ public class GameEnd extends Activity {
         text.setText(RANKS[rankings[i]]);
         // Set team name and color
         text = (TextView) findViewById(TEAM_NAME_IDS[i]);
-        text.setTextColor(mResources.getColor(teams.get(i).getSecondaryColor()));
+        text
+            .setTextColor(mResources.getColor(teams.get(i).getSecondaryColor()));
         text.setText(teams.get(i).getName());
         // Set team score and color
         text = (TextView) findViewById(TEAM_SCORE_IDS[i]);

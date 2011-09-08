@@ -34,25 +34,25 @@ import android.widget.TextView;
  * @author Siramix Labs
  */
 public class CardReview extends Activity {
-  
+
   /**
    * Static string used to refer to this class, in debug output for example.
    */
   private static final String TAG = "CardReview";
-  
+
   /**
    * Text elements
    */
-  private TextView mTitleView; 
+  private TextView mTitleView;
   private TextView[] mBadWordViews;
-  
+
   /**
    * Image buttons
    */
   private ImageButton mCorrectButton;
   private ImageButton mWrongButton;
   private ImageButton mSkipButton;
-  
+
   /**
    * Holder for the index of the card in the TurnSummary caller of this activity
    */
@@ -67,11 +67,13 @@ public class CardReview extends Activity {
         Log.d(TAG, "CorrectClickListener OnClick()");
       }
       setCardState(Card.RIGHT);
-      SoundManager.playSound(SoundManager.Sound.RIGHT);
+      SoundManager sm = SoundManager.getInstance(CardReview.this
+          .getBaseContext());
+      sm.playSound(SoundManager.Sound.RIGHT);
       goBackToTurnSummary(Card.RIGHT);
     }
   };
-  
+
   /**
    * Listener for wrong button
    */
@@ -81,11 +83,13 @@ public class CardReview extends Activity {
         Log.d(TAG, "WrongClickListener OnClick()");
       }
       setCardState(Card.WRONG);
-      SoundManager.playSound(SoundManager.Sound.WRONG);
+      SoundManager sm = SoundManager.getInstance(CardReview.this
+          .getBaseContext());
+      sm.playSound(SoundManager.Sound.WRONG);
       goBackToTurnSummary(Card.WRONG);
     }
   };
-  
+
   /**
    * Listener for skip button
    */
@@ -95,31 +99,39 @@ public class CardReview extends Activity {
         Log.d(TAG, "SkipClickListener OnClick()");
       }
       setCardState(Card.SKIP);
-      SoundManager.playSound(SoundManager.Sound.SKIP);
+      SoundManager sm = SoundManager.getInstance(CardReview.this
+          .getBaseContext());
+      sm.playSound(SoundManager.Sound.SKIP);
       goBackToTurnSummary(Card.SKIP);
     }
   };
-  
+
   /**
    * Set the references to the elements from the layout file
    */
   private void setupViewReferences() {
-    
+
     mTitleView = (TextView) this.findViewById(R.id.CardReview_CardTitle);
-    
+
     mBadWordViews = new TextView[5];
-    mBadWordViews[0] = (TextView) this.findViewById(R.id.CardReview_Card_BadWord0);
-    mBadWordViews[1] = (TextView) this.findViewById(R.id.CardReview_Card_BadWord1);
-    mBadWordViews[2] = (TextView) this.findViewById(R.id.CardReview_Card_BadWord2);
-    mBadWordViews[3] = (TextView) this.findViewById(R.id.CardReview_Card_BadWord3);
-    mBadWordViews[4] = (TextView) this.findViewById(R.id.CardReview_Card_BadWord4);
-    
-    mCorrectButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonCorrect);
+    mBadWordViews[0] = (TextView) this
+        .findViewById(R.id.CardReview_Card_BadWord0);
+    mBadWordViews[1] = (TextView) this
+        .findViewById(R.id.CardReview_Card_BadWord1);
+    mBadWordViews[2] = (TextView) this
+        .findViewById(R.id.CardReview_Card_BadWord2);
+    mBadWordViews[3] = (TextView) this
+        .findViewById(R.id.CardReview_Card_BadWord3);
+    mBadWordViews[4] = (TextView) this
+        .findViewById(R.id.CardReview_Card_BadWord4);
+
+    mCorrectButton = (ImageButton) this
+        .findViewById(R.id.CardReview_ButtonCorrect);
     mWrongButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonWrong);
     mSkipButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonSkip);
-    
+
   }
-  
+
   /**
    * Setup the button OnClickListeners
    */
@@ -130,17 +142,21 @@ public class CardReview extends Activity {
   }
 
   /**
-   * Reset the background selectors of the right-wrong-skip image buttons on
-   * the card. Then, set the selector of the passed state. 
-   * @param state - indicates the requested "lit" button
+   * Reset the background selectors of the right-wrong-skip image buttons on the
+   * card. Then, set the selector of the passed state.
+   * 
+   * @param state
+   *          - indicates the requested "lit" button
    */
   private void setCardState(int state) {
-    
-    mCorrectButton.setBackgroundResource(R.drawable.controls_review_right_selector);
-    mWrongButton.setBackgroundResource(R.drawable.controls_review_wrong_selector);
+
+    mCorrectButton
+        .setBackgroundResource(R.drawable.controls_review_right_selector);
+    mWrongButton
+        .setBackgroundResource(R.drawable.controls_review_wrong_selector);
     mSkipButton.setBackgroundResource(R.drawable.controls_review_skip_selector);
-    
-    switch(state) {
+
+    switch (state) {
     case Card.RIGHT:
       mCorrectButton.setBackgroundResource(R.drawable.controls_right_selector);
       break;
@@ -153,33 +169,36 @@ public class CardReview extends Activity {
       break;
     }
   }
-  
+
   /**
    * Display the specified card in the dialog
-   * @param card - the card to be displayed  
+   * 
+   * @param card
+   *          - the card to be displayed
    */
   private void displayCard(Card card) {
     mTitleView.setText(card.getTitle());
-    for(int i = 0; i < card.getBadWords().size(); ++i) {
+    for (int i = 0; i < card.getBadWords().size(); ++i) {
       mBadWordViews[i].setText(card.getBadWords().get(i));
     }
     this.setCardState(card.getRws());
   }
-  
+
   /**
-   * Finish the current activity and return the new card state and index
-   * to the calling activity.
-   * @param state - the right-wrong-skip state of the card
+   * Finish the current activity and return the new card state and index to the
+   * calling activity.
+   * 
+   * @param state
+   *          - the right-wrong-skip state of the card
    */
-  private void goBackToTurnSummary(int state)
-  {
+  private void goBackToTurnSummary(int state) {
     Intent curIntent = new Intent();
     curIntent.putExtra(getString(R.string.cardIndexBundleKey), mCardIndex);
-    curIntent.putExtra(getString(R.string.cardStateBundleKey), state );
+    curIntent.putExtra(getString(R.string.cardStateBundleKey), state);
     this.setResult(Activity.RESULT_OK, curIntent);
     this.finish();
   }
-  
+
   /**
    * Create the activity and display the card bundled in the intent.
    */
@@ -189,21 +208,22 @@ public class CardReview extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreate()");
     }
-    
+
     this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-    
+
     this.setContentView(R.layout.cardreview);
-    
+
     this.setupViewReferences();
-    
+
     this.setupListeners();
-    
+
     Intent curIntent = this.getIntent();
     Bundle cardBundle = curIntent.getExtras();
     mCardIndex = cardBundle.getInt(getString(R.string.cardIndexBundleKey));
-    Card curCard = (Card) cardBundle.getSerializable(getString(R.string.cardBundleKey));
-    
+    Card curCard = (Card) cardBundle
+        .getSerializable(getString(R.string.cardBundleKey));
+
     this.displayCard(curCard);
   }
-  
+
 }

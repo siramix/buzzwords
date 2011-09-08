@@ -62,6 +62,7 @@ public class Title extends Activity {
    */
   private boolean mContinueMusic;
 
+
   /**
    * Dialog constant for first Rate Us message
    */
@@ -188,7 +189,8 @@ public class Title extends Activity {
       mContinueMusic = true;
 
       // play confirm sound
-      SoundManager.playSound(SoundManager.Sound.CONFIRM);
+      SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(Title.this.getApplication().getString(
           R.string.IntentGameSetup), getIntent().getData()));
@@ -207,7 +209,8 @@ public class Title extends Activity {
       mContinueMusic = false;
 
       // play confirm sound
-      SoundManager.playSound(SoundManager.Sound.CONFIRM);
+      SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(getApplication()
           .getString(R.string.IntentBuzzer), getIntent().getData()));
@@ -226,7 +229,8 @@ public class Title extends Activity {
       mContinueMusic = true;
 
       // play confirm sound
-      SoundManager.playSound(SoundManager.Sound.CONFIRM);
+      SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(Title.this.getApplication().getString(
           R.string.IntentSettings), getIntent().getData()));
@@ -245,7 +249,8 @@ public class Title extends Activity {
       mContinueMusic = true;
 
       // play confirm sound
-      SoundManager.playSound(SoundManager.Sound.CONFIRM);
+      SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(
           getApplication().getString(R.string.IntentRules), getIntent()
@@ -266,7 +271,8 @@ public class Title extends Activity {
       mContinueMusic = false;
 
       // play confirm sound
-      SoundManager.playSound(SoundManager.Sound.CONFIRM);
+      SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
 
       Uri uri = Uri.parse("http://www.siramix.com/");
       Intent intent = new Intent(Intent.ACTION_VIEW, uri);
