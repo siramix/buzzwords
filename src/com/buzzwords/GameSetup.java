@@ -28,6 +28,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -294,6 +295,17 @@ public class GameSetup extends Activity {
     GameSetup.mGameSetupPrefs = getSharedPreferences(PREFS_NAME, 0);
     GameSetup.mGameSetupPrefEditor = GameSetup.mGameSetupPrefs.edit();
 
+    // set fonts on titles
+    Typeface antonFont = Typeface.createFromAsset(getAssets(),
+        "fonts/Anton.ttf");
+
+    TextView label = (TextView) this.findViewById(R.id.GameSetup_Title);
+    label.setTypeface(antonFont);
+    label = (TextView) this.findViewById(R.id.GameSetup_TeamsTitle);
+    label.setTypeface(antonFont);
+    label = (TextView) this.findViewById(R.id.GameSetup_SubHeader_Turns_Title);
+    label.setTypeface(antonFont);
+    
     // Set radio button labels
     RadioButton radio;
     for (int i = 0; i < GameSetup.ROUND_RADIOS.length; ++i) {
