@@ -135,180 +135,135 @@ public class GameSetup extends Activity {
    * Watches the button that adds the first team to the list
    */
   private final OnClickListener mAddTeamAListener = new OnClickListener() {
-	  public void onClick(View v) {
-		  if (BuzzWordsApplication.DEBUG) {
-			  Log.d(TAG, "AddTeamAListener onClick()");
-		  }
-		  Button b = (Button) v;
-		  View editIcon = GameSetup.this
-				  .findViewById(R.id.GameSetup_TeamEditIconA);
-		  SoundManager sm = SoundManager.getInstance(GameSetup.this
-				  .getBaseContext());
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "AddTeamAListener onClick()");
+      }
+      Button b = (Button) v;
+      View editIcon = GameSetup.this.findViewById(R.id.GameSetup_TeamEditIconA);
+      SoundManager sm = SoundManager.getInstance(GameSetup.this
+          .getBaseContext());
 
-		  if (mTeamList.remove(Team.TEAMA)) {
-			  // Update UI
-			  disableTeamUI(b, editIcon);
+      if (mTeamList.remove(Team.TEAMA)) {
+        // Update UI
+        disableTeamUI(b, editIcon);
 
-			  // Store off this selection so it is remember between activities
-			  GameSetup.mGameSetupPrefEditor.putBoolean(
-					  GameSetup.PREFKEY_TEAMA, false);
+        // Store off this selection so it is remember between activities
+        GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMA,
+            false);
 
-			  // Play back sound on remove
-			  sm.playSound(SoundManager.Sound.BACK);
+        // Play back sound on remove
+        sm.playSound(SoundManager.Sound.BACK);
 
-		  } else {
-			  // Add the team to the list
-			  mTeamList.add(Team.TEAMA);
+      } else {
+        // Add the team to the list
+        mTeamList.add(Team.TEAMA);
 
-			  // Update UI
-			  enableTeamUI(b, editIcon);
+        // Update UI
+        enableTeamUI(b, editIcon);
 
-			  // Store off this selection so it is remember between activities
-			  GameSetup.mGameSetupPrefEditor.putBoolean(
-					  GameSetup.PREFKEY_TEAMA, true);
+        // Store off this selection so it is remember between activities
+        GameSetup.mGameSetupPrefEditor
+            .putBoolean(GameSetup.PREFKEY_TEAMA, true);
 
-			  // Play confirm sound on add
-			  sm.playSound(SoundManager.Sound.CONFIRM);
+        // Play confirm sound on add
+        sm.playSound(SoundManager.Sound.CONFIRM);
 
-		  }
-	  }
+      }
+    }
   };
 
   /**
    * Watches the button that adds the second team to the list
    */
   private final OnClickListener mAddTeamBListener = new OnClickListener() {
-	  public void onClick(View v) {
-		  if (BuzzWordsApplication.DEBUG) {
-			  Log.d(TAG, "AddTeamBListener onClick()");
-		  }
-		  Button b = (Button) v;
-		  View editIcon = GameSetup.this
-				  .findViewById(R.id.GameSetup_TeamEditIconB);
-		  SoundManager sm = SoundManager.getInstance(GameSetup.this
-				  .getBaseContext());
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "AddTeamBListener onClick()");
+      }
+      Button b = (Button) v;
+      View editIcon = GameSetup.this.findViewById(R.id.GameSetup_TeamEditIconB);
+      SoundManager sm = SoundManager.getInstance(GameSetup.this
+          .getBaseContext());
 
-		  if (mTeamList.remove(Team.TEAMB)) {
+      if (mTeamList.remove(Team.TEAMB)) {
 
-			  // Update UI
-			  disableTeamUI(b, editIcon);
+        // Update UI
+        disableTeamUI(b, editIcon);
 
-			  // Store off this selection so it is remember between activities
-			  GameSetup.mGameSetupPrefEditor.putBoolean(
-					  GameSetup.PREFKEY_TEAMB, false);
+        // Store off this selection so it is remember between activities
+        GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMB,
+            false);
 
-			  // Play back sound on remove
-			  sm.playSound(SoundManager.Sound.BACK);
+        // Play back sound on remove
+        sm.playSound(SoundManager.Sound.BACK);
 
-		  } else {
-			  // Add the team to the list
-			  mTeamList.add(Team.TEAMB);
-			  // Update UI
-			  enableTeamUI(b, editIcon);
+      } else {
+        // Add the team to the list
+        mTeamList.add(Team.TEAMB);
+        // Update UI
+        enableTeamUI(b, editIcon);
 
-			  // Store off this selection so it is remember between activities
-			  GameSetup.mGameSetupPrefEditor.putBoolean(
-					  GameSetup.PREFKEY_TEAMB, true);
+        // Store off this selection so it is remember between activities
+        GameSetup.mGameSetupPrefEditor
+            .putBoolean(GameSetup.PREFKEY_TEAMB, true);
 
-			  // Play confirm sound on add
-			  sm.playSound(SoundManager.Sound.CONFIRM);
-		  }
-	  }
+        // Play confirm sound on add
+        sm.playSound(SoundManager.Sound.CONFIRM);
+      }
+    }
   };
 
   /**
    * Watches the button that adds the third team to the list
    */
   private final OnClickListener mAddTeamCListener = new OnClickListener() {
-	  public void onClick(View v) {
-		  if (BuzzWordsApplication.DEBUG) {
-			  Log.d(TAG, "AddTeamCListener onClick()");
-		  }
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "AddTeamCListener onClick()");
+      }
 
-		  EditText textField = (EditText) GameSetup.this
-				  .findViewById(R.id.GameSetup_TeamNameC);
-		  View editText = (View) GameSetup.this
-				  .findViewById(R.id.GameSetup_ButtonTeamC_EditName);
-		  View editTextIcon = (View) GameSetup.this
-				  .findViewById(R.id.GameSetup_TeamEditIconC);
+      EditText textField = (EditText) GameSetup.this
+          .findViewById(R.id.GameSetup_TeamNameC);
+      View editText = (View) GameSetup.this
+          .findViewById(R.id.GameSetup_ButtonTeamC_EditName);
+      View editTextIcon = (View) GameSetup.this
+          .findViewById(R.id.GameSetup_TeamEditIconC);
 
-		  SoundManager sm = SoundManager.getInstance(GameSetup.this
-				  .getBaseContext());
-		  // Play confirm sound
-		  if (mTeamList.remove(Team.TEAMC)) {
-			  textField.setBackgroundResource(R.color.inactiveButton);
-			  textField.setTextColor(GameSetup.this.getResources().getColor(
-					  R.color.genericBG));
-			  GameSetup.mGameSetupPrefEditor.putBoolean(
-					  GameSetup.PREFKEY_TEAMC, false);
-			  sm.playSound(SoundManager.Sound.BACK);
+      SoundManager sm = SoundManager.getInstance(GameSetup.this
+          .getBaseContext());
+      // Play confirm sound
+      if (mTeamList.remove(Team.TEAMC)) {
+        textField.setBackgroundResource(R.color.inactiveButton);
+        textField.setTextColor(GameSetup.this.getResources().getColor(
+            R.color.genericBG));
+        GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMC,
+            false);
+        sm.playSound(SoundManager.Sound.BACK);
 
-			  // Hide edit team name button
-			  editText.setVisibility(View.INVISIBLE);
-			  // Disallow selection on text element
-			  textField.setEnabled(false);
-			  // Hide edit icon
-			  editTextIcon.setVisibility(View.INVISIBLE);
-		  } else {
-			  mTeamList.add(Team.TEAMC);
-			  textField.setBackgroundResource(mTeamList.getLast()
-					  .getPrimaryColor());
-			  textField.setTextColor(GameSetup.this.getResources().getColor(
-					  mTeamList.getLast().getSecondaryColor()));
-			  GameSetup.mGameSetupPrefEditor.putBoolean(
-					  GameSetup.PREFKEY_TEAMC, true);
-			  sm.playSound(SoundManager.Sound.CONFIRM);
+        // Hide edit team name button
+        editText.setVisibility(View.INVISIBLE);
+        // Disallow selection on text element
+        textField.setEnabled(false);
+        // Hide edit icon
+        editTextIcon.setVisibility(View.INVISIBLE);
+      } else {
+        mTeamList.add(Team.TEAMC);
+        textField.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
+        textField.setTextColor(GameSetup.this.getResources().getColor(
+            mTeamList.getLast().getSecondaryColor()));
+        GameSetup.mGameSetupPrefEditor
+            .putBoolean(GameSetup.PREFKEY_TEAMC, true);
+        sm.playSound(SoundManager.Sound.CONFIRM);
 
-			  // Show edit team name button
-			  editText.setVisibility(View.VISIBLE);
-			  // Allow name to be edited
-			  textField.setEnabled(true);
-			  // Show edit icon
-			  editTextIcon.setVisibility(View.VISIBLE);
-		  }
-	  }
-  };
-
-  /**
-   * Watches the button that adds the fourth team to the list
-   */
-  private final OnClickListener mAddTeamDListener = new OnClickListener() {
-	  public void onClick(View v) {
-		  if (BuzzWordsApplication.DEBUG) {
-			  Log.d(TAG, "AddTeamDListener onClick()");
-		  }
-		  Button b = (Button) v;
-		  View editIcon = GameSetup.this
-				  .findViewById(R.id.GameSetup_TeamEditIconD);
-		  SoundManager sm = SoundManager.getInstance(GameSetup.this
-				  .getBaseContext());
-
-		  if (mTeamList.remove(Team.TEAMD)) {
-
-			  // Update UI
-			  disableTeamUI(b, editIcon);
-
-			  // Store off this selection so it is remember between activities
-			  GameSetup.mGameSetupPrefEditor.putBoolean(
-					  GameSetup.PREFKEY_TEAMD, false);
-
-			  // Play back sound on remove
-			  sm.playSound(SoundManager.Sound.BACK);
-		  } else {
-			  // Add the team to the list
-			  mTeamList.add(Team.TEAMD);
-
-			  // Update UI
-			  enableTeamUI(b, editIcon);
-
-			  // Store off this selection so it is remember between activities
-			  GameSetup.mGameSetupPrefEditor.putBoolean(
-					  GameSetup.PREFKEY_TEAMD, true);
-
-			  // Play confirm sound on add
-			  sm.playSound(SoundManager.Sound.CONFIRM);
-		  }
-	  }
+        // Show edit team name button
+        editText.setVisibility(View.VISIBLE);
+        // Allow name to be edited
+        textField.setEnabled(true);
+        // Show edit icon
+        editTextIcon.setVisibility(View.VISIBLE);
+      }
+    }
   };
 
   /**
@@ -319,69 +274,70 @@ public class GameSetup extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "mEditTeamCName onClick()");
       }
-      
-      EditText textField = (EditText) GameSetup.this.findViewById(R.id.GameSetup_TeamNameC);
+
+      EditText textField = (EditText) GameSetup.this
+          .findViewById(R.id.GameSetup_TeamNameC);
       InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
       imm.showSoftInput(textField, 0);
-      
-	  textField.setCursorVisible(true);
+
+      textField.setCursorVisible(true);
 
       textField.requestFocus();
-	  
-	  View frame = (View) GameSetup.this.findViewById(R.id.FrameLayout1);
-	  frame.setBackgroundColor(GameSetup.this.getResources()
-        .getColor(R.color.white));
-	  
-	  View addTeam = (View) GameSetup.this.findViewById(R.id.GameSetup_ButtonTeamC);
-	  addTeam.setVisibility(View.INVISIBLE);
+
+      View frame = (View) GameSetup.this.findViewById(R.id.FrameLayout1);
+      frame.setBackgroundColor(GameSetup.this.getResources().getColor(
+          R.color.white));
+
+      View addTeam = (View) GameSetup.this
+          .findViewById(R.id.GameSetup_ButtonTeamC);
+      addTeam.setVisibility(View.INVISIBLE);
 
     }
   };
-  
-  private OnEditorActionListener mEditTextListener = new TextView.OnEditorActionListener() {
-      @Override
-      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-          if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-    		  v.setCursorVisible(false);
-    		  v.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
-    		  View frame = (View) GameSetup.this.findViewById(R.id.FrameLayout1);
-    		  frame.setBackgroundColor(GameSetup.this.getResources()
-    	        .getColor(R.color.black));
-    		  
-    		  View addTeam = (View) GameSetup.this.findViewById(R.id.GameSetup_ButtonTeamC);
-    		  addTeam.setVisibility(View.VISIBLE);
-          }
-          return false;
+  private OnEditorActionListener mEditTextListener = new TextView.OnEditorActionListener() {
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+      if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+        v.setCursorVisible(false);
+        v.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
+        View frame = (View) GameSetup.this.findViewById(R.id.FrameLayout1);
+        frame.setBackgroundColor(GameSetup.this.getResources().getColor(
+            R.color.black));
+
+        View addTeam = (View) GameSetup.this
+            .findViewById(R.id.GameSetup_ButtonTeamC);
+        addTeam.setVisibility(View.VISIBLE);
       }
+      return false;
+    }
   };
-  
+
   /*
    * Helper function used to set UI properties when a team is removed
    */
-  private void disableTeamUI(Button teamButton, View editIcon)
-  {
-	  // Change background colors
-	  teamButton.setBackgroundResource(R.color.inactiveButton);
-	  teamButton.setTextColor(GameSetup.this.getResources().getColor(
-			  R.color.genericBG));
+  private void disableTeamUI(Button teamButton, View editIcon) {
+    // Change background colors
+    teamButton.setBackgroundResource(R.color.inactiveButton);
+    teamButton.setTextColor(GameSetup.this.getResources().getColor(
+        R.color.genericBG));
 
-	  // Hide team name edit icon when team is removed
-	  editIcon.setVisibility(View.INVISIBLE);
+    // Hide team name edit icon when team is removed
+    editIcon.setVisibility(View.INVISIBLE);
   }
-  
+
   /*
    * Helper function used to set UI properties when a team is added
    */
-  private void enableTeamUI(Button teamButton, View editIcon)
-  {
-      // Change background colors
-	  teamButton.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
-	  teamButton.setTextColor(GameSetup.this.getResources().getColor(
-          mTeamList.getLast().getSecondaryColor()));
-	  
-	  // Show team name edit icon when team is added
-	  editIcon.setVisibility(View.VISIBLE);
+  private void enableTeamUI(Button teamButton, View editIcon) {
+    // Change background colors
+    teamButton.setBackgroundResource(mTeamList.getLast().getPrimaryColor());
+    teamButton.setTextColor(GameSetup.this.getResources().getColor(
+        mTeamList.getLast().getSecondaryColor()));
+
+    // Show team name edit icon when team is added
+    editIcon.setVisibility(View.VISIBLE);
   }
 
   /**
@@ -435,7 +391,7 @@ public class GameSetup extends Activity {
     label.setTypeface(antonFont);
     label = (TextView) this.findViewById(R.id.GameSetup_SubHeader_Turns_Title);
     label.setTypeface(antonFont);
-    
+
     // Set radio button labels
     RadioButton radio;
     for (int i = 0; i < GameSetup.ROUND_RADIOS.length; ++i) {
@@ -462,18 +418,16 @@ public class GameSetup extends Activity {
     teamBButton.setOnClickListener(mAddTeamBListener);
     View teamCButton = this.findViewById(R.id.GameSetup_ButtonTeamC);
     teamCButton.setOnClickListener(mAddTeamCListener);
-    Button teamDButton = (Button) this.findViewById(R.id.GameSetup_ButtonTeamD);
-    teamDButton.setOnClickListener(mAddTeamDListener);
-    
+
     // EditTeamName Listeners
-    View editTeamCName = (View) this.findViewById(R.id.GameSetup_ButtonTeamC_EditName);
+    View editTeamCName = (View) this
+        .findViewById(R.id.GameSetup_ButtonTeamC_EditName);
     editTeamCName.setOnClickListener(mEditTeamCName);
-    
+
     // Set focus watcher to textField
     EditText textField = (EditText) this.findViewById(R.id.GameSetup_TeamNameC);
     textField.setOnEditorActionListener(mEditTextListener);
-    
-    
+
     // Steal focus from any of the text views... this stinks for accessibility,
     // but something needs focus
     View focusStealer = (View) this.findViewById(R.id.GameSetup_FocusStealer);
@@ -485,13 +439,15 @@ public class GameSetup extends Activity {
     if (GameSetup.mGameSetupPrefs.getBoolean(PREFKEY_TEAMA, false)) {
       mTeamList.add(Team.TEAMA);
     } else {
-      disableTeamUI(teamAButton, this.findViewById(R.id.GameSetup_TeamEditIconA));
+      disableTeamUI(teamAButton, this
+          .findViewById(R.id.GameSetup_TeamEditIconA));
     }
     // Set team B default selection
     if (GameSetup.mGameSetupPrefs.getBoolean(PREFKEY_TEAMB, false)) {
       mTeamList.add(Team.TEAMB);
     } else {
-      disableTeamUI(teamBButton, this.findViewById(R.id.GameSetup_TeamEditIconB));
+      disableTeamUI(teamBButton, this
+          .findViewById(R.id.GameSetup_TeamEditIconB));
     }
     // Set team C default selection
     if (GameSetup.mGameSetupPrefs.getBoolean(PREFKEY_TEAMC, false)) {
@@ -501,12 +457,6 @@ public class GameSetup extends Activity {
       textField.setBackgroundResource(R.color.inactiveButton);
       textField.setTextColor(GameSetup.this.getResources().getColor(
           R.color.genericBG));
-    }
-    // Set team D default selection
-    if (GameSetup.mGameSetupPrefs.getBoolean(PREFKEY_TEAMD, false)) {
-      mTeamList.add(Team.TEAMD);
-    } else {
-      disableTeamUI(teamDButton, this.findViewById(R.id.GameSetup_TeamEditIconD));
     }
 
     // Do helper text animations

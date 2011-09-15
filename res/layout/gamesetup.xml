@@ -61,16 +61,7 @@
                 <View android:layout_width="40dp" android:layout_height="fill_parent" android:layout_gravity="center_vertical" android:id="@+id/View04"></View>
             </LinearLayout>
         </RelativeLayout>
-        <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:id="@+id/RelativeLayout03">
-            <FrameLayout android:layout_width="fill_parent" android:id="@+id/FrameLayout03" android:background="@color/black" android:layout_height="fill_parent" android:paddingBottom="1dp" android:paddingTop="1dp">
-                <Button android:layout_height="fill_parent" android:background="@color/teamD_primary" android:paddingLeft="15dp" android:textSize="32dp" android:textColor="@color/teamD_secondary" android:includeFontPadding="false" android:gravity="left|center_vertical" android:layout_width="fill_parent" android:id="@+id/GameSetup_ButtonTeamD" android:text="Yellow"></Button>
-                <ImageView android:layout_width="25dp" android:layout_gravity="right|center_vertical" android:background="@drawable/gamesetup_editicon" android:layout_height="25dp" android:layout_marginRight="5dp" android:id="@+id/GameSetup_TeamEditIconD"></ImageView>
-            </FrameLayout>
-            <LinearLayout android:id="@+id/LinearLayout04" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <View android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:id="@+id/View06"></View>
-                <View android:layout_width="40dp" android:layout_height="fill_parent" android:layout_gravity="center_vertical" android:id="@+id/View05"></View>
-            </LinearLayout>
-        </RelativeLayout>
+        <com.buzzwords.TeamSelectLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1"/>
         <View android:background="@color/black" android:layout_width="wrap_content" android:layout_height="1dp" android:id="@+id/GameSetup_TeamBorderBot"></View>
     </LinearLayout>
 	
