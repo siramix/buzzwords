@@ -14,15 +14,12 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ImageView.ScaleType;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -100,17 +97,21 @@ public class TeamSelectLayout extends RelativeLayout {
     
     // Initialize EditText foreground in frame
     mTeamText = new EditText(mContext);
-    mTeamText.setText("Red team!");
+    mTeamText.setText("Stub");
     mTeamText.setBackgroundColor(this.getResources().getColor(R.color.genericBG));
     mTeamText.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
     mTeamText.setCursorVisible(false);
-    mTeamText.setFocusable(true);
+    // Don't allow focusing of neighboring elements
+    mTeamText.setNextFocusDownId(mTeamText.getId());
+    mTeamText.setNextFocusUpId(mTeamText.getId());
     mTeamText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     mTeamText.setIncludeFontPadding(false);
     mTeamText.setInputType(InputType.TYPE_CLASS_TEXT);
     mTeamText.setPadding( (int)(DENSITY * 15 + 0.5f), 0, 0, 0);
     mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 32);
-    mTeamText.setOnEditorActionListener(mEditTextListener);
+    mTeamText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    //mTeamText.setOnEditorActionListener(mEditTextListener);
+    mTeamText.setOnFocusChangeListener(mEditTextFocusListener);
     
     // Intialize EditIcon in frame
     mEditIcon = new ImageView(mContext);
@@ -229,10 +230,10 @@ public void setTeamLayoutActiveness(boolean active)
       mTeamText.setCursorVisible(true);
       mTeamText.requestFocus();
       
-      mFrame.setBackgroundColor(TeamSelectLayout.this.getResources().getColor(
-          R.color.white));
+//      mFrame.setBackgroundColor(TeamSelectLayout.this.getResources().getColor(
+//          R.color.white));
 
-      mButtonAddTeam.setVisibility(View.INVISIBLE);
+//      mButtonAddTeam.setVisibility(View.INVISIBLE);
 
       // Show the keyboard
       InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -255,8 +256,36 @@ public void setTeamLayoutActiveness(boolean active)
             R.color.black));
 
         mButtonAddTeam.setVisibility(View.VISIBLE);
+ 
       }
       return false;
     }
+  };
+  
+  private OnFocusChangeListener mEditTextFocusListener = new OnFocusChangeListener(){
+
+	@Override
+	public void onFocusChange(View v, boolean hasFocus) {
+	      if (BuzzWordsApplication.DEBUG) {
+	          Log.d(TAG, "FocusChanged");
+	        }
+		if(hasFocus)
+		{
+	      mFrame.setBackgroundColor(TeamSelectLayout.this.getResources().getColor(
+          R.color.white));
+
+	      mButtonAddTeam.setVisibility(View.INVISIBLE);
+		}
+		else
+		{
+	        mTeamText.setCursorVisible(false);
+	        mTeamText.setBackgroundResource(mTeam.getPrimaryColor());
+	        mFrame.setBackgroundColor(TeamSelectLayout.this.getResources().getColor(
+	            R.color.black));
+
+	        mButtonAddTeam.setVisibility(View.VISIBLE);
+		}
+	}
+
   };
 }
