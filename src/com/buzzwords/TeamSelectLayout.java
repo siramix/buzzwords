@@ -6,18 +6,24 @@ package com.buzzwords;
 import java.util.LinkedList;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -42,7 +48,8 @@ public class TeamSelectLayout extends RelativeLayout {
   private Team mTeam;
   private LinkedList<Team> mTeamList;
   
-  private boolean mTeamOn;
+  private String mPrefKey;
+  private SharedPreferences.Editor mPreferences;
   
   private static String TAG = "TeamSelectLayout";
   
@@ -88,7 +95,7 @@ public class TeamSelectLayout extends RelativeLayout {
     mFrame = new FrameLayout(mContext);
     mFrame.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
     int padding = (int) (DENSITY * 1 + 0.5f);
-    mFrame.setPadding(0, padding, padding, 0);
+    mFrame.setPadding(0, padding, 0, padding);
     mFrame.setBackgroundColor(R.color.black);
     
     // Initialize EditText foreground in frame
@@ -97,12 +104,13 @@ public class TeamSelectLayout extends RelativeLayout {
     mTeamText.setBackgroundColor(this.getResources().getColor(R.color.genericBG));
     mTeamText.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
     mTeamText.setCursorVisible(false);
-    mTeamText.setFocusable(false);
+    mTeamText.setFocusable(true);
     mTeamText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     mTeamText.setIncludeFontPadding(false);
     mTeamText.setInputType(InputType.TYPE_CLASS_TEXT);
     mTeamText.setPadding( (int)(DENSITY * 15 + 0.5f), 0, 0, 0);
     mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 32);
+    mTeamText.setOnEditorActionListener(mEditTextListener);
     
     // Intialize EditIcon in frame
     mEditIcon = new ImageView(mContext);
@@ -126,11 +134,11 @@ public class TeamSelectLayout extends RelativeLayout {
     mButtonAddTeam = new View(mContext);
     mButtonAddTeam.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
     mButtonAddTeam.setOnClickListener(mAddTeamListener);
-    mTeamOn = false;
 
     // Initialize EditTeamName button
     mButtonEditTeamName = new View(mContext);
     mButtonEditTeamName.setLayoutParams(new LayoutParams((int)(DENSITY * 40 + 0.5f), LayoutParams.FILL_PARENT));
+    mButtonEditTeamName.setOnClickListener(mEditTeamNameListener);
     
     // Add Buttons to button layout
     mButtons.addView(mButtonAddTeam);
@@ -148,34 +156,37 @@ public class TeamSelectLayout extends RelativeLayout {
  * @param team The team this Layout represents
  * @param teamList The list of teams this layout affects
  */
-public void assignTeam(Team team, LinkedList<Team> teamList)
+public void assignTeam(Team team, LinkedList<Team> teamList, SharedPreferences.Editor prefs, String key)
   {
 	  mTeam = team;
 	  mTeamList = teamList;
+	  mTeamText.setText(team.getName());
+	  mPrefKey = key;
+	  mPreferences = prefs;
   }
 
-public void activateTeamLayout()
+public void setTeamLayoutActiveness(boolean active)
 {
-    // Update UI
-    mTeamText.setBackgroundResource(mTeam.getPrimaryColor());
-    mTeamText.setTextColor(this.getResources().getColor(mTeam.getSecondaryColor()));
-
-    // Show edit team name icon when team is removed
-    mEditIcon.setVisibility(View.VISIBLE);
-    // Enable edit team name button with the icon
-    mButtonEditTeamName.setVisibility(View.VISIBLE);
-}
-
-public void deactivateTeamLayout()
-{
-    // Update UI
-    mTeamText.setBackgroundResource(R.color.inactiveButton);
-    mTeamText.setTextColor(this.getResources().getColor(R.color.genericBG));
-
-    // Hide team name edit icon when team is removed
-    mEditIcon.setVisibility(View.INVISIBLE);
-    // Disable edit team name button with the icon
-    mButtonEditTeamName.setVisibility(View.GONE);
+	if( active)
+	{
+	    mTeamText.setBackgroundResource(mTeam.getPrimaryColor());
+	    mTeamText.setTextColor(this.getResources().getColor(mTeam.getSecondaryColor()));
+	
+	    // Show edit team name icon when team is removed
+	    mEditIcon.setVisibility(View.VISIBLE);
+	    // Enable edit team name button with the icon
+	    mButtonEditTeamName.setVisibility(View.VISIBLE);
+	}
+	else
+	{
+	    mTeamText.setBackgroundResource(R.color.inactiveButton);
+	    mTeamText.setTextColor(this.getResources().getColor(R.color.genericBG));
+	
+	    // Hide team name edit icon when team is removed
+	    mEditIcon.setVisibility(View.INVISIBLE);
+	    // Disable edit team name button with the icon
+	    mButtonEditTeamName.setVisibility(View.GONE);
+	}
 }
 
   /**
@@ -186,38 +197,66 @@ public void deactivateTeamLayout()
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "AddTeamListener onClick()");
       }
+      
       SoundManager sm = SoundManager.getInstance(mContext);
-
-      // TODO: Add team to list
-      if (mTeamOn) {
-          mTeamOn = false;
-          
-          deactivateTeamLayout();
-
-        // TODO: Store off this selection so it is remember between activities
-        //GameSetup.mGameSetupPrefEditor.putBoolean(GameSetup.PREFKEY_TEAMA,
-        //    false);
-
+      // Attempt to remove the team from the list
+      if (mTeamList.remove(mTeam)) {    
+        setTeamLayoutActiveness(false);
+        // Store off this selection so it is remember between activities
+        mPreferences.putBoolean(mPrefKey, false);
         // Play back sound on remove
         sm.playSound(SoundManager.Sound.BACK);
-        
-
-
       } else {
-        // TODO: Add the team to the list
-        //mTeamList.add(Team.TEAMA);
-    	  mTeamOn = true;
-    	  
-    	  activateTeamLayout();
-
-        // TODO: Store off this selection so it is remember between activities
-        //GameSetup.mGameSetupPrefEditor
-        //    .putBoolean(GameSetup.PREFKEY_TEAMA, true);
-
+        // Add the team to the list
+        mTeamList.add(mTeam);  	  
+        setTeamLayoutActiveness(true);
+        // Store off this selection so it is remember between activities
+    	mPreferences.putBoolean(mPrefKey, true);
         // Play confirm sound on add
         sm.playSound(SoundManager.Sound.CONFIRM);
-
       }
+    }
+  };
+  
+  /**
+   * Edit Team Name button Listener
+   */
+  private final OnClickListener mEditTeamNameListener = new OnClickListener() {
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "mEditTeamName onClick()");
+      }
+      mTeamText.setCursorVisible(true);
+      mTeamText.requestFocus();
+      
+      mFrame.setBackgroundColor(TeamSelectLayout.this.getResources().getColor(
+          R.color.white));
+
+      mButtonAddTeam.setVisibility(View.INVISIBLE);
+
+      // Show the keyboard
+      InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+      imm.showSoftInput(mTeamText, 0);
+    }
+  };
+
+/*
+ * Watches the EditText view for keyboard input and changes rendering on
+ * the ui elements accordingly
+ */
+  private OnEditorActionListener mEditTextListener = new TextView.OnEditorActionListener() {
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+      if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+        v.setCursorVisible(false);
+        v.setBackgroundResource(mTeam.getPrimaryColor());
+        mFrame.setBackgroundColor(TeamSelectLayout.this.getResources().getColor(
+            R.color.black));
+
+        mButtonAddTeam.setVisibility(View.VISIBLE);
+      }
+      return false;
     }
   };
 }

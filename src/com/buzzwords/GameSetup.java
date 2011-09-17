@@ -426,8 +426,14 @@ public class GameSetup extends Activity {
     
     // Assign teams to TeamSelectLayouts
     TeamSelectLayout teamD = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamDLayout);
-    teamD.assignTeam(Team.TEAMD, mTeamList);
-    teamD.deactivateTeamLayout();
+    teamD.assignTeam(Team.TEAMD, mTeamList, mGameSetupPrefEditor, PREFKEY_TEAMD);
+    if(GameSetup.mGameSetupPrefs.getBoolean(PREFKEY_TEAMD, false)) {
+    	teamD.setTeamLayoutActiveness(true);
+    	mTeamList.add(Team.TEAMD);
+    }
+    else {
+    	teamD.setTeamLayoutActiveness(false);
+    }
 
     // Set focus watcher to textField
     EditText textField = (EditText) this.findViewById(R.id.GameSetup_TeamNameC);
