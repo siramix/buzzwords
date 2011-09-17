@@ -423,6 +423,11 @@ public class GameSetup extends Activity {
     View editTeamCName = (View) this
         .findViewById(R.id.GameSetup_ButtonTeamC_EditName);
     editTeamCName.setOnClickListener(mEditTeamCName);
+    
+    // Assign teams to TeamSelectLayouts
+    TeamSelectLayout teamD = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamDLayout);
+    teamD.assignTeam(Team.TEAMD, mTeamList);
+    teamD.deactivateTeamLayout();
 
     // Set focus watcher to textField
     EditText textField = (EditText) this.findViewById(R.id.GameSetup_TeamNameC);

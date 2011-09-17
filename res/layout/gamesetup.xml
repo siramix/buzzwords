@@ -34,11 +34,11 @@
         <RelativeLayout android:layout_width="fill_parent" android:id="@+id/relativeLayout1" android:layout_height="fill_parent" android:layout_weight="1">
             <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/FrameLayout1" android:paddingTop="1dp" android:paddingBottom="1dp" android:background="@color/black">
                 <EditText android:layout_width="fill_parent" android:id="@+id/GameSetup_TeamNameC" android:textColor="@color/teamC_secondary" android:textSize="32dp" android:text="Red" android:focusable="true" android:paddingLeft="15dp" android:includeFontPadding="false" android:imeOptions="normal|flagNoExtractUi" android:gravity="left|center_vertical" android:inputType="text" android:layout_height="fill_parent" android:maxLength="15" android:background="@color/teamC_primary" android:cursorVisible="false"></EditText>
-                <ImageView android:layout_marginRight="5dp" android:layout_gravity="right|center_vertical" android:id="@+id/GameSetup_TeamEditIconC" android:background="@drawable/gamesetup_editicon" android:layout_width="25dp" android:layout_height="25dp"></ImageView>
+                <ImageView android:layout_marginRight="5dp" android:layout_gravity="right|center_vertical" android:id="@+id/GameSetup_TeamEditIconC" android:background="@drawable/gamesetup_editicon" android:layout_height="25dp" android:layout_width="25dp"></ImageView>
             </FrameLayout>
             <LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <android.view.View android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/GameSetup_ButtonTeamC"></android.view.View>
-                <android.view.View android:layout_height="fill_parent" android:layout_gravity="center_vertical" android:layout_width="40dp" android:id="@+id/GameSetup_ButtonTeamC_EditName"></android.view.View>
+                <View android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/GameSetup_ButtonTeamC"></View>
+                <View android:layout_height="fill_parent" android:layout_width="40dp" android:id="@+id/GameSetup_ButtonTeamC_EditName"></View>
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:id="@+id/RelativeLayout01">
@@ -61,7 +61,7 @@
                 <View android:layout_width="40dp" android:layout_height="fill_parent" android:layout_gravity="center_vertical" android:id="@+id/View04"></View>
             </LinearLayout>
         </RelativeLayout>
-        <com.buzzwords.TeamSelectLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1"/>
+        <com.buzzwords.TeamSelectLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/GameSetup_TeamDLayout"/>
         <View android:background="@color/black" android:layout_width="wrap_content" android:layout_height="1dp" android:id="@+id/GameSetup_TeamBorderBot"></View>
     </LinearLayout>
 	
