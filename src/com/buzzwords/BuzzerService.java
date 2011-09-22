@@ -29,6 +29,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -43,7 +44,7 @@ public class BuzzerService {
   private static BuzzerService _instance = new BuzzerService();
 
   /**
-   * TODO: Determine if this is the best way to check the state.
+   * Determine if this is the best way to check the state.
    */
   private static boolean isBuzzing = false;
   
@@ -52,9 +53,18 @@ public class BuzzerService {
    */
   private static String gameToken;
 
+  /**
+   * TAG for debugging.  Every method should include a debug tag.
+   */
   private final static String TAG = "BuzzerService";
 
+  /**
+   * Null constructor for the BuzzerService.
+   */
   private BuzzerService() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "BuzzerService()");
+    } 
     gameToken = "";
     isBuzzing = false;
   }
@@ -64,17 +74,43 @@ public class BuzzerService {
    * @return the current instance of the BuzzerService
    */	
   public static BuzzerService getInstance() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getInstance()");
+    } 
     return _instance;
   }
 
-  public String getLocaltoken() {
+  /**
+   * Get the game token stored locally (as opposed to getting a token
+   * from the server.)
+   * @return string token that will be used to pair phones
+   */
+  public static String getLocalToken() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getLocaltoken()");
+    } 
     return gameToken;
   }
   
-  public boolean getLocalisBuzzing() {
+  /**
+   * Get the buzzing status that is stored locally (as opposed 
+   * to the status that exists on the server.)
+   * @return true for buzzing, false for not
+   */
+  public static boolean getLocalisBuzzing() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "getLocalisBuzzing()");
+    } 
     return isBuzzing;
   }  
   
+  /**
+   * Sends a request to buzzserver to check the status of the buzzer
+   * for a specified gameToken.  If true, the local isBuzzing status
+   * will be turned on.  Otherwise isBuzzing will be set to false.
+   * @param token
+   * @return
+   */
   public static boolean getBuzzing(String token) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "getBuzz(" + token + ")");
@@ -87,7 +123,7 @@ public class BuzzerService {
       if (Integer.parseInt(responseJSON.getString("buzzing")) == 1 && validateResponse(responseJSON)) {
         isBuzzing = true;
       }
-      else {
+      else {     
         isBuzzing = false;
       }   
     } catch (JSONException e) {
@@ -101,7 +137,7 @@ public class BuzzerService {
    * the Buzzer's device.
    * @param gameData
    */
-  public void updateBuzzer(JSONObject gameData) {
+  public static void updateBuzzer(JSONObject gameData) {
 	
   }
   
@@ -110,7 +146,7 @@ public class BuzzerService {
    * the Presenter's device.
    * @param gameData
    */
-  public void updatePresenter(JSONObject gameData) {
+  public static void updatePresenter(JSONObject gameData) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "updatePresenter(" + gameToken + ")");
     }		
@@ -118,10 +154,11 @@ public class BuzzerService {
   }
 
   /**
-   * Processes a call to synchronize and start a networked game.
-   * @param gameToken
+   * Processes a call to synchronize and start a networked game.  
+   * The local gameToken will be set and will be used to identify
+   * the active joinable games by another phone.
    */
-  public void setToken() {
+  public static void newGame() {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "syncGame(" + gameToken + ")");
     }		
@@ -137,13 +174,39 @@ public class BuzzerService {
   }  
   
   /**
+   * Sends geographic data to the server to see if a game can be joined.
+   * @return An ArrayList of each available game token as a string
+   */
+  public static ArrayList<String> joinGame() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "syncGame(" + gameToken + ")");
+    }   
+    
+    JSONObject responseJSON = sendBuzzServerRequest
+        ("http://www.siramix.com/buzz/server/joingame.php?", null, "31.5", "31.5", null, null);
+      
+    try {
+      JSONArray gamesJSONArray = responseJSON.getJSONArray("games");
+      ArrayList<String> gamesArray = new ArrayList<String>();
+      for (int i=0; i<gamesJSONArray.length(); ++i) {
+        gamesArray.add(gamesJSONArray.getString(i));
+      }
+      return gamesArray;
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    
+    return null;
+  }  
+    
+  /**
    * Sets the local service to the buzzing state and tells the 
    * server to do the same.  A successful response will be received
    * from the server if the server sets the state to 'buzzing'.
    * 
    * @param gameToken
    */
-  public void setBuzzing(String gameToken) {
+  public static void setBuzzing(String gameToken) {
   	if (BuzzWordsApplication.DEBUG) {
   	  Log.d(TAG, "setBuzzing(" + gameToken + ")");
   	}
@@ -170,7 +233,7 @@ public class BuzzerService {
    * 
    * @param gameToken
    */
-  public void unsetBuzzing(String gameToken) {
+  public static void unsetBuzzing(String gameToken) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "unsetBuzzing(" + gameToken + ")");
     }

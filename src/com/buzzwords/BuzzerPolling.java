@@ -29,7 +29,7 @@ public class BuzzerPolling extends TimerTask {
 	public void run() {
 		// TODO Auto-generated method stubf
 		BuzzerService bs = BuzzerService.getInstance();		
-		BuzzerService.getBuzzing(bs.getLocaltoken());
+		BuzzerService.getBuzzing(bs.getLocalToken());
 	}
 
 	public void setActivity(Activity act) {

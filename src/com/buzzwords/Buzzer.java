@@ -40,7 +40,7 @@ public class Buzzer extends Activity {
    * logging tag
    */
   public static String TAG = "Buzzer";
-
+  
   /**
    * OnTouch listener handles starting and stopping the buzzer sound
    */
@@ -63,13 +63,18 @@ public class Buzzer extends Activity {
         buzzStreamId = sm.playLoop(SoundManager.Sound.BUZZ);
         // Spoof an onclick state
         buzzButton.setBackgroundResource(R.drawable.buzzer_button_onclick);
-
+        BuzzerService.setBuzzing(BuzzerService.getLocalToken());
+        Log.d("************* Set was performed local is now: ", Boolean.toString(BuzzerService.getLocalisBuzzing()));
+        Log.d("************* SERVER SAYS: ", Boolean.toString(BuzzerService.getBuzzing(BuzzerService.getLocalToken())));
         break;
       case MotionEvent.ACTION_UP:
         sm.stopSound(buzzStreamId);
-
+        BuzzerService.unsetBuzzing(BuzzerService.getLocalToken());
         // Return from spoofed onclick state
         buzzButton.setBackgroundResource(R.drawable.buzzer_button);
+
+        Log.d("************* Unset was performed local is now: ", Boolean.toString(BuzzerService.getLocalisBuzzing()));
+        Log.d("************* SERVER SAYS: ", Boolean.toString(BuzzerService.getBuzzing(BuzzerService.getLocalToken())));
         break;
       }
       return true;
@@ -94,17 +99,18 @@ public class Buzzer extends Activity {
         .findViewById(R.id.Buzzer_Button);
     buzzButton.setOnTouchListener(mBuzzTouch);
 
-    BuzzerService bs = BuzzerService.getInstance();
+    BuzzerService.getInstance();
     TextView tv = (TextView) findViewById(R.id.DEBUGTXT);
-    bs.setToken();
-    tv.setText(bs.getLocaltoken());
-    Log.d("*************", Boolean.toString(BuzzerService.getBuzzing(bs.getLocaltoken())));
-    bs.setBuzzing(bs.getLocaltoken());
-    Log.d("************* Set was performed local is now: ", Boolean.toString(bs.getLocalisBuzzing()));
-    Log.d("************* SERVER SAYS: ", Boolean.toString(bs.getBuzzing(bs.getLocaltoken())));
-    bs.unsetBuzzing(bs.getLocaltoken());
-    Log.d("************* Unset was performed local is now: ", Boolean.toString(bs.getLocalisBuzzing()));
-    Log.d("************* SERVER SAYS: ", Boolean.toString(bs.getBuzzing(bs.getLocaltoken())));
+    BuzzerService.newGame();
+    BuzzerService.joinGame();
+    tv.setText(BuzzerService.getLocalToken());
+    Log.d("*************", Boolean.toString(BuzzerService.getBuzzing(BuzzerService.getLocalToken())));
+    BuzzerService.setBuzzing(BuzzerService.getLocalToken());
+    Log.d("************* Set was performed local is now: ", Boolean.toString(BuzzerService.getLocalisBuzzing()));
+    Log.d("************* SERVER SAYS: ", Boolean.toString(BuzzerService.getBuzzing(BuzzerService.getLocalToken())));
+    BuzzerService.unsetBuzzing(BuzzerService.getLocalToken());
+    Log.d("************* Unset was performed local is now: ", Boolean.toString(BuzzerService.getLocalisBuzzing()));
+    Log.d("************* SERVER SAYS: ", Boolean.toString(BuzzerService.getBuzzing(BuzzerService.getLocalToken())));
     
     //bs.unsetBuzzing(bs.getLocaltoken());
   }
