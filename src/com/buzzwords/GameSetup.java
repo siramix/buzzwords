@@ -127,6 +127,25 @@ public class GameSetup extends Activity {
     }
   };
   
+  
+  /**
+   * Edit team name button listener to launch Edit Team name dialog
+   */
+  private final OnClickListener mEditTeamNameListener = new OnClickListener() {
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "mEditTeamName onClick()");
+      }
+      
+      SoundManager sm = SoundManager.getInstance(GameSetup.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
+      
+      // Launch into Turn activity
+      startActivity(new Intent(getApplication().getString(R.string.IntentEditTeamName),
+          getIntent().getData()));
+    }
+  };
+  
   /**
    * Creates the animation that fades in the helper text
    * 
@@ -210,6 +229,7 @@ public class GameSetup extends Activity {
     else {
     	teamSelect.setTeamLayoutActiveness(false);
     }
+    teamSelect.bindOnEditListenter(mEditTeamNameListener);
     // TeamB
     teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamBLayout);
     teamSelect.assignTeam(Team.TEAMB, mTeamList, mGameSetupPrefEditor, PREFKEY_TEAMD);
@@ -220,6 +240,7 @@ public class GameSetup extends Activity {
     else {
     	teamSelect.setTeamLayoutActiveness(false);
     }
+    teamSelect.bindOnEditListenter(mEditTeamNameListener);
     // TeamC
     teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamCLayout);
     teamSelect.assignTeam(Team.TEAMC, mTeamList, mGameSetupPrefEditor, PREFKEY_TEAMC);
@@ -230,6 +251,7 @@ public class GameSetup extends Activity {
     else {
     	teamSelect.setTeamLayoutActiveness(false);
     }
+    teamSelect.bindOnEditListenter(mEditTeamNameListener);
     // TeamD
     teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamDLayout);
     teamSelect.assignTeam(Team.TEAMD, mTeamList, mGameSetupPrefEditor, PREFKEY_TEAMD);
@@ -240,6 +262,8 @@ public class GameSetup extends Activity {
     else {
     	teamSelect.setTeamLayoutActiveness(false);
     }
+    teamSelect.bindOnEditListenter(mEditTeamNameListener);
+
 
     // Do helper text animations
     TextView helpText = (TextView) this

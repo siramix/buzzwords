@@ -15,6 +15,7 @@
   <string name="IntentTurnSummary">com.buzzwords.intent.action.TURNSUMMARY</string>
   <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
   <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
+  <string name="IntentEditTeamName">com.buzzwords.intent.action.EDITTEAMNAME</string>
 
   <!-- Global Prefkey IDs -->
   <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
