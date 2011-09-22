@@ -249,57 +249,27 @@ public class GameSetup extends Activity {
         .findViewById(R.id.GameSetup_StartGameButton);
     startGameButton.setOnClickListener(mStartGameListener);
 
-
+    // Ids for TeamSelectLayouts
+    final int[] TEAM_SELECT_LAYOUTS = new int[] { R.id.GameSetup_TeamALayout,
+    		R.id.GameSetup_TeamBLayout, R.id.GameSetup_TeamCLayout, R.id.GameSetup_TeamDLayout };
+    
     // Assign teams to TeamSelectLayouts
-    // TeamA
     TeamSelectLayout teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamALayout);
-    teamSelect.assignTeam(Team.TEAMA);
-    if(GameSetup.mGameSetupPrefs.getBoolean(Team.TEAMA.getPreferenceKey(), false)) {
-    	teamSelect.setTeamLayoutActiveness(true);
-    	mTeamList.add(Team.TEAMA);
-    }
-    else {
-    	teamSelect.setTeamLayoutActiveness(false);
-    }
-    teamSelect.setOnTeamEditedListener(mTeamEditedListener);
-    teamSelect.setOnTeamAddedListener(mTeamAddedListener);
-    // TeamB
-    teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamBLayout);
-    teamSelect.assignTeam(Team.TEAMB);
-    if(GameSetup.mGameSetupPrefs.getBoolean(Team.TEAMB.getPreferenceKey(), false)) {
-    	teamSelect.setTeamLayoutActiveness(true);
-    	mTeamList.add(Team.TEAMB);
-    }
-    else {
-    	teamSelect.setTeamLayoutActiveness(false);
-    }
-    teamSelect.setOnTeamEditedListener(mTeamEditedListener);
-    teamSelect.setOnTeamAddedListener(mTeamAddedListener);
-    // TeamC
-    teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamCLayout);
-    teamSelect.assignTeam(Team.TEAMC);
-    if(GameSetup.mGameSetupPrefs.getBoolean(Team.TEAMC.getPreferenceKey(), false)) {
-    	teamSelect.setTeamLayoutActiveness(true);
-    	mTeamList.add(Team.TEAMC);
-    }
-    else {
-    	teamSelect.setTeamLayoutActiveness(false);
-    }
-    teamSelect.setOnTeamEditedListener(mTeamEditedListener);
-    teamSelect.setOnTeamAddedListener(mTeamAddedListener);
-    // TeamD
-    teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamDLayout);
-    teamSelect.assignTeam(Team.TEAMD);
-    if(GameSetup.mGameSetupPrefs.getBoolean(Team.TEAMD.getPreferenceKey(), false)) {
-    	teamSelect.setTeamLayoutActiveness(true);
-    	mTeamList.add(Team.TEAMD);
-    }
-    else {
-    	teamSelect.setTeamLayoutActiveness(false);
-    }
-    teamSelect.setOnTeamEditedListener(mTeamEditedListener);
-    teamSelect.setOnTeamAddedListener(mTeamAddedListener);
+    for( int i = 0; i < TEAM_SELECT_LAYOUTS.length; i++)
+    {
+    	teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[i]);
+        teamSelect.assignTeam(Team.values()[i]);
 
+        if(GameSetup.mGameSetupPrefs.getBoolean(Team.values()[i].getPreferenceKey(), false)) {
+        	teamSelect.setTeamLayoutActiveness(true);
+        	mTeamList.add(Team.values()[i]);
+        }
+        else {
+        	teamSelect.setTeamLayoutActiveness(false);
+        }
+        teamSelect.setOnTeamEditedListener(mTeamEditedListener);
+        teamSelect.setOnTeamAddedListener(mTeamAddedListener);
+    }
 
     // Do helper text animations
     TextView helpText = (TextView) this
