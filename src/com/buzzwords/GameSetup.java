@@ -143,6 +143,8 @@ public class GameSetup extends Activity {
       // Launch into Turn activity
       startActivity(new Intent(getApplication().getString(R.string.IntentEditTeamName),
           getIntent().getData()));
+      
+      mContinueMusic = true;
     }
   };
   
