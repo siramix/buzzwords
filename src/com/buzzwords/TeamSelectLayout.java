@@ -1,12 +1,23 @@
-/**
- * 
- */
+/*****************************************************************************
+ *  Buzzwords is a family friendly word game for mobile phones.
+ *  Copyright (C) 2011 Siramix Team
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
 package com.buzzwords;
 
-import java.util.LinkedList;
-
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -19,6 +30,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 /**
+ * Custom view that represents a team selection.  It can have a reference to
+ * a Team object, and it displays the Team information neatly.  It also
+ * handles OnClick events on its various elements, and passes them to the 
+ * appropriate listeners.
+ * 
  * @author The Buzzwords Team
  *
  */
@@ -39,9 +55,9 @@ public class TeamSelectLayout extends RelativeLayout {
   private boolean mIsTeamActive;
   
   private Team mTeam;
-  private LinkedList<Team> mTeamList;
   
   private OnTeamAddedListener mTeamAddedListener;
+  private OnTeamEditedListener mTeamEditedListener;
   
   private static String TAG = "TeamSelectLayout";
   
@@ -50,7 +66,7 @@ public class TeamSelectLayout extends RelativeLayout {
    */
   public TeamSelectLayout(Context context) {
     super(context);
-    // TODO Auto-generated constructor stub
+    mContext = context;
   }
 
   /**
@@ -59,8 +75,6 @@ public class TeamSelectLayout extends RelativeLayout {
    */
   public TeamSelectLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
-    // TODO Auto-generated constructor stub
-    
     mContext = context;
   }
 
@@ -71,7 +85,7 @@ public class TeamSelectLayout extends RelativeLayout {
    */
   public TeamSelectLayout(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
-    // TODO Auto-generated constructor stub
+    mContext = context;
   }
 
   @Override
@@ -122,6 +136,7 @@ public class TeamSelectLayout extends RelativeLayout {
     buttonParams.rightMargin = (int)(DENSITY * 10 + 0.5f);
     mButtonEditTeamName.setLayoutParams(buttonParams);
     mButtonEditTeamName.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.gamesetup_editicon_selector));
+    mButtonEditTeamName.setOnClickListener(mEditTeamListener);
     
     
     // Add Buttons to button layout
@@ -135,20 +150,33 @@ public class TeamSelectLayout extends RelativeLayout {
   }
 
   /**
-   * Set the teams and team list this TeamSelectLayout is associated with
+   * Set the team this TeamSelectLayout is associated with
  * @param team The team this Layout represents
- * @param teamList The list of teams this layout affects
  */
-public void assignTeam(Team team, LinkedList<Team> teamList)
+public void assignTeam(Team team)
   {
 	  mTeam = team;
-	  mTeamList = teamList;
 	  mTeamText.setText(team.getName());
   }
 
+/*
+ * Assign a listener to receive the OnTeamAdded callback
+ * @param listener
+ * 			Listener to receive the callback
+ */
 public void setOnTeamAddedListener(OnTeamAddedListener listener)
 {
 	mTeamAddedListener = listener;
+}
+
+/*
+ * Assign a listener to receive the OnTeamEdited callback
+ * @param listener
+ * 			Listener to receive the callback
+ */
+public void setOnTeamEditedListener(OnTeamEditedListener listener)
+{
+	mTeamEditedListener = listener;
 }
 
 /*
@@ -159,6 +187,9 @@ public Team getTeam()
 	  return mTeam;
 }
 
+/*
+ * Set the view to display as active or inactive (bright or dim, for example)
+ */
 public void setTeamLayoutActiveness(boolean active)
 {
 	mIsTeamActive = active;
@@ -180,10 +211,21 @@ public void setTeamLayoutActiveness(boolean active)
 	}
 }
 
-public void bindOnEditListenter(OnClickListener listener)
-{
-	mButtonEditTeamName.setOnClickListener(listener);
-}
+/**
+ * Watches the button that edits team name
+ */
+private final OnClickListener mEditTeamListener = new OnClickListener() {
+  public void onClick(View v) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "AddTeamListener onClick()");
+    }
+    // Send event to any listeners
+    if (mTeamEditedListener != null)
+    {
+    	mTeamEditedListener.onTeamEdited(mTeam);
+    }
+  }
+};
 
   /**
    * Watches the button that adds the first team to the list
