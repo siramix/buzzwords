@@ -35,11 +35,13 @@ public class TeamSelectLayout extends RelativeLayout {
   private View mButtonAddTeam;
   private ImageButton mButtonEditTeamName;
   
+  // Track if this team select is active or inactive
+  private boolean mIsTeamActive;
+  
   private Team mTeam;
   private LinkedList<Team> mTeamList;
   
-  private String mPrefKey;
-  private SharedPreferences.Editor mPreferences;
+  private OnTeamAddedListener mTeamAddedListener;
   
   private static String TAG = "TeamSelectLayout";
   
@@ -131,25 +133,36 @@ public class TeamSelectLayout extends RelativeLayout {
     this.addView(mFrame);
     this.addView(mButtons);
   }
-  
 
   /**
    * Set the teams and team list this TeamSelectLayout is associated with
  * @param team The team this Layout represents
  * @param teamList The list of teams this layout affects
  */
-public void assignTeam(Team team, LinkedList<Team> teamList, SharedPreferences.Editor prefs, String key)
+public void assignTeam(Team team, LinkedList<Team> teamList)
   {
 	  mTeam = team;
 	  mTeamList = teamList;
 	  mTeamText.setText(team.getName());
-	  mPrefKey = key;
-	  mPreferences = prefs;
   }
+
+public void setOnTeamAddedListener(OnTeamAddedListener listener)
+{
+	mTeamAddedListener = listener;
+}
+
+/*
+ * Get the team assigned to this TeamSelectLayout
+ */
+public Team getTeam()
+{
+	  return mTeam;
+}
 
 public void setTeamLayoutActiveness(boolean active)
 {
-	if( active)
+	mIsTeamActive = active;
+	if( mIsTeamActive)
 	{
 	    mTeamText.setBackgroundResource(mTeam.getPrimaryColor());
 	    mTeamText.setTextColor(this.getResources().getColor(mTeam.getSecondaryColor()));
@@ -180,24 +193,15 @@ public void bindOnEditListenter(OnClickListener listener)
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "AddTeamListener onClick()");
       }
+      // Toggle the view's display status
+      setTeamLayoutActiveness(!mIsTeamActive);
       
-      SoundManager sm = SoundManager.getInstance(mContext);
-      // Attempt to remove the team from the list
-      if (mTeamList.remove(mTeam)) {    
-        setTeamLayoutActiveness(false);
-        // Store off this selection so it is remember between activities
-        mPreferences.putBoolean(mPrefKey, false);
-        // Play back sound on remove
-        sm.playSound(SoundManager.Sound.BACK);
-      } else {
-        // Add the team to the list
-        mTeamList.add(mTeam);  	  
-        setTeamLayoutActiveness(true);
-        // Store off this selection so it is remember between activities
-    	mPreferences.putBoolean(mPrefKey, true);
-        // Play confirm sound on add
-        sm.playSound(SoundManager.Sound.CONFIRM);
+      // Send event to any listeners
+      if (mTeamAddedListener != null)
+      {
+    	  mTeamAddedListener.onTeamAdded(mTeam, mIsTeamActive);
       }
+      
     }
   };
 }

@@ -37,6 +37,7 @@
   <string name="cardStateBundleKey">com.buzzwords.cardState</string>
   <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
   <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
+  <string name="teamBundleKey">com.buzzwords.team</string>
 
   <!-- For end game dialog -->
   <string name="endGameDialog_title">Confirm End Game</string>

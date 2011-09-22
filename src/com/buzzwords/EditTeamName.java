@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -37,11 +38,28 @@ public class EditTeamName extends Activity {
    * Static string used to refer to this class, in debug output for example.
    */
   private static final String TAG = "EditTeamName";
+  
+  /*
+   * String to track entered team name
+   */
+  private String mTeamName;
+  
+  /*
+   * Reference to EditText view for team name
+   */
+  private EditText mEditTeamName;
 
   /**
    * flag used for stopping music OnStop() event.
    */
   private boolean mContinueMusic;
+
+  /**
+   * Set the references to the elements from the layout file
+   */
+  private void setupViewReferences() {
+	  mEditTeamName = (EditText) this.findViewById(R.id.EditTeamName_EditField);
+  }
   
   /**
    * Create the activity and display the card bundled in the intent.
@@ -55,6 +73,10 @@ public class EditTeamName extends Activity {
 
     this.setContentView(R.layout.editteamname);
 
+    setupViewReferences();
+    
+    mEditTeamName.setText("Test");
+    
     // set fonts on titles
     Typeface antonFont = Typeface.createFromAsset(getAssets(),
         "fonts/Anton.ttf");

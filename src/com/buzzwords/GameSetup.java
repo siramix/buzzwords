@@ -63,16 +63,14 @@ public class GameSetup extends Activity {
 
   // Preference keys (indicating quadrant)
   public static final String PREFS_NAME = "gamesetupprefs";
-  private static final String PREFKEY_TEAMA = "teamA_enabled";
-  private static final String PREFKEY_TEAMB = "teamB_enabled";
-  private static final String PREFKEY_TEAMC = "teamC_enabled";
-  private static final String PREFKEY_TEAMD = "teamD_enabled";
 
   // Index of the selected radio indicating number of rounds
   private static final String RADIO_INDEX = "round_radio_index";
 
   // Flag to play music into the next Activity
   private boolean mContinueMusic = false;
+  
+  static final int EDITTEAMNAME_REQUEST_CODE = 1;
 
   /**
    * logging tag
@@ -132,20 +130,57 @@ public class GameSetup extends Activity {
    * Edit team name button listener to launch Edit Team name dialog
    */
   private final OnClickListener mEditTeamNameListener = new OnClickListener() {
+	
     public void onClick(View v) {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "mEditTeamName onClick()");
       }
+
       
       SoundManager sm = SoundManager.getInstance(GameSetup.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
-      
+/*
+      Intent editTeamNameIntent = new Intent(
+          getString(R.string.IntentCardReview), getIntent().getData());
+      editTeamNameIntent.putExtra(getString(R.string.teamBundleKey),
+    		  layout.getTeam());
+      startActivityForResult(editTeamNameIntent, EDITTEAMNAME_REQUEST_CODE);
+ */  
       // Launch into Turn activity
       startActivity(new Intent(getApplication().getString(R.string.IntentEditTeamName),
           getIntent().getData()));
       
       mContinueMusic = true;
     }
+  };
+  
+  /*
+   * Listener that watches the TeamSelectLayouts for events when the 
+   * teams are added or removed.  It modifies the preferences and the list
+   * of teams accordingly.
+   */
+  private final OnTeamAddedListener mTeamAddedListener = new OnTeamAddedListener()
+  {
+	  public void onTeamAdded(Team team, boolean isTeamOn)
+	  {
+	      SoundManager sm = SoundManager.getInstance((GameSetup.this.getBaseContext()));
+	      
+	      if (isTeamOn) {
+	    	  // Add the team to the list
+	    	  mTeamList.add(team);
+	    	  // Store off this selection so it is remember between activities
+	    	  mGameSetupPrefEditor.putBoolean(team.getPreferenceKey(), true);
+	    	  // Play confirm sound on add
+	    	  sm.playSound(SoundManager.Sound.CONFIRM);
+	      } else {
+	    	// Remove thet eam from the list
+	    	mTeamList.remove(team);
+	        // Store off this selection so it is remember between activities
+	    	mGameSetupPrefEditor.putBoolean(team.getPreferenceKey(), false);
+	        // Play back sound on remove
+	        sm.playSound(SoundManager.Sound.BACK);
+	      }
+	  }
   };
   
   /**
@@ -223,8 +258,8 @@ public class GameSetup extends Activity {
     // Assign teams to TeamSelectLayouts
     // TeamA
     TeamSelectLayout teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamALayout);
-    teamSelect.assignTeam(Team.TEAMA, mTeamList, mGameSetupPrefEditor, PREFKEY_TEAMA);
-    if(GameSetup.mGameSetupPrefs.getBoolean(PREFKEY_TEAMA, false)) {
+    teamSelect.assignTeam(Team.TEAMA, mTeamList);
+    if(GameSetup.mGameSetupPrefs.getBoolean(Team.TEAMA.getPreferenceKey(), false)) {
     	teamSelect.setTeamLayoutActiveness(true);
     	mTeamList.add(Team.TEAMA);
     }
@@ -232,10 +267,11 @@ public class GameSetup extends Activity {
     	teamSelect.setTeamLayoutActiveness(false);
     }
     teamSelect.bindOnEditListenter(mEditTeamNameListener);
+    teamSelect.setOnTeamAddedListener(mTeamAddedListener);
     // TeamB
     teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamBLayout);
-    teamSelect.assignTeam(Team.TEAMB, mTeamList, mGameSetupPrefEditor, PREFKEY_TEAMD);
-    if(GameSetup.mGameSetupPrefs.getBoolean(PREFKEY_TEAMB, false)) {
+    teamSelect.assignTeam(Team.TEAMB, mTeamList);
+    if(GameSetup.mGameSetupPrefs.getBoolean(Team.TEAMB.getPreferenceKey(), false)) {
     	teamSelect.setTeamLayoutActiveness(true);
     	mTeamList.add(Team.TEAMB);
     }
@@ -243,10 +279,11 @@ public class GameSetup extends Activity {
     	teamSelect.setTeamLayoutActiveness(false);
     }
     teamSelect.bindOnEditListenter(mEditTeamNameListener);
+    teamSelect.setOnTeamAddedListener(mTeamAddedListener);
     // TeamC
     teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamCLayout);
-    teamSelect.assignTeam(Team.TEAMC, mTeamList, mGameSetupPrefEditor, PREFKEY_TEAMC);
-    if(GameSetup.mGameSetupPrefs.getBoolean(PREFKEY_TEAMC, false)) {
+    teamSelect.assignTeam(Team.TEAMC, mTeamList);
+    if(GameSetup.mGameSetupPrefs.getBoolean(Team.TEAMC.getPreferenceKey(), false)) {
     	teamSelect.setTeamLayoutActiveness(true);
     	mTeamList.add(Team.TEAMC);
     }
@@ -254,10 +291,11 @@ public class GameSetup extends Activity {
     	teamSelect.setTeamLayoutActiveness(false);
     }
     teamSelect.bindOnEditListenter(mEditTeamNameListener);
+    teamSelect.setOnTeamAddedListener(mTeamAddedListener);
     // TeamD
     teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamDLayout);
-    teamSelect.assignTeam(Team.TEAMD, mTeamList, mGameSetupPrefEditor, PREFKEY_TEAMD);
-    if(GameSetup.mGameSetupPrefs.getBoolean(PREFKEY_TEAMD, false)) {
+    teamSelect.assignTeam(Team.TEAMD, mTeamList);
+    if(GameSetup.mGameSetupPrefs.getBoolean(Team.TEAMD.getPreferenceKey(), false)) {
     	teamSelect.setTeamLayoutActiveness(true);
     	mTeamList.add(Team.TEAMD);
     }
@@ -265,6 +303,7 @@ public class GameSetup extends Activity {
     	teamSelect.setTeamLayoutActiveness(false);
     }
     teamSelect.bindOnEditListenter(mEditTeamNameListener);
+    teamSelect.setOnTeamAddedListener(mTeamAddedListener);
 
 
     // Do helper text animations

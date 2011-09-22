@@ -32,14 +32,14 @@ import com.buzzwords.R;
 public enum Team {
   TEAMA("Blue", R.color.teamA_BG, R.color.teamA_secondary,
       R.color.teamA_primary, R.drawable.bg_bluegradient,
-      R.drawable.gameend_row_end_blue), TEAMB("Green", R.color.teamB_BG,
+      R.drawable.gameend_row_end_blue, "teamA_enabled"), TEAMB("Green", R.color.teamB_BG,
       R.color.teamB_secondary, R.color.teamB_primary,
-      R.drawable.bg_greengradient, R.drawable.gameend_row_end_green), TEAMC(
+      R.drawable.bg_greengradient, R.drawable.gameend_row_end_green, "teamB_enabled"), TEAMC(
       "Red", R.color.teamC_BG, R.color.teamC_secondary, R.color.teamC_primary,
-      R.drawable.bg_redgradient, R.drawable.gameend_row_end_red), TEAMD(
+      R.drawable.bg_redgradient, R.drawable.gameend_row_end_red, "teamC_enabled"), TEAMD(
       "Yellow", R.color.teamD_BG, R.color.teamD_secondary,
       R.color.teamD_primary, R.drawable.bg_yellowgradient,
-      R.drawable.gameend_row_end_yellow);
+      R.drawable.gameend_row_end_yellow, "teamD_enabled");
 
   // Team name
   private final String mName;
@@ -51,18 +51,21 @@ public enum Team {
   private final int mGameEndBackground;
   // The team's running score
   private int mScore;
+  // The team's preference key
+  private final String mPrefKey;
 
   /*
    * Construct a Team
    */
   private Team(String name, int bg, int secondary, int primary, int gradient,
-      int gameend_bg) {
+      int gameend_bg, String key) {
     mName = name;
     mBackground = bg;
     mSecondary = secondary;
     mPrimary = primary;
     mGradient = gradient;
     mGameEndBackground = gameend_bg;
+    mPrefKey = key;
     this.setScore(0);
   }
 
@@ -119,6 +122,16 @@ public enum Team {
   public int getGameEndPiece() {
     return mGameEndBackground;
   }
+  
+  /**
+   * Returns the Team's preference key
+   * 
+   * @return the preference key
+   */
+  public String getPreferenceKey() {
+    return mPrefKey;
+  }
+
 
   /**
    * Set the Team's running score total
