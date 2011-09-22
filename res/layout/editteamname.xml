@@ -23,11 +23,11 @@
         <View android:layout_centerVertical="true" android:id="@+id/EditTeamName_TitleBar" android:layout_height="4dp" android:layout_width="fill_parent" android:layout_centerHorizontal="true" android:background="@color/genericBG_trim"></View>
         <TextView android:layout_marginLeft="10dp" android:gravity="center" android:textSize="24dp" android:layout_centerVertical="true" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/EditTeamName_Title" android:text="Edit Team Name" android:textColor="@color/white"></TextView>
     </RelativeLayout>
-    <EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginRight="10dp" android:layout_marginLeft="10dp" android:id="@+id/EditTeamName_EditField"></EditText>
-    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="@color/white" android:layout_gravity="center" android:layout_marginBottom="10dp" android:textSize="18dp" android:text="Choose a new name for Red Team" android:id="@+id/EditTeamName_Hint"></TextView>
+    <EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginRight="10dp" android:layout_marginLeft="10dp" android:id="@+id/EditTeamName_EditField" android:maxLines="1" android:inputType="text" android:imeOptions="actionDone"></EditText>
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="@color/white" android:layout_gravity="center" android:layout_marginBottom="10dp" android:text="Choose a new name for Red Team" android:id="@+id/EditTeamName_Hint" android:textSize="16dp"></TextView>
     <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/EditTeamName_Buttons">
-        <Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="Accept" android:id="@+id/EditTeamName_Buttons_Yes"></Button>
-        <Button android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:text="Cancel" android:id="@+id/EditTeamName_Buttons_No"></Button>
+        <Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="Accept" android:id="@+id/EditTeamName_Buttons_Accept"></Button>
+        <Button android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:text="Cancel" android:id="@+id/EditTeamName_Buttons_Cancel"></Button>
     </LinearLayout>
         
 </LinearLayout>

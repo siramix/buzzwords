@@ -108,7 +108,7 @@ public class TeamSelectLayout extends RelativeLayout {
     
     // Initialize EditText foreground in frame
     mTeamText = new TextView(mContext);
-    mTeamText.setText("Stub");
+    mTeamText.setText("No team assigned");
     mTeamText.setBackgroundColor(this.getResources().getColor(R.color.genericBG));
     mTeamText.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
     mTeamText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
@@ -158,6 +158,15 @@ public void assignTeam(Team team)
 	  mTeam = team;
 	  mTeamText.setText(team.getName());
   }
+
+/*
+ * Refreshes the view to reflect the most up to date data.  Call if
+ * team name changes.
+ */
+public void refresh()
+{
+	mTeamText.setText(mTeam.getName());
+}
 
 /*
  * Assign a listener to receive the OnTeamAdded callback

@@ -38,6 +38,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.view.animation.Animation;
@@ -61,6 +62,10 @@ public class GameSetup extends Activity {
       { R.id.GameSetup_Rounds0, 2 }, { R.id.GameSetup_Rounds1, 4 },
       { R.id.GameSetup_Rounds2, 6 }, { R.id.GameSetup_Rounds3, 8 } };
 
+  // Ids for TeamSelectLayouts
+  final int[] TEAM_SELECT_LAYOUTS = new int[] { R.id.GameSetup_TeamALayout,
+  		R.id.GameSetup_TeamBLayout, R.id.GameSetup_TeamCLayout, R.id.GameSetup_TeamDLayout };
+  
   // Preference keys (indicating quadrant)
   public static final String PREFS_NAME = "gamesetupprefs";
 
@@ -70,6 +75,7 @@ public class GameSetup extends Activity {
   // Flag to play music into the next Activity
   private boolean mContinueMusic = false;
   
+  // Request code for EditTeam activity result
   static final int EDITTEAMNAME_REQUEST_CODE = 1;
 
   /**
@@ -77,6 +83,22 @@ public class GameSetup extends Activity {
    */
   public static String TAG = "GameSetup";
 
+  /**
+   * Creates the animation that fades in the helper text
+   * 
+   * @return the animation that fades in the helper text
+   */
+  private Animation fadeInHelpText(long delay) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "FadeInHelpText()");
+    }
+    Animation fade = new AlphaAnimation(0.0f, 1.0f);
+    fade.setStartOffset(delay);
+    fade.setDuration(2000);
+    return fade;
+  }
+  
+  
   /**
    * Watches the button that handles hand-off to the Turn activity.
    */
@@ -134,17 +156,18 @@ public class GameSetup extends Activity {
 	  {
 	      SoundManager sm = SoundManager.getInstance(GameSetup.this.getBaseContext());
 	      sm.playSound(SoundManager.Sound.CONFIRM);
-	/*
+
 	      Intent editTeamNameIntent = new Intent(
-	          getString(R.string.IntentCardReview), getIntent().getData());
+	          getString(R.string.IntentEditTeamName), getIntent().getData());
 	      editTeamNameIntent.putExtra(getString(R.string.teamBundleKey),
-	    		  layout.getTeam());
+	    		  team);
 	      startActivityForResult(editTeamNameIntent, EDITTEAMNAME_REQUEST_CODE);
-	 */  
+	 
+	      /*
 	      // Launch into Turn activity
 	      startActivity(new Intent(getApplication().getString(R.string.IntentEditTeamName),
 	          getIntent().getData()));
-	      
+	      */
 	      mContinueMusic = true;
 	  }
   };
@@ -177,20 +200,25 @@ public class GameSetup extends Activity {
 	      }
 	  }
   };
-  
+
   /**
-   * Creates the animation that fades in the helper text
-   * 
-   * @return the animation that fades in the helper text
+   * This function is called when the EditTeamName activity finishes.
+   * It refreshes all Layouts.
    */
-  private Animation fadeInHelpText(long delay) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "FadeInHelpText()");
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == EDITTEAMNAME_REQUEST_CODE)
+    {
+    	// Refresh all TeamSelectLayouts
+        TeamSelectLayout teamSelect;
+        for( int i = 0; i < TEAM_SELECT_LAYOUTS.length; i++)
+        {
+        	teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[i]);
+        	teamSelect.refresh();
+        }
     }
-    Animation fade = new AlphaAnimation(0.0f, 1.0f);
-    fade.setStartOffset(delay);
-    fade.setDuration(2000);
-    return fade;
+
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   /**
@@ -249,13 +277,9 @@ public class GameSetup extends Activity {
         .findViewById(R.id.GameSetup_StartGameButton);
     startGameButton.setOnClickListener(mStartGameListener);
 
-    // Ids for TeamSelectLayouts
-    final int[] TEAM_SELECT_LAYOUTS = new int[] { R.id.GameSetup_TeamALayout,
-    		R.id.GameSetup_TeamBLayout, R.id.GameSetup_TeamCLayout, R.id.GameSetup_TeamDLayout };
-    
     // Assign teams to TeamSelectLayouts
-    TeamSelectLayout teamSelect = (TeamSelectLayout) this.findViewById(R.id.GameSetup_TeamALayout);
-    for( int i = 0; i < TEAM_SELECT_LAYOUTS.length; i++)
+    TeamSelectLayout teamSelect;
+    for( int i = 0; i < TEAM_SELECT_LAYOUTS.length; ++i)
     {
     	teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[i]);
         teamSelect.assignTeam(Team.values()[i]);
