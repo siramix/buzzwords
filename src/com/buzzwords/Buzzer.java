@@ -94,7 +94,7 @@ public class Buzzer extends Activity {
         .findViewById(R.id.Buzzer_Button);
     buzzButton.setOnTouchListener(mBuzzTouch);
 
-    BuzzerService bs = new BuzzerService();
+    BuzzerService bs = BuzzerService.getInstance();
     TextView tv = (TextView) findViewById(R.id.DEBUGTXT);
     bs.setToken();
     tv.setText(bs.getLocaltoken());
