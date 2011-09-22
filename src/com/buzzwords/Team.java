@@ -20,6 +20,8 @@ package com.buzzwords;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import android.util.Log;
+
 import com.buzzwords.R;
 
 /**
@@ -86,6 +88,9 @@ public enum Team implements Serializable {
    * @return the name
    */
   public String getName() {
+	if (BuzzWordsApplication.DEBUG) {
+	   Log.d("Team:", "getName(): " + mName);
+	}
     return mName;
   }
   

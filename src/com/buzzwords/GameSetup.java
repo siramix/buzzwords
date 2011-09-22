@@ -38,7 +38,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.view.animation.Animation;
@@ -279,14 +278,17 @@ public class GameSetup extends Activity {
 
     // Assign teams to TeamSelectLayouts
     TeamSelectLayout teamSelect;
+    Team curTeam;
     for( int i = 0; i < TEAM_SELECT_LAYOUTS.length; ++i)
     {
+    	curTeam = Team.values()[i];
+    	curTeam.setName(curTeam.getDefaultName());
     	teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[i]);
-        teamSelect.assignTeam(Team.values()[i]);
+        teamSelect.assignTeam(curTeam);
 
-        if(GameSetup.mGameSetupPrefs.getBoolean(Team.values()[i].getPreferenceKey(), false)) {
+        if(GameSetup.mGameSetupPrefs.getBoolean(curTeam.getPreferenceKey(), false)) {
         	teamSelect.setTeamLayoutActiveness(true);
-        	mTeamList.add(Team.values()[i]);
+        	mTeamList.add(curTeam);
         }
         else {
         	teamSelect.setTeamLayoutActiveness(false);

@@ -106,12 +106,10 @@
             <TextView android:id="@+id/GameEnd_Scores_1_name"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/GameEnd_Scores_1_place"
-                android:layout_width="80dp"
                 android:layout_centerVertical="true"
                 android:textSize="24dp"
                 android:text="Green"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/black" android:layout_width="80dp"/>
 
             <ImageView android:id="@+id/GameEnd_Scores_1_end"
                 android:layout_alignParentRight="true"
@@ -167,8 +165,7 @@
                 android:textSize="24dp"
                 android:text="Blue"
                 android:layout_toRightOf="@id/GameEnd_Scores_2_place"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/black"/>
 
             <ImageView android:id="@+id/GameEnd_Scores_2_end"
                 android:layout_alignParentRight="true"
@@ -224,8 +221,7 @@
                 android:textSize="24dp"
                 android:text="Red"
                 android:layout_toRightOf="@id/GameEnd_Scores_3_place"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/black"/>
 
             <ImageView android:id="@+id/GameEnd_Scores_3_end"
                 android:layout_alignParentRight="true"
@@ -281,8 +277,7 @@
                 android:textSize="24dp"
                 android:text="Yellow"
                 android:layout_toRightOf="@id/GameEnd_Scores_4_place"
-                android:textColor="@color/black"
-                />
+                android:textColor="@color/black"/>
 
             <ImageView android:id="@+id/GameEnd_Scores_4_end"
                 android:layout_alignParentRight="true"

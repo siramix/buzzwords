@@ -33,6 +33,7 @@ public class BuzzWordsApplication extends Application {
    * Global Debug constant
    */
   public static final boolean DEBUG = true;
+  public static final boolean DEBUG_TIMERTICKS = false;
 
   /**
    * logging tag

@@ -920,7 +920,7 @@ public class Turn extends Activity {
 
       @Override
       public void onTick() {
-        if (BuzzWordsApplication.DEBUG) {
+        if (BuzzWordsApplication.DEBUG_TIMERTICKS) {
           Log.d(TAG, Long.toString(mCounter.getTimeRemaining()));
         }
         // Update our text each second
