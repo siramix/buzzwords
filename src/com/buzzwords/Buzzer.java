@@ -100,7 +100,12 @@ public class Buzzer extends Activity {
     tv.setText(bs.getLocaltoken());
     Log.d("*************", Boolean.toString(BuzzerService.getBuzzing(bs.getLocaltoken())));
     bs.setBuzzing(bs.getLocaltoken());
-    Log.d("*************", Boolean.toString(bs.getLocalisBuzzing()));
+    Log.d("************* Set was performed local is now: ", Boolean.toString(bs.getLocalisBuzzing()));
+    Log.d("************* SERVER SAYS: ", Boolean.toString(bs.getBuzzing(bs.getLocaltoken())));
+    bs.unsetBuzzing(bs.getLocaltoken());
+    Log.d("************* Unset was performed local is now: ", Boolean.toString(bs.getLocalisBuzzing()));
+    Log.d("************* SERVER SAYS: ", Boolean.toString(bs.getBuzzing(bs.getLocaltoken())));
+    
     //bs.unsetBuzzing(bs.getLocaltoken());
   }
 
