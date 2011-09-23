@@ -362,77 +362,27 @@ public class GameEnd extends Activity {
     final int[] TEAM_SCORE_GROUPS = new int[] { R.id.GameEnd_Scores_1,
         R.id.GameEnd_Scores_2, R.id.GameEnd_Scores_3, R.id.GameEnd_Scores_4 };
 
-    // Ids for score placement text views. These should only be changed in the
-    // event of ties
-    final int[] TEAM_PLACE_IDS = new int[] { R.id.GameEnd_Scores_1_place,
-        R.id.GameEnd_Scores_2_place, R.id.GameEnd_Scores_3_place,
-        R.id.GameEnd_Scores_4_place };
-
-    // Ids for team names
-    final int[] TEAM_NAME_IDS = new int[] { R.id.GameEnd_Scores_1_name,
-        R.id.GameEnd_Scores_2_name, R.id.GameEnd_Scores_3_name,
-        R.id.GameEnd_Scores_4_name };
-
-    // Ids for score values
-    final int[] TEAM_SCORE_IDS = new int[] { R.id.GameEnd_Scores_1_score,
-        R.id.GameEnd_Scores_2_score, R.id.GameEnd_Scores_3_score,
-        R.id.GameEnd_Scores_4_score };
-
-    // Ids for scoreboard backgrounds
-    final int[] TEAM_SCORE_BGS = new int[] { R.id.GameEnd_Scores_1_BG,
-        R.id.GameEnd_Scores_2_BG, R.id.GameEnd_Scores_3_BG,
-        R.id.GameEnd_Scores_4_BG };
-
-    // Ids for scoreboard background end elements
-    final int[] TEAM_SCORE_ENDS = new int[] { R.id.GameEnd_Scores_1_end,
-        R.id.GameEnd_Scores_2_end, R.id.GameEnd_Scores_3_end,
-        R.id.GameEnd_Scores_4_end };
-
     final String[] RANKS = new String[] { "1st", "2nd", "3rd", "4th" };
 
+    
+    ScoreboardRowLayout row;
     // Setup score displays. Iterate through all team groups, setting scores for
     // teams that played
     // and disabling the group for teams that did not play
     for (int i = 0; i < TEAM_SCORE_GROUPS.length; i++) {
+      row = (ScoreboardRowLayout) this.findViewById(TEAM_SCORE_GROUPS[i]);
       if (i >= teams.size()) {
         // Gray out rows for teams that didn't play
-        View bg = (View) findViewById(TEAM_SCORE_BGS[i]);
-        bg.setBackgroundResource(R.color.gameend_blankrow);
-        // Hide place, Hide Name, Hide Score
-        TextView text = (TextView) findViewById(TEAM_PLACE_IDS[i]);
-        text.setVisibility(View.INVISIBLE);
-        text = (TextView) findViewById(TEAM_NAME_IDS[i]);
-        text.setVisibility(View.INVISIBLE);
-        text = (TextView) findViewById(TEAM_SCORE_IDS[i]);
-        text.setVisibility(View.INVISIBLE);
-        // Set background of end piece to gray
-        Drawable d = getResources().getDrawable(
-            R.drawable.gameend_row_end_blank);
-        ImageView end = (ImageView) findViewById(TEAM_SCORE_ENDS[i]);
-        end.setImageDrawable(d);
+    	row.setActiveness(false);
       } else {
+    	// Show teams that played, and set their rank
+          if (BuzzWordsApplication.DEBUG) {
+              Log.d(TAG, "SetTeam: " + teams.get(i).getName());
+            }
+        row.setTeam(teams.get(i));
 
-        // Set ranking
-        TextView text = (TextView) findViewById(TEAM_PLACE_IDS[i]);
-        // text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
-        text.setText(RANKS[rankings[i]]);
-        // Set team name and color
-        text = (TextView) findViewById(TEAM_NAME_IDS[i]);
-        text
-            .setTextColor(mResources.getColor(teams.get(i).getSecondaryColor()));
-        text.setText(teams.get(i).getName());
-        // Set team score and color
-        text = (TextView) findViewById(TEAM_SCORE_IDS[i]);
-        text.setTextColor(mResources.getColor(teams.get(i).getPrimaryColor()));
-        text.setText(Integer.toString(teams.get(i).getScore()));
-        // Set background color
-        View bg = (View) findViewById(TEAM_SCORE_BGS[i]);
-        bg.setBackgroundResource(teams.get(i).getPrimaryColor());
-        // Set row end background color
-        ImageView end = (ImageView) findViewById(TEAM_SCORE_ENDS[i]);
-        Drawable d = getResources().getDrawable(teams.get(i).getGameEndPiece());
-        end.setImageDrawable(d);
-
+    	row.setActiveness(true);
+    	row.setStanding(RANKS[rankings[i]]);
       }
     }
 
@@ -446,10 +396,10 @@ public class GameEnd extends Activity {
       text.setTextColor(mResources.getColor(teams.get(0).getPrimaryColor()));
       text.setText(teams.get(0).getName() + " Wins!");
     }
+    
     // set font
     Typeface antonFont = Typeface.createFromAsset(getAssets(),
         "fonts/Anton.ttf");
-    text.setTypeface(antonFont);
 
     // Set font on GameOver text
     text = (TextView) findViewById(R.id.GameEnd_GameOver_Game);

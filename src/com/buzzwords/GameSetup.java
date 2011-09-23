@@ -284,14 +284,14 @@ public class GameSetup extends Activity {
     	curTeam = Team.values()[i];
     	curTeam.setName(curTeam.getDefaultName());
     	teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[i]);
-        teamSelect.assignTeam(curTeam);
+        teamSelect.setTeam(curTeam);
 
         if(GameSetup.mGameSetupPrefs.getBoolean(curTeam.getPreferenceKey(), false)) {
-        	teamSelect.setTeamLayoutActiveness(true);
+        	teamSelect.setActiveness(true);
         	mTeamList.add(curTeam);
         }
         else {
-        	teamSelect.setTeamLayoutActiveness(false);
+        	teamSelect.setActiveness(false);
         }
         teamSelect.setOnTeamEditedListener(mTeamEditedListener);
         teamSelect.setOnTeamAddedListener(mTeamAddedListener);

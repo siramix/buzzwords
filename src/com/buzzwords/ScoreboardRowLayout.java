@@ -117,7 +117,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
     mStanding.setPadding( (int)(DENSITY * 5 + 0.5f), 0, 0, 0);
     mStanding.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
     mStanding.setTextColor(this.getResources().getColor(R.color.white));
-    //mStanding.setVisibility(View.INVISIBLE);
+    mStanding.setVisibility(View.INVISIBLE);
     
     // Initialize TeamName
     mTeamText = new TextView(mContext);
@@ -175,19 +175,23 @@ public class ScoreboardRowLayout extends RelativeLayout {
    * Set the team this TeamSelectLayout is associated with
  * @param team The team this Layout represents
  */
-public void assignTeam(Team team)
+public void setTeam(Team team)
   {
 	  mTeam = team;
 	  mTeamText.setText(team.getName());
+	  mTeamText.setTextColor(this.getResources().getColor(mTeam.getSecondaryColor()));
+	  mScore.setText(Integer.toString(mTeam.getScore()));
+	  mScore.setTextColor(this.getResources().getColor(mTeam.getPrimaryColor()));
   }
 
-/*
- * Refreshes the view to reflect the most up to date data.  Call if
- * team name changes.
- */
-public void refresh()
+/**
+ * Set the team this TeamSelectLayout is associated with
+* @param standing String to display as this team's standing (1st, 2nd, etc)
+*/
+public void setStanding(String standing)
 {
-	mTeamText.setText(mTeam.getName());
+	  mStanding.setText(standing);
+	  mStanding.setVisibility(View.VISIBLE);
 }
 
 /*
@@ -201,18 +205,24 @@ public Team getTeam()
 /*
  * Set the view to display as active or inactive (bright or dim, for example)
  */
-public void setTeamLayoutActiveness(boolean active)
+public void setActiveness(boolean active)
 {
 	mIsTeamActive = active;
-	if( mIsTeamActive)
+	if( mIsTeamActive && mTeam != null)
 	{
-	    mTeamText.setBackgroundResource(mTeam.getPrimaryColor());
-	    mTeamText.setTextColor(this.getResources().getColor(mTeam.getSecondaryColor()));
+		mBackground.setBackgroundResource(mTeam.getPrimaryColor());
+		mScoreBackground.setBackgroundDrawable(getResources().getDrawable(mTeam.getGameEndPiece()));
+		// Show scores and team names
+	    mTeamText.setVisibility(View.VISIBLE);
+	    mScore.setVisibility(View.VISIBLE);
 	}
 	else
 	{
-	    mTeamText.setBackgroundResource(R.color.inactiveButton);
-	    mTeamText.setTextColor(this.getResources().getColor(R.color.genericBG));
+		mBackground.setBackgroundColor(getResources().getColor(R.color.gameend_blankrow));
+	    mScoreBackground.setBackgroundDrawable(getResources().getDrawable(
+	            R.drawable.gameend_row_end_blank));
+	    mTeamText.setVisibility(View.INVISIBLE);
+	    mScore.setVisibility(View.INVISIBLE);
 	}
 }
 }
