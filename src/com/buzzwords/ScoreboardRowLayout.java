@@ -82,7 +82,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
     super(context, attrs, defStyle);
     mContext = context;
   }
-
+  
   @Override
   public void onFinishInflate()
   {
@@ -92,6 +92,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
     
     // Store off density in order to convert to pixels
     final float DENSITY = this.getResources().getDisplayMetrics().density;
+
     // Create the views
 
     // Initialize the group for the frame
@@ -111,22 +112,24 @@ public class ScoreboardRowLayout extends RelativeLayout {
     mContents.setOrientation(LinearLayout.HORIZONTAL);
     
     // Initialize team standing (1st, 2nd, 3rd, etc.) -- initially invisible
-    mStanding = new TextView(mContext);
+	mStanding = new TextView(mContext);
+	mStanding.setIncludeFontPadding(false);
     mStanding.setLayoutParams(new LayoutParams( (int)(DENSITY * 50 + 0.5f), LayoutParams.FILL_PARENT));
     mStanding.setText("0th");
+	mStanding.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     mStanding.setPadding( (int)(DENSITY * 5 + 0.5f), 0, 0, 0);
     mStanding.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
     mStanding.setTextColor(this.getResources().getColor(R.color.white));
     mStanding.setVisibility(View.INVISIBLE);
-    
+
     // Initialize TeamName
     mTeamText = new TextView(mContext);
     mTeamText.setText("No team assigned");
+    mTeamText.setIncludeFontPadding(false);
     LinearLayout.LayoutParams teamTextParams = new LinearLayout.LayoutParams( LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
     teamTextParams.weight = 1.0f;
     mTeamText.setLayoutParams(teamTextParams);
     mTeamText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-    mTeamText.setIncludeFontPadding(false);
     mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
     
     // Initialize Scoregroup
@@ -139,18 +142,24 @@ public class ScoreboardRowLayout extends RelativeLayout {
             R.drawable.gameend_row_end_blank));
     
     // Initialize Score view
-    mScore = new TextView(mContext);
+	mScore = new TextView(mContext);
     mScore.setText("0");
     mScore.setIncludeFontPadding(false);
-    //mScore.setLayoutParams(new LayoutParams( mEndTrim.getWidth(), mEndTrim.getHeight()));
-    mScore.setLayoutParams(new LayoutParams( (int)(DENSITY * 90 + 0.5f), (int)(DENSITY * 30 + 0.5f)));
-    mScore.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+    //mScore.setLayoutParams(new LayoutParams( mScoreBackground.getWidth(), mScoreBackground.getHeight()));
+    //HACK: Should not set size of this widget to size of background manually
+    LinearLayout.LayoutParams scoreParams = new LinearLayout.LayoutParams( (int)(DENSITY * 90 + 0.5f), (int)(DENSITY * 30 + 0.5f));
+    mScore.setLayoutParams(scoreParams);
     mScore.setPadding( 0, 0, (int)(DENSITY * 5 + 0.5f), 0);
+    mScore.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
     mScore.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-    /*
-    Typeface antonFont = Typeface.createFromAsset(mContext.getAssets(),
-            "fonts/Anton.ttf");
-    mScore.setTypeface(antonFont);
+    // Set font - Wrap in isInEditMode so as not to break previewer
+    /* This creates tons of padding / centering issues.... gotta figure this out later
+    if(!this.isInEditMode())
+	{     
+    	Typeface antonFont = Typeface.createFromAsset(mContext.getAssets(),
+    			"fonts/Anton.ttf");
+    	mScore.setTypeface(antonFont);
+	}
     */
     
     // Add background image and score to ScoreGroup
@@ -169,6 +178,8 @@ public class ScoreboardRowLayout extends RelativeLayout {
     
     // Add groups to TeamSelectLayout
     this.addView(mFrame);
+	
+
   }
 
   /**
