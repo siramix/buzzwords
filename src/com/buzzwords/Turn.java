@@ -802,6 +802,11 @@ public class Turn extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onTurnEnd()");
     }
+    BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
+            .getApplication();
+    GameManager gm = application.getGameManager();
+    gm.addTurnScore();
+    
     startActivity(new Intent(getString(R.string.IntentTurnSummary), getIntent()
         .getData()));
   }
@@ -1042,6 +1047,8 @@ public class Turn extends Activity {
               BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
                   .getApplication();
               GameManager gm = application.getGameManager();
+              // Add whatever score they've gotten in this turn
+              gm.addTurnScore();
               gm.endGame();
               startActivity(new Intent(getString(R.string.IntentEndGame),
                   getIntent().getData()));
@@ -1065,7 +1072,7 @@ public class Turn extends Activity {
 
       String curTeam = mGameManager.getActiveTeam().getName();
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("Ready " + curTeam + " Team?").setCancelable(false)
+      builder.setMessage("Ready " + curTeam + "?").setCancelable(false)
           .setPositiveButton("START!", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {

@@ -33,14 +33,6 @@
             android:background="@color/genericBG_trimDark"
             />
             
-        <View android:id="@+id/GameEnd_HeaderBreak"
-            android:layout_width="fill_parent"
-            android:background="#555555"
-            android:layout_marginTop="1dp"
-            android:layout_height="2dp"
-            android:layout_below="@id/GameEnd_HeaderBG"
-            />
-            
         <TextView android:id="@+id/GameEnd_Title"
             android:layout_height="wrap_content"
             android:textColor="@color/title"
@@ -73,21 +65,12 @@
         android:layout_width="wrap_content"
         android:orientation="vertical"
         android:layout_below="@id/GameEnd_HeaderGroup"
-        android:layout_marginTop="2dp"
-        android:background="@color/genericBG_trimDark" android:layout_height="wrap_content">
+        android:layout_height="wrap_content" android:background="@color/black" android:paddingTop="1dp" android:paddingBottom="1dp">
         
         <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_1" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
         <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_2" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
         <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_3" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
         <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_4" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
-        
-        <View android:id="@+id/GameEnd_HeaderBreak"
-            android:layout_width="fill_parent"
-            android:background="#555555"
-            android:layout_height="2dp"
-            android:layout_below="@id/GameEnd_HeaderBG"
-            android:layout_marginTop="2dp"
-            />
 
     </LinearLayout>
     

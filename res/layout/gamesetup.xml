@@ -55,7 +55,7 @@
 		android:paddingTop="10dp">
 		<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GameSetup_SubHeader_Turns">
 			<View android:layout_centerHorizontal="true" android:layout_width="fill_parent" android:layout_centerVertical="true" android:background="@color/genericBG_trim" android:layout_height="4dp" android:id="@+id/GameSetup_SubHeader_Turns_Bar"></View>
-			<TextView android:textColor="@color/white" android:layout_width="wrap_content" android:gravity="center" android:layout_centerVertical="true" android:textSize="24dp" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:id="@+id/GameSetup_SubHeader_Turns_Title" android:text="Lives"></TextView>
+			<TextView android:textColor="@color/white" android:layout_width="wrap_content" android:gravity="center" android:layout_centerVertical="true" android:textSize="24dp" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:id="@+id/GameSetup_SubHeader_Turns_Title" android:text="Turns"></TextView>
 		</RelativeLayout>
 		
 		<!--  Round selection -->

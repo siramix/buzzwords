@@ -362,7 +362,6 @@ public class GameEnd extends Activity {
 
     final String[] RANKS = new String[] { "1st", "2nd", "3rd", "4th" };
 
-    
     ScoreboardRowLayout row;
     // Setup score displays. Iterate through all team groups, setting scores for
     // teams that played
@@ -374,11 +373,7 @@ public class GameEnd extends Activity {
     	row.setActiveness(false);
       } else {
     	// Show teams that played, and set their rank
-          if (BuzzWordsApplication.DEBUG) {
-              Log.d(TAG, "SetTeam: " + teams.get(i).getName());
-            }
         row.setTeam(teams.get(i));
-
     	row.setActiveness(true);
     	row.setStanding(RANKS[rankings[i]]);
       }
