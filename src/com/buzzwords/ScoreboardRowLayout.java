@@ -111,7 +111,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
     mContents = new LinearLayout(mContext);
     mContents.setOrientation(LinearLayout.HORIZONTAL);
     
-    // Initialize team standing (1st, 2nd, 3rd, etc.) -- initially invisible
+    // Initialize team standing (1st, 2nd, 3rd, etc.) -- initially gone
 	mStanding = new TextView(mContext);
 	mStanding.setIncludeFontPadding(false);
     mStanding.setLayoutParams(new LayoutParams( (int)(DENSITY * 50 + 0.5f), LayoutParams.FILL_PARENT));
@@ -120,7 +120,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
     mStanding.setPadding( (int)(DENSITY * 5 + 0.5f), 0, 0, 0);
     mStanding.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
     mStanding.setTextColor(this.getResources().getColor(R.color.white));
-    mStanding.setVisibility(View.INVISIBLE);
+    mStanding.setVisibility(View.GONE);
 
     // Initialize TeamName
     mTeamText = new TextView(mContext);
@@ -129,6 +129,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
     LinearLayout.LayoutParams teamTextParams = new LinearLayout.LayoutParams( LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
     teamTextParams.weight = 1.0f;
     mTeamText.setLayoutParams(teamTextParams);
+    mTeamText.setPadding( (int)(DENSITY * 10 + 0.5f), 0, 0, 0);
     mTeamText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
     
