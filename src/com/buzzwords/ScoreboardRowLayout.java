@@ -18,14 +18,12 @@
 package com.buzzwords;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.RelativeLayout;
@@ -47,8 +45,6 @@ public class ScoreboardRowLayout extends RelativeLayout {
   private TextView mTeamText;
   
   private TextView mScore;
-  
-  private final int INITIAL_TEXTSIZE = 24;
   
   // Track if this team select is active or inactive
   private boolean mIsTeamActive;
@@ -96,7 +92,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
 
     // Initialize the group for the frame
     mFrame = new FrameLayout(mContext);
-    mFrame.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+    mFrame.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
     int padding = (int) (DENSITY * 1 + 0.5f);
     mFrame.setPadding(0, padding, 0, padding);
     mFrame.setBackgroundColor(R.color.black);
@@ -113,25 +109,27 @@ public class ScoreboardRowLayout extends RelativeLayout {
     // Initialize team standing (1st, 2nd, 3rd, etc.) -- initially gone
 	mStanding = new TextView(mContext);
 	mStanding.setIncludeFontPadding(false);
-    mStanding.setLayoutParams(new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
+    mStanding.setLayoutParams(new LayoutParams( (int)(DENSITY * 50 + 0.5f), LayoutParams.FILL_PARENT));
     mStanding.setText("0th");
 	mStanding.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     mStanding.setPadding( (int)(DENSITY * 5 + 0.5f), 0, 0, 0);
     mStanding.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
     mStanding.setTextColor(this.getResources().getColor(R.color.white));
-    mStanding.setVisibility(View.VISIBLE);
+    mStanding.setVisibility(View.GONE);
 
     // Initialize TeamName
     mTeamText = new TextView(mContext);
 
-    mTeamText.setText("Null Team");
+    mTeamText.setText("Null Teambalamoramofamo");
     mTeamText.setIncludeFontPadding(false);
     LinearLayout.LayoutParams teamTextParams = new LinearLayout.LayoutParams( LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
     teamTextParams.weight = 1.0f;
     mTeamText.setLayoutParams(teamTextParams);
     mTeamText.setPadding( (int)(DENSITY * 10 + 0.5f), 0, 0, 0);
     mTeamText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-    mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, INITIAL_TEXTSIZE);
+    mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+    mTeamText.setEllipsize(TruncateAt.END);
+    mTeamText.setHorizontallyScrolling(true);
     
     // Initialize Score view
 	mScore = new TextView(mContext);
@@ -166,13 +164,6 @@ public class ScoreboardRowLayout extends RelativeLayout {
     // Add groups to TeamSelectLayout
     this.addView(mFrame);
   }
-  
-	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		super.onLayout(changed, l, t, r, b);
-		
-	}
-
 
 	  /**
 	   * Set the team this TeamSelectLayout is associated with
@@ -185,24 +176,6 @@ public class ScoreboardRowLayout extends RelativeLayout {
 		mTeamText.setTextColor(this.getResources().getColor(mTeam.getSecondaryColor()));
 		mScore.setText(Integer.toString(mTeam.getScore()));
 		mScore.setTextColor(this.getResources().getColor(mTeam.getPrimaryColor()));
-
-		//resizeText();
-	}
-	
-	/*
-	 * Resizing the team's text to fit in the view
-	 */
-	private void resizeText()
-	{
-		/*
-		// Scale the text to fit the view
-		final int TEXTVIEW_WIDTH = (int) ( (INITIAL_TEXTWIDTH - mTeamText.getPaddingLeft())* this.getResources().getDisplayMetrics().density +0.5f);
-		int size = INITIAL_TEXTSIZE;
-		while( mTeamText.getPaint().measureText(mTeam.getName()) > TEXTVIEW_WIDTH )
-		{
-			mTeamText.setTextSize( --size );
-		}
-		*/
 	}
 
 	/**

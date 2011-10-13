@@ -91,7 +91,7 @@ public class GameEnd extends Activity {
     AlphaAnimation fadeInGameOver = new AlphaAnimation(0.0f, 1.0f);
     fadeInGameOver.setStartOffset(500);
     fadeInGameOver.setDuration(0);
-    AlphaAnimation fadeOutGameOver = new AlphaAnimation(1.0f, 0.25f);
+    AlphaAnimation fadeOutGameOver = new AlphaAnimation(1.0f, 0.75f);
     fadeOutGameOver.setStartOffset(500);
     fadeOutGameOver.setDuration(1000);
 
@@ -101,9 +101,9 @@ public class GameEnd extends Activity {
     animGameOver.setFillAfter(true);
     animGameOver.setAnimationListener(mGameOverListener);
 
-    RelativeLayout gameOverGroup = (RelativeLayout) this
-        .findViewById(R.id.GameEnd_GameOverGroup);
-    gameOverGroup.startAnimation(animGameOver);
+    View winnerGroup = (View) this
+        .findViewById(R.id.GameEnd_WinnerGroup);
+    winnerGroup.startAnimation(animGameOver);
 
     // Slide in header as GameOver comes to a stop
     TranslateAnimation transHeader = new TranslateAnimation(
@@ -192,17 +192,6 @@ public class GameEnd extends Activity {
     RelativeLayout panel1 = (RelativeLayout) this
         .findViewById(R.id.GameEnd_Scores_1);
     panel1.startAnimation(transPanel1);
-
-    // Show winner only at end
-    AlphaAnimation fadeInWinner = new AlphaAnimation(0.0f, 1.0f);
-    offset = transPanel1.getStartOffset() + transPanel1.getDuration();
-    fadeInWinner.setStartOffset(offset);
-    fadeInWinner.setDuration(200);
-    fadeInWinner.setFillBefore(true);
-
-    TextView winner = (TextView) this.findViewById(R.id.GameEnd_WinnerText);
-    winner.startAnimation(fadeInWinner);
-
   }
 
   /**
@@ -387,7 +376,7 @@ public class GameEnd extends Activity {
     } else {
       // Set text to Team X Wins!
       text.setTextColor(mResources.getColor(teams.get(0).getPrimaryColor()));
-      text.setText(teams.get(0).getName() + " Wins!");
+      text.setText(teams.get(0).getName() + "!");
     }
     
     // set font
@@ -395,11 +384,11 @@ public class GameEnd extends Activity {
         "fonts/Anton.ttf");
 
     // Set font on GameOver text
-    text = (TextView) findViewById(R.id.GameEnd_GameOver_Game);
+    text = (TextView) findViewById(R.id.GameEnd_WinnerText);
     text.setTypeface(antonFont);
-    text = (TextView) findViewById(R.id.GameEnd_GameOver_Over);
+    text = (TextView) findViewById(R.id.GameEnd_Winner);
     text.setTypeface(antonFont);
-
+    
     // Set onclick listeners for game end buttons
     Button mainMenuButton = (Button) this.findViewById(R.id.GameEnd_MainMenu);
     Button rematchButton = (Button) this.findViewById(R.id.GameEnd_Rematch);

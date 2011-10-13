@@ -47,9 +47,13 @@ public class TeamSelectLayout extends RelativeLayout {
    */
   private LinearLayout mButtons;
   private FrameLayout mFrame;
+  private View mFrameForeground;
   private TextView mTeamText;
   private View mButtonAddTeam;
   private ImageButton mButtonEditTeamName;
+  
+  private final int INITIAL_TEXTSIZE = 32;
+  private final int INITIAL_TEXTWIDTH = 270;
   
   // Track if this team select is active or inactive
   private boolean mIsTeamActive;
@@ -106,17 +110,24 @@ public class TeamSelectLayout extends RelativeLayout {
     mFrame.setPadding(0, padding, 0, padding);
     mFrame.setBackgroundColor(R.color.black);
     
-    // Initialize EditText foreground in frame
+    // Initialize foreground in frame
+
+    mFrameForeground = new View(mContext);
+    mFrameForeground.setBackgroundColor(this.getResources().getColor(R.color.genericBG));
+    mFrameForeground.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+    
+    // Initialize view for team name
     mTeamText = new TextView(mContext);
     mTeamText.setText("No team assigned");
-    mTeamText.setBackgroundColor(this.getResources().getColor(R.color.genericBG));
-    mTeamText.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+    mTeamText.setLayoutParams(new LayoutParams((int)(DENSITY * INITIAL_TEXTWIDTH + 0.5f), LayoutParams.FILL_PARENT));
     mTeamText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     mTeamText.setIncludeFontPadding(false);
     mTeamText.setPadding( (int)(DENSITY * 15 + 0.5f), 0, 0, 0);
-    mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 32);
+    mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, INITIAL_TEXTSIZE);
 
     // Add the views to frame
+    
+    mFrame.addView(mFrameForeground);
     mFrame.addView(mTeamText);
     
     // Initialize the group for the buttons
@@ -156,7 +167,7 @@ public class TeamSelectLayout extends RelativeLayout {
 public void setTeam(Team team)
   {
 	  mTeam = team;
-	  mTeamText.setText(team.getName());
+	  refresh();
   }
 
 /*
@@ -166,6 +177,16 @@ public void setTeam(Team team)
 public void refresh()
 {
 	mTeamText.setText(mTeam.getName());
+	
+	// Scale the text to fit the view
+    final int TEXTVIEW_WIDTH = (int) ((INITIAL_TEXTWIDTH - mTeamText.getPaddingLeft()) * this.getResources().getDisplayMetrics().density + 0.5f);
+    int size = INITIAL_TEXTSIZE;
+    mTeamText.setTextSize( size );
+    while( mTeamText.getPaint().measureText(mTeam.getName()) > TEXTVIEW_WIDTH )
+    {
+    	mTeamText.setTextSize( --size );
+    }
+    
 }
 
 /*
@@ -204,7 +225,7 @@ public void setActiveness(boolean active)
 	mIsTeamActive = active;
 	if( mIsTeamActive)
 	{
-	    mTeamText.setBackgroundResource(mTeam.getPrimaryColor());
+	    mFrameForeground.setBackgroundResource(mTeam.getPrimaryColor());
 	    mTeamText.setTextColor(this.getResources().getColor(mTeam.getSecondaryColor()));
 
 	    // Enable edit team name button
@@ -212,9 +233,8 @@ public void setActiveness(boolean active)
 	}
 	else
 	{
-	    mTeamText.setBackgroundResource(R.color.inactiveButton);
+		mFrameForeground.setBackgroundResource(R.color.inactiveButton);
 	    mTeamText.setTextColor(this.getResources().getColor(R.color.genericBG));
-	
 	    // Disable edit team name button
 	    mButtonEditTeamName.setVisibility(View.GONE);
 	}

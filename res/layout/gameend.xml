@@ -73,54 +73,9 @@
         <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_4" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
 
     </LinearLayout>
-    
-    <TextView android:id="@+id/GameEnd_WinnerText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/GameEnd_FinalStandings"
-        android:layout_centerHorizontal="true"
-        android:text="Green Wins!"
-        android:textSize="40dp"
-        android:textColor="@color/teamB_primary"
-        />
-
-    <RelativeLayout android:id="@+id/GameEnd_GameOverGroup"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/GameEnd_WinnerText"
-        android:layout_centerInParent="true"
-        android:layout_width="225dp">
-        
-        <TextView android:id="@+id/GameEnd_GameOver_Game"
-            android:layout_height="wrap_content"
-            android:text="Game"
-            android:textSize="80dp"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:layout_width="fill_parent"
-            android:textColor="#FFFFFF"
-            />
-            
-        <View android:id="@+id/GameEnd_GameOver_Break"
-            android:layout_height="10dp"
-            android:layout_alignTop="@id/GameEnd_GameOver_Game"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="103dp"
-            android:layout_width="160dp"
-            android:background="#FFFFFF"
-            />
-            
-        <TextView android:id="@+id/GameEnd_GameOver_Over"
-            android:layout_height="wrap_content"
-            android:text="Over!"
-            android:textSize="80dp"
-            android:layout_centerHorizontal="true"
-            android:layout_alignTop="@id/GameEnd_GameOver_Game"
-            android:layout_marginTop="90dp"
-            android:gravity="center"
-            android:layout_width="fill_parent"
-            android:textColor="#FFFFFF"
-            />
-            
-    </RelativeLayout>
+    <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_below="@id/GameEnd_FinalStandings" android:id="@+id/GameEnd_WinnerGroup">
+        <TextView android:layout_width="wrap_content" android:text="Winner:" android:id="@+id/GameEnd_Winner" android:layout_height="wrap_content" android:textSize="32dp" android:layout_gravity="center"></TextView>
+        <TextView android:layout_width="fill_parent" android:text="Green Wins!" android:id="@+id/GameEnd_WinnerText" android:layout_height="200dp" android:gravity="center_horizontal" android:textSize="50dp" android:textColor="@color/teamB_primary"></TextView>
+    </LinearLayout>
     
 </RelativeLayout>
