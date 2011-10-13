@@ -19,6 +19,7 @@ package com.buzzwords;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -45,11 +46,9 @@ public class ScoreboardRowLayout extends RelativeLayout {
   private TextView mStanding;
   private TextView mTeamText;
   
-  private RelativeLayout mScoreGroup;
-  private ImageView mScoreBackground;
   private TextView mScore;
   
-  
+  private final int INITIAL_TEXTSIZE = 24;
   
   // Track if this team select is active or inactive
   private boolean mIsTeamActive;
@@ -114,42 +113,33 @@ public class ScoreboardRowLayout extends RelativeLayout {
     // Initialize team standing (1st, 2nd, 3rd, etc.) -- initially gone
 	mStanding = new TextView(mContext);
 	mStanding.setIncludeFontPadding(false);
-    mStanding.setLayoutParams(new LayoutParams( (int)(DENSITY * 50 + 0.5f), LayoutParams.FILL_PARENT));
+    mStanding.setLayoutParams(new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
     mStanding.setText("0th");
 	mStanding.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     mStanding.setPadding( (int)(DENSITY * 5 + 0.5f), 0, 0, 0);
     mStanding.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
     mStanding.setTextColor(this.getResources().getColor(R.color.white));
-    mStanding.setVisibility(View.GONE);
+    mStanding.setVisibility(View.VISIBLE);
 
     // Initialize TeamName
     mTeamText = new TextView(mContext);
-    mTeamText.setText("No team assigned");
+
+    mTeamText.setText("Null Team");
     mTeamText.setIncludeFontPadding(false);
     LinearLayout.LayoutParams teamTextParams = new LinearLayout.LayoutParams( LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
     teamTextParams.weight = 1.0f;
     mTeamText.setLayoutParams(teamTextParams);
     mTeamText.setPadding( (int)(DENSITY * 10 + 0.5f), 0, 0, 0);
     mTeamText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-    mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-    
-    // Initialize Scoregroup
-    mScoreGroup = new RelativeLayout(mContext);
-    mScoreGroup.setLayoutParams(new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-    
-    // Initialize Score background element
-    mScoreBackground = new ImageView(mContext);
-    mScoreBackground.setBackgroundDrawable(getResources().getDrawable(
-            R.drawable.gameend_row_end_blank));
+    mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, INITIAL_TEXTSIZE);
     
     // Initialize Score view
 	mScore = new TextView(mContext);
+	mScore.setBackgroundDrawable(getResources().getDrawable(
+            R.drawable.gameend_row_end_blank));
+    mScore.setLayoutParams(new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT));
     mScore.setText("0");
     mScore.setIncludeFontPadding(false);
-    //mScore.setLayoutParams(new LayoutParams( mScoreBackground.getWidth(), mScoreBackground.getHeight()));
-    //HACK: Should not set size of this widget to size of background manually
-    LinearLayout.LayoutParams scoreParams = new LinearLayout.LayoutParams( (int)(DENSITY * 90 + 0.5f), (int)(DENSITY * 30 + 0.5f));
-    mScore.setLayoutParams(scoreParams);
     mScore.setPadding( 0, 0, (int)(DENSITY * 5 + 0.5f), 0);
     mScore.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
     mScore.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
@@ -163,15 +153,11 @@ public class ScoreboardRowLayout extends RelativeLayout {
 	}
     */
     
-    // Add background image and score to ScoreGroup
-    mScoreGroup.addView(mScoreBackground);
-    mScoreGroup.addView(mScore);
-    
 
     // Add views to the contents layout
     mContents.addView(mStanding);
     mContents.addView(mTeamText);
-    mContents.addView(mScoreGroup);
+    mContents.addView(mScore);
     
     // Add the views to frame
     mFrame.addView(mBackground);
@@ -179,62 +165,85 @@ public class ScoreboardRowLayout extends RelativeLayout {
     
     // Add groups to TeamSelectLayout
     this.addView(mFrame);
+  }
+  
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+		
+	}
+
+
+	  /**
+	   * Set the team this TeamSelectLayout is associated with
+	 * @param team The team this Layout represents
+	 */
+	public void setTeam(Team team)
+	{
+		mTeam = team;
+		mTeamText.setText(team.getName());
+		mTeamText.setTextColor(this.getResources().getColor(mTeam.getSecondaryColor()));
+		mScore.setText(Integer.toString(mTeam.getScore()));
+		mScore.setTextColor(this.getResources().getColor(mTeam.getPrimaryColor()));
+
+		//resizeText();
+	}
 	
-
-  }
-
-  /**
-   * Set the team this TeamSelectLayout is associated with
- * @param team The team this Layout represents
- */
-public void setTeam(Team team)
-  {
-	  mTeam = team;
-	  mTeamText.setText(team.getName());
-	  mTeamText.setTextColor(this.getResources().getColor(mTeam.getSecondaryColor()));
-	  mScore.setText(Integer.toString(mTeam.getScore()));
-	  mScore.setTextColor(this.getResources().getColor(mTeam.getPrimaryColor()));
-  }
-
-/**
- * Set the team this TeamSelectLayout is associated with
-* @param standing String to display as this team's standing (1st, 2nd, etc)
-*/
-public void setStanding(String standing)
-{
-	  mStanding.setText(standing);
-	  mStanding.setVisibility(View.VISIBLE);
-}
-
-/*
- * Get the team assigned to this TeamSelectLayout
- */
-public Team getTeam()
-{
-	  return mTeam;
-}
-
-/*
- * Set the view to display as active or inactive (bright or dim, for example)
- */
-public void setActiveness(boolean active)
-{
-	mIsTeamActive = active;
-	if( mIsTeamActive && mTeam != null)
+	/*
+	 * Resizing the team's text to fit in the view
+	 */
+	private void resizeText()
 	{
-		mBackground.setBackgroundResource(mTeam.getPrimaryColor());
-		mScoreBackground.setBackgroundDrawable(getResources().getDrawable(mTeam.getGameEndPiece()));
-		// Show scores and team names
-	    mTeamText.setVisibility(View.VISIBLE);
-	    mScore.setVisibility(View.VISIBLE);
+		/*
+		// Scale the text to fit the view
+		final int TEXTVIEW_WIDTH = (int) ( (INITIAL_TEXTWIDTH - mTeamText.getPaddingLeft())* this.getResources().getDisplayMetrics().density +0.5f);
+		int size = INITIAL_TEXTSIZE;
+		while( mTeamText.getPaint().measureText(mTeam.getName()) > TEXTVIEW_WIDTH )
+		{
+			mTeamText.setTextSize( --size );
+		}
+		*/
 	}
-	else
+
+	/**
+	 * Set the team this TeamSelectLayout is associated with
+	* @param standing String to display as this team's standing (1st, 2nd, etc)
+	*/
+	public void setStanding(String standing)
 	{
-		mBackground.setBackgroundColor(getResources().getColor(R.color.gameend_blankrow));
-	    mScoreBackground.setBackgroundDrawable(getResources().getDrawable(
-	            R.drawable.gameend_row_end_blank));
-	    mTeamText.setVisibility(View.INVISIBLE);
-	    mScore.setVisibility(View.INVISIBLE);
+		  mStanding.setText(standing);
+		  mStanding.setVisibility(View.VISIBLE);
 	}
-}
+	
+	/*
+	 * Get the team assigned to this TeamSelectLayout
+	 */
+	public Team getTeam()
+	{
+		  return mTeam;
+	}
+
+	/*
+	 * Set the view to display as active or inactive (bright or dim, for example)
+	 */
+	public void setActiveness(boolean active)
+	{
+		mIsTeamActive = active;
+		if( mIsTeamActive && mTeam != null)
+		{
+			mBackground.setBackgroundResource(mTeam.getPrimaryColor());
+			mScore.setBackgroundDrawable(getResources().getDrawable(mTeam.getGameEndPiece()));
+			// Show scores and team names
+		    mTeamText.setVisibility(View.VISIBLE);
+		    mScore.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			mBackground.setBackgroundColor(getResources().getColor(R.color.gameend_blankrow));
+		    mScore.setBackgroundDrawable(getResources().getDrawable(
+		            R.drawable.gameend_row_end_blank));
+		    mTeamText.setVisibility(View.INVISIBLE);
+		    mScore.setVisibility(View.INVISIBLE);
+		}
+	}
 }
