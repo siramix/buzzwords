@@ -75,7 +75,7 @@
     </LinearLayout>
     <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_below="@id/GameEnd_FinalStandings" android:id="@+id/GameEnd_WinnerGroup">
         <TextView android:layout_width="wrap_content" android:text="Winner:" android:id="@+id/GameEnd_Winner" android:layout_height="wrap_content" android:textSize="32dp" android:layout_gravity="center"></TextView>
-        <TextView android:layout_width="fill_parent" android:text="Green Wins!" android:id="@+id/GameEnd_WinnerText" android:layout_height="200dp" android:gravity="center_horizontal" android:textSize="50dp" android:textColor="@color/teamB_primary"></TextView>
+        <TextView android:layout_width="fill_parent" android:text="Green Wins!" android:id="@+id/GameEnd_WinnerText" android:gravity="center_horizontal" android:textSize="50dp" android:textColor="@color/teamB_primary" android:layout_height="225dp"></TextView>
     </LinearLayout>
     
 </RelativeLayout>
