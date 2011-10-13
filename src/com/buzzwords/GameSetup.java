@@ -414,9 +414,9 @@ public class GameSetup extends Activity {
     switch (id) {
     case DIALOG_TEAMERROR:
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("You must have at least two teams to start the game.")
-          .setCancelable(false).setTitle("Need more teams!")
-          .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+      builder.setMessage(getString(R.string.gameSetup_NeedTwo))
+          .setCancelable(false).setTitle(getString(R.string.gameSetup_NeedTeams))
+          .setPositiveButton(getString(R.string.global_Okay), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               dialog.cancel();
             }

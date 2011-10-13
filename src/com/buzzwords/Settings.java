@@ -21,6 +21,7 @@ import com.buzzwords.R;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -103,11 +104,11 @@ public class Settings extends PreferenceActivity {
     // Update the version preference caption to the existing app version
     Preference version = findPreference("app_version");
     try {
+      PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(),0);
+      String versionName = packageInfo.versionName; 
+      String versionSummary = getString(R.string.settings_Version, versionName);
       version.setTitle(this.getString(R.string.AppName));
-      version
-          .setSummary(" Version "
-              + this.getPackageManager().getPackageInfo(this.getPackageName(),
-                  0).versionName);
+      version.setSummary(versionSummary);
     } catch (NameNotFoundException e) {
       e.printStackTrace();
       Log.e(TAG, e.getMessage());
@@ -120,7 +121,8 @@ public class Settings extends PreferenceActivity {
   private void updateTimerLabel() {
     // When turn timer is loaded, update the caption
     ListPreference lp = (ListPreference) findPreference("turn_timer");
-    lp.setSummary(lp.getValue() + " seconds");
+    String timerValue = getString(R.string.settings_TimerValue, lp.getValue());
+    lp.setSummary(timerValue);
   }
 
   /**

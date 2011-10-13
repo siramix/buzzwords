@@ -390,7 +390,10 @@ public class GameEnd extends Activity {
         R.id.GameEnd_Scores_2_end, R.id.GameEnd_Scores_3_end,
         R.id.GameEnd_Scores_4_end };
 
-    final String[] RANKS = new String[] { "1st", "2nd", "3rd", "4th" };
+    // Strings for ranks
+    final String[] RANKS = new String[] { getString(R.string.gameEnd_1st),
+        getString(R.string.gameEnd_1st), getString(R.string.gameEnd_1st),
+        getString(R.string.gameEnd_1st) };
 
     // Setup score displays. Iterate through all team groups, setting scores for
     // teams that played
@@ -441,11 +444,12 @@ public class GameEnd extends Activity {
     if (tieGame) {
       // Set text to Tie game!
       text.setTextColor(mResources.getColor(R.color.white));
-      text.setText("Tie Game!");
+      text.setText(getString(R.string.gameEnd_Tie));
     } else {
       // Set text to Team X Wins!
       text.setTextColor(mResources.getColor(teams.get(0).getPrimaryColor()));
-      text.setText(teams.get(0).getName() + " Wins!");
+      String winText = getString(R.string.gameEnd_Winner,teams.get(0).getName());
+      text.setText(winText);
     }
     // set font
     Typeface antonFont = Typeface.createFromAsset(getAssets(),

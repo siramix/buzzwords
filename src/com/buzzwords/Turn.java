@@ -1041,8 +1041,8 @@ public class Turn extends Activity {
     switch (id) {
     case DIALOG_GAMEOVER_ID:
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("Are you sure you want to end the current game?")
-          .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+      builder.setMessage(getString(R.string.turn_EndVerify))
+          .setPositiveButton(getString(R.string.global_Yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound              
               mSoundManager.playSound(SoundManager.Sound.CONFIRM);
@@ -1054,7 +1054,7 @@ public class Turn extends Activity {
               startActivity(new Intent(getString(R.string.IntentEndGame),
                   getIntent().getData()));
             }
-          }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+          }).setNegativeButton(getString(R.string.global_No), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {             
               // Play confirmation sound              
               mSoundManager.playSound(SoundManager.Sound.CONFIRM);
@@ -1069,9 +1069,10 @@ public class Turn extends Activity {
       mSoundManager.playSound(SoundManager.Sound.TEAMREADY);
 
       String curTeam = mGameManager.getActiveTeam().getName();
+      String readyPrompt = getString(R.string.turn_TeamReady, curTeam);
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("Ready " + curTeam + " Team?").setCancelable(false)
-          .setPositiveButton("START!", new DialogInterface.OnClickListener() {
+      builder.setMessage(readyPrompt).setCancelable(false)
+          .setPositiveButton(getString(R.string.turn_Start), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
               dialog.dismiss();

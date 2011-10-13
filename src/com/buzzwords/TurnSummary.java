@@ -182,9 +182,10 @@ public class TurnSummary extends Activity {
     updateScoreViews();
 
     // Update numRounds
+    String roundFraction = game.getCurrentRound() + "/" + game.getNumRounds();
+    String roundText = getString(R.string.turnsummary_RoundText, roundFraction);
     TextView rounds = (TextView) this.findViewById(R.id.TurnSummary_Rounds);
-    rounds.setText("Round: " + game.getCurrentRound() + "/"
-        + game.getNumRounds());
+    rounds.setText(roundText);
 
     // Update Turn Order display
     updateTurnOrderDisplay();
@@ -197,9 +198,9 @@ public class TurnSummary extends Activity {
     // Handle activity changes for final turn
     if (game.getNumberOfTurnsRemaining() == 0) {
       // Change "Next Team" button
-      playGameButton.setText("Game Results");
+      playGameButton.setText(getString(R.string.turnsummary_GameResults));
       // Change round display
-      rounds.setText("Game Over");
+      rounds.setText(getString(R.string.turnsummary_GameOver));
       // Hide scoreboard for suspense
       RelativeLayout scores = (RelativeLayout) this
           .findViewById(R.id.TurnSummary_ScoreGroup);
@@ -215,8 +216,8 @@ public class TurnSummary extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreateOptionsMenu()");
     }
-    menu.add(0, R.string.menu_EndGame, 0, "End Game");
-    menu.add(0, R.string.menu_Rules, 0, "Rules");
+    menu.add(0, R.string.menu_EndGame, 0, getString(R.string.turnsummary_EndGame));
+    menu.add(0, R.string.menu_Rules, 0, getString(R.string.turnsummary_Rules));
 
     return true;
   }
@@ -263,8 +264,8 @@ public class TurnSummary extends Activity {
     switch (id) {
     case DIALOG_GAMEOVER_ID:
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("Are you sure you want to end the current game?")
-          .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+      builder.setMessage(getString(R.string.turn_EndVerify))
+          .setPositiveButton(getString(R.string.global_Yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound              
               mSoundManager.playSound(SoundManager.Sound.CONFIRM);              
@@ -275,7 +276,7 @@ public class TurnSummary extends Activity {
               startActivity(new Intent(getString(R.string.IntentEndGame),
                   getIntent().getData()));
             }
-          }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+          }).setNegativeButton(getString(R.string.global_No), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound              
               mSoundManager.playSound(SoundManager.Sound.CONFIRM);

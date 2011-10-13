@@ -20,22 +20,51 @@
   <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
   <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
 
+  <!-- Global Strings -->
+  <string name="global_Okay">Okay!</string>
+  <string name="global_Yes">Yes</string>
+  <string name="global_No">No</string>
+  <string name="global_TeamDefaultA">Blue</string>
+  <string name="global_TeamDefaultB">Green</string>
+  <string name="global_TeamDefaultC">Red</string>
+  <string name="global_TeamDefaultD">Yellow</string>
+
   <!-- Menu Designations -->
   <string name="menu_EndGame">MENU_ENDGAME</string>
   <string name="menu_Rules">MENU_RULES</string>
-
-  <!-- Team names -->
-  <string name="teamnameA">Blue</string>
-  <string name="teamnameB">Green</string>
-  <string name="teamnameC">Red</string>
-  <string name="teamnameD">Yellow</string>
-
+  
   <!-- Bundle Keys -->
   <string name="cardBundleKey">com.buzzwords.card</string>
   <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
   <string name="cardStateBundleKey">com.buzzwords.cardState</string>
-  <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
-  <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
+
+  <!-- For GameEnd Activity -->
+  <string name="gameEnd_1st">1st</string>
+  <string name="gameEnd_2nd">2nd</string>
+  <string name="gameEnd_3rd">3rd</string>
+  <string name="gameEnd_4th">4th</string>
+  <string name="gameEnd_Tie">Tie Game!</string>
+  <string name="gameEnd_Winner">%s Wins!</string>
+  
+  <!-- For GameSetup Activity -->
+  <string name="gameSetup_NeedTwo">You must have at least two teams to start the game.</string>
+  <string name="gameSetup_NeedTeams">Need more teams!</string>
+  
+  <!-- For Settings Activity -->
+  <string name="settings_Version">\u0020Version %s</string>
+  <string name="settings_TimerValue">%s seconds</string>
+  
+  <!-- For Turn Activity -->
+  <string name="turn_EndVerify">Are you sure you want to end the current game?</string>
+  <string name="turn_TeamReady">Ready %s Team?</string>
+  <string name="turn_Start">START!</string>
+  
+  <!--  For turn summary -->
+  <string name="turnsummary_GameOver">Game Over</string>
+  <string name="turnsummary_GameResults">Game Results</string>
+  <string name="turnsummary_RoundText">Round: %s</string>
+  <string name="turnsummary_EndGame">End Game</string>
+  <string name="turnsummary_Rules">Rules</string>
 
   <!-- For end game dialog -->
   <string name="endGameDialog_title">Confirm End Game</string>
