@@ -171,20 +171,18 @@ public class TurnSummary extends Activity {
     }
     list.addView(layout);
     
+    
+    // Set fonts
     Typeface antonFont = Typeface.createFromAsset(getAssets(),
             "fonts/Anton.ttf");
-
-
-    // Color activity views according to team
-    View curTeamHeader = (View) findViewById(R.id.TurnSummary_TitleBG);
-    int teamColor = this.getResources().getColor(
-        game.getActiveTeam().getPrimaryColor());
-    curTeamHeader.setBackgroundColor(teamColor);
     
     // Set font on Title text
     TextView scoreTitle = (TextView) findViewById(R.id.TurnSummary_ScoreboardTitle);
-    scoreTitle.setTypeface(antonFont);   
-
+    scoreTitle.setTypeface(antonFont);  
+    
+    TextView resultsTitle = (TextView) findViewById(R.id.TurnSummary_Title);
+    resultsTitle.setTypeface(antonFont); 
+    
     // Update the scoreboard views
     updateScoreViews();
 

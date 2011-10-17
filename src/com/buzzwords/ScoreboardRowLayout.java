@@ -204,6 +204,8 @@ public class ScoreboardRowLayout extends RelativeLayout {
 		mIsTeamActive = active;
 		if( mIsTeamActive && mTeam != null)
 		{
+			this.setVisibility(View.VISIBLE);
+			
 			mBackground.setBackgroundResource(mTeam.getPrimaryColor());
 			mScore.setBackgroundDrawable(getResources().getDrawable(mTeam.getGameEndPiece()));
 			// Show scores and team names
@@ -212,11 +214,13 @@ public class ScoreboardRowLayout extends RelativeLayout {
 		}
 		else
 		{
+			this.setVisibility(View.GONE);
+			
 			mBackground.setBackgroundColor(getResources().getColor(R.color.gameend_blankrow));
 		    mScore.setBackgroundDrawable(getResources().getDrawable(
 		            R.drawable.gameend_row_end_blank));
 		    mTeamText.setVisibility(View.INVISIBLE);
-		    mScore.setVisibility(View.INVISIBLE);
+		    mScore.setVisibility(View.INVISIBLE);	    	    
 		}
 	}
 }

@@ -22,62 +22,12 @@
     android:layout_height="fill_parent"
     android:background="@drawable/bg_generic"
     android:orientation="vertical">
-    
-    <RelativeLayout android:id="@+id/TurnSummary_Title"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent">
-        
-        <View android:id="@+id/TurnSummary_TitleBG"
-            android:layout_width="wrap_content"
-            android:background="@color/teamA_primary"
-            android:layout_height="20dp"
-            />
-            
-        <View android:id="@+id/TurnSummary_TitleTrim"
-            android:layout_width="wrap_content"
-            android:background="@color/genericBG_trim"
-            android:layout_height="5dp"
-            android:layout_below="@id/TurnSummary_TitleBG"
-            />
-            
-        <RelativeLayout android:id="@+id/TurnSummary_SubHeader_Title"
-            android:layout_height="35dp"
-            android:layout_width="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp">
-             
-            <View android:id="@+id/TurnSummary_SubHeader_Title_BG"
-                android:background="@color/genericBG_trim"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                />
-            
-            <View android:id="@+id/TurnSummary_SubHeader_Title_Fill"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/genericBG"
-                android:layout_margin="4dp"
-                />
-                
-            <TextView android:id="@+id/TurnSummary_SubHeader_Title_Text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textSize="20dp"
-                android:textColor="#FFFFFF"
-                android:text="Results"
-                />
-                
-        </RelativeLayout>
-        
-    </RelativeLayout>
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Results" android:id="@+id/TurnSummary_Title" android:textSize="38dp" android:textColor="@color/genericBG_trim" android:layout_marginTop="-10dp" android:layout_marginLeft="5dp" android:layout_gravity="left"></TextView>
     
     <ImageView android:id="@+id/TurnSummary_SpacerA"
         android:background="@color/genericBG_trim"
         android:layout_width="fill_parent"
-        android:layout_height="3dp"
-        android:layout_marginTop="5dp"
-        />
+        android:layout_height="3dp" android:layout_marginTop="-10dp"/>
         
     <ImageView android:id="@+id/TurnSummary_SpacerC" 
         android:layout_width="fill_parent"
@@ -87,9 +37,7 @@
 
     <ScrollView android:id="@+id/TurnSummary_CardList"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:layout_marginBottom="2dp" android:layout_marginTop="0dp">
+        android:layout_marginBottom="2dp" android:layout_marginTop="0dp" android:layout_height="fill_parent" android:layout_weight="1">
 
     </ScrollView>
     
@@ -110,7 +58,7 @@
         android:layout_marginBottom="5dp"
         android:layout_gravity="right"/>
     
-    <RelativeLayout android:layout_width="wrap_content" android:layout_below="@id/TurnSummary_TurnScore" android:id="@+id/TurnSummary_ScoreboardTitle_Group" android:layout_marginTop="-20dp" android:layout_height="wrap_content">
+    <RelativeLayout android:layout_width="wrap_content" android:id="@+id/TurnSummary_ScoreboardTitle_Group" android:layout_marginTop="-20dp" android:layout_height="wrap_content">
         <View android:layout_centerVertical="true" android:layout_centerHorizontal="true" android:layout_width="fill_parent" android:layout_height="4dp" android:id="@+id/TurnSummary_ScoreboardTitle_Bar" android:background="@color/genericBG_trim"></View>
         <TextView android:textColor="@color/white" android:layout_width="wrap_content" android:textSize="24dp" android:layout_height="wrap_content" android:text="Scores" android:layout_centerVertical="true" android:id="@+id/TurnSummary_ScoreboardTitle" android:gravity="center" android:layout_marginLeft="10dp"></TextView>
     </RelativeLayout>
@@ -119,12 +67,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:orientation="vertical" android:paddingTop="1dp" android:layout_marginTop="-5dp" android:paddingBottom="1dp" android:background="@color/black">
+        android:orientation="vertical" android:layout_marginTop="-5dp">
 
         <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamA" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
-        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamB" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
-        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamC" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
-        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamD" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
+        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamB" android:layout_height="30dp" android:layout_marginTop="-1dp"></com.buzzwords.ScoreboardRowLayout>
+        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamC" android:layout_height="30dp" android:layout_marginTop="-1dp"></com.buzzwords.ScoreboardRowLayout>
+        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamD" android:layout_height="30dp" android:layout_marginTop="-1dp"></com.buzzwords.ScoreboardRowLayout>
 
     </LinearLayout>
     

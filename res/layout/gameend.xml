@@ -17,65 +17,35 @@
  ****************************************************************************/
  -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bg_generic">
-    
-    <RelativeLayout android:id="@+id/GameEnd_HeaderGroup"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:layout_alignParentTop="true">
-         
-        <View android:id="@+id/GameEnd_HeaderBG"
-            android:layout_width="fill_parent"
-            android:layout_height="34dp"
-            android:background="@color/genericBG_trimDark"
-            />
-            
-        <TextView android:id="@+id/GameEnd_Title"
-            android:layout_height="wrap_content"
-            android:textColor="@color/title"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:textSize="28dp"
-            android:text="Final Standings"
-            android:includeFontPadding="false"
-            />
-            
-    </RelativeLayout>
+    android:background="@drawable/bg_generic" android:orientation="vertical">
+    <TextView android:layout_height="wrap_content" android:includeFontPadding="false" android:id="@+id/GameEnd_Title" android:layout_width="wrap_content" android:textColor="@color/genericBG_trim" android:textSize="38dp" android:layout_marginRight="5dp" android:layout_marginTop="-10dp" android:text="Game Over" android:layout_gravity="right"></TextView>
 
-    <Button android:id="@+id/GameEnd_Rematch"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="Rematch"
-        android:layout_height="60dp"
-        />
-        
-    <Button android:id="@+id/GameEnd_MainMenu"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="Main Menu"
-        android:layout_height="60dp"
-         />
+    <RelativeLayout android:layout_width="wrap_content" android:id="@+id/GameEnd_ScoreboardHeader_Group" android:layout_marginTop="-20dp" android:layout_height="wrap_content">
+        <View android:layout_centerVertical="true" android:layout_centerHorizontal="true" android:layout_width="fill_parent" android:layout_height="4dp" android:background="@color/genericBG_trim" android:id="@+id/GameEnd_ScoreboardHeader_Bar"></View>
+        <TextView android:textColor="@color/white" android:layout_width="wrap_content" android:textSize="24dp" android:layout_height="wrap_content" android:layout_centerVertical="true" android:gravity="center" android:layout_marginLeft="10dp" android:id="@+id/GameEnd_ScoreboardHeader" android:text="Final Scores"></TextView>
+    </RelativeLayout>
 
     <LinearLayout android:id="@+id/GameEnd_FinalStandings"
         android:layout_width="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@id/GameEnd_HeaderGroup"
-        android:layout_height="wrap_content" android:background="@color/black" android:paddingTop="1dp" android:paddingBottom="1dp">
+        android:layout_height="wrap_content" android:layout_marginTop="-5dp">
         
         <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_1" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
-        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_2" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
-        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_3" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
-        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_4" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
+        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_2" android:layout_height="30dp" android:layout_marginTop="-1dp"></com.buzzwords.ScoreboardRowLayout>
+        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_3" android:layout_height="30dp" android:layout_marginTop="-1dp"></com.buzzwords.ScoreboardRowLayout>
+        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_Scores_4" android:layout_height="30dp" android:layout_marginTop="-1dp"></com.buzzwords.ScoreboardRowLayout>
 
     </LinearLayout>
-    <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_below="@id/GameEnd_FinalStandings" android:id="@+id/GameEnd_WinnerGroup">
-        <TextView android:layout_width="wrap_content" android:text="Winner:" android:id="@+id/GameEnd_Winner" android:layout_height="wrap_content" android:textSize="32dp" android:layout_gravity="center"></TextView>
-        <TextView android:layout_width="fill_parent" android:text="Green Wins!" android:id="@+id/GameEnd_WinnerText" android:gravity="center_horizontal" android:textSize="50dp" android:textColor="@color/teamB_primary" android:layout_height="225dp"></TextView>
-    </LinearLayout>
+    <RelativeLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_WinnerGroup" android:layout_height="fill_parent" android:layout_weight="1">
+        <TextView android:layout_width="fill_parent" android:id="@+id/GameEnd_WinnerText" android:textSize="50dp" android:textColor="@color/teamB_primary" android:text="Green Monsters" android:layout_height="wrap_content" android:gravity="center" android:layout_centerInParent="true"></TextView>
+        <TextView android:layout_height="wrap_content" android:id="@+id/GameEnd_Winner" android:layout_width="wrap_content" android:text="Winner:" android:textSize="32dp" android:layout_above="@id/GameEnd_WinnerText" android:layout_centerHorizontal="true"></TextView>
+    </RelativeLayout>
+    <RelativeLayout android:layout_height="wrap_content" android:id="@+id/GameEnd_ButtonLayout" android:layout_width="fill_parent">
+        <Button android:layout_alignParentLeft="true" android:layout_height="60dp" android:id="@+id/GameEnd_MainMenu" android:layout_width="wrap_content" android:text="Main Menu"></Button>
+        <Button android:layout_alignBaseline="@+id/GameEnd_MainMenu" android:layout_height="60dp" android:id="@+id/GameEnd_Rematch" android:text="Rematch" android:layout_width="wrap_content" android:layout_alignParentRight="true"></Button>
+    </RelativeLayout>
     
-</RelativeLayout>
+</LinearLayout>
