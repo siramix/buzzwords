@@ -40,8 +40,8 @@
 
     </LinearLayout>
     <RelativeLayout android:layout_width="fill_parent" android:id="@+id/GameEnd_WinnerGroup" android:layout_height="fill_parent" android:layout_weight="1">
-        <TextView android:layout_width="fill_parent" android:id="@+id/GameEnd_WinnerText" android:textSize="50dp" android:textColor="@color/teamB_primary" android:text="Green Monsters" android:layout_height="wrap_content" android:gravity="center" android:layout_centerInParent="true"></TextView>
-        <TextView android:layout_height="wrap_content" android:id="@+id/GameEnd_Winner" android:layout_width="wrap_content" android:text="Winner:" android:textSize="32dp" android:layout_above="@id/GameEnd_WinnerText" android:layout_centerHorizontal="true"></TextView>
+        <TextView android:layout_width="fill_parent" android:id="@+id/GameEnd_WinnerText" android:textSize="50dp" android:text="Green Monsters" android:layout_height="wrap_content" android:gravity="center" android:layout_centerInParent="true" android:textColor="@color/teamB_primary"></TextView>
+        <TextView android:layout_height="wrap_content" android:id="@+id/GameEnd_Winner" android:layout_width="wrap_content" android:text="Winner:" android:textSize="32dp" android:layout_above="@id/GameEnd_WinnerText" android:layout_centerHorizontal="true" android:textColor="@color/white"></TextView>
     </RelativeLayout>
     <RelativeLayout android:layout_height="wrap_content" android:id="@+id/GameEnd_ButtonLayout" android:layout_width="fill_parent">
         <Button android:layout_alignParentLeft="true" android:layout_height="60dp" android:id="@+id/GameEnd_MainMenu" android:layout_width="wrap_content" android:text="Main Menu"></Button>

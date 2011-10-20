@@ -21,7 +21,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:background="@drawable/bg_generic" android:focusable="false">
-    <TextView android:layout_width="wrap_content" android:id="@+id/GameSetup_Title" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:textColor="@color/genericBG_trim" android:textSize="38dp" android:text="Game Setup" android:layout_marginRight="5dp"></TextView>
+    <TextView android:layout_width="wrap_content" android:id="@+id/GameSetup_Title" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:textColor="@color/genericBG_trim" android:textSize="38dp" android:text="Game Setup" android:layout_marginRight="5dp" android:layout_marginTop="-10dp"></TextView>
 
 	<!-- Team selection box -->
     <RelativeLayout android:layout_width="wrap_content" android:layout_below="@id/GameSetup_Title" android:id="@+id/GameSetup_TeamHeader" android:layout_marginTop="-20dp" android:layout_height="wrap_content">

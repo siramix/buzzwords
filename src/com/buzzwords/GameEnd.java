@@ -80,14 +80,14 @@ public class GameEnd extends Activity {
 	AlphaAnimation fadeInWinner = new AlphaAnimation(0.0f, 1.0f);
 	fadeInWinner.setStartOffset(offset);
 	fadeInWinner.setDuration(30);
-    fadeInWinner.setAnimationListener(mGameOverListener);
     View winnerText = (View) this.findViewById(R.id.GameEnd_Winner);
     winnerText.startAnimation(fadeInWinner);
     
 	AlphaAnimation fadeInWinnerText = new AlphaAnimation(0.0f, 1.0f);
-	offset = fadeInWinner.getStartOffset() + fadeInWinner.getDuration() + 1000;
+	offset = fadeInWinner.getStartOffset() + fadeInWinner.getDuration() + 500;
 	fadeInWinnerText.setStartOffset(offset);
 	fadeInWinnerText.setDuration(30);
+	fadeInWinnerText.setAnimationListener(mGameOverListener);
     View winnerTeamText = (View) this.findViewById(R.id.GameEnd_WinnerText);
     winnerTeamText.startAnimation(fadeInWinnerText);
 
@@ -176,16 +176,17 @@ public class GameEnd extends Activity {
    * Setup the sounds to go with the animation
    */
   private final AnimationListener mGameOverListener = new AnimationListener() {
-    public void onAnimationEnd(Animation animation) {
-    }
+	  public void onAnimationEnd(Animation animation) {
+		  // Play win sound
+		  SoundManager sm = SoundManager.getInstance(GameEnd.this.getBaseContext());
+		  sm.playSound(SoundManager.Sound.WIN);
+	  }
 
     public void onAnimationRepeat(Animation animation) {
     }
 
     public void onAnimationStart(Animation animation) {
-      // Play win sound
-      SoundManager sm = SoundManager.getInstance(GameEnd.this.getBaseContext());
-      sm.playSound(SoundManager.Sound.WIN);
+
     }
   };
 
