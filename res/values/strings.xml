@@ -23,6 +23,7 @@
   <!-- Menu Designations -->
   <string name="menu_EndGame">MENU_ENDGAME</string>
   <string name="menu_Rules">MENU_RULES</string>
+  <string name="menu_Upgrade">MENU_UPGRADE</string>
 
   <!-- Team names -->
   <string name="teamnameA">Blue</string>
@@ -40,6 +41,13 @@
   <!-- For end game dialog -->
   <string name="endGameDialog_title">Confirm End Game</string>
   <string name="endGameDialog_text">Are you sure you want to end the current game?</string>
+
+  <!-- For go pro dialog -->
+	<string name="upgradeDialog_text">"Mastered the lite version?  Go Pro and get all 1000 cards. 
+							\nThanks for the support!"</string>
+	
+	<string name="upgradeDialog_positiveBtn">Marketplace</string>
+	<string name="upgradeDialog_negativeBtn">Not Yet</string>
 
   <!-- For end game dialog -->
   <string name="pauseGameDialog_title">Game Paused</string>
