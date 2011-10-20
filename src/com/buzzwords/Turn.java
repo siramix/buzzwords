@@ -1073,7 +1073,7 @@ public class Turn extends Activity {
       String curTeam = mGameManager.getActiveTeam().getName();
       builder = new AlertDialog.Builder(this);
       builder.setMessage("Ready " + curTeam + "?").setCancelable(false)
-          .setPositiveButton("START!", new DialogInterface.OnClickListener() {
+          .setPositiveButton("Start!", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
               dialog.dismiss();
