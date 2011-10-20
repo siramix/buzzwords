@@ -211,13 +211,35 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "NextTurn()");
     }
-    int score = mCurrentTeam.getScore() + getTurnScore();
-    mCurrentTeam.setScore(score);
     this.incrementActiveTeamIndex();
     mCurrentCards.clear();
     mCardPosition = -1;
     mCurrentTurn++;
     mDeck.prepareForRound();
+  }
+  
+  /*
+   * Add the results of the current turn into the current team's score.
+   */
+  public void addTurnScore()
+  {
+	  int score = mCurrentTeam.getScore() + getTurnScore();
+	  mCurrentTeam.setScore(score);
+  }
+  
+  /*
+   * Ammend turn score by the result of a given card.  This is used when a card 
+   * is reviewed.
+   */
+  public void ammendCard(int changedCardIndex, int rws)
+  {
+	  int prevTurnScore = getTurnScore();
+      Card curCard = mCurrentCards.get(changedCardIndex);
+      curCard.setRws(rws);
+      // new score is current score (which included previous turn score) plus
+      // the difference
+      int newScore = mCurrentTeam.getScore() + (getTurnScore() - prevTurnScore);
+	  mCurrentTeam.setScore(newScore);
   }
 
   public void incrementActiveTeamIndex() {
@@ -237,10 +259,10 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "EndGame()");
     }
-    int score = mCurrentTeam.getScore() + getTurnScore();
-    mCurrentTeam.setScore(score);
     mTeamIterator = mTeams.iterator();
     mDeck.prepareForRound();
+    // clear current cards so that scoreboards don't add turn score in
+    mCurrentCards.clear();
   }
 
   /**

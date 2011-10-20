@@ -17,7 +17,10 @@
  ****************************************************************************/
 package com.buzzwords;
 
+import java.io.Serializable;
 import java.util.Comparator;
+
+import android.util.Log;
 
 import com.buzzwords.R;
 
@@ -29,20 +32,23 @@ import com.buzzwords.R;
  * @author BuzzWords team
  * 
  */
-public enum Team {
+public enum Team implements Serializable {
   TEAMA("Blue", R.color.teamA_BG, R.color.teamA_secondary,
       R.color.teamA_primary, R.drawable.bg_bluegradient,
-      R.drawable.gameend_row_end_blue), TEAMB("Green", R.color.teamB_BG,
+      R.drawable.gameend_row_end_blue, "teamA_enabled"), TEAMB("Green", R.color.teamB_BG,
       R.color.teamB_secondary, R.color.teamB_primary,
-      R.drawable.bg_greengradient, R.drawable.gameend_row_end_green), TEAMC(
+      R.drawable.bg_greengradient, R.drawable.gameend_row_end_green, "teamB_enabled"), TEAMC(
       "Red", R.color.teamC_BG, R.color.teamC_secondary, R.color.teamC_primary,
-      R.drawable.bg_redgradient, R.drawable.gameend_row_end_red), TEAMD(
+      R.drawable.bg_redgradient, R.drawable.gameend_row_end_red, "teamC_enabled"), TEAMD(
       "Yellow", R.color.teamD_BG, R.color.teamD_secondary,
       R.color.teamD_primary, R.drawable.bg_yellowgradient,
-      R.drawable.gameend_row_end_yellow);
+      R.drawable.gameend_row_end_yellow, "teamD_enabled");
 
   // Team name
-  private final String mName;
+  private String mName;
+  // Team default name
+  private final String mDefaultName;
+  
   // Team colors
   private final int mPrimary;
   private final int mSecondary;
@@ -51,18 +57,28 @@ public enum Team {
   private final int mGameEndBackground;
   // The team's running score
   private int mScore;
+  // The team's preference key
+  private final String mPrefKey;
 
+  /*
+   * Store a version ID for this serialized class
+   */
+  static final long serialVersionUID = -5094548104192852942L;
+  
+  
   /*
    * Construct a Team
    */
   private Team(String name, int bg, int secondary, int primary, int gradient,
-      int gameend_bg) {
+      int gameend_bg, String key) {
     mName = name;
+    mDefaultName = name;
     mBackground = bg;
     mSecondary = secondary;
     mPrimary = primary;
     mGradient = gradient;
     mGameEndBackground = gameend_bg;
+    mPrefKey = key;
     this.setScore(0);
   }
 
@@ -72,8 +88,21 @@ public enum Team {
    * @return the name
    */
   public String getName() {
+	if (BuzzWordsApplication.DEBUG) {
+	   Log.d("Team:", "getName(): " + mName);
+	}
     return mName;
   }
+  
+  /**
+   * Returns the Team's original name as a String
+   * 
+   * @return the default name
+   */
+  public String getDefaultName() {
+    return mDefaultName;
+  }
+
 
   /**
    * Returns the id of the Team's background color
@@ -119,6 +148,16 @@ public enum Team {
   public int getGameEndPiece() {
     return mGameEndBackground;
   }
+  
+  /**
+   * Returns the Team's preference key
+   * 
+   * @return the preference key
+   */
+  public String getPreferenceKey() {
+    return mPrefKey;
+  }
+
 
   /**
    * Set the Team's running score total
@@ -128,6 +167,16 @@ public enum Team {
   public void setScore(int score) {
     this.mScore = score;
   }
+  
+
+  /**
+   * Set the Team's new name.  Original name can still be accessed with
+   * getDefaultName()
+   */
+  public void setName(String name) {
+    this.mName = name;
+  }
+
 
   /**
    * Returns the Team's running score

@@ -104,18 +104,7 @@
                 android:layout_width="70dp"
                 android:layout_alignParentRight="true"
                 />
-                
-            <TextView android:id="@+id/Turn_Timer"
-                android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textColor="#FFFFFF"
-                android:layout_alignParentTop="true"
-                android:gravity="center"
-                android:layout_marginRight="4dp"
-                android:includeFontPadding="false"
-                android:layout_height="24dp"
-                android:textSize="22dp"
-                />
+            <TextView android:textColor="#FFFFFF" android:textSize="22dp" android:layout_width="wrap_content" android:gravity="center" android:includeFontPadding="false" android:id="@+id/Turn_Timer" android:layout_height="24dp" android:layout_alignParentRight="true" android:paddingRight="5dp"></TextView>
                 
         </RelativeLayout>
 

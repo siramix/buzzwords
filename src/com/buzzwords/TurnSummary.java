@@ -28,6 +28,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -162,14 +163,26 @@ public class TurnSummary extends Activity {
 
       // Set Row end icon
       ImageView cardIcon = (ImageView) realLine.getChildAt(2);
+      cardIcon.setImageResource(card.getRowEndDrawableId());
       mCardViewList.add(cardIcon);
       mCardLineList.add(realLine);
-      cardIcon.setImageResource(card.getRowEndDrawableId());
       realLine.setOnClickListener(mCardIconListener);
       count++;
     }
     list.addView(layout);
-
+    
+    
+    // Set fonts
+    Typeface antonFont = Typeface.createFromAsset(getAssets(),
+            "fonts/Anton.ttf");
+    
+    // Set font on Title text
+    TextView scoreTitle = (TextView) findViewById(R.id.TurnSummary_ScoreboardTitle);
+    scoreTitle.setTypeface(antonFont);  
+    
+    TextView resultsTitle = (TextView) findViewById(R.id.TurnSummary_Title);
+    resultsTitle.setTypeface(antonFont); 
+    
     // Update the scoreboard views
     updateScoreViews();
 
@@ -193,9 +206,11 @@ public class TurnSummary extends Activity {
       // Change round display
       rounds.setText("Game Over");
       // Hide scoreboard for suspense
-      RelativeLayout scores = (RelativeLayout) this
+      LinearLayout scores = (LinearLayout) this
           .findViewById(R.id.TurnSummary_ScoreGroup);
       scores.setVisibility(View.INVISIBLE);
+      RelativeLayout scoreHeader = (RelativeLayout) this.findViewById(R.id.TurnSummary_ScoreboardTitle_Group);
+      scoreHeader.setVisibility(View.INVISIBLE);
     }
   }
 
@@ -299,73 +314,30 @@ public class TurnSummary extends Activity {
     GameManager game = application.getGameManager();
     List<Team> teams = game.getTeams();
 
-    int turnscore = game.getTurnScore();
-
-    // Display total score for the current team
-    TextView scoreview = (TextView) findViewById(R.id.TurnSummary_TurnScore);
-    scoreview.setText("Total: " + Long.toString(turnscore));
-
-    // References to Scoreboard team scores
-    final int[] SCORE_VIEW_IDS = new int[] { R.id.TurnSummary_Scores_TeamANum,
-        R.id.TurnSummary_Scores_TeamBNum, R.id.TurnSummary_Scores_TeamCNum,
-        R.id.TurnSummary_Scores_TeamDNum };
-    // References to Scoreboard team names
-    final int[] SCORE_TEAMNAME_IDS = new int[] {
-        R.id.TurnSummary_Scores_TeamAName, R.id.TurnSummary_Scores_TeamBName,
-        R.id.TurnSummary_Scores_TeamCName, R.id.TurnSummary_Scores_TeamDName };
-
     // References to Scoreboard team Groups
-    final int[] SCORE_VIEW_GROUP_IDS = new int[] {
+    final int[] TEAM_SCORE_GROUPS = new int[] {
         R.id.TurnSummary_Scores_TeamA, R.id.TurnSummary_Scores_TeamB,
         R.id.TurnSummary_Scores_TeamC, R.id.TurnSummary_Scores_TeamD };
-    // Hide all
-    for (int i = 0; i < SCORE_VIEW_GROUP_IDS.length; i++) {
-      // Clear background
-      LinearLayout teamScoreGroupView = (LinearLayout) findViewById(SCORE_VIEW_GROUP_IDS[i]);
-      teamScoreGroupView.setBackgroundResource(R.color.genericBG_trimDark);
-      // Hide Team name
-      TextView text = (TextView) findViewById(SCORE_TEAMNAME_IDS[i]);
-      text.setVisibility(View.INVISIBLE);
-      // Hide Score
-      text = (TextView) findViewById(SCORE_VIEW_IDS[i]);
-      text.setVisibility(View.INVISIBLE);
-    }
-    // Show for teams that exist
-    for (Iterator<Team> itr = teams.iterator(); itr.hasNext();) {
-      Team team = itr.next();
-      LinearLayout teamScoreGroupView = (LinearLayout) findViewById(SCORE_VIEW_GROUP_IDS[team
-          .ordinal()]);
-      teamScoreGroupView.setBackgroundResource(R.color.genericBG);
-      // Show Team name
-      TextView text = (TextView) findViewById(SCORE_TEAMNAME_IDS[team.ordinal()]);
-      text.setVisibility(View.VISIBLE);
-      // Show Score
-      text = (TextView) findViewById(SCORE_VIEW_IDS[team.ordinal()]);
-      text.setVisibility(View.VISIBLE);
-
-      // Set Name
-      TextView teamnameView = (TextView) findViewById(SCORE_TEAMNAME_IDS[team
-          .ordinal()]);
-      teamnameView.setText(team.getName());
-      // Set Score
-      TextView teamTotalScoreView = (TextView) findViewById(SCORE_VIEW_IDS[team
-          .ordinal()]);
-      int score = team.getScore();
-      // if this is the current team's score, add in the temp score from the
-      // turn
-      if (game.getActiveTeam().ordinal() == team.ordinal()) {
-        score += turnscore;
+    
+    ScoreboardRowLayout row;
+    // Setup score displays. Iterate through all team groups, setting scores for
+    // teams that played
+    // and disabling the group for teams that did not play
+    for (int i = 0; i < TEAM_SCORE_GROUPS.length; i++) {
+      row = (ScoreboardRowLayout) this.findViewById(TEAM_SCORE_GROUPS[i]);
+      if (i >= teams.size()) {
+        // Gray out rows for teams that didn't play
+    	row.setActiveness(false);
+      } else {
+    	// Show teams that played, and set their rank
+        row.setTeam(teams.get(i));
+    	row.setActiveness(true);
       }
-      teamTotalScoreView.setText(Long.toString(score));
-
     }
 
-    // Color activity views according to team
-    View curTeamHeader = (View) findViewById(R.id.TurnSummary_TitleBG);
-    int teamColor = this.getResources().getColor(
-        game.getActiveTeam().getPrimaryColor());
-    curTeamHeader.setBackgroundColor(teamColor);
-
+    // Update Turn score total
+    TextView turnTotal = (TextView) this.findViewById(R.id.TurnSummary_TurnScore);
+    turnTotal.setText( "Total: " + Integer.toString(game.getTurnScore()));
   }
 
   /**
@@ -456,10 +428,17 @@ public class TurnSummary extends Activity {
           .getInt(getString(R.string.cardIndexBundleKey));
       int curCardState = curBundle
           .getInt(getString(R.string.cardStateBundleKey));
+
+      // Ammend the card
+      BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this.getApplication();
+      GameManager gm = application.getGameManager();
+      gm.ammendCard(curCardIndex, curCardState);
+      
+      // Update the individual card's UI in the list
       Card curCard = mCardList.get(curCardIndex);
-      curCard.setRws(curCardState);
       ImageView curImageView = mCardViewList.get(curCardIndex);
       curImageView.setImageResource(curCard.getRowEndDrawableId());
+      
       TurnSummary.this.updateScoreViews();
     }
 
