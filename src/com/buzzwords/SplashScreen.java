@@ -66,7 +66,7 @@ public class SplashScreen extends Activity {
       Log.d(TAG, "onCreate()");
     }
     super.onCreate(savedInstanceState);
-    
+
     // Do workaround for people who launch Buzzwords from the installation
     // prompt
     if (shouldApplicationLaunch()) {
@@ -84,6 +84,9 @@ public class SplashScreen extends Activity {
         }
       });
       mInstallThread.start();
+
+      // Initialize the soundManager during splash
+      SoundManager.getInstance(this.getBaseContext());
 
       // Fade in the logo
       this.fadeIn();
