@@ -64,7 +64,7 @@ public abstract class PauseTimer {
 
     @Override
     public void onTick(long millisUntilFinished) {
-      if (BuzzWordsApplication.DEBUG) {
+      if (BuzzWordsApplication.DEBUG_TIMERTICKS) {
         Log.d(TAG, "onTick(" + millisUntilFinished + ")");
       }
       PauseTimer.this.mTimeRemaining = millisUntilFinished;
@@ -151,9 +151,6 @@ public abstract class PauseTimer {
    * @return long representing milliseconds remaining
    */
   public long getTimeRemaining() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getTimeRemaining()");
-    }
     return this.mTimeRemaining;
   }
 }

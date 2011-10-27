@@ -20,168 +20,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="@drawable/bg_generic">
-
-	<RelativeLayout android:id="@+id/GameSetup_HeaderGroup"
-		android:layout_height="wrap_content"
-		android:layout_width="fill_parent"
-		android:layout_alignParentTop="true">
-		
-		<View android:id="@+id/GameSetup_HeaderBG"
-			android:layout_width="fill_parent"
-			android:background="@color/genericBG_trim"
-			android:layout_height="34dp"
-			/>
-			
-		<View android:id="@+id/GameSetup_HeaderFoot" 
-			android:layout_width="fill_parent"
-			android:background="#555555"
-			android:layout_marginTop="1dp"
-			android:layout_height="2dp"
-			android:layout_below="@id/GameSetup_HeaderBG"
-			/>
-			
-		<TextView android:id="@+id/GameSetup_Title"
-			android:layout_height="wrap_content"
-			android:textColor="@color/title"
-			android:layout_centerHorizontal="true"
-			android:layout_width="wrap_content"
-			android:textSize="28dp"
-			android:text="Setup"
-			/>
-			
-	</RelativeLayout>
+	android:background="@drawable/bg_generic" android:focusable="false">
+    <TextView android:layout_width="wrap_content" android:id="@+id/GameSetup_Title" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:textColor="@color/genericBG_trim" android:textSize="38dp" android:text="Game Setup" android:layout_marginRight="5dp" android:layout_marginTop="-10dp"></TextView>
 
 	<!-- Team selection box -->
-	<RelativeLayout android:id="@+id/GameSetup_TeamGroup"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:layout_below="@id/GameSetup_HeaderGroup"
-		android:paddingTop="8dp">
-		
-		<!--  Linear layout for each set of teams,  -->
-		<LinearLayout android:id="@+id/GameSetup_TeamLayout"
-			android:layout_width="fill_parent"
-			android:orientation="vertical"
-			android:layout_height="150dp"
-			android:layout_below="@id/GameSetup_Title"
-			android:background="@color/genericBG_trim">
-
-			<!--  Top two teams, laid out horizontally -->
-			<LinearLayout android:id="@+id/GameSetup_TopTwoTeams"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				android:layout_weight="1">
-				
-				<Button android:id="@+id/GameSetup_ButtonTeamA"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:layout_weight="1"
-					android:background="@color/teamA_primary"
-					android:textSize="32dp"
-					android:textColor="@color/teamA_secondary"
-					android:text="Blue"
-					android:layout_marginBottom="2dp"
-					android:layout_marginRight="2dp"
-					android:layout_marginLeft="4dp"
-					android:layout_marginTop="4dp"
-					/>
-					
-				<Button android:id="@+id/GameSetup_ButtonTeamB"
-					android:layout_weight="1"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:background="@color/teamB_primary"
-					android:text="Green"
-					android:textColor="@color/teamB_secondary"
-					android:textSize="32dp" 
-					android:layout_marginLeft="2dp"
-					android:layout_marginBottom="2dp"
-					android:layout_marginRight="4dp"
-					android:layout_marginTop="4dp"
-					/>
-					
-			</LinearLayout>
-			
-			<!--  Bottom two teams, laid out horizontally -->
-			<LinearLayout android:id="@+id/GameSetup_BottomTwoTeams"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				android:layout_weight="1">
-				
-				<Button android:id="@+id/GameSetup_ButtonTeamC"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:layout_weight="1"
-					android:background="@color/teamC_primary"
-					android:layout_marginBottom="5dp"
-					android:textSize="32dp"
-					android:text="Red" 
-					android:layout_marginRight="2dp"
-					android:layout_marginLeft="4dp"
-					android:layout_marginTop="2dp" android:textColor="@color/teamC_secondary"/>
-					
-				<Button android:id="@+id/GameSetup_ButtonTeamD"
-					android:layout_weight="1"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:background="@color/teamD_primary"
-					android:text="Yellow"
-					android:textColor="@color/teamD_secondary"
-					android:textSize="32dp" 
-					android:layout_marginLeft="2dp"
-					android:layout_marginBottom="4dp"
-					android:layout_marginRight="4dp"
-					android:layout_marginTop="2dp"
-					/>
-					
-			</LinearLayout>
-			
-		</LinearLayout>
-		
-		<!--  "Teams!" Subheader -->
-		<RelativeLayout android:id="@+id/GameSetup_SubHeader_Teams"
-			android:layout_centerInParent="true"
-			android:layout_height="35dp"
-			android:layout_width="100dp">
-			
-			<View android:id="@+id/GameSetup_SubHeader_Teams_BG"
-				android:background="@color/genericBG_trim"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				/>
-				
-			<View android:id="@+id/GameSetup_SubHeader_Teams_Fill"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				android:background="@color/genericBG" 
-				android:layout_margin="4dp"
-				/>
-				
-			<TextView android:id="@+id/GameSetup_SubHeader_Teams_Text"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Teams"
-				android:layout_centerInParent="true"
-				android:textSize="20dp"
-				android:textColor="#FFFFFF"
-				/>
-				
-		</RelativeLayout>
-		
-	</RelativeLayout>
+    <RelativeLayout android:layout_width="wrap_content" android:layout_below="@id/GameSetup_Title" android:id="@+id/GameSetup_TeamHeader" android:layout_marginTop="-20dp" android:layout_height="wrap_content">
+        <View android:layout_centerVertical="true" android:layout_centerHorizontal="true" android:layout_width="fill_parent" android:layout_height="4dp" android:id="@+id/GameSetup_TeamHeaderBar" android:background="@color/genericBG_trim"></View>
+        <TextView android:textColor="@color/white" android:layout_width="wrap_content" android:textSize="24dp" android:layout_height="wrap_content" android:text="Teams" android:layout_centerVertical="true" android:id="@+id/GameSetup_TeamsTitle" android:gravity="center" android:layout_marginLeft="10dp"></TextView>
+    </RelativeLayout>
+    <LinearLayout android:id="@+id/GameSetup_TeamLayout" android:layout_width="fill_parent" android:orientation="vertical" android:layout_below="@id/GameSetup_TeamHeader" android:layout_height="180dp">
+        <View android:background="@color/black" android:layout_width="wrap_content" android:layout_height="1dp" android:id="@+id/GameSetup_TeamBorderTop"></View>
+        <com.buzzwordslite.TeamSelectLayout android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/GameSetup_TeamALayout"></com.buzzwordslite.TeamSelectLayout>
+        <com.buzzwordslite.TeamSelectLayout android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/GameSetup_TeamBLayout"></com.buzzwordslite.TeamSelectLayout>
+        <com.buzzwordslite.TeamSelectLayout android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/GameSetup_TeamCLayout"></com.buzzwordslite.TeamSelectLayout>
+        <com.buzzwordslite.TeamSelectLayout android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/GameSetup_TeamDLayout"></com.buzzwordslite.TeamSelectLayout>
+        <View android:background="@color/black" android:layout_width="wrap_content" android:layout_height="1dp" android:id="@+id/GameSetup_TeamBorderBot"></View>
+    </LinearLayout>
 	
 	<!--  Helper caption for Team selection -->
 	<TextView android:id="@+id/GameSetup_HelpText_Team"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
-		android:layout_below="@id/GameSetup_TeamGroup"
 		android:layout_centerHorizontal="true"
 		android:width="300dp"
-		android:textColor="#999999"
 		android:textSize="18dp"
 		android:text="Tap teams to add or remove them."
-		/>
+		android:layout_below="@id/GameSetup_TeamLayout" android:textColor="@color/white"/>
 
 	<!-- Select number of turns -->
 	<RelativeLayout android:id="@+id/GameSetup_TurnGroup" 
@@ -189,35 +53,9 @@
 		android:layout_height="fill_parent"
 		android:layout_below="@id/GameSetup_HelpText_Team"
 		android:paddingTop="10dp">
-		
-		<RelativeLayout android:id="@+id/GameSetup_SubHeader_Turns"
-			android:layout_height="35dp"
-			android:layout_width="100dp"
-			android:layout_below="@id/GameSetup_HelpText_Team"
-			android:layout_centerHorizontal="true">
-			
-			<View android:id="@+id/GameSetup_SubHeader_Turn_BG"
-				android:background="@color/genericBG_trim"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				/>
-				
-			<View android:id="@+id/GameSetup_SubHeader_Turn_Fill"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				android:background="@color/genericBG" 
-				android:layout_margin="4dp"
-				/>
-				
-			<TextView android:id="@+id/GameSetup_SubHeader_Turns_Text"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerInParent="true"
-				android:textSize="20dp"
-				android:text="Turns"
-				android:textColor="#FFFFFF"
-				/>
-
+		<RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/GameSetup_SubHeader_Turns">
+			<View android:layout_centerHorizontal="true" android:layout_width="fill_parent" android:layout_centerVertical="true" android:background="@color/genericBG_trim" android:layout_height="4dp" android:id="@+id/GameSetup_SubHeader_Turns_Bar"></View>
+			<TextView android:textColor="@color/white" android:layout_width="wrap_content" android:gravity="center" android:layout_centerVertical="true" android:textSize="24dp" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:id="@+id/GameSetup_SubHeader_Turns_Title" android:text="Turns"></TextView>
 		</RelativeLayout>
 		
 		<!--  Round selection -->
@@ -268,9 +106,8 @@
 			android:layout_centerHorizontal="true"
 			android:text="Select the number of turns each team will take."
 			android:textSize="18dp"
-			android:textColor="#999999"
 			android:layout_below="@id/GameSetup_RadioGroup"
-			/>
+			android:textColor="@color/white"/>
 			
 	</RelativeLayout>
 	

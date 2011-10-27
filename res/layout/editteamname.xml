@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+/*****************************************************************************
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
+ -->
+ 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="wrap_content" android:background="@drawable/bg_generic">
+    <RelativeLayout android:id="@+id/EditTeamName_TeamHeader" android:layout_height="wrap_content" android:layout_width="wrap_content">
+        <View android:layout_centerVertical="true" android:id="@+id/EditTeamName_TitleBar" android:layout_height="4dp" android:layout_width="fill_parent" android:layout_centerHorizontal="true" android:background="@color/genericBG_trim"></View>
+        <TextView android:layout_marginLeft="10dp" android:gravity="center" android:textSize="24dp" android:layout_centerVertical="true" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/EditTeamName_Title" android:text="Edit Team Name" android:textColor="@color/white"></TextView>
+    </RelativeLayout>
+    <EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginRight="10dp" android:layout_marginLeft="10dp" android:id="@+id/EditTeamName_EditField" android:maxLines="1" android:inputType="text" android:imeOptions="actionDone" android:maxLength="25"></EditText>
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textColor="@color/white" android:layout_gravity="center" android:layout_marginBottom="10dp" android:text="Choose a new name for Red Team" android:id="@+id/EditTeamName_Hint" android:textSize="16dp"></TextView>
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/EditTeamName_Buttons">
+        <Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="Accept" android:id="@+id/EditTeamName_Buttons_Accept"></Button>
+        <Button android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:text="Cancel" android:id="@+id/EditTeamName_Buttons_Cancel"></Button>
+    </LinearLayout>
+        
+</LinearLayout>

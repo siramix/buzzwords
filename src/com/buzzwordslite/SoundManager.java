@@ -22,61 +22,89 @@ import com.buzzwordslite.R;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.util.Log;
 
 public class SoundManager {
 
-  private AudioManager mAudioManager;
-  private SoundPool mSoundPool;
-  private float mVolume;
+  private static SoundManager mInstance;
+  private static AudioManager mAudioManager;
+  private static Context mContext;
+  private static SoundPool mSoundPool;
 
   public static enum Sound {
     RIGHT, WRONG, SKIP, TEAMREADY, WIN, BACK, CONFIRM, GONG, BUZZ,
   };
 
   /**
-   * Array for storing system sound ids for the sounds loaded into the pool
+   * Logging tag
    */
-  private int[] mSoundIds;
+  public static String TAG = "SoundManager";
 
   /**
-   * Default consructor
-   * 
-   * @param baseContext
-   *          the context in which to initialize all of the system services
-   *          needed
+   * Array for storing system sound ids for the sounds loaded into the pool
+   */
+  private static int[] mSoundIds;
+
+  /**
+   * Default constructor
    */
   public SoundManager(Context baseContext) {
-    mAudioManager = (AudioManager) baseContext
+    initSoundManager(baseContext);
+    loadSounds();
+  }
+
+  /**
+   * Create or get the single instance to SoundManager
+   * 
+   * @param baseContext
+   * @return
+   */
+  public synchronized static SoundManager getInstance(Context baseContext) {
+    if (mInstance == null) {
+      mInstance = new SoundManager(baseContext);
+    }
+    return mInstance;
+  }
+
+  /**
+   * Create any objects and references needed for a SoundManager
+   * 
+   * @param baseContext
+   */
+  private void initSoundManager(Context baseContext) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "initSoundManager()");
+    }
+    mContext = baseContext;
+    mAudioManager = (AudioManager) mContext
         .getSystemService(Context.AUDIO_SERVICE);
-    float streamVolumeCurrent = mAudioManager
-        .getStreamVolume(AudioManager.STREAM_MUSIC);
-    float streamVolumeMax = mAudioManager
-        .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-    mVolume = streamVolumeCurrent / streamVolumeMax;
-
     mSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 100);
+  }
 
-    // Load all sounds on creation of Sound Manager. Could pull this into a
-    // separate function
-    // if we don't want these paired.
+  /**
+   * Load all the sounds for the game
+   */
+  private void loadSounds() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "loadSounds()");
+    }
     mSoundIds = new int[Sound.values().length];
-    mSoundIds[Sound.RIGHT.ordinal()] = mSoundPool.load(baseContext,
+    mSoundIds[Sound.RIGHT.ordinal()] = mSoundPool.load(mContext,
         R.raw.fx_right, 1);
-    mSoundIds[Sound.WRONG.ordinal()] = mSoundPool.load(baseContext,
+    mSoundIds[Sound.WRONG.ordinal()] = mSoundPool.load(mContext,
         R.raw.fx_wrong, 1);
-    mSoundIds[Sound.SKIP.ordinal()] = mSoundPool.load(baseContext,
-        R.raw.fx_skip, 1);
-    mSoundIds[Sound.TEAMREADY.ordinal()] = mSoundPool.load(baseContext,
-        R.raw.fx_teamready, 1);
-    mSoundIds[Sound.WIN.ordinal()] = mSoundPool.load(baseContext, R.raw.fx_win,
+    mSoundIds[Sound.SKIP.ordinal()] = mSoundPool.load(mContext, R.raw.fx_skip,
         1);
-    mSoundIds[Sound.BACK.ordinal()] = mSoundPool.load(baseContext,
-        R.raw.fx_back, 1);
-    mSoundIds[Sound.CONFIRM.ordinal()] = mSoundPool.load(baseContext,
+    mSoundIds[Sound.TEAMREADY.ordinal()] = mSoundPool.load(mContext,
+        R.raw.fx_teamready, 1);
+    mSoundIds[Sound.WIN.ordinal()] = mSoundPool.load(mContext, R.raw.fx_win, 1);
+    mSoundIds[Sound.BACK.ordinal()] = mSoundPool.load(mContext, R.raw.fx_back,
+        1);
+    mSoundIds[Sound.CONFIRM.ordinal()] = mSoundPool.load(mContext,
         R.raw.fx_confirm, 1);
-    mSoundIds[Sound.GONG.ordinal()] = mSoundPool.load(baseContext,
+    mSoundIds[Sound.GONG.ordinal()] = mSoundPool.load(mContext,
         R.raw.fx_countdown_gong, 1);
-    mSoundIds[Sound.BUZZ.ordinal()] = mSoundPool.load(baseContext,
+    mSoundIds[Sound.BUZZ.ordinal()] = mSoundPool.load(mContext,
         R.raw.fx_buzzer, 1);
   }
 
@@ -88,8 +116,13 @@ public class SoundManager {
    * @return the id of the sound in the sound pool
    */
   public int playSound(Sound fxIndex) {
-    return mSoundPool.play(mSoundIds[fxIndex.ordinal()], mVolume, mVolume, 1,
-        0, 1.0f);
+
+    // Volume% = current volume / max volume
+    float volume = (float) mAudioManager
+        .getStreamVolume(AudioManager.STREAM_MUSIC)
+        / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+    return mSoundPool.play(mSoundIds[fxIndex.ordinal()], volume, volume, 1, 0,
+        1.0f);
   }
 
   /**
@@ -100,8 +133,12 @@ public class SoundManager {
    * @return the id of the sound in the sound pool
    */
   public int playLoop(Sound fxIndex) {
-    return mSoundPool.play(mSoundIds[fxIndex.ordinal()], mVolume, mVolume, 1,
-        -1, 1.0f);
+    // Volume% = current volume / max volume
+    float volume = (float) mAudioManager
+        .getStreamVolume(AudioManager.STREAM_MUSIC)
+        / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+    return mSoundPool.play(mSoundIds[fxIndex.ordinal()], volume, volume, 1, -1,
+        1.0f);
   }
 
   /**

@@ -28,6 +28,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,18 +57,12 @@ public class TurnSummary extends Activity {
   public static String TAG = "TurnSummary";
 
   static final int DIALOG_GAMEOVER_ID = 0;
-  
+
   static final int CARDREVIEW_REQUEST_CODE = 1;
 
   private List<Card> mCardList;
   private List<ImageView> mCardViewList;
   private List<View> mCardLineList;
-  
-  /**
-   * Sound Manager stored as an instance variable to reduce calls to
-   * GetSoundManager
-   */
-  private SoundManager mSoundManager;  
 
   /**
    * Watches the button that handles hand-off to the next turn activity.
@@ -106,12 +101,13 @@ public class TurnSummary extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, Integer.toString(cardIndex));
       }
-      
+
       Card curCard = mCardList.get(cardIndex);
-      
-      Intent cardReviewIntent = new Intent(getString(R.string.IntentCardReview),
-        getIntent().getData());
-      cardReviewIntent.putExtra(getString(R.string.cardIndexBundleKey), cardIndex);
+
+      Intent cardReviewIntent = new Intent(
+          getString(R.string.IntentCardReview), getIntent().getData());
+      cardReviewIntent.putExtra(getString(R.string.cardIndexBundleKey),
+          cardIndex);
       cardReviewIntent.putExtra(getString(R.string.cardBundleKey), curCard);
       startActivityForResult(cardReviewIntent, CARDREVIEW_REQUEST_CODE);
     }
@@ -137,9 +133,6 @@ public class TurnSummary extends Activity {
         .getApplication();
     GameManager game = application.getGameManager();
 
-    // Save sound manager as a local variable
-    mSoundManager = application.getSoundManager();
-    
     // Populate and display list of cards
     ScrollView list = (ScrollView) findViewById(R.id.TurnSummary_CardList);
     LinearLayout layout = new LinearLayout(this.getBaseContext());
@@ -155,8 +148,8 @@ public class TurnSummary extends Activity {
     for (Iterator<Card> it = mCardList.iterator(); it.hasNext();) {
       card = it.next();
 
-      LinearLayout line = (LinearLayout) LinearLayout.inflate(this
-          .getBaseContext(), R.layout.turnsumrow, layout);
+      LinearLayout line = (LinearLayout) LinearLayout.inflate(
+          this.getBaseContext(), R.layout.turnsumrow, layout);
       RelativeLayout realLine = (RelativeLayout) line.getChildAt(count);
       // Make every line alternating color
       if (count % 2 == 0) {
@@ -170,13 +163,24 @@ public class TurnSummary extends Activity {
 
       // Set Row end icon
       ImageView cardIcon = (ImageView) realLine.getChildAt(2);
+      cardIcon.setImageResource(card.getRowEndDrawableId());
       mCardViewList.add(cardIcon);
       mCardLineList.add(realLine);
-      cardIcon.setImageResource(card.getRowEndDrawableId());
       realLine.setOnClickListener(mCardIconListener);
       count++;
     }
     list.addView(layout);
+
+    // Set fonts
+    Typeface antonFont = Typeface.createFromAsset(getAssets(),
+        "fonts/Anton.ttf");
+
+    // Set font on Title text
+    TextView scoreTitle = (TextView) findViewById(R.id.TurnSummary_ScoreboardTitle);
+    scoreTitle.setTypeface(antonFont);
+
+    TextView resultsTitle = (TextView) findViewById(R.id.TurnSummary_Title);
+    resultsTitle.setTypeface(antonFont);
 
     // Update the scoreboard views
     updateScoreViews();
@@ -201,9 +205,12 @@ public class TurnSummary extends Activity {
       // Change round display
       rounds.setText("Game Over");
       // Hide scoreboard for suspense
-      RelativeLayout scores = (RelativeLayout) this
+      LinearLayout scores = (LinearLayout) this
           .findViewById(R.id.TurnSummary_ScoreGroup);
       scores.setVisibility(View.INVISIBLE);
+      RelativeLayout scoreHeader = (RelativeLayout) this
+          .findViewById(R.id.TurnSummary_ScoreboardTitle_Group);
+      scoreHeader.setVisibility(View.INVISIBLE);
     }
   }
 
@@ -229,17 +236,17 @@ public class TurnSummary extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onOptionsItemSelected()");
     }
-    
+    SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     // Handle item selection
     switch (item.getItemId()) {
     case R.string.menu_EndGame:
-      // Play confirmation sound              
-      mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+      // Play confirmation sound
+      sm.playSound(SoundManager.Sound.CONFIRM);
       this.showDialog(DIALOG_GAMEOVER_ID);
       return true;
     case R.string.menu_Rules:
-      // Play confirmation sound              
-      mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+      // Play confirmation sound
+      sm.playSound(SoundManager.Sound.CONFIRM);
       startActivity(new Intent(
           getApplication().getString(R.string.IntentRules), getIntent()
               .getData()));
@@ -266,8 +273,10 @@ public class TurnSummary extends Activity {
       builder.setMessage("Are you sure you want to end the current game?")
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-              // Play confirmation sound              
-              mSoundManager.playSound(SoundManager.Sound.CONFIRM);              
+              // Play confirmation sound
+              SoundManager sm = SoundManager.getInstance(TurnSummary.this
+                  .getBaseContext());
+              sm.playSound(SoundManager.Sound.CONFIRM);
               BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this
                   .getApplication();
               GameManager gm = application.getGameManager();
@@ -277,8 +286,10 @@ public class TurnSummary extends Activity {
             }
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-              // Play confirmation sound              
-              mSoundManager.playSound(SoundManager.Sound.CONFIRM);
+              // Play confirmation sound
+              SoundManager sm = SoundManager.getInstance(TurnSummary.this
+                  .getBaseContext());
+              sm.playSound(SoundManager.Sound.CONFIRM);
               dialog.cancel();
             }
           });
@@ -303,73 +314,31 @@ public class TurnSummary extends Activity {
     GameManager game = application.getGameManager();
     List<Team> teams = game.getTeams();
 
-    int turnscore = game.getTurnScore();
-
-    // Display total score for the current team
-    TextView scoreview = (TextView) findViewById(R.id.TurnSummary_TurnScore);
-    scoreview.setText("Total: " + Long.toString(turnscore));
-
-    // References to Scoreboard team scores
-    final int[] SCORE_VIEW_IDS = new int[] { R.id.TurnSummary_Scores_TeamANum,
-        R.id.TurnSummary_Scores_TeamBNum, R.id.TurnSummary_Scores_TeamCNum,
-        R.id.TurnSummary_Scores_TeamDNum };
-    // References to Scoreboard team names
-    final int[] SCORE_TEAMNAME_IDS = new int[] {
-        R.id.TurnSummary_Scores_TeamAName, R.id.TurnSummary_Scores_TeamBName,
-        R.id.TurnSummary_Scores_TeamCName, R.id.TurnSummary_Scores_TeamDName };
-
     // References to Scoreboard team Groups
-    final int[] SCORE_VIEW_GROUP_IDS = new int[] {
-        R.id.TurnSummary_Scores_TeamA, R.id.TurnSummary_Scores_TeamB,
-        R.id.TurnSummary_Scores_TeamC, R.id.TurnSummary_Scores_TeamD };
-    // Hide all
-    for (int i = 0; i < SCORE_VIEW_GROUP_IDS.length; i++) {
-      // Clear background
-      LinearLayout teamScoreGroupView = (LinearLayout) findViewById(SCORE_VIEW_GROUP_IDS[i]);
-      teamScoreGroupView.setBackgroundResource(R.color.genericBG_trimDark);
-      // Hide Team name
-      TextView text = (TextView) findViewById(SCORE_TEAMNAME_IDS[i]);
-      text.setVisibility(View.INVISIBLE);
-      // Hide Score
-      text = (TextView) findViewById(SCORE_VIEW_IDS[i]);
-      text.setVisibility(View.INVISIBLE);
-    }
-    // Show for teams that exist
-    for (Iterator<Team> itr = teams.iterator(); itr.hasNext();) {
-      Team team = itr.next();
-      LinearLayout teamScoreGroupView = (LinearLayout) findViewById(SCORE_VIEW_GROUP_IDS[team
-          .ordinal()]);
-      teamScoreGroupView.setBackgroundResource(R.color.genericBG);
-      // Show Team name
-      TextView text = (TextView) findViewById(SCORE_TEAMNAME_IDS[team.ordinal()]);
-      text.setVisibility(View.VISIBLE);
-      // Show Score
-      text = (TextView) findViewById(SCORE_VIEW_IDS[team.ordinal()]);
-      text.setVisibility(View.VISIBLE);
+    final int[] TEAM_SCORE_GROUPS = new int[] { R.id.TurnSummary_Scores_TeamA,
+        R.id.TurnSummary_Scores_TeamB, R.id.TurnSummary_Scores_TeamC,
+        R.id.TurnSummary_Scores_TeamD };
 
-      // Set Name
-      TextView teamnameView = (TextView) findViewById(SCORE_TEAMNAME_IDS[team
-          .ordinal()]);
-      teamnameView.setText(team.getName());
-      // Set Score
-      TextView teamTotalScoreView = (TextView) findViewById(SCORE_VIEW_IDS[team
-          .ordinal()]);
-      int score = team.getScore();
-      // if this is the current team's score, add in the temp score from the
-      // turn
-      if (game.getActiveTeam().ordinal() == team.ordinal()) {
-        score += turnscore;
+    ScoreboardRowLayout row;
+    // Setup score displays. Iterate through all team groups, setting scores for
+    // teams that played
+    // and disabling the group for teams that did not play
+    for (int i = 0; i < TEAM_SCORE_GROUPS.length; i++) {
+      row = (ScoreboardRowLayout) this.findViewById(TEAM_SCORE_GROUPS[i]);
+      if (i >= teams.size()) {
+        // Gray out rows for teams that didn't play
+        row.setActiveness(false);
+      } else {
+        // Show teams that played, and set their rank
+        row.setTeam(teams.get(i));
+        row.setActiveness(true);
       }
-      teamTotalScoreView.setText(Long.toString(score));
-
     }
 
-    // Color activity views according to team
-    View curTeamHeader = (View) findViewById(R.id.TurnSummary_TitleBG);
-    int teamColor = this.getResources().getColor(
-        game.getActiveTeam().getPrimaryColor());
-    curTeamHeader.setBackgroundColor(teamColor);
-
+    // Update Turn score total
+    TextView turnTotal = (TextView) this
+        .findViewById(R.id.TurnSummary_TurnScore);
+    turnTotal.setText("Total: " + Integer.toString(game.getTurnScore()));
   }
 
   /**
@@ -428,44 +397,53 @@ public class TurnSummary extends Activity {
       }
     }
   }
-  
+
   /**
-   * Resume the activity when it comes to the foreground. If the calling
-   * Intent bundles a new card index and state the card in question is
-   * update accordingly.
+   * Resume the activity when it comes to the foreground. If the calling Intent
+   * bundles a new card index and state the card in question is update
+   * accordingly.
    */
   @Override
   protected void onResume() {
 
     super.onResume();
-    
+
   }
-  
+
   /**
    * When the card review activity finishes, this function is called. Well,
    * actually, any activity called with a request code will invoke this
-   * function. If the card review activity returns, we use the result to
-   * change the card state indicated by the result intent stored in data. 
+   * function. If the card review activity returns, we use the result to change
+   * the card state indicated by the result intent stored in data.
    */
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     Bundle curBundle = null;
-    if(data != null) {
-      curBundle = data.getExtras(); 
+    if (data != null) {
+      curBundle = data.getExtras();
     }
-    if(requestCode == CARDREVIEW_REQUEST_CODE &&
-       curBundle != null &&
-       curBundle.containsKey(getString(R.string.cardIndexBundleKey)) &&
-       curBundle.containsKey(getString(R.string.cardStateBundleKey))) {
-      int curCardIndex = curBundle.getInt(getString(R.string.cardIndexBundleKey));
-      int curCardState = curBundle.getInt(getString(R.string.cardStateBundleKey));
+    if (requestCode == CARDREVIEW_REQUEST_CODE && curBundle != null
+        && curBundle.containsKey(getString(R.string.cardIndexBundleKey))
+        && curBundle.containsKey(getString(R.string.cardStateBundleKey))) {
+      int curCardIndex = curBundle
+          .getInt(getString(R.string.cardIndexBundleKey));
+      int curCardState = curBundle
+          .getInt(getString(R.string.cardStateBundleKey));
+
+      // Ammend the card
+      BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this
+          .getApplication();
+      GameManager gm = application.getGameManager();
+      gm.ammendCard(curCardIndex, curCardState);
+
+      // Update the individual card's UI in the list
       Card curCard = mCardList.get(curCardIndex);
-      curCard.setRws(curCardState);
       ImageView curImageView = mCardViewList.get(curCardIndex);
       curImageView.setImageResource(curCard.getRowEndDrawableId());
+
       TurnSummary.this.updateScoreViews();
     }
-    
+
     super.onActivityResult(requestCode, resultCode, data);
   }
 

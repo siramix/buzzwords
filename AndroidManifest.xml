@@ -116,6 +116,16 @@
 			
 		</activity>
 		
+		<activity android:name=".EditTeamName" android:label=""
+      android:theme="@style/EditTeamNameDialog"
+      android:screenOrientation="portrait">
+      <intent-filter>
+        <action android:name="com.buzzwordslite.intent.action.EDITTEAMNAME"></action>
+        <category android:name="android.intent.category.DEFAULT"></category>
+      </intent-filter>
+      
+    </activity>
+		
 	</application>
 	
 	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="7" />

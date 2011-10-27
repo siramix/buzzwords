@@ -15,6 +15,7 @@
   <string name="IntentTurnSummary">com.buzzwordslite.intent.action.TURNSUMMARY</string>
   <string name="IntentEndGame">com.buzzwordslite.intent.action.GAMEEND</string>
   <string name="IntentCardReview">com.buzzwordslite.intent.action.CARDREVIEW</string>
+  <string name="IntentEditTeamName">com.buzzwordslite.intent.action.EDITTEAMNAME</string>
 
   <!-- Global Prefkey IDs -->
   <string name="PREFKEY_SHOWREMINDER">com.buzzwordslite.prefkey.SHOWREMINDER</string>
@@ -36,23 +37,19 @@
   <string name="cardStateBundleKey">com.buzzwordslite.cardState</string>
   <string name="scrollXBundleKey">com.buzzwordslite.scrollY</string>
   <string name="scrollYBundleKey">com.buzzwordslite.scrollY</string>
+  <string name="teamBundleKey">com.buzzwordslite.team</string>
+  <string name="teamNameBundleKey">com.buzzwordslite.teamName</string>
+  
+  <!-- For EditTeamName dialog -->
+  <string name="editTeamName_hint">Choose a new name for %s team.</string>
 
   <!-- For end game dialog -->
   <string name="endGameDialog_title">Confirm End Game</string>
   <string name="endGameDialog_text">Are you sure you want to end the current game?</string>
 
-  <!-- For end game dialog -->
+  <!-- For pause game dialog -->
   <string name="pauseGameDialog_title">Game Paused</string>
   <string name="pauseGameDialog_text">Paused</string>
-
-  <!-- Rate Us dialogs -->
-  <string name="rateUsFirstDialog_title">We want your feedback!</string>
-  <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
-     Would you mind taking a minute to provide some feedback?</string>
-  
-  <string name="rateUsSecondDialog_title">We still want your feedback!</string>
-  <string name="rateUsSecondDialog_text">Wow you\'ve played a LOT, which means your opinion is especially valuable to us!
-     We won\'t bug you again but would you mind providing some feedback?</string>
   
   <!-- Rate Us dialogs -->
   <string name="rateUsFirstDialog_title">We want your feedback!</string>

@@ -32,7 +32,8 @@ public class BuzzWordsApplication extends Application {
   /**
    * Global Debug constant
    */
-  public static final boolean DEBUG = false;
+  public static final boolean DEBUG = true;
+  public static final boolean DEBUG_TIMERTICKS = false;
 
   /**
    * logging tag
@@ -43,11 +44,6 @@ public class BuzzWordsApplication extends Application {
    * The GameManager for all of BuzzWords
    */
   private GameManager mGameManager;
-
-  /**
-   * The SoundFXManager for all of BuzzWords
-   */
-  private SoundManager mSoundManager;
 
   /**
    * MediaPlayer for music
@@ -61,6 +57,7 @@ public class BuzzWordsApplication extends Application {
     super();
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "BuzzWordsApplication()");
+
     }
   }
 
@@ -86,36 +83,20 @@ public class BuzzWordsApplication extends Application {
   }
 
   /**
-   * @return a reference to the sound manager
-   */
-  public SoundManager getSoundManager() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetSoundManager()");
-    }
-    return this.mSoundManager;
-  }
-
-  /**
-   * Create a SoundManager object
-   * @param context, the context in which to create the sound manager
-   * @return the sound manager 
-   */
-  public SoundManager createSoundManager(Context context) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "CreateSound Manager(" + context);
-    }
-    mSoundManager = new SoundManager(context);
-    return mSoundManager;
-  }
-
-  /**
-   * @param context in which to create the media player
-   * @param id of the music to play
+   * @param context
+   *          in which to create the media player
+   * @param id
+   *          of the music to play
    * @return a reference to the media player
    */
   public MediaPlayer createMusicPlayer(Context context, int id) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "CreateMusicPlayer(" + context + "," + id + ")");
+    }
+    // Clean up resources. This fixed a leak issue caused by starting many games
+    // over and over.
+    if (mMediaPlayer != null) {
+      mMediaPlayer.release();
     }
     mMediaPlayer = MediaPlayer.create(context, id);
     return mMediaPlayer;
