@@ -94,14 +94,16 @@ public class EditTeamName extends Activity {
         Log.d(TAG, "Cancel onClick()");
       }
 
-      // Commit changes to the team
-      mTeam.setName(mEditTeamName.getText().toString());
+      // Cache the team name
+      String teamName = mEditTeamName.getText().toString();
 
       // Keep music playing
       mContinueMusic = true;
 
-      // Modified current team, so only pass back result
+      // Pass back the team and the name
       Intent curIntent = new Intent();
+      curIntent.putExtra(getString(R.string.teamBundleKey), mTeam);
+      curIntent.putExtra(getString(R.string.teamNameBundleKey), teamName);
       EditTeamName.this.setResult(Activity.RESULT_OK, curIntent);
       finish();
     }

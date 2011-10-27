@@ -203,15 +203,27 @@ public class GameSetup extends Activity {
    */
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == EDITTEAMNAME_REQUEST_CODE) {
-      // Refresh all TeamSelectLayouts
-      TeamSelectLayout teamSelect;
-      for (int i = 0; i < TEAM_SELECT_LAYOUTS.length; i++) {
-        teamSelect = (TeamSelectLayout) this
-            .findViewById(TEAM_SELECT_LAYOUTS[i]);
-        teamSelect.refresh();
+    if (requestCode == EDITTEAMNAME_REQUEST_CODE &&
+        resultCode == Activity.RESULT_OK &&
+        data.getExtras() != null) {
+      
+      // Get team and team name from dialog
+      String curTeamName = data.getStringExtra(getString(R.string.teamNameBundleKey));
+      Team curTeam = (Team) data.getSerializableExtra(getString(R.string.teamBundleKey));
+      
+      if(curTeamName != null && curTeam != null) {
+        
+        // Set the team name and update the layout
+        curTeam.setName(curTeamName);      
+        TeamSelectLayout teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[curTeam.ordinal()]);
+        teamSelect.setTeam(curTeam);
+        
+        // Set the name as a pref
+        mGameSetupPrefEditor.putString(curTeam.getDefaultName(), curTeam.getName());
+        mGameSetupPrefEditor.commit();
+        
+        }
       }
-    }
 
     super.onActivityResult(requestCode, resultCode, data);
   }
@@ -277,7 +289,8 @@ public class GameSetup extends Activity {
     Team curTeam;
     for (int i = 0; i < TEAM_SELECT_LAYOUTS.length; ++i) {
       curTeam = Team.values()[i];
-      curTeam.setName(curTeam.getDefaultName());
+      String curTeamName = mGameSetupPrefs.getString(curTeam.getDefaultName(), curTeam.getDefaultName());
+      curTeam.setName(curTeamName);
       teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[i]);
       teamSelect.setTeam(curTeam);
 

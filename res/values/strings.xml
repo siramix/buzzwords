@@ -38,6 +38,7 @@
   <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
   <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
   <string name="teamBundleKey">com.buzzwords.team</string>
+  <string name="teamNameBundleKey">com.buzzwords.teamName</string>
   
   <!-- For EditTeamName dialog -->
   <string name="editTeamName_hint">Choose a new name for %s team.</string>
