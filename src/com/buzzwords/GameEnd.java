@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,16 +32,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -78,56 +73,39 @@ public class GameEnd extends Activity {
    * Animates all views in GameEnd screen in an interesting sequence.
    */
   private void animateGameEnd(int numteams) {
-    // Animate GameOver by sliding it down and fading to some semi-transparency
-    // value
-    AnimationSet animGameOver = new AnimationSet(false);
 
-    TranslateAnimation transGameOver = new TranslateAnimation(
-        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-        Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-    transGameOver.setStartOffset(500);
-    transGameOver.setDuration(500);
-    transGameOver.setInterpolator(new AccelerateInterpolator());
+    long offset = 500;
 
-    // Wait to Fade in Game Over - for drama.
-    AlphaAnimation fadeInGameOver = new AlphaAnimation(0.0f, 1.0f);
-    fadeInGameOver.setStartOffset(500);
-    fadeInGameOver.setDuration(0);
-    AlphaAnimation fadeOutGameOver = new AlphaAnimation(1.0f, 0.25f);
-    fadeOutGameOver.setStartOffset(500);
-    fadeOutGameOver.setDuration(1000);
+    // Fade in Winner text
+    AlphaAnimation fadeInWinner = new AlphaAnimation(0.0f, 1.0f);
+    fadeInWinner.setStartOffset(offset);
+    fadeInWinner.setDuration(30);
+    View winnerText = (View) this.findViewById(R.id.GameEnd_Winner);
+    winnerText.startAnimation(fadeInWinner);
 
-    animGameOver.addAnimation(transGameOver);
-    animGameOver.addAnimation(fadeInGameOver);
-    animGameOver.addAnimation(fadeOutGameOver);
-    animGameOver.setFillAfter(true);
-    animGameOver.setAnimationListener(mGameOverListener);
+    AlphaAnimation fadeInWinnerText = new AlphaAnimation(0.0f, 1.0f);
+    offset = fadeInWinner.getStartOffset() + fadeInWinner.getDuration() + 500;
+    fadeInWinnerText.setStartOffset(offset);
+    fadeInWinnerText.setDuration(30);
+    fadeInWinnerText.setAnimationListener(mGameOverListener);
+    View winnerTeamText = (View) this.findViewById(R.id.GameEnd_WinnerText);
+    winnerTeamText.startAnimation(fadeInWinnerText);
 
-    RelativeLayout gameOverGroup = (RelativeLayout) this
-        .findViewById(R.id.GameEnd_GameOverGroup);
-    gameOverGroup.startAnimation(animGameOver);
-
-    // Slide in header as GameOver comes to a stop
-    TranslateAnimation transHeader = new TranslateAnimation(
-        Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-        Animation.RELATIVE_TO_PARENT, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
-    transHeader.setStartOffset(500);
-    transHeader.setDuration(500);
-    transHeader.setInterpolator(new AccelerateInterpolator());
-    transHeader.setFillBefore(true);
-
-    RelativeLayout header = (RelativeLayout) this
-        .findViewById(R.id.GameEnd_HeaderGroup);
-    header.startAnimation(transHeader);
-
-    // Translate scoreboard with header
-    LinearLayout scoreboard = (LinearLayout) this
-        .findViewById(R.id.GameEnd_FinalStandings);
-    scoreboard.startAnimation(transHeader);
+    // Fade in Title
+    AlphaAnimation fadeInAfterWinner = new AlphaAnimation(0.0f, 1.0f);
+    offset = fadeInWinnerText.getStartOffset() + fadeInWinnerText.getDuration()
+        + 500;
+    fadeInAfterWinner.setStartOffset(offset);
+    fadeInAfterWinner.setDuration(500);
+    TextView title = (TextView) this.findViewById(R.id.GameEnd_Title);
+    title.startAnimation(fadeInAfterWinner);
+    View scoreboardHeader = (View) this
+        .findViewById(R.id.GameEnd_ScoreboardHeader_Group);
+    scoreboardHeader.startAnimation(fadeInAfterWinner);
 
     // Animate buttons to fade in as scoreboard translates
     AlphaAnimation fadeInButtons = new AlphaAnimation(0.0f, 1.0f);
-    fadeInButtons.setStartOffset(1000);
+    fadeInButtons.setStartOffset(offset);
     fadeInButtons.setDuration(500);
     fadeInButtons.setAnimationListener(mButtonFadeListener);
     Button tempButton = (Button) this.findViewById(R.id.GameEnd_MainMenu);
@@ -140,7 +118,6 @@ public class GameEnd extends Activity {
     TranslateAnimation transPanel4 = new TranslateAnimation(
         Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f,
         Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-    long offset = 1500;
     transPanel4.setStartOffset(offset);
     transPanel4.setDuration(250);
     transPanel4.setFillBefore(true);
@@ -186,7 +163,6 @@ public class GameEnd extends Activity {
     offset = transPanel2.getStartOffset() + transPanel2.getDuration()
         + PANEL_DELAY;
     transPanel1.setStartOffset(offset);
-    // Suspense on final animation
     transPanel1.setDuration(250);
     transPanel1.setFillBefore(true);
     transPanel1.setInterpolator(new DecelerateInterpolator());
@@ -194,17 +170,6 @@ public class GameEnd extends Activity {
     RelativeLayout panel1 = (RelativeLayout) this
         .findViewById(R.id.GameEnd_Scores_1);
     panel1.startAnimation(transPanel1);
-
-    // Show winner only at end
-    AlphaAnimation fadeInWinner = new AlphaAnimation(0.0f, 1.0f);
-    offset = transPanel1.getStartOffset() + transPanel1.getDuration();
-    fadeInWinner.setStartOffset(offset);
-    fadeInWinner.setDuration(200);
-    fadeInWinner.setFillBefore(true);
-
-    TextView winner = (TextView) this.findViewById(R.id.GameEnd_WinnerText);
-    winner.startAnimation(fadeInWinner);
-
   }
 
   /**
@@ -212,15 +177,15 @@ public class GameEnd extends Activity {
    */
   private final AnimationListener mGameOverListener = new AnimationListener() {
     public void onAnimationEnd(Animation animation) {
+      // Play win sound
+      SoundManager sm = SoundManager.getInstance(GameEnd.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.WIN);
     }
 
     public void onAnimationRepeat(Animation animation) {
     }
 
     public void onAnimationStart(Animation animation) {
-      // Play win sound
-      SoundManager sm = SoundManager.getInstance(GameEnd.this.getBaseContext());
-      sm.playSound(SoundManager.Sound.WIN);
     }
   };
 
@@ -362,77 +327,23 @@ public class GameEnd extends Activity {
     final int[] TEAM_SCORE_GROUPS = new int[] { R.id.GameEnd_Scores_1,
         R.id.GameEnd_Scores_2, R.id.GameEnd_Scores_3, R.id.GameEnd_Scores_4 };
 
-    // Ids for score placement text views. These should only be changed in the
-    // event of ties
-    final int[] TEAM_PLACE_IDS = new int[] { R.id.GameEnd_Scores_1_place,
-        R.id.GameEnd_Scores_2_place, R.id.GameEnd_Scores_3_place,
-        R.id.GameEnd_Scores_4_place };
-
-    // Ids for team names
-    final int[] TEAM_NAME_IDS = new int[] { R.id.GameEnd_Scores_1_name,
-        R.id.GameEnd_Scores_2_name, R.id.GameEnd_Scores_3_name,
-        R.id.GameEnd_Scores_4_name };
-
-    // Ids for score values
-    final int[] TEAM_SCORE_IDS = new int[] { R.id.GameEnd_Scores_1_score,
-        R.id.GameEnd_Scores_2_score, R.id.GameEnd_Scores_3_score,
-        R.id.GameEnd_Scores_4_score };
-
-    // Ids for scoreboard backgrounds
-    final int[] TEAM_SCORE_BGS = new int[] { R.id.GameEnd_Scores_1_BG,
-        R.id.GameEnd_Scores_2_BG, R.id.GameEnd_Scores_3_BG,
-        R.id.GameEnd_Scores_4_BG };
-
-    // Ids for scoreboard background end elements
-    final int[] TEAM_SCORE_ENDS = new int[] { R.id.GameEnd_Scores_1_end,
-        R.id.GameEnd_Scores_2_end, R.id.GameEnd_Scores_3_end,
-        R.id.GameEnd_Scores_4_end };
-
     final String[] RANKS = new String[] { "1st", "2nd", "3rd", "4th" };
 
+    ScoreboardRowLayout row;
     // Setup score displays. Iterate through all team groups, setting scores for
     // teams that played
     // and disabling the group for teams that did not play
     for (int i = 0; i < TEAM_SCORE_GROUPS.length; i++) {
+      row = (ScoreboardRowLayout) this.findViewById(TEAM_SCORE_GROUPS[i]);
       if (i >= teams.size()) {
         // Gray out rows for teams that didn't play
-        View bg = (View) findViewById(TEAM_SCORE_BGS[i]);
-        bg.setBackgroundResource(R.color.gameend_blankrow);
-        // Hide place, Hide Name, Hide Score
-        TextView text = (TextView) findViewById(TEAM_PLACE_IDS[i]);
-        text.setVisibility(View.INVISIBLE);
-        text = (TextView) findViewById(TEAM_NAME_IDS[i]);
-        text.setVisibility(View.INVISIBLE);
-        text = (TextView) findViewById(TEAM_SCORE_IDS[i]);
-        text.setVisibility(View.INVISIBLE);
-        // Set background of end piece to gray
-        Drawable d = getResources().getDrawable(
-            R.drawable.gameend_row_end_blank);
-        ImageView end = (ImageView) findViewById(TEAM_SCORE_ENDS[i]);
-        end.setImageDrawable(d);
+        row.setActiveness(false);
       } else {
 
-        // Set ranking
-        TextView text = (TextView) findViewById(TEAM_PLACE_IDS[i]);
-        // text.setTextColor( res.getColor( teams.get( teamIndex ).getText() ));
-        text.setText(RANKS[rankings[i]]);
-        // Set team name and color
-        text = (TextView) findViewById(TEAM_NAME_IDS[i]);
-        text
-            .setTextColor(mResources.getColor(teams.get(i).getSecondaryColor()));
-        text.setText(teams.get(i).getName());
-        // Set team score and color
-        text = (TextView) findViewById(TEAM_SCORE_IDS[i]);
-        text.setTextColor(mResources.getColor(teams.get(i).getPrimaryColor()));
-        text.setText(Integer.toString(teams.get(i).getScore()));
-        // Set background color
-        View bg = (View) findViewById(TEAM_SCORE_BGS[i]);
-        bg.setBackgroundResource(teams.get(i).getPrimaryColor());
-        // Set row end background color
-        ImageView end = (ImageView) findViewById(TEAM_SCORE_ENDS[i]);
-        Drawable d = getResources().getDrawable(teams.get(i).getGameEndPiece());
-        end.setImageDrawable(d);
-
+        // Show teams that played, and set their rank
+        row.setTeam(teams.get(i));
+        row.setActiveness(true);
+        row.setStanding(RANKS[rankings[i]]);
       }
     }
 
@@ -442,19 +353,21 @@ public class GameEnd extends Activity {
       text.setTextColor(mResources.getColor(R.color.white));
       text.setText("Tie Game!");
     } else {
-      // Set text to Team X Wins!
+      // Announce winning team
       text.setTextColor(mResources.getColor(teams.get(0).getPrimaryColor()));
-      text.setText(teams.get(0).getName() + " Wins!");
+      text.setText(teams.get(0).getName());
     }
-    // set font
+
+    // Set Anton fonts
     Typeface antonFont = Typeface.createFromAsset(getAssets(),
         "fonts/Anton.ttf");
+    text = (TextView) findViewById(R.id.GameEnd_WinnerText);
     text.setTypeface(antonFont);
-
-    // Set font on GameOver text
-    text = (TextView) findViewById(R.id.GameEnd_GameOver_Game);
+    text = (TextView) findViewById(R.id.GameEnd_Winner);
     text.setTypeface(antonFont);
-    text = (TextView) findViewById(R.id.GameEnd_GameOver_Over);
+    text = (TextView) findViewById(R.id.GameEnd_Title);
+    text.setTypeface(antonFont);
+    text = (TextView) findViewById(R.id.GameEnd_ScoreboardHeader);
     text.setTypeface(antonFont);
 
     // Set onclick listeners for game end buttons
@@ -468,7 +381,6 @@ public class GameEnd extends Activity {
 
     // Animate the whole thing
     animateGameEnd(teams.size());
-
   }
 
   /**
