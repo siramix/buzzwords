@@ -63,8 +63,9 @@ public class GameSetup extends Activity {
 
   // Ids for TeamSelectLayouts
   final int[] TEAM_SELECT_LAYOUTS = new int[] { R.id.GameSetup_TeamALayout,
-  		R.id.GameSetup_TeamBLayout, R.id.GameSetup_TeamCLayout, R.id.GameSetup_TeamDLayout };
-  
+      R.id.GameSetup_TeamBLayout, R.id.GameSetup_TeamCLayout,
+      R.id.GameSetup_TeamDLayout };
+
   // Preference keys (indicating quadrant)
   public static final String PREFS_NAME = "gamesetupprefs";
 
@@ -73,7 +74,7 @@ public class GameSetup extends Activity {
 
   // Flag to play music into the next Activity
   private boolean mContinueMusic = false;
-  
+
   // Request code for EditTeam activity result
   static final int EDITTEAMNAME_REQUEST_CODE = 1;
 
@@ -96,8 +97,7 @@ public class GameSetup extends Activity {
     fade.setDuration(2000);
     return fade;
   }
-  
-  
+
   /**
    * Watches the button that handles hand-off to the Turn activity.
    */
@@ -127,8 +127,8 @@ public class GameSetup extends Activity {
       while (keepLooping) {
         try {
           GameManager gm = new GameManager(GameSetup.this);
-          gm.startGame(mTeamList, ROUND_RADIOS[GameSetup.this
-              .getCheckedRadioIndex()][1]);
+          gm.startGame(mTeamList,
+              ROUND_RADIOS[GameSetup.this.getCheckedRadioIndex()][1]);
           application.setGameManager(gm);
           keepLooping = false;
         } catch (SQLiteException e) {
@@ -145,76 +145,72 @@ public class GameSetup extends Activity {
       mp.stop();
     }
   };
-  
+
   /*
    * Edit team name listener to launch Edit Team name dialog
    */
-  private final OnTeamEditedListener mTeamEditedListener = new OnTeamEditedListener()
-  {
-	  public void onTeamEdited(Team team)
-	  {
-	      SoundManager sm = SoundManager.getInstance(GameSetup.this.getBaseContext());
-	      sm.playSound(SoundManager.Sound.CONFIRM);
+  private final OnTeamEditedListener mTeamEditedListener = new OnTeamEditedListener() {
+    public void onTeamEdited(Team team) {
+      SoundManager sm = SoundManager.getInstance(GameSetup.this
+          .getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
 
-	      Intent editTeamNameIntent = new Intent(
-	          getString(R.string.IntentEditTeamName), getIntent().getData());
-	      editTeamNameIntent.putExtra(getString(R.string.teamBundleKey),
-	    		  team);
-	      startActivityForResult(editTeamNameIntent, EDITTEAMNAME_REQUEST_CODE);
-	 
-	      /*
-	      // Launch into Turn activity
-	      startActivity(new Intent(getApplication().getString(R.string.IntentEditTeamName),
-	          getIntent().getData()));
-	      */
-	      mContinueMusic = true;
-	  }
+      Intent editTeamNameIntent = new Intent(
+          getString(R.string.IntentEditTeamName), getIntent().getData());
+      editTeamNameIntent.putExtra(getString(R.string.teamBundleKey), team);
+      startActivityForResult(editTeamNameIntent, EDITTEAMNAME_REQUEST_CODE);
+
+      /*
+       * // Launch into Turn activity startActivity(new
+       * Intent(getApplication().getString(R.string.IntentEditTeamName),
+       * getIntent().getData()));
+       */
+      mContinueMusic = true;
+    }
   };
-  
+
   /*
-   * Listener that watches the TeamSelectLayouts for events when the 
-   * teams are added or removed.  It modifies the preferences and the list
-   * of teams accordingly.
+   * Listener that watches the TeamSelectLayouts for events when the teams are
+   * added or removed. It modifies the preferences and the list of teams
+   * accordingly.
    */
-  private final OnTeamAddedListener mTeamAddedListener = new OnTeamAddedListener()
-  {
-	  public void onTeamAdded(Team team, boolean isTeamOn)
-	  {
-	      SoundManager sm = SoundManager.getInstance((GameSetup.this.getBaseContext()));
-	      
-	      if (isTeamOn) {
-	    	  // Add the team to the list
-	    	  mTeamList.add(team);
-	    	  // Store off this selection so it is remember between activities
-	    	  mGameSetupPrefEditor.putBoolean(team.getPreferenceKey(), true);
-	    	  // Play confirm sound on add
-	    	  sm.playSound(SoundManager.Sound.CONFIRM);
-	      } else {
-	    	// Remove thet eam from the list
-	    	mTeamList.remove(team);
-	        // Store off this selection so it is remember between activities
-	    	mGameSetupPrefEditor.putBoolean(team.getPreferenceKey(), false);
-	        // Play back sound on remove
-	        sm.playSound(SoundManager.Sound.BACK);
-	      }
-	  }
+  private final OnTeamAddedListener mTeamAddedListener = new OnTeamAddedListener() {
+    public void onTeamAdded(Team team, boolean isTeamOn) {
+      SoundManager sm = SoundManager.getInstance((GameSetup.this
+          .getBaseContext()));
+
+      if (isTeamOn) {
+        // Add the team to the list
+        mTeamList.add(team);
+        // Store off this selection so it is remember between activities
+        mGameSetupPrefEditor.putBoolean(team.getPreferenceKey(), true);
+        // Play confirm sound on add
+        sm.playSound(SoundManager.Sound.CONFIRM);
+      } else {
+        // Remove thet eam from the list
+        mTeamList.remove(team);
+        // Store off this selection so it is remember between activities
+        mGameSetupPrefEditor.putBoolean(team.getPreferenceKey(), false);
+        // Play back sound on remove
+        sm.playSound(SoundManager.Sound.BACK);
+      }
+    }
   };
 
   /**
-   * This function is called when the EditTeamName activity finishes.
-   * It refreshes all Layouts.
+   * This function is called when the EditTeamName activity finishes. It
+   * refreshes all Layouts.
    */
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == EDITTEAMNAME_REQUEST_CODE)
-    {
-    	// Refresh all TeamSelectLayouts
-        TeamSelectLayout teamSelect;
-        for( int i = 0; i < TEAM_SELECT_LAYOUTS.length; i++)
-        {
-        	teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[i]);
-        	teamSelect.refresh();
-        }
+    if (requestCode == EDITTEAMNAME_REQUEST_CODE) {
+      // Refresh all TeamSelectLayouts
+      TeamSelectLayout teamSelect;
+      for (int i = 0; i < TEAM_SELECT_LAYOUTS.length; i++) {
+        teamSelect = (TeamSelectLayout) this
+            .findViewById(TEAM_SELECT_LAYOUTS[i]);
+        teamSelect.refresh();
+      }
     }
 
     super.onActivityResult(requestCode, resultCode, data);
@@ -279,22 +275,21 @@ public class GameSetup extends Activity {
     // Assign teams to TeamSelectLayouts
     TeamSelectLayout teamSelect;
     Team curTeam;
-    for( int i = 0; i < TEAM_SELECT_LAYOUTS.length; ++i)
-    {
-    	curTeam = Team.values()[i];
-    	curTeam.setName(curTeam.getDefaultName());
-    	teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[i]);
-        teamSelect.setTeam(curTeam);
+    for (int i = 0; i < TEAM_SELECT_LAYOUTS.length; ++i) {
+      curTeam = Team.values()[i];
+      curTeam.setName(curTeam.getDefaultName());
+      teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[i]);
+      teamSelect.setTeam(curTeam);
 
-        if(GameSetup.mGameSetupPrefs.getBoolean(curTeam.getPreferenceKey(), false)) {
-        	teamSelect.setActiveness(true);
-        	mTeamList.add(curTeam);
-        }
-        else {
-        	teamSelect.setActiveness(false);
-        }
-        teamSelect.setOnTeamEditedListener(mTeamEditedListener);
-        teamSelect.setOnTeamAddedListener(mTeamAddedListener);
+      if (GameSetup.mGameSetupPrefs.getBoolean(curTeam.getPreferenceKey(),
+          false)) {
+        teamSelect.setActiveness(true);
+        mTeamList.add(curTeam);
+      } else {
+        teamSelect.setActiveness(false);
+      }
+      teamSelect.setOnTeamEditedListener(mTeamEditedListener);
+      teamSelect.setOnTeamAddedListener(mTeamAddedListener);
     }
 
     // Do helper text animations
@@ -346,12 +341,12 @@ public class GameSetup extends Activity {
     case DIALOG_TEAMERROR:
       builder = new AlertDialog.Builder(this);
       builder.setMessage("You must have at least two teams to start the game.")
-          .setCancelable(false).setTitle("Need more teams!").setPositiveButton(
-              "Okay", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                  dialog.cancel();
-                }
-              });
+          .setCancelable(false).setTitle("Need more teams!")
+          .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              dialog.cancel();
+            }
+          });
       dialog = builder.create();
       break;
     default:
@@ -404,8 +399,8 @@ public class GameSetup extends Activity {
     // Store off game's attributes as preferences. This is done in Pause to
     // maintain selections
     // when they press "back" to main title then return.
-    GameSetup.mGameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX, GameSetup.this
-        .getCheckedRadioIndex());
+    GameSetup.mGameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX,
+        GameSetup.this.getCheckedRadioIndex());
     GameSetup.mGameSetupPrefEditor.commit();
   }
 

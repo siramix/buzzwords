@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 /**
  * This handles changing a specified team's name
+ * 
  * @author Siramix Labs
  */
 public class EditTeamName extends Activity {
@@ -42,9 +43,9 @@ public class EditTeamName extends Activity {
    * Static string used to refer to this class, in debug output for example.
    */
   private static final String TAG = "EditTeamName";
-  
+
   private Team mTeam;
-  
+
   /*
    * References to views
    */
@@ -61,14 +62,16 @@ public class EditTeamName extends Activity {
    * Set the references to the elements from the layout file
    */
   private void setupViewReferences() {
-	  mEditTeamName = (EditText) this.findViewById(R.id.EditTeamName_EditField);
-	  mButtonCancel = (Button) this.findViewById(R.id.EditTeamName_Buttons_Cancel);
-	  mButtonAccept = (Button) this.findViewById(R.id.EditTeamName_Buttons_Accept);
+    mEditTeamName = (EditText) this.findViewById(R.id.EditTeamName_EditField);
+    mButtonCancel = (Button) this
+        .findViewById(R.id.EditTeamName_Buttons_Cancel);
+    mButtonAccept = (Button) this
+        .findViewById(R.id.EditTeamName_Buttons_Accept);
   }
-  
+
   /**
-   * Watches the button that handles returning to previous activity
-   * with no changes
+   * Watches the button that handles returning to previous activity with no
+   * changes
    */
   private final OnClickListener mCancelListener = new OnClickListener() {
     public void onClick(View v) {
@@ -81,30 +84,29 @@ public class EditTeamName extends Activity {
     }
   };
 
-  
   /**
-   * Watches the button that handles returning to previous activity
-   * with changes to team
+   * Watches the button that handles returning to previous activity with changes
+   * to team
    */
   private final OnClickListener mAcceptListener = new OnClickListener() {
     public void onClick(View v) {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "Cancel onClick()");
       }
-      
+
       // Commit changes to the team
       mTeam.setName(mEditTeamName.getText().toString());
-      
+
       // Keep music playing
       mContinueMusic = true;
-      
+
       // Modified current team, so only pass back result
       Intent curIntent = new Intent();
       EditTeamName.this.setResult(Activity.RESULT_OK, curIntent);
       finish();
     }
   };
-  
+
   /**
    * Create the activity and display the card bundled in the intent.
    */
@@ -118,20 +120,20 @@ public class EditTeamName extends Activity {
     this.setContentView(R.layout.editteamname);
 
     setupViewReferences();
-    
+
     // Set fonts on titles
     Typeface antonFont = Typeface.createFromAsset(getAssets(),
         "fonts/Anton.ttf");
 
     TextView label = (TextView) this.findViewById(R.id.EditTeamName_Title);
     label.setTypeface(antonFont);
-        
+
     // Get the team from the passed in Bundle
     Intent curIntent = this.getIntent();
     Bundle teamBundle = curIntent.getExtras();
     mTeam = (Team) teamBundle
         .getSerializable(getString(R.string.teamBundleKey));
-    
+
     // Set initial value for EditTeamName field
     mEditTeamName.setText(mTeam.getName());
     // Select the last character (this seems to be typical behavior)
@@ -140,7 +142,7 @@ public class EditTeamName extends Activity {
     // Initialize hint text
     TextView hint = (TextView) this.findViewById(R.id.EditTeamName_Hint);
     hint.setText(getString(R.string.editTeamName_hint, mTeam.getDefaultName()));
-    
+
     // Set listener for accept
     mButtonCancel.setOnClickListener(mCancelListener);
     mButtonAccept.setOnClickListener(mAcceptListener);
@@ -182,7 +184,7 @@ public class EditTeamName extends Activity {
       }
     }
   }
- 
+
   /**
    * Override OnResume to resume activity specific processes
    */
@@ -202,7 +204,7 @@ public class EditTeamName extends Activity {
     if (!mp.isPlaying() && sp.getBoolean("music_enabled", true)) {
       mp.start();
     }
-    
+
     // set flag to let onPause handle music
     mContinueMusic = false;
   }

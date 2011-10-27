@@ -73,36 +73,36 @@ public class GameEnd extends Activity {
    * Animates all views in GameEnd screen in an interesting sequence.
    */
   private void animateGameEnd(int numteams) {
-	  
-	long offset = 500;
-	
-	// Fade in Winner text
-	AlphaAnimation fadeInWinner = new AlphaAnimation(0.0f, 1.0f);
-	fadeInWinner.setStartOffset(offset);
-	fadeInWinner.setDuration(30);
+
+    long offset = 500;
+
+    // Fade in Winner text
+    AlphaAnimation fadeInWinner = new AlphaAnimation(0.0f, 1.0f);
+    fadeInWinner.setStartOffset(offset);
+    fadeInWinner.setDuration(30);
     View winnerText = (View) this.findViewById(R.id.GameEnd_Winner);
     winnerText.startAnimation(fadeInWinner);
-    
-	AlphaAnimation fadeInWinnerText = new AlphaAnimation(0.0f, 1.0f);
-	offset = fadeInWinner.getStartOffset() + fadeInWinner.getDuration() + 500;
-	fadeInWinnerText.setStartOffset(offset);
-	fadeInWinnerText.setDuration(30);
-	fadeInWinnerText.setAnimationListener(mGameOverListener);
+
+    AlphaAnimation fadeInWinnerText = new AlphaAnimation(0.0f, 1.0f);
+    offset = fadeInWinner.getStartOffset() + fadeInWinner.getDuration() + 500;
+    fadeInWinnerText.setStartOffset(offset);
+    fadeInWinnerText.setDuration(30);
+    fadeInWinnerText.setAnimationListener(mGameOverListener);
     View winnerTeamText = (View) this.findViewById(R.id.GameEnd_WinnerText);
     winnerTeamText.startAnimation(fadeInWinnerText);
 
     // Fade in Title
-	AlphaAnimation fadeInAfterWinner = new AlphaAnimation(0.0f, 1.0f);
-	offset = fadeInWinnerText.getStartOffset() + fadeInWinnerText.getDuration() + 500;
-	fadeInAfterWinner.setStartOffset(offset);
-	fadeInAfterWinner.setDuration(500);
-    TextView title = (TextView) this
-            .findViewById(R.id.GameEnd_Title);
+    AlphaAnimation fadeInAfterWinner = new AlphaAnimation(0.0f, 1.0f);
+    offset = fadeInWinnerText.getStartOffset() + fadeInWinnerText.getDuration()
+        + 500;
+    fadeInAfterWinner.setStartOffset(offset);
+    fadeInAfterWinner.setDuration(500);
+    TextView title = (TextView) this.findViewById(R.id.GameEnd_Title);
     title.startAnimation(fadeInAfterWinner);
     View scoreboardHeader = (View) this
-            .findViewById(R.id.GameEnd_ScoreboardHeader_Group);
-    scoreboardHeader.startAnimation(fadeInAfterWinner);    
-   
+        .findViewById(R.id.GameEnd_ScoreboardHeader_Group);
+    scoreboardHeader.startAnimation(fadeInAfterWinner);
+
     // Animate buttons to fade in as scoreboard translates
     AlphaAnimation fadeInButtons = new AlphaAnimation(0.0f, 1.0f);
     fadeInButtons.setStartOffset(offset);
@@ -176,11 +176,11 @@ public class GameEnd extends Activity {
    * Setup the sounds to go with the animation
    */
   private final AnimationListener mGameOverListener = new AnimationListener() {
-	  public void onAnimationEnd(Animation animation) {
-		  // Play win sound
-		  SoundManager sm = SoundManager.getInstance(GameEnd.this.getBaseContext());
-		  sm.playSound(SoundManager.Sound.WIN);
-	  }
+    public void onAnimationEnd(Animation animation) {
+      // Play win sound
+      SoundManager sm = SoundManager.getInstance(GameEnd.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.WIN);
+    }
 
     public void onAnimationRepeat(Animation animation) {
     }
@@ -338,12 +338,12 @@ public class GameEnd extends Activity {
       row = (ScoreboardRowLayout) this.findViewById(TEAM_SCORE_GROUPS[i]);
       if (i >= teams.size()) {
         // Gray out rows for teams that didn't play
-    	row.setActiveness(false);
+        row.setActiveness(false);
       } else {
-    	// Show teams that played, and set their rank
+        // Show teams that played, and set their rank
         row.setTeam(teams.get(i));
-    	row.setActiveness(true);
-    	row.setStanding(RANKS[rankings[i]]);
+        row.setActiveness(true);
+        row.setStanding(RANKS[rankings[i]]);
       }
     }
 
@@ -357,7 +357,7 @@ public class GameEnd extends Activity {
       text.setTextColor(mResources.getColor(teams.get(0).getPrimaryColor()));
       text.setText(teams.get(0).getName());
     }
-    
+
     // Set Anton fonts
     Typeface antonFont = Typeface.createFromAsset(getAssets(),
         "fonts/Anton.ttf");
@@ -369,7 +369,7 @@ public class GameEnd extends Activity {
     text.setTypeface(antonFont);
     text = (TextView) findViewById(R.id.GameEnd_ScoreboardHeader);
     text.setTypeface(antonFont);
-    
+
     // Set onclick listeners for game end buttons
     Button mainMenuButton = (Button) this.findViewById(R.id.GameEnd_MainMenu);
     Button rematchButton = (Button) this.findViewById(R.id.GameEnd_Rematch);

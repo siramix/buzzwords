@@ -18,28 +18,26 @@
 package com.buzzwords;
 
 /**
- * Interface definition for a callback to be invoked when the 
- * TeamSelectLayout detects a team edited event.
+ * Interface definition for a callback to be invoked when the TeamSelectLayout
+ * detects a team edited event.
  * 
- *  @author Siramix Labs
+ * @author Siramix Labs
  * 
  */
 public abstract class OnTeamEditedListener {
 
-	/* 
-	 * Empty Constructor
-	 */
-	OnTeamEditedListener()
-	{
-		
-	}
-	
-	/*
-	 * Override to handle when a team is edited from a TeamSelectLayout
-	 * 
-	 * @param t 
-	 * 			team that was edited
-	 */
-	public abstract void onTeamEdited(Team t);
-	
+  /*
+   * Empty Constructor
+   */
+  OnTeamEditedListener() {
+
+  }
+
+  /*
+   * Override to handle when a team is edited from a TeamSelectLayout
+   * 
+   * @param t team that was edited
+   */
+  public abstract void onTeamEdited(Team t);
+
 }

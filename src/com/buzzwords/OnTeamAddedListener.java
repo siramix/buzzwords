@@ -18,31 +18,28 @@
 package com.buzzwords;
 
 /**
- * Interface definition for a callback to be invoked when the 
- * TeamSelectLayout detects a team added or removed event.
+ * Interface definition for a callback to be invoked when the TeamSelectLayout
+ * detects a team added or removed event.
  * 
- *  @author Siramix Labs
+ * @author Siramix Labs
  * 
  */
 public abstract class OnTeamAddedListener {
 
-	/* 
-	 * Empty Constructor
-	 */
-	OnTeamAddedListener()
-	{
-		
-	}
-	
-	/*
-	 * Override to handle when a team is added or removed
-	 * from a TeamSelectLayout
-	 * 
-	 * @param t 
-	 * 			team that was added
-	 * @param teamAdded
-	 * 			true if the team was added, false if it was removed
-	 */
-	public abstract void onTeamAdded(Team t, boolean isTeamAdded);
-	
+  /*
+   * Empty Constructor
+   */
+  OnTeamAddedListener() {
+
+  }
+
+  /*
+   * Override to handle when a team is added or removed from a TeamSelectLayout
+   * 
+   * @param t team that was added
+   * 
+   * @param teamAdded true if the team was added, false if it was removed
+   */
+  public abstract void onTeamAdded(Team t, boolean isTeamAdded);
+
 }

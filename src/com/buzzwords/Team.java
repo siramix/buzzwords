@@ -174,7 +174,11 @@ public enum Team implements Serializable {
    * getDefaultName()
    */
   public void setName(String name) {
-    this.mName = name;
+    if(name.length() > 0) {
+      this.mName = name;
+    } else {
+      this.mName = this.mDefaultName;
+    }
   }
 
 

@@ -148,8 +148,8 @@ public class TurnSummary extends Activity {
     for (Iterator<Card> it = mCardList.iterator(); it.hasNext();) {
       card = it.next();
 
-      LinearLayout line = (LinearLayout) LinearLayout.inflate(this
-          .getBaseContext(), R.layout.turnsumrow, layout);
+      LinearLayout line = (LinearLayout) LinearLayout.inflate(
+          this.getBaseContext(), R.layout.turnsumrow, layout);
       RelativeLayout realLine = (RelativeLayout) line.getChildAt(count);
       // Make every line alternating color
       if (count % 2 == 0) {
@@ -170,19 +170,18 @@ public class TurnSummary extends Activity {
       count++;
     }
     list.addView(layout);
-    
-    
+
     // Set fonts
     Typeface antonFont = Typeface.createFromAsset(getAssets(),
-            "fonts/Anton.ttf");
-    
+        "fonts/Anton.ttf");
+
     // Set font on Title text
     TextView scoreTitle = (TextView) findViewById(R.id.TurnSummary_ScoreboardTitle);
-    scoreTitle.setTypeface(antonFont);  
-    
+    scoreTitle.setTypeface(antonFont);
+
     TextView resultsTitle = (TextView) findViewById(R.id.TurnSummary_Title);
-    resultsTitle.setTypeface(antonFont); 
-    
+    resultsTitle.setTypeface(antonFont);
+
     // Update the scoreboard views
     updateScoreViews();
 
@@ -209,7 +208,8 @@ public class TurnSummary extends Activity {
       LinearLayout scores = (LinearLayout) this
           .findViewById(R.id.TurnSummary_ScoreGroup);
       scores.setVisibility(View.INVISIBLE);
-      RelativeLayout scoreHeader = (RelativeLayout) this.findViewById(R.id.TurnSummary_ScoreboardTitle_Group);
+      RelativeLayout scoreHeader = (RelativeLayout) this
+          .findViewById(R.id.TurnSummary_ScoreboardTitle_Group);
       scoreHeader.setVisibility(View.INVISIBLE);
     }
   }
@@ -315,10 +315,10 @@ public class TurnSummary extends Activity {
     List<Team> teams = game.getTeams();
 
     // References to Scoreboard team Groups
-    final int[] TEAM_SCORE_GROUPS = new int[] {
-        R.id.TurnSummary_Scores_TeamA, R.id.TurnSummary_Scores_TeamB,
-        R.id.TurnSummary_Scores_TeamC, R.id.TurnSummary_Scores_TeamD };
-    
+    final int[] TEAM_SCORE_GROUPS = new int[] { R.id.TurnSummary_Scores_TeamA,
+        R.id.TurnSummary_Scores_TeamB, R.id.TurnSummary_Scores_TeamC,
+        R.id.TurnSummary_Scores_TeamD };
+
     ScoreboardRowLayout row;
     // Setup score displays. Iterate through all team groups, setting scores for
     // teams that played
@@ -327,17 +327,18 @@ public class TurnSummary extends Activity {
       row = (ScoreboardRowLayout) this.findViewById(TEAM_SCORE_GROUPS[i]);
       if (i >= teams.size()) {
         // Gray out rows for teams that didn't play
-    	row.setActiveness(false);
+        row.setActiveness(false);
       } else {
-    	// Show teams that played, and set their rank
+        // Show teams that played, and set their rank
         row.setTeam(teams.get(i));
-    	row.setActiveness(true);
+        row.setActiveness(true);
       }
     }
 
     // Update Turn score total
-    TextView turnTotal = (TextView) this.findViewById(R.id.TurnSummary_TurnScore);
-    turnTotal.setText( "Total: " + Integer.toString(game.getTurnScore()));
+    TextView turnTotal = (TextView) this
+        .findViewById(R.id.TurnSummary_TurnScore);
+    turnTotal.setText("Total: " + Integer.toString(game.getTurnScore()));
   }
 
   /**
@@ -430,15 +431,16 @@ public class TurnSummary extends Activity {
           .getInt(getString(R.string.cardStateBundleKey));
 
       // Ammend the card
-      BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this.getApplication();
+      BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this
+          .getApplication();
       GameManager gm = application.getGameManager();
       gm.ammendCard(curCardIndex, curCardState);
-      
+
       // Update the individual card's UI in the list
       Card curCard = mCardList.get(curCardIndex);
       ImageView curImageView = mCardViewList.get(curCardIndex);
       curImageView.setImageResource(curCard.getRowEndDrawableId());
-      
+
       TurnSummary.this.updateScoreViews();
     }
 
