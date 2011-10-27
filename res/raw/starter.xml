@@ -602,14 +602,14 @@
   </card>
   <card>
     <pack-name>starter</pack-name>
-    <title>Boxing</title>
+    <title>Beef Jerky</title>
     <categories>starter</categories>
     <bad-words>
-      <word>PUNCH</word>
-      <word>HIT</word>
-      <word>RING</word>
-      <word>SPORT</word>
-      <word>GLOVE</word>
+      <word>Slim Jim™</word>
+      <word>DRY</word>
+      <word>MEAT</word>
+      <word>CHEW</word>
+      <word>SALT</word>
     </bad-words>
   </card>
   <card>
@@ -666,7 +666,7 @@
     <categories>starter</categories>
     <bad-words>
       <word>GREET</word>
-      <word>MATH</word>
+      <word>MAT</word>
       <word>HELLO</word>
       <word>HOME</word>
       <word>PARTY</word>
@@ -686,14 +686,14 @@
   </card>
   <card>
     <pack-name>starter</pack-name>
-    <title>Heaven</title>
+    <title>Crop Circle</title>
     <categories>starter</categories>
     <bad-words>
-      <word>GOOD</word>
-      <word>DEATH</word>
-      <word>AFTERLIFE</word>
-      <word>KINGDOM</word>
-      <word>GOD</word>
+      <word>CORN</word>
+      <word>UFO</word>
+      <word>PATTERN</word>
+      <word>ALIEN</word>
+      <word>HOAX</word>
     </bad-words>
   </card>
   <card>
@@ -1262,14 +1262,14 @@
   </card>
   <card>
     <pack-name>starter</pack-name>
-    <title>Hook Up</title>
+    <title>French Kiss</title>
     <categories>starter</categories>
     <bad-words>
-      <word>KISS</word>
-      <word>MAKE</word>
-      <word>SMOOCH</word>
+      <word>LIPS</word>
+      <word>MAKE OUT</word>
+      <word>TONGUE</word>
       <word>PARTY</word>
-      <word>BOY</word>
+      <word>MOUTH</word>
     </bad-words>
   </card>
   <card>
