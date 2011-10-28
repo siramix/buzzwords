@@ -67,7 +67,7 @@ public class Deck {
   private static final String DATABASE_NAME = "buzzwords";
   private static final String CARD_TABLE_NAME = "cards";
   private static final String CACHE_TABLE_NAME = "cache";
-  private static final int DATABASE_VERSION = 1;
+  private static final int DATABASE_VERSION = 2;
   private static final int CACHE_SIZE = 50;
   private static final String CARD_TABLE_CREATE = "CREATE TABLE "
       + CARD_TABLE_NAME + "( " + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
