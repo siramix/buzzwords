@@ -36,6 +36,7 @@ import android.view.animation.TranslateAnimation;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnSeekCompleteListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
@@ -69,6 +70,7 @@ public class Turn extends Activity {
   static final int DIALOG_PAUSED_ID = 0;
   static final int DIALOG_GAMEOVER_ID = 1;
   static final int DIALOG_READY_ID = 2;
+  static final int DIALOG_UPGRADE_ID = 3;
 
   static final int TIMERANIM_PAUSE_ID = 0;
   static final int TIMERANIM_RESUME_ID = 1;
@@ -160,6 +162,7 @@ public class Turn extends Activity {
   protected static final int MENU_ENDGAME = 0;
   protected static final int MENU_SCORE = 1;
   protected static final int MENU_RULES = 2;
+  protected static final int MENU_UPGRADE = 3;
 
   /**
    * Swipe left for skip, right for back, up for right, and down for wrong.
@@ -266,11 +269,12 @@ public class Turn extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreateOptionsMenu()");
-    }
-
-    menu.add(0, R.string.menu_EndGame, 0, "End Game");
-    menu.add(0, R.string.menu_Rules, 0, "Rules");
-
+    }   
+    
+    menu.add(0, R.string.menu_EndGame, 1, "End Game");
+    menu.add(0, R.string.menu_Upgrade, 2, "Go Pro");
+    menu.add(0, R.string.menu_Rules, 3, "Rules");
+    
     return true;
   }
 
@@ -295,6 +299,11 @@ public class Turn extends Activity {
       sm.playSound(SoundManager.Sound.CONFIRM);
       startActivity(new Intent(getString(R.string.IntentRules), getIntent()
           .getData()));
+      return true;
+    case R.string.menu_Upgrade:
+      // Take user to android store
+      sm.playSound(SoundManager.Sound.CONFIRM);
+      this.showDialog(DIALOG_UPGRADE_ID);
       return true;
     default:
       return super.onOptionsItemSelected(item);
@@ -1063,6 +1072,29 @@ public class Turn extends Activity {
               dialog.cancel();
             }
           });
+      dialog = builder.create();
+      break;
+    case DIALOG_UPGRADE_ID:
+      builder = new AlertDialog.Builder(this);
+      builder.setMessage(getString(R.string.upgradeDialog_text))
+         .setPositiveButton(getString(R.string.upgradeDialog_positiveBtn), 
+                                 new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int id) {
+             // Play confirmation sound
+             SoundManager sm = SoundManager.getInstance(getBaseContext());
+             sm.playSound(SoundManager.Sound.CONFIRM);
+             Uri uri = Uri.parse(getString(R.string.rateUs_URI));
+             startActivity(new Intent(Intent.ACTION_VIEW, uri));
+           }
+         }).setNegativeButton(getString(R.string.upgradeDialog_negativeBtn), 
+                                 new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int id) {
+             // Play confirmation sound
+             SoundManager sm = SoundManager.getInstance(getBaseContext());
+             sm.playSound(SoundManager.Sound.CONFIRM);
+             dialog.cancel();
+           }
+         });
       dialog = builder.create();
       break;
     case DIALOG_READY_ID:

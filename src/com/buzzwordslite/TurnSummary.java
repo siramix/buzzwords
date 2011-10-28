@@ -30,6 +30,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -57,6 +58,8 @@ public class TurnSummary extends Activity {
   public static String TAG = "TurnSummary";
 
   static final int DIALOG_GAMEOVER_ID = 0;
+
+  static final int DIALOG_UPGRADE_ID = 1;
 
   static final int CARDREVIEW_REQUEST_CODE = 1;
 
@@ -222,8 +225,10 @@ public class TurnSummary extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreateOptionsMenu()");
     }
-    menu.add(0, R.string.menu_EndGame, 0, "End Game");
-    menu.add(0, R.string.menu_Rules, 0, "Rules");
+    
+    menu.add(0, R.string.menu_EndGame, 1, "End Game");
+    menu.add(0, R.string.menu_Upgrade, 2, "Go Pro");
+    menu.add(0, R.string.menu_Rules, 3, "Rules");
 
     return true;
   }
@@ -243,6 +248,11 @@ public class TurnSummary extends Activity {
       // Play confirmation sound
       sm.playSound(SoundManager.Sound.CONFIRM);
       this.showDialog(DIALOG_GAMEOVER_ID);
+      return true;
+    case R.string.menu_Upgrade:
+      // Take user to android store
+      sm.playSound(SoundManager.Sound.CONFIRM);
+      this.showDialog(DIALOG_UPGRADE_ID);
       return true;
     case R.string.menu_Rules:
       // Play confirmation sound
@@ -293,6 +303,31 @@ public class TurnSummary extends Activity {
               dialog.cancel();
             }
           });
+      dialog = builder.create();
+      break;
+    case DIALOG_UPGRADE_ID:
+      builder = new AlertDialog.Builder(this);
+      builder.setMessage(getString(R.string.upgradeDialog_text))
+         .setPositiveButton(getString(R.string.upgradeDialog_positiveBtn), 
+                                 new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int id) {
+             // Play confirmation sound
+             SoundManager sm = SoundManager.getInstance(TurnSummary.this
+                 .getBaseContext());
+             sm.playSound(SoundManager.Sound.CONFIRM);
+             Uri uri = Uri.parse(getString(R.string.rateUs_URI));
+             startActivity(new Intent(Intent.ACTION_VIEW, uri));
+           }
+         }).setNegativeButton(getString(R.string.upgradeDialog_negativeBtn), 
+                                 new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int id) {
+             // Play confirmation sound
+             SoundManager sm = SoundManager.getInstance(TurnSummary.this
+                 .getBaseContext());
+             sm.playSound(SoundManager.Sound.CONFIRM);
+             dialog.cancel();
+           }
+         });
       dialog = builder.create();
       break;
     default:
