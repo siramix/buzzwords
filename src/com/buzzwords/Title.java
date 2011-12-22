@@ -18,7 +18,6 @@
 package com.buzzwords;
 
 import com.buzzwords.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -538,10 +537,19 @@ public class Title extends Activity {
           .setMessage(     		  
         	  getResources().getString(R.string.rateUsFirstDialog_text))
           .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
-        		  new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int id) {              
-	                  Uri uri = Uri.parse(getResources().getString(R.string.rateUs_URI));
-	                  Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        		  new DialogInterface.OnClickListener() {            
+	                public void onClick(DialogInterface dialog, int id) {  
+	                  // Retrieve the correct string resource for the store URI
+	                  Uri storeURI = Uri.parse(getString(R.string.URI_buzzwords_redirect));
+	                  switch (BuzzWordsApplication.MARKET) {
+	                    case ANDROID:
+	                      storeURI = Uri.parse(getString(R.string.URI_android_market_buzzwords));
+	                      break;
+	                    case AMAZON:
+	                      storeURI = Uri.parse(getString(R.string.URI_amazon_market_buzzwords));
+	                      break;    
+	                  }
+	                  Intent intent = new Intent(Intent.ACTION_VIEW, storeURI);
 	                  startActivity(intent);
 	                  muteRateReminder();
 	        }
@@ -568,8 +576,17 @@ public class Title extends Activity {
             .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
             	  new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface dialog, int id) {              
-		              Uri uri = Uri.parse(getResources().getString(R.string.rateUs_URI));
-		              Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                  // Retrieve the correct string resource for the store URI
+                  Uri storeURI = Uri.parse(getString(R.string.URI_buzzwords_redirect));
+                  switch (BuzzWordsApplication.MARKET) {
+                    case ANDROID:
+                      storeURI = Uri.parse(getString(R.string.URI_android_market_buzzwords));
+                      break;
+                    case AMAZON:
+                      storeURI = Uri.parse(getString(R.string.URI_amazon_market_buzzwords));
+                      break;    
+                  }
+		              Intent intent = new Intent(Intent.ACTION_VIEW, storeURI);
 		              startActivity(intent);
 		              muteRateReminder();
               }

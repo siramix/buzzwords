@@ -1021,7 +1021,7 @@ public class Turn extends Activity {
       this.pauseGame();
     }
   }
-
+  
   /**
    * Create game over and ready dialogs using builders
    */
@@ -1032,7 +1032,7 @@ public class Turn extends Activity {
     }
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
-
+    
     switch (id) {
     case DIALOG_GAMEOVER_ID:
       builder = new AlertDialog.Builder(this);
@@ -1065,16 +1065,18 @@ public class Turn extends Activity {
           });
       dialog = builder.create();
       break;
-    case DIALOG_READY_ID:
+    case DIALOG_READY_ID:     
+      
       // Play team ready sound
       SoundManager sm = SoundManager.getInstance(Turn.this.getBaseContext());
       sm.playSound(SoundManager.Sound.TEAMREADY);
 
-      String curTeam = mGameManager.getActiveTeam().getName();
+      String curTeam = mGameManager.getActiveTeam().getName();      
+      
       builder = new AlertDialog.Builder(this);
       builder.setMessage("Ready " + curTeam + "?").setCancelable(false)
-          .setPositiveButton("Start!", new DialogInterface.OnClickListener() {
-
+          .setPositiveButton("Start!", new DialogInterface.OnClickListener(){          
+            
             public void onClick(DialogInterface dialog, int which) {
               dialog.dismiss();
               Turn.this.showCard();
@@ -1117,17 +1119,8 @@ public class Turn extends Activity {
               }
 
             }
-          })
-
-          .setOnCancelListener(new DialogInterface.OnCancelListener() {
-            public void onCancel(DialogInterface dialog) {
-              // Handles canceling the dialog (which shouldn't be possible
-              // anymore)
-              Turn.this.showCard();
-              mIsBack = true;
-              Turn.this.startTimer();
-            }
           });
+      
       dialog = builder.create();
       break;
     default:
@@ -1251,7 +1244,7 @@ public class Turn extends Activity {
 
     return true;
   }
-
+  
   /**
    * Handler for key down events. This will start tracking the back button event
    * so we can properly catch it and move back between cards instead of
@@ -1260,7 +1253,7 @@ public class Turn extends Activity {
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onKeyDown()");
+      Log.d(TAG, "onKeyDown(" + event.toString() +")");
     }
 
     // Handle the back button
@@ -1268,7 +1261,10 @@ public class Turn extends Activity {
       event.startTracking();
       return true;
     }
-
+    // Consume the search button
+    else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+      return false;
+    }    
     return super.onKeyDown(keyCode, event);
   }
 
@@ -1279,7 +1275,7 @@ public class Turn extends Activity {
   @Override
   public boolean onKeyUp(int keyCode, KeyEvent event) {
     if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onKeyUp()");
+      Log.d(TAG, "onKeyUp(" + event.toString() + ")");
     }
 
     // Back button should go to the previous card
@@ -1300,10 +1296,12 @@ public class Turn extends Activity {
    */
   @Override
   public boolean onTouchEvent(MotionEvent event) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onTouchEvent(" + event.toString() + ")");
+    }
     if (mSwipeDetector.onTouchEvent(event))
       return true;
     else
       return false;
   }
-
 }

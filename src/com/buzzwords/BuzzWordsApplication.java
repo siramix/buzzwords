@@ -34,7 +34,12 @@ public class BuzzWordsApplication extends Application {
    */
   public static final boolean DEBUG = true;
   public static final boolean DEBUG_TIMERTICKS = false;
-
+  public static final Markets MARKET = Markets.ANDROID;
+  
+  public static enum Markets {
+    ANDROID, AMAZON, BN
+  };
+  
   /**
    * logging tag
    */
@@ -57,7 +62,6 @@ public class BuzzWordsApplication extends Application {
     super();
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "BuzzWordsApplication()");
-
     }
   }
 
@@ -111,5 +115,4 @@ public class BuzzWordsApplication extends Application {
     }
     return mMediaPlayer;
   }
-
 }
