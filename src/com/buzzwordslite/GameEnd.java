@@ -428,8 +428,19 @@ public class GameEnd extends Activity {
               "Want the full BuzzWords experience with a full deck of 1000 Words? Buy the full version today!")
           .setPositiveButton("Yeah!", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-              Uri uri = Uri.parse("http://www.siramix.com/buzzwordsappstore");
-              Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+              
+              // Determine the appropriate store URI
+              Uri storeURI = Uri.parse(getString(R.string.URI_buzzwords_redirect));
+              switch (BuzzWordsApplication.MARKET) {
+                case ANDROID:
+                  storeURI = Uri.parse(getString(R.string.URI_android_market_buzzwords));
+                  break;
+                case AMAZON:
+                  storeURI = Uri.parse(getString(R.string.URI_amazon_market_buzzwords));
+                  break;    
+              }
+              
+              Intent intent = new Intent(Intent.ACTION_VIEW, storeURI);              
               startActivity(intent);
             }
           }).setNegativeButton("Not Yet",
