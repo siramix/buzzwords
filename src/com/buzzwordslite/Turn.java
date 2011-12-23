@@ -1031,6 +1031,17 @@ public class Turn extends Activity {
   }
   
   /**
+   * Display a dialog when the search is requested
+   */
+  @Override
+  public boolean onSearchRequested() {
+    if(BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onSearchRequested()");
+    }
+    return false;
+  }
+
+  /**
    * Create game over and ready dialogs using builders
    */
   @Override
@@ -1106,14 +1117,15 @@ public class Turn extends Activity {
       String curTeam = mGameManager.getActiveTeam().getName();      
       
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("Ready " + curTeam + "?").setCancelable(false)
-          .setPositiveButton("Start!", new DialogInterface.OnClickListener(){          
-            
+      builder.setMessage("Ready " + curTeam + "?")
+          .setCancelable(false)
+          .setPositiveButton("Start!", new DialogInterface.OnClickListener() {
+
             public void onClick(DialogInterface dialog, int which) {
+              mIsPaused = false;
+              mIsBack = true;
               dialog.dismiss();
               Turn.this.showCard();
-              mIsBack = true;
-              mIsPaused = false;
               Turn.this.startTimer();
 
               // Play back sound to differentiate from normal clicks
@@ -1154,6 +1166,18 @@ public class Turn extends Activity {
           });
       
       dialog = builder.create();
+
+      // We add an onDismiss listener to handle the case in which a user attempts
+      // to search on the ready dialog
+      dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+        public void onDismiss(DialogInterface dialog) {
+          if(mIsPaused) {
+            showDialog(DIALOG_READY_ID);
+          }
+        }
+
+      });
       break;
     default:
       dialog = null;
