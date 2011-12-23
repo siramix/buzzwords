@@ -20,6 +20,7 @@ package com.buzzwords;
 import android.app.Application;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.util.Log;
 
 /**
@@ -35,7 +36,7 @@ public class BuzzWordsApplication extends Application {
   public static final boolean DEBUG = true;
   public static final boolean DEBUG_TIMERTICKS = false;
   public static final Markets MARKET = Markets.ANDROID;
-  
+  public static Uri uri;
   public static enum Markets {
     ANDROID, AMAZON, BN
   };
@@ -65,6 +66,18 @@ public class BuzzWordsApplication extends Application {
     }
   }
 
+  public void onCreate() {
+    uri = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
+    switch (BuzzWordsApplication.MARKET) {
+      case ANDROID:
+        uri = Uri.parse(getApplicationContext().getString(R.string.URI_android_market_buzzwords));
+        break;
+      case AMAZON:
+        uri = Uri.parse(getApplicationContext().getString(R.string.URI_amazon_market_buzzwords));
+        break;    
+    }
+  }
+  
   /**
    * @return a reference to the game manager
    */
