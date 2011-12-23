@@ -17,11 +17,14 @@
  ****************************************************************************/
 package com.buzzwordslite;
 
+
 import com.buzzwordslite.R;
+import com.buzzwordslite.BuzzWordsApplication.Markets;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +35,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -72,7 +76,17 @@ public class Title extends Activity {
    * Dialog constant for second Rate Us message
    */
   static final int DIALOG_RATEUS_SECOND = 1;
-    
+  
+  /**
+   * Dialog constant for second Rate Us message
+   */
+  static final int DIALOG_HOLIDAY_GIVEAWAY = 2;
+  
+  /**
+   * TEMPORARY variable for holiday giveaway key
+   */
+  private final String showgift_prefkey = "show_giveaway"; 
+  
   /**
    * PlayGameListener is used for the start game button. It launches the next
    * activity.
@@ -357,9 +371,14 @@ public class Title extends Activity {
     // Capture our play count to decide whether to show the Rate Us dialog
     int playCount = sp.getInt(getResources().getString(R.string.PREFKEY_PLAYCOUNT), 0);
     boolean showReminder = sp.getBoolean(getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
+    boolean showGift = sp.getBoolean(showgift_prefkey, true);
+    
+    if (showGift) {
+      showDialog(DIALOG_HOLIDAY_GIVEAWAY);
+    }
     
     // If 3 plays have been done and reminder is not muted, show dialog
-    if (showReminder) {
+    if (showReminder && !showGift) {
       if (playCount < 6) {
         showDialog(DIALOG_RATEUS_FIRST);
       }
@@ -483,7 +502,7 @@ public class Title extends Activity {
   private void delayRateReminder()
   {
 	if (BuzzWordsApplication.DEBUG) {
-		Log.d(TAG, "muteRateReminder()");
+		Log.d(TAG, "delayRateReminder()");
 	}
     // Prepare to edit preference for mute reminder bool
     BuzzWordsApplication application = (BuzzWordsApplication) getApplication();    
@@ -515,6 +534,17 @@ public class Title extends Activity {
   }
   
   /**
+   * TEMPORARY METHOD for muting the holiday gift dialog
+   */
+  private void muteGiftDialog() {
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();    
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
+    SharedPreferences.Editor prefEditor = sp.edit();   
+    
+    prefEditor.putBoolean(showgift_prefkey, false);                  
+    prefEditor.commit();
+  }
+  /**
    * Custom create Dialogs
    */
   @Override
@@ -524,13 +554,14 @@ public class Title extends Activity {
     }
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
-
+    
     switch (id) {
     /**
      * When players have played X times, show a dialog asking them to rate us or put it
      * off until later.  We will provide a 'Never' option as well.
      */
     case DIALOG_RATEUS_FIRST:
+      
       builder = new AlertDialog.Builder(this);
       builder
           .setTitle(
@@ -538,14 +569,14 @@ public class Title extends Activity {
           .setMessage(     		  
         	  getResources().getString(R.string.rateUsFirstDialog_text))
           .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
-        		  new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int id) {              
-	                  Uri uri = Uri.parse(getResources().getString(R.string.rateUs_URI));
-	                  Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-	                  startActivity(intent);
-	                  muteRateReminder();
-	        }
-          }).setNegativeButton(getResources().getString(R.string.rateUsDialog_neutralBtn),
+              new DialogInterface.OnClickListener() {            
+                public void onClick(DialogInterface dialog, int id) {                                            
+                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_BuzzwordsLite);
+                  startActivity(intent);
+                  muteRateReminder();
+                }
+          })
+          .setNegativeButton(getResources().getString(R.string.rateUsDialog_neutralBtn),
 	              new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int id) {
 	                  delayRateReminder();
@@ -566,13 +597,12 @@ public class Title extends Activity {
             .setMessage(
             	getResources().getString(R.string.rateUsSecondDialog_text))
             .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
-            	  new DialogInterface.OnClickListener() {
-		            public void onClick(DialogInterface dialog, int id) {              
-		              Uri uri = Uri.parse(getResources().getString(R.string.rateUs_URI));
-		              Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-		              startActivity(intent);
-		              muteRateReminder();
-              }
+                new DialogInterface.OnClickListener() {            
+                  public void onClick(DialogInterface dialog, int id) {                                            
+                    Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_BuzzwordsLite);
+                    startActivity(intent);
+                    muteRateReminder();
+                  }
             }).setNegativeButton(getResources().getString(R.string.rateUsDialog_negativeBtn), 
                   new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -581,7 +611,40 @@ public class Title extends Activity {
             });
       dialog = builder.create();
       break;
-      
+    
+    case DIALOG_HOLIDAY_GIVEAWAY:
+        builder = new AlertDialog.Builder(this);
+        builder
+          .setTitle("A Holiday Gift from Siramix!")
+          .setCancelable(false)
+          .setMessage("To celebrate the holidays Buzzwords will be entirely free until the new year!  " + 
+                      "We hope that you enjoy playing with your friends and family over the holidays.")
+          .setPositiveButton("Upgrade", 
+              new DialogInterface.OnClickListener() {            
+                public void onClick(DialogInterface dialog, int id) {
+                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
+                  startActivity(intent);
+                  muteGiftDialog();
+                }
+                 
+          }).setNeutralButton("Share This", 
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                  Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                  sharingIntent.setType("text/plain");
+                  sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Buzzwords for Android is " + 
+                      "free until the new year! #buzzwords " +BuzzWordsApplication.storeURI_Buzzwords.toString());
+                  startActivity(Intent.createChooser(sharingIntent,"Share using"));
+                }
+          }).setNegativeButton("Bah Humbug", 
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                  muteGiftDialog();
+                }
+          });
+      dialog = builder.create();
+      break;
+                      
     default:
       dialog = null;
     }

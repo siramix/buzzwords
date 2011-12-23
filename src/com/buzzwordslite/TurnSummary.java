@@ -30,7 +30,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -314,9 +313,8 @@ public class TurnSummary extends Activity {
              // Play confirmation sound
              SoundManager sm = SoundManager.getInstance(TurnSummary.this
                  .getBaseContext());
-             sm.playSound(SoundManager.Sound.CONFIRM);
-             Uri uri = Uri.parse(getString(R.string.rateUs_URI));
-             startActivity(new Intent(Intent.ACTION_VIEW, uri));
+             sm.playSound(SoundManager.Sound.CONFIRM);             
+             startActivity(new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords));
            }
          }).setNegativeButton(getString(R.string.upgradeDialog_negativeBtn), 
                                  new DialogInterface.OnClickListener() {

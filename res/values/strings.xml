@@ -73,6 +73,10 @@
   <string name="rateUsDialog_negativeBtn">Never</string>
   
   <!--  Rate Us URI for app store -->
-  <string name="rateUs_URI">http://www.siramix.com/buzzwordsappstore/lite</string>
+  <string name="URI_buzzwords_redirect">http://www.siramix.com/buzzwordsappstore</string>
+  <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwords</string>
+  <string name="URI_android_market_buzzwordslite">https://market.android.com/details?id=com.buzzwordslite</string>
+  <string name="URI_amazon_market_buzzwords">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwords</string>
+  <string name="URI_amazon_market_buzzwordslite">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite</string>
   
 </resources>

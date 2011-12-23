@@ -29,7 +29,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -425,11 +424,13 @@ public class GameEnd extends Activity {
       builder = new AlertDialog.Builder(this);
       builder
           .setMessage(
-              "Want the full BuzzWords experience with a full deck of 1000 Words? Buy the full version today!")
-          .setPositiveButton("Yeah!", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-              Uri uri = Uri.parse("http://www.siramix.com/buzzwordsappstore");
-              Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+              //"Want the full BuzzWords experience with a full deck of 1000 Words? Buy the full version today!")
+              "The full version of Buzzwords is free until the new year!  But hey, " + 
+              "if you'd rather keep playing the lite version, we won't stop you.")
+          //.setPositiveButton("Yeah!", new DialogInterface.OnClickListener() {
+          .setPositiveButton("Upgrade!", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {              
+              Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);              
               startActivity(intent);
             }
           }).setNegativeButton("Not Yet",

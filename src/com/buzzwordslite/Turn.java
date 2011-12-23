@@ -36,7 +36,6 @@ import android.view.animation.TranslateAnimation;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnSeekCompleteListener;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
@@ -1030,6 +1029,17 @@ public class Turn extends Activity {
       this.pauseGame();
     }
   }
+  
+  /**
+   * Display a dialog when the search is requested
+   */
+  @Override
+  public boolean onSearchRequested() {
+    if(BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onSearchRequested()");
+    }
+    return false;
+  }
 
   /**
    * Create game over and ready dialogs using builders
@@ -1041,7 +1051,7 @@ public class Turn extends Activity {
     }
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
-
+    
     switch (id) {
     case DIALOG_GAMEOVER_ID:
       builder = new AlertDialog.Builder(this);
@@ -1074,6 +1084,7 @@ public class Turn extends Activity {
           });
       dialog = builder.create();
       break;
+
     case DIALOG_UPGRADE_ID:
       builder = new AlertDialog.Builder(this);
       builder.setMessage(getString(R.string.upgradeDialog_text))
@@ -1082,9 +1093,9 @@ public class Turn extends Activity {
            public void onClick(DialogInterface dialog, int id) {
              // Play confirmation sound
              SoundManager sm = SoundManager.getInstance(getBaseContext());
-             sm.playSound(SoundManager.Sound.CONFIRM);
-             Uri uri = Uri.parse(getString(R.string.rateUs_URI));
-             startActivity(new Intent(Intent.ACTION_VIEW, uri));
+             sm.playSound(SoundManager.Sound.CONFIRM);             
+             Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);             
+             startActivity(intent);
            }
          }).setNegativeButton(getString(R.string.upgradeDialog_negativeBtn), 
                                  new DialogInterface.OnClickListener() {
@@ -1097,21 +1108,24 @@ public class Turn extends Activity {
          });
       dialog = builder.create();
       break;
+      
     case DIALOG_READY_ID:
       // Play team ready sound
       SoundManager sm = SoundManager.getInstance(Turn.this.getBaseContext());
       sm.playSound(SoundManager.Sound.TEAMREADY);
 
-      String curTeam = mGameManager.getActiveTeam().getName();
+      String curTeam = mGameManager.getActiveTeam().getName();      
+      
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("Ready " + curTeam + "?").setCancelable(false)
+      builder.setMessage("Ready " + curTeam + "?")
+          .setCancelable(false)
           .setPositiveButton("Start!", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
+              mIsPaused = false;
+              mIsBack = true;
               dialog.dismiss();
               Turn.this.showCard();
-              mIsBack = true;
-              mIsPaused = false;
               Turn.this.startTimer();
 
               // Play back sound to differentiate from normal clicks
@@ -1149,18 +1163,21 @@ public class Turn extends Activity {
               }
 
             }
-          })
-
-          .setOnCancelListener(new DialogInterface.OnCancelListener() {
-            public void onCancel(DialogInterface dialog) {
-              // Handles canceling the dialog (which shouldn't be possible
-              // anymore)
-              Turn.this.showCard();
-              mIsBack = true;
-              Turn.this.startTimer();
-            }
           });
+      
       dialog = builder.create();
+
+      // We add an onDismiss listener to handle the case in which a user attempts
+      // to search on the ready dialog
+      dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+        public void onDismiss(DialogInterface dialog) {
+          if(mIsPaused) {
+            showDialog(DIALOG_READY_ID);
+          }
+        }
+
+      });
       break;
     default:
       dialog = null;
@@ -1283,7 +1300,7 @@ public class Turn extends Activity {
 
     return true;
   }
-
+  
   /**
    * Handler for key down events. This will start tracking the back button event
    * so we can properly catch it and move back between cards instead of
@@ -1292,7 +1309,7 @@ public class Turn extends Activity {
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onKeyDown()");
+      Log.d(TAG, "onKeyDown(" + event.toString() +")");
     }
 
     // Handle the back button
@@ -1300,7 +1317,10 @@ public class Turn extends Activity {
       event.startTracking();
       return true;
     }
-
+    // Consume the search button
+    else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+      return false;
+    }    
     return super.onKeyDown(keyCode, event);
   }
 
@@ -1311,7 +1331,7 @@ public class Turn extends Activity {
   @Override
   public boolean onKeyUp(int keyCode, KeyEvent event) {
     if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onKeyUp()");
+      Log.d(TAG, "onKeyUp(" + event.toString() + ")");
     }
 
     // Back button should go to the previous card
@@ -1332,10 +1352,12 @@ public class Turn extends Activity {
    */
   @Override
   public boolean onTouchEvent(MotionEvent event) {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onTouchEvent(" + event.toString() + ")");
+    }
     if (mSwipeDetector.onTouchEvent(event))
       return true;
     else
       return false;
   }
-
 }

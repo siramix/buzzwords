@@ -44,7 +44,7 @@
 		android:layout_centerHorizontal="true"
 		android:width="300dp"
 		android:textSize="18dp"
-		android:text="Tap teams to add or remove them."
+		android:text="Tap teams to add or remove them.  Tap the pencil to rename a team."
 		android:layout_below="@id/GameSetup_TeamLayout" android:textColor="@color/white"/>
 
 	<!-- Select number of turns -->
