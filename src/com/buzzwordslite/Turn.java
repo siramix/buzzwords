@@ -36,7 +36,6 @@ import android.view.animation.TranslateAnimation;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnSeekCompleteListener;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
@@ -1083,19 +1082,9 @@ public class Turn extends Activity {
            public void onClick(DialogInterface dialog, int id) {
              // Play confirmation sound
              SoundManager sm = SoundManager.getInstance(getBaseContext());
-             sm.playSound(SoundManager.Sound.CONFIRM);
-             Uri storeURI = Uri.parse(getString(R.string.URI_buzzwords_redirect));
-             switch (BuzzWordsApplication.MARKET) {
-               case ANDROID:
-                 storeURI = Uri.parse(getString(R.string.URI_android_market_buzzwords));
-                 break;
-               case AMAZON:
-                 storeURI = Uri.parse(getString(R.string.URI_amazon_market_buzzwords));
-                 break;    
-             }
-             Intent intent = new Intent(Intent.ACTION_VIEW, storeURI);
-             
-             startActivity(new Intent(Intent.ACTION_VIEW, storeURI));
+             sm.playSound(SoundManager.Sound.CONFIRM);             
+             Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI);             
+             startActivity(intent);
            }
          }).setNegativeButton(getString(R.string.upgradeDialog_negativeBtn), 
                                  new DialogInterface.OnClickListener() {

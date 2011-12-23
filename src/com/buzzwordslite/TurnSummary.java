@@ -314,9 +314,8 @@ public class TurnSummary extends Activity {
              // Play confirmation sound
              SoundManager sm = SoundManager.getInstance(TurnSummary.this
                  .getBaseContext());
-             sm.playSound(SoundManager.Sound.CONFIRM);
-             Uri uri = Uri.parse(getString(R.string.URI_buzzwords_redirect));
-             startActivity(new Intent(Intent.ACTION_VIEW, uri));
+             sm.playSound(SoundManager.Sound.CONFIRM);             
+             startActivity(new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI));
            }
          }).setNegativeButton(getString(R.string.upgradeDialog_negativeBtn), 
                                  new DialogInterface.OnClickListener() {
