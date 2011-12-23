@@ -622,8 +622,7 @@ public class Title extends Activity {
           .setPositiveButton("Upgrade", 
               new DialogInterface.OnClickListener() {            
                 public void onClick(DialogInterface dialog, int id) {
-                  //TODO FIX THIS
-                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI);
+                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
                   startActivity(intent);
                   muteGiftDialog();
                 }
@@ -634,7 +633,7 @@ public class Title extends Activity {
                   Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                   sharingIntent.setType("text/plain");
                   sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Buzzwords for Android is " + 
-                      "free until the new year! #buzzwords " +BuzzWordsApplication.storeURI.toString());
+                      "free until the new year! #buzzwords " +BuzzWordsApplication.storeURI_Buzzwords.toString());
                   startActivity(Intent.createChooser(sharingIntent,"Share using"));
                 }
           }).setNegativeButton("Bah Humbug", 
