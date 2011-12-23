@@ -540,7 +540,7 @@ public class Title extends Activity {
           .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
               new DialogInterface.OnClickListener() {            
                 public void onClick(DialogInterface dialog, int id) {                                            
-                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI);
+                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
                   startActivity(intent);
                   muteRateReminder();
                 }
@@ -568,7 +568,7 @@ public class Title extends Activity {
             .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
                 new DialogInterface.OnClickListener() {            
                   public void onClick(DialogInterface dialog, int id) {                                            
-                    Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
                     startActivity(intent);
                     muteRateReminder();
                   }
