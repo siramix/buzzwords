@@ -36,7 +36,8 @@ public class BuzzWordsApplication extends Application {
   public static final boolean DEBUG = false;
   public static final boolean DEBUG_TIMERTICKS = false;
   public static final Markets MARKET = Markets.ANDROID;
-  public static Uri storeURI;
+  public static Uri storeURI_BuzzwordsLite;
+  public static Uri storeURI_Buzzwords;
   public static enum Markets {
     ANDROID, AMAZON, BN
   };
@@ -66,14 +67,21 @@ public class BuzzWordsApplication extends Application {
     }
   }
 
+  /**
+   * Initialize strings to appropriate URIs
+   */
   public void onCreate() {
-    storeURI = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
+    // Fallback just goes to our redirect
+    storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
+    storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
     switch (BuzzWordsApplication.MARKET) {
       case ANDROID:
-        storeURI = Uri.parse(getApplicationContext().getString(R.string.URI_android_market_buzzwords));
+        storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_android_market_buzzwordslite));
+        storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_android_market_buzzwords));
         break;
       case AMAZON:
-        storeURI = Uri.parse(getApplicationContext().getString(R.string.URI_amazon_market_buzzwords));
+        storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_amazon_market_buzzwordslite));
+        storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_amazon_market_buzzwords));
         break;    
     }
   }

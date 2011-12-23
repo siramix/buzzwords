@@ -1094,7 +1094,7 @@ public class Turn extends Activity {
              // Play confirmation sound
              SoundManager sm = SoundManager.getInstance(getBaseContext());
              sm.playSound(SoundManager.Sound.CONFIRM);             
-             Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI);             
+             Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);             
              startActivity(intent);
            }
          }).setNegativeButton(getString(R.string.upgradeDialog_negativeBtn), 

@@ -427,7 +427,7 @@ public class GameEnd extends Activity {
               "Want the full BuzzWords experience with a full deck of 1000 Words? Buy the full version today!")
           .setPositiveButton("Yeah!", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {              
-              Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI);              
+              Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);              
               startActivity(intent);
             }
           }).setNegativeButton("Not Yet",
