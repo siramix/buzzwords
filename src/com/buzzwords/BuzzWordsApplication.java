@@ -20,6 +20,7 @@ package com.buzzwords;
 import android.app.Application;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.util.Log;
 
 /**
@@ -34,7 +35,13 @@ public class BuzzWordsApplication extends Application {
    */
   public static final boolean DEBUG = true;
   public static final boolean DEBUG_TIMERTICKS = false;
-
+  public static final Markets MARKET = Markets.ANDROID;
+  public static Uri storeURI_Buzzwords;
+  public static Uri storeURI_BuzzwordsLite;
+  public static enum Markets {
+    ANDROID, AMAZON, BN
+  };
+  
   /**
    * logging tag
    */
@@ -57,10 +64,24 @@ public class BuzzWordsApplication extends Application {
     super();
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "BuzzWordsApplication()");
-
     }
   }
 
+  public void onCreate() {
+    storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
+    storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
+    switch (BuzzWordsApplication.MARKET) {
+      case ANDROID:
+        storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_android_market_buzzwordslite));
+        storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_android_market_buzzwords));
+        break;
+      case AMAZON:
+        storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_amazon_market_buzzwordslite));
+        storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_amazon_market_buzzwords));
+        break;    
+    }
+  }
+  
   /**
    * @return a reference to the game manager
    */
@@ -111,5 +132,4 @@ public class BuzzWordsApplication extends Application {
     }
     return mMediaPlayer;
   }
-
 }

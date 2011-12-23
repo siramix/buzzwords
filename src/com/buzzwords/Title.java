@@ -18,7 +18,6 @@
 package com.buzzwords;
 
 import com.buzzwords.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -483,7 +482,7 @@ public class Title extends Activity {
   private void delayRateReminder()
   {
 	if (BuzzWordsApplication.DEBUG) {
-		Log.d(TAG, "muteRateReminder()");
+		Log.d(TAG, "delayRateReminder()");
 	}
     // Prepare to edit preference for mute reminder bool
     BuzzWordsApplication application = (BuzzWordsApplication) getApplication();    
@@ -524,13 +523,14 @@ public class Title extends Activity {
     }
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
-
+    
     switch (id) {
     /**
      * When players have played X times, show a dialog asking them to rate us or put it
      * off until later.  We will provide a 'Never' option as well.
      */
     case DIALOG_RATEUS_FIRST:
+      
       builder = new AlertDialog.Builder(this);
       builder
           .setTitle(
@@ -538,14 +538,14 @@ public class Title extends Activity {
           .setMessage(     		  
         	  getResources().getString(R.string.rateUsFirstDialog_text))
           .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
-        		  new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int id) {              
-	                  Uri uri = Uri.parse(getResources().getString(R.string.rateUs_URI));
-	                  Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-	                  startActivity(intent);
-	                  muteRateReminder();
-	        }
-          }).setNegativeButton(getResources().getString(R.string.rateUsDialog_neutralBtn),
+              new DialogInterface.OnClickListener() {            
+                public void onClick(DialogInterface dialog, int id) {                                            
+                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
+                  startActivity(intent);
+                  muteRateReminder();
+                }
+          })
+          .setNegativeButton(getResources().getString(R.string.rateUsDialog_neutralBtn),
 	              new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int id) {
 	                  delayRateReminder();
@@ -566,13 +566,12 @@ public class Title extends Activity {
             .setMessage(
             	getResources().getString(R.string.rateUsSecondDialog_text))
             .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
-            	  new DialogInterface.OnClickListener() {
-		            public void onClick(DialogInterface dialog, int id) {              
-		              Uri uri = Uri.parse(getResources().getString(R.string.rateUs_URI));
-		              Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-		              startActivity(intent);
-		              muteRateReminder();
-              }
+                new DialogInterface.OnClickListener() {            
+                  public void onClick(DialogInterface dialog, int id) {                                            
+                    Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
+                    startActivity(intent);
+                    muteRateReminder();
+                  }
             }).setNegativeButton(getResources().getString(R.string.rateUsDialog_negativeBtn), 
                   new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
