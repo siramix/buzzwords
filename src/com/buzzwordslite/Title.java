@@ -85,7 +85,7 @@ public class Title extends Activity {
   /**
    * TEMPORARY variable for holiday giveaway key
    */
-  private final String giveaway_prefkey = "show_giveaway"; 
+  private final String showgift_prefkey = "show_giveaway"; 
   
   /**
    * PlayGameListener is used for the start game button. It launches the next
@@ -371,14 +371,14 @@ public class Title extends Activity {
     // Capture our play count to decide whether to show the Rate Us dialog
     int playCount = sp.getInt(getResources().getString(R.string.PREFKEY_PLAYCOUNT), 0);
     boolean showReminder = sp.getBoolean(getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
-    boolean showGiveAway = sp.getBoolean(giveaway_prefkey, true);
-    showGiveAway = true;
-    if (showGiveAway) {
+    boolean showGift = sp.getBoolean(showgift_prefkey, true);
+    
+    if (showGift) {
       showDialog(DIALOG_HOLIDAY_GIVEAWAY);
     }
     
     // If 3 plays have been done and reminder is not muted, show dialog
-    if (showReminder && !showGiveAway) {
+    if (showReminder && !showGift) {
       if (playCount < 6) {
         showDialog(DIALOG_RATEUS_FIRST);
       }
@@ -541,7 +541,7 @@ public class Title extends Activity {
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
     SharedPreferences.Editor prefEditor = sp.edit();   
     
-    prefEditor.putBoolean(giveaway_prefkey, false);                  
+    prefEditor.putBoolean(showgift_prefkey, false);                  
     prefEditor.commit();
   }
   /**
@@ -616,9 +616,10 @@ public class Title extends Activity {
         builder = new AlertDialog.Builder(this);
         builder
           .setTitle("A Holiday Gift from Siramix!")
+          .setCancelable(false)
           .setMessage("To celebrate the holidays Buzzwords will be entirely free until the new year!  " + 
                       "We hope that you enjoy playing with your friends and family over the holidays.")
-          .setPositiveButton("Upgrade (free)", 
+          .setPositiveButton("Upgrade", 
               new DialogInterface.OnClickListener() {            
                 public void onClick(DialogInterface dialog, int id) {
                   //TODO FIX THIS
@@ -627,16 +628,16 @@ public class Title extends Activity {
                   muteGiftDialog();
                 }
                  
-          }).setNeutralButton("Share with friends", 
+          }).setNeutralButton("Share This", 
               new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                   Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                   sharingIntent.setType("text/plain");
-                  sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "EXTRA TEXT HERE");
-                  startActivity(Intent.createChooser(sharingIntent,"Share using"));                  
-                  muteGiftDialog();
+                  sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Buzzwords for Android is " + 
+                      "free until the new year! #buzzwords " +BuzzWordsApplication.storeURI.toString());
+                  startActivity(Intent.createChooser(sharingIntent,"Share using"));
                 }
-          }).setNegativeButton("No Thanks", 
+          }).setNegativeButton("Bah Humbug", 
               new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                   muteGiftDialog();
