@@ -523,7 +523,6 @@ public class Title extends Activity {
     }
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
-    final Uri storeURI = BuzzWordsApplication.uri;
     
     switch (id) {
     /**
@@ -541,7 +540,7 @@ public class Title extends Activity {
           .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
               new DialogInterface.OnClickListener() {            
                 public void onClick(DialogInterface dialog, int id) {                                            
-                  Intent intent = new Intent(Intent.ACTION_VIEW, storeURI);
+                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.uri);
                   startActivity(intent);
                   muteRateReminder();
                 }
@@ -569,7 +568,7 @@ public class Title extends Activity {
             .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
                 new DialogInterface.OnClickListener() {            
                   public void onClick(DialogInterface dialog, int id) {                                            
-                    Intent intent = new Intent(Intent.ACTION_VIEW, storeURI);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.uri);
                     startActivity(intent);
                     muteRateReminder();
                   }
