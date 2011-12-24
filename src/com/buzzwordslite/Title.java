@@ -629,7 +629,7 @@ public class Title extends Activity {
                   Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                   sharingIntent.setType("text/plain");
                   sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Buzzwords for Android is " + 
-                      "free until the new year! #buzzwords " +BuzzWordsApplication.storeURI_Buzzwords.toString());
+                      "half off until the new year! #buzzwords " +BuzzWordsApplication.storeURI_Buzzwords.toString());
                   startActivity(Intent.createChooser(sharingIntent,"Share using"));
                 }
           }).setNegativeButton("Bah Humbug", 
