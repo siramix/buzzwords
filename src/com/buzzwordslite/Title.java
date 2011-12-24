@@ -613,7 +613,7 @@ public class Title extends Activity {
         builder
           .setTitle("A Holiday Gift from Siramix!")
           .setCancelable(false)
-          .setMessage("To celebrate the holidays Buzzwords will be entirely free until the new year!  " + 
+          .setMessage("To celebrate the holidays Buzzwords will be $0.99 on the Android market and Free on the Amazon marketplace until the new year!  " + 
                       "We hope that you enjoy playing with your friends and family over the holidays.")
           .setPositiveButton("Upgrade", 
               new DialogInterface.OnClickListener() {            
