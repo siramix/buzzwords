@@ -72,6 +72,7 @@ public class TurnSummary extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "NextTurnListener OnClick()");
       }
+      v.setEnabled(false);
       BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this
           .getApplication();
       GameManager gm = application.getGameManager();

@@ -185,6 +185,7 @@ public class Title extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "PlayGameListener OnClick()");
       }
+      v.setEnabled(false);
       mContinueMusic = true;
 
       // play confirm sound
@@ -205,6 +206,7 @@ public class Title extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "PlayGameListener OnClick()");
       }
+      v.setEnabled(false);
       mContinueMusic = false;
 
       // play confirm sound
@@ -225,6 +227,7 @@ public class Title extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "SettingsListener OnClick()");
       }
+      v.setEnabled(false);
       mContinueMusic = true;
 
       // play confirm sound
@@ -245,6 +248,7 @@ public class Title extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "RulesListener OnClick()");
       }
+      v.setEnabled(false);
       mContinueMusic = true;
 
       // play confirm sound
@@ -267,6 +271,7 @@ public class Title extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "AboutUsListener OnClick()");
       }
+      v.setEnabled(false);
       mContinueMusic = false;
 
       // play confirm sound
@@ -460,6 +465,16 @@ public class Title extends Activity {
       Log.d(TAG, "onResume()");
     }
     super.onResume();
+
+    // Re-enable things
+    this.findViewById(R.id.Title_RulesButton).setEnabled(true);
+    this.findViewById(R.id.Title_BuzzButton).setEnabled(true);
+    this.findViewById(R.id.Title_AboutUs).setEnabled(true);
+    this.findViewById(R.id.Title_PlayButton).setEnabled(true);
+    this.findViewById(R.id.Title_PlayDelegate).setEnabled(true);
+    this.findViewById(R.id.Title_BuzzDelegate).setEnabled(true);
+    this.findViewById(R.id.Title_SettingsDelegate).setEnabled(true);
+    this.findViewById(R.id.Title_RulesDelegate).setEnabled(true);
 
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this

@@ -78,6 +78,7 @@ public class EditTeamName extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "Cancel onClick()");
       }
+      v.setEnabled(false);
       // Keep music playing
       mContinueMusic = true;
       finish();
@@ -93,6 +94,7 @@ public class EditTeamName extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "Cancel onClick()");
       }
+      v.setEnabled(false);
 
       // Cache the team name
       String teamName = mEditTeamName.getText().toString();
