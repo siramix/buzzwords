@@ -19,6 +19,7 @@
 
   <!-- Global Prefkey IDs -->
   <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
+  <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
   <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
 
   <!-- Menu Designations -->
@@ -55,15 +56,23 @@
   <string name="rateUsFirstDialog_title">We want your feedback!</string>
   <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
      Would you mind taking a minute to provide some feedback?</string>
-  
+
   <string name="rateUsSecondDialog_title">We still want your feedback!</string>
   <string name="rateUsSecondDialog_text">Wow you\'ve played a LOT, which means your opinion is especially valuable to us!
      We won\'t bug you again but would you mind providing some feedback?</string>
-  
+
   <string name="rateUsDialog_positiveBtn">Rate</string>
   <string name="rateUsDialog_neutralBtn">Later</string>
   <string name="rateUsDialog_negativeBtn">Never</string>
-  
+
+  <!-- Text for the dialog on their first play of the game -->
+  <string name="openingDialog_title">First Time?</string>
+  <string name="openingDialog_text">Thank you for trying Buzzwords!
+      This is a party game meant to be played with a group.
+      If you\'ve played Taboo™ before, you\'ll know just what to do.</string>
+  <string name="openingDialog_positiveBtn">View Rules</string>
+  <string name="openingDialog_negativeBtn">I\'ve Got This</string>
+
   <!--  Rate Us URI for app store -->
   <string name="URI_buzzwords_redirect">http://www.siramix.com/buzzwordsappstore</string>
   <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwords</string>
