@@ -67,22 +67,17 @@ public class Title extends Activity {
    * Dialog constant for first Rate Us message
    */
   static final int DIALOG_RATEUS_FIRST = 0;
- 
+
   /**
    * Dialog constant for second Rate Us message
    */
   static final int DIALOG_RATEUS_SECOND = 1;
-  
+
   /**
-   * Dialog constant for second Rate Us message
+   * Dialog constant for the first time dialog
    */
-  static final int DIALOG_HOLIDAY_GIVEAWAY = 2;
-  
-  /**
-   * TEMPORARY variable for holiday giveaway key
-   */
-  private final String showgift_prefkey = "show_giveaway"; 
-  
+  static final int DIALOG_FIRST_TIME = 2;
+
   /**
    * PlayGameListener is used for the start game button. It launches the next
    * activity.
@@ -367,10 +362,11 @@ public class Title extends Activity {
     // Capture our play count to decide whether to show the Rate Us dialog
     int playCount = sp.getInt(getResources().getString(R.string.PREFKEY_PLAYCOUNT), 0);
     boolean showReminder = sp.getBoolean(getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
-    boolean showGift = sp.getBoolean(showgift_prefkey, true);
-    
-    if (showGift) {
-      showDialog(DIALOG_HOLIDAY_GIVEAWAY);
+    boolean showFirstRun = sp.getBoolean(getResources().getString(R.string.PREFKEY_SHOWFIRSTRUN), true);
+
+    // If playCount is 0. Show them the first-time dialog
+    if (playCount == 0 && showFirstRun) {
+      showDialog(DIALOG_FIRST_TIME);
     }
     
     // If 3 plays have been done and reminder is not muted, show dialog
@@ -514,21 +510,35 @@ public class Title extends Activity {
    */
   private void muteRateReminder()
   {
-	if (BuzzWordsApplication.DEBUG) {
-		Log.d(TAG, "muteRateReminder()");
-	}
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "muteRateReminder()");
+    }
     // Prepare to edit preference for mute reminder bool
-    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();    
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
-    SharedPreferences.Editor prefEditor = sp.edit();   
+    SharedPreferences.Editor prefEditor = sp.edit();
     
     // 7 and false will mean the user has seen the second dialog and muted it 
     prefEditor.putInt(this.getResources().getString(R.string.PREFKEY_PLAYCOUNT),7);
     prefEditor.putBoolean(this.getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
     
-    prefEditor.commit();    
+    prefEditor.commit();
   }
-  
+
+  /**
+   * Set the pref for the first-open dialog to false
+   */
+  private void muteFirstRunDialog() {
+    // Prepare to edit preference for mute reminder bool
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
+    SharedPreferences.Editor prefEditor = sp.edit();
+
+    prefEditor.putBoolean(this.getResources().getString(R.string.PREFKEY_SHOWFIRSTRUN), false);
+
+    prefEditor.commit();
+  }
+
   /**
    * TEMPORARY METHOD for muting the holiday gift dialog
    */
@@ -597,50 +607,48 @@ public class Title extends Activity {
                   public void onClick(DialogInterface dialog, int id) {                                            
                     Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_BuzzwordsLite);
                     startActivity(intent);
-                    muteRateReminder();
-                  }
-            }).setNegativeButton(getResources().getString(R.string.rateUsDialog_negativeBtn), 
-                  new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                      muteRateReminder();
-              }
-            });
-      dialog = builder.create();
-      break;
-    
-    case DIALOG_HOLIDAY_GIVEAWAY:
-        builder = new AlertDialog.Builder(this);
-        builder
-          .setTitle("A Holiday Gift from Siramix!")
-          .setCancelable(false)
-          .setMessage("To celebrate the holidays Buzzwords will be $0.99 until the new year!  " + 
-                      "We hope that you enjoy playing with your friends and family over the holidays.")
-          .setPositiveButton("Upgrade", 
-              new DialogInterface.OnClickListener() {            
-                public void onClick(DialogInterface dialog, int id) {
-                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
                   startActivity(intent);
-                  muteGiftDialog();
+                  muteRateReminder();
                 }
-                 
-          }).setNeutralButton("Share This", 
-              new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                  Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                  sharingIntent.setType("text/plain");
-                  sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Buzzwords for Android is " + 
-                      "half off until the new year! #buzzwords " +BuzzWordsApplication.storeURI_Buzzwords.toString());
-                  startActivity(Intent.createChooser(sharingIntent,"Share using"));
-                }
-          }).setNegativeButton("Bah Humbug", 
-              new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                  muteGiftDialog();
-                }
+          }).setNegativeButton(getResources().getString(R.string.rateUsDialog_negativeBtn), 
+                new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int which) {
+                    muteRateReminder();
+            }
           });
       dialog = builder.create();
       break;
-                      
+    case DIALOG_FIRST_TIME:
+      builder = new AlertDialog.Builder(this);
+      builder
+          .setTitle(
+              getResources().getString(R.string.openingDialog_title))
+          .setMessage(
+            getResources().getString(R.string.openingDialog_text))
+          .setPositiveButton(getResources().getString(R.string.openingDialog_positiveBtn), 
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                  mContinueMusic = true;
+                  // play confirm sound
+                  SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+                  sm.playSound(SoundManager.Sound.CONFIRM);
+                  muteFirstRunDialog();
+                  startActivity(new Intent(
+                      getApplication().getString(R.string.IntentRules), getIntent()
+                          .getData()));
+                }
+          }).setNegativeButton(getResources().getString(R.string.openingDialog_negativeBtn), 
+                new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int which) {
+                    // play confirm sound
+                    SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+                    sm.playSound(SoundManager.Sound.CONFIRM);
+                    muteFirstRunDialog();
+            }
+          });
+      dialog = builder.create();
+      break;
     default:
       dialog = null;
     }
