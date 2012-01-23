@@ -1067,7 +1067,8 @@
 					android:layout_below="@id/Rules_SubHeader_FinalThoughts"
 					android:text="We hope you enjoy playing Buzzwords!"
 					android:textSize="16dp"
-					android:padding="5dp"/>
+					android:padding="5dp"
+					/>
 					
 				<TextView android:id="@+id/Rules_FinalThoughts_Text02"
 					android:layout_width="wrap_content"
@@ -1075,7 +1076,8 @@
 					android:layout_below="@id/Rules_FinalThoughts_Text01"
 					android:text="If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or by clicking the ram icon on the title page.  Or email us at buzzwords@siramix.com or tweet @siramixlabs."
 					android:textSize="16dp"
-					android:padding="5dp"/>
+					android:padding="5dp"
+					/>
 					
 			</RelativeLayout>
 
