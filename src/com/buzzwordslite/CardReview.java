@@ -66,6 +66,7 @@ public class CardReview extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "CorrectClickListener OnClick()");
       }
+      v.setEnabled(false);
       setCardState(Card.RIGHT);
       SoundManager sm = SoundManager.getInstance(CardReview.this
           .getBaseContext());
@@ -82,6 +83,7 @@ public class CardReview extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "WrongClickListener OnClick()");
       }
+      v.setEnabled(false);
       setCardState(Card.WRONG);
       SoundManager sm = SoundManager.getInstance(CardReview.this
           .getBaseContext());
@@ -98,6 +100,7 @@ public class CardReview extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "SkipClickListener OnClick()");
       }
+      v.setEnabled(false);
       setCardState(Card.SKIP);
       SoundManager sm = SoundManager.getInstance(CardReview.this
           .getBaseContext());

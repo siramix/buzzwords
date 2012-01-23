@@ -249,8 +249,20 @@ public class GameEnd extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "RematchListener onClick()");
       }
+      v.setEnabled(false);
       mRematch = true;
       showDialog(DIALOG_BUYFULL_ID);
+      BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+
+      GameManager curgm = application.getGameManager();
+      GameManager newgm = new GameManager(GameEnd.this);
+      newgm.startGame(curgm.getTeams(), curgm.getNumRounds());
+      application.setGameManager(newgm);
+
+      Intent clearStackIntent = new Intent(getApplication().getString(
+          R.string.IntentTurn), getIntent().getData());
+      clearStackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+      startActivity(clearStackIntent);
     }
   }; // End MainMenuListener
 
