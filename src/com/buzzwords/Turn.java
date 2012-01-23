@@ -1091,9 +1091,9 @@ public class Turn extends Activity {
 
             public void onClick(DialogInterface dialog, int which) {
               mIsPaused = false;
-              mIsBack = true;
               dialog.dismiss();
               Turn.this.showCard();
+              mIsBack = true;
               Turn.this.startTimer();
 
               // Play back sound to differentiate from normal clicks

@@ -236,6 +236,7 @@ public class GameEnd extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "RematchListener onClick()");
       }
+      v.setEnabled(false);
 
       BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
 

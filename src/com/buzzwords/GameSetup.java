@@ -106,6 +106,7 @@ public class GameSetup extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "StartGameListener onClick()");
       }
+      v.setEnabled(false);
 
       // Validate team numbers
       if (GameSetup.this.mTeamList.size() <= 1) {
