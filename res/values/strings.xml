@@ -19,7 +19,7 @@
 
   <!-- Global Prefkey IDs -->
   <string name="PREFKEY_SHOWREMINDER">com.buzzwordslite.prefkey.SHOWREMINDER</string>
-  <string name="PREFKEY_PLAYCOUNT">com.buzzwordslite.prefkey.PREFKEY_PLAYCOUNT</string>
+  <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwordslite.prefkey.SHOWFIRSTRUN</string>
   <string name="PREFKEY_PLAYCOUNT">com.buzzwordslite.prefkey.PREFKEY_PLAYCOUNT</string>
 
   <!-- Menu Designations -->

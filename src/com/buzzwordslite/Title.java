@@ -375,7 +375,7 @@ public class Title extends Activity {
     }
     
     // If 3 plays have been done and reminder is not muted, show dialog
-    if (showReminder && !showGift) {
+    if (showReminder) {
       if (playCount < 6) {
         showDialog(DIALOG_RATEUS_FIRST);
       }
@@ -554,17 +554,6 @@ public class Title extends Activity {
     prefEditor.commit();
   }
 
-  /**
-   * TEMPORARY METHOD for muting the holiday gift dialog
-   */
-  private void muteGiftDialog() {
-    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();    
-    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
-    SharedPreferences.Editor prefEditor = sp.edit();   
-    
-    prefEditor.putBoolean(showgift_prefkey, false);                  
-    prefEditor.commit();
-  }
   /**
    * Custom create Dialogs
    */
