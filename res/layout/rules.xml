@@ -445,7 +445,7 @@
 							android:padding="8dp"
 							android:text="Setup Screen: Here you choose which teams will play.  You then select how many turns each team will present.  4 teams with 4 turns a piece means 16 times presenting."
 							android:layout_weight="1"
-							android:layout_width="150dp"
+							android:layout_width="200dp"
 							android:textSize="16dp"/>
 							
 						<ImageView android:id="@+id/Rules_Screens_Setup"
@@ -453,8 +453,7 @@
 							android:layout_height="wrap_content"
 							android:background="@drawable/rules_setup_ss"
 							android:contentDescription="Setup Screen Image"
-							android:layout_weight="1"
-							/>
+							android:layout_weight="1"/>
 
 					</LinearLayout>
 
