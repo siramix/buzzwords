@@ -111,14 +111,15 @@ public class GameSetup extends Activity {
       // Validate team numbers
       if (GameSetup.this.mTeamList.size() <= 1) {
         GameSetup.this.showDialog(DIALOG_TEAMERROR);
+        v.setEnabled(true);
         return;
       }
-
+      
       // Store off game's attributes as preferences
       GameSetup.mGameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX,
           GameSetup.this.getCheckedRadioIndex());
       GameSetup.mGameSetupPrefEditor.commit();
-
+      
       // Create a GameManager to manage attributes about the current game.
       // the while loop around the try-catch block makes sure the database
       // has loaded before actually starting the game.
