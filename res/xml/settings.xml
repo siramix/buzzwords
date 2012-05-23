@@ -22,10 +22,10 @@
 	<PreferenceCategory android:title="Audio">
 	
 		<CheckBoxPreference 
+			android:key="com.buzzwords.MUSIC_ENABLED"
 			android:title="Music"
 			android:summary="Enable all music"
 			android:defaultValue="true" 
-			android:key="music_enabled"
 			/>
 			
 	</PreferenceCategory>
@@ -33,11 +33,21 @@
 	<PreferenceCategory android:title="Game">
 
 		<ListPreference 
-			android:key="turn_timer" 
+			android:key="com.buzzwords.DIFFICULTY"
+			android:title="Difficulty"
+			android:selectable="true"
+			android:entries="@array/difficulties"
+			android:entryValues="@array/difficulty_values"
+			android:summary="" 
+			android:defaultValue="5"/>
+		
+		<ListPreference 
+			android:key="com.buzzwords.TURN_TIMER" 
 			android:title="Turn Timer Length"
 			android:entryValues="@array/turntime_values" 
 			android:entries="@array/turntimes"
-			android:summary="" android:defaultValue="60" 
+			android:summary="" 
+			android:defaultValue="60" 
 			/>
 
 		<CheckBoxPreference 
@@ -66,5 +76,6 @@
     </Preference>
     
   </PreferenceCategory>
+  
 
 </PreferenceScreen>

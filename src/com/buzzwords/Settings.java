@@ -52,12 +52,12 @@ public class Settings extends PreferenceActivity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "onSharedPreferencesChanged()");
       }
-      if (key.equals("music_enabled")) {
+      if (key.equals(Consts.PREFKEY_MUSIC)) {
         // Start or stop the music
         BuzzWordsApplication application = (BuzzWordsApplication) Settings.this
             .getApplication();
         MediaPlayer mp = application.getMusicPlayer();
-        if (sharedPreferences.getBoolean("music_enabled", true)) {
+        if (sharedPreferences.getBoolean(Consts.PREFKEY_MUSIC, true)) {
           if (!mp.isPlaying()) {
             mp.start();
           }
@@ -68,9 +68,14 @@ public class Settings extends PreferenceActivity {
         }
       }
 
-      else if (key.equals("turn_timer")) {
+      else if (key.equals(Consts.PREFKEY_TIMER)) {
         // When turn timer is changed, update the caption
-        Settings.this.updateTimerLabel();
+        Settings.this.updateTimerSummary();
+      }
+      
+      else if (key.equals(Consts.PREFKEY_DIFFICULTY)) {
+        // Update caption
+        Settings.this.updateDifficultySummary();
       }
     }
   };
@@ -98,14 +103,15 @@ public class Settings extends PreferenceActivity {
     this.addPreferencesFromResource(R.xml.settings);
 
     // When turn timer is loaded, update the caption
-    this.updateTimerLabel();
+    this.updateTimerSummary();
+    this.updateDifficultySummary();
 
     // Update the version preference caption to the existing app version
     Preference version = findPreference("app_version");
     try {
       version.setTitle(this.getString(R.string.AppName));
       version
-          .setSummary(" Version "
+          .setSummary("Version "
               + this.getPackageManager().getPackageInfo(this.getPackageName(),
                   0).versionName);
     } catch (NameNotFoundException e) {
@@ -117,10 +123,19 @@ public class Settings extends PreferenceActivity {
   /**
    * Updates the timer label by checking the preference for the current time
    */
-  private void updateTimerLabel() {
+  private void updateTimerSummary() {
     // When turn timer is loaded, update the caption
-    ListPreference lp = (ListPreference) findPreference("turn_timer");
+    ListPreference lp = (ListPreference) findPreference(Consts.PREFKEY_TIMER);
     lp.setSummary(lp.getValue() + " seconds");
+  }
+  
+  /**
+   * Update the text beneath difficulty to display the current selection
+   */
+  private void updateDifficultySummary() {
+    // When difficulty is changed, update our caption
+    ListPreference lp = (ListPreference) findPreference(Consts.PREFKEY_DIFFICULTY);
+    lp.setSummary(lp.getEntry());
   }
 
   /**
@@ -181,7 +196,7 @@ public class Settings extends PreferenceActivity {
     MediaPlayer mp = application.getMusicPlayer();
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
-    if (!mp.isPlaying() && sp.getBoolean("music_enabled", true)) {
+    if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
       mp.start();
     }
 

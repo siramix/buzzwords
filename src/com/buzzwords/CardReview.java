@@ -19,8 +19,10 @@ package com.buzzwords;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -58,6 +60,11 @@ public class CardReview extends Activity {
    */
   private int mCardIndex;
 
+  /**
+   * Integers for displaying buzzwords according to preferences
+   */
+  private int mNumBuzzwords;
+  private final int MAX_BUZZWORDS = 5;
   /**
    * Listener for correct button
    */
@@ -116,6 +123,8 @@ public class CardReview extends Activity {
 
     mTitleView = (TextView) this.findViewById(R.id.CardReview_CardTitle);
 
+    int numToHide = MAX_BUZZWORDS- mNumBuzzwords;
+    
     mBadWordViews = new TextView[5];
     mBadWordViews[0] = (TextView) this
         .findViewById(R.id.CardReview_Card_BadWord0);
@@ -128,6 +137,10 @@ public class CardReview extends Activity {
     mBadWordViews[4] = (TextView) this
         .findViewById(R.id.CardReview_Card_BadWord4);
 
+    for(int i=1; i<=numToHide; ++i) {
+      mBadWordViews[MAX_BUZZWORDS-i].setVisibility(View.GONE);
+    }
+    
     mCorrectButton = (ImageButton) this
         .findViewById(R.id.CardReview_ButtonCorrect);
     mWrongButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonWrong);
@@ -211,6 +224,11 @@ public class CardReview extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreate()");
     }
+    
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    
+    mNumBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_DIFFICULTY, "5"));
 
     this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 

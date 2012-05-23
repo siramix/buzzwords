@@ -735,10 +735,21 @@ public class Turn extends Activity {
     int color = this.getResources().getColor(curTeam.getSecondaryColor());
     ArrayList<String> badwords = curCard.getBadWords();
 
-    for (int i = 0; i < wordLayout.getChildCount(); ++i) {
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    
+    int numBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_DIFFICULTY, "5"));
+    int maxBuzzwords = wordLayout.getChildCount();
+    
+    for (int i = 0; i < maxBuzzwords; ++i) {
       text = (TextView) wordLayout.getChildAt(i);
       text.setText(badwords.get(i));
       text.setTextColor(color);
+    }
+    
+    int numToHide = maxBuzzwords - numBuzzwords;
+    for (int i = 1; i <= numToHide; ++i) {
+      wordLayout.getChildAt(maxBuzzwords-i).setVisibility(View.GONE);
     }
   }
 

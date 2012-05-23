@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   
+
     <string-array name="turntimes">
       <item>30 seconds</item>
       <item>60 seconds (recommended)</item>
       <item>90 seconds</item>
     </string-array>
-    
+
     <string-array name="turntime_values">
       <item>30</item>
       <item>60</item>
       <item>90</item>
-        
     </string-array>
-      
+
+    <string-array name="difficulties">
+      <item>No Buzzwords</item>
+      <item>Just Learning - 3 Buzzwords</item>
+      <item>Getting Good - 4 Buzzwords</item>
+      <item>Buzzwords Pro - 5 Buzzwords</item>
+    </string-array>
+
+    <string-array name="difficulty_values">
+      <item>0</item>
+      <item>3</item>
+      <item>4</item>
+      <item>5</item>
+    </string-array>
+    
 </resources>
