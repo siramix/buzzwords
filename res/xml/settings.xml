@@ -30,7 +30,7 @@
 			
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="Game">
+	<PreferenceCategory android:title="House Rules">
 
 		<ListPreference 
 			android:key="com.buzzwords.DIFFICULTY"
@@ -62,8 +62,42 @@
 			android:title="Allow Gestures"
 			android:defaultValue="true"
 			android:summary="Swipe up for correct, down for wrong, left for skip, and right for back."
-			/>			
+			/>
+		
+	</PreferenceCategory>
+	
+	<PreferenceCategory android:title="Advanced House Rules">
 
+		<ListPreference
+			android:key="com.buzzwords.RIGHT_SCORE"
+			android:title="Right Reward"
+			android:selectable="true"
+			android:entries="@array/right_scores"
+			android:entryValues="@array/right_scores_values"
+			android:summary="Score change for correct guesses." 
+			android:defaultValue="1"
+			/>
+
+		<ListPreference
+			android:key="com.buzzwords.WRONG_SCORE"
+			android:title="Buzz Penalty"
+			android:selectable="true"
+			android:entries="@array/wrong_scores"
+			android:entryValues="@array/wrong_scores_values"
+			android:summary="Score change for getting buzzed." 
+			android:defaultValue="-1"
+			/>
+		
+		<ListPreference
+			android:key="com.buzzwords.SKIP_SCORE"
+			android:title="Skip Penalty"
+			android:selectable="true"
+			android:entries="@array/skip_scores"
+			android:entryValues="@array/skip_scores_values"
+			android:summary="Score change for skipping a word." 
+			android:defaultValue="0"
+			/>
+		
 	</PreferenceCategory>
 
   <PreferenceCategory android:title="App Info">

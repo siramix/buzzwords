@@ -131,9 +131,12 @@ public class GameManager {
     mRwsValueRules = new int[3];
 
     // Set score values for game
-    mRwsValueRules[0] = 1; // Value for correct cards
-    mRwsValueRules[1] = -1; // Value for wrong cards
-    mRwsValueRules[2] = 0; // set skip value to 0 if skip penalty is not on
+    // Value for correct cards
+    mRwsValueRules[0] = Integer.valueOf(sp.getString(Consts.PREFKEY_RIGHT_SCORE, "1"));
+    // Value for wrong cards
+    mRwsValueRules[1] = Integer.valueOf(sp.getString(Consts.PREFKEY_WRONG_SCORE, "-1"));
+    // set skip value to 0 if skip penalty is not on
+    mRwsValueRules[2] = Integer.valueOf(sp.getString(Consts.PREFKEY_SKIP_SCORE, "0")); 
 
     mDeck = new Deck(context);
   }

@@ -27,4 +27,57 @@
       <item>5</item>
     </string-array>
     
+     <string-array name="wrong_scores">
+      <item>-5 points</item>
+      <item>-4 points</item>
+      <item>-3 points</item>
+      <item>-2 points</item>
+      <item>-1 point (default)</item>
+      <item>0 points</item>
+    </string-array>
+
+    <string-array name="wrong_scores_values">
+      <item>-5</item>
+      <item>-4</item>
+      <item>-3</item>
+      <item>-2</item>
+      <item>-1</item>
+      <item>0</item>
+    </string-array>
+    
+    <string-array name="skip_scores">
+      <item>-5 points</item>
+      <item>-4 points</item>
+      <item>-3 points</item>
+      <item>-2 points</item>
+      <item>-1 points</item>
+      <item>0 points (default)</item>
+    </string-array>
+
+    <string-array name="skip_scores_values">
+      <item>-5</item>
+      <item>-4</item>
+      <item>-3</item>
+      <item>-2</item>
+      <item>-1</item>
+      <item>0</item>
+    </string-array>
+    
+    <string-array name="right_scores">
+      <item>5 points</item>
+      <item>4 points</item>
+      <item>3 points</item>
+      <item>2 points</item>
+      <item>1 point (default)</item>
+      <item>0 points</item>
+    </string-array>
+
+    <string-array name="right_scores_values">
+      <item>5</item>
+      <item>4</item>
+      <item>3</item>
+      <item>2</item>
+      <item>1</item>
+      <item>0</item>
+    </string-array>
 </resources>

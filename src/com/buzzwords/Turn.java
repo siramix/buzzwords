@@ -987,13 +987,13 @@ public class Turn extends Activity {
       mMusicEnabled = false;
 
     // Set local variable for skip preference to reduce calls to get
-    if (sp.getBoolean(Consts.PREKEY_SKIP, true))
+    if (sp.getBoolean(Consts.PREFKEY_SKIP, true))
       mSkipEnabled = true;
     else
       mSkipEnabled = false;
 
     // Set local variable for allowing gesture preference to reduce get calls
-    if (sp.getBoolean(Consts.PREKEY_GESTURES, true))
+    if (sp.getBoolean(Consts.PREFKEY_GESTURES, true))
       mGesturesEnabled = true;
     else
       mGesturesEnabled = false;

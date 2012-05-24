@@ -75,7 +75,14 @@ public class Settings extends PreferenceActivity {
       
       else if (key.equals(Consts.PREFKEY_DIFFICULTY)) {
         // Update caption
-        Settings.this.updateDifficultySummary();
+        Settings.this.updatePreferenceSummary(key);
+      }
+      
+      else if (key.equals(Consts.PREFKEY_RIGHT_SCORE) || 
+               key.equals(Consts.PREFKEY_WRONG_SCORE) || 
+               key.equals(Consts.PREFKEY_SKIP_SCORE)) {
+        // Update score caption
+        Settings.this.updateScorePreferenceSummary(key);
       }
     }
   };
@@ -104,7 +111,10 @@ public class Settings extends PreferenceActivity {
 
     // When turn timer is loaded, update the caption
     this.updateTimerSummary();
-    this.updateDifficultySummary();
+    this.updatePreferenceSummary(Consts.PREFKEY_DIFFICULTY);
+    this.updateScorePreferenceSummary(Consts.PREFKEY_RIGHT_SCORE);
+    this.updateScorePreferenceSummary(Consts.PREFKEY_WRONG_SCORE);
+    this.updateScorePreferenceSummary(Consts.PREFKEY_SKIP_SCORE);
 
     // Update the version preference caption to the existing app version
     Preference version = findPreference("app_version");
@@ -128,16 +138,35 @@ public class Settings extends PreferenceActivity {
     ListPreference lp = (ListPreference) findPreference(Consts.PREFKEY_TIMER);
     lp.setSummary(lp.getValue() + " seconds");
   }
-  
+
   /**
-   * Update the text beneath difficulty to display the current selection
+   * Update the text beneath a List Preference to display the current selection
+   * @param updateKey Preference key of preference to update
    */
-  private void updateDifficultySummary() {
+  private void updatePreferenceSummary(String updateKey) {
     // When difficulty is changed, update our caption
-    ListPreference lp = (ListPreference) findPreference(Consts.PREFKEY_DIFFICULTY);
+    ListPreference lp = (ListPreference) findPreference(updateKey);
     lp.setSummary(lp.getEntry());
   }
-
+  
+  /**
+   * Update the text beneath a List Preference that pertains to scoring.  We
+   * use this for right / wrong /skip score change preference.
+   * @param updateKey Preference key of preference to update
+   */
+  private void updateScorePreferenceSummary(String updateKey) {
+    // When difficulty is changed, update our caption
+    ListPreference lp = (ListPreference) findPreference(updateKey);
+    String scorePrefVal = lp.getValue();
+    String pointString = "points";
+    // Handle the singular case
+    if (scorePrefVal.compareTo("-1") == 0 || scorePrefVal.compareTo("1") == 0) {
+      pointString = "point";
+    }
+    lp.setSummary(getResources().getString(R.string.settings_scorechange_summary) 
+                    + " " + scorePrefVal + " " + pointString);
+  }
+ 
   /**
    * Override back button to carry music on back to the Title activity
    */
