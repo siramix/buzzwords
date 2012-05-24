@@ -43,4 +43,6 @@ public class Consts {
     public static final String PREFKEY_DIFFICULTY = "com.buzzwords.DIFFICULTY";
     public static final String PREFKEY_TIMER = "com.buzzwords.TURN_TIMER";
     public static final String PREFKEY_MUSIC = "com.buzzwords.MUSIC_ENABLED";
+    public static final String PREKEY_SKIP = "com.buzzwords.ALLOW_SKIP";
+    public static final String PREKEY_GESTURES= "com.buzzwords.ALLOW_GESTURES";
 }

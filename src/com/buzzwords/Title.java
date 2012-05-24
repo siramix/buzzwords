@@ -359,7 +359,7 @@ public class Title extends Activity {
     mp.setLooping(true);
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
-    if (sp.getBoolean("music_enabled", true)) {
+    if (sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
       mp.start();
     }
 
@@ -461,7 +461,7 @@ public class Title extends Activity {
       MediaPlayer mp = application.getMusicPlayer();
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
           .getBaseContext());
-      if (mp.isPlaying() && sp.getBoolean("music_enabled", true)) {
+      if (mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
         mp.pause();
       }
     }
@@ -493,7 +493,7 @@ public class Title extends Activity {
     MediaPlayer mp = application.getMusicPlayer();
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
-    if (sp.getBoolean("music_enabled", true)) {
+    if (sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
       if (!mp.isPlaying()) {
         mp.start();
       }

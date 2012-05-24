@@ -435,7 +435,7 @@ public class GameSetup extends Activity {
     MediaPlayer mp = application.getMusicPlayer();
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
-    if (!mp.isPlaying() && sp.getBoolean("music_enabled", true)) {
+    if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
       mp.start();
     }
 
