@@ -81,7 +81,7 @@ public class Settings extends PreferenceActivity {
   };
 
   /**
-   * logging tag 
+   * logging tag
    */
   public static String TAG = "Settings";
 
