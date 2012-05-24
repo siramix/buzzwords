@@ -981,19 +981,19 @@ public class Turn extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
 
-    if (sp.getBoolean("music_enabled", true))
+    if (sp.getBoolean(Consts.PREFKEY_MUSIC, true))
       mMusicEnabled = true;
     else
       mMusicEnabled = false;
 
     // Set local variable for skip preference to reduce calls to get
-    if (sp.getBoolean("allow_skip", true))
+    if (sp.getBoolean(Consts.PREKEY_SKIP, true))
       mSkipEnabled = true;
     else
       mSkipEnabled = false;
 
     // Set local variable for allowing gesture preference to reduce get calls
-    if (sp.getBoolean("allow_gestures", true))
+    if (sp.getBoolean(Consts.PREKEY_GESTURES, true))
       mGesturesEnabled = true;
     else
       mGesturesEnabled = false;

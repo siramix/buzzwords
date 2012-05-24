@@ -74,7 +74,7 @@ public class Rules extends Activity {
         + " seconds");
 
     // Allow Skipping rule display
-    if (sp.getBoolean("allow_skip", true)) {
+    if (sp.getBoolean(Consts.PREKEY_SKIP, true)) {
       prefBuilder.append("\nAllow Skipping: Players may skip words.");
     } else {
       prefBuilder.append("\nAllow Skipping: Players can not skip words.");
@@ -140,7 +140,7 @@ public class Rules extends Activity {
       MediaPlayer mp = application.getMusicPlayer();
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
           .getBaseContext());
-      if (!mp.isPlaying() && sp.getBoolean("music_enabled", true)) {
+      if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
         mp.start();
       }
     }

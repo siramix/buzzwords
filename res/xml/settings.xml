@@ -51,14 +51,14 @@
 			/>
 
 		<CheckBoxPreference 
-			android:key="allow_skip"
+			android:key="com.buzzwords.ALLOW_SKIP"
 			android:title="Allow Skipping"
 			android:defaultValue="true"
 			android:summary="If checked players may skip cards."
 			/>
 			
 		<CheckBoxPreference 
-			android:key="allow_gestures"
+			android:key="com.buzzwords.ALLOW_GESTURES"
 			android:title="Allow Gestures"
 			android:defaultValue="true"
 			android:summary="Swipe up for correct, down for wrong, left for skip, and right for back."
