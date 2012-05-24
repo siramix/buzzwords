@@ -123,7 +123,7 @@ public class GameManager {
     mRwsResourceIds = new int[] { R.drawable.right, R.drawable.wrong,
         R.drawable.skip };
 
-    mTurnTime = Integer.parseInt(sp.getString("turn_timer", "60")) * 1000;
+    mTurnTime = Integer.valueOf(sp.getString(Consts.PREFKEY_TIMER, "60")) * 1000;
 
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "Turn time is " + mTurnTime);

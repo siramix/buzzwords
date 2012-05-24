@@ -735,10 +735,21 @@ public class Turn extends Activity {
     int color = this.getResources().getColor(curTeam.getSecondaryColor());
     ArrayList<String> badwords = curCard.getBadWords();
 
-    for (int i = 0; i < wordLayout.getChildCount(); ++i) {
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    
+    int numBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_DIFFICULTY, "5"));
+    int maxBuzzwords = wordLayout.getChildCount();
+    
+    for (int i = 0; i < maxBuzzwords; ++i) {
       text = (TextView) wordLayout.getChildAt(i);
       text.setText(badwords.get(i));
       text.setTextColor(color);
+    }
+    
+    int numToHide = maxBuzzwords - numBuzzwords;
+    for (int i = 1; i <= numToHide; ++i) {
+      wordLayout.getChildAt(maxBuzzwords-i).setVisibility(View.GONE);
     }
   }
 
@@ -970,19 +981,19 @@ public class Turn extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
 
-    if (sp.getBoolean("music_enabled", true))
+    if (sp.getBoolean(Consts.PREFKEY_MUSIC, true))
       mMusicEnabled = true;
     else
       mMusicEnabled = false;
 
     // Set local variable for skip preference to reduce calls to get
-    if (sp.getBoolean("allow_skip", true))
+    if (sp.getBoolean(Consts.PREKEY_SKIP, true))
       mSkipEnabled = true;
     else
       mSkipEnabled = false;
 
     // Set local variable for allowing gesture preference to reduce get calls
-    if (sp.getBoolean("allow_gestures", true))
+    if (sp.getBoolean(Consts.PREKEY_GESTURES, true))
       mGesturesEnabled = true;
     else
       mGesturesEnabled = false;
