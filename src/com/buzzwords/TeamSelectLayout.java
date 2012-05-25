@@ -23,6 +23,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -129,9 +130,18 @@ public class TeamSelectLayout extends RelativeLayout {
     mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, INITIAL_TEXTSIZE);
 
     // Add the views to frame
-
     mFrame.addView(mFrameForeground);
     mFrame.addView(mTeamText);
+    
+    // Add single pixel bar of lightened color to give depth
+    View lightBar = new View(mContext);
+    lightBar.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+        (int) (DENSITY * 1 + 0.5f)));
+    lightBar.setBackgroundColor(getResources().getColor(R.color.white));
+    AlphaAnimation alpha = new AlphaAnimation(0.2f, 0.2f);
+    alpha.setFillAfter(true);
+    lightBar.startAnimation(alpha);
+    mFrame.addView(lightBar);
 
     // Initialize the group for the buttons
     mButtons = new LinearLayout(mContext);

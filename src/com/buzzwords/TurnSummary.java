@@ -37,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -169,6 +170,13 @@ public class TurnSummary extends Activity {
       mCardLineList.add(realLine);
       realLine.setOnClickListener(mCardIconListener);
       count++;
+      
+      // Add single pixel bar of lightened color to give depth
+      View lightBar = (View) realLine.getChildAt(3);
+      lightBar.setBackgroundColor(getResources().getColor(R.color.white));
+      AlphaAnimation alpha = new AlphaAnimation(0.2f, 0.2f);
+      alpha.setFillAfter(true);
+      lightBar.startAnimation(alpha);
     }
     list.addView(layout);
 
