@@ -42,9 +42,9 @@
         <RelativeLayout android:layout_height="90dp" android:layout_width="fill_parent" android:id="@+id/CardReview_LowBar">
             <View android:layout_height="45dp" android:layout_alignParentBottom="true" android:layout_marginTop="40dp" android:layout_width="fill_parent" android:background="@color/genericBG" android:id="@+id/CardReview_LowBarBG"></View>
             <View android:layout_height="10dp" android:layout_width="fill_parent" android:background="@color/genericBG_trim" android:layout_alignTop="@id/CardReview_LowBarBG" android:id="@+id/CardReview_LowBarTrim"></View>
-            <ImageButton android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_width="wrap_content" android:id="@+id/CardReview_ButtonSkip" android:background="@drawable/controls_skip_desaturated"></ImageButton>
-            <ImageButton android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginRight="99dp" android:layout_alignRight="@id/CardReview_ButtonSkip" android:layout_width="wrap_content" android:id="@+id/CardReview_ButtonWrong" android:background="@drawable/controls_wrong_desaturated"></ImageButton>
-            <ImageButton android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginLeft="99dp" android:layout_width="wrap_content" android:id="@+id/CardReview_ButtonCorrect" android:layout_alignLeft="@id/CardReview_ButtonSkip" android:background="@drawable/controls_right_desaturated"></ImageButton>
+            <ImageButton android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_width="wrap_content" android:id="@+id/CardReview_ButtonSkip" android:background="@drawable/button_skip_desaturated"></ImageButton>
+            <ImageButton android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginRight="99dp" android:layout_alignRight="@id/CardReview_ButtonSkip" android:layout_width="wrap_content" android:id="@+id/CardReview_ButtonWrong" android:background="@drawable/button_wrong_desaturated"></ImageButton>
+            <ImageButton android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginLeft="99dp" android:layout_width="wrap_content" android:id="@+id/CardReview_ButtonCorrect" android:layout_alignLeft="@id/CardReview_ButtonSkip" android:background="@drawable/button_right_desaturated"></ImageButton>
         </RelativeLayout>
         
     </LinearLayout>

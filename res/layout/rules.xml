@@ -281,7 +281,7 @@
 						<ImageView android:id="@+id/Rules_Gameplay_RightButton"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:background="@drawable/controls_right"
+							android:background="@drawable/button_right_normal"
 							android:contentDescription="Right button icon"
 							android:scaleType="centerCrop"
 							/>
@@ -305,7 +305,7 @@
 							android:layout_below="@id/Rules_SkipIconCouple"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:background="@drawable/controls_skip"
+							android:background="@drawable/button_skip_normal"
 							/>
 							
 						<TextView android:id="@+id/Rules_GameplayText03"
@@ -329,7 +329,7 @@
 							android:layout_below="@id/Rules_WrongIconCouple"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:background="@drawable/controls_wrong"
+							android:background="@drawable/button_wrong_normal"
 							/>
 							
 						<TextView android:id="@+id/Rules_GameplayText04"

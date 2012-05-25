@@ -93,7 +93,7 @@
 				/>
 				
 			<ImageButton android:id="@+id/Title_PlayButton"
-				android:background="@drawable/title_play"
+				android:background="@drawable/title_play_normal"
 				android:layout_centerVertical="true" 
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
@@ -128,7 +128,7 @@
 			<ImageButton android:id="@+id/Title_BuzzButton"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content" 
-				android:background="@drawable/title_buzzer"
+				android:background="@drawable/title_buzzer_normal"
 				android:layout_centerVertical="true"
 				/>
 
@@ -160,7 +160,7 @@
 			<ImageButton android:id="@+id/Title_SettingsButton"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content" 
-				android:background="@drawable/title_settings"
+				android:background="@drawable/title_settings_normal"
 				android:layout_centerVertical="true"
 				/>
 				
@@ -192,7 +192,7 @@
 			<ImageButton android:id="@+id/Title_RulesButton"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content" 
-				android:background="@drawable/title_rules"
+				android:background="@drawable/title_rules_normal"
 				android:layout_centerVertical="true"
 				/>
 				

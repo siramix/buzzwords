@@ -167,21 +167,21 @@ public class CardReview extends Activity {
   private void setCardState(int state) {
 
     mCorrectButton
-        .setBackgroundResource(R.drawable.controls_review_right_selector);
+        .setBackgroundResource(R.drawable.button_review_right_selector);
     mWrongButton
-        .setBackgroundResource(R.drawable.controls_review_wrong_selector);
-    mSkipButton.setBackgroundResource(R.drawable.controls_review_skip_selector);
+        .setBackgroundResource(R.drawable.button_review_wrong_selector);
+    mSkipButton.setBackgroundResource(R.drawable.button_review_skip_selector);
 
     switch (state) {
     case Card.RIGHT:
-      mCorrectButton.setBackgroundResource(R.drawable.controls_right_selector);
+      mCorrectButton.setBackgroundResource(R.drawable.button_right_selector);
       break;
     case Card.WRONG:
-      mWrongButton.setBackgroundResource(R.drawable.controls_wrong_selector);
+      mWrongButton.setBackgroundResource(R.drawable.button_wrong_selector);
       break;
     case Card.SKIP:
     default:
-      mSkipButton.setBackgroundResource(R.drawable.controls_skip_selector);
+      mSkipButton.setBackgroundResource(R.drawable.button_skip_selector);
       break;
     }
   }

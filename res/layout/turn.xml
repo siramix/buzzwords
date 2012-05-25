@@ -240,7 +240,7 @@
             <ImageButton android:id="@+id/Turn_ButtonSkip"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:background="@drawable/controls_skip_selector"
+                android:background="@drawable/button_skip_selector"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 />
@@ -251,14 +251,14 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="99dp"
                 android:layout_alignRight="@id/Turn_ButtonSkip"
-                android:background="@drawable/controls_wrong_selector"
+                android:background="@drawable/button_wrong_selector"
                 />
                 
             <ImageButton android:id="@+id/Turn_ButtonCorrect"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/controls_right_selector"
+                android:background="@drawable/button_right_selector"
                 android:layout_alignLeft="@id/Turn_ButtonSkip"
                 android:layout_marginLeft="99dp"
                 />

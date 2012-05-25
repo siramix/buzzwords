@@ -129,7 +129,7 @@ public class Title extends Activity {
         label.setTextColor(Title.this.getResources().getColor(
             R.color.teamB_highlight));
       } else {
-        button.setBackgroundResource(R.drawable.title_play);
+        button.setBackgroundResource(R.drawable.title_play_normal);
         label.setTextColor(Title.this.getResources().getColor(
             R.color.teamB_primary));
       }
@@ -142,7 +142,7 @@ public class Title extends Activity {
         label.setTextColor(Title.this.getResources().getColor(
             R.color.teamC_highlight));
       } else {
-        button.setBackgroundResource(R.drawable.title_buzzer);
+        button.setBackgroundResource(R.drawable.title_buzzer_normal);
         label.setTextColor(Title.this.getResources().getColor(
             R.color.teamC_primary));
       }
@@ -155,7 +155,7 @@ public class Title extends Activity {
         label.setTextColor(Title.this.getResources().getColor(
             R.color.teamD_highlight));
       } else {
-        button.setBackgroundResource(R.drawable.title_settings);
+        button.setBackgroundResource(R.drawable.title_settings_normal);
         label.setTextColor(Title.this.getResources().getColor(
             R.color.teamD_primary));
       }
@@ -168,7 +168,7 @@ public class Title extends Activity {
         label.setTextColor(Title.this.getResources().getColor(
             R.color.teamA_highlight));
       } else {
-        button.setBackgroundResource(R.drawable.title_rules);
+        button.setBackgroundResource(R.drawable.title_rules_normal);
         label.setTextColor(Title.this.getResources().getColor(
             R.color.teamA_primary));
       }
