@@ -738,7 +738,7 @@ public class Turn extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
     
-    int numBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_DIFFICULTY, "5"));
+    int numBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_NUM_BUZZWORDS, "5"));
     int maxBuzzwords = wordLayout.getChildCount();
     
     for (int i = 0; i < maxBuzzwords; ++i) {

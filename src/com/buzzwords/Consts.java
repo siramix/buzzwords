@@ -40,7 +40,7 @@ package com.buzzwords;
 public class Consts {
 
     public static final boolean DEBUG = true;
-    public static final String PREFKEY_DIFFICULTY = "com.buzzwords.DIFFICULTY";
+    public static final String PREFKEY_NUM_BUZZWORDS = "com.buzzwords.NUM_BUZZWORDS";
     public static final String PREFKEY_TIMER = "com.buzzwords.TURN_TIMER";
     public static final String PREFKEY_MUSIC = "com.buzzwords.MUSIC_ENABLED";
     public static final String PREFKEY_SKIP = "com.buzzwords.ALLOW_SKIP";

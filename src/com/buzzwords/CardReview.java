@@ -228,7 +228,7 @@ public class CardReview extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
     
-    mNumBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_DIFFICULTY, "5"));
+    mNumBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_NUM_BUZZWORDS, "5"));
 
     this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 

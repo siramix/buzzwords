@@ -13,15 +13,19 @@
       <item>90</item>
     </string-array>
 
-    <string-array name="difficulties">
-      <item>No Buzzwords</item>
-      <item>Just Learning - 3 Buzzwords</item>
-      <item>Getting Good - 4 Buzzwords</item>
-      <item>Buzzwords Pro - 5 Buzzwords</item>
+    <string-array name="numbuzzwords">
+      <item>0 buzzwords</item>
+      <item>1 buzzword</item>
+      <item>2 buzzwords</item>
+      <item>3 buzzwords</item>
+      <item>4 buzzwords</item>
+      <item>5 buzzwords (recommended)</item>
     </string-array>
 
-    <string-array name="difficulty_values">
+    <string-array name="numbuzzwords_values">
       <item>0</item>
+      <item>1</item>
+      <item>2</item>
       <item>3</item>
       <item>4</item>
       <item>5</item>
@@ -51,7 +55,7 @@
       <item>-3 points</item>
       <item>-2 points</item>
       <item>-1 points</item>
-      <item>0 points (default)</item>
+      <item>0 points (recommmended)</item>
     </string-array>
 
     <string-array name="skip_scores_values">
@@ -68,7 +72,7 @@
       <item>4 points</item>
       <item>3 points</item>
       <item>2 points</item>
-      <item>1 point (default)</item>
+      <item>1 point (recommended)</item>
       <item>0 points</item>
     </string-array>
 

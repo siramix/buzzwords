@@ -73,7 +73,7 @@ public class Settings extends PreferenceActivity {
         Settings.this.updateTimerSummary();
       }
       
-      else if (key.equals(Consts.PREFKEY_DIFFICULTY)) {
+      else if (key.equals(Consts.PREFKEY_NUM_BUZZWORDS)) {
         // Update caption
         Settings.this.updatePreferenceSummary(key);
       }
@@ -111,7 +111,7 @@ public class Settings extends PreferenceActivity {
 
     // When turn timer is loaded, update the caption
     this.updateTimerSummary();
-    this.updatePreferenceSummary(Consts.PREFKEY_DIFFICULTY);
+    this.updatePreferenceSummary(Consts.PREFKEY_NUM_BUZZWORDS);
     this.updateScorePreferenceSummary(Consts.PREFKEY_RIGHT_SCORE);
     this.updateScorePreferenceSummary(Consts.PREFKEY_WRONG_SCORE);
     this.updateScorePreferenceSummary(Consts.PREFKEY_SKIP_SCORE);

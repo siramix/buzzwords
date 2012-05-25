@@ -19,7 +19,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<PreferenceCategory android:title="Audio">
+	<PreferenceCategory android:title="App Settings">
 	
 		<CheckBoxPreference 
 			android:key="com.buzzwords.MUSIC_ENABLED"
@@ -27,36 +27,7 @@
 			android:summary="Enable all music"
 			android:defaultValue="true" 
 			/>
-			
-	</PreferenceCategory>
-
-	<PreferenceCategory android:title="House Rules">
-
-		<ListPreference 
-			android:key="com.buzzwords.DIFFICULTY"
-			android:title="Difficulty"
-			android:selectable="true"
-			android:entries="@array/difficulties"
-			android:entryValues="@array/difficulty_values"
-			android:summary="" 
-			android:defaultValue="5"/>
-		
-		<ListPreference 
-			android:key="com.buzzwords.TURN_TIMER" 
-			android:title="Turn Timer Length"
-			android:entryValues="@array/turntime_values" 
-			android:entries="@array/turntimes"
-			android:summary="" 
-			android:defaultValue="60" 
-			/>
-
-		<CheckBoxPreference 
-			android:key="com.buzzwords.ALLOW_SKIP"
-			android:title="Allow Skipping"
-			android:defaultValue="true"
-			android:summary="If checked players may skip cards."
-			/>
-			
+					
 		<CheckBoxPreference 
 			android:key="com.buzzwords.ALLOW_GESTURES"
 			android:title="Allow Gestures"
@@ -66,50 +37,89 @@
 		
 	</PreferenceCategory>
 	
-	<PreferenceCategory android:title="Advanced House Rules">
-
-		<ListPreference
-			android:key="com.buzzwords.RIGHT_SCORE"
-			android:title="Right Reward"
-			android:selectable="true"
-			android:entries="@array/right_scores"
-			android:entryValues="@array/right_scores_values"
-			android:summary="Score change for correct guesses." 
-			android:defaultValue="1"
-			/>
-
-		<ListPreference
-			android:key="com.buzzwords.WRONG_SCORE"
-			android:title="Buzz Penalty"
-			android:selectable="true"
-			android:entries="@array/wrong_scores"
-			android:entryValues="@array/wrong_scores_values"
-			android:summary="Score change for getting buzzed." 
-			android:defaultValue="-1"
+	<PreferenceCategory android:title="House Rules">
+		
+		<ListPreference 
+			android:key="com.buzzwords.TURN_TIMER" 
+			android:title="Turn Timer Length"
+			android:entryValues="@array/turntime_values" 
+			android:entries="@array/turntimes"
+			android:summary="" 
+			android:defaultValue="60"
 			/>
 		
-		<ListPreference
-			android:key="com.buzzwords.SKIP_SCORE"
-			android:title="Skip Penalty"
-			android:selectable="true"
-			android:entries="@array/skip_scores"
-			android:entryValues="@array/skip_scores_values"
-			android:summary="Score change for skipping a word." 
-			android:defaultValue="0"
+		<CheckBoxPreference 
+			android:key="com.buzzwords.ALLOW_SKIP"
+			android:title="Allow Skipping"
+			android:defaultValue="true"
+			android:summary="If checked players may skip cards."
 			/>
-		
+	
 	</PreferenceCategory>
 
-  <PreferenceCategory android:title="App Info">
-      
-    <Preference 
-      android:key="app_version" 
-      android:title="Version" 
-      android:selectable="false" 
-      android:enabled="false">
-    </Preference>
-    
-  </PreferenceCategory>
-  
+	<PreferenceScreen 
+		android:key="com.buzzwords.ADVANCED_RULES"
+		android:title="Advanced House Rules"
+		android:summary="Customize scoring or reduce difficulty">
+		
+		<PreferenceCategory android:title="Scoring">
+		
+			<ListPreference
+				android:key="com.buzzwords.RIGHT_SCORE"
+				android:title="Right Reward"
+				android:selectable="true"
+				android:entries="@array/right_scores"
+				android:entryValues="@array/right_scores_values"
+				android:summary="Score change for correct guesses." 
+				android:defaultValue="1"
+				/>
+			
+			<ListPreference
+				android:key="com.buzzwords.WRONG_SCORE"
+				android:title="Buzz Penalty"
+				android:selectable="true"
+				android:entries="@array/wrong_scores"
+				android:entryValues="@array/wrong_scores_values"
+				android:summary="Score change for getting buzzed." 
+				android:defaultValue="-1"
+				/>
+			
+			<ListPreference
+				android:key="com.buzzwords.SKIP_SCORE"
+				android:title="Skip Penalty"
+				android:selectable="true"
+				android:entries="@array/skip_scores"
+				android:entryValues="@array/skip_scores_values"
+				android:summary="Score change for skipping a word." 
+				android:defaultValue="0"
+				/>
+			
+		</PreferenceCategory>
+		
+		<PreferenceCategory android:title="Difficulty">
+		
+			<ListPreference 
+				android:key="com.buzzwords.NUM_BUZZWORDS"
+				android:title="Number of Buzzwords"
+				android:selectable="true"
+				android:entries="@array/numbuzzwords"
+				android:entryValues="@array/numbuzzwords_values"
+				android:summary="" 
+				android:defaultValue="5"/>
+		
+		</PreferenceCategory>
+			
+	</PreferenceScreen>
+	
+	<PreferenceCategory android:title="App Info">
+		
+		<Preference 
+			android:key="app_version" 
+			android:title="Version" 
+			android:selectable="false" 
+			android:enabled="false">
+		</Preference>
+		
+	</PreferenceCategory>
 
 </PreferenceScreen>
