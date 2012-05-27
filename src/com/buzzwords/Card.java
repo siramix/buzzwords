@@ -28,10 +28,10 @@ public class Card implements Serializable {
   /**
    * R-W-S Constants
    */
-  public static final int NOTSET = -1;
   public static final int RIGHT = 0;
   public static final int WRONG = 1;
   public static final int SKIP = 2;
+  public static final int NOTSET = 3;
 
   /**
    * The db id of the card
@@ -39,7 +39,7 @@ public class Card implements Serializable {
   private int mId;
 
   /**
-   * The right,wrong,skip {0,1,2} state of the card
+   * The right,wrong,skip, not set {0,1,2,3} state of the card
    */
   private int mRws;
 
@@ -82,7 +82,7 @@ public class Card implements Serializable {
    */
   public static int getCardMarkDrawableId(int cardRWS) {
     if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getDrawableId()");
+      Log.d(TAG, "getCardMarkDrawableId()");
     }
     switch (cardRWS) {
     case RIGHT:
@@ -91,8 +91,11 @@ public class Card implements Serializable {
       return R.drawable.stamp_wrong;
     case SKIP:
       return R.drawable.stamp_skip;
+    case NOTSET:
+      //TODO Edward fill this in with the right drawable for NotSet
+      return 3;
     default:
-      return 0;
+      return -1;
     }
   }
 
@@ -266,12 +269,15 @@ public class Card implements Serializable {
       Log.d(TAG, "getRowEndDrawableId()");
     }
     switch (mRws) {
-    case 0:
+    case RIGHT:
       return R.drawable.right;
-    case 1:
+    case WRONG:
       return R.drawable.wrong;
-    case 2:
+    case SKIP:
       return R.drawable.skip;
+    case NOTSET:
+      //TODO Edward fill this in with a better drawable
+      return R.drawable.logoram;
     default:
       return 0;
     }

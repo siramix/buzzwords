@@ -54,6 +54,7 @@ public class CardReview extends Activity {
   private ImageButton mCorrectButton;
   private ImageButton mWrongButton;
   private ImageButton mSkipButton;
+  private ImageButton mNoScoreButton;
 
   /**
    * Holder for the index of the card in the TurnSummary caller of this activity
@@ -117,6 +118,23 @@ public class CardReview extends Activity {
   };
 
   /**
+   * Listener for skip button
+   */
+  private final OnClickListener mNoScoreClickListener = new OnClickListener() {
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "NoScoreClickListener OnClick()");
+      }
+      v.setEnabled(false);
+      setCardState(Card.NOTSET);
+      SoundManager sm = SoundManager.getInstance(CardReview.this
+          .getBaseContext());
+      sm.playSound(SoundManager.Sound.BACK);
+      goBackToTurnSummary(Card.NOTSET);
+    }
+  };
+
+  /**
    * Set the references to the elements from the layout file
    */
   private void setupViewReferences() {
@@ -145,7 +163,7 @@ public class CardReview extends Activity {
         .findViewById(R.id.CardReview_ButtonCorrect);
     mWrongButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonWrong);
     mSkipButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonSkip);
-
+    mNoScoreButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonNoScore);
   }
 
   /**
@@ -155,6 +173,7 @@ public class CardReview extends Activity {
     mCorrectButton.setOnClickListener(mCorrectClickListener);
     mWrongButton.setOnClickListener(mWrongClickListener);
     mSkipButton.setOnClickListener(mSkipClickListener);
+    mNoScoreButton.setOnClickListener(mNoScoreClickListener);
   }
 
   /**
@@ -171,7 +190,9 @@ public class CardReview extends Activity {
     mWrongButton
         .setBackgroundResource(R.drawable.controls_review_wrong_selector);
     mSkipButton.setBackgroundResource(R.drawable.controls_review_skip_selector);
-
+    //TODO Edward if we are going to have the noscore button toggle I think this 
+    // section needs to be updated.  Otherwise, you can delete this todo
+    
     switch (state) {
     case Card.RIGHT:
       mCorrectButton.setBackgroundResource(R.drawable.controls_right_selector);
@@ -180,8 +201,11 @@ public class CardReview extends Activity {
       mWrongButton.setBackgroundResource(R.drawable.controls_wrong_selector);
       break;
     case Card.SKIP:
-    default:
       mSkipButton.setBackgroundResource(R.drawable.controls_skip_selector);
+      break;
+    case Card.NOTSET:
+      break;
+    default:
       break;
     }
   }

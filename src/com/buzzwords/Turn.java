@@ -657,7 +657,7 @@ public class Turn extends Activity {
     mViewFlipper.showNext();
 
     this.setActiveCard();
-    mGameManager.processCard(Card.SKIP);
+    mGameManager.processCard(Card.NOTSET);
     Card curCard = mGameManager.getPreviousCard();
     mCardTitle.setText(curCard.getTitle());
     // Update bad words
