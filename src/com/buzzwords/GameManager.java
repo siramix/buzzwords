@@ -128,13 +128,17 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "Turn time is " + mTurnTime);
     }
-    mRwsValueRules = new int[3];
+    mRwsValueRules = new int[4];
 
     // Set score values for game
-    mRwsValueRules[0] = 1; // Value for correct cards
-    mRwsValueRules[1] = -1; // Value for wrong cards
-    mRwsValueRules[2] = 0; // set skip value to 0 if skip penalty is not on
-
+    // Value for correct cards
+    mRwsValueRules[0] = Integer.valueOf(sp.getString(Consts.PREFKEY_RIGHT_SCORE, "1"));
+    // Value for wrong cards
+    mRwsValueRules[1] = Integer.valueOf(sp.getString(Consts.PREFKEY_WRONG_SCORE, "-1"));
+    // Set skip value to 0 if skip penalty is not on
+    mRwsValueRules[2] = Integer.valueOf(sp.getString(Consts.PREFKEY_SKIP_SCORE, "0"));
+    // Value for NOTSET
+    mRwsValueRules[3] = 0;
     mDeck = new Deck(context);
   }
 
@@ -315,13 +319,6 @@ public class GameManager {
     int ret = 0;
     for (Iterator<Card> it = mCurrentCards.iterator(); it.hasNext();) {
       Card card = it.next();
-
-      // If the card's rws value is not set we default it to SKIP
-      if(card.getRws() == Card.NOTSET)
-      {
-        card.setRws(Card.SKIP);
-      }
-
       ret += mRwsValueRules[card.getRws()];
     }
     return ret;

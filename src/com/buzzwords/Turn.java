@@ -657,7 +657,7 @@ public class Turn extends Activity {
     mViewFlipper.showNext();
 
     this.setActiveCard();
-    mGameManager.processCard(Card.SKIP);
+    mGameManager.processCard(Card.NOTSET);
     Card curCard = mGameManager.getPreviousCard();
     mCardTitle.setText(curCard.getTitle());
     // Update bad words
@@ -738,7 +738,7 @@ public class Turn extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
     
-    int numBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_DIFFICULTY, "5"));
+    int numBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_NUM_BUZZWORDS, "5"));
     int maxBuzzwords = wordLayout.getChildCount();
     
     for (int i = 0; i < maxBuzzwords; ++i) {
@@ -987,13 +987,13 @@ public class Turn extends Activity {
       mMusicEnabled = false;
 
     // Set local variable for skip preference to reduce calls to get
-    if (sp.getBoolean(Consts.PREKEY_SKIP, true))
+    if (sp.getBoolean(Consts.PREFKEY_SKIP, true))
       mSkipEnabled = true;
     else
       mSkipEnabled = false;
 
     // Set local variable for allowing gesture preference to reduce get calls
-    if (sp.getBoolean(Consts.PREKEY_GESTURES, true))
+    if (sp.getBoolean(Consts.PREFKEY_GESTURES, true))
       mGesturesEnabled = true;
     else
       mGesturesEnabled = false;

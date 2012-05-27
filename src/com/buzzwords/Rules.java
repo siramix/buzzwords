@@ -74,7 +74,7 @@ public class Rules extends Activity {
         + " seconds");
 
     // Allow Skipping rule display
-    if (sp.getBoolean(Consts.PREKEY_SKIP, true)) {
+    if (sp.getBoolean(Consts.PREFKEY_SKIP, true)) {
       prefBuilder.append("\nAllow Skipping: Players may skip words.");
     } else {
       prefBuilder.append("\nAllow Skipping: Players can not skip words.");

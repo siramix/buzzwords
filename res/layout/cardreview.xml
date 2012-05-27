@@ -36,6 +36,16 @@
                     <TextView android:text="TextView" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/CardReview_Card_BadWord4" android:textColor="@color/cardreview_WordText" style="@style/BadWordTextReview"></TextView>
                 </LinearLayout>
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/CardReview_ButtonNoScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/logotext"
+                android:text="No Score" />
+
         </RelativeLayout>
         
         <!-- Grouping for buttons on the bottom -->
