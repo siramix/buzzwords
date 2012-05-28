@@ -34,6 +34,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.buzzwords.Card;
+import com.buzzwords.Pack;
+import com.buzzwords.Deck.DeckOpenHelper;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -67,7 +71,7 @@ public class Deck {
   private static final String DATABASE_NAME = "buzzwords";
   private static final String CARD_TABLE_NAME = "cards";
   private static final String CACHE_TABLE_NAME = "cache";
-  private static final int DATABASE_VERSION = 2;
+  
   private static final int CACHE_SIZE = 50;
   private static final String CARD_TABLE_CREATE = "CREATE TABLE "
       + CARD_TABLE_NAME + "( " + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -75,14 +79,42 @@ public class Deck {
   private static final String CACHE_TABLE_CREATE = "CREATE TABLE "
       + CACHE_TABLE_NAME + "( " + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
       + "val TEXT );";
-
+  
   private static final String[] CARD_COLUMNS = { "id", "title", "badwords" };
   private static final String[] CACHE_COLUMNS = { "id", "val" };
+  
+  private static final int DATABASE_VERSION = 3;
+  
+  protected static final int BACK_CACHE_MAXSIZE = 200;
+  protected static final int FRONT_CACHE_MAXSIZE = 20;
+  
+  private static final int PACK_CURRENT = -1;
+  private static final int PACK_NOT_PRESENT = -2;
+  
+  // This is the sum of all cards in selected packs
+  private int mTotalPlayableCards;
+  
+  // After taking the top 1/DIVSOR phrases from a pack, throw back a percentage of them 
+  private static final int THROW_BACK_PERCENTAGE = 0;
+  
+  // A list of back cards used for refreshing the deck.  Will be filled after it reaches 0.
+  private LinkedList<Card> mBackCache;
+  
+  // Front Cache will be topped off every turn
+  private LinkedList<Card> mFrontCache;
+  
+  // Should be wiped every time the mbackCache is cleared
+  private LinkedList<Card> mSeenCards;
+  
+  // List of all packs selected for the Deck
+  private LinkedList<Pack> mSelectedPacks;
+  
+  private Context mContext;
+  
   private LinkedList<Card> mCache;
   private int mSeed;
   private int mPosition;
   private ArrayList<Integer> mOrder;
-  private Context mContext;
 
   private DeckOpenHelper mDatabaseOpenHelper;
 
@@ -94,8 +126,13 @@ public class Deck {
    */
   public Deck(Context context) {
     mContext = context;
-    mDatabaseOpenHelper = new DeckOpenHelper(context);
     mCache = new LinkedList<Card>();
+    mBackCache = new LinkedList<Card>();
+    mFrontCache = new LinkedList<Card>();
+    mSeenCards = new LinkedList<Card>();
+    mSelectedPacks = new LinkedList<Pack>();
+    mDatabaseOpenHelper = new DeckOpenHelper(context);
+//    setPackData();
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(context);
     Random r = new Random();
