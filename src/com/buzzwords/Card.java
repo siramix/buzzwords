@@ -75,7 +75,7 @@ public class Card implements Serializable {
 
     return ret;
   }
-
+  
   /**
    * Get the resource ID for this card's right wrong skip icon Mid-turn (when
    * user hits back). These IDs must differ from those on Turn Result Screen.
@@ -235,6 +235,16 @@ public class Card implements Serializable {
       Log.d(TAG, "getBadWords()");
     }
     return mBadWords;
+  }
+  
+  /**
+   * Get the array list of bad words as a comma separated
+   * string of words
+   * @return a comma separated string of badwords
+   */
+  public String getBadWordsString() {
+    String badwordString = mBadWords.toString();
+    return badwordString.substring(1, badwordString.length()-1);
   }
 
   /**

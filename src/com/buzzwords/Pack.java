@@ -157,7 +157,7 @@ public class Pack implements Serializable {
   }
   
   /**
-   * @return the number of phrases to pull from the pack next
+   * @return the number of cards to pull from the pack next
    */
   public int getNumToPullNext() {
     return mNumToPullNext;
@@ -169,8 +169,11 @@ public class Pack implements Serializable {
   }
   
   /**
-   * @return the number of phrases "in play" at a
+   * @return the number of cards in the pack
    */
+  public void setSize(int numCards) {
+    mSize = numCards;
+  }
   
   /**
    * Set the weight of the pack
@@ -181,11 +184,11 @@ public class Pack implements Serializable {
   }
 
   /**
-   * Set the number of playable phrases in the pack
-   * @param numPhrases number of phrases that are playable in the pack
+   * Set the number of playable cards in the pack
+   * @param numCards number of cards that are playable in the pack
    */
-  public void setNumToPullNext(int numPhrases) {
-    mNumToPullNext = numPhrases;
+  public void setNumToPullNext(int numCards) {
+    mNumToPullNext = numCards;
   }
   
   /**

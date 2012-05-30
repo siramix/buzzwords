@@ -21,6 +21,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.buzzwords.Card;
+import com.buzzwords.Pack;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -45,6 +48,9 @@ public class GameManager {
    */
   private Deck mDeck;
 
+  // Create a thread for updating the playcount for each card
+  private Thread mUpdateThread;
+  
   /**
    * The position in the list of card ids (where we are in the "deck")
    */
@@ -154,7 +160,7 @@ public class GameManager {
     }
     ++mCardPosition;
     if(mCardPosition >= mCurrentCards.size()) {
-      mCurrentCard = mDeck.getCard();
+      mCurrentCard = mDeck.dealCard();
       mCurrentCards.addLast(mCurrentCard);
     }
     else {
@@ -204,7 +210,6 @@ public class GameManager {
     mNumRounds = rounds;
     mNumTurns = mTeams.size() * mNumRounds;
     mCurrentTurn++;
-    mDeck.prepareForRound();
   }
 
   /**
@@ -219,7 +224,6 @@ public class GameManager {
     mCurrentCards.clear();
     mCardPosition = -1;
     mCurrentTurn++;
-    mDeck.prepareForRound();
   }
   
   /*
@@ -264,11 +268,86 @@ public class GameManager {
       Log.d(TAG, "EndGame()");
     }
     mTeamIterator = mTeams.iterator();
-    mDeck.prepareForRound();
+    //TODO Another questionable location for topping off the front cache
+    maintainDeck();
     // clear current cards so that scoreboards don't add turn score in
     mCurrentCards.clear();
   }
 
+  /**
+   * Checks on the deck's caches to make sure enough cards have been
+   * stored to play a turn.
+   */
+  public void maintainDeck() {
+    Log.d(TAG, "maintainDeck()");
+    mDeck.fillCachesIfLow();
+  }
+
+  /**
+   * The game manager will have the Deck update the play date for
+   * any cards the Deck has marked as "seen".  Runs inside a thread.
+   */
+  public void updatePlayDate() {
+    mUpdateThread = new Thread(new Runnable() {
+      public void run() {
+        mDeck.updatePlayDate();
+        }
+      });
+    mUpdateThread.start();
+  }
+  
+  /**
+   * Call the Deck function that installs all 'starter' decks.  This
+   * should only get called on first run.
+   */
+  public void installStarterPacks() {
+    mDeck.installStarterPacks();
+  }
+  
+  
+  public void installPack(final Pack pack) {
+    // TODO This should probably be in a thread (mInstallThread)
+    // Though I ran into problems with the database state 
+    try {
+      mDeck.installPack(pack);
+    } catch (RuntimeException e) {
+      Log.e(TAG, "Unable to install pack: " + pack.getName());
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Attempt to remove the pack with _id == packId
+   * @param packId the id of the pack to remove
+   * @param removeDialog a dialog that is shown to users during removal
+   */
+  public void uninstallPack(final int packId) {
+    // TODO This should probably be in a thread (mInstallThread)
+    // Though I ran into problems with the database state
+    try {
+      mDeck.uninstallPack(packId);
+    } catch (RuntimeException e) {
+      Log.e(TAG, "Unable to install pack: " +String.valueOf(packId));
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * The game manager will have the Deck update the play date for
+   * any cards passed into this method.  This is being used for
+   * Turn Summary which will have a list of seen cards to pass in.
+   * Runs inside a thread.
+   * @param cardsToUpdate - A linked list of cards to update
+   */
+  public void updatePlayDate(final LinkedList<Card> cardsToUpdate) {
+    mUpdateThread = new Thread(new Runnable() {
+      public void run() {
+        mDeck.updatePlayDate(cardsToUpdate);
+        }
+      });
+    mUpdateThread.start();
+  }
+  
   /**
    * Adds the current card to the active cards
    * 
