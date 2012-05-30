@@ -2,7 +2,7 @@
 <resources>
   <style name="BuzzWordsButton" parent="@android:style/Widget.Button">
     <item name="android:textColor">@color/buttonText</item>
-    <item name="android:background">@drawable/button</item>
+    <item name="android:background">@drawable/button_generic</item>
   </style>
   <style name="BuzzWordsRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
     <item name="android:button">@drawable/radio</item>
