@@ -67,6 +67,7 @@ public class Title extends Activity {
    */
   private boolean mContinueMusic;
 
+  private SharedPreferences mSharedPrefs;
 
   /**
    * Dialog constant for first Rate Us message
@@ -353,7 +354,9 @@ public class Title extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreate()");
     }
-
+    mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this
+        .getBaseContext());
+    
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -363,32 +366,10 @@ public class Title extends Activity {
         R.raw.mus_title);
 
     mp.setLooping(true);
-    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
-        .getBaseContext());
-    if (sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
+
+    if (mSharedPrefs.getBoolean(Consts.PREFKEY_MUSIC, true)) {
       mp.start();
     }
-
-    // Capture our play count to decide whether to show the Rate Us dialog
-    int playCount = sp.getInt(getResources().getString(R.string.PREFKEY_PLAYCOUNT), 0);
-    boolean showReminder = sp.getBoolean(getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
-    boolean showFirstRun = sp.getBoolean(getResources().getString(R.string.PREFKEY_SHOWFIRSTRUN), true);
-
-    // If playCount is 0. Show them the first-time dialog
-    if (playCount == 0 && showFirstRun) {
-      showDialog(DIALOG_FIRST_TIME);
-    }
-    
-    // If 3 plays have been done and reminder is not muted, show dialog
-    if (showReminder) {
-      if (playCount < 6) {
-        showDialog(DIALOG_RATEUS_FIRST);
-      }
-      else {
-        showDialog(DIALOG_RATEUS_SECOND);
-      }
-    }
-
     mContinueMusic = false;
 
     // Setup the Main Title Screen view
@@ -556,11 +537,46 @@ public class Title extends Activity {
           dialog.dismiss();
         }
         
+        displayTitleDialog();
         // Rotate the starburst which would have slowed down the install process
         //TODO Fill this in once title animations are updated
         //ImageView starburst = (ImageView) findViewById(R.id.Title_Starburst);
         //starburst.startAnimation(rotateStarburst());
       }
+  }
+  
+  /**
+   * The Title screen should only show one dialog.  We can call this after the
+   * installation check completes.  This method ensures that the correct dialog
+   * displays for the Title screen depending on things like times played.
+   */
+  private void displayTitleDialog() {
+    // Capture our play count to decide whether to show the Rate Us dialog
+    if (mSharedPrefs == null) {
+      mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+    }
+        
+    int playCount = mSharedPrefs.getInt(getResources()
+                                      .getString(R.string.PREFKEY_PLAYCOUNT), 0);
+    boolean showReminder = mSharedPrefs.getBoolean(getResources()
+                                      .getString(R.string.PREFKEY_SHOWREMINDER), false);
+    boolean showFirstRun = mSharedPrefs.getBoolean(getResources()
+                                      .getString(R.string.PREFKEY_SHOWFIRSTRUN), true);
+
+    // If playCount is 0. Show them the first-time dialog
+    if (playCount == 0 && showFirstRun) {
+      showDialog(DIALOG_FIRST_TIME);
+    }
+    
+    // If 3 plays have been done and reminder is not muted, show dialog
+    if (showReminder) {
+      if (playCount < 6) {
+        showDialog(DIALOG_RATEUS_FIRST);
+      }
+      else {
+        showDialog(DIALOG_RATEUS_SECOND);
+      }
+    }
   }
   
   /**
