@@ -140,8 +140,6 @@ public class ScoreboardRowLayout extends RelativeLayout {
 
     // Initialize Score view
     mScore = new TextView(mContext);
-    mScore.setBackgroundDrawable(getResources().getDrawable(
-        R.drawable.gameend_row_end_white));
     mScore.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
         LayoutParams.FILL_PARENT));
     mScore.setText("0");
