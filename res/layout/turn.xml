@@ -71,19 +71,12 @@
         
         <RelativeLayout android:id="@+id/Turn_TimerBar"
             android:layout_width="wrap_content"
-            android:layout_height="35dp">
+            android:layout_height="wrap_content">
             
             <ImageView android:id="@+id/Turn_TimerBG"
                 android:background="@color/genericBG"
                 android:layout_width="fill_parent"
-                android:layout_height="25dp"
-                />
-
-            <View android:id="@+id/Turn_TimerTrim"
-                android:layout_height="10dp"
-                android:layout_width="fill_parent"
-                android:background="@color/genericBG_trim"
-                android:layout_below="@id/Turn_TimerBG"
+                android:layout_height="26dp"
                 />
 
             
@@ -91,19 +84,23 @@
             <ImageView android:id="@+id/Turn_TimerFill"
                 android:layout_alignParentTop="true"
                 android:background="@color/teamA_primary"
-                android:layout_height="23dp"
-                android:layout_marginTop="1dp"
+                android:layout_height="24dp"
                 android:layout_alignParentLeft="true"
                 android:layout_width="fill_parent"
-                android:layout_marginRight="40dp"
-                />
+                android:layout_marginRight="48dp" android:layout_marginTop="1dp" android:layout_marginBottom="1dp"/>
             
-            <View android:id="@+id/Turn_TimerFrame"
-                android:layout_height="25dp"
-                android:background="@drawable/turn_timer_frame"
-                android:layout_width="70dp"
+            <ImageView android:id="@+id/Turn_TimerFrame"
+                android:layout_height="24dp"
+                android:background="@drawable/gameend_row_end_white"
                 android:layout_alignParentRight="true"
-                />
+                android:layout_width="75dp" android:layout_marginTop="1dp"/>
+
+            <View
+                android:id="@+id/Turn_TimerTrim"
+                android:layout_width="fill_parent"
+                android:layout_height="8dp"
+                android:background="@color/genericBG_trim" android:layout_below="@id/Turn_TimerBG"/>
+
             <TextView android:textColor="#FFFFFF" android:textSize="22dp" android:layout_width="wrap_content" android:gravity="center" android:includeFontPadding="false" android:id="@+id/Turn_Timer" android:layout_height="24dp" android:layout_alignParentRight="true" android:paddingRight="5dp"></TextView>
                 
         </RelativeLayout>

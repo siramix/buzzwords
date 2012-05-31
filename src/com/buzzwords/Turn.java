@@ -25,6 +25,8 @@ import android.app.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateInterpolator;
@@ -910,9 +912,17 @@ public class Turn extends Activity {
 
     // Change views to appropriate team color
     ImageView barFill = (ImageView) this.findViewById(R.id.Turn_TimerFill);
-
+    // Color timer fill
     Team curTeam = mGameManager.getActiveTeam();
     barFill.setImageResource(curTeam.getPrimaryColor());
+    
+    // Set Turn Timer frame color
+    Drawable timerFrameBG = getResources().getDrawable(R.drawable.gameend_row_end_white);
+    ImageView timerFrame = (ImageView) this.findViewById(R.id.Turn_TimerFrame);
+    timerFrameBG.setColorFilter(getResources().getColor(R.color.genericBG_trim), Mode.MULTIPLY);
+    timerFrame.setBackgroundDrawable(timerFrameBG);
+    
+    // Set background gradient
     this.findViewById(R.id.Turn_Root).setBackgroundResource(
         curTeam.getGradient());
   }
