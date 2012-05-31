@@ -231,8 +231,9 @@ public class TurnSummary extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreateOptionsMenu()");
     }
-    menu.add(0, R.string.menu_EndGame, 0, "End Game");
-    menu.add(0, R.string.menu_Rules, 0, "Rules");
+    
+    menu.add(0, R.string.menu_EndGame, 0, R.string.menu_EndGame_Title);
+    menu.add(0, R.string.menu_Rules, 0, R.string.menu_Rules_Title);
 
     return true;
   }
@@ -279,7 +280,7 @@ public class TurnSummary extends Activity {
     switch (id) {
     case DIALOG_GAMEOVER_ID:
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("Are you sure you want to end the current game?")
+      builder.setMessage(this.getString(R.string.menu_EndGame_Text))
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound

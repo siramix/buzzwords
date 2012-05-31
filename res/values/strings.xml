@@ -22,9 +22,15 @@
   <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
   <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
 
-  <!-- Menu Designations -->
+  <!-- Menus -->
+  <string name="menu_EndTurn">MENU_ENDTURN</string>
+  <string name="menu_EndTurn_Title">End Turn</string>
+  <string name="menu_EndTurn_Text">Are you sure you want to end your turn?</string>
   <string name="menu_EndGame">MENU_ENDGAME</string>
+  <string name="menu_EndGame_Title">End Game</string>
+  <string name="menu_EndGame_Text">Are you sure you want to end the current game?</string>
   <string name="menu_Rules">MENU_RULES</string>
+  <string name="menu_Rules_Title">Rules</string>
 
   <!-- Team names -->
   <string name="teamnameA">Blue</string>

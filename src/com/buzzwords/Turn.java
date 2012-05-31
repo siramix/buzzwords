@@ -71,6 +71,7 @@ public class Turn extends Activity {
   static final int DIALOG_PAUSED_ID = 0;
   static final int DIALOG_GAMEOVER_ID = 1;
   static final int DIALOG_READY_ID = 2;
+  static final int DIALOG_ENDTURN_ID = 3;
 
   static final int TIMERANIM_PAUSE_ID = 0;
   static final int TIMERANIM_RESUME_ID = 1;
@@ -151,17 +152,6 @@ public class Turn extends Activity {
    * started.
    */
   private boolean mIsTicking = false;
-
-  /**
-   * The time in miliseconds left when the ticking music began.
-   */
-
-  /**
-   * Unique IDs for Options menu
-   */
-  protected static final int MENU_ENDGAME = 0;
-  protected static final int MENU_SCORE = 1;
-  protected static final int MENU_RULES = 2;
 
   /**
    * Swipe left for skip, right for back, up for right, and down for wrong.
@@ -270,8 +260,9 @@ public class Turn extends Activity {
       Log.d(TAG, "onCreateOptionsMenu()");
     }
 
-    menu.add(0, R.string.menu_EndGame, 0, "End Game");
-    menu.add(0, R.string.menu_Rules, 0, "Rules");
+    menu.add(0, R.string.menu_EndTurn, 0, R.string.menu_EndTurn_Title);
+    menu.add(0, R.string.menu_EndGame, 0, R.string.menu_EndGame_Title);
+    menu.add(0, R.string.menu_Rules, 0, R.string.menu_Rules_Title);
 
     return true;
   }
@@ -287,6 +278,11 @@ public class Turn extends Activity {
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     // Handle item selection
     switch (item.getItemId()) {
+    case R.string.menu_EndTurn:
+      // Play confirmation sound
+      sm.playSound(SoundManager.Sound.CONFIRM);
+      this.showDialog(DIALOG_ENDTURN_ID);
+      return true;
     case R.string.menu_EndGame:
       // Play confirmation sound
       sm.playSound(SoundManager.Sound.CONFIRM);
@@ -765,7 +761,7 @@ public class Turn extends Activity {
     mResultsDelay = new PauseTimer(1500) {
       @Override
       public void onFinish() {
-        Turn.this.onTurnEnd();
+        Turn.this.endTurn();
       }
 
       @Override
@@ -811,7 +807,7 @@ public class Turn extends Activity {
   /**
    * Hands off the intent to the next turn summary activity.
    */
-  protected void onTurnEnd() {
+  protected void endTurn() {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onTurnEnd()");
     }
@@ -1065,9 +1061,32 @@ public class Turn extends Activity {
     AlertDialog.Builder builder = null;
     
     switch (id) {
+    case DIALOG_ENDTURN_ID:
+      builder = new AlertDialog.Builder(this);
+      builder.setMessage(this.getString(R.string.menu_EndTurn_Text))
+          .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              // Play confirmation sound
+              SoundManager sm = SoundManager.getInstance(Turn.this
+                  .getBaseContext());
+              sm.playSound(SoundManager.Sound.CONFIRM);
+              endTurn();
+            }
+          }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              // Play confirmation sound
+              SoundManager sm = SoundManager.getInstance(Turn.this
+                  .getBaseContext());
+              sm.playSound(SoundManager.Sound.CONFIRM);
+
+              dialog.cancel();
+            }
+          });
+      dialog = builder.create();
+      break;
     case DIALOG_GAMEOVER_ID:
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("Are you sure you want to end the current game?")
+      builder.setMessage(this.getString(R.string.menu_EndGame_Text))
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound
