@@ -48,4 +48,6 @@ public class Consts {
     public static final String PREFKEY_RIGHT_SCORE= "com.buzzwords.RIGHT_SCORE";
     public static final String PREFKEY_WRONG_SCORE= "com.buzzwords.WRONG_SCORE";
     public static final String PREFKEY_SKIP_SCORE= "com.buzzwords.SKIP_SCORE";
+    public static final String PREFKEY_DB_INITIALIZED = "com.buzzwords.DB_INITIALIZED";    
+    public static final String PREFFILE_PACK_SELECTIONS = "com.buzzwords.PACK_SELECTIONS";
 }

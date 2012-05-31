@@ -17,7 +17,14 @@
  ****************************************************************************/
 package com.buzzwords;
 
+import java.util.List;
+
+import com.buzzwords.R;
+import com.buzzwords.SoundManager;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,8 +55,6 @@ public class SplashScreen extends Activity {
   // Flag prevents double calls to open the next activity
   private boolean mSplashDone = false;
 
-  private Thread mInstallThread;
-
   /**
    * Called on creation of splash screen activity
    * 
@@ -62,29 +67,51 @@ public class SplashScreen extends Activity {
     }
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.splashscreen);
+    // Do workaround for people who launch Buzzwords from the installation
+    // prompt
+    if (shouldApplicationLaunch()) {
+      setContentView(R.layout.splashscreen);
 
-    // Create a Deck so we load the cards into the SQL DB on first run
-    // this operation will occur in a threaded manner (hot, I know).
-    mInstallThread = new Thread(new Runnable() {
+      // Initialize the soundManager during splash
+      SoundManager.getInstance(this.getBaseContext());
 
-      public void run() {
-        Deck.DeckOpenHelper helper = new Deck.DeckOpenHelper(SplashScreen.this);
-        helper.countCards();
-        helper.close();
-      }
-    });
-    mInstallThread.start();
-
-    // Initialize the soundManager during splash
-    SoundManager.getInstance(this.getBaseContext());
-
-    // Fade in the logo
-    this.fadeIn();
+      // Fade in the logo
+      this.fadeIn();
+    } else {
+      finish();
+    }
   }
 
   /**
-   * Handle interupts to the spash screen
+   * Workaround for bug where launching from Installation uses a different
+   * filter to invoke the Activity, causing a new activity to be brought to the
+   * top of the stack instead of resuming from the topmost activity.
+   * 
+   * @return true if the application should launch
+   */
+  private boolean shouldApplicationLaunch() {
+    final ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+    final List<RunningTaskInfo> runningTasks = am.getRunningTasks(1024);
+
+    if (!runningTasks.isEmpty()) {
+      final String ourAppPackageName = getPackageName();
+      RunningTaskInfo taskInfo;
+      final int size = runningTasks.size();
+      for (int i = 0; i < size; i++) {
+        taskInfo = runningTasks.get(i);
+        if (ourAppPackageName.equals(taskInfo.baseActivity.getPackageName())) {
+          // Only allow the application to launch if the splash screen is the
+          // only activity from this package that is running
+          return taskInfo.numActivities == 1;
+        }
+      }
+    }
+
+    return true;
+  }
+  
+  /**
+   * Handle interrupts to the splash screen
    * 
    * @return true if the event was consumed
    */

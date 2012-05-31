@@ -18,9 +18,14 @@
 package com.buzzwords;
 
 import com.buzzwords.R;
+import com.buzzwords.Consts;
+import com.buzzwords.GameManager;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +34,7 @@ import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -387,7 +393,8 @@ public class Title extends Activity {
 
     // Setup the Main Title Screen view
     this.setContentView(R.layout.title);
-
+    new InstallerAndAnimator().execute();
+    
     // Assign listeners to the delegate buttons
     View delegate = (View) this.findViewById(R.id.Title_PlayDelegate);
     delegate.setOnTouchListener(mTouchPlayListener);
@@ -502,6 +509,60 @@ public class Title extends Activity {
     mContinueMusic = false;
   }
 
+  /** 
+   * Run the installation in an Async Task.  This puts the intensive task of installing
+   * on a separate thread that once complete will dismiss the progress dialog and start
+   * the title screen's animation.  After the first run this task will only be used
+   * for animating the title screen.
+   */
+  private class InstallerAndAnimator extends AsyncTask <Void, Void, Boolean>
+  {
+      private ProgressDialog dialog;
+      private SharedPreferences prefs;
+      private boolean initialized;
+      
+      @Override
+      protected void onPreExecute()
+      {
+        prefs = getPreferences(Context.MODE_PRIVATE);
+        initialized = prefs.getBoolean(Consts.PREFKEY_DB_INITIALIZED, false);
+        if (!initialized) {
+          dialog = ProgressDialog.show(
+            Title.this,
+            null,
+            getString(R.string.progressDialog_install_text), 
+            true);
+        }
+      }
+
+      @Override
+      protected Boolean doInBackground(Void... params)
+      {
+        if (!initialized) {
+          GameManager gm = new GameManager(Title.this);
+          gm.installStarterPacks();
+        }
+        return true;
+        
+      }
+
+      @Override
+      protected void onPostExecute(Boolean result)
+      {
+        if (!initialized) {
+          SharedPreferences.Editor edit = prefs.edit();
+          edit.putBoolean(Consts.PREFKEY_DB_INITIALIZED, true);
+          edit.commit();
+          dialog.dismiss();
+        }
+        
+        // Rotate the starburst which would have slowed down the install process
+        //TODO Fill this in once title animations are updated
+        //ImageView starburst = (ImageView) findViewById(R.id.Title_Starburst);
+        //starburst.startAnimation(rotateStarburst());
+      }
+  }
+  
   /**
    * Sets the boolean preference for muting the Rate Us dialog to true.
    */

@@ -20,10 +20,12 @@ package com.buzzwords;
 import java.util.LinkedList;
 
 import com.buzzwords.R;
+import com.buzzwords.Consts;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,6 +57,7 @@ public class GameSetup extends Activity {
   private LinkedList<Team> mTeamList = new LinkedList<Team>();
   private static SharedPreferences mGameSetupPrefs;
   private static SharedPreferences.Editor mGameSetupPrefEditor;
+  private static SharedPreferences mPackPrefs;
 
   // A two dimensional array to store the radioID/value pair.
   private static final int[][] ROUND_RADIOS = new int[][] {
@@ -123,12 +126,14 @@ public class GameSetup extends Activity {
       // Create a GameManager to manage attributes about the current game.
       // the while loop around the try-catch block makes sure the database
       // has loaded before actually starting the game.
+      //TODO I don't think this looping is necessary anymore
       BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
           .getApplication();
       boolean keepLooping = true;
       while (keepLooping) {
         try {
           GameManager gm = new GameManager(GameSetup.this);
+          gm.maintainDeck();
           gm.startGame(mTeamList, ROUND_RADIOS[GameSetup.this
               .getCheckedRadioIndex()][1]);
           application.setGameManager(gm);
@@ -255,7 +260,16 @@ public class GameSetup extends Activity {
     // Get the current game setup preferences
     GameSetup.mGameSetupPrefs = getSharedPreferences(PREFS_NAME, 0);
     GameSetup.mGameSetupPrefEditor = GameSetup.mGameSetupPrefs.edit();
-
+    // Get our pack preferences
+    GameSetup.mPackPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
+        Context.MODE_PRIVATE);
+    
+    //TODO This can be removed once pack selections screen is added
+    // Store the pack's boolean in the preferences file for pack preferences
+    SharedPreferences.Editor packPrefsEdit = mPackPrefs.edit();
+    packPrefsEdit.putBoolean(String.valueOf(1), true);
+    packPrefsEdit.commit();
+    
     // set fonts on titles
     Typeface antonFont = Typeface.createFromAsset(getAssets(),
         "fonts/Anton.ttf");

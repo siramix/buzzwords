@@ -54,6 +54,11 @@ public class Card implements Serializable {
   private ArrayList<String> mBadWords;
 
   /**
+   * The Pack to which the card belongs
+   */
+  private Pack mPack;
+  
+  /**
    * Function for breaking a string into an array list of strings based on the
    * presence of commas. The bad words are stored in the database as a comma
    * separated list for each card.
@@ -63,9 +68,6 @@ public class Card implements Serializable {
    * @return an array list of the substrings
    */
   public static ArrayList<String> bustString(String commaSeparated) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "BustString()");
-    }
     ArrayList<String> ret = new ArrayList<String>();
     StringTokenizer tok = new StringTokenizer(commaSeparated);
 
@@ -75,7 +77,7 @@ public class Card implements Serializable {
 
     return ret;
   }
-
+  
   /**
    * Get the resource ID for this card's right wrong skip icon Mid-turn (when
    * user hits back). These IDs must differ from those on Turn Result Screen.
@@ -103,10 +105,7 @@ public class Card implements Serializable {
    * Default constructor
    */
   public Card() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "Card()");
-    }
-    this.init(NOTSET, NOTSET, "", new ArrayList<String>());
+    this.init(NOTSET, NOTSET, "", new ArrayList<String>(), new Pack());
   }
 
   /**
@@ -117,7 +116,7 @@ public class Card implements Serializable {
       Log.d(TAG, "Card( Card )");
     }
     ArrayList<String> bws = new ArrayList<String>(rhs.getBadWords());
-    this.init(rhs.getId(), rhs.getRws(), rhs.getTitle(), bws);
+    this.init(rhs.getId(), rhs.getRws(), rhs.getTitle(), bws, rhs.getPack());
   }
 
   /**
@@ -128,8 +127,8 @@ public class Card implements Serializable {
    * @param title
    * @param badWords
    */
-  public Card(int id, int rws, String title, ArrayList<String> badWords) {
-    this.init(id, rws, title, badWords);
+  public Card(int id, int rws, String title, ArrayList<String> badWords, Pack pack) {
+    this.init(id, rws, title, badWords, pack);
   }
 
   /**
@@ -138,9 +137,10 @@ public class Card implements Serializable {
    * @param id
    * @param title
    * @param badWords
+   * @param pack Can be set to null if unset
    */
-  public Card(int id, String title, String badWords) {
-    this.init(id, NOTSET, title, Card.bustString(badWords));
+  public Card(int id, String title, String badWords, Pack pack) {
+    this.init(id, NOTSET, title, Card.bustString(badWords), pack);
   }
 
   /**
@@ -167,14 +167,12 @@ public class Card implements Serializable {
   /**
    * Function for initializing card state
    */
-  private void init(int id, int rws, String title, ArrayList<String> badWords) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "init()");
-    }
+  private void init(int id, int rws, String title, ArrayList<String> badWords, Pack pack) {
     mId = id;
     mRws = rws;
     mTitle = title;
     mBadWords = badWords;
+    mPack = pack;
   }
 
   /**
@@ -183,9 +181,6 @@ public class Card implements Serializable {
    * @return
    */
   public int getRws() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getRws()");
-    }
     return mRws;
   }
 
@@ -195,9 +190,7 @@ public class Card implements Serializable {
    * @param rws
    */
   public void setRws(int rws) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "setRws()");
-    }
+    Log.d(TAG, "setRws(" + String.valueOf(rws) + ")");
     mRws = rws;
   }
 
@@ -207,9 +200,6 @@ public class Card implements Serializable {
    * @return
    */
   public String getTitle() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getTitle()");
-    }
     return mTitle;
   }
 
@@ -219,9 +209,7 @@ public class Card implements Serializable {
    * @param title
    */
   public void setTitle(String title) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "setTitle()");
-    }
+    Log.d(TAG, "setTitle()");
     mTitle = title;
   }
 
@@ -231,10 +219,17 @@ public class Card implements Serializable {
    * @return an array list of bad words
    */
   public ArrayList<String> getBadWords() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getBadWords()");
-    }
     return mBadWords;
+  }
+  
+  /**
+   * Get the array list of bad words as a comma separated
+   * string of words
+   * @return a comma separated string of badwords
+   */
+  public String getBadWordsString() {
+    String badwordString = mBadWords.toString();
+    return badwordString.substring(1, badwordString.length()-1);
   }
 
   /**
@@ -243,9 +238,7 @@ public class Card implements Serializable {
    * @param badWords
    */
   public void setBadWords(ArrayList<String> badWords) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "setBadWords(ArrayList<String>)");
-    }
+    Log.d(TAG, "setBadWords(ArrayList<String>)");
     mBadWords = badWords;
   }
 
@@ -255,9 +248,7 @@ public class Card implements Serializable {
    * @param commaSeparated
    */
   public void setBadWords(String commaSeparated) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "setBadWords(String)");
-    }
+    Log.d(TAG, "setBadWords(String)");
     mBadWords = Card.bustString(commaSeparated);
   }
 
@@ -265,9 +256,6 @@ public class Card implements Serializable {
    * Get the resource ID for this card's right wrong skip icon
    */
   public int getRowEndDrawableId() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getRowEndDrawableId()");
-    }
     switch (mRws) {
     case RIGHT:
       return R.drawable.right;
@@ -280,19 +268,6 @@ public class Card implements Serializable {
       return R.drawable.logoram;
     default:
       return 0;
-    }
-  }
-
-  /**
-   * Cycle right/wrong/skip for the turn summary
-   */
-  public void cycleRws() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "cycleRws()");
-    }
-    mRws++;
-    if (mRws == 3) {
-      mRws = 0;
     }
   }
 
@@ -312,4 +287,10 @@ public class Card implements Serializable {
     return mId;
   }
 
+  /**
+   * @return The pack to which the card belongs
+   */
+  public Pack getPack() {
+    return mPack;
+  }
 }

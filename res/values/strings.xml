@@ -79,6 +79,11 @@
   <string name="openingDialog_positiveBtn">View Rules</string>
   <string name="openingDialog_negativeBtn">I\'ve Got This</string>
 
+  <!-- Installation dialogs -->
+  <string name="progressDialog_install_text">Installing Phrases&#8230;</string>
+  <string name="progressDialog_uninstall_text">Syncing Phrases with market&#8230;</string>
+  <string name="progressDialog_update_text">Updating Phrases&#8230;</string>
+      
   <!--  Rate Us URI for app store -->
   <string name="URI_buzzwords_redirect">http://www.siramix.com/buzzwordsappstore</string>
   <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwords</string>
