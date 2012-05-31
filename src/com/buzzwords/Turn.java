@@ -308,6 +308,7 @@ public class Turn extends Activity {
         Log.d(TAG, "TimerClickListener OnClick()");
       }
       Turn.this.pauseGame();
+      Turn.this.openOptionsMenu();
     }
   };
 

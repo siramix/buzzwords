@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.buzzwords.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -64,6 +63,21 @@ public class TurnSummary extends Activity {
   private List<Card> mCardList;
   private List<ImageView> mCardViewList;
   private List<View> mCardLineList;
+
+  /**
+   * Listener for menu button
+   */
+  private final OnClickListener mMenuListener = new OnClickListener() {
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "mMenuListener OnClick()");
+      }
+      SoundManager sm = SoundManager.getInstance(TurnSummary.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
+
+      TurnSummary.this.openOptionsMenu();
+    }
+  };
 
   /**
    * Watches the button that handles hand-off to the next turn activity.
@@ -212,6 +226,10 @@ public class TurnSummary extends Activity {
     Button playGameButton = (Button) this
         .findViewById(R.id.TurnSummary_NextTurn);
     playGameButton.setOnClickListener(mNextTurnListener);
+    
+    // Bind menu button
+    Button menuButton = (Button) this.findViewById(R.id.TurnSummary_Menu);
+    menuButton.setOnClickListener(mMenuListener);
 
     // Handle activity changes for final turn
     if (game.getNumberOfTurnsRemaining() == 0) {
