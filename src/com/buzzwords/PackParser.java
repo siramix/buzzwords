@@ -17,15 +17,11 @@
  ****************************************************************************/
 package com.buzzwords;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
-
 import android.util.Log;
 
 /**
@@ -92,7 +88,7 @@ public class PackParser {
     String curName = curCard.getString("title");
     int curId = curCard.getInt("_id");
     String curBadWords= curCard.getString("badwords");
-    Card card = new Card(curId, curName, curBadWords);
+    Card card = new Card(curId, curName, curBadWords, null);
     return card;
   }
 

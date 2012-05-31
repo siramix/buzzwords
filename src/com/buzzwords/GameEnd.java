@@ -382,6 +382,7 @@ public class GameEnd extends Activity {
 
     // Animate the whole thing
     animateGameEnd(teams.size());
+    mGameManager.maintainDeck();
   }
 
   /**

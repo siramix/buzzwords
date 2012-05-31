@@ -19,43 +19,28 @@ package com.buzzwords;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import com.buzzwords.Card;
 import com.buzzwords.Pack;
-import com.buzzwords.Deck.DeckOpenHelper;
 import com.buzzwords.CardJSONIterator;
 import com.buzzwords.Consts;
 import com.buzzwords.Deck;
-//import com.buzzwords.PackClient;
 import com.buzzwords.PackColumns;
 import com.buzzwords.PackParser;
 import com.buzzwords.CardColumns;
-import com.buzzwords.BuzzWordsApplication;
 import com.buzzwords.R;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -82,11 +67,7 @@ import android.util.Log;
 public class Deck {
 
   private static final String TAG = "Deck";
-
-  private static final String DATABASE_NAME = "buzzwords";
-  private static final String CARD_TABLE_NAME = "cards";
-  private static final String CACHE_TABLE_NAME = "cache";
-  
+  private static final String DATABASE_NAME = "buzzwords";  
   private static final int DATABASE_VERSION = 3;
   
   protected static final int BACK_CACHE_MAXSIZE = 200;
@@ -145,7 +126,7 @@ public class Deck {
       this.topOffFrontCache();
     }
     ret = mFrontCache.removeFirst();
-    Log.i(TAG, " Dealing ::" + ret.getTitle() + " Pack: ???");
+    Log.i(TAG, " Dealing ::" + ret.getTitle() + " Pack: " + ret.getPack().getName());
     mSeenCards.add(ret);
     return ret;
   }
@@ -172,8 +153,8 @@ public class Deck {
    * The list of seen cards will be cleared when the front cache is re-filled.
    * cache.
    */
-  public void updatePlayDate() {
-    this.updatePlayDate(mSeenCards);
+  public void updatePlayDates() {
+    this.updatePlayDates(mSeenCards);
   }
 
   /**
@@ -182,10 +163,10 @@ public class Deck {
    * @param cardsToUpdate - a Linked List of cards that will have their playdate
    *                        updated to today's date.
    */
-  public void updatePlayDate(LinkedList<Card> cardsToUpdate) {
+  public void updatePlayDates(List<Card> cardsToUpdate) {
     DeckOpenHelper helper = new Deck.DeckOpenHelper(
         mContext);      
-    helper.updatePlayDate(cardsToUpdate);
+    helper.updatePlayDates(cardsToUpdate);
     helper.close();
   }
 
@@ -312,7 +293,7 @@ public class Deck {
     // If we reach this scenario it means a lot of cards were looked at during a turn
     // Otherwise it should be filled by a GameManager.maintainDeck call
     if (mBackCache.isEmpty()) {
-      mDatabaseOpenHelper.updatePlayDate(mSeenCards);
+      mDatabaseOpenHelper.updatePlayDates(mSeenCards);
       mSeenCards.clear();
       this.fillBackCache();
     }
@@ -644,7 +625,15 @@ public class Deck {
       Log.d(TAG, "DONE loading words.");
     }
 
-
+    /**
+     * Take a Pack and determine whether it needs to be updated, installed, or ignored.
+     * If Pack needs to be installed, request the cards to install from the server and 
+     * perform installation.
+     * 
+     * @param serverPack Pack of cards to install
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     public void installPackFromServer(Pack serverPack) throws IOException, URISyntaxException {
       Log.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
       mDatabase = getWritableDatabase();
@@ -791,6 +780,45 @@ public class Deck {
     }
 
     /**
+     * Delete a pack from the database
+     * @param packId Pack id to delete
+     * @param db
+     */
+    public synchronized static void clearPack(int packId, SQLiteDatabase db) {
+      String[] whereArgs = new String[] { String.valueOf(packId) };
+      db.beginTransaction();
+      try {
+        db.delete(PackColumns.TABLE_NAME, PackColumns._ID + " = ?", whereArgs);
+        db.delete(CardColumns.TABLE_NAME, CardColumns.PACK_ID + " = ?", whereArgs);
+        db.setTransactionSuccessful();
+      } finally {
+        db.endTransaction();
+      }
+    }
+
+    /**
+     * Update play_date for all passed in card ids to current time
+     * @param ids
+     *          comma delimited set of card ids to increment, ex. "1, 2, 4, 10"
+     * @return
+     */
+    public synchronized void updatePlayDates(List<Card> cardList) {
+      mDatabase = getWritableDatabase();
+      String ids = buildCardIdString(cardList);
+      Log.d(TAG, "UPDATING THE FOLLOWING...WE HOPE: " + ids);
+      mDatabase.beginTransaction();
+      try {
+        mDatabase.execSQL("UPDATE " + CardColumns.TABLE_NAME
+                      + " SET " + CardColumns.PLAY_DATE + " = datetime('now')"
+                      + " WHERE " + CardColumns._ID + " in(" + ids + ");");
+        mDatabase.setTransactionSuccessful();
+      } finally {
+        mDatabase.endTransaction();
+      }
+      mDatabase.close();
+    }
+
+    /**
      * Queries the Packs table and returns the packId if the pack requires updating, 
      * otherwise returns either PACK_CURRENT or PACK_NOT_PRESENT.
      * @param packName 
@@ -817,46 +845,7 @@ public class Deck {
       }
     }
 
-    /**
-     * Delete a pack from the database
-     * @param packId Pack id to delete
-     * @param db
-     */
-    public static void clearPack(int packId, SQLiteDatabase db) {
-      String[] whereArgs = new String[] { String.valueOf(packId) };
-      db.delete(PackColumns.TABLE_NAME, PackColumns._ID + " = ?", whereArgs);
-      db.delete(CardColumns.TABLE_NAME, CardColumns.PACK_ID + " = ?", whereArgs);
-    }
-
-    /**
-     * Update play_date for all passed in card ids to current time
-     * @param ids
-     *          comma delimited set of card ids to increment, ex. "1, 2, 4, 10"
-     * @return
-     */
-    public void updatePlayDate(LinkedList<Card> cardList) {
-      mDatabase = getWritableDatabase();
-      if (Consts.DEBUG) {
-        Log.d(TAG, "updatePlaydate()");
-      }
-      
-      String ids = buildCardIdString(cardList);
-      
-      //TODO for code review:  For some reason the database.update command was interpreting the
-      // playcount+1 as a string and inserting that string instead of actually incrementing
-      // If its all the same to everyone, I went ahead and hardcoded this query to work around this
-      // There is also a known issue with this...if a card is seen twice in a single round
-      // it will only get updated once.  To me the issue of seeing a card twice is the real issue
-      // and it's not worth fixing the count for that severe case.
-//      ContentValues newValues = new ContentValues();
-//      newValues.put("playcount", "playcount+1");
-//      mDatabase.update(PHRASE_TABLE_NAME, newValues, "id in (" + args + ")", null);
-      mDatabase.execSQL("UPDATE " + CardColumns.TABLE_NAME
-                      + " SET " + CardColumns.PLAY_DATE + " = datetime('now')"
-                      + " WHERE " + CardColumns._ID + " in(" + ids + ");");
-      mDatabase.close();
-    }
-
+    
     /**
      * Generates and returns a LinkedList of Cards from the database for a specific pack.  First,
      * we request all the cards from the db sorted by date.  Then we calculate how many of the 
@@ -897,11 +886,10 @@ public class Deck {
       Log.d(TAG, "** this.surplusnum: " + surplusNum);
       Log.d(TAG, "** this.numPlayable (excludes active): " + res.getCount());
       Log.d(TAG, "** Pack.size: " + pack.getSize());
-      Log.d(TAG, "** ADDING PHRASES");
 
       // Add cards to what will be the Cache, including a surplus 
       while (!res.isAfterLast() && res.getPosition() < (targetNum + surplusNum)) {
-        returnCards.add(new Card(res.getInt(0), res.getString(1), res.getString(2)));
+        returnCards.add(new Card(res.getInt(0), res.getString(1), res.getString(2), pack));
         res.moveToNext();
       }
       Log.d(TAG, "**" + returnCards.size() + " phrases added.");
@@ -910,14 +898,13 @@ public class Deck {
       Random r = new Random();
       int removeCount = 0;
       int randIndex = 0;
-      Log.d(TAG, "** REMOVING PHRASES");
       while (removeCount < surplusNum) {
         randIndex = r.nextInt(returnCards.size()-1);
         Log.d(TAG, "**removing: " + returnCards.get(randIndex).getTitle());
         returnCards.remove(randIndex);
         removeCount++;
       }
-      Log.d(TAG, "**" + removeCount + " phrases removed.");
+      Log.d(TAG, "**" + removeCount + " phrases thrown out.");
       
       res.close();
       mDatabase.close();
@@ -930,7 +917,7 @@ public class Deck {
      * @param cardList a list of Cards
      * @return a comma-delimited string of Ids ex. 1,20,22
      */
-    private String buildCardIdString(LinkedList<Card> cardList) {
+    private String buildCardIdString(List<Card> cardList) {
       Log.d(TAG, "buildCardIdString(cardList)");
       String[] ids = new String[cardList.size()];
       
@@ -946,7 +933,7 @@ public class Deck {
      * @param packList a list of Packs
      * @return a comma-delimited string of Ids ex. 1,20,22
      */
-    private String buildPackIdString(LinkedList<Pack> packList) {
+    private String buildPackIdString(List<Pack> packList) {
       Log.d(TAG, "buildPackIdString(packList)");
       String[] ids = new String[packList.size()];
       
@@ -988,9 +975,7 @@ public class Deck {
       }
       return ret;
     }
-    
-    //TODO Let's reconsider if this is the best thing to do after we figure out 
-    // how marketplace updates will affect each phone's database
+
      /**
      * For now, onUpgrade destroys the old database and runs create again.
      */
@@ -1000,6 +985,8 @@ public class Deck {
           + newVersion + ", which will destroy all old data");
       db.execSQL("DROP TABLE IF EXISTS cards;");
       db.execSQL("DROP TABLE IF EXISTS cache;");
+      db.execSQL("CREATE TABLE IF NOT EXISTS " + CardColumns.TABLE_NAME + ";");
+      db.execSQL("CREATE TABLE IF NOT EXISTS " + PackColumns.TABLE_NAME + ";");
       onCreate(db);
     }
 

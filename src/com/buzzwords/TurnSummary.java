@@ -191,6 +191,12 @@ public class TurnSummary extends Activity {
     TextView resultsTitle = (TextView) findViewById(R.id.TurnSummary_Title);
     resultsTitle.setTypeface(antonFont);
 
+    // Update our database in a thread to avoid crashes on fast next clicks and slow db writes
+    game.updatePlayDates(mCardList);
+    
+    // TODO This should be in a thread, but I'm not sure how to access the game from inside the thread
+    game.maintainDeck();
+    
     // Update the scoreboard views
     updateScoreViews();
 

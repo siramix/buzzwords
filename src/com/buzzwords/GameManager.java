@@ -268,8 +268,7 @@ public class GameManager {
       Log.d(TAG, "EndGame()");
     }
     mTeamIterator = mTeams.iterator();
-    //TODO Another questionable location for topping off the front cache
-    maintainDeck();
+
     // clear current cards so that scoreboards don't add turn score in
     mCurrentCards.clear();
   }
@@ -283,18 +282,6 @@ public class GameManager {
     mDeck.fillCachesIfLow();
   }
 
-  /**
-   * The game manager will have the Deck update the play date for
-   * any cards the Deck has marked as "seen".  Runs inside a thread.
-   */
-  public void updatePlayDate() {
-    mUpdateThread = new Thread(new Runnable() {
-      public void run() {
-        mDeck.updatePlayDate();
-        }
-      });
-    mUpdateThread.start();
-  }
   
   /**
    * Call the Deck function that installs all 'starter' decks.  This
@@ -334,15 +321,28 @@ public class GameManager {
   
   /**
    * The game manager will have the Deck update the play date for
+   * any cards the Deck has marked as "seen".  Runs inside a thread.
+   */
+  public void updatePlayDates() {
+    mUpdateThread = new Thread(new Runnable() {
+      public void run() {
+        mDeck.updatePlayDates();
+        }
+      });
+    mUpdateThread.start();
+  }
+  
+  /**
+   * The game manager will have the Deck update the play date for
    * any cards passed into this method.  This is being used for
    * Turn Summary which will have a list of seen cards to pass in.
    * Runs inside a thread.
    * @param cardsToUpdate - A linked list of cards to update
    */
-  public void updatePlayDate(final LinkedList<Card> cardsToUpdate) {
+  public void updatePlayDates(final List<Card> cardsToUpdate) {
     mUpdateThread = new Thread(new Runnable() {
       public void run() {
-        mDeck.updatePlayDate(cardsToUpdate);
+        mDeck.updatePlayDates(cardsToUpdate);
         }
       });
     mUpdateThread.start();
