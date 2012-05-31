@@ -912,10 +912,9 @@ public class Turn extends Activity {
     ImageView barFill = (ImageView) this.findViewById(R.id.Turn_TimerFill);
 
     Team curTeam = mGameManager.getActiveTeam();
-    barFill.setImageResource(curTeam.getBackground());
+    barFill.setImageResource(curTeam.getPrimaryColor());
     this.findViewById(R.id.Turn_Root).setBackgroundResource(
         curTeam.getGradient());
-
   }
 
   /**

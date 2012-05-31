@@ -33,16 +33,15 @@ import com.buzzwords.R;
  * 
  */
 public enum Team implements Serializable {
-  TEAMA("Blue", R.color.teamA_BG, R.color.teamA_secondary,
-      R.color.teamA_primary, R.drawable.bg_bluegradient,
-      R.drawable.gameend_row_end_blue, "teamA_enabled"), TEAMB("Green", R.color.teamB_BG,
-      R.color.teamB_secondary, R.color.teamB_primary,
-      R.drawable.bg_greengradient, R.drawable.gameend_row_end_green, "teamB_enabled"), TEAMC(
-      "Red", R.color.teamC_BG, R.color.teamC_secondary, R.color.teamC_primary,
-      R.drawable.bg_redgradient, R.drawable.gameend_row_end_red, "teamC_enabled"), TEAMD(
-      "Yellow", R.color.teamD_BG, R.color.teamD_secondary,
-      R.color.teamD_primary, R.drawable.bg_yellowgradient,
-      R.drawable.gameend_row_end_yellow, "teamD_enabled");
+  TEAMA("Blue", R.color.teamA_primary,
+      R.color.teamA_secondary, R.color.teamA_complement, R.drawable.bg_bluegradient, 
+      "teamA_enabled"), TEAMB("Green",
+      R.color.teamB_primary, R.color.teamB_secondary,  R.color.teamB_complement,
+      R.drawable.bg_greengradient, "teamB_enabled"), TEAMC(
+      "Red", R.color.teamC_primary,  R.color.teamC_secondary,
+      R.color.teamC_complement, R.drawable.bg_redgradient, "teamC_enabled"), TEAMD(
+      "Yellow", R.color.teamD_primary, R.color.teamD_secondary,
+      R.color.teamD_complement, R.drawable.bg_yellowgradient, "teamD_enabled");
 
   // Team name
   private String mName;
@@ -52,9 +51,8 @@ public enum Team implements Serializable {
   // Team colors
   private final int mPrimary;
   private final int mSecondary;
-  private final int mBackground;
+  private final int mComplement;
   private final int mGradient;
-  private final int mGameEndBackground;
   // The team's running score
   private int mScore;
   // The team's preference key
@@ -69,15 +67,13 @@ public enum Team implements Serializable {
   /*
    * Construct a Team
    */
-  private Team(String name, int bg, int secondary, int primary, int gradient,
-      int gameend_bg, String key) {
+  private Team(String name, int primary, int secondary, int complement, int gradient, String key) {
     mName = name;
     mDefaultName = name;
-    mBackground = bg;
+    mComplement = complement;
     mSecondary = secondary;
     mPrimary = primary;
     mGradient = gradient;
-    mGameEndBackground = gameend_bg;
     mPrefKey = key;
     this.setScore(0);
   }
@@ -103,16 +99,6 @@ public enum Team implements Serializable {
     return mDefaultName;
   }
 
-
-  /**
-   * Returns the id of the Team's background color
-   * 
-   * @return the background color
-   */
-  public int getBackground() {
-    return mBackground;
-  }
-
   /**
    * Returns the id of the Team's secondary color
    * 
@@ -130,6 +116,16 @@ public enum Team implements Serializable {
   public int getPrimaryColor() {
     return mPrimary;
   }
+  
+  /**
+   * Returns the id of the Team's complement color
+   * 
+   * @return the background color
+   */
+  public int getComplementaryColor() {
+    return mComplement;
+  }
+
 
   /**
    * Returns the id of the Team's gradient resource
@@ -138,15 +134,6 @@ public enum Team implements Serializable {
    */
   public int getGradient() {
     return mGradient;
-  }
-
-  /**
-   * Returns the id of the drawable that caps the end of a team themed row
-   * 
-   * @return the end piece for a game end row
-   */
-  public int getGameEndPiece() {
-    return mGameEndBackground;
   }
   
   /**
