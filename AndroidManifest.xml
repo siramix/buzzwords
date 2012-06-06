@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionCode="10" android:versionName="1.34" package="com.buzzwords">
-
+          package="com.buzzwords"
+          android:versionCode="10" 
+          android:versionName="1.34"
+          android:installLocation="auto">
+	
+  <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="7" />
+    
   <uses-permission android:name="android.permission.GET_TASKS" />
   <uses-permission android:name="com.android.vending.BILLING" />
   <uses-permission android:name="android.permission.INTERNET" />
@@ -129,6 +134,4 @@
 		
 	</application>
 	
-	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="7" />
-
 </manifest> 
