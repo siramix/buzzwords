@@ -1,137 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.buzzwords"
-          android:versionCode="10" 
-          android:versionName="1.34"
-          android:installLocation="auto">
-	
-  <uses-sdk android:minSdkVersion="3" android:targetSdkVersion="7" />
-    
-  <uses-permission android:name="android.permission.GET_TASKS" />
-  <uses-permission android:name="com.android.vending.BILLING" />
-  <uses-permission android:name="android.permission.INTERNET" />
+    package="com.buzzwords"
+    android:installLocation="auto"
+    android:versionCode="10"
+    android:versionName="1.34" >
 
-	<application android:icon="@drawable/icon" android:label="@string/AppName"
-		android:theme="@style/BuzzWordsTheme" android:name="com.buzzwords.BuzzWordsApplication"
-		android:configChanges="keyboardHidden">
+    <uses-sdk
+        android:minSdkVersion="3"
+        android:targetSdkVersion="7" />
 
-		<activity android:name=".SplashScreen" android:label="@string/AppName"
-			android:screenOrientation="portrait">
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
+    <application
+        android:name="com.buzzwords.BuzzWordsApplication"
+        android:configChanges="keyboardHidden"
+        android:icon="@drawable/icon"
+        android:label="@string/AppName"
+        android:theme="@style/BuzzWordsTheme" >
+        <activity
+            android:name=".SplashScreen"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.SPLASHSCREEN" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.SPLASHSCREEN" />
 
-		</activity>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Title"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.TITLE" />
 
-		<activity android:name=".Title" android:label="@string/AppName"
-			android:screenOrientation="portrait">
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Settings"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.SETTINGS" />
 
-			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.TITLE" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Rules"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.RULES" />
 
-		</activity>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Buzzer"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.BUZZER" />
 
-		<activity android:name=".Settings" android:label="@string/AppName"
-			android:screenOrientation="portrait"
-			android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".GameSetup"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.GAMESETUP" />
 
-			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.SETTINGS" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Turn"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.TURN" >
+                </action>
 
-		</activity>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".GameEnd"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.GAMEEND" >
+                </action>
 
-		<activity android:name=".Rules" android:label="@string/AppName"
-			android:screenOrientation="portrait">
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".TurnSummary"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.TURNSUMMARY" >
+                </action>
 
-			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.RULES" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CardReview"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.CARDREVIEW" >
+                </action>
 
-		</activity>
-		
-		<activity android:name=".Buzzer" android:label="@string/AppName"
-			android:screenOrientation="portrait">
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EditTeamName"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/EditTeamNameDialog" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.EDITTEAMNAME" >
+                </action>
 
-			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.BUZZER" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+            </intent-filter>
+        </activity>
+    </application>
 
-		</activity>
-		
-		<activity android:name=".GameSetup" android:label="@string/AppName"
-			android:screenOrientation="portrait">
-			
-			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.GAMESETUP" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-
-		</activity>
-		
-		<activity android:name=".Turn" android:label="@string/AppName"
-			android:screenOrientation="portrait">
-			
-			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.TURN"></action>
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-			
-		</activity>
-		
-		<activity android:name=".GameEnd" android:label="@string/AppName"
-			android:screenOrientation="portrait">
-			
-			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.GAMEEND"></action>
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-			
-		</activity>
-		
-		<activity android:name=".TurnSummary" android:label="@string/AppName"
-			android:screenOrientation="portrait">
-			
-			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.TURNSUMMARY"></action>
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-			
-		</activity>
-		
-		<activity android:name=".CardReview" android:label=""
-			android:theme="@android:style/Theme.Dialog"
-			android:screenOrientation="portrait">
-		
-			<intent-filter>
-				<action android:name="com.buzzwords.intent.action.CARDREVIEW"></action>
-				<category android:name="android.intent.category.DEFAULT"></category>
-			</intent-filter>
-			
-		</activity>
-		
-		<activity android:name=".EditTeamName" android:label=""
-      android:theme="@style/EditTeamNameDialog"
-      android:screenOrientation="portrait">
-      <intent-filter>
-        <action android:name="com.buzzwords.intent.action.EDITTEAMNAME"></action>
-        <category android:name="android.intent.category.DEFAULT"></category>
-      </intent-filter>
-      
-    </activity>
-		
-	</application>
-	
-</manifest> 
+</manifest>
