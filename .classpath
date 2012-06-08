@@ -4,5 +4,10 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="lib" path="/Library/android-sdk-mac_x86/In-App-Purchasing/lib/in-app-purchasing-1.0.3.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Library/android-sdk-mac_x86/In-App-Purchasing/documentation/API-Reference/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

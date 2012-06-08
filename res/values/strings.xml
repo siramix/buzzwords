@@ -16,7 +16,9 @@
   <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
   <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
   <string name="IntentEditTeamName">com.buzzwords.intent.action.EDITTEAMNAME</string>
-
+  <string name="IntentPackPurchase">com.buzzwords.intent.action.WORDPACKPURCHASE</string>
+  <string name="IntentPackInfo">com.buzzwords.intent.action.WORDPACKINFOGUI</string>
+  
   <!-- Global Prefkey IDs -->
   <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
   <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
@@ -40,12 +42,23 @@
 
   <!-- Bundle Keys -->
   <string name="cardBundleKey">com.buzzwords.card</string>
+  <string name="packBundleKey">com.buzzwords.pack</string>
   <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
   <string name="cardStateBundleKey">com.buzzwords.cardState</string>
   <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
   <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
   <string name="teamBundleKey">com.buzzwords.team</string>
   <string name="teamNameBundleKey">com.buzzwords.teamName</string>
+  <string name="packInfoIsPackSelectedBundleKey">com.buzzwords.isPackSelected</string>
+  <string name="packInfoIsPackRowOddBundleKey">com.buzzwords.isPackRowOdd</string>
+  <string name="packInfoIsPackPurchased">com.buzzwords.isPackPurchased</string>
+  
+  <!-- Pack Purchasing dialog strings -->
+  <string name="packpurchase_title">Phrase Packs</string>
+  <string name="packpurchase_unlockedheader">Your Packs</string>
+  <string name="packpurchase_lockedheader">Purchasable Packs</string>
+  <string name="packpurchase_button">Confirm</string>
+  <string name="packpurchase_restoring_packs">Restoring your purchases&#8230;</string>
   
   <!-- Turn Summary Strings -->
   <string name="button_menu">Menu</string>
@@ -53,9 +66,8 @@
   <!-- For EditTeamName dialog -->
   <string name="editTeamName_hint">Choose a new name for %s team.</string>
 
-  <!-- For pause game dialog -->
-  <string name="pauseGameDialog_title">Game Paused</string>
-  <string name="pauseGameDialog_text">Paused</string>
+  <!-- Word Pack purchasing Screen -->
+  <string name="toast_wordpurchase_nopackselected"></string>
 
   <!-- Rate Us dialogs -->
   <string name="rateUsFirstDialog_title">We want your feedback!</string>
@@ -70,6 +82,20 @@
   <string name="rateUsDialog_neutralBtn">Later</string>
   <string name="rateUsDialog_negativeBtn">Never</string>
 
+  <!--  Word Pack Purchasing text -->
+  <string name="toast_packpurchase_notwitter">Sorry, we could not detect any Twitter clients.</string>
+  <string name="toast_packpurchase_nofacebook">Sorry, we could not detect any Facebook clients.</string>
+  <string name="toast_packpurchase_nogoogleplus">Sorry, we could not detect any Google+ clients.</string>
+  <string name="toast_packpurchase_nointerneterror">No internet connection detected.  We can only show your purchased packs.</string>
+  <string name="toast_packpurchase_siramixdownerror">Sorry, there were problems connecting to our store.  We can only show your purchased packs.</string>
+  <string name="toast_packpurchase_nopackselected">Please select at least one pack to play.</string>
+  
+  <!--  Pack Info dialog -->
+  <string name="packInfo_confirm_nobuy">OK</string>
+  <string name="packInfo_confirm_buy">Buy</string>
+  <string name="packInfo_cancel">Cancel</string>
+  <string name="packInfo_alreadyOwned">You already have this pack!</string>
+  
   <!-- Text for the dialog on their first play of the game -->
   <string name="openingDialog_title">First Time?</string>
   <string name="openingDialog_text">Thank you for trying Buzzwords!
