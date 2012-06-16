@@ -51,7 +51,6 @@
   <string name="teamNameBundleKey">com.buzzwords.teamName</string>
   <string name="packInfoIsPackSelectedBundleKey">com.buzzwords.isPackSelected</string>
   <string name="packInfoIsPackRowOddBundleKey">com.buzzwords.isPackRowOdd</string>
-  <string name="packInfoIsPackPurchased">com.buzzwords.isPackPurchased</string>
   <string name="packInfoPurchaseTypeKey">com.buzzwords.packPurchaseType</string>
   
   <!-- Pack Purchasing dialog strings -->

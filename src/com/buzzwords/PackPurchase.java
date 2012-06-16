@@ -667,9 +667,6 @@ public class PackPurchase extends Activity {
     intent.putExtra(
         getApplication().getString(R.string.packInfoIsPackRowOddBundleKey),
         isPackRowOdd);
-    intent.putExtra(
-        getApplication().getString(R.string.packInfoIsPackPurchased),
-        false);//pack.isInstalled());
     intent.putExtra(getApplication().getString(R.string.packInfoPurchaseTypeKey),
         pack.getPurchaseType());
     

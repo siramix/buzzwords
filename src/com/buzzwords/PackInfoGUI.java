@@ -123,9 +123,7 @@ public class PackInfoGUI extends Activity {
     mIsPackRowOdd = inIntent.getBooleanExtra(
         getApplication().getString(R.string.packInfoIsPackRowOddBundleKey),
         false);
-    mIsPackPurchased = inIntent.getBooleanExtra(
-        getApplication().getString(R.string.packInfoIsPackPurchased),
-        false);
+    mIsPackPurchased = mPack.isInstalled();
     mPurchaseType = mPack.getPurchaseType();
 
     setupViewReferences();
