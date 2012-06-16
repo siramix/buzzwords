@@ -65,13 +65,14 @@ public class PackParser {
     int curId = curPack.getInt("_id");
     String curName = curPack.getString("name");
     String curPath = curPack.getString("path");
+    int curPurchaseType= curPack.getInt("purchase_type");
     String curUpdateMessage = curPack.getString("update_message");
     String curDescription = curPack.getString("description");
     int iconID = R.drawable.starter_icon;
     int curVersion = curPack.getInt("version");
     int curSize = curPack.getInt("size");
-    Pack pack = new Pack(curId, curName, curPath, curDescription, 
-                         curUpdateMessage, iconID, curSize, curVersion, false);
+    Pack pack = new Pack(curId, curName, curPath, curDescription, curUpdateMessage, 
+                         iconID, curSize, curPurchaseType, curVersion, false);
     return pack;
   }
 

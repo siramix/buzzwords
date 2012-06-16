@@ -47,8 +47,7 @@ public class PackClient {
    * URL Constants
    */
   private static final String URL_BASE = "http://siramix.com/buzzwords/packs/";
-  private static final String PAY_LIST_URL = "premiumpacks.json";
-  private static final String FREE_LIST_URL = "freepacks.json";
+  private static final String PACK_LIST_URL = "packs.json";
   
   /**
    * Members
@@ -68,33 +67,17 @@ public class PackClient {
   }
 
   /**
-   * Get all of the packs available on the server for pay
+   * Get all of the packs available on the server
    * @return a LinkedList of Packs representing the pack that is available
    * @throws IOException if the request to the server fails
    * @throws URISyntaxException if the uri is malformed
    * @throws JSONException if the JSON is invalid
    */
-  public LinkedList<Pack> getPayPacks() throws IOException, URISyntaxException, JSONException {
+  public LinkedList<Pack> getServerPacks() throws IOException, URISyntaxException, JSONException {
     Log.d(TAG, "getPayPacks");
     StringBuilder in = null;
     LinkedList<Pack> ret = null;
-    in = doHTTPGet(URL_BASE+PAY_LIST_URL);
-    ret = PackParser.parsePacks(in);
-    return ret;
-  }
-
-  /**
-   * Get all of the packs available on the server that don't go through the market (free)
-   * @return a LinkedList of Packs representing the pack that is available
-   * @throws IOException if the request to the server fails
-   * @throws URISyntaxException if the uri is malformed
-   * @throws JSONException if the JSON is invalid
-   */
-  public LinkedList<Pack> getFreePacks() throws IOException, URISyntaxException, JSONException {
-    Log.d(TAG, "getFreePacks");
-    StringBuilder in = null;
-    LinkedList<Pack> ret = null;
-    in = doHTTPGet(URL_BASE+FREE_LIST_URL);
+    in = doHTTPGet(URL_BASE+PACK_LIST_URL);
     ret = PackParser.parsePacks(in);
     return ret;
   }

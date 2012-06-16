@@ -59,14 +59,7 @@ public class PackInfoGUI extends Activity {
   private boolean mIsPackRowOdd;
   private boolean mIsPackPurchased;
   private int mPurchaseType;
-  
-  /*
-   * Results that can be returned from this activity
-   */
-  public static final int RESULT_TWITTER = 2;
-  public static final int RESULT_FACEBOOK = 3;
-  public static final int RESULT_GOOGLE = 4;
-  
+
   /**
    * Set the references to the elements from the layout file
    */
@@ -133,7 +126,7 @@ public class PackInfoGUI extends Activity {
     mIsPackPurchased = inIntent.getBooleanExtra(
         getApplication().getString(R.string.packInfoIsPackPurchased),
         false);
-    mPurchaseType = inIntent.getExtras().getInt("HACK_PurchaseType");
+    mPurchaseType = mPack.getPurchaseType();
 
     setupViewReferences();
 
@@ -166,26 +159,9 @@ public class PackInfoGUI extends Activity {
       mButtonCancel.setOnClickListener(mCancelListener);
       mPackIsOwnedText.setVisibility(View.GONE);
       
-      // Set Accept Button text and return result based on the purchase type
-      switch (mPurchaseType)
-      {
-      case Pack.PURCHASETYPE_BUY:
-        mButtonAccept.setText(this.getResources().getString(R.string.packInfo_confirm_buy));
-        mButtonAccept.setTag(RESULT_OK);
-        break;
-      case Pack.PURCHASETYPE_TWEET:
-        mButtonAccept.setText("Tweet");
-        mButtonAccept.setTag(RESULT_TWITTER);
-        break;
-      case Pack.PURCHASETYPE_FACEBOOK:
-        mButtonAccept.setText("Post");
-        mButtonAccept.setTag(RESULT_FACEBOOK);
-        break;
-      case Pack.PURCHASETYPE_GOOGLE:
-        mButtonAccept.setText("Plus+1");
-        mButtonAccept.setTag(RESULT_GOOGLE);
-        break;
-      }
+      mButtonAccept.setText(this.getResources().
+          getString(PackPurchaseType.PURCHASE_LABEL_IDS[mPurchaseType]));
+      mButtonAccept.setTag(PackPurchaseType.PURCHASE_RESULT_CODES[mPurchaseType]);
     }
     //TODO Edward we need to handle the case where billing service is not available
     else

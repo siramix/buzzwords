@@ -47,8 +47,7 @@ public class PackPurchase extends Activity {
   private SharedPreferences mPackPrefs;
   
   // Our pack lists as retrieved from the server
-  private LinkedList<Pack> mFreePacks;
-  private LinkedList<Pack> mPayPacks;
+  private LinkedList<Pack> mServerPacks;
 
   /**
    * This block of maps stores our lists of clients
@@ -110,8 +109,7 @@ public class PackPurchase extends Activity {
     Log.d(TAG, "onCreate()");
 
     // Initialize our packs
-    mFreePacks = new LinkedList<Pack>();
-    mPayPacks = new LinkedList<Pack>();
+    mServerPacks = new LinkedList<Pack>();
     
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -168,11 +166,8 @@ public class PackPurchase extends Activity {
     //TODO these http pack requests should be in their own methods (getLockedPacksFromServer...)
     // First try to get the online packs, if no internet, just use local packs
     try {
-      mFreePacks = client.getFreePacks();
-      mPayPacks = client.getPayPacks();
-      lockedPacks.addAll(mPayPacks);
-      lockedPacks.addAll(mFreePacks);
-      lockedPacks = removeLocalPacks(lockedPacks, localPacks);
+      mServerPacks = client.getServerPacks();
+      lockedPacks = removeLocalPacks(mServerPacks, localPacks);
       populatePackLayout(localPacks, unlockedPackLayout);
       //TODO maybe we want to put this on the purchase button isntead
       populatePackLayout(lockedPacks, paidPackLayout);
@@ -296,7 +291,7 @@ public class PackPurchase extends Activity {
    * @param id The pack Id of the pack that should be installed.
    */
   private void installPack(int id) {
-    for (Pack curPack : mPayPacks) {
+    for (Pack curPack : mServerPacks) {
       if (curPack.getId() == id) {
         // TODO: Catch the runtime exception correctly
         try {
@@ -315,7 +310,7 @@ public class PackPurchase extends Activity {
    * @param id The pack Id of the pack that should be installed.
    */
   private void installPack(String name) {
-    for (Pack curPack : mPayPacks) {
+    for (Pack curPack : mServerPacks) {
       if (curPack.getName().equals(name)) {
         // TODO: Catch the runtime exception correctly
         try {
@@ -363,7 +358,7 @@ public class PackPurchase extends Activity {
    * @param id The pack Id of the pack that should be installed.
    */
   private void uninstallPack(String name) {
-    for (Pack curPack : mPayPacks) {
+    for (Pack curPack : mServerPacks) {
       if (curPack.getName().equals(name)) {    
         //TODO: Catch the runtime exception correctly
         try {
@@ -465,25 +460,25 @@ public class PackPurchase extends Activity {
         
       // Get the pack
       Pack curPack = (Pack) data.getExtras().get(getString(R.string.packBundleKey));
-      
-      switch(resultCode)
+      int resultTypeIndex = curPack.getPurchaseType();
+      switch(PackPurchaseType.PURCHASE_RESULT_CODES[resultTypeIndex])
       {
-        case PackInfoGUI.RESULT_OK:
+        case PackPurchaseType.RESULT_NOCODE:
           purchasePack(curPack);
           break;
-        case PackInfoGUI.RESULT_TWITTER:
+        case PackPurchaseType.RESULT_TWITTER:
           openTwitterClient();
           // TODO: This should not occur until they RETURN from the Tweet
           //   but we would have trouble getting to the Pack they just tweeted ABOUT
           // returning from Tweet etc.
           installPack(curPack);
           break;
-        case PackInfoGUI.RESULT_FACEBOOK:
+        case PackPurchaseType.RESULT_FACEBOOK:
           openFacebookClient();
           // TODO: This should not occur until they RETURN
           installPack(curPack);
           break;
-        case PackInfoGUI.RESULT_GOOGLE:
+        case PackPurchaseType.RESULT_GOOGLE:
           openGoogleClient();
           // TODO: This should not occur until they RETURN
           installPack(curPack);
@@ -675,22 +670,8 @@ public class PackPurchase extends Activity {
     intent.putExtra(
         getApplication().getString(R.string.packInfoIsPackPurchased),
         false);//pack.isInstalled());
-    // TODO Add PurchaseType to packs to read from server so we don't have
-    // to pass it in, or check against ID
-    int purchaseType = Pack.PURCHASETYPE_BUY;
-    switch(pack.getId())
-    {
-    case 4:
-      purchaseType = Pack.PURCHASETYPE_TWEET;
-      break;
-    case 5:
-      purchaseType = Pack.PURCHASETYPE_FACEBOOK;
-      break;
-    case 6:
-      purchaseType = Pack.PURCHASETYPE_GOOGLE;
-      break;
-    }
-    intent.putExtra("HACK_PurchaseType", purchaseType);
+    intent.putExtra(getApplication().getString(R.string.packInfoPurchaseTypeKey),
+        pack.getPurchaseType());
     
     startActivityForResult(intent, PACKINFO_REQUEST_CODE);
   }
