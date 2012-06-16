@@ -312,10 +312,11 @@ public class Deck {
   private void setPackData() {
     instantiateSelectedPacks();
     mTotalPlayableCards = 0;
+    LinkedList<Pack> packList = new LinkedList<Pack>();
     for (Pack pack : mSelectedPacks) {
-      mTotalPlayableCards += pack.getSize();
+      packList.add(pack);
     }
-    
+    mTotalPlayableCards += mDatabaseOpenHelper.countCards(packList);
     setPackWeights();
   }
   
@@ -386,6 +387,10 @@ public class Deck {
     Log.d(TAG, "setPackWeights()");
     Log.d(TAG, "** mTotalPlayableCards: " + mTotalPlayableCards);
 
+    //TODO This is a place for refactoring.  The getSize call is NOT guaranteed to
+    // be accurate.  This could cause real probs.  We really need to have size
+    // be queried for and then cached in all cases except for when pulling from the 
+    // server.  Really, we should probably have two size variables under Pack.
     for (Pack curPack : mSelectedPacks) {
       curPack.setWeight((float) curPack.getSize() / (float) mTotalPlayableCards);
       Log.d(TAG, curPack.toString());
@@ -457,7 +462,8 @@ public class Deck {
     private final Context mHelperContext;
     private SQLiteDatabase mDatabase;
     private Pack starterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", 
-        "Description of pack1", "first install", R.drawable.starter_icon, 125, 0, true);
+        "Description of pack1", "first install", R.drawable.starter_icon, 125,
+        PackPurchaseType.UNSET, 0, true);
     
     /**
      * Default Constructor from superclass
@@ -515,7 +521,6 @@ public class Deck {
       String[] args = new String[2];
       
       args[0] = buildPackIdString(packs);
-      args[1] = buildDifficultyString();
       
       //TODO For code review, we are counting size every time we instantiatePacks.
       // Perhaps it would be better to make sure Packs.size stays current?
@@ -528,7 +533,7 @@ public class Deck {
       mDatabase.close();
       return count;
     }
-    
+
     /**
      * Count the number of packs which will likely be needed for setting up views
      * 
@@ -560,7 +565,8 @@ public class Deck {
       if (packQuery.moveToFirst()) {
         while (!packQuery.isAfterLast()) {
           pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
-              packQuery.getString(3), null, R.drawable.starter_icon, packQuery.getInt(4), packQuery.getInt(5), true);
+              packQuery.getString(3), null, R.drawable.starter_icon, packQuery.getInt(4), 
+              PackPurchaseType.UNSET, packQuery.getInt(5), true);
           ret.add(pack);
           packQuery.moveToNext();
         }
@@ -588,7 +594,8 @@ public class Deck {
       Pack pack = null;
       if (packQuery.moveToFirst()) {
         pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
-                        packQuery.getString(3), null, R.drawable.starter_icon, packQuery.getInt(4), packQuery.getInt(5), true);
+                        packQuery.getString(3), null, R.drawable.starter_icon, packQuery.getInt(4), 
+                        PackPurchaseType.UNSET, packQuery.getInt(5), true);
       }
       packQuery.close();
       mDatabase.close();
@@ -643,12 +650,17 @@ public class Deck {
         return;
       }
       if(packId == PACK_NOT_PRESENT) { 
-        //CardJSONIterator cardItr = PackClient.getInstance().getCardsForPack(serverPack);
-        //installPack(mDatabase, serverPack, cardItr);
+        //TODO I BELIEVE that we are getting a database lock issue when an exception is thrown here.
+        // Patrick: What do you recommend we do so that the database closes even when the method
+        // errors because the pack's path is not found on the server?  
+        CardJSONIterator cardItr = PackClient.getInstance().getCardsForPack(serverPack);
+        installPack(mDatabase, serverPack, cardItr);
+
       }
       else {
-        //CardJSONIterator cardItr = PackClient.getInstance().getCardsForPack(serverPack);
-        //installPack(mDatabase, serverPack, cardItr);
+        //TODO same thing here (see above todo about locking)
+        CardJSONIterator cardItr = PackClient.getInstance().getCardsForPack(serverPack);
+        installPack(mDatabase, serverPack, cardItr);
       }
       Log.d(TAG, "DONE loading words.");
       mDatabase.close();
@@ -869,7 +881,6 @@ public class Deck {
       String[] args = new String[3];
       args[0] = String.valueOf(packid);
       args[1] = buildCardIdString(cardsToExclude);
-      args[2] = buildDifficultyString();
       
       // Get the playable cards from pack, sorted by playdate
       Cursor res = mDatabase.query(CardColumns.TABLE_NAME, CardColumns.COLUMNS,
@@ -941,39 +952,6 @@ public class Deck {
         ids[i] = String.valueOf(packList.get(i).getId());
       }
       return TextUtils.join(",", ids);
-    }
-    
-    /**
-     * Helper method to build a comma-delimited string of the enabled
-     * difficulties
-     * @return Comma-delimited string of difficulties for db args
-     */
-    private String buildDifficultyString() {
-      Log.d(TAG, "buildDifficultyString()");
-      SharedPreferences prefs = PreferenceManager
-          .getDefaultSharedPreferences(mHelperContext);
-      
-      Boolean easy = prefs.getBoolean("easy_phrases", true);
-      Boolean medium = prefs.getBoolean("medium_phrases", true);
-      Boolean hard = prefs.getBoolean("hard_phrases", true);
-      
-      String ret = "";
-      if (easy && medium && hard) {
-        ret = "0,1,2";
-      } else if (easy && hard) {
-        ret = "0,2";
-      } else if (easy && medium) {
-        ret = "0,1";
-      } else if (medium && hard) {
-        ret = "1,2";
-      } else if (easy) {
-        ret = "0";
-      } else if (medium) {
-        ret = "1";
-      } else if (hard) {
-        ret = "2";
-      }
-      return ret;
     }
 
      /**

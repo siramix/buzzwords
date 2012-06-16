@@ -264,12 +264,6 @@ public class GameSetup extends Activity {
     GameSetup.mPackPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
         Context.MODE_PRIVATE);
     
-    //TODO This can be removed once pack selections screen is added
-    // Store the pack's boolean in the preferences file for pack preferences
-    SharedPreferences.Editor packPrefsEdit = mPackPrefs.edit();
-    packPrefsEdit.putBoolean(String.valueOf(1), true);
-    packPrefsEdit.commit();
-    
     // set fonts on titles
     Typeface antonFont = Typeface.createFromAsset(getAssets(),
         "fonts/Anton.ttf");

@@ -44,6 +44,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".PackPurchase" android:label="@string/AppName"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.WORDPACKPURCHASE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Settings"
             android:label="@string/AppName"
@@ -144,6 +151,16 @@
                 </category>
             </intent-filter>
         </activity>
+        <activity 
+            android:name=".PackInfoGUI"
+            android:label=""
+            android:theme="@style/NoTitleDialog"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.WORDPACKINFOGUI"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+         </activity>
     </application>
 
 </manifest>

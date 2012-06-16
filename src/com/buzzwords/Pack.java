@@ -35,25 +35,21 @@ public class Pack implements Serializable {
 
   private static final long serialVersionUID = -3764144456280018930L;
   
-  // Model fields for database
+  // Model fields for database and server
   private int mId;
   private String mName;
   private String mPath;
   private String mDescription;
+  private int mPurchaseType;
+  private String mUpdateMessage;
   private int mVersion;
   private int mIconID;
-
+  
   // Model fields for app at playtime
   private int mSize;
-  private String mUpdateMessage;
   private float mWeight;
   private int mNumToPullNext;
   private boolean mInstalled;
-  
-  public static final int PURCHASETYPE_BUY = 0;
-  public static final int PURCHASETYPE_TWEET = 1;
-  public static final int PURCHASETYPE_FACEBOOK = 2;
-  public static final int PURCHASETYPE_GOOGLE = 3;
   
   private static final String TAG = "Pack";
   
@@ -61,7 +57,7 @@ public class Pack implements Serializable {
    * Default constructor
    */
   public Pack() {
-    this(-1, "","", "","", -1, -1,-1, false);
+    this(-1, "","", "","", -1, -1, PackPurchaseType.UNSET,-1, false);
     Log.d(TAG, "null consructor Pack()");
   }
 
@@ -77,7 +73,7 @@ public class Pack implements Serializable {
    * @param installed (whether the pack has been installed yet)
    */
   public Pack(int id, String name, String path, String description,
-                      String updateMessage, int iconID, int size, int version, boolean installed) {
+              String updateMessage, int iconID, int size, int purchaseType, int version, boolean installed) {
     Log.d(TAG, "constructor Pack(args)");
     mId = id;
     mName = name;
@@ -86,6 +82,7 @@ public class Pack implements Serializable {
     mUpdateMessage = updateMessage;
     mIconID = iconID;
     mSize = size;
+    mPurchaseType = purchaseType;
     mVersion = version;
     mWeight = -1;
     mInstalled = installed;
@@ -150,6 +147,13 @@ public class Pack implements Serializable {
   }
   
   /**
+   * @return the type of pack purchased
+   */
+  public int getPurchaseType() {
+    return mPurchaseType;
+  }
+  
+  /**
    * @return the weight of the pack relative to the entire deck
    */
   public float getWeight() {
@@ -204,6 +208,7 @@ public class Pack implements Serializable {
     ret += "   pack.Path: " + mPath + "\n";
     ret += "   pack.Description: " + mDescription + "\n";
     ret += "   pack.Size: " + String.valueOf(mSize) + "\n";
+    ret += "   pack.PurchaseType: " + String.valueOf(mPurchaseType) + "\n";    
     ret += "   pack.Version: " + String.valueOf(mVersion) + "\n";
     ret += "---- runtime fields --\n";
     ret += "   pack.UpdateMessage: " + mUpdateMessage + "\n";

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+/*****************************************************************************
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
+ -->
+ 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="wrap_content" android:background="@drawable/bg_generic">
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/PackInfo_Title">
+        <include android:layout_width="wrap_content" android:layout_height="wrap_content" layout="@layout/packpurchaserow" android:id="@+id/PackInfo_TitlePackRow"></include>
+        <View android:layout_width="wrap_content" android:background="@color/genericBG_trim" android:layout_height="4dp" android:id="@+id/PackInfo_Spacer"></View>
+    </LinearLayout>
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/PackInfo_ContentsGroup">
+        <TextView android:paddingRight="10dp" android:paddingLeft="10dp" android:textSize="18sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="A perfect cross-section of the English language. This pack is an essential part to any complete Buzzwords deck." android:id="@+id/PackInfo_Description"></TextView>
+        <LinearLayout android:layout_width="fill_parent" android:layout_marginTop="5dp" android:id="@+id/PackInfo_Buttons" android:padding="5dp" android:layout_height="50dp">
+            <com.buzzwords.AntonButton android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="Cancel" android:layout_weight="1" android:id="@+id/PackInfo_Buttons_Cancel" android:background="@drawable/button_generic" style="@style/BuzzWordsButton" android:layout_gravity="center" android:layout_marginRight="2dp" android:visibility="gone"></com.buzzwords.AntonButton>
+            <TextView android:layout_weight="1" android:gravity="center" android:layout_height="fill_parent" android:layout_width="fill_parent" android:textSize="16sp" android:id="@+id/PackInfo_AlreadyOwnedText" android:text="@string/packInfo_alreadyOwned"></TextView>
+            <com.buzzwords.AntonButton android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/PackInfo_Buttons_Accept" android:text="OK" android:background="@drawable/button_generic" android:layout_gravity="center" android:layout_height="fill_parent" style="@style/BuzzWordsButton" android:layout_marginLeft="2dp"></com.buzzwords.AntonButton>
+        </LinearLayout>
+    </LinearLayout>
+    <View android:layout_width="wrap_content" android:background="@color/genericBG_trim" android:layout_weight="1" android:layout_height="4dp" android:id="@+id/PackInfo_BottomSpacer"></View>
+        
+</LinearLayout>
