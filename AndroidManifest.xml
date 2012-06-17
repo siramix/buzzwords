@@ -19,6 +19,12 @@
         android:icon="@drawable/icon"
         android:label="@string/AppName"
         android:theme="@style/BuzzWordsTheme" >
+        <receiver android:name = "com.amazon.inapp.purchasing.ResponseReceiver" >
+            <intent-filter>
+                <action android:name = "com.amazon.inapp.purchasing.NOTIFY"
+                        android:permission = "com.amazon.inapp.purchasing.Permission.NOTIFY" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".SplashScreen"
             android:label="@string/AppName"
@@ -44,7 +50,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".PackPurchase" android:label="@string/AppName"
+        <activity android:name=".PackPurchaseActivity" android:label="@string/AppName"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.buzzwords.intent.action.WORDPACKPURCHASE" />

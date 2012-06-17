@@ -1,0 +1,16 @@
+{
+  "5" : {
+    "itemType": "ENTITLED",
+    "price": 0.99,
+	"title": "Basic",
+	"description": "Button Clicker - Now in Blue!",
+    "smallIconUrl": "http://some/image.jpg"
+  },
+  "6" : {
+    "itemType": "ENTITLED",
+    "price": 0.99,
+	"title": "Hott",
+	"description": "Button Clicker - Now in Green!",
+    "smallIconUrl": "http://some/image.jpg"
+  }
+}
