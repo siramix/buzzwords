@@ -2,16 +2,16 @@ package com.buzzwords;
 
 public class PackPurchaseType {
   public static final int UNSET = -1;
-  public static final int FREE = 0;
-  public static final int PAY = 1;
-  public static final int TWITTER = 2;
-  public static final int FACEBOOK = 3;
-  public static final int GOOGLE = 4;
+  public static final int FREE = 100;
+  public static final int PAY = 101;
+  public static final int TWITTER = 102;
+  public static final int FACEBOOK = 103;
+  public static final int GOOGLE = 104;
   
-  public static final int RESULT_NOCODE = 0;
-  public static final int RESULT_TWITTER = 2;
-  public static final int RESULT_FACEBOOK = 3;
-  public static final int RESULT_GOOGLE = 4;
+  public static final int RESULT_NOCODE = 100;
+  public static final int RESULT_TWITTER = 102;
+  public static final int RESULT_FACEBOOK = 103;
+  public static final int RESULT_GOOGLE = 104;
   /**
    * IDs of label strings for purchase buttons.
    */

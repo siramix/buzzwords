@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.json.JSONException;
 
+import com.amazon.inapp.purchasing.PurchasingManager;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -33,11 +35,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PackPurchase extends Activity {
+public class PackPurchaseActivity extends Activity {
 
   private static final String TAG = "PackPurchase";
-  
-  private ProgressDialog mInstallDialog;
   
   // To be used for tooltips to help guide users
   private Toast mHelpToast = null;
@@ -60,6 +60,13 @@ public class PackPurchase extends Activity {
   HashMap<String, ActivityInfo> mFoundGoogleClients;
 
   /**
+   * This block of variables is for Amazon In-App Purchases
+   */
+  // currently logged in user
+  private String mCurrentUser;
+  // Mapping of our requestIds to unlockable content
+  public Map<String, String> requestIds;
+  /**
    * Request Code constants for social media sharing
    */
   private static final int TWITTER_REQUEST_CODE = 11;
@@ -76,7 +83,7 @@ public class PackPurchase extends Activity {
       Log.d(TAG, "PlayGameListener OnClick()");
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(PackPurchase.this
+      SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
           .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
@@ -92,7 +99,7 @@ public class PackPurchase extends Activity {
 
       // Only advance to next screen if a pack is selected
       if (anyPackSelected == true) {
-        startActivity(new Intent(PackPurchase.this.getApplication()
+        startActivity(new Intent(PackPurchaseActivity.this.getApplication()
             .getString(R.string.IntentGameSetup), getIntent().getData()));
       } else {
         showToast(getString(R.string.toast_wordpurchase_nopackselected));
@@ -111,6 +118,8 @@ public class PackPurchase extends Activity {
     // Initialize our packs
     mServerPacks = new LinkedList<Pack>();
     
+    requestIds = new HashMap<String, String>();
+
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -140,16 +149,31 @@ public class PackPurchase extends Activity {
     refreshAllPackLayouts();
   }
 
+  
+  /**
+   * Whenever the application regains focus, the observer is registered again.
+   */
+  @Override
+  public void onStart() {
+      super.onStart();
+      PackPurchaseObserver packPurchaseObserver = new PackPurchaseObserver(this);
+      PurchasingManager.registerObserver(packPurchaseObserver);
+  }
+  
+  /**
+   * When the application resumes the application checks which customer is signed in.
+   */
   @Override
   public void onResume() {
     super.onResume();
+    PurchasingManager.initiateGetUserIdRequest();
     refreshAllPackLayouts();
   }
 
   protected void refreshAllPackLayouts() {
     Log.d(TAG, "refreshAllPackLayouts");
     // Get our current context
-    GameManager game = new GameManager(PackPurchase.this);
+    GameManager game = new GameManager(PackPurchaseActivity.this);
 
     // Populate and display list of cards
     LinearLayout unlockedPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_UnlockedPackSets);
@@ -284,7 +308,7 @@ public class PackPurchase extends Activity {
   /*
    * Helper function to install a purchased pack
    */
-  private void installPack(Pack packToInstall)
+  protected void installPack(Pack packToInstall)
   {
     // TODO: Catch the runtime exception
     try {
@@ -306,7 +330,7 @@ public class PackPurchase extends Activity {
    * can infer which pack the user is requesting and get it from the server.
    * @param id The pack Id of the pack that should be installed.
    */
-  private void installPack(int id) {
+  protected void installPack(int id) {
     for (Pack curPack : mServerPacks) {
       if (curPack.getId() == id) {
         // TODO: Catch the runtime exception correctly
@@ -325,7 +349,7 @@ public class PackPurchase extends Activity {
    * can infer which pack the user is requesting and get it from the server.
    * @param id The pack Id of the pack that should be installed.
    */
-  private void installPack(String name) {
+  protected void installPack(String name) {
     for (Pack curPack : mServerPacks) {
       if (curPack.getName().equals(name)) {
         // TODO: Catch the runtime exception correctly
@@ -343,7 +367,7 @@ public class PackPurchase extends Activity {
    * can infer which pack the user is requesting and get it from the server.
    * @param id The pack Id of the pack that should be removed if possible.
    */
-  private void uninstallPack(int id) {
+  protected void uninstallPack(int id) {
     // TODO: Catch the runtime exception correctly
     try {
       new PackUninstaller().execute(id);
@@ -356,7 +380,7 @@ public class PackPurchase extends Activity {
    * This will update all packs needing updates in a separate thread from the UI.
    * @param id The pack Id of the pack that should be removed if possible.
    */
-  private void updatePacks(Pack[] packToUpdate) {
+  protected void updatePacks(Pack[] packToUpdate) {
     // TODO: Catch the runtime exception correctly
     try {
       new PackUpdater().execute(packToUpdate);
@@ -373,7 +397,7 @@ public class PackPurchase extends Activity {
    * THE ONLY REASON WE HAVE THIS IS BECAUSE OF THE android.test PACKAGES
    * @param id The pack Id of the pack that should be installed.
    */
-  private void uninstallPack(String name) {
+  protected void uninstallPack(String name) {
     for (Pack curPack : mServerPacks) {
       if (curPack.getName().equals(name)) {    
         //TODO: Catch the runtime exception correctly
@@ -477,10 +501,18 @@ public class PackPurchase extends Activity {
       // Get the pack
       Pack curPack = (Pack) data.getExtras().get(getString(R.string.packBundleKey));
       int resultTypeIndex = curPack.getPurchaseType();
+      
       switch(PackPurchaseType.PURCHASE_RESULT_CODES[resultTypeIndex])
       {
         case PackPurchaseType.RESULT_NOCODE:
-          purchasePack(curPack);
+          final SharedPreferences settings = getSharedPreferencesForCurrentUser();
+          final String sku = String.valueOf(curPack.getId());
+          boolean entitled = settings.getBoolean(sku, false);
+          
+          if (!entitled) {
+            String requestId = PurchasingManager.initiatePurchaseRequest(sku);
+            storeRequestId(requestId, sku);
+          }
           break;
         case PackPurchaseType.RESULT_TWITTER:
           openTwitterClient();
@@ -513,17 +545,29 @@ public class PackPurchase extends Activity {
    * Helper function to submit the request to the billing service
    */
   private void purchasePack(Pack packToPurchase)
-  {  
-    //showPackInfo(packToPurchase);
+  {
+    showPackInfo(packToPurchase);
     Log.d(TAG, "purchasePack(" + packToPurchase.getName() + ")");
   }
 
+  /**
+   * Helper method to associate request ids to shared preference keys
+   * 
+   * @param requestId
+   *            Request ID returned from a Purchasing Manager Request
+   * @param key
+   *            Key used in shared preferences file
+   */
+  private void storeRequestId(String requestId, String key) {
+      requestIds.put(requestId, key);
+  }
+  
   /** 
    * Run installations in an Async Task.  This puts the intensive task of installing
    * on a separate thread that once complete will dismiss the progress dialog and refresh
    * the layout.
    */
-  private class PackInstaller extends AsyncTask <Pack, Void, String>
+  public class PackInstaller extends AsyncTask <Pack, Void, String>
   {
       private ProgressDialog dialog;
       private Pack packToInstall;
@@ -532,7 +576,7 @@ public class PackPurchase extends Activity {
       protected void onPreExecute()
       {
         dialog = ProgressDialog.show(
-          PackPurchase.this,
+          PackPurchaseActivity.this,
           null,
           getString(R.string.progressDialog_install_text), 
           true);
@@ -541,8 +585,9 @@ public class PackPurchase extends Activity {
       @Override
       protected String doInBackground(Pack... pack)
       {
+        Log.d(TAG, "Install Pack Async: " + pack[0].getName());
         packToInstall = pack[0];
-        GameManager gm = new GameManager(PackPurchase.this);
+        GameManager gm = new GameManager(PackPurchaseActivity.this);
         gm.installPack(packToInstall);
         return "";
       }
@@ -561,7 +606,7 @@ public class PackPurchase extends Activity {
    * on a separate thread that once complete will dismiss the progress dialog and refresh
    * the layout.
    */
-  private class PackUninstaller extends AsyncTask <Integer, Void, String>
+  protected class PackUninstaller extends AsyncTask <Integer, Void, String>
   {
       private ProgressDialog dialog;
 
@@ -569,7 +614,7 @@ public class PackPurchase extends Activity {
       protected void onPreExecute()
       {
         dialog = ProgressDialog.show(
-          PackPurchase.this,
+          PackPurchaseActivity.this,
           null,
           getString(R.string.progressDialog_uninstall_text), 
           true);
@@ -578,7 +623,7 @@ public class PackPurchase extends Activity {
       @Override
       protected String doInBackground(Integer... packIds)
       {
-        GameManager gm = new GameManager(PackPurchase.this);
+        GameManager gm = new GameManager(PackPurchaseActivity.this);
         gm.uninstallPack(packIds[0]);
         return "";
       }
@@ -600,7 +645,7 @@ public class PackPurchase extends Activity {
       protected void onPreExecute()
       {
         dialog = ProgressDialog.show(
-          PackPurchase.this,
+          PackPurchaseActivity.this,
           null,
           getString(R.string.progressDialog_uninstall_text), 
           true);
@@ -609,7 +654,7 @@ public class PackPurchase extends Activity {
       @Override
       protected String doInBackground(Pack... packsToInstall)
       {
-        GameManager gm = new GameManager(PackPurchase.this);
+        GameManager gm = new GameManager(PackPurchaseActivity.this);
         for (Pack pack : packsToInstall) {
           gm.installPack(pack);
         }
@@ -634,7 +679,7 @@ public class PackPurchase extends Activity {
       setPackPref(pack, selectionStatus);
 
       // play confirm sound when points are added
-      SoundManager sm = SoundManager.getInstance(PackPurchase.this
+      SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
           .getBaseContext());
       if (selectionStatus) {
         sm.playSound(SoundManager.Sound.CONFIRM);
@@ -652,7 +697,7 @@ public class PackPurchase extends Activity {
     @Override
     public void onPackInfoRequested(Pack pack) {
       // play confirm sound when points are added
-      SoundManager sm = SoundManager.getInstance(PackPurchase.this
+      SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
           .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
      
@@ -801,6 +846,39 @@ public class PackPurchase extends Activity {
     return result;
   }
 
+  /**
+   * Get the SharedPreferences file for the current user.
+   * @return SharedPreferences file for a user.
+   */
+  private SharedPreferences getSharedPreferencesForCurrentUser() {
+      final SharedPreferences settings = getSharedPreferences(mCurrentUser, Context.MODE_PRIVATE);
+      return settings;
+  }
+  
+  /**
+   * Generate a SharedPreferences.Editor object. 
+   * @return editor for Shared Preferences file.
+   */
+  private SharedPreferences.Editor getSharedPreferencesEditor(){
+      return getSharedPreferencesForCurrentUser().edit();
+  }
+  
+  /**
+   * Gets current logged in user
+   * @return current user
+   */
+  String getCurrentUser(){
+      return mCurrentUser;
+  }
+  
+  /**
+   * Sets current logged in user
+   * @param currentUser current user to set
+   */
+  void setCurrentUser(final String currentUser){
+      this.mCurrentUser = currentUser;
+  }
+  
   /**
    * If the database has not been initialized, we send a
    * RESTORE_TRANSACTIONS request to Android Market to get the list of purchased items
