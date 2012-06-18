@@ -98,7 +98,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
         LayoutParams.WRAP_CONTENT));
     int padding = (int) (DENSITY * 1 + 0.5f);
     mFrame.setPadding(0, padding, 0, padding);
-    mFrame.setBackgroundColor(R.color.black);
+    mFrame.setBackgroundColor(this.getResources().getColor(R.color.black));
 
     // Background for the layout
     mBackground = new View(mContext);

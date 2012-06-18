@@ -25,6 +25,7 @@ import android.app.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -47,6 +48,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -89,6 +91,7 @@ public class Turn extends Activity {
   private ImageButton mBuzzerButton;
   private ImageButton mNextButton;
   private ImageButton mSkipButton;
+  private Button mMenuButton;
   private TextView mCountdownText;
   private TextView mTimesUpText;
   private LinearLayout mPauseTextLayout;
@@ -100,6 +103,7 @@ public class Turn extends Activity {
   private LinearLayout mCardBadWords;
   private ImageView mCardStatus;
 
+  private RelativeLayout mMenuBar;
   private RelativeLayout mTimerGroup;
   private RelativeLayout mButtonGroup;
 
@@ -308,9 +312,26 @@ public class Turn extends Activity {
         Log.d(TAG, "TimerClickListener OnClick()");
       }
       Turn.this.pauseGame();
+    }
+  };
+  
+  /**
+   * Listener for menu button
+   */
+  private final OnClickListener mMenuButtonListener = new OnClickListener() {
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "MenuButtonListener OnClick()");
+      }
+      if(!mIsPaused)
+      {
+        Turn.this.pauseGame();       
+      }
+      
       Turn.this.openOptionsMenu();
     }
   };
+
 
   /**
    * Listener for the 'Correct' button. It deals with the flip to the next card.
@@ -773,15 +794,11 @@ public class Turn extends Activity {
     mResultsDelay.start();
 
     // Hide timer bar and time
-    ImageView timerFill = (ImageView) this.findViewById(R.id.Turn_TimerFill);
-    timerFill.setVisibility(View.INVISIBLE);
-    RelativeLayout timerGroup = (RelativeLayout) this
-        .findViewById(R.id.Turn_TimerBar);
-    timerGroup.startAnimation(this.showTimerAnim(false));
+    mTimerfill.setVisibility(View.INVISIBLE);
+    mMenuBar.startAnimation(this.showTimerAnim(false));
     // Hide buttons
-    RelativeLayout buttonGroup = (RelativeLayout) this
-        .findViewById(R.id.Turn_LowBar);
-    buttonGroup.startAnimation(this.showButtonsAnim(false));
+
+    mButtonGroup.startAnimation(this.showButtonsAnim(false));
 
     // Only play gong if music is off
     if (!mMusicEnabled) {
@@ -834,7 +851,7 @@ public class Turn extends Activity {
         .getApplication();
     mGameManager = application.getGameManager();
 
-    mPauseOverlay = (View) this.findViewById(R.id.Turn_PauseImageView);
+    mPauseOverlay = (View) this.findViewById(R.id.Turn_PauseOverlay);
     mCountdownText = (TextView) findViewById(R.id.Turn_Timer);
     mViewFlipper = (ViewFlipper) this.findViewById(R.id.Turn_ViewFlipper);
     mTimesUpText = (TextView) this.findViewById(R.id.Turn_TimesUp);
@@ -842,11 +859,13 @@ public class Turn extends Activity {
     mBuzzerButton = (ImageButton) this.findViewById(R.id.Turn_ButtonWrong);
     mNextButton = (ImageButton) this.findViewById(R.id.Turn_ButtonCorrect);
     mSkipButton = (ImageButton) this.findViewById(R.id.Turn_ButtonSkip);
+    mMenuButton = (Button) this.findViewById(R.id.Turn_TimerMenuButton);
 
     mTimerfill = (ImageView) this.findViewById(R.id.Turn_TimerFill);
     mPauseTextLayout = (LinearLayout) this
         .findViewById(R.id.Turn_PauseTextGroup);
 
+    mMenuBar = (RelativeLayout) this.findViewById(R.id.Turn_HighBar);
     mTimerGroup = (RelativeLayout) this.findViewById(R.id.Turn_TimerBar);
     mButtonGroup = (RelativeLayout) this.findViewById(R.id.Turn_LowBar);
   }
@@ -877,6 +896,10 @@ public class Turn extends Activity {
     } else {
       mSkipButton.setVisibility(View.INVISIBLE);
     }
+    
+    // assign click to menu button
+    mMenuButton.setOnClickListener(mMenuButtonListener);
+
 
     // Listen for all gestures
     mSwipeDetector = new GestureDetector(mSwipeListener);
@@ -918,6 +941,13 @@ public class Turn extends Activity {
     ImageView timerFrame = (ImageView) this.findViewById(R.id.Turn_TimerFrame);
     timerFrameBG.setColorFilter(getResources().getColor(R.color.genericBG_trim), Mode.MULTIPLY);
     timerFrame.setBackgroundDrawable(timerFrameBG);
+    
+    Typeface antonFont = Typeface.createFromAsset(getAssets(),
+        "fonts/Anton.ttf");
+    // Set font on Title text
+    TextView timerText = (TextView) findViewById(R.id.Turn_Timer);
+    timerText.setTypeface(antonFont);
+
     
     // Set background gradient
     this.findViewById(R.id.Turn_Root).setBackgroundResource(
@@ -1136,7 +1166,7 @@ public class Turn extends Activity {
               Turn.this.showCard();
               mIsBack = true;
               Turn.this.startTimer();
-
+              
               // Play back sound to differentiate from normal clicks
               SoundManager sm = SoundManager.getInstance(Turn.this
                   .getBaseContext());
@@ -1170,7 +1200,6 @@ public class Turn extends Activity {
               if (mMusicEnabled) {
                 mp.start();
               }
-
             }
           });
       
@@ -1239,8 +1268,10 @@ public class Turn extends Activity {
       mBuzzerButton.setEnabled(true);
       mSkipButton.setEnabled(true);
       mNextButton.setEnabled(true);
+      
+      // Allow timer to pause the game again
+      mTimerGroup.setEnabled(true);
 
-      mTimerGroup.startAnimation(this.showTimerAnim(true));
       mButtonGroup.startAnimation(this.showButtonsAnim(true));
     } else {
       mResultsDelay.resume();
@@ -1278,6 +1309,9 @@ public class Turn extends Activity {
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     sm.playSound(SoundManager.Sound.TEAMREADY);
 
+    // Make timer group allow unpause while paused. 
+    mTimerGroup.setEnabled(false);
+
     if (!mTurnIsOver) {
       this.stopTurnTimer();
 
@@ -1288,7 +1322,6 @@ public class Turn extends Activity {
       mSkipButton.setEnabled(false);
       mNextButton.setEnabled(false);
 
-      mTimerGroup.startAnimation(this.showTimerAnim(false));
       mButtonGroup.startAnimation(this.showButtonsAnim(false));
     } else {
       mResultsDelay.pause();

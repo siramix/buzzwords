@@ -20,8 +20,7 @@
 <RelativeLayout android:id="@+id/Turn_Root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/bg_bluegradient">
+    android:layout_height="fill_parent" android:background="@drawable/bg_bluegradient">
 
     <TextView android:id="@+id/Turn_TimesUp"
         android:layout_width="wrap_content"
@@ -68,41 +67,83 @@
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
         android:orientation="vertical">
-        
-        <RelativeLayout android:id="@+id/Turn_TimerBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            
-            <ImageView android:id="@+id/Turn_TimerBG"
-                android:background="@color/genericBG"
-                android:layout_width="fill_parent"
-                android:layout_height="26dp"
-                />
 
-            
-                
-            <ImageView android:id="@+id/Turn_TimerFill"
-                android:layout_alignParentTop="true"
-                android:background="@color/teamA_primary"
-                android:layout_height="24dp"
-                android:layout_alignParentLeft="true"
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/Turn_HighBar">
+
+            <View
+                android:id="@+id/Turn_MenuBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@color/genericBG" />
+
+            <LinearLayout
+                android:id="@+id/Turn_TimerGroup"
                 android:layout_width="fill_parent"
-                android:layout_marginRight="48dp" android:layout_marginTop="1dp" android:layout_marginBottom="1dp"/>
-            
-            <ImageView android:id="@+id/Turn_TimerFrame"
-                android:layout_height="24dp"
-                android:background="@drawable/gameend_row_end_white"
-                android:layout_alignParentRight="true"
-                android:layout_width="75dp" android:layout_marginTop="1dp"/>
+                android:layout_height="40dp">
+
+                <RelativeLayout
+                    android:id="@+id/Turn_TimerBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <ImageView
+                        android:id="@+id/Turn_TimerFill"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginRight="61dp"
+                        android:layout_marginTop="1dp"
+                        android:background="@color/teamA_primary" />
+
+                    <ImageView
+                        android:id="@+id/Turn_TimerFrame"
+                        android:layout_width="wrap_content"
+                        android:layout_height="37dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="1dp"
+                        android:background="@drawable/gameend_row_end_white" />
+
+                    <ImageView
+                        android:id="@+id/Turn_TimerIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_timer"
+                        android:layout_alignRight="@id/Turn_TimerFrame"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="4dp"/>
+
+                    <TextView
+                        android:id="@+id/Turn_Timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right|center_vertical"
+                        android:includeFontPadding="false"
+                        android:paddingRight="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="26dp" android:layout_toLeftOf="@id/Turn_TimerIcon" android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/Turn_TimerMenuButton"
+                    android:layout_width="60dp"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="2dp"
+                    android:text="Menu" />
+            </LinearLayout>
 
             <View
                 android:id="@+id/Turn_TimerTrim"
                 android:layout_width="fill_parent"
-                android:layout_height="8dp"
-                android:background="@color/genericBG_trim" android:layout_below="@id/Turn_TimerBG"/>
+                android:layout_height="5dp"
+                android:background="@color/genericBG_trim" android:layout_below="@id/Turn_TimerGroup"/>
 
-            <TextView android:textColor="#FFFFFF" android:textSize="22dp" android:layout_width="wrap_content" android:gravity="center" android:includeFontPadding="false" android:id="@+id/Turn_Timer" android:layout_height="24dp" android:layout_alignParentRight="true" android:paddingRight="5dp"></TextView>
-                
         </RelativeLayout>
 
         <ViewFlipper android:id="@+id/Turn_ViewFlipper"
@@ -228,7 +269,7 @@
                 />
                  
             <View android:id="@+id/Turn_LowBarTrim"
-                android:layout_height="10dp"
+                android:layout_height="5dp"
                 android:layout_width="fill_parent"
                 android:background="@color/genericBG_trim"
                 android:layout_alignTop="@id/Turn_LowBarBG"
@@ -265,11 +306,11 @@
     </LinearLayout>
 
     <!--  View to unpause game on touch -->
-    <View android:id="@+id/Turn_PauseImageView"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+
+    <View
+        android:id="@+id/Turn_PauseOverlay"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        />
+        android:layout_centerHorizontal="true" android:layout_marginTop="45dp"/>
 
 </RelativeLayout>
