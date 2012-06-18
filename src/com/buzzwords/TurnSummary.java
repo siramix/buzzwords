@@ -72,9 +72,7 @@ public class TurnSummary extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "mMenuListener OnClick()");
       }
-      SoundManager sm = SoundManager.getInstance(TurnSummary.this.getBaseContext());
-      sm.playSound(SoundManager.Sound.CONFIRM);
-
+      
       TurnSummary.this.openOptionsMenu();
     }
   };

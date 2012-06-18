@@ -39,7 +39,7 @@
 
         <Button
             android:id="@+id/TurnSummary_Menu"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -64,10 +64,9 @@
         android:orientation="vertical" android:layout_marginTop="-5dp">
 
         <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamA" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
-        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamB" android:layout_height="30dp" android:layout_marginTop="-1dp"></com.buzzwords.ScoreboardRowLayout>
-        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamC" android:layout_height="30dp" android:layout_marginTop="-1dp"></com.buzzwords.ScoreboardRowLayout>
-        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamD" android:layout_height="30dp" android:layout_marginTop="-1dp"></com.buzzwords.ScoreboardRowLayout>
-
+        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamB" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
+        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamC" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
+        <com.buzzwords.ScoreboardRowLayout android:layout_width="fill_parent" android:id="@+id/TurnSummary_Scores_TeamD" android:layout_height="30dp"></com.buzzwords.ScoreboardRowLayout>
     </LinearLayout>
     
     <LinearLayout android:id="@+id/TurnSummary_BottomGroup"
