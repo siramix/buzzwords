@@ -54,7 +54,7 @@ public class CardReview extends Activity {
   private ImageButton mCorrectButton;
   private ImageButton mWrongButton;
   private ImageButton mSkipButton;
-  private ImageButton mNoScoreButton;
+  private AntonButton mNoScoreButton;
 
   /**
    * Holder for the index of the card in the TurnSummary caller of this activity
@@ -163,7 +163,7 @@ public class CardReview extends Activity {
         .findViewById(R.id.CardReview_ButtonCorrect);
     mWrongButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonWrong);
     mSkipButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonSkip);
-    mNoScoreButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonNoScore);
+    mNoScoreButton = (AntonButton) this.findViewById(R.id.CardReview_ButtonNoScore);
   }
 
   /**
@@ -190,8 +190,7 @@ public class CardReview extends Activity {
     mWrongButton
         .setBackgroundResource(R.drawable.button_review_wrong_selector);
     mSkipButton.setBackgroundResource(R.drawable.button_review_skip_selector);
-    mNoScoreButton.setBackgroundResource(R.drawable.button_review_notset_selector);
-    
+
     switch (state) {
     case Card.RIGHT:
       mCorrectButton.setBackgroundResource(R.drawable.button_right_selector);
@@ -201,9 +200,6 @@ public class CardReview extends Activity {
       break;
     case Card.SKIP:
       mSkipButton.setBackgroundResource(R.drawable.button_skip_selector);
-      break;
-    case Card.NOTSET:
-      mNoScoreButton.setBackgroundResource(R.drawable.button_notset_selector);
       break;
     default:
       break;
@@ -222,6 +218,12 @@ public class CardReview extends Activity {
       mBadWordViews[i].setText(card.getBadWords().get(i));
     }
     this.setCardState(card.getRws());
+    
+    // When not set, hide "clear" button (status is already cleared)
+    if (card.getRws() == Card.NOTSET)
+    {
+      mNoScoreButton.setVisibility(View.GONE);
+    }
   }
 
   /**
