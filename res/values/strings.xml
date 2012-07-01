@@ -63,6 +63,9 @@
   <!-- Turn Summary Strings -->
   <string name="button_menu">Menu</string>
   
+   <!-- Card Review Strings -->
+   <string name="button_notset">Clear</string>
+  
   <!-- For EditTeamName dialog -->
   <string name="editTeamName_hint">Choose a new name for %s team.</string>
 
