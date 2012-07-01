@@ -258,14 +258,13 @@ public class Card implements Serializable {
   public int getRowEndDrawableId() {
     switch (mRws) {
     case RIGHT:
-      return R.drawable.right;
+      return R.drawable.turnsum_right;
     case WRONG:
-      return R.drawable.wrong;
+      return R.drawable.turnsum_wrong;
     case SKIP:
-      return R.drawable.skip;
+      return R.drawable.turnsum_skip;
     case NOTSET:
-      //TODO Edward fill this in with a better drawable
-      return R.drawable.logoram;
+      return R.drawable.turnsum_notset;
     default:
       return 0;
     }

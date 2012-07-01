@@ -28,6 +28,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -176,19 +178,30 @@ public class TurnSummary extends Activity {
       cardTitle.setText(card.getTitle());
 
       // Set Row end icon
-      ImageView cardIcon = (ImageView) realLine.getChildAt(2);
-      cardIcon.setImageResource(card.getRowEndDrawableId());
+      ImageView cardIcon = (ImageView) realLine.getChildAt(4);
+      setCardIcon(cardIcon, card);
+      
       mCardViewList.add(cardIcon);
       mCardLineList.add(realLine);
-      realLine.setOnClickListener(mCardIconListener);
-      count++;
-      
+
       // Add single pixel bar of lightened color to give depth
       View lightBar = (View) realLine.getChildAt(3);
       lightBar.setBackgroundColor(getResources().getColor(R.color.white));
       AlphaAnimation alpha = new AlphaAnimation(0.2f, 0.2f);
       alpha.setFillAfter(true);
       lightBar.startAnimation(alpha);
+      
+      ImageView rowEnd = (ImageView) realLine.getChildAt(2);
+      Drawable d = getResources().getDrawable(R.drawable.turnsum_row_end_white);
+      // Don't need to mutate, since all row end pieces should be the same color.
+      d.setColorFilter(getResources().getColor(R.color.genericBG_trim), Mode.MULTIPLY);
+      rowEnd.setBackgroundDrawable(d);
+      
+      // Assign the card review listener to the row
+      realLine.setOnClickListener(mCardIconListener);
+      
+      // increment to next line
+      count++;
     }
     list.addView(layout);
 
@@ -471,12 +484,30 @@ public class TurnSummary extends Activity {
       // Update the individual card's UI in the list
       Card curCard = mCardList.get(curCardIndex);
       ImageView curImageView = mCardViewList.get(curCardIndex);
-      curImageView.setImageResource(curCard.getRowEndDrawableId());
+      setCardIcon(curImageView, curCard);
 
       TurnSummary.this.updateScoreViews();
     }
 
     super.onActivityResult(requestCode, resultCode, data);
+  }
+  
+  /*
+   * Sets the specified image to the card's RWS drawable
+   */
+  private void setCardIcon(ImageView icon, Card card)
+  {
+    // Set Row end icon
+    int iconID = card.getRowEndDrawableId();
+    if(iconID > 0)
+    {
+      //cardIcon.setImageResource(iconID);
+      icon.setImageDrawable(getResources().getDrawable(iconID));
+    }
+    else
+    {
+      icon.setImageDrawable(null);
+    }
   }
 
   /**

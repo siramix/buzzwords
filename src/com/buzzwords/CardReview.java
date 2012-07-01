@@ -190,8 +190,7 @@ public class CardReview extends Activity {
     mWrongButton
         .setBackgroundResource(R.drawable.button_review_wrong_selector);
     mSkipButton.setBackgroundResource(R.drawable.button_review_skip_selector);
-    //TODO Edward if we are going to have the noscore button toggle I think this 
-    // section needs to be updated.  Otherwise, you can delete this todo
+    mNoScoreButton.setBackgroundResource(R.drawable.button_review_notset_selector);
     
     switch (state) {
     case Card.RIGHT:
@@ -204,6 +203,7 @@ public class CardReview extends Activity {
       mSkipButton.setBackgroundResource(R.drawable.button_skip_selector);
       break;
     case Card.NOTSET:
+      mNoScoreButton.setBackgroundResource(R.drawable.button_notset_selector);
       break;
     default:
       break;
