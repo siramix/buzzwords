@@ -7,6 +7,12 @@
   <style name="BuzzWordsRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
     <item name="android:button">@drawable/radio</item>
   </style>
+  <style name="ActivityHeader" parent="@android:style/TextAppearance">
+    <item name="android:typeface">sans</item>
+    <item name="android:textSize">38dp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">#3c3c3c</item>
+  </style>
   <style name="CardTitle" parent="@android:style/TextAppearance">
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_width">fill_parent</item>

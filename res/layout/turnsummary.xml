@@ -33,9 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="-5dp"
-            android:text="Results"
-            android:textColor="@color/genericBG_trim"
-            android:textSize="38dp" />
+            android:text="Results" style="@style/ActivityHeader"/>
 
         <Button
             android:id="@+id/TurnSummary_Menu"

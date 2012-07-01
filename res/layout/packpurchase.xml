@@ -28,9 +28,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="-10dp"
         android:gravity="left"
-        android:text="@string/packpurchase_title"
-        android:textColor="@color/genericBG_trim"
-        android:textSize="38dp" />
+        android:text="@string/packpurchase_title" style="@style/ActivityHeader"/>
 
     <ScrollView
         android:id="@+id/PackPurchase_ScrollView"

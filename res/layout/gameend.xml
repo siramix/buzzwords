@@ -21,7 +21,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/bg_generic" android:orientation="vertical">
-    <TextView android:layout_height="wrap_content" android:includeFontPadding="false" android:id="@+id/GameEnd_Title" android:layout_width="wrap_content" android:textColor="@color/genericBG_trim" android:textSize="38dp" android:layout_marginRight="5dp" android:layout_marginTop="-10dp" android:text="Game Over" android:layout_gravity="right"></TextView>
+    <TextView android:layout_height="wrap_content" android:includeFontPadding="false" android:id="@+id/GameEnd_Title" android:layout_width="wrap_content" android:layout_marginRight="5dp" android:layout_marginTop="-10dp" android:text="Game Over" android:layout_gravity="right" style="@style/ActivityHeader"></TextView>
 
     <RelativeLayout android:layout_width="wrap_content" android:id="@+id/GameEnd_ScoreboardHeader_Group" android:layout_marginTop="-20dp" android:layout_height="wrap_content">
         <View android:layout_centerVertical="true" android:layout_centerHorizontal="true" android:layout_width="fill_parent" android:layout_height="4dp" android:background="@color/genericBG_trim" android:id="@+id/GameEnd_ScoreboardHeader_Bar"></View>
