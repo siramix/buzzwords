@@ -276,7 +276,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                     break;
                 }
                 editor.commit();
-
+                
                 printReceipt(purchaseResponse.getReceipt());
                 return true;
             case ALREADY_ENTITLED:
@@ -288,6 +288,8 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 final String requestId = purchaseResponse.getRequestId();
                 editor.putBoolean(baseActivity.requestIds.get(requestId), true);
                 editor.commit();
+                // Try to install the pack (it won't install if it already is installed)
+                baseActivity.installPack(Integer.parseInt(baseActivity.requestIds.get(requestId)));
                 return true;
             case FAILED:
                 /*
@@ -395,7 +397,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
         protected void onPostExecute(final Boolean success) {
             super.onPostExecute(success);
             if (success) {
-                baseActivity.refreshAllPackLayouts();
+               // baseActivity.refreshAllPackLayouts();
             }
         }
     }
