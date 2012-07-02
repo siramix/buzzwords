@@ -23,15 +23,16 @@
 	android:background="@drawable/bg_generic"
 	android:clipChildren="false">
 
-	<ImageButton android:id="@+id/Title_AboutUs" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+	<ImageButton android:id="@+id/Title_FB_BuzzwordsApp"
+		android:contentDescription="@string/description_fb_buzzwordsapp"
+		android:layout_width="38dp"
+		android:layout_height="38dp"
 		android:layout_alignParentRight="true"
 		android:layout_alignParentBottom="true" 
-		android:layout_marginRight="5dp"
-		android:layout_marginBottom="5dp" 
-		android:background="@drawable/title_logo_mini_selector"
-		/>
+		android:layout_marginRight="8dp"
+		android:layout_marginBottom="8dp" 
+		android:background="@drawable/button_fb_selector"
+		android:clickable="true"/>
 
 	<LinearLayout android:id="@+id/Title_Banner"
 		android:layout_width="wrap_content"
