@@ -290,7 +290,7 @@ public class Title extends Activity {
       SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
-      Uri uri = Uri.parse("http://www.siramix.com/");
+      Uri uri = Uri.parse(getApplication().getString(R.string.URI_fb_buzzwordsapp));
       Intent intent = new Intent(Intent.ACTION_VIEW, uri);
       startActivity(intent);
 
@@ -402,7 +402,7 @@ public class Title extends Activity {
     buzzerButton.setOnClickListener(mBuzzerListener);
 
     ImageButton aboutusButton = (ImageButton) this
-        .findViewById(R.id.Title_AboutUs);
+        .findViewById(R.id.Title_FB_BuzzwordsApp);
     aboutusButton.setOnClickListener(mAboutUsListener);
 
     View button = (View) this.findViewById(R.id.Title_PlayButton);
@@ -468,7 +468,7 @@ public class Title extends Activity {
     // Re-enable things
     this.findViewById(R.id.Title_RulesButton).setEnabled(true);
     this.findViewById(R.id.Title_BuzzButton).setEnabled(true);
-    this.findViewById(R.id.Title_AboutUs).setEnabled(true);
+    this.findViewById(R.id.Title_FB_BuzzwordsApp).setEnabled(true);
     this.findViewById(R.id.Title_PlayButton).setEnabled(true);
     this.findViewById(R.id.Title_PlayDelegate).setEnabled(true);
     this.findViewById(R.id.Title_BuzzDelegate).setEnabled(true);
