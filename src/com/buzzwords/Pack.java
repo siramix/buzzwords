@@ -42,11 +42,13 @@ public class Pack implements Serializable {
   private String mDescription;
   private int mPurchaseType;
   private String mUpdateMessage;
+  private int mServerSize;
   private int mVersion;
   private int mIconID;
   
   // Model fields for app at playtime
   private int mSize;
+  private int mNumSeen;
   private float mWeight;
   private int mNumToPullNext;
   private boolean mInstalled;
@@ -57,7 +59,7 @@ public class Pack implements Serializable {
    * Default constructor
    */
   public Pack() {
-    this(-1, "","", "","", -1, -1, PackPurchaseType.UNSET,-1, false);
+    this(-1, "","", "","", -1, -1, -1, PackPurchaseType.UNSET, false);
     Log.d(TAG, "null consructor Pack()");
   }
 
@@ -73,7 +75,8 @@ public class Pack implements Serializable {
    * @param installed (whether the pack has been installed yet)
    */
   public Pack(int id, String name, String path, String description,
-              String updateMessage, int iconID, int size, int purchaseType, int version, boolean installed) {
+              String updateMessage, int iconID, int serverSize, int purchaseType,
+              int version, boolean installed) {
     Log.d(TAG, "constructor Pack(args)");
     mId = id;
     mName = name;
@@ -81,10 +84,13 @@ public class Pack implements Serializable {
     mDescription = description;
     mUpdateMessage = updateMessage;
     mIconID = iconID;
-    mSize = size;
+    mServerSize = serverSize;
     mPurchaseType = purchaseType;
     mVersion = version;
     mWeight = -1;
+    mSize = -1;
+    mNumSeen = -1;
+    mNumToPullNext = -1;
     mInstalled = installed;
   }
   
@@ -140,10 +146,25 @@ public class Pack implements Serializable {
   }
   
   /**
-   * @return the total number of phrases in the pack
+   * @return the total number of cards in the pack
    */
   public int getSize() {
     return mSize;
+  }
+  
+  /**
+   * Size of the pack according to our web server
+   * @return the pack size according to our server
+   */
+  public int getServerSize() {
+    return mServerSize;
+  }
+  
+  /**
+   * @return the number of cards already seen in the pack
+   */
+  public int getNumSeen() {
+    return mNumSeen;
   }
   
   /**
@@ -173,10 +194,19 @@ public class Pack implements Serializable {
   }
   
   /**
-   * @return the number of cards in the pack
+   * Set the size of the pack
+   * @param the number of cards in the pack
    */
   public void setSize(int numCards) {
     mSize = numCards;
+  }
+  
+  /**
+   * Set the number of cards seen in a pack
+   * @param numSeen the number of cards seen in the pack
+   */
+  public void setNumSeen(int numSeen) {
+    mNumSeen = numSeen;
   }
   
   /**
@@ -207,10 +237,12 @@ public class Pack implements Serializable {
     ret += "   pack.Name: " + mName + "\n";
     ret += "   pack.Path: " + mPath + "\n";
     ret += "   pack.Description: " + mDescription + "\n";
-    ret += "   pack.Size: " + String.valueOf(mSize) + "\n";
     ret += "   pack.PurchaseType: " + String.valueOf(mPurchaseType) + "\n";    
     ret += "   pack.Version: " + String.valueOf(mVersion) + "\n";
     ret += "---- runtime fields --\n";
+    ret += "   pack.ServerSize: " + String.valueOf(mServerSize) + "\n";
+    ret += "   pack.Size: " + String.valueOf(mSize) + "\n";
+    ret += "   pack.NumSeen: " + String.valueOf(mNumSeen) + "\n";
     ret += "   pack.UpdateMessage: " + mUpdateMessage + "\n";
     ret += "   pack.Weight: " + String.valueOf(mWeight) + "\n";
     ret += "   pack.NumToPullNext: " + String.valueOf(mNumToPullNext) + "\n";

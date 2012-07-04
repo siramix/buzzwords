@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -76,11 +77,11 @@ public class Deck {
   private static final int PACK_CURRENT = -1;
   private static final int PACK_NOT_PRESENT = -2;
   
-  // This is the sum of all Cards in selected Packs
-  private int mTotalPlayableCards;
-  
   // After taking the top 1/DIVSOR Cards from a pack, throw back a percentage of them 
   private static final int THROW_BACK_PERCENTAGE = 0;
+  
+  // This is the sum of all Cards in selected Packs
+  private int mTotalPlayableCards;
   
   // A list of back Cards used for refreshing the deck.  Will be filled after it reaches 0.
   private LinkedList<Card> mBackCache;
@@ -176,7 +177,13 @@ public class Deck {
    * @return Linked List of all local Packs
    */
   public LinkedList<Pack> getLocalPacks() {
-    return mDatabaseOpenHelper.getAllPacksFromDB();
+    LinkedList<Pack> localPacks = mDatabaseOpenHelper.getAllPacksFromDB();
+    for (Pack pack : localPacks) {
+      pack.setSize(mDatabaseOpenHelper.countCards(pack));
+      pack.setNumSeen(mDatabaseOpenHelper.countNumSeen(pack));
+      Log.d(TAG, pack.toString());
+    }
+    return localPacks;
   }
   
   /**
@@ -393,7 +400,6 @@ public class Deck {
     // server.  Really, we should probably have two size variables under Pack.
     for (Pack curPack : mSelectedPacks) {
       curPack.setWeight((float) curPack.getSize() / (float) mTotalPlayableCards);
-      Log.d(TAG, curPack.toString());
     }
   }
   
@@ -508,7 +514,32 @@ public class Deck {
       mDatabase.close();
       return ret;
     }
-    
+
+    /**
+     * Returns an integer count of all phrases associated with the passed in pack
+     * @param pack The pack to count
+     * @return -1 if no phrases found, otherwise the number of phrases found
+     */
+    public int countCards(Pack pack) {
+      Log.d(TAG, "countCards(LinkedList<String>)");
+      mDatabase = getWritableDatabase();
+      
+      String[] args = new String[2];
+      
+      args[0] = String.valueOf(pack.getId());
+      
+      //TODO For code review, we are counting size every time we instantiatePacks.
+      // Perhaps it would be better to make sure Packs.size stays current?
+      Cursor countQuery = mDatabase.rawQuery("SELECT * " + 
+          " FROM " + CardColumns.TABLE_NAME + 
+          " WHERE " + CardColumns.PACK_ID + " IN (" + args[0] + ")", null);
+      int count = countQuery.getCount();
+      
+      countQuery.close();
+      mDatabase.close();
+      return count;
+    }
+
     /**
      * Returns an integer count of all phrases associated with the passed in pack names
      * @param packFileNames The filenames of all packs to be counted
@@ -534,6 +565,7 @@ public class Deck {
       return count;
     }
 
+    
     /**
      * Count the number of packs which will likely be needed for setting up views
      * 
@@ -544,7 +576,7 @@ public class Deck {
       mDatabase = getReadableDatabase();
       
       int ret = (int) DatabaseUtils.queryNumEntries(mDatabase, PackColumns.TABLE_NAME);
-      
+
       mDatabase.close();
       return ret;
     }
@@ -565,8 +597,8 @@ public class Deck {
       if (packQuery.moveToFirst()) {
         while (!packQuery.isAfterLast()) {
           pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
-              packQuery.getString(3), null, R.drawable.starter_icon, packQuery.getInt(4), 
-              PackPurchaseType.UNSET, packQuery.getInt(5), true);
+              packQuery.getString(3), null, R.drawable.starter_icon, -1, 
+              PackPurchaseType.UNSET, packQuery.getInt(4), true);
           ret.add(pack);
           packQuery.moveToNext();
         }
@@ -594,14 +626,35 @@ public class Deck {
       Pack pack = null;
       if (packQuery.moveToFirst()) {
         pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
-                        packQuery.getString(3), null, R.drawable.starter_icon, packQuery.getInt(4), 
-                        PackPurchaseType.UNSET, packQuery.getInt(5), true);
+                        packQuery.getString(3), null, R.drawable.starter_icon, -1, 
+                        PackPurchaseType.UNSET, packQuery.getInt(4), true);
       }
       packQuery.close();
       mDatabase.close();
       return pack;
     }
 
+    /**
+     * Count the number of seen cards in a given pack.
+     * @param pack the pack to count
+     * @return
+     */
+    public int countNumSeen(Pack pack) {
+      Log.d(TAG, "getPercentSeen(" + String.valueOf(pack.getId()) + ")");
+      mDatabase = getReadableDatabase();
+      
+      String id = String.valueOf(pack.getId());
+      Cursor cardCursor = mDatabase.query(CardColumns.TABLE_NAME, CardColumns.COLUMNS, 
+          CardColumns.PACK_ID + " = " + id + " and " + CardColumns.HAS_BEEN_SEEN + "=1", 
+          null, null, null, null);
+      
+      int seenCardCount = cardCursor.getCount();
+      
+      cardCursor.close();
+      mDatabase.close();
+      return seenCardCount;
+    }
+    
     /**
      * Load the words from the JSON file using only one SQLite database. This
      * function loads the words from a json file that is stored as a resource in the project
@@ -750,6 +803,7 @@ public class Deck {
       initialValues.put(CardColumns.TITLE, card.getTitle());
       initialValues.put(CardColumns.BADWORDS, card.getBadWordsString());
       initialValues.put(CardColumns.PLAY_DATE, 0);
+      initialValues.put(CardColumns.HAS_BEEN_SEEN, 0);
       initialValues.put(CardColumns.PACK_ID, packId);
       return db.insert(CardColumns.TABLE_NAME, null, initialValues);
     }
@@ -786,7 +840,6 @@ public class Deck {
       packValues.put(PackColumns.NAME, pack.getName());
       packValues.put(PackColumns.PATH, pack.getPath());
       packValues.put(PackColumns.DESCRIPTION, pack.getDescription());
-      packValues.put(PackColumns.SIZE, pack.getSize());
       packValues.put(PackColumns.VERSION, pack.getVersion());
       return db.replace(PackColumns.TABLE_NAME, null, packValues);
     }
@@ -821,7 +874,8 @@ public class Deck {
       mDatabase.beginTransaction();
       try {
         mDatabase.execSQL("UPDATE " + CardColumns.TABLE_NAME
-                      + " SET " + CardColumns.PLAY_DATE + " = datetime('now')"
+                      + " SET " + CardColumns.PLAY_DATE + " = datetime('now'), "
+                                + CardColumns.HAS_BEEN_SEEN + " = 1"
                       + " WHERE " + CardColumns._ID + " in(" + ids + ");");
         mDatabase.setTransactionSuccessful();
       } finally {
@@ -940,6 +994,7 @@ public class Deck {
     
     /**
      * Helper class to convert a linked list of packs to 
+     * 
      * a comma-delimited String of Pack Ids.
      * @param packList a list of Packs
      * @return a comma-delimited string of Ids ex. 1,20,22

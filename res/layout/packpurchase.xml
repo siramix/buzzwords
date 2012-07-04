@@ -109,6 +109,24 @@
 
         </LinearLayout>
     </ScrollView>
+    <TextView 
+        android:id="@+id/PackPurchase_NUMSEEN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TMP-NUMSEEN"/>
+    <TextView 
+        android:id="@+id/PackPurchase_TOTALCARDS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TMP-TOTALCARDS"/>
+    <TextView 
+        android:id="@+id/PackPurchase_TMP_PERCENTAGE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TMP-PERCENTAGE"/>
     <View android:id="@+id/view1" android:layout_height="4dp" android:background="@color/genericBG_trim" android:layout_width="fill_parent"></View>
 
     <LinearLayout
