@@ -982,14 +982,21 @@ public class Turn extends Activity {
         // When music is not enabled, use the ticking sound
         if (!mMusicEnabled && !mIsTicking) {
           if (shownTime == 10) {
-            if (BuzzWordsApplication.DEBUG) {
-              Log.d(TAG, "Queue tick 'music' ");
+            SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(getBaseContext());
+
+            // Only play ticking when sound effects are enabled
+            if (sp.getBoolean(Consts.PREFKEY_SFX, true))
+            {
+              if (BuzzWordsApplication.DEBUG) {
+                Log.d(TAG, "Queue tick 'music' ");
+              }
+              mIsTicking = true;
+              BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
+                  .getApplication();
+              MediaPlayer mp = application.getMusicPlayer();
+              mp.start();
             }
-            mIsTicking = true;
-            BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
-                .getApplication();
-            MediaPlayer mp = application.getMusicPlayer();
-            mp.start();
           }
         }
       }

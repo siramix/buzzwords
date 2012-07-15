@@ -20,8 +20,10 @@ package com.buzzwords;
 import com.buzzwords.R;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class SoundManager {
@@ -117,6 +119,14 @@ public class SoundManager {
    */
   public int playSound(Sound fxIndex) {
 
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(mContext);
+    
+    // Don't play any sounds if SFX are disabled
+    if( !sp.getBoolean(Consts.PREFKEY_SFX, true) )
+    {
+      return 0;
+    }
     // Volume% = current volume / max volume
     float volume = (float) mAudioManager
         .getStreamVolume(AudioManager.STREAM_MUSIC)

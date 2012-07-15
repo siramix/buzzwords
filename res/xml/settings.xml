@@ -27,12 +27,20 @@
 			android:summary="Enable all music"
 			android:defaultValue="true" 
 			/>
+		
+		<CheckBoxPreference 
+      android:key="com.buzzwords.SFX_ENABLED"
+      android:title="Sound Effects"
+      android:summary="Play beeps and boops when pressing buttons"
+      android:defaultValue="true" 
+      />
+          
 					
 		<CheckBoxPreference 
 			android:key="com.buzzwords.ALLOW_GESTURES"
 			android:title="Allow Gestures"
 			android:defaultValue="true"
-			android:summary="Swipe up for correct, down for wrong, left for skip, and right for back."
+			android:summary="Swipe up for correct, down for wrong, left for skip, and right for back"
 			/>
 		
 	</PreferenceCategory>
@@ -52,7 +60,7 @@
 			android:key="com.buzzwords.ALLOW_SKIP"
 			android:title="Allow Skipping"
 			android:defaultValue="true"
-			android:summary="If checked players may skip cards."
+			android:summary="If checked players may skip cards"
 			/>
 	
 	</PreferenceCategory>
@@ -70,7 +78,7 @@
 				android:selectable="true"
 				android:entries="@array/right_scores"
 				android:entryValues="@array/right_scores_values"
-				android:summary="Score change for correct guesses." 
+				android:summary="Score change for correct guesses" 
 				android:defaultValue="1"
 				/>
 			
@@ -80,7 +88,7 @@
 				android:selectable="true"
 				android:entries="@array/wrong_scores"
 				android:entryValues="@array/wrong_scores_values"
-				android:summary="Score change for getting buzzed." 
+				android:summary="Score change for getting buzzed" 
 				android:defaultValue="-1"
 				/>
 			
@@ -90,7 +98,7 @@
 				android:selectable="true"
 				android:entries="@array/skip_scores"
 				android:entryValues="@array/skip_scores_values"
-				android:summary="Score change for skipping a word." 
+				android:summary="Score change for skipping a word" 
 				android:defaultValue="0"
 				/>
 			
