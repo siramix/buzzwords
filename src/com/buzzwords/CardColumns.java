@@ -31,14 +31,16 @@ public class CardColumns implements BaseColumns {
 
   public static final String PACK_ID = "pack_id";
 
-  public static final String[] COLUMNS = {_ID, TITLE, BADWORDS, PLAY_DATE, PACK_ID};
+  public static final String HAS_BEEN_SEEN = "has_been_seen";
+
+  public static final String[] COLUMNS = {_ID, TITLE, BADWORDS, PLAY_DATE, HAS_BEEN_SEEN, PACK_ID};
 
   public static final String TABLE_CREATE = "CREATE TABLE "
-      + TABLE_NAME + "( " + 
+      + TABLE_NAME + "( " +
       _ID + " INTEGER PRIMARY KEY, " +
-      TITLE + " TEXT, " + 
+      TITLE + " TEXT, " +
       BADWORDS+ " TEXT, " +
       PLAY_DATE + " INTEGER, " +
+      HAS_BEEN_SEEN + " BOOLEAN, " +
       PACK_ID + " INTEGER );";
 }
-

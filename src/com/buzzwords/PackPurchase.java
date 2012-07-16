@@ -184,6 +184,22 @@ public class PackPurchase extends Activity {
       e1.printStackTrace();
     }
     
+    //TODO Edward this is here for you to clean up
+    TextView percentagePlayed = (TextView) this.findViewById(R.id.PackPurchase_TMP_PERCENTAGE);
+    TextView numSeen = (TextView) this.findViewById(R.id.PackPurchase_NUMSEEN);
+    TextView totalCardCount = (TextView) this.findViewById(R.id.PackPurchase_TOTALCARDS);
+    int totalSeen = 0;
+    int totalCards = 0;
+    for (Pack pack : localPacks) {
+      totalSeen += pack.getNumSeen();
+      totalCards += pack.getSize();
+    }
+    numSeen.setText(String.valueOf(totalSeen));
+    totalCardCount.setText("/" + String.valueOf(totalCards));
+    int percentSeen = (int) Math.round(
+        ((float) totalSeen / (float) totalCards) * 100.00);
+    percentagePlayed.setText(String.valueOf(percentSeen));
+
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
     btn.setOnClickListener(mGameSetupListener);
   }

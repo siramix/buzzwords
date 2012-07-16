@@ -473,7 +473,7 @@ public class GameManager {
   public int getNumberOfTurnsRemaining() {
     return mNumTurns - mCurrentTurn;
   }
-  
+
   /**
    * Return a Linked List of all Packs that are currently installed.
    * @return
