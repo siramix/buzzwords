@@ -71,7 +71,7 @@ public class Deck {
   private static final String DATABASE_NAME = "buzzwords";  
   private static final int DATABASE_VERSION = 3;
   
-  protected static final int BACK_CACHE_MAXSIZE = 200;
+  protected static final int BACK_CACHE_MAXSIZE = 80;
   protected static final int FRONT_CACHE_MAXSIZE = 20;
   
   private static final int PACK_CURRENT = -1;
