@@ -81,6 +81,11 @@ public class EditTeamName extends Activity {
       v.setEnabled(false);
       // Keep music playing
       mContinueMusic = true;
+      
+      SoundManager sm = SoundManager.getInstance((EditTeamName.this
+          .getBaseContext()));
+      sm.playSound(SoundManager.Sound.BACK);
+      
       finish();
     }
   };
@@ -102,6 +107,10 @@ public class EditTeamName extends Activity {
       // Keep music playing
       mContinueMusic = true;
 
+      SoundManager sm = SoundManager.getInstance((EditTeamName.this
+          .getBaseContext()));
+      sm.playSound(SoundManager.Sound.CONFIRM);
+      
       // Pass back the team and the name
       Intent curIntent = new Intent();
       curIntent.putExtra(getString(R.string.teamBundleKey), mTeam);

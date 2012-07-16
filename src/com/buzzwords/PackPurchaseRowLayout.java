@@ -18,6 +18,7 @@
 package com.buzzwords;
 
 import android.content.Context;
+import android.content.res.Resources.Theme;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
@@ -208,6 +209,9 @@ public class PackPurchaseRowLayout extends FrameLayout {
 
     // Add the views to frame
     this.addView(mContents);
+    
+    // Disable clicking sounds on the view.
+    mContents.setSoundEffectsEnabled(false);
 
     // Add single pixel bar of lightened color to give depth
     View lightBar = new View(mContext);

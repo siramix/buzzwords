@@ -120,8 +120,7 @@
             android:layout_width="fill_parent"
             android:text="@string/packpurchase_button"
             android:textSize="22dp"
-            android:layout_height="50dp"
-            android:soundEffectsEnabled="false">
+            android:layout_height="50dp">
         </com.buzzwords.AntonButton>
     </LinearLayout>
 

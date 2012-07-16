@@ -129,7 +129,7 @@
             android:name=".CardReview"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Dialog" >
+            android:theme="@style/NoTitleDialog" >
             <intent-filter>
                 <action android:name="com.buzzwords.intent.action.CARDREVIEW" >
                 </action>
@@ -142,7 +142,7 @@
             android:name=".EditTeamName"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/EditTeamNameDialog" >
+            android:theme="@style/NoTitleDialog" >
             <intent-filter>
                 <action android:name="com.buzzwords.intent.action.EDITTEAMNAME" >
                 </action>
