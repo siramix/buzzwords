@@ -195,7 +195,7 @@ public class GameSetup extends Activity {
         // Play confirm sound on add
         sm.playSound(SoundManager.Sound.CONFIRM);
       } else {
-        // Remove thet eam from the list
+        // Remove the team from the list
         mTeamList.remove(team);
         // Store off this selection so it is remember between activities
         mGameSetupPrefEditor.putBoolean(team.getPreferenceKey(), false);

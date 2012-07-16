@@ -59,10 +59,9 @@
     <item name="android:textStyle">bold</item>
     <item name="android:gravity">center</item>
   </style>
-  <style name="EditTeamNameDialog" parent="android:style/Theme.Dialog">
-   <item name="android:windowNoTitle">true</item>
-  </style>
   <style name="NoTitleDialog" parent="android:style/Theme.Dialog">
+   <!-- Disable system sound effects because we have custom sounds -->
+   <item name="android:soundEffectsEnabled">false</item>
    <item name="android:windowNoTitle">true</item>
   </style>  
 </resources>

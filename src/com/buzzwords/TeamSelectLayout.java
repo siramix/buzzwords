@@ -24,6 +24,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -150,7 +151,8 @@ public class TeamSelectLayout extends RelativeLayout {
     mButtons.setOrientation(LinearLayout.HORIZONTAL);
 
     // Initialize Add / Remove team button
-    mButtonAddTeam = new View(mContext);
+    mButtonAddTeam = new Button(mContext);
+    mButtonAddTeam.setBackgroundDrawable(null);
     mButtonAddTeam.setLayoutParams(new LinearLayout.LayoutParams(
         LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
     mButtonAddTeam.setOnClickListener(mAddTeamListener);
@@ -173,6 +175,8 @@ public class TeamSelectLayout extends RelativeLayout {
     // Add groups to TeamSelectLayout
     this.addView(mFrame);
     this.addView(mButtons);
+    
+    //mButtonAddTeam.setSoundEffectsEnabled(false);
   }
 
   /**
