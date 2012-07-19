@@ -612,6 +612,7 @@ public class Deck {
       Pack pack = null;
       LinkedList<Pack> ret = new LinkedList<Pack>();
       if (packQuery.moveToFirst()) {
+        
         while (!packQuery.isAfterLast()) {
           pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
               packQuery.getString(3), null, R.drawable.starter_icon, -1, 
@@ -911,7 +912,6 @@ public class Deck {
     public synchronized void updateSeenFields(List<Card> cardList) {
       mDatabase = getWritableDatabase();
       String ids = buildCardIdString(cardList);
-      Log.d(TAG, "UPDATING THE FOLLOWING: " + ids);
       mDatabase.beginTransaction();
       try {
         mDatabase.execSQL("UPDATE " + CardColumns.TABLE_NAME
