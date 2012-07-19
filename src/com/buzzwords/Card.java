@@ -59,6 +59,11 @@ public class Card implements Serializable {
   private Pack mPack;
   
   /**
+   * Set to true when we know a card has been seen
+   */
+  private boolean mSeen;
+  
+  /**
    * Function for breaking a string into an array list of strings based on the
    * presence of commas. The bad words are stored in the database as a comma
    * separated list for each card.
@@ -173,6 +178,7 @@ public class Card implements Serializable {
     mTitle = title;
     mBadWords = badWords;
     mPack = pack;
+    mSeen = false;
   }
 
   /**
@@ -270,6 +276,22 @@ public class Card implements Serializable {
     }
   }
 
+  /**
+   * Return whether the card has been seen or not
+   * @return
+   */
+  public boolean hasBeenSeen() {
+    return mSeen;
+  }
+  
+  /**
+   * Set whether the card has been seen or not
+   * @param trueFalse
+   */
+  public void setSeen(boolean bool) {
+    mSeen = bool;
+  }
+  
   /**
    * Sets a card's id (from DB)
    * 

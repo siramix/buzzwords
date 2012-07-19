@@ -191,7 +191,7 @@ public class PackPurchase extends Activity {
     int totalSeen = 0;
     int totalCards = 0;
     for (Pack pack : localPacks) {
-      totalSeen += pack.getNumSeen();
+      totalSeen += pack.getNumCardsSeen();
       totalCards += pack.getSize();
     }
     numSeen.setText(String.valueOf(totalSeen));

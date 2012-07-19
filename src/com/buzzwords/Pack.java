@@ -48,7 +48,7 @@ public class Pack implements Serializable {
   
   // Model fields for app at playtime
   private int mSize;
-  private int mNumSeen;
+  private int mNumCardsSeen;
   private float mWeight;
   private int mNumToPullNext;
   private boolean mInstalled;
@@ -89,7 +89,7 @@ public class Pack implements Serializable {
     mVersion = version;
     mWeight = -1;
     mSize = -1;
-    mNumSeen = -1;
+    mNumCardsSeen = -1;
     mNumToPullNext = -1;
     mInstalled = installed;
   }
@@ -163,10 +163,10 @@ public class Pack implements Serializable {
   /**
    * @return the number of cards already seen in the pack
    */
-  public int getNumSeen() {
-    return mNumSeen;
+  public int getNumCardsSeen() {
+    return mNumCardsSeen;
   }
-  
+
   /**
    * @return the type of pack purchased
    */
@@ -205,9 +205,10 @@ public class Pack implements Serializable {
    * Set the number of cards seen in a pack
    * @param numSeen the number of cards seen in the pack
    */
-  public void setNumSeen(int numSeen) {
-    mNumSeen = numSeen;
+  public void setNumCardsSeen(int numSeen) {
+    mNumCardsSeen = numSeen;
   }
+
   
   /**
    * Set the weight of the pack
@@ -242,7 +243,7 @@ public class Pack implements Serializable {
     ret += "---- runtime fields --\n";
     ret += "   pack.ServerSize: " + String.valueOf(mServerSize) + "\n";
     ret += "   pack.Size: " + String.valueOf(mSize) + "\n";
-    ret += "   pack.NumSeen: " + String.valueOf(mNumSeen) + "\n";
+    ret += "   pack.NumCardsSeen: " + String.valueOf(mNumCardsSeen) + "\n";
     ret += "   pack.UpdateMessage: " + mUpdateMessage + "\n";
     ret += "   pack.Weight: " + String.valueOf(mWeight) + "\n";
     ret += "   pack.NumToPullNext: " + String.valueOf(mNumToPullNext) + "\n";

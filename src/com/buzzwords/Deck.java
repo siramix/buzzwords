@@ -90,7 +90,7 @@ public class Deck {
   private LinkedList<Card> mFrontCache;
   
   // Should be wiped every time the mbackCache is cleared
-  private LinkedList<Card> mSeenCards;
+  private LinkedList<Card> mDiscardPile;
   
   // List of all packs selected for the Deck
   private LinkedList<Pack> mSelectedPacks;
@@ -110,7 +110,7 @@ public class Deck {
     mDatabaseOpenHelper = new DeckOpenHelper(context);
     mBackCache = new LinkedList<Card>();
     mFrontCache = new LinkedList<Card>();
-    mSeenCards = new LinkedList<Card>();
+    mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
     setPackData();
   }
@@ -128,7 +128,7 @@ public class Deck {
     }
     ret = mFrontCache.removeFirst();
     Log.i(TAG, " Dealing ::" + ret.getTitle() + " Pack: " + ret.getPack().getName());
-    mSeenCards.add(ret);
+    mDiscardPile.add(ret);
     return ret;
   }
   
@@ -150,27 +150,26 @@ public class Deck {
   }
   
   /**
-   * Updates the playdate for any cards seen mid-turn to today's date.
-   * The list of seen cards will be cleared when the front cache is re-filled.
-   * cache.
+   * Updates the playdate and times_seen for only the seen cards.  This
+   * should be called when we pause the game or a turn ends.
    */
-  public void updatePlayDates() {
-    this.updatePlayDates(mSeenCards);
+  public void updateSeenFields() {
+    this.updateSeenFields(mDiscardPile);
+    mDiscardPile.clear();
   }
 
   /**
-   * Updates the playdate for any cards passed in.  This
+   * Updates the playdate and times_seen for any cards passed in.  This
    * list of cards will be cleared 
    * @param cardsToUpdate - a Linked List of cards that will have their playdate
    *                        updated to today's date.
    */
-  public void updatePlayDates(List<Card> cardsToUpdate) {
+  public void updateSeenFields(List<Card> cardsToUpdate) {
     DeckOpenHelper helper = new Deck.DeckOpenHelper(
         mContext);      
-    helper.updatePlayDates(cardsToUpdate);
+    helper.updateSeenFields(cardsToUpdate);
     helper.close();
   }
-
   
   /**
    * Retrieve a Linked List of all Packs that a user has installed in their database.
@@ -180,7 +179,7 @@ public class Deck {
     LinkedList<Pack> localPacks = mDatabaseOpenHelper.getAllPacksFromDB();
     for (Pack pack : localPacks) {
       pack.setSize(mDatabaseOpenHelper.countCards(pack));
-      pack.setNumSeen(mDatabaseOpenHelper.countNumSeen(pack));
+      pack.setNumCardsSeen(mDatabaseOpenHelper.countNumSeen(pack));
       Log.d(TAG, pack.toString());
     }
     return localPacks;
@@ -277,6 +276,9 @@ public class Deck {
     return packsToUpdate;
   }
   
+  /**
+   * Fill the front cache to maximum size by popping off the back cache.
+   */
   private void topOffFrontCache() {
     Log.d(TAG, "topOffFrontCache()");
     int lack = FRONT_CACHE_MAXSIZE - mFrontCache.size();
@@ -300,8 +302,8 @@ public class Deck {
     // If we reach this scenario it means a lot of cards were looked at during a turn
     // Otherwise it should be filled by a GameManager.maintainDeck call
     if (mBackCache.isEmpty()) {
-      mDatabaseOpenHelper.updatePlayDates(mSeenCards);
-      mSeenCards.clear();
+      mDatabaseOpenHelper.updateSeenFields(mDiscardPile);
+      mDiscardPile.clear();
       this.fillBackCache();
     }
     ret = mBackCache.removeFirst();
@@ -343,16 +345,31 @@ public class Deck {
     allocateCardsToPull(lack);
     
     // 2. Fill our cache up with cards from all selected packs (using sorting algorithm)
+    //    Separate seen and unseen cards for handling the end of deck 
+    //    (when unseen must take priority)
     Log.d(TAG, "2. Pull Calculations ");
     LinkedList<Card> activeCards = new LinkedList<Card>();
     activeCards.addAll(mFrontCache);
     activeCards.addAll(mBackCache);
+    LinkedList<Card> unseenCards = new LinkedList<Card>();
+    LinkedList<Card> seenCards = new LinkedList<Card>();
     for (int i=0; i<mSelectedPacks.size(); ++i) {
-      mBackCache.addAll(mDatabaseOpenHelper.pullFromPack(mSelectedPacks.get(i), activeCards));
+      LinkedList<Card> pulledCards = mDatabaseOpenHelper.pullFromPack(mSelectedPacks.get(i), activeCards);
+      for (Card card : pulledCards) {
+        if (card.hasBeenSeen()) {
+          seenCards.add(card);
+        }
+        else {
+          unseenCards.add(card);
+        }
+      }
     }
     
     // 3. Now shuffle
-    Collections.shuffle(mBackCache);
+    Collections.shuffle(seenCards);
+    Collections.shuffle(unseenCards);
+    mBackCache.addAll(unseenCards);
+    mBackCache.addAll(seenCards);
     
     mDatabaseOpenHelper.close();
     Log.i(TAG, "filled.");
@@ -595,6 +612,7 @@ public class Deck {
       Pack pack = null;
       LinkedList<Pack> ret = new LinkedList<Pack>();
       if (packQuery.moveToFirst()) {
+        
         while (!packQuery.isAfterLast()) {
           pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
               packQuery.getString(3), null, R.drawable.starter_icon, -1, 
@@ -635,17 +653,17 @@ public class Deck {
     }
 
     /**
-     * Count the number of seen cards in a given pack.
+     * Count the number of seen cards in a given pack at least once.
      * @param pack the pack to count
      * @return
      */
-    public int countNumSeen(Pack pack) {
-      Log.d(TAG, "getPercentSeen(" + String.valueOf(pack.getId()) + ")");
+    public synchronized int countNumSeen(Pack pack) {
+      Log.d(TAG, "countNumSeen(" + String.valueOf(pack.getId()) + ")");
       mDatabase = getReadableDatabase();
       
       String id = String.valueOf(pack.getId());
       Cursor cardCursor = mDatabase.query(CardColumns.TABLE_NAME, CardColumns.COLUMNS, 
-          CardColumns.PACK_ID + " = " + id + " and " + CardColumns.HAS_BEEN_SEEN + "=1", 
+          CardColumns.PACK_ID + " = " + id + " and " + CardColumns.TIMES_SEEN +  " >= 1", 
           null, null, null, null);
       
       int seenCardCount = cardCursor.getCount();
@@ -653,6 +671,30 @@ public class Deck {
       cardCursor.close();
       mDatabase.close();
       return seenCardCount;
+    }
+    
+    /**
+     * Determine the number of complete playthroughs by returning the smallest
+     * times_seen value for all cards in the passed in pack.
+     * @param pack for which to find num playthroughs
+     * @return number of playthroughs
+     */
+    public synchronized int calcNumPlaythroughs(Pack pack) {
+      Log.d(TAG, "setNumPlaythroughs(" + String.valueOf(pack.getId()) + ")");
+      mDatabase = getReadableDatabase();
+      
+      String[] id = new String[] {String.valueOf(pack.getId())};
+      
+      Cursor cursor = mDatabase.rawQuery(
+            "SELECT MIN(" + CardColumns.TIMES_SEEN + ")"
+          + " FROM " + CardColumns.TABLE_NAME 
+          + " WHERE " + CardColumns.PACK_ID + " = ?", id);
+      
+      cursor.moveToFirst();
+      int playThroughs = cursor.getInt(0);
+      cursor.close();
+      mDatabase.close();
+      return playThroughs;
     }
     
     /**
@@ -803,7 +845,7 @@ public class Deck {
       initialValues.put(CardColumns.TITLE, card.getTitle());
       initialValues.put(CardColumns.BADWORDS, card.getBadWordsString());
       initialValues.put(CardColumns.PLAY_DATE, 0);
-      initialValues.put(CardColumns.HAS_BEEN_SEEN, 0);
+      initialValues.put(CardColumns.TIMES_SEEN, 0);
       initialValues.put(CardColumns.PACK_ID, packId);
       return db.insert(CardColumns.TABLE_NAME, null, initialValues);
     }
@@ -862,21 +904,20 @@ public class Deck {
     }
 
     /**
-     * Update play_date for all passed in card ids to current time
+     * Update play_date and times_seen for all passed in card ids to current time
      * @param ids
      *          comma delimited set of card ids to increment, ex. "1, 2, 4, 10"
      * @return
      */
-    public synchronized void updatePlayDates(List<Card> cardList) {
+    public synchronized void updateSeenFields(List<Card> cardList) {
       mDatabase = getWritableDatabase();
       String ids = buildCardIdString(cardList);
-      Log.d(TAG, "UPDATING THE FOLLOWING...WE HOPE: " + ids);
       mDatabase.beginTransaction();
       try {
         mDatabase.execSQL("UPDATE " + CardColumns.TABLE_NAME
-                      + " SET " + CardColumns.PLAY_DATE + " = datetime('now'), "
-                                + CardColumns.HAS_BEEN_SEEN + " = 1"
-                      + " WHERE " + CardColumns._ID + " in(" + ids + ");");
+             + " SET " + CardColumns.PLAY_DATE + " = datetime('now'), "
+                       + CardColumns.TIMES_SEEN + " = " + CardColumns.TIMES_SEEN + " + 1"
+             + " WHERE " + CardColumns._ID + " in(" + ids + ");");
         mDatabase.setTransactionSuccessful();
       } finally {
         mDatabase.endTransaction();
@@ -923,6 +964,9 @@ public class Deck {
      */
     public LinkedList<Card> pullFromPack(Pack pack, LinkedList<Card> cardsToExclude) {
       Log.d(TAG, "pullFromPack(" + pack.getName() + ")");
+      // Do this first since it needs it's own db interaction
+      int numPlayThroughs = calcNumPlaythroughs(pack);
+      
       mDatabase = getWritableDatabase();
       
       LinkedList<Card> returnCards = new LinkedList<Card>();
@@ -952,9 +996,13 @@ public class Deck {
       Log.d(TAG, "** this.numPlayable (excludes active): " + res.getCount());
       Log.d(TAG, "** Pack.size: " + pack.getSize());
 
-      // Add cards to what will be the Cache, including a surplus 
+      // Add cards to what will be the Cache, including a surplus
       while (!res.isAfterLast() && res.getPosition() < (targetNum + surplusNum)) {
-        returnCards.add(new Card(res.getInt(0), res.getString(1), res.getString(2), pack));
+        Card card = new Card(res.getInt(0), res.getString(1), res.getString(2), pack);
+        if (res.getInt(4) > numPlayThroughs) {
+          card.setSeen(true);
+        }
+        returnCards.add(card);
         res.moveToNext();
       }
       Log.d(TAG, "**" + returnCards.size() + " phrases added.");
