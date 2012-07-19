@@ -316,10 +316,10 @@ public class GameManager {
    * The game manager will have the Deck update the play date for
    * any cards the Deck has marked as "seen".  Runs inside a thread.
    */
-  public void updatePlayDates() {
+  public void updateSeenFields() {
     mUpdateThread = new Thread(new Runnable() {
       public void run() {
-        mDeck.updatePlayDates();
+        mDeck.updateSeenFields();
         }
       });
     mUpdateThread.start();
@@ -332,10 +332,10 @@ public class GameManager {
    * Runs inside a thread.
    * @param cardsToUpdate - A linked list of cards to update
    */
-  public void updatePlayDates(final List<Card> cardsToUpdate) {
+  public void updateSeenFields(final List<Card> cardsToUpdate) {
     mUpdateThread = new Thread(new Runnable() {
       public void run() {
-        mDeck.updatePlayDates(cardsToUpdate);
+        mDeck.updateSeenFields(cardsToUpdate);
         }
       });
     mUpdateThread.start();

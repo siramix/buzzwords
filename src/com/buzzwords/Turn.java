@@ -1067,7 +1067,7 @@ public class Turn extends Activity {
     if (!mIsPaused && !mTurnIsOver) {
       this.pauseGame();
     }
-    mGameManager.updatePlayDates();
+    mGameManager.updateSeenFields();
   }
   
   /**
