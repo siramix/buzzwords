@@ -63,7 +63,7 @@ import android.util.Log;
  * 
  * @author Siramix Labs
  */
-public class Turn extends Activity {
+public class TurnActivity extends Activity {
 
   /**
    * Static string used to refer to this class, in debug output for example.
@@ -177,19 +177,19 @@ public class Turn extends Activity {
       if (mGesturesEnabled) {
         if (mSkipEnabled && e1.getX() - e2.getX() > mGestureThreshold
             && Math.abs(velocityX) > mGestureVelocityThreshold) {
-          Turn.this.doSkip();
+          TurnActivity.this.doSkip();
           return true;
         } else if (e2.getX() - e1.getX() > mGestureThreshold
             && Math.abs(velocityX) > mGestureVelocityThreshold) {
-          Turn.this.doBack();
+          TurnActivity.this.doBack();
           return true;
         } else if (e1.getY() - e2.getY() > mGestureThreshold
             && Math.abs(velocityY) > mGestureVelocityThreshold) {
-          Turn.this.doCorrect();
+          TurnActivity.this.doCorrect();
           return true;
         } else if (e2.getY() - e1.getY() > mGestureThreshold
             && Math.abs(velocityY) > mGestureVelocityThreshold) {
-          Turn.this.doWrong();
+          TurnActivity.this.doWrong();
           return true;
         }
       }
@@ -214,7 +214,7 @@ public class Turn extends Activity {
     }
 
     mCounter.start();
-    mTimerfill.startAnimation(timerAnimation(Turn.TIMERANIM_START_ID));
+    mTimerfill.startAnimation(timerAnimation(TurnActivity.TIMERANIM_START_ID));
   }
 
   /**
@@ -232,7 +232,7 @@ public class Turn extends Activity {
         Log.d(TAG, "Do the Pause.");
       }
       mCounter.pause();
-      mTimerfill.startAnimation(timerAnimation(Turn.TIMERANIM_PAUSE_ID));
+      mTimerfill.startAnimation(timerAnimation(TurnActivity.TIMERANIM_PAUSE_ID));
     }
   }
 
@@ -251,7 +251,7 @@ public class Turn extends Activity {
         Log.d(TAG, "Do the Resume.");
       }
       mCounter.resume();
-      mTimerfill.startAnimation(timerAnimation(Turn.TIMERANIM_RESUME_ID));
+      mTimerfill.startAnimation(timerAnimation(TurnActivity.TIMERANIM_RESUME_ID));
     }
   }
 
@@ -311,7 +311,7 @@ public class Turn extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "TimerClickListener OnClick()");
       }
-      Turn.this.pauseGame();
+      TurnActivity.this.pauseGame();
     }
   };
   
@@ -325,10 +325,10 @@ public class Turn extends Activity {
       }
       if(!mIsPaused)
       {
-        Turn.this.pauseGame();       
+        TurnActivity.this.pauseGame();       
       }
       
-      Turn.this.openOptionsMenu();
+      TurnActivity.this.openOptionsMenu();
     }
   };
 
@@ -342,7 +342,7 @@ public class Turn extends Activity {
         Log.d(TAG, "CorrectListener OnClick()");
       }
 
-      Turn.this.doCorrect();
+      TurnActivity.this.doCorrect();
     }
   }; // End CorrectListener
 
@@ -355,7 +355,7 @@ public class Turn extends Activity {
         Log.d(TAG, "WrongListener OnClick()");
       }
 
-      Turn.this.doWrong();
+      TurnActivity.this.doWrong();
     }
   }; // End WrongListener
 
@@ -366,7 +366,7 @@ public class Turn extends Activity {
   private final OnClickListener mSkipListener = new OnClickListener() {
     public void onClick(View v) {
 
-      Turn.this.doSkip();
+      TurnActivity.this.doSkip();
     }
   }; // End SkipListener
 
@@ -384,13 +384,13 @@ public class Turn extends Activity {
       if (mTurnIsOver || (!mMusicEnabled && !mIsTicking)) {
         // Turn is over when timer reaches 0. At that point, we should just not
         // resume music
-        Turn.this.resumeGame();
+        TurnActivity.this.resumeGame();
       } else if (mMusicEnabled || mIsTicking) {
         if (BuzzWordsApplication.DEBUG) {
           Log.d(TAG, "unpause_OnClick ()");
         }
         // Resume must wait for music to seek back to the correct elapsed time
-        BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
+        BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
             .getApplication();
         MediaPlayer mp = application.getMusicPlayer();
         int elapsedtime;
@@ -558,9 +558,9 @@ public class Turn extends Activity {
         .getTurnTime());
     int duration = mGameManager.getTurnTime();
 
-    if (timerCommand == Turn.TIMERANIM_RESUME_ID) {
+    if (timerCommand == TurnActivity.TIMERANIM_RESUME_ID) {
       duration = (int) mCounter.getTimeRemaining();
-    } else if (timerCommand == Turn.TIMERANIM_PAUSE_ID) {
+    } else if (timerCommand == TurnActivity.TIMERANIM_PAUSE_ID) {
       duration = Integer.MAX_VALUE;
     }
 
@@ -783,7 +783,7 @@ public class Turn extends Activity {
     mResultsDelay = new PauseTimer(1500) {
       @Override
       public void onFinish() {
-        Turn.this.endTurn();
+        TurnActivity.this.endTurn();
       }
 
       @Override
@@ -829,7 +829,7 @@ public class Turn extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onTurnEnd()");
     }
-    BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
+    BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
             .getApplication();
     GameManager gm = application.getGameManager();
     gm.addTurnScore();
@@ -965,7 +965,7 @@ public class Turn extends Activity {
     return new PauseTimer(time) {
       @Override
       public void onFinish() {
-        Turn.this.onTimeExpired();
+        TurnActivity.this.onTimeExpired();
         mCountdownText.setText("0");
         mTurnIsOver = true;
       }
@@ -992,7 +992,7 @@ public class Turn extends Activity {
                 Log.d(TAG, "Queue tick 'music' ");
               }
               mIsTicking = true;
-              BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
+              BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
                   .getApplication();
               MediaPlayer mp = application.getMusicPlayer();
               mp.start();
@@ -1016,7 +1016,7 @@ public class Turn extends Activity {
       Log.d(TAG, "onCreate()");
     }
 
-    final float scale = Turn.this.getResources().getDisplayMetrics().density;
+    final float scale = TurnActivity.this.getResources().getDisplayMetrics().density;
     mGestureThreshold = (int) (SWIPE_MIN_DISTANCE_DP * scale + 0.5f);
     mGestureVelocityThreshold = (int) (SWIPE_THRESHOLD_VELOCITY_DP * scale + 0.5f);
 
@@ -1106,7 +1106,7 @@ public class Turn extends Activity {
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound
-              SoundManager sm = SoundManager.getInstance(Turn.this
+              SoundManager sm = SoundManager.getInstance(TurnActivity.this
                   .getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
               endTurn();
@@ -1114,7 +1114,7 @@ public class Turn extends Activity {
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound
-              SoundManager sm = SoundManager.getInstance(Turn.this
+              SoundManager sm = SoundManager.getInstance(TurnActivity.this
                   .getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
 
@@ -1129,11 +1129,11 @@ public class Turn extends Activity {
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound
-              SoundManager sm = SoundManager.getInstance(Turn.this
+              SoundManager sm = SoundManager.getInstance(TurnActivity.this
                   .getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
 
-              BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
+              BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
                   .getApplication();
               GameManager gm = application.getGameManager();
               // Add whatever score they've gotten in this turn
@@ -1145,7 +1145,7 @@ public class Turn extends Activity {
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound
-              SoundManager sm = SoundManager.getInstance(Turn.this
+              SoundManager sm = SoundManager.getInstance(TurnActivity.this
                   .getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
 
@@ -1157,7 +1157,7 @@ public class Turn extends Activity {
     case DIALOG_READY_ID:     
       
       // Play team ready sound
-      SoundManager sm = SoundManager.getInstance(Turn.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TurnActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.TEAMREADY);
 
       String curTeam = mGameManager.getActiveTeam().getName();      
@@ -1170,17 +1170,17 @@ public class Turn extends Activity {
             public void onClick(DialogInterface dialog, int which) {
               mIsPaused = false;
               dialog.dismiss();
-              Turn.this.showCard();
+              TurnActivity.this.showCard();
               mIsBack = true;
-              Turn.this.startTimer();
+              TurnActivity.this.startTimer();
               
               // Play back sound to differentiate from normal clicks
-              SoundManager sm = SoundManager.getInstance(Turn.this
+              SoundManager sm = SoundManager.getInstance(TurnActivity.this
                   .getBaseContext());
               sm.playSound(SoundManager.Sound.BACK);
 
               // Start the turn music
-              BuzzWordsApplication application = (BuzzWordsApplication) Turn.this
+              BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
                   .getApplication();
               GameManager gm = application.getGameManager();
 
@@ -1200,7 +1200,7 @@ public class Turn extends Activity {
                 }
               }
 
-              MediaPlayer mp = application.createMusicPlayer(Turn.this
+              MediaPlayer mp = application.createMusicPlayer(TurnActivity.this
                   .getBaseContext(), musicId);
               // If music is not enabled, it will start the countdown track at
               // 10 seconds
@@ -1242,7 +1242,7 @@ public class Turn extends Activity {
         Log.d(TAG, "onSeekComplete");
       }
       // Resume the game on seek complete
-      Turn.this.resumeGame();
+      TurnActivity.this.resumeGame();
 
       // Resume the music
       if (mMusicEnabled || (!mMusicEnabled && mIsTicking)) {

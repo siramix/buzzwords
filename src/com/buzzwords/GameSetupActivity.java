@@ -51,7 +51,7 @@ import android.view.animation.AlphaAnimation;
  * 
  * @author Siramix Labs
  */
-public class GameSetup extends Activity {
+public class GameSetupActivity extends Activity {
 
   static final int DIALOG_TEAMERROR = 0;
   private LinkedList<Team> mTeamList = new LinkedList<Team>();
@@ -112,29 +112,29 @@ public class GameSetup extends Activity {
       v.setEnabled(false);
 
       // Validate team numbers
-      if (GameSetup.this.mTeamList.size() <= 1) {
-        GameSetup.this.showDialog(DIALOG_TEAMERROR);
+      if (GameSetupActivity.this.mTeamList.size() <= 1) {
+        GameSetupActivity.this.showDialog(DIALOG_TEAMERROR);
         v.setEnabled(true);
         return;
       }
       
       // Store off game's attributes as preferences
-      GameSetup.mGameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX,
-          GameSetup.this.getCheckedRadioIndex());
-      GameSetup.mGameSetupPrefEditor.commit();
+      GameSetupActivity.mGameSetupPrefEditor.putInt(GameSetupActivity.RADIO_INDEX,
+          GameSetupActivity.this.getCheckedRadioIndex());
+      GameSetupActivity.mGameSetupPrefEditor.commit();
       
       // Create a GameManager to manage attributes about the current game.
       // the while loop around the try-catch block makes sure the database
       // has loaded before actually starting the game.
       //TODO I don't think this looping is necessary anymore
-      BuzzWordsApplication application = (BuzzWordsApplication) GameSetup.this
+      BuzzWordsApplication application = (BuzzWordsApplication) GameSetupActivity.this
           .getApplication();
       boolean keepLooping = true;
       while (keepLooping) {
         try {
-          GameManager gm = new GameManager(GameSetup.this);
+          GameManager gm = new GameManager(GameSetupActivity.this);
           gm.maintainDeck();
-          gm.startGame(mTeamList, ROUND_RADIOS[GameSetup.this
+          gm.startGame(mTeamList, ROUND_RADIOS[GameSetupActivity.this
               .getCheckedRadioIndex()][1]);
           application.setGameManager(gm);
           keepLooping = false;
@@ -159,7 +159,7 @@ public class GameSetup extends Activity {
    */
   private final OnTeamEditedListener mTeamEditedListener = new OnTeamEditedListener() {
     public void onTeamEdited(Team team) {
-      SoundManager sm = SoundManager.getInstance(GameSetup.this
+      SoundManager sm = SoundManager.getInstance(GameSetupActivity.this
           .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
@@ -184,7 +184,7 @@ public class GameSetup extends Activity {
    */
   private final OnTeamAddedListener mTeamAddedListener = new OnTeamAddedListener() {
     public void onTeamAdded(Team team, boolean isTeamOn) {
-      SoundManager sm = SoundManager.getInstance((GameSetup.this
+      SoundManager sm = SoundManager.getInstance((GameSetupActivity.this
           .getBaseContext()));
 
       if (isTeamOn) {
@@ -258,10 +258,10 @@ public class GameSetup extends Activity {
     this.setContentView(R.layout.gamesetup);
 
     // Get the current game setup preferences
-    GameSetup.mGameSetupPrefs = getSharedPreferences(PREFS_NAME, 0);
-    GameSetup.mGameSetupPrefEditor = GameSetup.mGameSetupPrefs.edit();
+    GameSetupActivity.mGameSetupPrefs = getSharedPreferences(PREFS_NAME, 0);
+    GameSetupActivity.mGameSetupPrefEditor = GameSetupActivity.mGameSetupPrefs.edit();
     // Get our pack preferences
-    GameSetup.mPackPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
+    GameSetupActivity.mPackPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
         Context.MODE_PRIVATE);
     
     // set fonts on titles
@@ -277,16 +277,16 @@ public class GameSetup extends Activity {
 
     // Set radio button labels
     RadioButton radio;
-    for (int i = 0; i < GameSetup.ROUND_RADIOS.length; ++i) {
-      radio = (RadioButton) this.findViewById(GameSetup.ROUND_RADIOS[i][0]);
-      radio.setText(String.valueOf(GameSetup.ROUND_RADIOS[i][1]));
+    for (int i = 0; i < GameSetupActivity.ROUND_RADIOS.length; ++i) {
+      radio = (RadioButton) this.findViewById(GameSetupActivity.ROUND_RADIOS[i][0]);
+      radio.setText(String.valueOf(GameSetupActivity.ROUND_RADIOS[i][1]));
     }
 
     // Set the radio button to the previous preference
-    int radio_default = GameSetup.mGameSetupPrefs.getInt(GameSetup.RADIO_INDEX,
+    int radio_default = GameSetupActivity.mGameSetupPrefs.getInt(GameSetupActivity.RADIO_INDEX,
         1);
     radio = (RadioButton) this
-        .findViewById(GameSetup.ROUND_RADIOS[radio_default][0]);
+        .findViewById(GameSetupActivity.ROUND_RADIOS[radio_default][0]);
     radio.setChecked(true);
 
     // Bind view buttons
@@ -304,7 +304,7 @@ public class GameSetup extends Activity {
       teamSelect = (TeamSelectLayout) this.findViewById(TEAM_SELECT_LAYOUTS[i]);
       teamSelect.setTeam(curTeam);
 
-      if (GameSetup.mGameSetupPrefs.getBoolean(curTeam.getPreferenceKey(),
+      if (GameSetupActivity.mGameSetupPrefs.getBoolean(curTeam.getPreferenceKey(),
           false)) {
         teamSelect.setActiveness(true);
         mTeamList.add(curTeam);
@@ -336,9 +336,9 @@ public class GameSetup extends Activity {
     int checkedRadioIndex = -1;
     // Iterate through radio buttons to find the one that is checked and return
     // it.
-    for (int i = 0; i < GameSetup.ROUND_RADIOS.length; i++) {
-      RadioButton test = (RadioButton) GameSetup.this
-          .findViewById(GameSetup.ROUND_RADIOS[i][0]);
+    for (int i = 0; i < GameSetupActivity.ROUND_RADIOS.length; i++) {
+      RadioButton test = (RadioButton) GameSetupActivity.this
+          .findViewById(GameSetupActivity.ROUND_RADIOS[i][0]);
       if (test.isChecked()) {
         checkedRadioIndex = i;
         break;
@@ -391,7 +391,7 @@ public class GameSetup extends Activity {
         Log.d(TAG, "BackKeyUp()");
       }
       // Flag to keep music playing
-      GameSetup.this.mContinueMusic = true;
+      GameSetupActivity.this.mContinueMusic = true;
     }
 
     return super.onKeyUp(keyCode, event);
@@ -422,9 +422,9 @@ public class GameSetup extends Activity {
     // Store off game's attributes as preferences. This is done in Pause to
     // maintain selections
     // when they press "back" to main title then return.
-    GameSetup.mGameSetupPrefEditor.putInt(GameSetup.RADIO_INDEX, GameSetup.this
+    GameSetupActivity.mGameSetupPrefEditor.putInt(GameSetupActivity.RADIO_INDEX, GameSetupActivity.this
         .getCheckedRadioIndex());
-    GameSetup.mGameSetupPrefEditor.commit();
+    GameSetupActivity.mGameSetupPrefEditor.commit();
   }
 
   /**

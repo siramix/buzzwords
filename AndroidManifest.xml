@@ -20,7 +20,7 @@
         android:label="@string/AppName"
         android:theme="@style/BuzzWordsTheme" >
         <activity
-            android:name=".SplashScreen"
+            android:name=".SplashScreenActivity"
             android:label="@string/AppName"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Title"
+            android:name=".TitleActivity"
             android:label="@string/AppName"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Settings"
+            android:name=".SettingsPreferenceActivity"
             android:label="@string/AppName"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Rules"
+            android:name=".RulesActivity"
             android:label="@string/AppName"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -73,7 +73,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Buzzer"
+            android:name=".BuzzerActivity"
             android:label="@string/AppName"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -83,7 +83,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GameSetup"
+            android:name=".GameSetupActivity"
             android:label="@string/AppName"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -93,7 +93,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Turn"
+            android:name=".TurnActivity"
             android:label="@string/AppName"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -104,7 +104,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GameEnd"
+            android:name=".GameEndActivity"
             android:label="@string/AppName"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -115,7 +115,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TurnSummary"
+            android:name=".TurnSummaryActivity"
             android:label="@string/AppName"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -126,7 +126,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CardReview"
+            android:name=".CardReviewActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleDialog" >

@@ -42,7 +42,7 @@ import android.widget.ImageView;
  * 
  * @author Siramix Labs
  */
-public class SplashScreen extends Activity {
+public class SplashScreenActivity extends Activity {
 
   /**
    * Logging tag
@@ -136,7 +136,7 @@ public class SplashScreen extends Activity {
       // EndAnimation
       // listener on this
       // platform. We'd like to rely on that event to call exitSplash().
-      SplashScreen.this.exitSplash();
+      SplashScreenActivity.this.exitSplash();
       return true;
     } else {
       return false;
@@ -152,7 +152,7 @@ public class SplashScreen extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "onAnimEnd()");
       }
-      SplashScreen.this.exitSplash();
+      SplashScreenActivity.this.exitSplash();
     }
 
     public void onAnimationRepeat(Animation animation) {
