@@ -37,7 +37,7 @@ import android.view.KeyEvent;
  * 
  * @author Siramix Labs
  */
-public class Settings extends PreferenceActivity {
+public class SettingsPreferenceActivity extends PreferenceActivity {
 
   private boolean mContinueMusic = false; // Flag to continue music across
                                           // Activities
@@ -54,7 +54,7 @@ public class Settings extends PreferenceActivity {
       }
       if (key.equals(Consts.PREFKEY_MUSIC)) {
         // Start or stop the music
-        BuzzWordsApplication application = (BuzzWordsApplication) Settings.this
+        BuzzWordsApplication application = (BuzzWordsApplication) SettingsPreferenceActivity.this
             .getApplication();
         MediaPlayer mp = application.getMusicPlayer();
         if (sharedPreferences.getBoolean(Consts.PREFKEY_MUSIC, true)) {
@@ -70,19 +70,19 @@ public class Settings extends PreferenceActivity {
 
       else if (key.equals(Consts.PREFKEY_TIMER)) {
         // When turn timer is changed, update the caption
-        Settings.this.updateTimerSummary();
+        SettingsPreferenceActivity.this.updateTimerSummary();
       }
       
       else if (key.equals(Consts.PREFKEY_NUM_BUZZWORDS)) {
         // Update caption
-        Settings.this.updatePreferenceSummary(key);
+        SettingsPreferenceActivity.this.updatePreferenceSummary(key);
       }
       
       else if (key.equals(Consts.PREFKEY_RIGHT_SCORE) || 
                key.equals(Consts.PREFKEY_WRONG_SCORE) || 
                key.equals(Consts.PREFKEY_SKIP_SCORE)) {
         // Update score caption
-        Settings.this.updateScorePreferenceSummary(key);
+        SettingsPreferenceActivity.this.updateScorePreferenceSummary(key);
       }
     }
   };

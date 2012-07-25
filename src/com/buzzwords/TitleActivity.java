@@ -55,7 +55,7 @@ import android.view.animation.TranslateAnimation;
  * 
  * @author Siramix Labs
  */
-public class Title extends Activity {
+public class TitleActivity extends Activity {
   
   /**
    * logging tag
@@ -124,59 +124,59 @@ public class Title extends Activity {
    * @param id
    */
   private void highlightDelegateItems(int id, boolean on) {
-    ImageButton button = (ImageButton) Title.this
+    ImageButton button = (ImageButton) TitleActivity.this
         .findViewById(R.id.Title_PlayButton);
-    TextView label = (TextView) Title.this.findViewById(R.id.Title_PlayText);
+    TextView label = (TextView) TitleActivity.this.findViewById(R.id.Title_PlayText);
     switch (id) {
     case R.id.Title_PlayDelegate:
-      button = (ImageButton) Title.this.findViewById(R.id.Title_PlayButton);
-      label = (TextView) Title.this.findViewById(R.id.Title_PlayText);
+      button = (ImageButton) TitleActivity.this.findViewById(R.id.Title_PlayButton);
+      label = (TextView) TitleActivity.this.findViewById(R.id.Title_PlayText);
       if (on) {
         button.setBackgroundResource(R.drawable.title_play_onclick);
-        label.setTextColor(Title.this.getResources().getColor(
+        label.setTextColor(TitleActivity.this.getResources().getColor(
             R.color.teamB_highlight));
       } else {
         button.setBackgroundResource(R.drawable.title_play_normal);
-        label.setTextColor(Title.this.getResources().getColor(
+        label.setTextColor(TitleActivity.this.getResources().getColor(
             R.color.teamB_primary));
       }
       break;
     case R.id.Title_BuzzDelegate:
-      button = (ImageButton) Title.this.findViewById(R.id.Title_BuzzButton);
-      label = (TextView) Title.this.findViewById(R.id.Title_BuzzText);
+      button = (ImageButton) TitleActivity.this.findViewById(R.id.Title_BuzzButton);
+      label = (TextView) TitleActivity.this.findViewById(R.id.Title_BuzzText);
       if (on) {
         button.setBackgroundResource(R.drawable.title_buzzer_onclick);
-        label.setTextColor(Title.this.getResources().getColor(
+        label.setTextColor(TitleActivity.this.getResources().getColor(
             R.color.teamC_highlight));
       } else {
         button.setBackgroundResource(R.drawable.title_buzzer_normal);
-        label.setTextColor(Title.this.getResources().getColor(
+        label.setTextColor(TitleActivity.this.getResources().getColor(
             R.color.teamC_primary));
       }
       break;
     case R.id.Title_SettingsDelegate:
-      button = (ImageButton) Title.this.findViewById(R.id.Title_SettingsButton);
-      label = (TextView) Title.this.findViewById(R.id.Title_SettingsText);
+      button = (ImageButton) TitleActivity.this.findViewById(R.id.Title_SettingsButton);
+      label = (TextView) TitleActivity.this.findViewById(R.id.Title_SettingsText);
       if (on) {
         button.setBackgroundResource(R.drawable.title_settings_onclick);
-        label.setTextColor(Title.this.getResources().getColor(
+        label.setTextColor(TitleActivity.this.getResources().getColor(
             R.color.teamD_highlight));
       } else {
         button.setBackgroundResource(R.drawable.title_settings_normal);
-        label.setTextColor(Title.this.getResources().getColor(
+        label.setTextColor(TitleActivity.this.getResources().getColor(
             R.color.teamD_primary));
       }
       break;
     case R.id.Title_RulesDelegate:
-      button = (ImageButton) Title.this.findViewById(R.id.Title_RulesButton);
-      label = (TextView) Title.this.findViewById(R.id.Title_RulesText);
+      button = (ImageButton) TitleActivity.this.findViewById(R.id.Title_RulesButton);
+      label = (TextView) TitleActivity.this.findViewById(R.id.Title_RulesText);
       if (on) {
         button.setBackgroundResource(R.drawable.title_rules_onclick);
-        label.setTextColor(Title.this.getResources().getColor(
+        label.setTextColor(TitleActivity.this.getResources().getColor(
             R.color.teamA_highlight));
       } else {
         button.setBackgroundResource(R.drawable.title_rules_normal);
-        label.setTextColor(Title.this.getResources().getColor(
+        label.setTextColor(TitleActivity.this.getResources().getColor(
             R.color.teamA_primary));
       }
       break;
@@ -201,10 +201,10 @@ public class Title extends Activity {
       mContinueMusic = true;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
-      startActivity(new Intent(Title.this.getApplication().getString(
+      startActivity(new Intent(TitleActivity.this.getApplication().getString(
           R.string.IntentPackPurchase), getIntent().getData()));
     }
   };
@@ -222,7 +222,7 @@ public class Title extends Activity {
       mContinueMusic = false;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(getApplication()
@@ -243,10 +243,10 @@ public class Title extends Activity {
       mContinueMusic = true;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
-      startActivity(new Intent(Title.this.getApplication().getString(
+      startActivity(new Intent(TitleActivity.this.getApplication().getString(
           R.string.IntentSettings), getIntent().getData()));
     }
   }; // End SettingsListener
@@ -264,7 +264,7 @@ public class Title extends Activity {
       mContinueMusic = true;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(
@@ -287,7 +287,7 @@ public class Title extends Activity {
       mContinueMusic = false;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       Uri uri = Uri.parse(getApplication().getString(R.string.URI_fb_buzzwordsapp));
@@ -509,7 +509,7 @@ public class Title extends Activity {
         initialized = prefs.getBoolean(Consts.PREFKEY_DB_INITIALIZED, false);
         if (!initialized) {
           dialog = ProgressDialog.show(
-            Title.this,
+            TitleActivity.this,
             null,
             getString(R.string.progressDialog_install_text), 
             true);
@@ -520,7 +520,7 @@ public class Title extends Activity {
       protected Boolean doInBackground(Void... params)
       {
         if (!initialized) {
-          GameManager gm = new GameManager(Title.this);
+          GameManager gm = new GameManager(TitleActivity.this);
           gm.installStarterPacks();
         }
         return true;
@@ -710,7 +710,7 @@ public class Title extends Activity {
 
                   mContinueMusic = true;
                   // play confirm sound
-                  SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+                  SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
                   sm.playSound(SoundManager.Sound.CONFIRM);
                   muteFirstRunDialog();
                   startActivity(new Intent(
@@ -721,7 +721,7 @@ public class Title extends Activity {
                 new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int which) {
                     // play confirm sound
-                    SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
+                    SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
                     sm.playSound(SoundManager.Sound.CONFIRM);
                     muteFirstRunDialog();
             }

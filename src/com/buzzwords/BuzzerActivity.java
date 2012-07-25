@@ -34,7 +34,7 @@ import android.widget.ImageButton;
  * 
  * @author Siramix Labs
  */
-public class Buzzer extends Activity {
+public class BuzzerActivity extends Activity {
   /**
    * logging tag
    */
@@ -52,9 +52,9 @@ public class Buzzer extends Activity {
 
     public boolean onTouch(View yourButton, MotionEvent motion) {
 
-      SoundManager mSoundManager = SoundManager.getInstance(Buzzer.this
+      SoundManager mSoundManager = SoundManager.getInstance(BuzzerActivity.this
           .getBaseContext());
-      ImageButton buzzButton = (ImageButton) Buzzer.this
+      ImageButton buzzButton = (ImageButton) BuzzerActivity.this
           .findViewById(R.id.Buzzer_Button);
 
       switch (motion.getAction()) {

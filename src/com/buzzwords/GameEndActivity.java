@@ -52,7 +52,7 @@ import com.buzzwords.BuzzWordsApplication;
  * @author BuzzWords team
  * 
  */
-public class GameEnd extends Activity {
+public class GameEndActivity extends Activity {
 
   /**
    * logging tag
@@ -178,7 +178,7 @@ public class GameEnd extends Activity {
   private final AnimationListener mGameOverListener = new AnimationListener() {
     public void onAnimationEnd(Animation animation) {
       // Play win sound
-      SoundManager sm = SoundManager.getInstance(GameEnd.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(GameEndActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.WIN);
     }
 
@@ -218,7 +218,7 @@ public class GameEnd extends Activity {
         Log.d(TAG, "MainMenuListener onClick()");
       }
       // Play confirm sound
-      SoundManager sm = SoundManager.getInstance(GameEnd.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(GameEndActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       Intent clearStackIntent = new Intent(getApplication().getString(
@@ -241,7 +241,7 @@ public class GameEnd extends Activity {
       BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
 
       GameManager curgm = application.getGameManager();
-      GameManager newgm = new GameManager(GameEnd.this);
+      GameManager newgm = new GameManager(GameEndActivity.this);
       newgm.startGame(curgm.getTeams(), curgm.getNumRounds());
       application.setGameManager(newgm);
 

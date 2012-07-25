@@ -52,7 +52,7 @@ import android.widget.TextView;
  * 
  * @author Siramix Labs
  */
-public class TurnSummary extends Activity {
+public class TurnSummaryActivity extends Activity {
   /**
    * logging tag
    */
@@ -75,7 +75,7 @@ public class TurnSummary extends Activity {
         Log.d(TAG, "mMenuListener OnClick()");
       }
       
-      TurnSummary.this.openOptionsMenu();
+      TurnSummaryActivity.this.openOptionsMenu();
     }
   };
 
@@ -88,7 +88,7 @@ public class TurnSummary extends Activity {
         Log.d(TAG, "NextTurnListener OnClick()");
       }
       v.setEnabled(false);
-      BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this
+      BuzzWordsApplication application = (BuzzWordsApplication) TurnSummaryActivity.this
           .getApplication();
       GameManager gm = application.getGameManager();
 
@@ -316,10 +316,10 @@ public class TurnSummary extends Activity {
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound
-              SoundManager sm = SoundManager.getInstance(TurnSummary.this
+              SoundManager sm = SoundManager.getInstance(TurnSummaryActivity.this
                   .getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
-              BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this
+              BuzzWordsApplication application = (BuzzWordsApplication) TurnSummaryActivity.this
                   .getApplication();
               GameManager gm = application.getGameManager();
               gm.endGame();
@@ -329,7 +329,7 @@ public class TurnSummary extends Activity {
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound
-              SoundManager sm = SoundManager.getInstance(TurnSummary.this
+              SoundManager sm = SoundManager.getInstance(TurnSummaryActivity.this
                   .getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
               dialog.cancel();
@@ -473,7 +473,7 @@ public class TurnSummary extends Activity {
           .getInt(getString(R.string.cardStateBundleKey));
 
       // Ammend the card
-      BuzzWordsApplication application = (BuzzWordsApplication) TurnSummary.this
+      BuzzWordsApplication application = (BuzzWordsApplication) TurnSummaryActivity.this
           .getApplication();
       GameManager gm = application.getGameManager();
       gm.ammendCard(curCardIndex, curCardState);
@@ -483,7 +483,7 @@ public class TurnSummary extends Activity {
       ImageView curImageView = mCardViewList.get(curCardIndex);
       setCardIcon(curImageView, curCard);
 
-      TurnSummary.this.updateScoreViews();
+      TurnSummaryActivity.this.updateScoreViews();
     }
 
     super.onActivityResult(requestCode, resultCode, data);

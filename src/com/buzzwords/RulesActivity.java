@@ -35,7 +35,7 @@ import android.widget.TextView;
  * 
  * @author Siramix Labs
  */
-public class Rules extends Activity {
+public class RulesActivity extends Activity {
   /**
    * logging tag
    */

@@ -35,7 +35,7 @@ import android.widget.TextView;
  * 
  * @author Siramix Labs
  */
-public class CardReview extends Activity {
+public class CardReviewActivity extends Activity {
 
   /**
    * Static string used to refer to this class, in debug output for example.
@@ -76,7 +76,7 @@ public class CardReview extends Activity {
       }
       v.setEnabled(false);
       setCardState(Card.RIGHT);
-      SoundManager sm = SoundManager.getInstance(CardReview.this
+      SoundManager sm = SoundManager.getInstance(CardReviewActivity.this
           .getBaseContext());
       sm.playSound(SoundManager.Sound.RIGHT);
       goBackToTurnSummary(Card.RIGHT);
@@ -93,7 +93,7 @@ public class CardReview extends Activity {
       }
       v.setEnabled(false);
       setCardState(Card.WRONG);
-      SoundManager sm = SoundManager.getInstance(CardReview.this
+      SoundManager sm = SoundManager.getInstance(CardReviewActivity.this
           .getBaseContext());
       sm.playSound(SoundManager.Sound.WRONG);
       goBackToTurnSummary(Card.WRONG);
@@ -110,7 +110,7 @@ public class CardReview extends Activity {
       }
       v.setEnabled(false);
       setCardState(Card.SKIP);
-      SoundManager sm = SoundManager.getInstance(CardReview.this
+      SoundManager sm = SoundManager.getInstance(CardReviewActivity.this
           .getBaseContext());
       sm.playSound(SoundManager.Sound.SKIP);
       goBackToTurnSummary(Card.SKIP);
@@ -127,7 +127,7 @@ public class CardReview extends Activity {
       }
       v.setEnabled(false);
       setCardState(Card.NOTSET);
-      SoundManager sm = SoundManager.getInstance(CardReview.this
+      SoundManager sm = SoundManager.getInstance(CardReviewActivity.this
           .getBaseContext());
       sm.playSound(SoundManager.Sound.BACK);
       goBackToTurnSummary(Card.NOTSET);
