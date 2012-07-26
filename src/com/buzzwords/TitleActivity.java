@@ -44,10 +44,13 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.TranslateAnimation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
 
 /**
  * This is the activity class that kicks off BuzzWords and displays a nice title
@@ -124,23 +127,9 @@ public class TitleActivity extends Activity {
    * @param id
    */
   private void highlightDelegateItems(int id, boolean on) {
-    ImageButton button = (ImageButton) TitleActivity.this
-        .findViewById(R.id.Title_PlayButton);
-    TextView label = (TextView) TitleActivity.this.findViewById(R.id.Title_PlayText);
+    ImageButton button;
+    TextView label = (TextView) TitleActivity.this.findViewById(R.id.Title_BuzzText);
     switch (id) {
-    case R.id.Title_PlayDelegate:
-      button = (ImageButton) TitleActivity.this.findViewById(R.id.Title_PlayButton);
-      label = (TextView) TitleActivity.this.findViewById(R.id.Title_PlayText);
-      if (on) {
-        button.setBackgroundResource(R.drawable.title_play_onclick);
-        label.setTextColor(TitleActivity.this.getResources().getColor(
-            R.color.teamB_highlight));
-      } else {
-        button.setBackgroundResource(R.drawable.title_play_normal);
-        label.setTextColor(TitleActivity.this.getResources().getColor(
-            R.color.teamB_primary));
-      }
-      break;
     case R.id.Title_BuzzDelegate:
       button = (ImageButton) TitleActivity.this.findViewById(R.id.Title_BuzzButton);
       label = (TextView) TitleActivity.this.findViewById(R.id.Title_BuzzText);
@@ -298,51 +287,73 @@ public class TitleActivity extends Activity {
   }; // End AboutUsListener
 
   /**
-   * Returns the animation that brings in the buttons screen
+   * Returns the animation that scales in buttons
    * 
-   * @return The animation that brings in the buttons screen
+   * @param labelNum
+   *          specifies the number this animation corresponds to. Used for start
+   *          offsets.
    */
-  private Animation translateButtons(int buttonNum) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "TranslateButtons()");
-    }
+  private AnimationSet stretch(int order) {
+    final int SCALE_UP_DURATION = 400;
+    final int SCALE_DOWN_DURATION = 200;
+    final int SCALE_NORMAL_DURATION = 100;
+    final float SCALE_START = 0.0f;
+    final float SCALE_MAX = 1.20f;
+    final float SCALE_MIN = 0.8f;
+    final float SCALE_NORMAL = 1.0f;
 
-    final int MOVETIME = 600;
+    AnimationSet set = new AnimationSet(true);
+    set.setInterpolator(new DecelerateInterpolator());
 
-    // Slide in from off-screen
-    TranslateAnimation slideIn = new TranslateAnimation(
-        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
-        Animation.ABSOLUTE, (-600f), Animation.RELATIVE_TO_PARENT, 0.0f);
-    slideIn.setDuration(MOVETIME + (200 * buttonNum));
-    slideIn.setInterpolator(new DecelerateInterpolator());
-    return slideIn;
+    ScaleAnimation scaleUp = new ScaleAnimation(SCALE_START, SCALE_MAX,
+        SCALE_START, SCALE_MAX, Animation.RELATIVE_TO_SELF, 0.5f,
+        Animation.RELATIVE_TO_SELF, 0.5f);
+    scaleUp.setDuration(SCALE_UP_DURATION);
+    ScaleAnimation scaleDown = new ScaleAnimation(SCALE_MAX, SCALE_MIN,
+        SCALE_MAX, SCALE_MIN, Animation.RELATIVE_TO_SELF, 0.5f,
+        Animation.RELATIVE_TO_SELF, 0.5f);
+    scaleDown.setDuration(SCALE_DOWN_DURATION);
+    scaleDown.setStartOffset(SCALE_UP_DURATION);
+
+    ScaleAnimation scaleNormal = new ScaleAnimation(SCALE_MIN, SCALE_NORMAL,
+        SCALE_MIN, SCALE_NORMAL, Animation.RELATIVE_TO_SELF, 0.5f,
+        Animation.RELATIVE_TO_SELF, 0.5f);
+    scaleNormal.setDuration(SCALE_NORMAL_DURATION);
+    scaleNormal.setStartOffset(SCALE_UP_DURATION + SCALE_DOWN_DURATION);
+
+    set.addAnimation(scaleUp);
+    set.addAnimation(scaleDown);
+    set.addAnimation(scaleNormal);
+
+    set.setStartOffset(order * 200);
+
+    return set;
   }
 
   /**
-   * Returns the animation that brings in labels screen
+   * Returns the animation that fades in labels.
    * 
-   * @return The animation that brings in labels screen
+   * @param labelNum
+   *          specifies the number this animation corresponds to. Used for start
+   *          offsets.
    */
-  private AnimationSet translateLabels(int labelNum) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "TranslateLabels()");
-    }
+  private AlphaAnimation fadeLabels(int labelNum) {
+    AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+    alpha.setDuration(500);
+    alpha.setStartOffset(labelNum * 200);
+    return alpha;
+  }
 
-    final int MOVETIME = 800;
-    AnimationSet set = new AnimationSet(true);
-
-    // Define the translate animation
-    TranslateAnimation slideIn = new TranslateAnimation(
-        Animation.RELATIVE_TO_PARENT, (-1.0f * labelNum),
-        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT,
-        (0.0f), Animation.RELATIVE_TO_PARENT, 0.0f);
-    slideIn.setDuration(MOVETIME);
-    slideIn.setInterpolator(new DecelerateInterpolator());
-    slideIn.setStartOffset(300 * (labelNum + 1));
-
-    // Create entire sequence
-    set.addAnimation(slideIn);
-    return set;
+  /*
+   * Returns the rotation animation for the starburst
+   */
+  private RotateAnimation rotateStarburst() {
+    RotateAnimation rotate = new RotateAnimation(0, 360,
+        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+    rotate.setDuration(60000);
+    rotate.setInterpolator(new LinearInterpolator());
+    rotate.setRepeatCount(Animation.INFINITE);
+    return rotate;
   }
 
   /**
@@ -377,11 +388,10 @@ public class TitleActivity extends Activity {
     new InstallerAndAnimator().execute();
     
     // Assign listeners to the delegate buttons
-    View delegate = (View) this.findViewById(R.id.Title_PlayDelegate);
-    delegate.setOnTouchListener(mTouchPlayListener);
-    delegate.setOnClickListener(mPlayGameListener);
+    View playbutton = (View) this.findViewById(R.id.Title_Button_Play);
+    playbutton.setOnClickListener(mPlayGameListener);
 
-    delegate = (View) this.findViewById(R.id.Title_BuzzDelegate);
+    View delegate = (View) this.findViewById(R.id.Title_BuzzDelegate);
     delegate.setOnTouchListener(mTouchPlayListener);
     delegate.setOnClickListener(mBuzzerListener);
 
@@ -405,32 +415,31 @@ public class TitleActivity extends Activity {
         .findViewById(R.id.Title_FB_BuzzwordsApp);
     aboutusButton.setOnClickListener(mAboutUsListener);
 
-    View button = (View) this.findViewById(R.id.Title_PlayButton);
-    button.startAnimation(this.translateButtons(4));
-    button = (View) this.findViewById(R.id.Title_BuzzButton);
-    button.startAnimation(this.translateButtons(3));
-    button = (View) this.findViewById(R.id.Title_SettingsButton);
-    button.startAnimation(this.translateButtons(2));
-    button = (View) this.findViewById(R.id.Title_RulesButton);
-    button.startAnimation(this.translateButtons(1));
-
-    // set font
+    // Initialize button animations
+    View tempButton;
+    int[] buttons = {R.id.Title_BuzzButton, R.id.Title_SettingsButton, R.id.Title_RulesButton};
+    for(int i = 0; i < buttons.length; i++)
+    {
+      tempButton = (View) this.findViewById(buttons[i]);
+      tempButton.startAnimation(stretch(i));
+    }
+    
+    // Initialize Labels with animation and font
     Typeface antonFont = Typeface.createFromAsset(getAssets(),
         "fonts/Anton.ttf");
-
-    TextView label = (TextView) this.findViewById(R.id.Title_PlayText);
-    label.startAnimation(this.translateLabels(4));
-    label.setTypeface(antonFont);
-    label = (TextView) this.findViewById(R.id.Title_BuzzText);
-    label.startAnimation(this.translateLabels(3));
-    label.setTypeface(antonFont);
-    label = (TextView) this.findViewById(R.id.Title_SettingsText);
-    label.startAnimation(this.translateLabels(2));
-    label.setTypeface(antonFont);
-    label = (TextView) this.findViewById(R.id.Title_RulesText);
-    label.startAnimation(this.translateLabels(1));
-    label.setTypeface(antonFont);
-
+    TextView tempLabel;
+    int[] labels = {R.id.Title_BuzzText, R.id.Title_SettingsText, R.id.Title_RulesText};
+    for(int i = 0; i < labels.length; i++)
+    {
+      tempLabel = (TextView) this.findViewById(labels[i]);
+      tempLabel.startAnimation(fadeLabels(i));
+      tempLabel.setTypeface(antonFont);
+    }
+    
+    // Animate starburst to rotate
+    View starburst = (View) this.findViewById(R.id.Title_Starburst);
+    starburst.startAnimation(rotateStarburst());
+    
   }
 
   /**
@@ -469,8 +478,7 @@ public class TitleActivity extends Activity {
     this.findViewById(R.id.Title_RulesButton).setEnabled(true);
     this.findViewById(R.id.Title_BuzzButton).setEnabled(true);
     this.findViewById(R.id.Title_FB_BuzzwordsApp).setEnabled(true);
-    this.findViewById(R.id.Title_PlayButton).setEnabled(true);
-    this.findViewById(R.id.Title_PlayDelegate).setEnabled(true);
+    this.findViewById(R.id.Title_Button_Play).setEnabled(true);
     this.findViewById(R.id.Title_BuzzDelegate).setEnabled(true);
     this.findViewById(R.id.Title_SettingsDelegate).setEnabled(true);
     this.findViewById(R.id.Title_RulesDelegate).setEnabled(true);
