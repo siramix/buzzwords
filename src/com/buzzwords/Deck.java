@@ -94,6 +94,9 @@ public class Deck {
   
   // List of all packs selected for the Deck
   private LinkedList<Pack> mSelectedPacks;
+
+  private Pack mStarterPack;
+  
   
   private Context mContext;
   
@@ -113,6 +116,9 @@ public class Deck {
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
     setPackData();
+    mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", 
+        "Description of pack1", "first install", R.drawable.starter_icon, 125,
+        PackPurchaseType.UNSET, 0, true);
   }
 
   /**
@@ -210,7 +216,7 @@ public class Deck {
    */
   public synchronized void installStarterPacks() {
     Log.d(TAG, "INSTALLING STARTER PACKS");
-    mDatabaseOpenHelper.installStarterPacks();
+    mDatabaseOpenHelper.installStarterPacks(mStarterPack);
   }
   
   /** 
@@ -454,6 +460,14 @@ public class Deck {
   }
   
   /**
+   * Return the starter pack that comes with every installation
+   * @return Pack object for the starting pack
+   */
+  public Pack getStarterPack() {
+    return mStarterPack;
+  }
+  
+  /**
    * Debugging function.  Can be removed later.
    */
   public void printDeck() {
@@ -484,10 +498,7 @@ public class Deck {
 
     private final Context mHelperContext;
     private SQLiteDatabase mDatabase;
-    private Pack starterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", 
-        "Description of pack1", "first install", R.drawable.starter_icon, 125,
-        PackPurchaseType.UNSET, 0, true);
-    
+
     /**
      * Default Constructor from superclass
      * 
@@ -511,7 +522,7 @@ public class Deck {
      * Install all the packs that come with the app into the database.
      * Since the pack
      */
-    public void installStarterPacks() {
+    public void installStarterPacks(Pack starterPack) {
       Log.d(TAG, "installStarterPacks()");
       mDatabase = getWritableDatabase();
 
@@ -738,9 +749,11 @@ public class Deck {
      */
     public void installPackFromServer(Pack serverPack) throws IOException, URISyntaxException {
       Log.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
-      mDatabase = getWritableDatabase();
-      // Don't add a pack if it's already there
       int packId = packInstalled(serverPack.getId(), serverPack.getVersion());
+
+      mDatabase = getWritableDatabase();
+
+      // Don't add a pack if it's already there
       if (packId == PACK_CURRENT) {
         return;
       }
@@ -942,12 +955,14 @@ public class Deck {
         res.moveToFirst();
         int oldVersion = res.getInt(3);
         int oldId = res.getInt(0);
+        res.close();
         if (packVersion > oldVersion) {
           return oldId;
         } else {
           return PACK_CURRENT;
         }
       } else {
+        res.close();
         return PACK_NOT_PRESENT;
       }
     }

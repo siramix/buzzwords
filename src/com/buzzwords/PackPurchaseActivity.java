@@ -26,6 +26,7 @@ import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,6 +49,8 @@ public class PackPurchaseActivity extends Activity {
   
   // Our pack lists as retrieved from the server
   private LinkedList<Pack> mServerPacks;
+  
+  private GameManager mGameManager;
 
   /**
    * This block of maps stores our lists of clients
@@ -118,6 +121,8 @@ public class PackPurchaseActivity extends Activity {
     // Initialize our packs
     mServerPacks = new LinkedList<Pack>();
     
+    mGameManager= new GameManager(PackPurchaseActivity.this);
+
     requestIds = new HashMap<String, String>();
 
     // Force volume controls to affect Media volume
@@ -173,7 +178,6 @@ public class PackPurchaseActivity extends Activity {
   protected void refreshAllPackLayouts() {
     Log.d(TAG, "refreshAllPackLayouts");
     // Get our current context
-    GameManager game = new GameManager(PackPurchaseActivity.this);
 
     // Populate and display list of cards
     LinearLayout unlockedPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_UnlockedPackSets);
@@ -184,23 +188,23 @@ public class PackPurchaseActivity extends Activity {
 
     PackClient client = PackClient.getInstance();
     LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
-    LinkedList<Pack> localPacks = new LinkedList<Pack>();
-    localPacks = game.getInstalledPacks();
+    LinkedList<Pack> unlockedPacks = new LinkedList<Pack>();
+    unlockedPacks = mGameManager.getInstalledPacks();
 
     //TODO these http pack requests should be in their own methods (getLockedPacksFromServer...)
     // First try to get the online packs, if no internet, just use local packs
     try {
       mServerPacks = client.getServerPacks();
-      lockedPacks = removeLocalPacks(mServerPacks, localPacks);
-      populatePackLayout(localPacks, unlockedPackLayout);
+      lockedPacks = getUnownedPacks(mServerPacks, unlockedPacks);
+      populatePackLayout(unlockedPacks, unlockedPackLayout);
       //TODO maybe we want to put this on the purchase button isntead
       populatePackLayout(lockedPacks, paidPackLayout);
     } catch (IOException e1) {
-      populatePackLayout(localPacks, unlockedPackLayout);
+      populatePackLayout(unlockedPacks, unlockedPackLayout);
       showToast(getString(R.string.toast_packpurchase_nointerneterror));
       e1.printStackTrace();
     } catch (URISyntaxException e1) {
-      populatePackLayout(localPacks, unlockedPackLayout);
+      populatePackLayout(unlockedPacks, unlockedPackLayout);
       showToast(getString(R.string.toast_packpurchase_siramixdownerror));
       e1.printStackTrace();
     } catch (JSONException e1) {
@@ -214,7 +218,7 @@ public class PackPurchaseActivity extends Activity {
     TextView totalCardCount = (TextView) this.findViewById(R.id.PackPurchase_TOTALCARDS);
     int totalSeen = 0;
     int totalCards = 0;
-    for (Pack pack : localPacks) {
+    for (Pack pack : unlockedPacks) {
       totalSeen += pack.getNumCardsSeen();
       totalCards += pack.getSize();
     }
@@ -234,17 +238,20 @@ public class PackPurchaseActivity extends Activity {
    * @param localPacks
    * @return
    */
-  private LinkedList<Pack> removeLocalPacks(LinkedList<Pack> lockedPacks, LinkedList<Pack> installedPacks) {
+  private LinkedList<Pack> getUnownedPacks(LinkedList<Pack> lockedPacks, LinkedList<Pack> installedPacks) {
     Log.d(TAG, "removeLocalPacks");
+    LinkedList<Pack> unownedPackList = new LinkedList<Pack>();
+    unownedPackList.addAll(lockedPacks);
+    
     for (Pack localPack : installedPacks) {
-      for (int lockedIndex=0; lockedIndex<lockedPacks.size(); ++lockedIndex) {
-        if (localPack.getId() == lockedPacks.get(lockedIndex).getId()) {
-          lockedPacks.remove(lockedIndex);
+      for (int unownedIndex=0; unownedIndex<unownedPackList.size(); ++unownedIndex) {
+        if (localPack.getId() == unownedPackList.get(unownedIndex).getId()) {
+          unownedPackList.remove(unownedIndex);
         }
       }
     }
     
-    return lockedPacks;
+    return unownedPackList;
   }
   
   /**
@@ -304,8 +311,27 @@ public class PackPurchaseActivity extends Activity {
     }
     insertionPoint.addView(layout);
   }
+
+  /** 
+   * Compare the pack preferences against installation status for each pack
+   * and install or uninstall as necessary.
+   */
+  protected void syncronizePacks() {
+    Log.d(TAG, "SYNCRONIZING PACKS...");
+    Pack[] packArray = mServerPacks.toArray(new Pack[mServerPacks.size()]);
+    try {
+      // Don't call syncronize unless SYNCED preference is false
+      if (!getSharedPreferencesForCurrentUser().getBoolean(Consts.PREFKEY_PURCHASES_SYNCED, false)) {
+        new PackSyncronizer().execute(packArray);
+      }
+    } catch (RuntimeException e) {
+      Log.e(TAG, "Encountered an error syncronizing packs.");
+      e.printStackTrace();
+    }
+  }
   
   /*
+   * 
    * Helper function to install a purchased pack
    */
   protected void installPack(Pack packToInstall)
@@ -541,15 +567,6 @@ public class PackPurchaseActivity extends Activity {
     }
   }
 
-  /*
-   * Helper function to submit the request to the billing service
-   */
-  private void purchasePack(Pack packToPurchase)
-  {
-    showPackInfo(packToPurchase);
-    Log.d(TAG, "purchasePack(" + packToPurchase.getName() + ")");
-  }
-
   /**
    * Helper method to associate request ids to shared preference keys
    * 
@@ -562,6 +579,53 @@ public class PackPurchaseActivity extends Activity {
       requestIds.put(requestId, key);
   }
   
+  public class PackSyncronizer extends AsyncTask <Pack, Void, Integer>
+  {
+    private ProgressDialog dialog;
+    final SharedPreferences userPurchases = getSharedPreferencesForCurrentUser();
+    final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+    final GameManager gm = new GameManager(PackPurchaseActivity.this);
+    
+    @Override
+    protected void onPreExecute() {
+      dialog = ProgressDialog.show(
+          PackPurchaseActivity.this,
+          null,
+          getString(R.string.progressDialog_update_text), 
+          true);
+    }
+    
+    @Override
+    protected Integer doInBackground(Pack... packs) {
+      for (int i=0; i<packs.length; ++i) {
+        Log.d(TAG, "SYNCING PACK: " + packs[i].getName());
+        boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
+        if (isPackPurchased) {
+          gm.installPack(packs[i]);
+        } 
+        else if (isPackPurchased == false) {
+          // If the pack isn't the starter deck, uninstall it.
+          if (packs[i].getId() != gm.getDeck().getStarterPack().getId()) {
+            gm.uninstallPack(packs[i].getId());
+          }
+        }
+      }
+      return 0; 
+    }
+    
+    @Override
+    protected void onPostExecute(Integer result)
+    {
+      dialog.dismiss();
+      refreshAllPackLayouts();
+      
+      editor.putBoolean(Consts.PREFKEY_PURCHASES_SYNCED, true);
+      editor.commit();
+      
+      findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
+    }
+  }
+  
   /** 
    * Run installations in an Async Task.  This puts the intensive task of installing
    * on a separate thread that once complete will dismiss the progress dialog and refresh
@@ -571,6 +635,8 @@ public class PackPurchaseActivity extends Activity {
   {
       private ProgressDialog dialog;
       private Pack packToInstall;
+      final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+      private GameManager gm = new GameManager(PackPurchaseActivity.this);
       
       @Override
       protected void onPreExecute()
@@ -587,9 +653,9 @@ public class PackPurchaseActivity extends Activity {
       {
         Log.d(TAG, "Install Pack Async: " + pack[0].getName());
         packToInstall = pack[0];
-        GameManager gm = new GameManager(PackPurchaseActivity.this);
         gm.installPack(packToInstall);
         return "";
+        
       }
 
       @Override
@@ -597,6 +663,11 @@ public class PackPurchaseActivity extends Activity {
       {
         dialog.dismiss();
         refreshAllPackLayouts();
+        if (gm.getDeck().isPackInstalled(packToInstall.getId())) {
+          editor.putBoolean(String.valueOf(packToInstall.getId()), true);
+          Log.d(TAG, "Put Pref (" + packToInstall.getId() + ", TRUE)");
+          
+        }
         findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
       }
   }
@@ -609,7 +680,9 @@ public class PackPurchaseActivity extends Activity {
   protected class PackUninstaller extends AsyncTask <Integer, Void, String>
   {
       private ProgressDialog dialog;
-
+      private int packIdToUninstall;
+      final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+      
       @Override
       protected void onPreExecute()
       {
@@ -624,7 +697,8 @@ public class PackPurchaseActivity extends Activity {
       protected String doInBackground(Integer... packIds)
       {
         GameManager gm = new GameManager(PackPurchaseActivity.this);
-        gm.uninstallPack(packIds[0]);
+        packIdToUninstall = packIds[0];
+        gm.uninstallPack(packIdToUninstall);
         return "";
       }
 
@@ -633,6 +707,11 @@ public class PackPurchaseActivity extends Activity {
       {
         dialog.dismiss();
         refreshAllPackLayouts();
+        if (mGameManager.getDeck().isPackInstalled(packIdToUninstall) == false) {
+          // Pack has been uninstalled so update the preference.
+          editor.putBoolean(String.valueOf(packIdToUninstall), false);
+          Log.d(TAG, "Put Pref (" + packIdToUninstall + ", FALSE)");
+        }
         findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
       }
   }

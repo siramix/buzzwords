@@ -74,7 +74,7 @@ public class PackClient {
    * @throws JSONException if the JSON is invalid
    */
   public LinkedList<Pack> getServerPacks() throws IOException, URISyntaxException, JSONException {
-    Log.d(TAG, "getPayPacks");
+    Log.d(TAG, "getServerPacks");
     StringBuilder in = null;
     LinkedList<Pack> ret = null;
     in = doHTTPGet(URL_BASE+PACK_LIST_URL);
