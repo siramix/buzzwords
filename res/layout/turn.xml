@@ -27,13 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:textSize="60dp"
-        android:textStyle="bold"
         android:text="Time's Up!"
         android:gravity="center"
-        android:visibility="invisible"
         android:textColor="@color/white"
-        />
+        style="@style/TurnNotify" android:visibility="invisible"/>
 
     <LinearLayout android:id="@+id/Turn_PauseTextGroup"
         android:layout_height="wrap_content"
@@ -46,20 +43,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="60dp"
-            android:textStyle="bold"
             android:text="Paused"
             android:layout_gravity="center"
             android:textColor="@color/white"
-            />
+            style="@style/TurnNotify"/>
 
         <TextView android:id="@+id/Turn_PausedSubText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20dp"
             android:layout_gravity="center"
             android:text="Tap to Unpause"
-            />
+            style="@style/TurnNotifySubText"/>
 
     </LinearLayout>
 
