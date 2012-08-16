@@ -118,7 +118,7 @@ public class Deck {
     setPackData();
     mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", 
         "Description of pack1", "first install", R.drawable.starter_icon, 125,
-        PackPurchaseType.UNSET, 0, true);
+        PackPurchaseType.FREE, 0, true);
   }
 
   /**
@@ -197,7 +197,7 @@ public class Deck {
    * @throws IOException
    * @throws URISyntaxException
    */
-  public synchronized void installPack(Pack pack) throws RuntimeException {
+  public void installPack(Pack pack) throws RuntimeException {
     Log.d(TAG, "INSTALLING PACK: \n" + pack.toString());
     try {
       mDatabaseOpenHelper.installPackFromServer(pack);
@@ -403,7 +403,9 @@ public class Deck {
           newPack.setSize(mDatabaseOpenHelper.countCards(packsToCount));
           mSelectedPacks.add(newPack);
         } else {
-          Log.e(TAG, "Preference set for a pack that does not exist in the database.");
+          Log.w(TAG, "Preference set for pack " + String.valueOf(packId) + 
+                     " which does not exist in the database. " +
+                     "This may be due to changing users which will wipe purchased packs.");
         }
       }
     }
@@ -522,7 +524,7 @@ public class Deck {
      * Install all the packs that come with the app into the database.
      * Since the pack
      */
-    public void installStarterPacks(Pack starterPack) {
+    public synchronized void installStarterPacks(Pack starterPack) {
       Log.d(TAG, "installStarterPacks()");
       mDatabase = getWritableDatabase();
 
@@ -536,7 +538,7 @@ public class Deck {
      * 
      * @return the number of cards in the deck
      */
-    public int countAllCards() {
+    public synchronized int countAllCards() {
       mDatabase = getReadableDatabase();
       int ret = (int) DatabaseUtils.queryNumEntries(mDatabase, CardColumns.TABLE_NAME);
       mDatabase.close();
@@ -548,7 +550,7 @@ public class Deck {
      * @param pack The pack to count
      * @return -1 if no phrases found, otherwise the number of phrases found
      */
-    public int countCards(Pack pack) {
+    public synchronized int countCards(Pack pack) {
       Log.d(TAG, "countCards(LinkedList<String>)");
       mDatabase = getWritableDatabase();
       
@@ -573,7 +575,7 @@ public class Deck {
      * @param packFileNames The filenames of all packs to be counted
      * @return -1 if no phrases found, otherwise the number of phrases found
      */
-    public int countCards(LinkedList<Pack> packs) {
+    public synchronized int countCards(LinkedList<Pack> packs) {
       Log.d(TAG, "countCards(LinkedList<String>)");
       mDatabase = getWritableDatabase();
       
@@ -599,7 +601,7 @@ public class Deck {
      * 
      * @return the number of packs
      */
-    public int countPacks() {
+    public synchronized int countPacks() {
       Log.d(TAG, "countPacks()");
       mDatabase = getReadableDatabase();
       
@@ -613,7 +615,7 @@ public class Deck {
      * Return a linked list of instantiated Packs that exist in the Pack db table.
      * @return LinkedList of Packs that use has already installed
      */
-    public LinkedList<Pack> getAllPacksFromDB() {
+    public synchronized LinkedList<Pack> getAllPacksFromDB() {
       Log.d(TAG, "getAllPacksFromDB()");
       mDatabase = getReadableDatabase();
       
@@ -627,7 +629,7 @@ public class Deck {
         while (!packQuery.isAfterLast()) {
           pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
               packQuery.getString(3), null, R.drawable.starter_icon, -1, 
-              PackPurchaseType.UNSET, packQuery.getInt(4), true);
+              packQuery.getInt(4), packQuery.getInt(5), true);
           ret.add(pack);
           packQuery.moveToNext();
         }
@@ -643,7 +645,7 @@ public class Deck {
      * @param packId of the pack you wish to instantiate
      * @return Instantiated Pack object if exists, null otherwise 
      */
-    public Pack getPackFromDB(String packId) {
+    public synchronized Pack getPackFromDB(String packId) {
       Log.d(TAG, "getPackFromDB(" + String.valueOf(packId) + ")");
       mDatabase = getReadableDatabase();
       
@@ -656,7 +658,7 @@ public class Deck {
       if (packQuery.moveToFirst()) {
         pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
                         packQuery.getString(3), null, R.drawable.starter_icon, -1, 
-                        PackPurchaseType.UNSET, packQuery.getInt(4), true);
+                        packQuery.getInt(4), packQuery.getInt(5), true);
       }
       packQuery.close();
       mDatabase.close();
@@ -716,7 +718,7 @@ public class Deck {
      * @param packName the name of the file to digest
      * @param resId the resource of the pack file to digest
      */
-    public void installPackFromResource(SQLiteDatabase db, Pack pack, int resId) {
+    public synchronized void installPackFromResource(SQLiteDatabase db, Pack pack, int resId) {
       Log.d(TAG, "Installing pack from resource " + String.valueOf(resId));
 
       BufferedReader packJSON = new BufferedReader(new InputStreamReader(
@@ -747,7 +749,7 @@ public class Deck {
      * @throws IOException
      * @throws URISyntaxException
      */
-    public void installPackFromServer(Pack serverPack) throws IOException, URISyntaxException {
+    public synchronized void installPackFromServer(Pack serverPack) throws IOException, URISyntaxException {
       Log.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
       int packId = packInstalled(serverPack.getId(), serverPack.getVersion());
 
@@ -1046,7 +1048,6 @@ public class Deck {
      * @return a comma-delimited string of Ids ex. 1,20,22
      */
     private String buildCardIdString(List<Card> cardList) {
-      Log.d(TAG, "buildCardIdString(cardList)");
       String[] ids = new String[cardList.size()];
       
       for (int i=0; i< cardList.size(); ++i) {
@@ -1063,7 +1064,6 @@ public class Deck {
      * @return a comma-delimited string of Ids ex. 1,20,22
      */
     private String buildPackIdString(List<Pack> packList) {
-      Log.d(TAG, "buildPackIdString(packList)");
       String[] ids = new String[packList.size()];
       
       for (int i=0; i<packList.size(); ++i) {

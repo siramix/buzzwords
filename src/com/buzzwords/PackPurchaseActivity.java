@@ -603,7 +603,7 @@ public class PackPurchaseActivity extends Activity {
         if (isPackPurchased) {
           gm.installPack(packs[i]);
         } 
-        else if (isPackPurchased == false) {
+        else if (isPackPurchased == false && packs[i].getPurchaseType() == PackPurchaseType.PAY) {
           // If the pack isn't the starter deck, uninstall it.
           if (packs[i].getId() != gm.getDeck().getStarterPack().getId()) {
             gm.uninstallPack(packs[i].getId());
