@@ -20,6 +20,7 @@ package com.buzzwords;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -27,6 +28,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -165,7 +167,26 @@ public class CardReviewActivity extends Activity {
     mSkipButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonSkip);
     mNoScoreButton = (AntonButton) this.findViewById(R.id.CardReview_ButtonNoScore);
   }
-
+  
+  /**
+   * Setup any visual properties of the UI
+   */
+  private void setupUIProperties() {
+    // Set font on title
+    Typeface font = Typeface.createFromAsset(getAssets(),
+        "fonts/FrancoisOne.ttf");
+    TextView text = (TextView) this.findViewById(R.id.CardReview_CardTitle);
+    text.setTypeface(font);
+    
+    // Set font on badwords
+    LinearLayout badWords = (LinearLayout) findViewById(R.id.CardReview_Card_BadWords); 
+    for(int i = 0; i < badWords.getChildCount(); i++)
+    {
+      text = (TextView) badWords.getChildAt(i);
+      text.setTypeface(font);
+    }
+  }
+  
   /**
    * Setup the button OnClickListeners
    */
@@ -261,7 +282,9 @@ public class CardReviewActivity extends Activity {
     this.setContentView(R.layout.cardreview);
 
     this.setupViewReferences();
-
+    
+    this.setupUIProperties();
+    
     this.setupListeners();
 
     Intent curIntent = this.getIntent();
