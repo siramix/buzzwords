@@ -59,7 +59,7 @@ public class Pack implements Serializable {
    * Default constructor
    */
   public Pack() {
-    this(-1, "","", "","", -1, -1, -1, PackPurchaseType.UNSET, false);
+    this(-1, "","", "","", -1, -1, -1, PackPurchaseConsts.PACKTYPE_UNSET, false);
     Log.d(TAG, "null consructor Pack()");
   }
 

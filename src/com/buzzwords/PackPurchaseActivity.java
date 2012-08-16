@@ -55,12 +55,8 @@ public class PackPurchaseActivity extends Activity {
   /**
    * This block of maps stores our lists of clients
    */
-  HashMap<String, String> mKnownTwitterClients;
   HashMap<String, String> mKnownFacebookClients;
-  HashMap<String, String> mKnownGoogleClients;
-  HashMap<String, ActivityInfo> mFoundTwitterClients;
   HashMap<String, ActivityInfo> mFoundFacebookClients;
-  HashMap<String, ActivityInfo> mFoundGoogleClients;
 
   /**
    * This block of variables is for Amazon In-App Purchases
@@ -72,10 +68,8 @@ public class PackPurchaseActivity extends Activity {
   /**
    * Request Code constants for social media sharing
    */
-  private static final int TWITTER_REQUEST_CODE = 11;
-  private static final int FACEBOOK_REQUEST_CODE = 12;
-  private static final int GOOGLEPLUS_REQUEST_CODE = 13;
-  private static final int PACKINFO_REQUEST_CODE = 14;
+    private static final int FACEBOOK_REQUEST_CODE = 12;
+    private static final int PACKINFO_REQUEST_CODE = 14;
 
   /**
    * PlayGameListener plays an animation on the view that will result in
@@ -435,30 +429,6 @@ public class PackPurchaseActivity extends Activity {
       }
     }
   }
-  
-  /**
-   * Opens the twitter client for promotional packs
-   */
-  private void openTwitterClient()
-  {
-    ComponentName targetComponent = getClientComponentName(mFoundTwitterClients);
-
-    if (targetComponent != null) {
-      Intent shareIntent = new Intent(Intent.ACTION_SEND);
-      shareIntent.setComponent(targetComponent);
-
-      String intentType = (targetComponent.getClassName()
-          .contains("com.twidroid")) ? "application/twitter" : "text/plain";
-
-      shareIntent.setType(intentType);
-      shareIntent
-          .putExtra(Intent.EXTRA_TEXT,
-              "TESTING TESTING \n https://market.android.com/details?id=com.buzzwords");
-      startActivityForResult(shareIntent, TWITTER_REQUEST_CODE);
-    } else {
-      showToast(getString(R.string.toast_packpurchase_notwitter));
-    }
-  };
 
   /**
    * Opens the Facebook client for promotional packs
@@ -486,36 +456,12 @@ public class PackPurchaseActivity extends Activity {
   };
 
   /**
-   * Opens the Google client for promotional packs
-   */
-  private void openGoogleClient()
-  {
-    ComponentName targetComponent = getClientComponentName(mFoundGoogleClients);
-
-    // TODO intent is a stupid name
-    if (targetComponent != null) {
-      Intent gplusIntent = new Intent(Intent.ACTION_SEND);
-      gplusIntent.setComponent(targetComponent);
-      String intentType = ("text/plain");
-      gplusIntent.setType(intentType);
-      gplusIntent.putExtra(Intent.EXTRA_SUBJECT, "SUBJECT SUBJECT" + "\n"
-          + "TESTING");
-      gplusIntent
-          .putExtra(Intent.EXTRA_TEXT,
-              "TESTING TESTING \n https://market.android.com/details?id=com.buzzwords");
-      startActivityForResult(gplusIntent, GOOGLEPLUS_REQUEST_CODE);
-    } else {
-      showToast(getString(R.string.toast_packpurchase_nogoogleplus));
-    }
-  };
-
-  /**
-   * Listen for the result of social activities like twitter, facebook, and
-   * google+
+   * Listen for the result of a pack info click, purchase click, or social post click.
    */
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    Log.d(TAG, "****** ACTIVITY RESULT RESULTCODE = " + resultCode);
 
+    // If the request is coming from our packInfo Activity, handle the request as
+    // a purchase, a facebook post, or nothing.
     if(requestCode == PACKINFO_REQUEST_CODE)
     {
       if(resultCode == RESULT_CANCELED)
@@ -523,14 +469,14 @@ public class PackPurchaseActivity extends Activity {
         // Do nothing
         return;
       }
-        
+      
       // Get the pack
       Pack curPack = (Pack) data.getExtras().get(getString(R.string.packBundleKey));
       int resultTypeIndex = curPack.getPurchaseType();
       
-      switch(PackPurchaseType.PURCHASE_RESULT_CODES[resultTypeIndex])
+      switch(PackPurchaseConsts.PURCHASE_RESULT_CODES[resultTypeIndex])
       {
-        case PackPurchaseType.RESULT_NOCODE:
+        case PackPurchaseConsts.RESULT_NOCODE:
           final SharedPreferences settings = getSharedPreferencesForCurrentUser();
           final String sku = String.valueOf(curPack.getId());
           boolean entitled = settings.getBoolean(sku, false);
@@ -540,31 +486,19 @@ public class PackPurchaseActivity extends Activity {
             storeRequestId(requestId, sku);
           }
           break;
-        case PackPurchaseType.RESULT_TWITTER:
-          openTwitterClient();
-          // TODO: This should not occur until they RETURN from the Tweet
-          //   but we would have trouble getting to the Pack they just tweeted ABOUT
-          // returning from Tweet etc.
-          installPack(curPack);
-          break;
-        case PackPurchaseType.RESULT_FACEBOOK:
+        case PackPurchaseConsts.RESULT_FACEBOOK:
           openFacebookClient();
-          // TODO: This should not occur until they RETURN
-          installPack(curPack);
-          break;
-        case PackPurchaseType.RESULT_GOOGLE:
-          openGoogleClient();
-          // TODO: This should not occur until they RETURN
-          installPack(curPack);
           break;
       }
+    } 
 
+    
+    // If the most recent request was to open Facebook and we return to Buzzwords, 
+    // then install the Facebook pack
+    if (requestCode == FACEBOOK_REQUEST_CODE) {
+      installPack(PackPurchaseConsts.FACEBOOK_PACK_ID);
     }
-    else if(requestCode == TWITTER_REQUEST_CODE)
-    {
-      // TODO: Here is where we really want to install the pack, but we 
-      // can't get to the pack from here...
-    }
+
   }
 
   /**
@@ -603,7 +537,8 @@ public class PackPurchaseActivity extends Activity {
         if (isPackPurchased) {
           gm.installPack(packs[i]);
         } 
-        else if (isPackPurchased == false && packs[i].getPurchaseType() == PackPurchaseType.PAY) {
+        else if (isPackPurchased == false && 
+            packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_PAY) {
           // If the pack isn't the starter deck, uninstall it.
           if (packs[i].getId() != gm.getDeck().getStarterPack().getId()) {
             gm.uninstallPack(packs[i].getId());
@@ -818,26 +753,11 @@ public class PackPurchaseActivity extends Activity {
    */
   private void buildKnownClientsList() {
     Log.d(TAG, "buildKnownClientsList()");
-
-    mKnownTwitterClients = new HashMap<String, String>();
-    mKnownTwitterClients.put("Twitter", "com.twitter.android.PostActivity");
-    mKnownTwitterClients.put("UberSocial", "com.twidroid.activity.SendTweet");
-    mKnownTwitterClients.put("TweetDeck",
-        "com.tweetdeck.compose.ComposeActivity");
-    mKnownTwitterClients.put("Seesmic", "com.seesmic.ui.Composer");
-    mKnownTwitterClients.put("TweetCaster",
-        "com.handmark.tweetcaster.ShareSelectorActivity");
-    mKnownTwitterClients.put("Plume",
-        "com.levelup.touiteur.appwidgets.TouiteurWidgetNewTweet");
-    mKnownTwitterClients.put("Twicca", "jp.r246.twicca.statuses.Send");
     mKnownFacebookClients = new HashMap<String, String>();
     mKnownFacebookClients.put("Facebook",
         "com.facebook.katana.ShareLinkActivity");
     mKnownFacebookClients.put("FriendCaster",
         "uk.co.senab.blueNotifyFree.activity.PostToFeedActivity");
-    mKnownGoogleClients = new HashMap<String, String>();
-    mKnownGoogleClients.put("Google+",
-        "com.google.android.apps.plus.phone.PostActivity");
   }
 
   /**
@@ -849,9 +769,7 @@ public class PackPurchaseActivity extends Activity {
     Log.d(TAG, "detectClients()");
 
     buildKnownClientsList();
-    mFoundTwitterClients = new HashMap<String, ActivityInfo>();
     mFoundFacebookClients = new HashMap<String, ActivityInfo>();
-    mFoundGoogleClients = new HashMap<String, ActivityInfo>();
 
     Intent intent = new Intent(Intent.ACTION_SEND);
     intent.setType("text/plain");
@@ -862,12 +780,8 @@ public class PackPurchaseActivity extends Activity {
       ResolveInfo app = (ResolveInfo) activityList.get(i);
       ActivityInfo activity = app.activityInfo;
       Log.d(TAG, "******* --> " + activity.name);
-      if (mKnownTwitterClients.containsValue(activity.name)) {
-        mFoundTwitterClients.put(activity.name, activity);
-      } else if (mKnownFacebookClients.containsValue(activity.name)) {
+      if (mKnownFacebookClients.containsValue(activity.name)) {
         mFoundFacebookClients.put(activity.name, activity);
-      } else if (mKnownGoogleClients.containsValue(activity.name)) {
-        mFoundGoogleClients.put(activity.name, activity);
       }
     }
   }

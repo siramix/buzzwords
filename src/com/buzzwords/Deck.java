@@ -118,7 +118,7 @@ public class Deck {
     setPackData();
     mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", 
         "Description of pack1", "first install", R.drawable.starter_icon, 125,
-        PackPurchaseType.FREE, 0, true);
+        PackPurchaseConsts.PACKTYPE_FREE, 0, true);
   }
 
   /**
@@ -765,7 +765,6 @@ public class Deck {
         // errors because the pack's path is not found on the server?  
         CardJSONIterator cardItr = PackClient.getInstance().getCardsForPack(serverPack);
         installPack(mDatabase, serverPack, cardItr);
-
       }
       else {
         //TODO same thing here (see above todo about locking)

@@ -158,8 +158,8 @@ public class PackInfoGUI extends Activity {
       mPackIsOwnedText.setVisibility(View.GONE);
       
       mButtonAccept.setText(this.getResources().
-          getString(PackPurchaseType.PURCHASE_LABEL_IDS[mPurchaseType]));
-      mButtonAccept.setTag(PackPurchaseType.PURCHASE_RESULT_CODES[mPurchaseType]);
+          getString(PackPurchaseConsts.PURCHASE_LABEL_IDS[mPurchaseType]));
+      mButtonAccept.setTag(PackPurchaseConsts.PURCHASE_RESULT_CODES[mPurchaseType]);
     }
     //TODO Edward we need to handle the case where billing service is not available
     else
