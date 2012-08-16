@@ -1,3 +1,4 @@
 bin/
 .settings/
 gen/
+.DS_Store
