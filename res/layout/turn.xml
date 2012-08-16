@@ -128,8 +128,7 @@
                     android:id="@+id/Turn_TimerMenuButton"
                     android:layout_width="60dp"
                     android:layout_height="fill_parent"
-                    android:layout_margin="2dp"
-                    android:text="Menu" >
+                    android:text="Menu" android:layout_marginBottom="1dp" android:layout_marginLeft="1dp" android:layout_marginTop="1dp">
                 </com.buzzwords.AntonButton>
             </LinearLayout>
 
