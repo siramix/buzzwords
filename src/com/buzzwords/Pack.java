@@ -70,8 +70,10 @@ public class Pack implements Serializable {
    * @param path
    * @param description 
    * @param updateMessage
+   * @param iconId
+   * @param size (server)
+   * @param purchaseType
    * @param version
-   * @param size
    * @param installed (whether the pack has been installed yet)
    */
   public Pack(int id, String name, String path, String description,

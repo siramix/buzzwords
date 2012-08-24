@@ -267,8 +267,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 case ENTITLED:
                     key = getKey(receipt.getSku());
                     editor.putBoolean(key, true);
-                    editor.putBoolean(Consts.PREFKEY_PURCHASES_SYNCED, false);
-                    Log.v(TAG, "ENTITLED CONTENT SHOULD BE INSTALLED RIGHT NOW...");
+                    editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
                     baseActivity.installPack(Integer.parseInt(receipt.getSku()));
                     break;
                 case SUBSCRIPTION:
@@ -287,7 +286,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                  */
                 final String requestId = purchaseResponse.getRequestId();
                 editor.putBoolean(baseActivity.requestIds.get(requestId), true);
-                editor.putBoolean(Consts.PREFKEY_PURCHASES_SYNCED, false);
+                editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
                 editor.commit();
                 // Try to install the pack (it won't install if it already is installed)
                 baseActivity.installPack(Integer.parseInt(baseActivity.requestIds.get(requestId)));
@@ -342,7 +341,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 Log.v(TAG, "Revoked Sku:" + sku);
                 final String key = getKey(sku);
                 editor.putBoolean(key, false);
-                editor.putBoolean(Consts.PREFKEY_PURCHASES_SYNCED, false);
+                editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
                 editor.commit();
             }
 
@@ -358,7 +357,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                          * If the receipt is for an entitlement, the customer is re-entitled.
                          */
                         editor.putBoolean(key, true);
-                        editor.putBoolean(Consts.PREFKEY_PURCHASES_SYNCED, false);
+                        editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
                         editor.commit();
                         break;
                     case SUBSCRIPTION:

@@ -50,7 +50,7 @@ public class Consts {
     public static final String PREFKEY_WRONG_SCORE= "com.buzzwords.WRONG_SCORE";
     public static final String PREFKEY_SKIP_SCORE= "com.buzzwords.SKIP_SCORE";
     public static final String PREFKEY_DB_INITIALIZED = "com.buzzwords.DB_INITIALIZED";
-    public static final String PREFKEY_PURCHASES_SYNCED = "com.buzzwords.PURCHASES_SYNCED";
+    public static final String PREFKEY_SYNC_REQUIRED = "com.buzzwords.PACK_SYNC_REQUIRED";
     public static final String PREFKEY_FACEBOOK_REQUEST_CODE = "com.buzzwords.RECENT_REQUEST_CODE";
     public static final String PREFKEY_FACEBOOK_PACK_ID = "com.buzzwords.FACEBOOK_PACK_ID";
 

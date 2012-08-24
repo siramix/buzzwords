@@ -275,6 +275,10 @@ public class GameManager {
     mDeck.fillCachesIfLow();
   }
 
+  public boolean packsRequireUpdate(LinkedList<Pack> serverPacks) {
+    Log.d(TAG, "packsCurrent(LinkedList<Pack>)");
+    return mDeck.packsRequireUpdate(serverPacks);
+  }
   
   /**
    * Call the Deck function that installs all 'starter' decks.  This

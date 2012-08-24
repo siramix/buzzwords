@@ -224,6 +224,7 @@ public class PackPurchaseActivity extends Activity {
 
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
     btn.setOnClickListener(mGameSetupListener);
+    
   }
 
   /**
@@ -308,14 +309,17 @@ public class PackPurchaseActivity extends Activity {
 
   /** 
    * Compare the pack preferences against installation status for each pack
-   * and install or uninstall as necessary.
+   * and install or uninstall as necessary.  This is called remotely by PackPurchaseObserver.
    */
   protected void syncronizePacks() {
     Log.d(TAG, "SYNCRONIZING PACKS...");
+    final SharedPreferences userPurchases = getSharedPreferencesForCurrentUser();
+
     Pack[] packArray = mServerPacks.toArray(new Pack[mServerPacks.size()]);
     try {
-      // Don't call syncronize unless SYNCED preference is false
-      if (!getSharedPreferencesForCurrentUser().getBoolean(Consts.PREFKEY_PURCHASES_SYNCED, false)) {
+      // Don't call syncronize unless SYNCED preference is true or some packs are out of date
+      if (userPurchases.getBoolean(Consts.PREFKEY_SYNC_REQUIRED, true) || 
+          mGameManager.packsRequireUpdate(mServerPacks)) {
         new PackSyncronizer().execute(packArray);
       }
     } catch (RuntimeException e) {
@@ -496,7 +500,10 @@ public class PackPurchaseActivity extends Activity {
     // If the most recent request was to open Facebook and we return to Buzzwords, 
     // then install the Facebook pack
     if (requestCode == FACEBOOK_REQUEST_CODE) {
-      installPack(PackPurchaseConsts.FACEBOOK_PACK_ID);
+      final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+      editor.putBoolean(String.valueOf(PackPurchaseConsts.FACEBOOK_PACK_ID), true);
+      editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+      editor.commit();
     }
 
   }
@@ -532,17 +539,19 @@ public class PackPurchaseActivity extends Activity {
     @Override
     protected Integer doInBackground(Pack... packs) {
       for (int i=0; i<packs.length; ++i) {
-        Log.d(TAG, "SYNCING PACK: " + packs[i].getName());
+        Log.d(TAG, "SYNCING PACK: " + packs[i].toString());
         boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
         if (isPackPurchased) {
           gm.installPack(packs[i]);
         } 
+        // Uninstall pack if it is not purchased and is a premium pack
         else if (isPackPurchased == false && 
             packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_PAY) {
-          // If the pack isn't the starter deck, uninstall it.
-          if (packs[i].getId() != gm.getDeck().getStarterPack().getId()) {
-            gm.uninstallPack(packs[i].getId());
-          }
+          gm.uninstallPack(packs[i].getId());
+        }
+        // Update free and starter packs
+        else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_FREE) {
+          gm.installPack(packs[i]);
         }
       }
       return 0; 
@@ -554,7 +563,7 @@ public class PackPurchaseActivity extends Activity {
       dialog.dismiss();
       refreshAllPackLayouts();
       
-      editor.putBoolean(Consts.PREFKEY_PURCHASES_SYNCED, true);
+      editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
       editor.commit();
       
       findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);

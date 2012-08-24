@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -243,35 +244,19 @@ public class Deck {
   /**
    * Take the packs from the server and compare version numbers against installed
    * pack versions.  Return a list of pack ids that need to be udpated.
-   * @param payPacks All the server's pay packs
-   * @param freePacks All the server's free packs
-   * @return LinkedList of packs that need to be updated, 
-   *            null if no packs need updating
+   * @param packs from Server
+   * @return true if any pack needs to be updated, false otherwise
    */
-  public LinkedList<Pack> getPacksForUpdate(LinkedList<Pack> payPacks, LinkedList<Pack> freePacks) {
+  public boolean packsRequireUpdate(LinkedList<Pack> serverPacks) {
     Log.d(TAG, "Checking local pack status...");
-    LinkedList<Pack> localPacks = mDatabaseOpenHelper.getAllPacksFromDB();
-    LinkedList<Pack> allPacks = new LinkedList<Pack>();
-    allPacks.addAll(payPacks);
-    allPacks.addAll(freePacks);
     
-    HashMap<Integer, Pack> allPacksMap= new HashMap<Integer, Pack>();
-    for (Pack pack : allPacks) {
-      allPacksMap.put(pack.getId(), pack);
-    }
-    
-    LinkedList<Pack> packsToUpdate = new LinkedList<Pack>();
-    for (Pack pack : localPacks) {
-      int curId = pack.getId();
-      int oldVsn = pack.getVersion();
-      int newVsn = allPacksMap.get(curId).getVersion();
-      Log.d(TAG, "pack: " + pack.getName() + " oldvsn: " + oldVsn + " newvsn: " + newVsn);
-      
-      if (oldVsn < newVsn) {
-        packsToUpdate.add(allPacksMap.get(curId));
+    for (Pack serverPack : serverPacks) {
+      int packStatus = mDatabaseOpenHelper.packInstalled(serverPack.getId(), serverPack.getVersion());
+      if (packStatus != PACK_CURRENT && packStatus != PACK_NOT_PRESENT) {
+        return true;
       }
     }
-    return packsToUpdate;
+    return false;
   }
   
   /**
@@ -787,13 +772,14 @@ public class Deck {
      */
     private synchronized void installPack(Pack pack, CardJSONIterator cardItr) {
       Log.d(TAG, "installPack: " + pack.getName() + "v" + String.valueOf(pack.getVersion()));
+      // TODO We are getting close() errors that reference this line below.  Cannot figure out why.
       mDatabase = getWritableDatabase();
       
       // Add the pack and all cards in a single transaction.
       mDatabase.beginTransaction();
       try {
         // Clear our pack in case it exists (transactions can be nested)
-        uninstallPack(String.valueOf(pack.getId()));
+//        uninstallPack(String.valueOf(pack.getId()));
         
         Card curCard = null;
         while(cardItr.hasNext()) {
@@ -834,7 +820,6 @@ public class Deck {
      * @return rowId or -1 if failed
      */
     public synchronized static long upsertCard(Card card, int packId, SQLiteDatabase db) {
-      Log.d(TAG, "upsertCard(" + card.getTitle() + ")");
       long ret;
       String[] whereArgs = new String[] { String.valueOf(card.getId()) };
       Cursor cursor = db.query(CardColumns.TABLE_NAME, CardColumns.COLUMNS,
@@ -856,6 +841,7 @@ public class Deck {
      * @return The new id of the row where the card was inserted, -1 if error
      */
     private synchronized static long insertCard(Card card, int packId, SQLiteDatabase db) {
+      Log.d(TAG, "insertCard(" + card.getTitle() + ")");
       ContentValues initialValues = new ContentValues();
       initialValues.put(CardColumns._ID, card.getId());
       initialValues.put(CardColumns.TITLE, card.getTitle());
@@ -874,6 +860,7 @@ public class Deck {
      * @return The number of rows affected
      */
     private synchronized static long updateCard(Card card, int packId, SQLiteDatabase db) {
+      Log.d(TAG, "updateCard(" + card.getTitle() + ")");
       String[] whereArgs = new String[] { String.valueOf(card.getId()) };
       ContentValues initialValues = new ContentValues();
       initialValues.put(CardColumns.TITLE, card.getTitle());
@@ -898,6 +885,7 @@ public class Deck {
       packValues.put(PackColumns.NAME, pack.getName());
       packValues.put(PackColumns.PATH, pack.getPath());
       packValues.put(PackColumns.DESCRIPTION, pack.getDescription());
+      packValues.put(PackColumns.PURCHASE_TYPE, pack.getPurchaseType());
       packValues.put(PackColumns.VERSION, pack.getVersion());
       return db.replace(PackColumns.TABLE_NAME, null, packValues);
     }
@@ -938,7 +926,7 @@ public class Deck {
           PackColumns._ID + " = (?)", packIds, null, null, null);
       if (res.getCount() >= 1) {
         res.moveToFirst();
-        int oldVersion = res.getInt(3);
+        int oldVersion = res.getInt(5);
         int oldId = res.getInt(0);
         res.close();
         mDatabase.close();
