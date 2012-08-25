@@ -71,7 +71,10 @@
 
   <!-- Word Pack purchasing Screen -->
   <string name="toast_wordpurchase_nopackselected">Select at least one of Your Packs to play.</string>
-
+	<string name="packpurchase_facebook_subject">SUBJECT></string>
+	<string name="packpurchase_facebook_text">TEXT></string>
+	
+  
   <!-- Rate Us dialogs -->
   <string name="rateUsFirstDialog_title">We want your feedback!</string>
   <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  

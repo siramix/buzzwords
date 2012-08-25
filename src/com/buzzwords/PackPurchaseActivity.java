@@ -44,8 +44,6 @@ public class PackPurchaseActivity extends Activity {
   private Toast mHelpToast = null;
 
   List<View> mPackLineList;
-
-  private SharedPreferences mPackPrefs;
   
   // Our pack lists as retrieved from the server
   private LinkedList<Pack> mServerPacks;
@@ -84,12 +82,15 @@ public class PackPurchaseActivity extends Activity {
           .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
+      SharedPreferences packSelectionPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
+          Context.MODE_PRIVATE);
+
       Map<String, ?> packSelections = new HashMap<String, Boolean>();
-      packSelections = mPackPrefs.getAll();
+      packSelections = packSelectionPrefs.getAll();
 
       boolean anyPackSelected = false;
       for (String packId : packSelections.keySet()) {
-        if (mPackPrefs.getBoolean(packId, false) == true) {
+        if (packSelectionPrefs.getBoolean(packId, false) == true) {
           anyPackSelected = true;
         }
       }
@@ -121,10 +122,6 @@ public class PackPurchaseActivity extends Activity {
 
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-    // Get our pack preferences
-    mPackPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
-        Context.MODE_PRIVATE);
 
     // Setup the view
     this.setContentView(R.layout.packpurchase);
@@ -224,7 +221,6 @@ public class PackPurchaseActivity extends Activity {
 
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
     btn.setOnClickListener(mGameSetupListener);
-    
   }
 
   /**
@@ -280,7 +276,7 @@ public class PackPurchaseActivity extends Activity {
       
       // Assign the pack to the row. This should maybe be done in
       // a constructor
-      row.setPack(curPack, getPackPref(curPack), count % 2 == 0);
+      row.setPack(curPack, getPackSelectedPref(curPack), count % 2 == 0);
 
       // Add pack rows to the list. Give margin so borders don't double up.
       LinearLayout.LayoutParams margin = (LinearLayout.LayoutParams) row
@@ -341,12 +337,7 @@ public class PackPurchaseActivity extends Activity {
       e.printStackTrace();
     }
     
-    showToast(packToInstall.getName());
-    if (getPackPref(packToInstall)) {
-      setPackPref(packToInstall, false);
-    } else {
-      setPackPref(packToInstall, true);
-    }
+    setPackSelectedPref(packToInstall, true);
   }
   
   /**
@@ -358,11 +349,13 @@ public class PackPurchaseActivity extends Activity {
     for (Pack curPack : mServerPacks) {
       if (curPack.getId() == id) {
         // TODO: Catch the runtime exception correctly
+        Pack packToInstall = curPack;
         try {
-          installPack(curPack);
+          installPack(packToInstall);
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
+        setPackSelectedPref(packToInstall, true);
       }
     }
   }
@@ -441,19 +434,13 @@ public class PackPurchaseActivity extends Activity {
   {
     ComponentName targetComponent = getClientComponentName(mFoundFacebookClients);
 
-    // TODO intent is a stupid name
     if (targetComponent != null) {
-      Intent intent = new Intent(Intent.ACTION_SEND);
-      intent.setComponent(targetComponent);
+      Intent facebookIntent = new Intent(Intent.ACTION_SEND);
+      facebookIntent.setComponent(targetComponent);
       String intentType = ("text/plain");
-      intent.setType(intentType);
-      intent.putExtra(Intent.EXTRA_SUBJECT, "SUBJECT SUBJECT" + "\n"
-          + "TESTING");
-      intent
-          .putExtra(Intent.EXTRA_TEXT, "TESTING TESTING" + "\n" + "TESTING");
-      intent.putExtra(Intent.EXTRA_TEXT,
-          "https://market.android.com/details?id=com.buzzwords");
-      startActivityForResult(intent, FACEBOOK_REQUEST_CODE);
+      facebookIntent.setType(intentType);
+      facebookIntent.putExtra(Intent.EXTRA_TEXT, BuzzWordsApplication.storeURI_Buzzwords.toString());
+      startActivityForResult(facebookIntent, FACEBOOK_REQUEST_CODE);
     } else {
       showToast(getString(R.string.toast_packpurchase_nofacebook));
     }
@@ -699,7 +686,7 @@ public class PackPurchaseActivity extends Activity {
   private final OnPackSelectedListener mSelectPackListener = new OnPackSelectedListener() {
     @Override
     public void onPackSelected(Pack pack, boolean selectionStatus) {
-      setPackPref(pack, selectionStatus);
+      setPackSelectedPref(pack, selectionStatus);
 
       // play confirm sound when points are added
       SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
@@ -735,7 +722,7 @@ public class PackPurchaseActivity extends Activity {
    */
   private void showPackInfo(Pack pack)
   {
-    boolean selectionStatus = getPackPref(pack);
+    boolean selectionStatus = getPackSelectedPref(pack);
     // For now, we don't care if the row background matches
     boolean isPackRowOdd = true; 
 
@@ -801,8 +788,11 @@ public class PackPurchaseActivity extends Activity {
    * @param packName
    * @return
    */
-  public boolean getPackPref(Pack pack) {
-    return mPackPrefs.getBoolean(String.valueOf(pack.getId()), false);
+  public boolean getPackSelectedPref(Pack pack) {
+    SharedPreferences packSelectionPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
+        Context.MODE_PRIVATE);
+
+    return packSelectionPrefs.getBoolean(String.valueOf(pack.getId()), false);
   }
 
   /**
@@ -811,11 +801,10 @@ public class PackPurchaseActivity extends Activity {
    * @param curPack
    *          the pack whose preference will be changed
    */
-  public void setPackPref(Pack pack, boolean onoff) {
-    Log.d(TAG, "setPackPref(" + pack.getName() + "," + onoff + ")");
-    
+  public void setPackSelectedPref(Pack pack, boolean onoff) {
     // Store the pack's boolean in the preferences file for pack preferences
-    SharedPreferences.Editor packPrefsEdit = mPackPrefs.edit();
+    SharedPreferences.Editor packPrefsEdit = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
+        Context.MODE_PRIVATE).edit();
     packPrefsEdit.putBoolean(String.valueOf(pack.getId()), onoff);
     packPrefsEdit.commit();
   }
