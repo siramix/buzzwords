@@ -435,11 +435,6 @@ public class TitleActivity extends Activity {
       tempLabel.startAnimation(fadeLabels(i));
       tempLabel.setTypeface(antonFont);
     }
-    
-    // Animate starburst to rotate
-    View starburst = (View) this.findViewById(R.id.Title_Starburst);
-    starburst.startAnimation(rotateStarburst());
-    
   }
 
   /**
@@ -546,10 +541,10 @@ public class TitleActivity extends Activity {
         }
         
         displayTitleDialog();
-        // Rotate the starburst which would have slowed down the install process
-        //TODO Fill this in once title animations are updated
-        //ImageView starburst = (ImageView) findViewById(R.id.Title_Starburst);
-        //starburst.startAnimation(rotateStarburst());
+
+        // Animate (rotate) the starburst which would have slowed down the install process
+        View starburst = (View) findViewById(R.id.Title_Starburst);
+        starburst.startAnimation(rotateStarburst());
       }
   }
   

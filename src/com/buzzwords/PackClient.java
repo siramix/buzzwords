@@ -110,7 +110,7 @@ public class PackClient {
    * @throws URISyntaxException if the URI is malformed
    */
   private static StringBuilder doHTTPGet(String url) throws IOException, URISyntaxException {
-    Log.d(TAG, "doHTTPGet()");
+    Log.d(TAG, "doHTTPGet(" + url + ")");
     HttpClient client = new DefaultHttpClient();
     HttpGet request = new HttpGet();
     request.setURI(new URI(url));
