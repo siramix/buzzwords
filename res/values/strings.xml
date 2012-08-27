@@ -23,6 +23,7 @@
   <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
   <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
   <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
+  <string name="PREFKEY_GAMELIMIT">com.buzzwords.prefkey.GAMELIMIT</string>
 
   <!-- Menus -->
   <string name="menu_EndTurn">MENU_ENDTURN</string>
