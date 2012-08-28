@@ -80,12 +80,12 @@ public class GameManager {
   /**
    * Number of turns to play
    */
-  private int mNumTurns;
+  private int mTurnLimit;
   
   /**
    * Number of points to play to
    */
-  private int mPointLimit;
+  private int mScoreLimit;
   
   /**
    * The current game's mode
@@ -249,18 +249,18 @@ public class GameManager {
     {
     	case TURNS:
     		mNumRounds = modeInfo;
-    	    mNumTurns = mTeams.size() * mNumRounds;
-    		mPointLimit = -1;
+    	    mTurnLimit = mTeams.size() * mNumRounds;
+    		mScoreLimit = -1;
     		break;
     	case SCORE:
     		mNumRounds = -1;
-    	    mNumTurns = -1;
-    		mPointLimit = modeInfo;
+    	    mTurnLimit = -1;
+    		mScoreLimit = modeInfo;
     		break;
     	case FREEPLAY:
     		mNumRounds = -1;
-    	    mNumTurns = -1;
-    		mPointLimit = -1;
+    	    mTurnLimit = -1;
+    		mScoreLimit = -1;
     		break;
     }
     mCurrentTurn++;
@@ -438,7 +438,7 @@ public class GameManager {
     }
     return mCurrentCards;
   }
-  
+
   /**
    * Queries the game manager to determine if the game should end rather than
    * advancing to another turn based on the current game mode.
@@ -447,11 +447,43 @@ public class GameManager {
    */
   public boolean shouldGameEnd()
   {
-    if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "shouldGameEnd()");
-      }
-	
-    return getNumberOfTurnsRemaining() == 0;
+    if( BuzzWordsApplication.DEBUG )
+    {
+      Log.d( TAG, "shouldGameEnd()" );
+    }
+    boolean ret = false;
+    switch ( mCurrentGameMode )
+    {
+      case TURNS:
+        ret = getNumberOfTurnsRemaining() == 0;
+        break;
+      case SCORE:
+        Iterator<Team> itr = mTeams.iterator();
+        boolean isScoreLimitReached = false;
+        for( itr = mTeams.iterator(); itr.hasNext(); )
+        {
+          if( itr.next().getScore() >= mScoreLimit )
+          {
+            isScoreLimitReached = true;
+            break;
+          }
+        }
+        // When score limit is reached, make sure all teams have had
+        // equal number of turns.
+        if( isScoreLimitReached )
+        {
+          ret = mCurrentTurn % mTeams.size() == 0; 
+        }
+        else
+        {
+          ret = false;
+        }
+        break;
+      case FREEPLAY:
+        ret = false;
+        break;
+    }
+    return ret;
   }
 
   /**
@@ -534,9 +566,41 @@ public class GameManager {
     return mNumRounds;
   }
   
+  /**
+   * Returns the point limit for the current game
+   * 
+   * @return the points a team needs to reach in order to win
+   */
+  public int getScoreLimit() {
+    if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "GetNumRounds()");
+      }	  
+	  return mScoreLimit;
+  }
+
+  /**
+   * Returns game limit, regardless of mode
+   * 
+   * @return the game limit, no matter what the mode. -1 for free play
+   */
+  public int getGameLimit()
+  {
+    int limit;
+    if( mCurrentGameMode == GameMode.TURNS ) {
+      limit = mTurnLimit;
+    }
+    else if( mCurrentGameMode == GameMode.SCORE ) {
+      limit = mScoreLimit;
+    }
+    else {
+      limit = -1;
+    }
+    return limit;
+  }
   
   /**
    * Returns the game mode for the current game
+   * 
    * @return the game mode for the current game
    */
   public GameMode getGameMode()
@@ -559,8 +623,21 @@ public class GameManager {
     return mTurnTime;
   }
 
-  public int getNumberOfTurnsRemaining() {
-    return mNumTurns - mCurrentTurn;
+  /**
+   * Returns the number of remaining Turns in Turns GameMode.
+   * If the GameMode is not Turns, it returns -1.
+   * 
+   * @returns the number of turns until the turn limit is reached
+   */
+  private int getNumberOfTurnsRemaining() {
+    if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "GetNumberOfTurnsRemaining()");
+      }
+    
+    if(mCurrentGameMode != GameMode.TURNS)
+    	return -1;
+    
+    return mTurnLimit - mCurrentTurn;
   }
 
   /**

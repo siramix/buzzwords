@@ -184,7 +184,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
-                android:clickable="false"
                 android:text="Score"
                 android:textSize="22dp" />
 
@@ -194,9 +193,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
-                android:clickable="false"
                 android:text="Free"
                 android:textSize="22dp" />
+
         </RadioGroup>
 
         <TextView
