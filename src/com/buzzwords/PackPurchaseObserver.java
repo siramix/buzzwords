@@ -19,6 +19,7 @@ import java.util.Map;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.amazon.inapp.purchasing.BasePurchasingObserver;
@@ -31,7 +32,6 @@ import com.amazon.inapp.purchasing.PurchaseResponse;
 import com.amazon.inapp.purchasing.PurchaseUpdatesResponse;
 import com.amazon.inapp.purchasing.PurchasingManager;
 import com.amazon.inapp.purchasing.Receipt;
-import com.amazon.inapp.purchasing.SubscriptionPeriod;
 
 /**
  * Purchasing Observer will be called on by the Purchasing Manager asynchronously.
@@ -42,7 +42,6 @@ import com.amazon.inapp.purchasing.SubscriptionPeriod;
 public class PackPurchaseObserver extends BasePurchasingObserver {
     
     private static final String OFFSET = "offset";
-    private static final String START_DATE = "startDate";
     private static final String TAG = "Amazon-IAP";
     private final PackPurchaseActivity baseActivity;
 
@@ -114,9 +113,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
     public void onPurchaseResponse(final PurchaseResponse purchaseResponse) {
         Log.v(TAG, "onPurchaseResponse recieved");
         Log.v(TAG, "PurchaseRequestStatus:" + purchaseResponse.getPurchaseRequestStatus());
-        new PurchaseAsyncTask().
-        
-        execute(purchaseResponse);
+        new PurchaseAsyncTask().execute(purchaseResponse);
     }
 
     /**
@@ -150,7 +147,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      * Helper method to retrieve the correct key to use with our shared preferences
      */
     private String getKey(final String sku) {
-        // TODO To avoid hard-coding our list of entitlements like the example Amazon app,
+        // To avoid hard-coding our list of entitlements like the example Amazon app,
         // we will just use the sku as our key
         return sku;
     }
@@ -158,6 +155,11 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
     private SharedPreferences getSharedPreferencesForCurrentUser() {
         final SharedPreferences settings = baseActivity.getSharedPreferences(baseActivity.getCurrentUser(), Context.MODE_PRIVATE);
         return settings;
+    }
+    
+    private SharedPreferences getSyncPreferences() {
+        final SharedPreferences syncPrefs = baseActivity.getSyncPreferences();
+        return syncPrefs;
     }
     
     private SharedPreferences.Editor getSharedPreferencesEditor(){
@@ -252,7 +254,9 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 PurchasingManager.initiatePurchaseUpdatesRequest(Offset.fromString(baseActivity.getSharedPreferences(baseActivity.getCurrentUser(), Context.MODE_PRIVATE)
                                                                                    .getString(OFFSET, Offset.BEGINNING.toString())));                
             }
-            final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+            final SharedPreferences.Editor userPrefEditor = getSharedPreferencesEditor();
+            // The requires sync preference must be set globally (across users) so switching users triggers a sync
+            final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
             switch (purchaseResponse.getPurchaseRequestStatus()) {
             case SUCCESSFUL:
                 /*
@@ -266,15 +270,15 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                     break;
                 case ENTITLED:
                     key = getKey(receipt.getSku());
-                    editor.putBoolean(key, true);
-                    editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
-                    baseActivity.installPack(Integer.parseInt(receipt.getSku()));
+                    userPrefEditor.putBoolean(key, true);
+                    syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
                     break;
                 case SUBSCRIPTION:
                     //Nothing to do since Buzzwords doesn't use subscriptions
                     break;
                 }
-                editor.commit();
+                userPrefEditor.commit();
+                syncPrefEditor.commit();
                 
                 printReceipt(purchaseResponse.getReceipt());
                 return true;
@@ -285,11 +289,10 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                  * request id returned from the initial request with the request id stored in the response.
                  */
                 final String requestId = purchaseResponse.getRequestId();
-                editor.putBoolean(baseActivity.requestIds.get(requestId), true);
-                editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
-                editor.commit();
-                // Try to install the pack (it won't install if it already is installed)
-                baseActivity.installPack(Integer.parseInt(baseActivity.requestIds.get(requestId)));
+                userPrefEditor.putBoolean(baseActivity.requestIds.get(requestId), true);
+                syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+                userPrefEditor.commit();
+                syncPrefEditor.commit();
                 return true;
             case FAILED:
                 /*
@@ -328,7 +331,9 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
         @Override
         protected Boolean doInBackground(final PurchaseUpdatesResponse... params) {
             final PurchaseUpdatesResponse purchaseUpdatesResponse = params[0];
-            final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+            final SharedPreferences.Editor userPrefEditor = getSharedPreferencesEditor();
+            // The requires sync preference must be set globally (across users) so switching users triggers a sync
+            final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
             final String userId = baseActivity.getCurrentUser();
             if (!purchaseUpdatesResponse.getUserId().equals(userId)) {
                 return false;
@@ -340,9 +345,10 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
             for (final String sku : purchaseUpdatesResponse.getRevokedSkus()) {
                 Log.v(TAG, "Revoked Sku:" + sku);
                 final String key = getKey(sku);
-                editor.putBoolean(key, false);
-                editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
-                editor.commit();
+                userPrefEditor.putBoolean(key, false);
+                syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+                userPrefEditor.commit();
+                syncPrefEditor.commit();
             }
 
             
@@ -356,9 +362,10 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                         /*
                          * If the receipt is for an entitlement, the customer is re-entitled.
                          */
-                        editor.putBoolean(key, true);
-                        editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
-                        editor.commit();
+                        userPrefEditor.putBoolean(key, true);
+                        syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+                        userPrefEditor.commit();
+                        syncPrefEditor.commit();
                         break;
                     case SUBSCRIPTION:
                         // Do nothing because Buzzwords does not use any subscriptions.
@@ -376,8 +383,8 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                  * offset.
                  */
                 final Offset newOffset = purchaseUpdatesResponse.getOffset();
-                editor.putString(OFFSET, newOffset.toString());
-                editor.commit();
+                userPrefEditor.putString(OFFSET, newOffset.toString());
+                userPrefEditor.commit();
                 if (purchaseUpdatesResponse.isMore()) {
                     Log.v(TAG, "Initiating Another Purchase Updates with offset: " + newOffset.toString());
                     PurchasingManager.initiatePurchaseUpdatesRequest(newOffset);

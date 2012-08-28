@@ -27,6 +27,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -309,13 +310,22 @@ public class PackPurchaseActivity extends Activity {
    */
   protected void syncronizePacks() {
     Log.d(TAG, "SYNCRONIZING PACKS...");
-    final SharedPreferences userPurchases = getSharedPreferencesForCurrentUser();
-
+    boolean syncRequired = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+    boolean updateRequired = mGameManager.packsRequireUpdate(mServerPacks);
+    String previousUser = getSyncPreferences().getString(Consts.PREFKEY_LAST_USER, getCurrentUser());
+    
+    // If user has switched, trigger a re-sync
+    if (!previousUser.equals(getCurrentUser())) {
+      syncRequired = true;
+    }
+    
+    Log.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
+    Log.d(TAG, "   UPDATE REQUIRED: " + updateRequired);
+    
     Pack[] packArray = mServerPacks.toArray(new Pack[mServerPacks.size()]);
     try {
       // Don't call syncronize unless SYNCED preference is true or some packs are out of date
-      if (userPurchases.getBoolean(Consts.PREFKEY_SYNC_REQUIRED, true) || 
-          mGameManager.packsRequireUpdate(mServerPacks)) {
+      if (syncRequired || updateRequired) {
         new PackSyncronizer().execute(packArray);
       }
     } catch (RuntimeException e) {
@@ -488,9 +498,13 @@ public class PackPurchaseActivity extends Activity {
     // then install the Facebook pack
     if (requestCode == FACEBOOK_REQUEST_CODE) {
       final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+      // The requires sync preference must be set globally (across users) so switching users triggers a sync
+      final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
       editor.putBoolean(String.valueOf(PackPurchaseConsts.FACEBOOK_PACK_ID), true);
-      editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+      syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
       editor.commit();
+      syncPrefEditor.commit();
     }
 
   }
@@ -511,7 +525,7 @@ public class PackPurchaseActivity extends Activity {
   {
     private ProgressDialog dialog;
     final SharedPreferences userPurchases = getSharedPreferencesForCurrentUser();
-    final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+    final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
     final GameManager gm = new GameManager(PackPurchaseActivity.this);
     
     @Override
@@ -550,8 +564,9 @@ public class PackPurchaseActivity extends Activity {
       dialog.dismiss();
       refreshAllPackLayouts();
       
-      editor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
-      editor.commit();
+      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
+      syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
+      syncPrefEditor.commit();
       
       findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
     }
@@ -618,10 +633,8 @@ public class PackPurchaseActivity extends Activity {
       protected void onPreExecute()
       {
         dialog = ProgressDialog.show(
-          PackPurchaseActivity.this,
-          null,
-          getString(R.string.progressDialog_uninstall_text), 
-          true);
+              PackPurchaseActivity.this, null, 
+              getString(R.string.progressDialog_uninstall_text), true);
       }
 
       @Override
@@ -655,10 +668,8 @@ public class PackPurchaseActivity extends Activity {
       protected void onPreExecute()
       {
         dialog = ProgressDialog.show(
-          PackPurchaseActivity.this,
-          null,
-          getString(R.string.progressDialog_uninstall_text), 
-          true);
+            PackPurchaseActivity.this, null,
+            getString(R.string.progressDialog_uninstall_text), true);
       }
 
       @Override
@@ -855,11 +866,20 @@ public class PackPurchaseActivity extends Activity {
   }
   
   /**
+   * Get the preferences file that all users will share
+   * @return SharedPreferences file for all users.
+   */
+  protected SharedPreferences getSyncPreferences() {
+    final SharedPreferences syncPrefs = getSharedPreferences(Consts.PREFFILE_SYNC_REQUIRED, Context.MODE_PRIVATE);
+    return syncPrefs;
+  }
+  
+  /**
    * Gets current logged in user
    * @return current user
    */
-  String getCurrentUser(){
-      return mCurrentUser;
+  protected String getCurrentUser(){
+    return mCurrentUser;
   }
   
   /**
@@ -869,28 +889,6 @@ public class PackPurchaseActivity extends Activity {
   void setCurrentUser(final String currentUser){
       this.mCurrentUser = currentUser;
   }
-  
-  /**
-   * If the database has not been initialized, we send a
-   * RESTORE_TRANSACTIONS request to Android Market to get the list of purchased items
-   * for this user. This happens if the application has just been installed
-   * or the user wiped data. We do not want to do this on every startup, rather, we want to do
-   * only when the database needs to be initialized.
-   */
-//  private void restorePacks() {
-//    Log.d(TAG, "restorePacks");
-//    SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-//    boolean initialized = prefs.getBoolean(
-//        Consts.PREFKEY_PACKS_INITIALIZED, false);
-//    if (!initialized) {
-//      Log.d(TAG, "restoring transactions...");
-//      mBillingService.restoreTransactions();
-//      Toast.makeText(this, R.string.packpurchase_restoring_packs, Toast.LENGTH_LONG).show();
-//    }
-//    else {
-//      Log.d(TAG, "restore not necessary");
-//    }
-//  }
   
   /**
    * Handle showing a toast or refreshing an existing toast

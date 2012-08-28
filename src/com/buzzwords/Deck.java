@@ -775,9 +775,6 @@ public class Deck {
       // Add the pack and all cards in a single transaction.
       mDatabase.beginTransaction();
       try {
-        // Clear our pack in case it exists (transactions can be nested)
-//        uninstallPack(String.valueOf(pack.getId()));
-        
         Card curCard = null;
         while(cardItr.hasNext()) {
           curCard = cardItr.next();
