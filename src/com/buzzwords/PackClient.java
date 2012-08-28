@@ -74,7 +74,7 @@ public class PackClient {
    * @throws JSONException if the JSON is invalid
    */
   public LinkedList<Pack> getServerPacks() throws IOException, URISyntaxException, JSONException {
-    Log.d(TAG, "getPayPacks");
+    Log.d(TAG, "getServerPacks");
     StringBuilder in = null;
     LinkedList<Pack> ret = null;
     in = doHTTPGet(URL_BASE+PACK_LIST_URL);
@@ -110,7 +110,7 @@ public class PackClient {
    * @throws URISyntaxException if the URI is malformed
    */
   private static StringBuilder doHTTPGet(String url) throws IOException, URISyntaxException {
-    Log.d(TAG, "doHTTPGet()");
+    Log.d(TAG, "doHTTPGet(" + url + ")");
     HttpClient client = new DefaultHttpClient();
     HttpGet request = new HttpGet();
     request.setURI(new URI(url));

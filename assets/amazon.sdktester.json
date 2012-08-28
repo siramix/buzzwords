@@ -1,0 +1,30 @@
+{
+  "3" : {
+    "itemType": "ENTITLED",
+    "price": 0.99,
+	"title": "Basic",
+	"description": "Button Clicker - Now in Blue!",
+    "smallIconUrl": "http://some/image.jpg"
+  },
+  "4" : {
+    "itemType": "ENTITLED",
+    "price": 0.99,
+	"title": "Hott",
+	"description": "Button Clicker - Now in Green!",
+    "smallIconUrl": "http://some/image.jpg"
+  },
+  "5" : {
+    "itemType": "ENTITLED",
+    "price": 0.99,
+	"title": "Amazon Pack 1",
+	"description": "Description hosted by Amazon for pack 1!",
+    "smallIconUrl": "http://some/image.jpg"
+  },
+  "6" : {
+    "itemType": "ENTITLED",
+    "price": 0.99,
+	"title": "Amazon Pack 2",
+	"description": "Description hosted by Amazon for pack 2!",
+    "smallIconUrl": "http://some/image.jpg"
+  }
+}

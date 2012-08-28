@@ -59,7 +59,7 @@ public class Pack implements Serializable {
    * Default constructor
    */
   public Pack() {
-    this(-1, "","", "","", -1, -1, -1, PackPurchaseType.UNSET, false);
+    this(-1, "","", "","", -1, -1, -1, PackPurchaseConsts.PACKTYPE_UNSET, false);
     Log.d(TAG, "null consructor Pack()");
   }
 
@@ -70,8 +70,10 @@ public class Pack implements Serializable {
    * @param path
    * @param description 
    * @param updateMessage
+   * @param iconId
+   * @param size (server)
+   * @param purchaseType
    * @param version
-   * @param size
    * @param installed (whether the pack has been installed yet)
    */
   public Pack(int id, String name, String path, String description,

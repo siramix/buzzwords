@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.json.JSONException;
 
+import com.amazon.inapp.purchasing.PurchasingManager;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -24,6 +26,8 @@ import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,39 +37,38 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PackPurchase extends Activity {
+public class PackPurchaseActivity extends Activity {
 
   private static final String TAG = "PackPurchase";
-  
-  private ProgressDialog mInstallDialog;
   
   // To be used for tooltips to help guide users
   private Toast mHelpToast = null;
 
   List<View> mPackLineList;
-
-  private SharedPreferences mPackPrefs;
   
   // Our pack lists as retrieved from the server
   private LinkedList<Pack> mServerPacks;
+  
+  private GameManager mGameManager;
 
   /**
    * This block of maps stores our lists of clients
    */
-  HashMap<String, String> mKnownTwitterClients;
   HashMap<String, String> mKnownFacebookClients;
-  HashMap<String, String> mKnownGoogleClients;
-  HashMap<String, ActivityInfo> mFoundTwitterClients;
   HashMap<String, ActivityInfo> mFoundFacebookClients;
-  HashMap<String, ActivityInfo> mFoundGoogleClients;
 
+  /**
+   * This block of variables is for Amazon In-App Purchases
+   */
+  // currently logged in user
+  private String mCurrentUser;
+  // Mapping of our requestIds to unlockable content
+  public Map<String, String> requestIds;
   /**
    * Request Code constants for social media sharing
    */
-  private static final int TWITTER_REQUEST_CODE = 11;
-  private static final int FACEBOOK_REQUEST_CODE = 12;
-  private static final int GOOGLEPLUS_REQUEST_CODE = 13;
-  private static final int PACKINFO_REQUEST_CODE = 14;
+    private static final int FACEBOOK_REQUEST_CODE = 12;
+    private static final int PACKINFO_REQUEST_CODE = 14;
 
   /**
    * PlayGameListener plays an animation on the view that will result in
@@ -76,23 +79,26 @@ public class PackPurchase extends Activity {
       Log.d(TAG, "PlayGameListener OnClick()");
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(PackPurchase.this
+      SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
           .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
+      SharedPreferences packSelectionPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
+          Context.MODE_PRIVATE);
+
       Map<String, ?> packSelections = new HashMap<String, Boolean>();
-      packSelections = mPackPrefs.getAll();
+      packSelections = packSelectionPrefs.getAll();
 
       boolean anyPackSelected = false;
       for (String packId : packSelections.keySet()) {
-        if (mPackPrefs.getBoolean(packId, false) == true) {
+        if (packSelectionPrefs.getBoolean(packId, false) == true) {
           anyPackSelected = true;
         }
       }
 
       // Only advance to next screen if a pack is selected
       if (anyPackSelected == true) {
-        startActivity(new Intent(PackPurchase.this.getApplication()
+        startActivity(new Intent(PackPurchaseActivity.this.getApplication()
             .getString(R.string.IntentGameSetup), getIntent().getData()));
       } else {
         showToast(getString(R.string.toast_wordpurchase_nopackselected));
@@ -111,12 +117,12 @@ public class PackPurchase extends Activity {
     // Initialize our packs
     mServerPacks = new LinkedList<Pack>();
     
+    mGameManager= new GameManager(PackPurchaseActivity.this);
+
+    requestIds = new HashMap<String, String>();
+
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-    // Get our pack preferences
-    mPackPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
-        Context.MODE_PRIVATE);
 
     // Setup the view
     this.setContentView(R.layout.packpurchase);
@@ -140,16 +146,30 @@ public class PackPurchase extends Activity {
     refreshAllPackLayouts();
   }
 
+  
+  /**
+   * Whenever the application regains focus, the observer is registered again.
+   */
+  @Override
+  public void onStart() {
+      super.onStart();
+      PackPurchaseObserver packPurchaseObserver = new PackPurchaseObserver(this);
+      PurchasingManager.registerObserver(packPurchaseObserver);
+  }
+  
+  /**
+   * When the application resumes the application checks which customer is signed in.
+   */
   @Override
   public void onResume() {
     super.onResume();
+    PurchasingManager.initiateGetUserIdRequest();
     refreshAllPackLayouts();
   }
 
   protected void refreshAllPackLayouts() {
     Log.d(TAG, "refreshAllPackLayouts");
     // Get our current context
-    GameManager game = new GameManager(PackPurchase.this);
 
     // Populate and display list of cards
     LinearLayout unlockedPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_UnlockedPackSets);
@@ -160,23 +180,23 @@ public class PackPurchase extends Activity {
 
     PackClient client = PackClient.getInstance();
     LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
-    LinkedList<Pack> localPacks = new LinkedList<Pack>();
-    localPacks = game.getInstalledPacks();
+    LinkedList<Pack> unlockedPacks = new LinkedList<Pack>();
+    unlockedPacks = mGameManager.getInstalledPacks();
 
     //TODO these http pack requests should be in their own methods (getLockedPacksFromServer...)
     // First try to get the online packs, if no internet, just use local packs
     try {
       mServerPacks = client.getServerPacks();
-      lockedPacks = removeLocalPacks(mServerPacks, localPacks);
-      populatePackLayout(localPacks, unlockedPackLayout);
+      lockedPacks = getUnownedPacks(mServerPacks, unlockedPacks);
+      populatePackLayout(unlockedPacks, unlockedPackLayout);
       //TODO maybe we want to put this on the purchase button isntead
       populatePackLayout(lockedPacks, paidPackLayout);
     } catch (IOException e1) {
-      populatePackLayout(localPacks, unlockedPackLayout);
+      populatePackLayout(unlockedPacks, unlockedPackLayout);
       showToast(getString(R.string.toast_packpurchase_nointerneterror));
       e1.printStackTrace();
     } catch (URISyntaxException e1) {
-      populatePackLayout(localPacks, unlockedPackLayout);
+      populatePackLayout(unlockedPacks, unlockedPackLayout);
       showToast(getString(R.string.toast_packpurchase_siramixdownerror));
       e1.printStackTrace();
     } catch (JSONException e1) {
@@ -190,7 +210,7 @@ public class PackPurchase extends Activity {
     TextView totalCardCount = (TextView) this.findViewById(R.id.PackPurchase_TOTALCARDS);
     int totalSeen = 0;
     int totalCards = 0;
-    for (Pack pack : localPacks) {
+    for (Pack pack : unlockedPacks) {
       totalSeen += pack.getNumCardsSeen();
       totalCards += pack.getSize();
     }
@@ -210,17 +230,20 @@ public class PackPurchase extends Activity {
    * @param localPacks
    * @return
    */
-  private LinkedList<Pack> removeLocalPacks(LinkedList<Pack> lockedPacks, LinkedList<Pack> installedPacks) {
+  private LinkedList<Pack> getUnownedPacks(LinkedList<Pack> lockedPacks, LinkedList<Pack> installedPacks) {
     Log.d(TAG, "removeLocalPacks");
+    LinkedList<Pack> unownedPackList = new LinkedList<Pack>();
+    unownedPackList.addAll(lockedPacks);
+    
     for (Pack localPack : installedPacks) {
-      for (int lockedIndex=0; lockedIndex<lockedPacks.size(); ++lockedIndex) {
-        if (localPack.getId() == lockedPacks.get(lockedIndex).getId()) {
-          lockedPacks.remove(lockedIndex);
+      for (int unownedIndex=0; unownedIndex<unownedPackList.size(); ++unownedIndex) {
+        if (localPack.getId() == unownedPackList.get(unownedIndex).getId()) {
+          unownedPackList.remove(unownedIndex);
         }
       }
     }
     
-    return lockedPacks;
+    return unownedPackList;
   }
   
   /**
@@ -254,7 +277,7 @@ public class PackPurchase extends Activity {
       
       // Assign the pack to the row. This should maybe be done in
       // a constructor
-      row.setPack(curPack, getPackPref(curPack), count % 2 == 0);
+      row.setPack(curPack, getPackSelectedPref(curPack), count % 2 == 0);
 
       // Add pack rows to the list. Give margin so borders don't double up.
       LinearLayout.LayoutParams margin = (LinearLayout.LayoutParams) row
@@ -280,11 +303,42 @@ public class PackPurchase extends Activity {
     }
     insertionPoint.addView(layout);
   }
+
+  /** 
+   * Compare the pack preferences against installation status for each pack
+   * and install or uninstall as necessary.  This is called remotely by PackPurchaseObserver.
+   */
+  protected void syncronizePacks() {
+    Log.d(TAG, "SYNCRONIZING PACKS...");
+    boolean syncRequired = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+    boolean updateRequired = mGameManager.packsRequireUpdate(mServerPacks);
+    String previousUser = getSyncPreferences().getString(Consts.PREFKEY_LAST_USER, getCurrentUser());
+    
+    // If user has switched, trigger a re-sync
+    if (!previousUser.equals(getCurrentUser())) {
+      syncRequired = true;
+    }
+    
+    Log.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
+    Log.d(TAG, "   UPDATE REQUIRED: " + updateRequired);
+    
+    Pack[] packArray = mServerPacks.toArray(new Pack[mServerPacks.size()]);
+    try {
+      // Don't call syncronize unless SYNCED preference is true or some packs are out of date
+      if (syncRequired || updateRequired) {
+        new PackSyncronizer().execute(packArray);
+      }
+    } catch (RuntimeException e) {
+      Log.e(TAG, "Encountered an error syncronizing packs.");
+      e.printStackTrace();
+    }
+  }
   
   /*
+   * 
    * Helper function to install a purchased pack
    */
-  private void installPack(Pack packToInstall)
+  protected void installPack(Pack packToInstall)
   {
     // TODO: Catch the runtime exception
     try {
@@ -293,12 +347,7 @@ public class PackPurchase extends Activity {
       e.printStackTrace();
     }
     
-    showToast(packToInstall.getName());
-    if (getPackPref(packToInstall)) {
-      setPackPref(packToInstall, false);
-    } else {
-      setPackPref(packToInstall, true);
-    }
+    setPackSelectedPref(packToInstall, true);
   }
   
   /**
@@ -306,15 +355,17 @@ public class PackPurchase extends Activity {
    * can infer which pack the user is requesting and get it from the server.
    * @param id The pack Id of the pack that should be installed.
    */
-  private void installPack(int id) {
+  protected void installPack(int id) {
     for (Pack curPack : mServerPacks) {
       if (curPack.getId() == id) {
         // TODO: Catch the runtime exception correctly
+        Pack packToInstall = curPack;
         try {
-          installPack(curPack);
+          installPack(packToInstall);
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
+        setPackSelectedPref(packToInstall, true);
       }
     }
   }
@@ -325,7 +376,7 @@ public class PackPurchase extends Activity {
    * can infer which pack the user is requesting and get it from the server.
    * @param id The pack Id of the pack that should be installed.
    */
-  private void installPack(String name) {
+  protected void installPack(String name) {
     for (Pack curPack : mServerPacks) {
       if (curPack.getName().equals(name)) {
         // TODO: Catch the runtime exception correctly
@@ -343,7 +394,7 @@ public class PackPurchase extends Activity {
    * can infer which pack the user is requesting and get it from the server.
    * @param id The pack Id of the pack that should be removed if possible.
    */
-  private void uninstallPack(int id) {
+  protected void uninstallPack(int id) {
     // TODO: Catch the runtime exception correctly
     try {
       new PackUninstaller().execute(id);
@@ -356,7 +407,7 @@ public class PackPurchase extends Activity {
    * This will update all packs needing updates in a separate thread from the UI.
    * @param id The pack Id of the pack that should be removed if possible.
    */
-  private void updatePacks(Pack[] packToUpdate) {
+  protected void updatePacks(Pack[] packToUpdate) {
     // TODO: Catch the runtime exception correctly
     try {
       new PackUpdater().execute(packToUpdate);
@@ -373,7 +424,7 @@ public class PackPurchase extends Activity {
    * THE ONLY REASON WE HAVE THIS IS BECAUSE OF THE android.test PACKAGES
    * @param id The pack Id of the pack that should be installed.
    */
-  private void uninstallPack(String name) {
+  protected void uninstallPack(String name) {
     for (Pack curPack : mServerPacks) {
       if (curPack.getName().equals(name)) {    
         //TODO: Catch the runtime exception correctly
@@ -385,30 +436,6 @@ public class PackPurchase extends Activity {
       }
     }
   }
-  
-  /**
-   * Opens the twitter client for promotional packs
-   */
-  private void openTwitterClient()
-  {
-    ComponentName targetComponent = getClientComponentName(mFoundTwitterClients);
-
-    if (targetComponent != null) {
-      Intent shareIntent = new Intent(Intent.ACTION_SEND);
-      shareIntent.setComponent(targetComponent);
-
-      String intentType = (targetComponent.getClassName()
-          .contains("com.twidroid")) ? "application/twitter" : "text/plain";
-
-      shareIntent.setType(intentType);
-      shareIntent
-          .putExtra(Intent.EXTRA_TEXT,
-              "TESTING TESTING \n https://market.android.com/details?id=com.buzzwords");
-      startActivityForResult(shareIntent, TWITTER_REQUEST_CODE);
-    } else {
-      showToast(getString(R.string.toast_packpurchase_notwitter));
-    }
-  };
 
   /**
    * Opens the Facebook client for promotional packs
@@ -417,55 +444,25 @@ public class PackPurchase extends Activity {
   {
     ComponentName targetComponent = getClientComponentName(mFoundFacebookClients);
 
-    // TODO intent is a stupid name
     if (targetComponent != null) {
-      Intent intent = new Intent(Intent.ACTION_SEND);
-      intent.setComponent(targetComponent);
+      Intent facebookIntent = new Intent(Intent.ACTION_SEND);
+      facebookIntent.setComponent(targetComponent);
       String intentType = ("text/plain");
-      intent.setType(intentType);
-      intent.putExtra(Intent.EXTRA_SUBJECT, "SUBJECT SUBJECT" + "\n"
-          + "TESTING");
-      intent
-          .putExtra(Intent.EXTRA_TEXT, "TESTING TESTING" + "\n" + "TESTING");
-      intent.putExtra(Intent.EXTRA_TEXT,
-          "https://market.android.com/details?id=com.buzzwords");
-      startActivityForResult(intent, FACEBOOK_REQUEST_CODE);
+      facebookIntent.setType(intentType);
+      facebookIntent.putExtra(Intent.EXTRA_TEXT, BuzzWordsApplication.storeURI_Buzzwords.toString());
+      startActivityForResult(facebookIntent, FACEBOOK_REQUEST_CODE);
     } else {
       showToast(getString(R.string.toast_packpurchase_nofacebook));
     }
   };
 
   /**
-   * Opens the Google client for promotional packs
-   */
-  private void openGoogleClient()
-  {
-    ComponentName targetComponent = getClientComponentName(mFoundGoogleClients);
-
-    // TODO intent is a stupid name
-    if (targetComponent != null) {
-      Intent gplusIntent = new Intent(Intent.ACTION_SEND);
-      gplusIntent.setComponent(targetComponent);
-      String intentType = ("text/plain");
-      gplusIntent.setType(intentType);
-      gplusIntent.putExtra(Intent.EXTRA_SUBJECT, "SUBJECT SUBJECT" + "\n"
-          + "TESTING");
-      gplusIntent
-          .putExtra(Intent.EXTRA_TEXT,
-              "TESTING TESTING \n https://market.android.com/details?id=com.buzzwords");
-      startActivityForResult(gplusIntent, GOOGLEPLUS_REQUEST_CODE);
-    } else {
-      showToast(getString(R.string.toast_packpurchase_nogoogleplus));
-    }
-  };
-
-  /**
-   * Listen for the result of social activities like twitter, facebook, and
-   * google+
+   * Listen for the result of a pack info click, purchase click, or social post click.
    */
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    Log.d(TAG, "****** ACTIVITY RESULT RESULTCODE = " + resultCode);
 
+    // If the request is coming from our packInfo Activity, handle the request as
+    // a purchase, a facebook post, or nothing.
     if(requestCode == PACKINFO_REQUEST_CODE)
     {
       if(resultCode == RESULT_CANCELED)
@@ -473,66 +470,125 @@ public class PackPurchase extends Activity {
         // Do nothing
         return;
       }
-        
+      
       // Get the pack
       Pack curPack = (Pack) data.getExtras().get(getString(R.string.packBundleKey));
       int resultTypeIndex = curPack.getPurchaseType();
-      switch(PackPurchaseType.PURCHASE_RESULT_CODES[resultTypeIndex])
+      
+      switch(PackPurchaseConsts.PURCHASE_RESULT_CODES[resultTypeIndex])
       {
-        case PackPurchaseType.RESULT_NOCODE:
-          purchasePack(curPack);
+        case PackPurchaseConsts.RESULT_NOCODE:
+          final SharedPreferences settings = getSharedPreferencesForCurrentUser();
+          final String sku = String.valueOf(curPack.getId());
+          boolean entitled = settings.getBoolean(sku, false);
+          
+          if (!entitled) {
+            String requestId = PurchasingManager.initiatePurchaseRequest(sku);
+            storeRequestId(requestId, sku);
+          }
           break;
-        case PackPurchaseType.RESULT_TWITTER:
-          openTwitterClient();
-          // TODO: This should not occur until they RETURN from the Tweet
-          //   but we would have trouble getting to the Pack they just tweeted ABOUT
-          // returning from Tweet etc.
-          installPack(curPack);
-          break;
-        case PackPurchaseType.RESULT_FACEBOOK:
+        case PackPurchaseConsts.RESULT_FACEBOOK:
           openFacebookClient();
-          // TODO: This should not occur until they RETURN
-          installPack(curPack);
-          break;
-        case PackPurchaseType.RESULT_GOOGLE:
-          openGoogleClient();
-          // TODO: This should not occur until they RETURN
-          installPack(curPack);
           break;
       }
+    } 
 
+    
+    // If the most recent request was to open Facebook and we return to Buzzwords, 
+    // then install the Facebook pack
+    if (requestCode == FACEBOOK_REQUEST_CODE) {
+      final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+      // The requires sync preference must be set globally (across users) so switching users triggers a sync
+      final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
+      editor.putBoolean(String.valueOf(PackPurchaseConsts.FACEBOOK_PACK_ID), true);
+      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+      syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
+      editor.commit();
+      syncPrefEditor.commit();
     }
-    else if(requestCode == TWITTER_REQUEST_CODE)
-    {
-      // TODO: Here is where we really want to install the pack, but we 
-      // can't get to the pack from here...
-    }
+
   }
 
-  /*
-   * Helper function to submit the request to the billing service
+  /**
+   * Helper method to associate request ids to shared preference keys
+   * 
+   * @param requestId
+   *            Request ID returned from a Purchasing Manager Request
+   * @param key
+   *            Key used in shared preferences file
    */
-  private void purchasePack(Pack packToPurchase)
-  {  
-    //showPackInfo(packToPurchase);
-    Log.d(TAG, "purchasePack(" + packToPurchase.getName() + ")");
+  private void storeRequestId(String requestId, String key) {
+      requestIds.put(requestId, key);
   }
-
+  
+  public class PackSyncronizer extends AsyncTask <Pack, Void, Integer>
+  {
+    private ProgressDialog dialog;
+    final SharedPreferences userPurchases = getSharedPreferencesForCurrentUser();
+    final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
+    final GameManager gm = new GameManager(PackPurchaseActivity.this);
+    
+    @Override
+    protected void onPreExecute() {
+      dialog = ProgressDialog.show(
+          PackPurchaseActivity.this,
+          null,
+          getString(R.string.progressDialog_update_text), 
+          true);
+    }
+    
+    @Override
+    protected Integer doInBackground(Pack... packs) {
+      for (int i=0; i<packs.length; ++i) {
+        Log.d(TAG, "SYNCING PACK: " + packs[i].toString());
+        boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
+        if (isPackPurchased) {
+          gm.installPack(packs[i]);
+        } 
+        // Uninstall pack if it is not purchased and is a premium pack
+        else if (isPackPurchased == false && 
+            packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_PAY) {
+          gm.uninstallPack(packs[i].getId());
+        }
+        // Update free and starter packs
+        else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_FREE) {
+          gm.installPack(packs[i]);
+        }
+      }
+      return 0; 
+    }
+    
+    @Override
+    protected void onPostExecute(Integer result)
+    {
+      dialog.dismiss();
+      refreshAllPackLayouts();
+      
+      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
+      syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
+      syncPrefEditor.commit();
+      
+      findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
+    }
+  }
+  
   /** 
    * Run installations in an Async Task.  This puts the intensive task of installing
    * on a separate thread that once complete will dismiss the progress dialog and refresh
    * the layout.
    */
-  private class PackInstaller extends AsyncTask <Pack, Void, String>
+  public class PackInstaller extends AsyncTask <Pack, Void, String>
   {
       private ProgressDialog dialog;
       private Pack packToInstall;
+      final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+      private GameManager gm = new GameManager(PackPurchaseActivity.this);
       
       @Override
       protected void onPreExecute()
       {
         dialog = ProgressDialog.show(
-          PackPurchase.this,
+          PackPurchaseActivity.this,
           null,
           getString(R.string.progressDialog_install_text), 
           true);
@@ -541,10 +597,11 @@ public class PackPurchase extends Activity {
       @Override
       protected String doInBackground(Pack... pack)
       {
+        Log.d(TAG, "Install Pack Async: " + pack[0].getName());
         packToInstall = pack[0];
-        GameManager gm = new GameManager(PackPurchase.this);
         gm.installPack(packToInstall);
         return "";
+        
       }
 
       @Override
@@ -552,6 +609,11 @@ public class PackPurchase extends Activity {
       {
         dialog.dismiss();
         refreshAllPackLayouts();
+        if (gm.getDeck().isPackInstalled(packToInstall.getId())) {
+          editor.putBoolean(String.valueOf(packToInstall.getId()), true);
+          Log.d(TAG, "Put Pref (" + packToInstall.getId() + ", TRUE)");
+          
+        }
         findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
       }
   }
@@ -561,25 +623,26 @@ public class PackPurchase extends Activity {
    * on a separate thread that once complete will dismiss the progress dialog and refresh
    * the layout.
    */
-  private class PackUninstaller extends AsyncTask <Integer, Void, String>
+  protected class PackUninstaller extends AsyncTask <Integer, Void, String>
   {
       private ProgressDialog dialog;
-
+      private int packIdToUninstall;
+      final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+      
       @Override
       protected void onPreExecute()
       {
         dialog = ProgressDialog.show(
-          PackPurchase.this,
-          null,
-          getString(R.string.progressDialog_uninstall_text), 
-          true);
+              PackPurchaseActivity.this, null, 
+              getString(R.string.progressDialog_uninstall_text), true);
       }
 
       @Override
       protected String doInBackground(Integer... packIds)
       {
-        GameManager gm = new GameManager(PackPurchase.this);
-        gm.uninstallPack(packIds[0]);
+        GameManager gm = new GameManager(PackPurchaseActivity.this);
+        packIdToUninstall = packIds[0];
+        gm.uninstallPack(packIdToUninstall);
         return "";
       }
 
@@ -588,6 +651,11 @@ public class PackPurchase extends Activity {
       {
         dialog.dismiss();
         refreshAllPackLayouts();
+        if (mGameManager.getDeck().isPackInstalled(packIdToUninstall) == false) {
+          // Pack has been uninstalled so update the preference.
+          editor.putBoolean(String.valueOf(packIdToUninstall), false);
+          Log.d(TAG, "Put Pref (" + packIdToUninstall + ", FALSE)");
+        }
         findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
       }
   }
@@ -600,16 +668,14 @@ public class PackPurchase extends Activity {
       protected void onPreExecute()
       {
         dialog = ProgressDialog.show(
-          PackPurchase.this,
-          null,
-          getString(R.string.progressDialog_uninstall_text), 
-          true);
+            PackPurchaseActivity.this, null,
+            getString(R.string.progressDialog_uninstall_text), true);
       }
 
       @Override
       protected String doInBackground(Pack... packsToInstall)
       {
-        GameManager gm = new GameManager(PackPurchase.this);
+        GameManager gm = new GameManager(PackPurchaseActivity.this);
         for (Pack pack : packsToInstall) {
           gm.installPack(pack);
         }
@@ -631,10 +697,10 @@ public class PackPurchase extends Activity {
   private final OnPackSelectedListener mSelectPackListener = new OnPackSelectedListener() {
     @Override
     public void onPackSelected(Pack pack, boolean selectionStatus) {
-      setPackPref(pack, selectionStatus);
+      setPackSelectedPref(pack, selectionStatus);
 
       // play confirm sound when points are added
-      SoundManager sm = SoundManager.getInstance(PackPurchase.this
+      SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
           .getBaseContext());
       if (selectionStatus) {
         sm.playSound(SoundManager.Sound.CONFIRM);
@@ -652,7 +718,7 @@ public class PackPurchase extends Activity {
     @Override
     public void onPackInfoRequested(Pack pack) {
       // play confirm sound when points are added
-      SoundManager sm = SoundManager.getInstance(PackPurchase.this
+      SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
           .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
      
@@ -667,7 +733,7 @@ public class PackPurchase extends Activity {
    */
   private void showPackInfo(Pack pack)
   {
-    boolean selectionStatus = getPackPref(pack);
+    boolean selectionStatus = getPackSelectedPref(pack);
     // For now, we don't care if the row background matches
     boolean isPackRowOdd = true; 
 
@@ -694,26 +760,11 @@ public class PackPurchase extends Activity {
    */
   private void buildKnownClientsList() {
     Log.d(TAG, "buildKnownClientsList()");
-
-    mKnownTwitterClients = new HashMap<String, String>();
-    mKnownTwitterClients.put("Twitter", "com.twitter.android.PostActivity");
-    mKnownTwitterClients.put("UberSocial", "com.twidroid.activity.SendTweet");
-    mKnownTwitterClients.put("TweetDeck",
-        "com.tweetdeck.compose.ComposeActivity");
-    mKnownTwitterClients.put("Seesmic", "com.seesmic.ui.Composer");
-    mKnownTwitterClients.put("TweetCaster",
-        "com.handmark.tweetcaster.ShareSelectorActivity");
-    mKnownTwitterClients.put("Plume",
-        "com.levelup.touiteur.appwidgets.TouiteurWidgetNewTweet");
-    mKnownTwitterClients.put("Twicca", "jp.r246.twicca.statuses.Send");
     mKnownFacebookClients = new HashMap<String, String>();
     mKnownFacebookClients.put("Facebook",
         "com.facebook.katana.ShareLinkActivity");
     mKnownFacebookClients.put("FriendCaster",
         "uk.co.senab.blueNotifyFree.activity.PostToFeedActivity");
-    mKnownGoogleClients = new HashMap<String, String>();
-    mKnownGoogleClients.put("Google+",
-        "com.google.android.apps.plus.phone.PostActivity");
   }
 
   /**
@@ -725,9 +776,7 @@ public class PackPurchase extends Activity {
     Log.d(TAG, "detectClients()");
 
     buildKnownClientsList();
-    mFoundTwitterClients = new HashMap<String, ActivityInfo>();
     mFoundFacebookClients = new HashMap<String, ActivityInfo>();
-    mFoundGoogleClients = new HashMap<String, ActivityInfo>();
 
     Intent intent = new Intent(Intent.ACTION_SEND);
     intent.setType("text/plain");
@@ -738,12 +787,8 @@ public class PackPurchase extends Activity {
       ResolveInfo app = (ResolveInfo) activityList.get(i);
       ActivityInfo activity = app.activityInfo;
       Log.d(TAG, "******* --> " + activity.name);
-      if (mKnownTwitterClients.containsValue(activity.name)) {
-        mFoundTwitterClients.put(activity.name, activity);
-      } else if (mKnownFacebookClients.containsValue(activity.name)) {
+      if (mKnownFacebookClients.containsValue(activity.name)) {
         mFoundFacebookClients.put(activity.name, activity);
-      } else if (mKnownGoogleClients.containsValue(activity.name)) {
-        mFoundGoogleClients.put(activity.name, activity);
       }
     }
   }
@@ -754,8 +799,11 @@ public class PackPurchase extends Activity {
    * @param packName
    * @return
    */
-  public boolean getPackPref(Pack pack) {
-    return mPackPrefs.getBoolean(String.valueOf(pack.getId()), false);
+  public boolean getPackSelectedPref(Pack pack) {
+    SharedPreferences packSelectionPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
+        Context.MODE_PRIVATE);
+
+    return packSelectionPrefs.getBoolean(String.valueOf(pack.getId()), false);
   }
 
   /**
@@ -764,11 +812,10 @@ public class PackPurchase extends Activity {
    * @param curPack
    *          the pack whose preference will be changed
    */
-  public void setPackPref(Pack pack, boolean onoff) {
-    Log.d(TAG, "setPackPref(" + pack.getName() + "," + onoff + ")");
-    
+  public void setPackSelectedPref(Pack pack, boolean onoff) {
     // Store the pack's boolean in the preferences file for pack preferences
-    SharedPreferences.Editor packPrefsEdit = mPackPrefs.edit();
+    SharedPreferences.Editor packPrefsEdit = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
+        Context.MODE_PRIVATE).edit();
     packPrefsEdit.putBoolean(String.valueOf(pack.getId()), onoff);
     packPrefsEdit.commit();
   }
@@ -802,26 +849,46 @@ public class PackPurchase extends Activity {
   }
 
   /**
-   * If the database has not been initialized, we send a
-   * RESTORE_TRANSACTIONS request to Android Market to get the list of purchased items
-   * for this user. This happens if the application has just been installed
-   * or the user wiped data. We do not want to do this on every startup, rather, we want to do
-   * only when the database needs to be initialized.
+   * Get the SharedPreferences file for the current user.
+   * @return SharedPreferences file for a user.
    */
-//  private void restorePacks() {
-//    Log.d(TAG, "restorePacks");
-//    SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-//    boolean initialized = prefs.getBoolean(
-//        Consts.PREFKEY_PACKS_INITIALIZED, false);
-//    if (!initialized) {
-//      Log.d(TAG, "restoring transactions...");
-//      mBillingService.restoreTransactions();
-//      Toast.makeText(this, R.string.packpurchase_restoring_packs, Toast.LENGTH_LONG).show();
-//    }
-//    else {
-//      Log.d(TAG, "restore not necessary");
-//    }
-//  }
+  private SharedPreferences getSharedPreferencesForCurrentUser() {
+      final SharedPreferences settings = getSharedPreferences(mCurrentUser, Context.MODE_PRIVATE);
+      return settings;
+  }
+  
+  /**
+   * Generate a SharedPreferences.Editor object. 
+   * @return editor for Shared Preferences file.
+   */
+  private SharedPreferences.Editor getSharedPreferencesEditor(){
+      return getSharedPreferencesForCurrentUser().edit();
+  }
+  
+  /**
+   * Get the preferences file that all users will share
+   * @return SharedPreferences file for all users.
+   */
+  protected SharedPreferences getSyncPreferences() {
+    final SharedPreferences syncPrefs = getSharedPreferences(Consts.PREFFILE_SYNC_REQUIRED, Context.MODE_PRIVATE);
+    return syncPrefs;
+  }
+  
+  /**
+   * Gets current logged in user
+   * @return current user
+   */
+  protected String getCurrentUser(){
+    return mCurrentUser;
+  }
+  
+  /**
+   * Sets current logged in user
+   * @param currentUser current user to set
+   */
+  void setCurrentUser(final String currentUser){
+      this.mCurrentUser = currentUser;
+  }
   
   /**
    * Handle showing a toast or refreshing an existing toast

@@ -35,7 +35,7 @@ public class BuzzWordsApplication extends Application {
    */
   public static final boolean DEBUG = true;
   public static final boolean DEBUG_TIMERTICKS = false;
-  public static final Markets MARKET = Markets.ANDROID;
+  public static final Markets MARKET = Markets.AMAZON;
   public static Uri storeURI_Buzzwords;
   public static Uri storeURI_BuzzwordsLite;
   public static enum Markets {

@@ -275,6 +275,10 @@ public class GameManager {
     mDeck.fillCachesIfLow();
   }
 
+  public boolean packsRequireUpdate(LinkedList<Pack> serverPacks) {
+    Log.d(TAG, "packsCurrent(LinkedList<Pack>)");
+    return mDeck.packsRequireUpdate(serverPacks);
+  }
   
   /**
    * Call the Deck function that installs all 'starter' decks.  This
@@ -285,7 +289,7 @@ public class GameManager {
   }
   
   
-  public void installPack(final Pack pack) {
+  public synchronized void installPack(final Pack pack) {
     // TODO This should probably be in a thread (mInstallThread)
     // Though I ran into problems with the database state 
     try {
@@ -301,7 +305,7 @@ public class GameManager {
    * @param packId the id of the pack to remove
    * @param removeDialog a dialog that is shown to users during removal
    */
-  public void uninstallPack(final int packId) {
+  public synchronized void uninstallPack(final int packId) {
     // TODO This should probably be in a thread (mInstallThread)
     // Though I ran into problems with the database state
     try {
@@ -446,6 +450,14 @@ public class GameManager {
     return mCurrentRound + 1;
   }
 
+  /**
+   * Return the Deck for the game.
+   * @return Deck
+   */
+  public Deck getDeck() {
+    return mDeck;
+  }
+  
   /**
    * Return the maximum number of rounds in this game
    * 
