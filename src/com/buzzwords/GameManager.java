@@ -37,6 +37,10 @@ import android.util.Log;
  *         new games, turns, and teams. The application shall also use this
  *         class for preparing and retrieving cards from the virtual deck.
  */
+/**
+ * @author elrowe
+ *
+ */
 public class GameManager {
   /**
    * logging tag
@@ -77,6 +81,16 @@ public class GameManager {
    * Number of turns to play
    */
   private int mNumTurns;
+  
+  /**
+   * Number of points to play to
+   */
+  private int mPointLimit;
+  
+  /**
+   * The current game's mode
+   */
+  private GameMode mCurrentGameMode;
 
   /**
    * Index of the current turn
@@ -102,6 +116,34 @@ public class GameManager {
    * Time for the Timer in milliseconds
    */
   private int mTurnTime;
+  
+  /**
+   * The various game modes that are selected in game setup
+   */
+  public static enum GameMode{
+	  TURNS (0, "Turns"),
+	  SCORE (1, "Score"), 
+	  FREEPLAY (2, "Free Play");
+	  
+	  private int index;
+	  private String name;
+	  
+	  GameMode(int index, String name)
+	  {
+		  this.index = index;
+		  this.name = name;
+	  }
+	  
+	  public int getIndex()
+	  {
+		  return index;		  
+	  }
+	  
+	  public String getName()
+	  {
+		  return name;
+	  }
+  }
 
   /**
    * Standard Constructor
@@ -186,10 +228,12 @@ public class GameManager {
    * 
    * @param teams
    *          a string array of team names
-   * @param rounds
-   *          the number of rounds to play
+   * @param mode
+   * 		  GameMode for this game (play to score, or number of rounds)
+   * @param modeInfo
+   *          the number of rounds to play, or the points to play to
    */
-  public void startGame(List<Team> teams, int rounds) {
+  public void startGame(List<Team> teams, GameMode mode, int modeInfo) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "StartGame()");
     }
@@ -200,8 +244,25 @@ public class GameManager {
     }
     mTeamIterator = teams.iterator();
     mCurrentTeam = mTeamIterator.next();
-    mNumRounds = rounds;
-    mNumTurns = mTeams.size() * mNumRounds;
+    mCurrentGameMode = mode;
+    switch (mCurrentGameMode)
+    {
+    	case TURNS:
+    		mNumRounds = modeInfo;
+    	    mNumTurns = mTeams.size() * mNumRounds;
+    		mPointLimit = -1;
+    		break;
+    	case SCORE:
+    		mNumRounds = -1;
+    	    mNumTurns = -1;
+    		mPointLimit = modeInfo;
+    		break;
+    	case FREEPLAY:
+    		mNumRounds = -1;
+    	    mNumTurns = -1;
+    		mPointLimit = -1;
+    		break;
+    }
     mCurrentTurn++;
   }
 
@@ -472,11 +533,24 @@ public class GameManager {
     }
     return mNumRounds;
   }
+  
+  
+  /**
+   * Returns the game mode for the current game
+   * @return the game mode for the current game
+   */
+  public GameMode getGameMode()
+  {
+    if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "getGameMode()");
+      }
+	  return mCurrentGameMode;
+  }
 
   /**
    * Accessor to return the amount of time in each turn.
    * 
-   * @return integer representing the number of miliseconds in each turn.
+   * @return integer representing the number of milliseconds in each turn.
    */
   public int getTurnTime() {
     if (BuzzWordsApplication.DEBUG) {

@@ -19,8 +19,10 @@ package com.buzzwords;
 
 import java.util.LinkedList;
 
+import com.buzzwords.GameManager;
 import com.buzzwords.R;
 import com.buzzwords.Consts;
+import com.buzzwords.GameManager.GameMode;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -126,7 +128,7 @@ public class GameSetupActivity extends Activity {
 			// Store off game's attributes as preferences
 			GameSetupActivity.mGameSetupPrefEditor.putInt(
 					GameSetupActivity.RADIO_INDEX,
-					GameSetupActivity.this.getCheckedRadioIndex());
+					GameSetupActivity.this.getCheckedGameModeIndex());
 			GameSetupActivity.mGameSetupPrefEditor.commit();
 
 			// Create a GameManager to manage attributes about the current game.
@@ -140,7 +142,9 @@ public class GameSetupActivity extends Activity {
 				try {
 					GameManager gm = new GameManager(GameSetupActivity.this);
 					gm.maintainDeck();
-					gm.startGame(mTeamList, mGameLimit);
+					gm.startGame(mTeamList,
+							GameMode.values()[getCheckedGameModeIndex()],
+							mGameLimit);
 					application.setGameManager(gm);
 					keepLooping = false;
 				} catch (SQLiteException e) {
@@ -366,15 +370,13 @@ public class GameSetupActivity extends Activity {
 		mGameLimitView.setTypeface(antonFont);
 
 		// Set radio button labels
-		// HACK ToDo: Clean this up by using a gameMode enum probably
 		RadioButton radio;
-		final int[] GameModes = {0, 1, 2};
-		final String[] GameModeNames = {"Turns", "Score", "Free"};
-		for (int i = 0; i < mRadioGroup.getChildCount(); ++i) {
-			radio = (RadioButton) mRadioGroup.getChildAt(i);
-			radio.setText(GameModeNames[i]);
+		for( GameManager.GameMode mode : GameManager.GameMode.values())
+		{
+			radio = (RadioButton) mRadioGroup.getChildAt(mode.ordinal());
+			radio.setText(mode.getName());
 		}
-
+		
 		// Set the radio button to the previous preference
 		int radio_default = GameSetupActivity.mGameSetupPrefs.getInt(
 				GameSetupActivity.RADIO_INDEX, 1);
@@ -422,7 +424,7 @@ public class GameSetupActivity extends Activity {
 	 * 
 	 * @return index of the checked radio button (-1 if none found)
 	 */
-	private int getCheckedRadioIndex() {
+	private int getCheckedGameModeIndex() {
 		if (BuzzWordsApplication.DEBUG) {
 			Log.d(TAG, "getCheckedRadioValue()");
 		}
@@ -529,7 +531,7 @@ public class GameSetupActivity extends Activity {
 	{
 		GameSetupActivity.mGameSetupPrefEditor.putInt(
 				GameSetupActivity.RADIO_INDEX,
-				GameSetupActivity.this.getCheckedRadioIndex());
+				GameSetupActivity.this.getCheckedGameModeIndex());
 		GameSetupActivity.mGameSetupPrefEditor.putInt(
 				GameSetupActivity.this.getString(R.string.PREFKEY_GAMELIMIT),
 				mGameLimit);
