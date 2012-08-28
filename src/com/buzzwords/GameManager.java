@@ -377,6 +377,21 @@ public class GameManager {
     }
     return mCurrentCards;
   }
+  
+  /**
+   * Queries the game manager to determine if the game should end rather than
+   * advancing to another turn based on the current game mode.
+   * 
+   * @return true if the game should end instead of advancing to another turn
+   */
+  public boolean shouldGameEnd()
+  {
+    if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "shouldGameEnd()");
+      }
+	
+    return getNumberOfTurnsRemaining() == 0;
+  }
 
   /**
    * Iterate through through all cards for the current turn and return the total

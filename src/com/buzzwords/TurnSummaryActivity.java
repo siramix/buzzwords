@@ -92,7 +92,7 @@ public class TurnSummaryActivity extends Activity {
           .getApplication();
       GameManager gm = application.getGameManager();
 
-      if (gm.getNumberOfTurnsRemaining() == 0) {
+      if (gm.shouldGameEnd()) {
         gm.endGame();
         startActivity(new Intent(getApplication().getString(
             R.string.IntentEndGame), getIntent().getData()));
@@ -240,7 +240,7 @@ public class TurnSummaryActivity extends Activity {
     menuButton.setOnClickListener(mMenuListener);
 
     // Handle activity changes for final turn
-    if (game.getNumberOfTurnsRemaining() == 0) {
+    if (game.shouldGameEnd()) {
       // Change "Next Team" button
       playGameButton.setText("Game Results");
       // Change round display
