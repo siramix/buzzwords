@@ -196,7 +196,7 @@ public class Deck {
    * @throws URISyntaxException
    */
   public void installPack(Pack pack) throws RuntimeException {
-    Log.d(TAG, "INSTALLING PACK: \n" + pack.toString());
+    Log.d(TAG, "INSTALLING PACK: \n" + pack.getName());
     mDatabaseOpenHelper.installPackFromServer(pack);
   }
   

@@ -333,109 +333,6 @@ public class PackPurchaseActivity extends Activity {
       e.printStackTrace();
     }
   }
-  
-  /*
-   * 
-   * Helper function to install a purchased pack
-   */
-  protected void installPack(Pack packToInstall)
-  {
-    // TODO: Catch the runtime exception
-    try {
-      new PackInstaller().execute(packToInstall);
-    } catch (RuntimeException e) {
-      e.printStackTrace();
-    }
-    
-    setPackSelectedPref(packToInstall, true);
-  }
-  
-  /**
-   * The market sends us the Product ID of a purchased item.  With that we 
-   * can infer which pack the user is requesting and get it from the server.
-   * @param id The pack Id of the pack that should be installed.
-   */
-  protected void installPack(int id) {
-    for (Pack curPack : mServerPacks) {
-      if (curPack.getId() == id) {
-        // TODO: Catch the runtime exception correctly
-        Pack packToInstall = curPack;
-        try {
-          installPack(packToInstall);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-        setPackSelectedPref(packToInstall, true);
-      }
-    }
-  }
-  
-  // TODO: DEBUG CODE, THIS SHOULD NOT GO TO PRODUCTION
-  /**
-   * The market sends us the Product ID of a purchased item.  With that we 
-   * can infer which pack the user is requesting and get it from the server.
-   * @param id The pack Id of the pack that should be installed.
-   */
-  protected void installPack(String name) {
-    for (Pack curPack : mServerPacks) {
-      if (curPack.getName().equals(name)) {
-        // TODO: Catch the runtime exception correctly
-        try {
-          installPack(curPack);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-      }
-    }
-  }
-  
-  /**
-   * The market sends us the Product ID of a purchased item.  With that we 
-   * can infer which pack the user is requesting and get it from the server.
-   * @param id The pack Id of the pack that should be removed if possible.
-   */
-  protected void uninstallPack(int id) {
-    // TODO: Catch the runtime exception correctly
-    try {
-      new PackUninstaller().execute(id);
-    } catch (RuntimeException e) {
-        e.printStackTrace();
-    }
-  }
-  
-  /**
-   * This will update all packs needing updates in a separate thread from the UI.
-   * @param id The pack Id of the pack that should be removed if possible.
-   */
-  protected void updatePacks(Pack[] packToUpdate) {
-    // TODO: Catch the runtime exception correctly
-    try {
-      new PackUpdater().execute(packToUpdate);
-    } catch (RuntimeException e) {
-        e.printStackTrace();
-    }
-  }
-  
-  // TODO: DEBUG CODE, THIS SHOULD NOT GO TO PRODUCTION
-  /**
-   * The market sends us the Product ID of a purchased item.  With that we 
-   * can infer which pack the user is requesting and get it from the server.
-   * THIS METHOD DOES NOT NEED TO EXIST AS IN THE FUTURE ID IS ALL WE NEED
-   * THE ONLY REASON WE HAVE THIS IS BECAUSE OF THE android.test PACKAGES
-   * @param id The pack Id of the pack that should be installed.
-   */
-  protected void uninstallPack(String name) {
-    for (Pack curPack : mServerPacks) {
-      if (curPack.getName().equals(name)) {    
-        //TODO: Catch the runtime exception correctly
-        try {
-          new PackUninstaller().execute(curPack.getId());
-        } catch (RuntimeException e) {
-          e.printStackTrace();
-        }
-      }
-    }
-  }
 
   /**
    * Opens the Facebook client for promotional packs
@@ -540,19 +437,22 @@ public class PackPurchaseActivity extends Activity {
     @Override
     protected Integer doInBackground(Pack... packs) {
       for (int i=0; i<packs.length; ++i) {
-        Log.d(TAG, "SYNCING PACK: " + packs[i].toString());
+        Log.d(TAG, "SYNCING PACK: " + packs[i].getName());
         boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
         if (isPackPurchased) {
           gm.installPack(packs[i]);
         } 
         // Uninstall pack if it is not purchased and is a premium pack
         else if (isPackPurchased == false && 
-            packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_PAY) {
+            packs[i].getPurchaseType() != PackPurchaseConsts.PACKTYPE_FREE) {
           gm.uninstallPack(packs[i].getId());
         }
         // Update free and starter packs
         else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_FREE) {
           gm.installPack(packs[i]);
+        }
+        else {
+          Log.e(TAG, "Failed to update or install packId: " + packs[i].getId() + " name: " + packs[i].getName());
         }
       }
       return 0; 
@@ -572,124 +472,7 @@ public class PackPurchaseActivity extends Activity {
     }
   }
   
-  /** 
-   * Run installations in an Async Task.  This puts the intensive task of installing
-   * on a separate thread that once complete will dismiss the progress dialog and refresh
-   * the layout.
-   */
-  public class PackInstaller extends AsyncTask <Pack, Void, String>
-  {
-      private ProgressDialog dialog;
-      private Pack packToInstall;
-      final SharedPreferences.Editor editor = getSharedPreferencesEditor();
-      private GameManager gm = new GameManager(PackPurchaseActivity.this);
-      
-      @Override
-      protected void onPreExecute()
-      {
-        dialog = ProgressDialog.show(
-          PackPurchaseActivity.this,
-          null,
-          getString(R.string.progressDialog_install_text), 
-          true);
-      }
-
-      @Override
-      protected String doInBackground(Pack... pack)
-      {
-        Log.d(TAG, "Install Pack Async: " + pack[0].getName());
-        packToInstall = pack[0];
-        gm.installPack(packToInstall);
-        return "";
-        
-      }
-
-      @Override
-      protected void onPostExecute(String result)
-      {
-        dialog.dismiss();
-        refreshAllPackLayouts();
-        if (gm.getDeck().isPackInstalled(packToInstall.getId())) {
-          editor.putBoolean(String.valueOf(packToInstall.getId()), true);
-          Log.d(TAG, "Put Pref (" + packToInstall.getId() + ", TRUE)");
-          
-        }
-        findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
-      }
-  }
-  
-  /** 
-   * Run uninstalls in an Async Task.  This puts the intensive task of db deletions
-   * on a separate thread that once complete will dismiss the progress dialog and refresh
-   * the layout.
-   */
-  protected class PackUninstaller extends AsyncTask <Integer, Void, String>
-  {
-      private ProgressDialog dialog;
-      private int packIdToUninstall;
-      final SharedPreferences.Editor editor = getSharedPreferencesEditor();
-      
-      @Override
-      protected void onPreExecute()
-      {
-        dialog = ProgressDialog.show(
-              PackPurchaseActivity.this, null, 
-              getString(R.string.progressDialog_uninstall_text), true);
-      }
-
-      @Override
-      protected String doInBackground(Integer... packIds)
-      {
-        GameManager gm = new GameManager(PackPurchaseActivity.this);
-        packIdToUninstall = packIds[0];
-        gm.uninstallPack(packIdToUninstall);
-        return "";
-      }
-
-      @Override
-      protected void onPostExecute(String result)
-      {
-        dialog.dismiss();
-        refreshAllPackLayouts();
-        if (mGameManager.getDeck().isPackInstalled(packIdToUninstall) == false) {
-          // Pack has been uninstalled so update the preference.
-          editor.putBoolean(String.valueOf(packIdToUninstall), false);
-          Log.d(TAG, "Put Pref (" + packIdToUninstall + ", FALSE)");
-        }
-        findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
-      }
-  }
-  
-  private class PackUpdater extends AsyncTask <Pack, Void, String>
-  {
-      private ProgressDialog dialog;
-
-      @Override
-      protected void onPreExecute()
-      {
-        dialog = ProgressDialog.show(
-            PackPurchaseActivity.this, null,
-            getString(R.string.progressDialog_uninstall_text), true);
-      }
-
-      @Override
-      protected String doInBackground(Pack... packsToInstall)
-      {
-        GameManager gm = new GameManager(PackPurchaseActivity.this);
-        for (Pack pack : packsToInstall) {
-          gm.installPack(pack);
-        }
-        return "";
-      }
-
-      @Override
-      protected void onPostExecute(String result)
-      {
-        dialog.dismiss();
-        refreshAllPackLayouts();
-        findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
-      }
-  }
+ 
   /*
    * Listener for the pack selection, which includes or excludes the pack
    * from the deck.
