@@ -23,6 +23,7 @@
   <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
   <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
   <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
+  <string name="PREFKEY_GAMETYPE">com.buzzwords.prefkey.GAMETYPE</string>
   <string name="PREFKEY_GAMELIMIT_TURNS">com.buzzwords.prefkey.GAMELIMIT_TURNS</string>
   <string name="PREFKEY_GAMELIMIT_SCORE">com.buzzwords.prefkey.GAMELIMIT_SCORE</string>
 

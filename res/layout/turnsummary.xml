@@ -44,6 +44,7 @@
             android:layout_marginRight="5dp"
             android:text="@string/button_menu" >
         </com.buzzwords.AntonButton>
+
     </RelativeLayout>
 
     <ImageView
@@ -152,14 +153,14 @@
         android:id="@+id/TurnSummary_BottomGroup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-
+
         <TextView
-            android:id="@+id/TurnSummary_Rounds"
+            android:id="@+id/TurnSummary_GameTypeInfo"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
-            android:text="Round: 1/5"
+            android:text="Score Limit: 14"
             android:textSize="18dp" />
 
         <LinearLayout
@@ -289,7 +290,9 @@
             android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="Next Team" android:textSize="20dp">
+            android:text="Next Team"
+            android:textSize="16dp" >
+
         </com.buzzwords.AntonButton>
     </LinearLayout>
 

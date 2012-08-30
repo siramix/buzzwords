@@ -223,9 +223,18 @@ public class TurnSummaryActivity extends Activity {
     updateScoreViews();
 
     // Update numRounds
-    TextView rounds = (TextView) this.findViewById(R.id.TurnSummary_Rounds);
-    rounds.setText("Round: " + game.getCurrentRound() + "/"
-        + game.getNumRounds());
+    TextView gametypeInfo = (TextView) this.findViewById(R.id.TurnSummary_GameTypeInfo);
+    switch (game.getGameType()) {
+    case TURNS:
+      gametypeInfo.setText("Round: " + game.getCurrentRound() + "/"
+          + game.getNumRounds());
+      break;
+    case SCORE:
+      gametypeInfo.setText("Score Limit: " + game.getGameLimitValue());
+      break;
+    case FREEPLAY:
+      gametypeInfo.setText("Free Play");
+    }
 
     // Update Turn Order display
     updateTurnOrderDisplay();
@@ -244,7 +253,7 @@ public class TurnSummaryActivity extends Activity {
       // Change "Next Team" button
       playGameButton.setText("Game Results");
       // Change round display
-      rounds.setText("Game Over");
+      gametypeInfo.setText("Game Over");
       // Hide scoreboard for suspense
       LinearLayout scores = (LinearLayout) this
           .findViewById(R.id.TurnSummary_ScoreGroup);

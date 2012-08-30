@@ -80,9 +80,6 @@ public class GameSetupActivity extends Activity {
 	// Preference keys (indicating quadrant)
 	public static final String PREFS_NAME = "gamesetupprefs";
 
-	// Index of the selected radio indicating number of rounds
-	private static final String RADIO_INDEX = "round_radio_index";
-
 	// Flag to play music into the next Activity
 	private boolean mContinueMusic = false;
 
@@ -126,11 +123,11 @@ public class GameSetupActivity extends Activity {
 				return;
 			}
 
-			// Store off game's attributes as preferences
-			GameSetupActivity.mGameSetupPrefEditor.putInt(
-					GameSetupActivity.RADIO_INDEX,
-					GameSetupActivity.this.mGameType);
-			GameSetupActivity.mGameSetupPrefEditor.commit();
+      // Store off game's attributes as preferences
+      GameSetupActivity.mGameSetupPrefEditor.putInt(
+          getString(R.string.PREFKEY_GAMETYPE),
+          GameSetupActivity.this.mGameType);
+      GameSetupActivity.mGameSetupPrefEditor.commit();
 
 			// Create a GameManager to manage attributes about the current game.
 			// the while loop around the try-catch block makes sure the database
@@ -407,7 +404,7 @@ public class GameSetupActivity extends Activity {
     
     // Set the radio button to the previous preference
     int radio_default = GameSetupActivity.mGameSetupPrefs.getInt(
-        GameSetupActivity.RADIO_INDEX, 1);
+        getString(R.string.PREFKEY_GAMETYPE), 1);
     RadioButton defaultRadio = (RadioButton) mRadioGroup.getChildAt(radio_default);
     defaultRadio.setChecked(true);
     
@@ -515,7 +512,7 @@ public class GameSetupActivity extends Activity {
 				Log.d(TAG, "BackKeyUp()");
 			}
 			// Flag to keep music playing
-			GameSetupActivity.this.mContinueMusic = true;
+			mContinueMusic = true;
 		}
 
 		return super.onKeyUp(keyCode, event);
@@ -549,22 +546,17 @@ public class GameSetupActivity extends Activity {
 		saveGameSetupPrefs();
 	}
 	
-	/*
-	 * Stores off game's attributes as preferences
-	 */
-	private void saveGameSetupPrefs()
-	{
-		GameSetupActivity.mGameSetupPrefEditor.putInt(
-				GameSetupActivity.RADIO_INDEX,
-				GameSetupActivity.this.mGameType);
-		GameSetupActivity.mGameSetupPrefEditor.putInt(
-				GameSetupActivity.this.getString(R.string.PREFKEY_GAMELIMIT_TURNS),
-				mGameLimits[0]);
+  /*
+   * Stores off game's attributes as preferences
+   */
+  private void saveGameSetupPrefs() {
     GameSetupActivity.mGameSetupPrefEditor.putInt(
-        GameSetupActivity.this.getString(R.string.PREFKEY_GAMELIMIT_SCORE),
-        mGameLimits[1]);
-		GameSetupActivity.mGameSetupPrefEditor.commit();
-		
+        getString(R.string.PREFKEY_GAMETYPE), mGameType);
+    GameSetupActivity.mGameSetupPrefEditor.putInt(
+        getString(R.string.PREFKEY_GAMELIMIT_TURNS), mGameLimits[0]);
+    GameSetupActivity.mGameSetupPrefEditor.putInt(
+        getString(R.string.PREFKEY_GAMELIMIT_SCORE), mGameLimits[1]);
+    GameSetupActivity.mGameSetupPrefEditor.commit();
 	}
 
 	/**
