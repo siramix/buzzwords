@@ -45,6 +45,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.view.animation.Animation;
 import android.view.animation.AlphaAnimation;
 
@@ -72,6 +73,9 @@ public class GameSetupActivity extends Activity {
 	private TextView mGameLimitView;
 	private RadioGroup mRadioGroup;
 
+  // Track the current shown toast
+  private Toast mHelpToast = null;
+  
 	// Ids for TeamSelectLayouts
 	final int[] TEAM_SELECT_LAYOUTS = new int[] { R.id.GameSetup_TeamALayout,
 			R.id.GameSetup_TeamBLayout, R.id.GameSetup_TeamCLayout,
@@ -236,6 +240,18 @@ public class GameSetupActivity extends Activity {
 			}
 		}
 	};
+
+  /**
+   * Watches the hint butons for clicks
+   */
+  private final OnClickListener mHintListener = new OnClickListener() {
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "mHintListener onClick()");
+      }
+      showToast((String) v.getTag());  
+    }
+  };
 	
 
   /**
@@ -334,7 +350,20 @@ public class GameSetupActivity extends Activity {
     Button startGameButton = (Button) this
         .findViewById(R.id.GameSetup_StartGameButton);
     startGameButton.setOnClickListener(mStartGameListener);
-
+    
+    // Do hint bindings
+    Button hintButton = (Button) this.findViewById(R.id.GameSetup_TeamsHintButton);
+    hintButton.setOnClickListener(mHintListener);
+    hintButton.setTag(getString(R.string.gameSetup_hint_teams));
+    
+    hintButton = (Button) this.findViewById(R.id.GameSetup_GameType_HintButton);
+    hintButton.setOnClickListener(mHintListener);
+    hintButton.setTag(getString(R.string.gameSetup_hint_GameType));
+    
+    hintButton = (Button) this.findViewById(R.id.GameSetup_GameTypeParameter_HintButton);
+    hintButton.setOnClickListener(mHintListener);
+    // Default hint tag to something to avoid null data
+    hintButton.setTag(getString(R.string.gameSetup_hint_score));
 	}
 	
 	/**
@@ -422,6 +451,11 @@ public class GameSetupActivity extends Activity {
     updateViewForNewGameType(mGameType);
   }
 
+  /**
+   * Refresh any views that need to change based on the specified game type
+   * 
+   * @param gameType
+   */
   private void updateViewForNewGameType(int gameType) {
     if (gameType == GameManager.GameType.FREEPLAY.ordinal()) {
       findViewById(R.id.GameSetup_GameTypeParamter_Group).setVisibility(
@@ -437,6 +471,17 @@ public class GameSetupActivity extends Activity {
 
       findViewById(R.id.GameSetup_GameTypeParamter_Group).setVisibility(
           View.VISIBLE);
+
+      // Set hint button to give the correct hint
+      int hintID;
+      if (gameType == GameManager.GameType.TURNS.ordinal()) {
+        hintID = R.string.gameSetup_hint_turns;
+      } else {
+        hintID = R.string.gameSetup_hint_score;
+      }
+      Button hintButton = (Button) this
+          .findViewById(R.id.GameSetup_GameTypeParameter_HintButton);
+      hintButton.setTag(getString(hintID));
     }
   }
 
@@ -463,6 +508,19 @@ public class GameSetupActivity extends Activity {
     label = (TextView) this
         .findViewById(R.id.GameSetup_GameTypeParameter_Value);
     label.setTypeface(antonFont);
+  }
+
+  /**
+   * Handle showing a toast or refreshing an existing toast
+   */
+  private void showToast(String text) {
+    if(mHelpToast == null) {
+      mHelpToast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+    } else {
+      mHelpToast.setText(text);
+      mHelpToast.setDuration(Toast.LENGTH_LONG);
+    }
+    mHelpToast.show();
   }
 
 	/**
