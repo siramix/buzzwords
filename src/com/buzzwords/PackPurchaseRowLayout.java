@@ -24,6 +24,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -315,7 +316,8 @@ public class PackPurchaseRowLayout extends FrameLayout {
 
     // Set new pack attributes
     mTitle.setText(mPack.getName());
-    mIcon.setImageDrawable(this.getResources().getDrawable(mPack.getIconID()));
+    int iconId = this.getResources().getIdentifier(pack.getIconName(), "drawable", "com.buzzwords");
+    mIcon.setImageDrawable(this.getResources().getDrawable(iconId));
 
     // Assign click listeners based on the pack's purchase state
     if (mIsPackPurchased) {

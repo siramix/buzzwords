@@ -19,6 +19,7 @@ package com.buzzwords;
 
 import java.io.Serializable;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -39,12 +40,11 @@ public class Pack implements Serializable {
   private int mId;
   private String mName;
   private String mPath;
+  private String mIconPath;
   private String mDescription;
   private int mPurchaseType;
-  private String mUpdateMessage;
   private int mServerSize;
   private int mVersion;
-  private int mIconID;
   
   // Model fields for app at playtime
   private int mSize;
@@ -59,7 +59,7 @@ public class Pack implements Serializable {
    * Default constructor
    */
   public Pack() {
-    this(-1, "","", "","", -1, -1, -1, PackPurchaseConsts.PACKTYPE_UNSET, false);
+    this(-1, "","", "","", -1, -1, PackPurchaseConsts.PACKTYPE_UNSET, false);
     Log.d(TAG, "null consructor Pack()");
   }
 
@@ -68,24 +68,21 @@ public class Pack implements Serializable {
    * @param id
    * @param name
    * @param path
+   * @param iconPath
    * @param description 
-   * @param updateMessage
-   * @param iconId
    * @param size (server)
    * @param purchaseType
    * @param version
    * @param installed (whether the pack has been installed yet)
    */
-  public Pack(int id, String name, String path, String description,
-              String updateMessage, int iconID, int serverSize, int purchaseType,
-              int version, boolean installed) {
+  public Pack(int id, String name, String path, String iconPath, String description,
+              int serverSize, int purchaseType, int version, boolean installed) {
     Log.d(TAG, "constructor Pack(args)");
     mId = id;
     mName = name;
     mPath = path;
+    mIconPath = iconPath;
     mDescription = description;
-    mUpdateMessage = updateMessage;
-    mIconID = iconID;
     mServerSize = serverSize;
     mPurchaseType = purchaseType;
     mVersion = version;
@@ -111,25 +108,26 @@ public class Pack implements Serializable {
   }
 
   /**
-   * @return the update message
-   */
-  public String getUpdateMessage() {
-    return mUpdateMessage;
-  }
-
-  /**
    * @return the path from server-root with which to retrieve cards.
    */
   public String getPath() {
     return mPath;
   }
   
+  /**
+   * @return the path of the pack icon on the server
+   */
+  public String getIconPath() {
+    return mIconPath;
+  }
   
   /**
-   * @return the pack's icon resource id.
+   * @return the pack's icon name (can get resource id from this)
    */
-  public int getIconID() {
-    return mIconID;
+  public String getIconName() {
+    String iconName = TextUtils.split(mIconPath, "/")[1];
+    iconName = TextUtils.split(iconName, "\\.")[0];
+    return iconName;
   }
 
 
@@ -239,6 +237,7 @@ public class Pack implements Serializable {
     ret += "   pack.Id: " + String.valueOf(mId) + "\n";
     ret += "   pack.Name: " + mName + "\n";
     ret += "   pack.Path: " + mPath + "\n";
+    ret += "   pack.IconName: " + mIconPath + "\n";
     ret += "   pack.Description: " + mDescription + "\n";
     ret += "   pack.PurchaseType: " + String.valueOf(mPurchaseType) + "\n";    
     ret += "   pack.Version: " + String.valueOf(mVersion) + "\n";
@@ -246,7 +245,6 @@ public class Pack implements Serializable {
     ret += "   pack.ServerSize: " + String.valueOf(mServerSize) + "\n";
     ret += "   pack.Size: " + String.valueOf(mSize) + "\n";
     ret += "   pack.NumCardsSeen: " + String.valueOf(mNumCardsSeen) + "\n";
-    ret += "   pack.UpdateMessage: " + mUpdateMessage + "\n";
     ret += "   pack.Weight: " + String.valueOf(mWeight) + "\n";
     ret += "   pack.NumToPullNext: " + String.valueOf(mNumToPullNext) + "\n";
     ret += "   pack.mInstalled: " + String.valueOf(mInstalled) + "\n";

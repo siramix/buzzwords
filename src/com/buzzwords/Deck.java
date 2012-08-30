@@ -114,9 +114,8 @@ public class Deck {
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
     setPackData();
-    mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", 
-        "Description of pack1", "first install", R.drawable.starter_icon, 125,
-        PackPurchaseConsts.PACKTYPE_FREE, 0, true);
+    mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", "icons/starter_icon.png",
+        "Description of pack1", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true);
   }
 
   /**
@@ -598,8 +597,8 @@ public class Deck {
         
         while (!packQuery.isAfterLast()) {
           pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
-              packQuery.getString(3), null, R.drawable.starter_icon, -1, 
-              packQuery.getInt(4), packQuery.getInt(5), true);
+              packQuery.getString(3), packQuery.getString(4), -1, 
+              packQuery.getInt(5), packQuery.getInt(6), true);
           ret.add(pack);
           packQuery.moveToNext();
         }
@@ -627,8 +626,8 @@ public class Deck {
       Pack pack = null;
       if (packQuery.moveToFirst()) {
         pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
-                        packQuery.getString(3), null, R.drawable.starter_icon, -1, 
-                        packQuery.getInt(4), packQuery.getInt(5), true);
+                        packQuery.getString(3), packQuery.getString(4), -1, 
+                        packQuery.getInt(5), packQuery.getInt(6), true);
       }
       packQuery.close();
       mDatabase.close();
@@ -878,6 +877,7 @@ public class Deck {
       packValues.put(PackColumns._ID, pack.getId());
       packValues.put(PackColumns.NAME, pack.getName());
       packValues.put(PackColumns.PATH, pack.getPath());
+      packValues.put(PackColumns.ICON_PATH, pack.getIconPath());
       packValues.put(PackColumns.DESCRIPTION, pack.getDescription());
       packValues.put(PackColumns.PURCHASE_TYPE, pack.getPurchaseType());
       packValues.put(PackColumns.VERSION, pack.getVersion());
@@ -920,7 +920,7 @@ public class Deck {
           PackColumns._ID + " = (?)", packIds, null, null, null);
       if (res.getCount() >= 1) {
         res.moveToFirst();
-        int oldVersion = res.getInt(5);
+        int oldVersion = res.getInt(6);
         int oldId = res.getInt(0);
         res.close();
         mDatabase.close();

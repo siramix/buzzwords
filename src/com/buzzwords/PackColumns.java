@@ -26,6 +26,8 @@ public class PackColumns implements BaseColumns {
   public static final String NAME = "name";
 
   public static final String PATH = "path";
+  
+  public static final String ICON_PATH = "icon_path";
 
   public static final String DESCRIPTION = "description";
 
@@ -33,13 +35,14 @@ public class PackColumns implements BaseColumns {
 
   public static final String VERSION = "version";
 
-  public static final String[] COLUMNS = {_ID, NAME, PATH, DESCRIPTION, PURCHASE_TYPE, VERSION};
+  public static final String[] COLUMNS = {_ID, NAME, PATH, ICON_PATH, DESCRIPTION, PURCHASE_TYPE, VERSION};
 
   public static final String TABLE_CREATE = "CREATE TABLE " 
       + TABLE_NAME + "( " +
           _ID + " INTEGER PRIMARY KEY, " +
           NAME + " TEXT, " +
           PATH + " TEXT, " +
+          ICON_PATH + " TEXT, " + 
           DESCRIPTION + " TEXT, " +
           PURCHASE_TYPE + " INTEGER, " +
           VERSION + " INTEGER );";
