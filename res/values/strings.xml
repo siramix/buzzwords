@@ -23,7 +23,8 @@
   <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
   <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
   <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
-  <string name="PREFKEY_GAMELIMIT">com.buzzwords.prefkey.GAMELIMIT</string>
+  <string name="PREFKEY_GAMELIMIT_TURNS">com.buzzwords.prefkey.GAMELIMIT_TURNS</string>
+  <string name="PREFKEY_GAMELIMIT_SCORE">com.buzzwords.prefkey.GAMELIMIT_SCORE</string>
 
   <!-- Menus -->
   <string name="menu_EndTurn">MENU_ENDTURN</string>
@@ -41,6 +42,13 @@
   <string name="teamnameC">Red</string>
   <string name="teamnameD">Yellow</string>
 
+  <!--  Game Manager -->
+  <string name="gameManager_gameType_turns">Turn Limit</string>
+  <string name="gameManager_gameType_turns_param">Turns</string>
+  <string name="gameManager_gameType_score">Score Limit</string>
+  <string name="gameManager_gameType_score_param">Points</string>
+  <string name="gameManager_gameType_freeplay">Free Play</string>
+  
   <!-- Bundle Keys -->
   <string name="cardBundleKey">com.buzzwords.card</string>
   <string name="packBundleKey">com.buzzwords.pack</string>
@@ -106,6 +114,12 @@
   <string name="packInfo_button_tweet">Tweet It</string>
   <string name="packInfo_button_facebook">Post It</string>
   <string name="packInfo_button_googleplus">Post It</string>
+  
+  <!--  Game Setup dialog -->
+  <string name="gameSetup_hint_teams">Tap teams to add or remove them. Tap the pencil to rename a team.</string>
+  <string name="gameSetup_hint_GameType">Game limit determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
+  <string name="gameSetup_hint_turns">Set the number of turns each team will take.</string>
+  <string name="gameSetup_hint_score">Set the number of points a team needs to win. All teams will play an equal number of turns.</string>
   
   <!-- Text for the dialog on their first play of the game -->
   <string name="openingDialog_title">First Time?</string>

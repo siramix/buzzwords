@@ -22,7 +22,7 @@ import java.util.LinkedList;
 import com.buzzwords.GameManager;
 import com.buzzwords.R;
 import com.buzzwords.Consts;
-import com.buzzwords.GameManager.GameMode;
+import com.buzzwords.GameManager.GameType;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -65,7 +65,8 @@ public class GameSetupActivity extends Activity {
 	// Store game limit parameters
 	private final int mGAMELIMIT_MIN = 1;
 	private final int mGAMELIMIT_MAX = 99;
-	private int mGameLimit;
+	private int mGameLimits[] = new int[GameManager.GameType.values().length];
+	private int mGameType;
 	
 	// References to views to limit calls to FindViewById
 	private TextView mGameLimitView;
@@ -128,7 +129,7 @@ public class GameSetupActivity extends Activity {
 			// Store off game's attributes as preferences
 			GameSetupActivity.mGameSetupPrefEditor.putInt(
 					GameSetupActivity.RADIO_INDEX,
-					GameSetupActivity.this.getCheckedGameModeIndex());
+					GameSetupActivity.this.mGameType);
 			GameSetupActivity.mGameSetupPrefEditor.commit();
 
 			// Create a GameManager to manage attributes about the current game.
@@ -143,8 +144,8 @@ public class GameSetupActivity extends Activity {
 					GameManager gm = new GameManager(GameSetupActivity.this);
 					gm.maintainDeck();
 					gm.startGame(mTeamList,
-							GameMode.values()[getCheckedGameModeIndex()],
-							mGameLimit);
+							GameType.values()[mGameType],
+							mGameLimits[mGameType]);
 					application.setGameManager(gm);
 					keepLooping = false;
 				} catch (SQLiteException e) {
@@ -224,11 +225,12 @@ public class GameSetupActivity extends Activity {
 			if (BuzzWordsApplication.DEBUG) {
 				Log.d(TAG, "mAddPointLimit onClick()");
 			}
+			
+			int newLimit = mGameLimits[mGameType] + (Integer) v.getTag();
 
-			if (mGameLimit < mGAMELIMIT_MAX) {
-				mGameLimit += 1;
-				TextView limitText = (TextView) v.getTag();
-				limitText.setText(Integer.toString(mGameLimit));
+			if (newLimit <= mGAMELIMIT_MAX && newLimit >= mGAMELIMIT_MIN) {
+				mGameLimits[mGameType] = newLimit;
+				mGameLimitView.setText(Integer.toString(mGameLimits[mGameType]));
 
 				// play confirm sound when points are added
 				SoundManager sm = SoundManager
@@ -237,29 +239,26 @@ public class GameSetupActivity extends Activity {
 			}
 		}
 	};
+	
 
-	/**
-	 * Watches the button to remove a point from the Limit
-	 */
-	private final OnClickListener mSubtractPointLimit = new OnClickListener() {
-		public void onClick(View v) {
-			if (BuzzWordsApplication.DEBUG) {
-				Log.d(TAG, "mSubtractPointLimit onClick()");
-			}
+  /**
+   * Watches the radio group for game type changes
+   */
+  private final OnClickListener mGameTypeListener = new OnClickListener() {
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "mAddPointLimit onClick()");
+      }
+      
+      mGameType = (Integer) v.getTag();
+      updateViewForNewGameType(mGameType);
 
-			// Don't let them set a score limit below 1
-			if (mGameLimit > mGAMELIMIT_MIN) {
-				mGameLimit -= 1;
-				TextView limitText = (TextView) v.getTag();
-				limitText.setText(Integer.toString(mGameLimit));
-
-				// play confirm sound when points are added
-				SoundManager sm = SoundManager
-						.getInstance(GameSetupActivity.this.getBaseContext());
-				sm.playSound(SoundManager.Sound.BACK);
-			}
-		}
-	};
+      // play confirm sound
+      SoundManager sm = SoundManager
+          .getInstance(GameSetupActivity.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
+      }
+    };
 
 	/**
 	 * This function is called when the EditTeamName activity finishes. It
@@ -293,31 +292,56 @@ public class GameSetupActivity extends Activity {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
-	/*
-	 * Here we establish permanent references to views to limit calls to 
-	 * findViewById()
-	 */
-	private void setupViewReferences()
- {
-		mGameLimitView = (TextView) findViewById(R.id.GameSetup_GameParameter_Value);
-		mRadioGroup = (RadioGroup) findViewById(R.id.GameSetup_GameMode_RadioGroup);
-	}
+
+  /*
+   * Here we establish permanent references to views to limit calls to
+   * findViewById()
+   */
+  private void setupViewReferences() {
+    mGameLimitView = (TextView) findViewById(R.id.GameSetup_GameTypeParameter_Value);
+    mRadioGroup = (RadioGroup) findViewById(R.id.GameSetup_GameType_RadioGroup);
+  }
 
 	/**
 	 * Setup any special properties on views such as onClick events and tags
 	 */
 	private void setupUIProperties() {
-		Button button = (Button) findViewById(R.id.GameSetup_GameParameter_Minus);
-		button.setTag(mGameLimitView);
-		button.setOnClickListener(mSubtractPointLimit);
-		button = (Button) findViewById(R.id.GameSetup_GameParameter_Plus);
-		button.setTag(mGameLimitView);
-		button.setOnClickListener(mAddPointLimit);
-	}
 
+    // Assign listeners to teamSelectLayouts
+    TeamSelectLayout teamSelect;
+    for (int i = 0; i < TEAM_SELECT_LAYOUTS.length; ++i) {
+      teamSelect = (TeamSelectLayout) this
+          .findViewById(TEAM_SELECT_LAYOUTS[i]);
+      teamSelect.setOnTeamEditedListener(mTeamEditedListener);
+      teamSelect.setOnTeamAddedListener(mTeamAddedListener);
+    }
+
+    // Set radio button labels
+    RadioButton radio;
+    for( GameManager.GameType mode : GameManager.GameType.values())
+    {
+      radio = (RadioButton) mRadioGroup.getChildAt(mode.ordinal());
+      radio.setText(mode.getName(getBaseContext()));
+      radio.setOnClickListener(mGameTypeListener);
+      radio.setTag(mode.ordinal());
+    }
+	  
+		Button button = (Button) findViewById(R.id.GameSetup_GameTypeParameter_Minus);
+		button.setTag(-1);
+		button.setOnClickListener(mAddPointLimit);
+		button = (Button) findViewById(R.id.GameSetup_GameTypeParameter_Plus);
+		button.setTag(1);
+		button.setOnClickListener(mAddPointLimit);
+
+    // Bind start buttons
+    Button startGameButton = (Button) this
+        .findViewById(R.id.GameSetup_StartGameButton);
+    startGameButton.setOnClickListener(mStartGameListener);
+
+	}
+	
 	/**
-	 * Initializes the activity to display the results of the turn.
+	 * Initialize the activity
 	 * 
 	 * @param savedInstanceState
 	 *            bundle used for saved state of the activity
@@ -341,107 +365,108 @@ public class GameSetupActivity extends Activity {
 		// Force volume controls to affect Media volume
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		
-		// Get the current game setup preferences
-		GameSetupActivity.mGameSetupPrefs = getSharedPreferences(PREFS_NAME, 0);
-		GameSetupActivity.mGameSetupPrefEditor = GameSetupActivity.mGameSetupPrefs
-				.edit();
-		// Get our pack preferences
-		GameSetupActivity.mPackPrefs = getSharedPreferences(
-				Consts.PREFFILE_PACK_SELECTIONS, Context.MODE_PRIVATE);
+		restorePreferences();
 
-		// Set default value for score limit
-		mGameLimit = GameSetupActivity.mGameSetupPrefs
-				.getInt(GameSetupActivity.this
-						.getString(R.string.PREFKEY_GAMELIMIT), 7);
-		mGameLimitView.setText(Integer.toString(mGameLimit));
+		setAntonFonts();
 
-		
-		// set fonts on titles
-		Typeface antonFont = Typeface.createFromAsset(getAssets(),
-				"fonts/Anton.ttf");
-
-		TextView label = (TextView) this.findViewById(R.id.GameSetup_Title);
-		label.setTypeface(antonFont);
-		label = (TextView) this.findViewById(R.id.GameSetup_TeamsTitle);
-		label.setTypeface(antonFont);
-		label = (TextView) this
-				.findViewById(R.id.GameSetup_SubHeader_Turns_Title);
-		label.setTypeface(antonFont);
-		mGameLimitView.setTypeface(antonFont);
-
-		// Set radio button labels
-		RadioButton radio;
-		for( GameManager.GameMode mode : GameManager.GameMode.values())
-		{
-			radio = (RadioButton) mRadioGroup.getChildAt(mode.ordinal());
-			radio.setText(mode.getName());
-		}
-		
-		// Set the radio button to the previous preference
-		int radio_default = GameSetupActivity.mGameSetupPrefs.getInt(
-				GameSetupActivity.RADIO_INDEX, 1);
-		radio = (RadioButton) mRadioGroup.getChildAt(radio_default);
-		radio.setChecked(true);
-
-		// Bind view buttons
-		Button startGameButton = (Button) this
-				.findViewById(R.id.GameSetup_StartGameButton);
-		startGameButton.setOnClickListener(mStartGameListener);
-
-		// Assign teams to TeamSelectLayouts
-		TeamSelectLayout teamSelect;
-		Team curTeam;
-		for (int i = 0; i < TEAM_SELECT_LAYOUTS.length; ++i) {
-			curTeam = Team.values()[i];
-			String curTeamName = mGameSetupPrefs.getString(
-					curTeam.getDefaultName(), curTeam.getDefaultName());
-			curTeam.setName(curTeamName);
-			teamSelect = (TeamSelectLayout) this
-					.findViewById(TEAM_SELECT_LAYOUTS[i]);
-			teamSelect.setTeam(curTeam);
-
-			if (GameSetupActivity.mGameSetupPrefs.getBoolean(
-					curTeam.getPreferenceKey(), false)) {
-				teamSelect.setActiveness(true);
-				mTeamList.add(curTeam);
-			} else {
-				teamSelect.setActiveness(false);
-			}
-			teamSelect.setOnTeamEditedListener(mTeamEditedListener);
-			teamSelect.setOnTeamAddedListener(mTeamAddedListener);
-		}
-
-		// Do helper text animations
-		TextView helpText = (TextView) this
-				.findViewById(R.id.GameSetup_HelpText_Team);
-		helpText.setAnimation(this.fadeInHelpText(1000));
-		helpText = (TextView) this.findViewById(R.id.GameSetup_HelpText_Turn);
-		helpText.setAnimation(this.fadeInHelpText(3000));
 	}
+  
+  /**
+   * Restores preferences into member variables and sets the view to represent them
+   */
+  private void restorePreferences()
+  {
+     // Get the current game setup preferences
+    GameSetupActivity.mGameSetupPrefs = getSharedPreferences(PREFS_NAME, 0);
+    GameSetupActivity.mGameSetupPrefEditor = GameSetupActivity.mGameSetupPrefs
+        .edit();
+    // Get our pack preferences
+    GameSetupActivity.mPackPrefs = getSharedPreferences(
+        Consts.PREFFILE_PACK_SELECTIONS, Context.MODE_PRIVATE);
 
-	/**
-	 * Getter that returns the index of the checked radio button.
-	 * 
-	 * @return index of the checked radio button (-1 if none found)
-	 */
-	private int getCheckedGameModeIndex() {
-		if (BuzzWordsApplication.DEBUG) {
-			Log.d(TAG, "getCheckedRadioValue()");
-		}
+    // Assign teams to TeamSelectLayouts
+    TeamSelectLayout teamSelect;
+    Team curTeam;
+    for (int i = 0; i < TEAM_SELECT_LAYOUTS.length; ++i) {
+      curTeam = Team.values()[i];
+      String curTeamName = mGameSetupPrefs.getString(
+          curTeam.getDefaultName(), curTeam.getDefaultName());
+      curTeam.setName(curTeamName);
+      teamSelect = (TeamSelectLayout) this
+          .findViewById(TEAM_SELECT_LAYOUTS[i]);
+      teamSelect.setTeam(curTeam);
 
-		int checkedRadioIndex = -1;
-		// Iterate through radio buttons to find the one that is checked and
-		// return it.
-		for (int i = 0; i < mRadioGroup.getChildCount(); i++) {
-			RadioButton test = (RadioButton) mRadioGroup.getChildAt(i);
-			if (test.isChecked()) {
-				checkedRadioIndex = i;
-				break;
-			}
-		}
+      if (GameSetupActivity.mGameSetupPrefs.getBoolean(
+          curTeam.getPreferenceKey(), false)) {
+        teamSelect.setActiveness(true);
+        mTeamList.add(curTeam);
+      } else {
+        teamSelect.setActiveness(false);
+      }
+    }    
+    
+    // Set the radio button to the previous preference
+    int radio_default = GameSetupActivity.mGameSetupPrefs.getInt(
+        GameSetupActivity.RADIO_INDEX, 1);
+    RadioButton defaultRadio = (RadioButton) mRadioGroup.getChildAt(radio_default);
+    defaultRadio.setChecked(true);
+    
+    mGameType = radio_default;
+  
+    // Set default value for turns limit
+    mGameLimits[0] = GameSetupActivity.mGameSetupPrefs
+        .getInt(GameSetupActivity.this
+            .getString(R.string.PREFKEY_GAMELIMIT_TURNS), 7);
+    // Set default value for score limit
+    mGameLimits[1] = GameSetupActivity.mGameSetupPrefs
+        .getInt(GameSetupActivity.this
+            .getString(R.string.PREFKEY_GAMELIMIT_SCORE), 21);
+ 
+    updateViewForNewGameType(mGameType);
+  }
 
-		return checkedRadioIndex;
-	}
+  private void updateViewForNewGameType(int gameType) {
+    if (gameType == GameManager.GameType.FREEPLAY.ordinal()) {
+      findViewById(R.id.GameSetup_GameTypeParamter_Group).setVisibility(
+          View.GONE);
+    } else {
+      // Set the game type parameter header to the correct string
+      TextView gameLimitHeader = (TextView) findViewById(R.id.GameSetup_GameTypeParameter_Title);
+      gameLimitHeader.setText(GameManager.GameType.values()[gameType]
+          .getParamName(getBaseContext()));
+
+      // Set the text on the view to represent the value
+      mGameLimitView.setText(Integer.toString(mGameLimits[gameType]));
+
+      findViewById(R.id.GameSetup_GameTypeParamter_Group).setVisibility(
+          View.VISIBLE);
+    }
+  }
+
+  /**
+   * Setup the Anton font on any textviews that need it.
+   * Should extend TextView as AntonTextView which would automatically
+   * do this.
+   */
+  private void setAntonFonts()
+  {
+    Typeface antonFont = Typeface.createFromAsset(getAssets(),
+        "fonts/Anton.ttf");
+    
+    TextView label = (TextView) this.findViewById(R.id.GameSetup_Title);
+    label.setTypeface(antonFont);
+    label = (TextView) this.findViewById(R.id.GameSetup_TeamsTitle);
+    label.setTypeface(antonFont);
+    label = (TextView) this
+        .findViewById(R.id.GameSetup_GameTypeParameter_Title);
+    label.setTypeface(antonFont);
+    label = (TextView) this
+        .findViewById(R.id.GameSetup_GameType_Text);
+    label.setTypeface(antonFont);
+    label = (TextView) this
+        .findViewById(R.id.GameSetup_GameTypeParameter_Value);
+    label.setTypeface(antonFont);
+  }
 
 	/**
 	 * Handle creation of team warning dialog, used to prevent starting a game
@@ -531,10 +556,13 @@ public class GameSetupActivity extends Activity {
 	{
 		GameSetupActivity.mGameSetupPrefEditor.putInt(
 				GameSetupActivity.RADIO_INDEX,
-				GameSetupActivity.this.getCheckedGameModeIndex());
+				GameSetupActivity.this.mGameType);
 		GameSetupActivity.mGameSetupPrefEditor.putInt(
-				GameSetupActivity.this.getString(R.string.PREFKEY_GAMELIMIT),
-				mGameLimit);
+				GameSetupActivity.this.getString(R.string.PREFKEY_GAMELIMIT_TURNS),
+				mGameLimits[0]);
+    GameSetupActivity.mGameSetupPrefEditor.putInt(
+        GameSetupActivity.this.getString(R.string.PREFKEY_GAMELIMIT_SCORE),
+        mGameLimits[1]);
 		GameSetupActivity.mGameSetupPrefEditor.commit();
 		
 	}

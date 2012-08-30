@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.content.res.Resources;
 
 /**
  * @author Siramix Labs
@@ -90,7 +91,7 @@ public class GameManager {
   /**
    * The current game's mode
    */
-  private GameMode mCurrentGameMode;
+  private GameType mCurrentGameLimit;
 
   /**
    * Index of the current turn
@@ -120,18 +121,20 @@ public class GameManager {
   /**
    * The various game modes that are selected in game setup
    */
-  public static enum GameMode{
-	  TURNS (0, "Turns"),
-	  SCORE (1, "Score"), 
-	  FREEPLAY (2, "Free Play");
+  public enum GameType{
+	  TURNS (0, R.string.gameManager_gameType_turns, R.string.gameManager_gameType_turns_param),
+	  SCORE (1, R.string.gameManager_gameType_score, R.string.gameManager_gameType_score_param), 
+	  FREEPLAY (2, R.string.gameManager_gameType_freeplay, -1);
 	  
 	  private int index;
-	  private String name;
+	  private int nameID;
+	  private int paramNameID;
 	  
-	  GameMode(int index, String name)
+	  GameType(int index, int nameID, int paramNameID)
 	  {
 		  this.index = index;
-		  this.name = name;
+		  this.nameID = nameID;
+		  this.paramNameID = paramNameID;
 	  }
 	  
 	  public int getIndex()
@@ -139,9 +142,21 @@ public class GameManager {
 		  return index;		  
 	  }
 	  
-	  public String getName()
+	  public String getName(Context context)
 	  {
-		  return name;
+		  return context.getString(nameID);
+	  }
+	  
+	  public String getParamName(Context context)
+	  {
+	    if(paramNameID > 0)
+	    {
+	      return context.getString(paramNameID);
+	    }
+	    else
+	    {
+	      return "";
+	    }
 	  }
   }
 
@@ -181,6 +196,7 @@ public class GameManager {
     // Value for NOTSET
     mRwsValueRules[3] = 0;
     mDeck = new Deck(context);
+    
   }
 
   /**
@@ -229,11 +245,11 @@ public class GameManager {
    * @param teams
    *          a string array of team names
    * @param mode
-   * 		  GameMode for this game (play to score, or number of rounds)
+   * 		  GameType for this game (play to score, or number of rounds)
    * @param modeInfo
    *          the number of rounds to play, or the points to play to
    */
-  public void startGame(List<Team> teams, GameMode mode, int modeInfo) {
+  public void startGame(List<Team> teams, GameType mode, int modeInfo) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "StartGame()");
     }
@@ -244,8 +260,8 @@ public class GameManager {
     }
     mTeamIterator = teams.iterator();
     mCurrentTeam = mTeamIterator.next();
-    mCurrentGameMode = mode;
-    switch (mCurrentGameMode)
+    mCurrentGameLimit = mode;
+    switch (mCurrentGameLimit)
     {
     	case TURNS:
     		mNumRounds = modeInfo;
@@ -452,7 +468,7 @@ public class GameManager {
       Log.d( TAG, "shouldGameEnd()" );
     }
     boolean ret = false;
-    switch ( mCurrentGameMode )
+    switch ( mCurrentGameLimit )
     {
       case TURNS:
         ret = getNumberOfTurnsRemaining() == 0;
@@ -583,13 +599,13 @@ public class GameManager {
    * 
    * @return the game limit, no matter what the mode. -1 for free play
    */
-  public int getGameLimit()
+  public int getGameLimitValue()
   {
     int limit;
-    if( mCurrentGameMode == GameMode.TURNS ) {
+    if( mCurrentGameLimit == GameType.TURNS ) {
       limit = mTurnLimit;
     }
-    else if( mCurrentGameMode == GameMode.SCORE ) {
+    else if( mCurrentGameLimit == GameType.SCORE ) {
       limit = mScoreLimit;
     }
     else {
@@ -603,12 +619,12 @@ public class GameManager {
    * 
    * @return the game mode for the current game
    */
-  public GameMode getGameMode()
+  public GameType getGameType()
   {
     if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "getGameMode()");
+        Log.d(TAG, "getGameType()");
       }
-	  return mCurrentGameMode;
+	  return mCurrentGameLimit;
   }
 
   /**
@@ -624,8 +640,8 @@ public class GameManager {
   }
 
   /**
-   * Returns the number of remaining Turns in Turns GameMode.
-   * If the GameMode is not Turns, it returns -1.
+   * Returns the number of remaining Turns in Turns GameType.
+   * If the GameType is not Turns, it returns -1.
    * 
    * @returns the number of turns until the turn limit is reached
    */
@@ -634,7 +650,7 @@ public class GameManager {
         Log.d(TAG, "GetNumberOfTurnsRemaining()");
       }
     
-    if(mCurrentGameMode != GameMode.TURNS)
+    if(mCurrentGameLimit != GameType.TURNS)
     	return -1;
     
     return mTurnLimit - mCurrentTurn;
