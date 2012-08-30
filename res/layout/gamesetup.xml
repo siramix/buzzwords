@@ -15,16 +15,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/bg_generic"
-    android:focusable="false" >
+    android:focusable="false"
+    android:orientation="vertical" >
 
     <ScrollView
         android:id="@+id/GameSetup_ScrollView"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
 
         <LinearLayout
             android:id="@+id/GameSetup_ScrollInnerLayout"
@@ -46,7 +49,7 @@
                 android:id="@+id/GameSetup_TeamHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-20dp" >
+                android:layout_marginTop="-10dp" >
 
                 <View
                     android:id="@+id/GameSetup_TeamHeaderBar"
@@ -66,6 +69,15 @@
                     android:text="Teams"
                     android:textColor="@color/white"
                     android:textSize="24dp" />
+
+                <Button
+                    android:id="@+id/GameSetup_TeamsHintButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@id/GameSetup_TeamHeaderBar"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/button_info" />
             </RelativeLayout>
 
             <LinearLayout
@@ -146,6 +158,15 @@
                         android:text="Game Type"
                         android:textColor="@color/white"
                         android:textSize="24dp" />
+
+                    <Button
+                        android:id="@+id/GameSetup_GameType_HintButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@id/GameSetup_GameType_Bar"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/button_info" />
                 </RelativeLayout>
 
                 <RadioGroup
@@ -214,6 +235,15 @@
                         android:text="Turns"
                         android:textColor="@color/white"
                         android:textSize="24dp" />
+
+                    <Button
+                        android:id="@+id/GameSetup_GameTypeParameter_HintButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@id/GameSetup_GameTypeParameter_Bar"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/button_info" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -245,7 +275,6 @@
                         android:background="@drawable/button_plus" />
                 </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
@@ -261,10 +290,10 @@
         android:id="@+id/GameSetup_StartGameButton"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
         android:text="Start Game"
         android:textSize="20sp" >
+
     </com.buzzwords.AntonButton>
 
-</RelativeLayout>
+</LinearLayout>
