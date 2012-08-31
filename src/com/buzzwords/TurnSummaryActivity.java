@@ -92,7 +92,7 @@ public class TurnSummaryActivity extends Activity {
           .getApplication();
       GameManager gm = application.getGameManager();
 
-      if (gm.getNumberOfTurnsRemaining() == 0) {
+      if (gm.shouldGameEnd()) {
         gm.endGame();
         startActivity(new Intent(getApplication().getString(
             R.string.IntentEndGame), getIntent().getData()));
@@ -223,9 +223,18 @@ public class TurnSummaryActivity extends Activity {
     updateScoreViews();
 
     // Update numRounds
-    TextView rounds = (TextView) this.findViewById(R.id.TurnSummary_Rounds);
-    rounds.setText("Round: " + game.getCurrentRound() + "/"
-        + game.getNumRounds());
+    TextView gametypeInfo = (TextView) this.findViewById(R.id.TurnSummary_GameTypeInfo);
+    switch (game.getGameType()) {
+    case TURNS:
+      gametypeInfo.setText("Round: " + game.getCurrentRound() + "/"
+          + game.getNumRounds());
+      break;
+    case SCORE:
+      gametypeInfo.setText("Score Limit: " + game.getGameLimitValue());
+      break;
+    case FREEPLAY:
+      gametypeInfo.setText("Free Play");
+    }
 
     // Update Turn Order display
     updateTurnOrderDisplay();
@@ -240,11 +249,11 @@ public class TurnSummaryActivity extends Activity {
     menuButton.setOnClickListener(mMenuListener);
 
     // Handle activity changes for final turn
-    if (game.getNumberOfTurnsRemaining() == 0) {
+    if (game.shouldGameEnd()) {
       // Change "Next Team" button
       playGameButton.setText("Game Results");
       // Change round display
-      rounds.setText("Game Over");
+      gametypeInfo.setText("Game Over");
       // Hide scoreboard for suspense
       LinearLayout scores = (LinearLayout) this
           .findViewById(R.id.TurnSummary_ScoreGroup);

@@ -37,6 +37,10 @@ import android.util.Log;
  *         new games, turns, and teams. The application shall also use this
  *         class for preparing and retrieving cards from the virtual deck.
  */
+/**
+ * @author elrowe
+ *
+ */
 public class GameManager {
   /**
    * logging tag
@@ -76,7 +80,17 @@ public class GameManager {
   /**
    * Number of turns to play
    */
-  private int mNumTurns;
+  private int mTurnLimit;
+  
+  /**
+   * Number of points to play to
+   */
+  private int mScoreLimit;
+  
+  /**
+   * The current game's mode
+   */
+  private GameType mCurrentGameLimit;
 
   /**
    * Index of the current turn
@@ -102,6 +116,48 @@ public class GameManager {
    * Time for the Timer in milliseconds
    */
   private int mTurnTime;
+  
+  /**
+   * The various game modes that are selected in game setup
+   */
+  public enum GameType{
+	  TURNS (0, R.string.gameManager_gameType_turns, R.string.gameManager_gameType_turns_param),
+	  SCORE (1, R.string.gameManager_gameType_score, R.string.gameManager_gameType_score_param), 
+	  FREEPLAY (2, R.string.gameManager_gameType_freeplay, -1);
+	  
+	  private int index;
+	  private int nameID;
+	  private int paramNameID;
+	  
+	  GameType(int index, int nameID, int paramNameID)
+	  {
+		  this.index = index;
+		  this.nameID = nameID;
+		  this.paramNameID = paramNameID;
+	  }
+	  
+	  public int getIndex()
+	  {
+		  return index;		  
+	  }
+	  
+	  public String getName(Context context)
+	  {
+		  return context.getString(nameID);
+	  }
+	  
+	  public String getParamName(Context context)
+	  {
+	    if(paramNameID > 0)
+	    {
+	      return context.getString(paramNameID);
+	    }
+	    else
+	    {
+	      return "";
+	    }
+	  }
+  }
 
   /**
    * Standard Constructor
@@ -139,6 +195,7 @@ public class GameManager {
     // Value for NOTSET
     mRwsValueRules[3] = 0;
     mDeck = new Deck(context);
+    
   }
 
   /**
@@ -186,10 +243,12 @@ public class GameManager {
    * 
    * @param teams
    *          a string array of team names
-   * @param rounds
-   *          the number of rounds to play
+   * @param mode
+   * 		  GameType for this game (play to score, or number of rounds)
+   * @param modeInfo
+   *          the number of rounds to play, or the points to play to
    */
-  public void startGame(List<Team> teams, int rounds) {
+  public void startGame(List<Team> teams, GameType mode, int modeInfo) {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "StartGame()");
     }
@@ -200,8 +259,25 @@ public class GameManager {
     }
     mTeamIterator = teams.iterator();
     mCurrentTeam = mTeamIterator.next();
-    mNumRounds = rounds;
-    mNumTurns = mTeams.size() * mNumRounds;
+    mCurrentGameLimit = mode;
+    switch (mCurrentGameLimit)
+    {
+    	case TURNS:
+    		mNumRounds = modeInfo;
+    	    mTurnLimit = mTeams.size() * mNumRounds;
+    		mScoreLimit = -1;
+    		break;
+    	case SCORE:
+    		mNumRounds = -1;
+    	    mTurnLimit = -1;
+    		mScoreLimit = modeInfo;
+    		break;
+    	case FREEPLAY:
+    		mNumRounds = -1;
+    	    mTurnLimit = -1;
+    		mScoreLimit = -1;
+    		break;
+    }
     mCurrentTurn++;
   }
 
@@ -383,6 +459,53 @@ public class GameManager {
   }
 
   /**
+   * Queries the game manager to determine if the game should end rather than
+   * advancing to another turn based on the current game mode.
+   * 
+   * @return true if the game should end instead of advancing to another turn
+   */
+  public boolean shouldGameEnd()
+  {
+    if( BuzzWordsApplication.DEBUG )
+    {
+      Log.d( TAG, "shouldGameEnd()" );
+    }
+    boolean ret = false;
+    switch ( mCurrentGameLimit )
+    {
+      case TURNS:
+        ret = getNumberOfTurnsRemaining() == 0;
+        break;
+      case SCORE:
+        Iterator<Team> itr = mTeams.iterator();
+        boolean isScoreLimitReached = false;
+        for( itr = mTeams.iterator(); itr.hasNext(); )
+        {
+          if( itr.next().getScore() >= mScoreLimit )
+          {
+            isScoreLimitReached = true;
+            break;
+          }
+        }
+        // When score limit is reached, make sure all teams have had
+        // equal number of turns.
+        if( isScoreLimitReached )
+        {
+          ret = mCurrentTurn % mTeams.size() == 0; 
+        }
+        else
+        {
+          ret = false;
+        }
+        break;
+      case FREEPLAY:
+        ret = false;
+        break;
+    }
+    return ret;
+  }
+
+  /**
    * Iterate through through all cards for the current turn and return the total
    * score
    * 
@@ -469,11 +592,56 @@ public class GameManager {
     }
     return mNumRounds;
   }
+  
+  /**
+   * Returns the point limit for the current game
+   * 
+   * @return the points a team needs to reach in order to win
+   */
+  public int getScoreLimit() {
+    if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "GetNumRounds()");
+      }	  
+	  return mScoreLimit;
+  }
+
+  /**
+   * Returns game limit, regardless of mode
+   * 
+   * @return the game limit, no matter what the mode. -1 for free play
+   */
+  public int getGameLimitValue()
+  {
+    int limit;
+    if( mCurrentGameLimit == GameType.TURNS ) {
+      limit = mTurnLimit;
+    }
+    else if( mCurrentGameLimit == GameType.SCORE ) {
+      limit = mScoreLimit;
+    }
+    else {
+      limit = -1;
+    }
+    return limit;
+  }
+  
+  /**
+   * Returns the game mode for the current game
+   * 
+   * @return the game mode for the current game
+   */
+  public GameType getGameType()
+  {
+    if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "getGameType()");
+      }
+	  return mCurrentGameLimit;
+  }
 
   /**
    * Accessor to return the amount of time in each turn.
    * 
-   * @return integer representing the number of miliseconds in each turn.
+   * @return integer representing the number of milliseconds in each turn.
    */
   public int getTurnTime() {
     if (BuzzWordsApplication.DEBUG) {
@@ -482,8 +650,21 @@ public class GameManager {
     return mTurnTime;
   }
 
-  public int getNumberOfTurnsRemaining() {
-    return mNumTurns - mCurrentTurn;
+  /**
+   * Returns the number of remaining Turns in Turns GameType.
+   * If the GameType is not Turns, it returns -1.
+   * 
+   * @returns the number of turns until the turn limit is reached
+   */
+  private int getNumberOfTurnsRemaining() {
+    if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "GetNumberOfTurnsRemaining()");
+      }
+    
+    if(mCurrentGameLimit != GameType.TURNS)
+    	return -1;
+    
+    return mTurnLimit - mCurrentTurn;
   }
 
   /**

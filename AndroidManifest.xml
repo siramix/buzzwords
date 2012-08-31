@@ -6,7 +6,7 @@
     android:versionName="1.34" >
 
     <uses-sdk
-        android:minSdkVersion="3"
+        android:minSdkVersion="5"
         android:targetSdkVersion="7" />
 
     <uses-permission android:name="android.permission.GET_TASKS" />
