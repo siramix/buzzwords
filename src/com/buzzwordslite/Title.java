@@ -22,6 +22,7 @@ import com.buzzwordslite.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,6 +40,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
@@ -284,10 +286,18 @@ public class Title extends Activity {
       SoundManager sm = SoundManager.getInstance(Title.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
-      Uri uri = Uri.parse("http://www.siramix.com/");
-      Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-      startActivity(intent);
-
+      // Launch Facebook, if not found, launch a browser intent
+      try {
+        String url = getApplication().getString(R.string.URI_fb_launcher_buzzwordsapp);
+        Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(facebookIntent);
+      } catch (ActivityNotFoundException e) {
+        Uri uri = Uri.parse(getApplication().getString(R.string.URI_fb_buzzwordsapp));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+        browserIntent.setDataAndType(uri, "text/plain");
+        startActivity(browserIntent);
+      }
+      
     }
   }; // End AboutUsListener
 
@@ -337,6 +347,17 @@ public class Title extends Activity {
     // Create entire sequence
     set.addAnimation(slideIn);
     return set;
+  }
+  
+  private Animation fadeFacebookTagline() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "TranslateLabels()");
+    }
+    Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+    fadeOut.setStartOffset(3000);
+    fadeOut.setDuration(2000);
+    
+    return fadeOut;
   }
 
   /**
@@ -415,7 +436,7 @@ public class Title extends Activity {
     buzzerButton.setOnClickListener(mBuzzerListener);
 
     ImageButton aboutusButton = (ImageButton) this
-        .findViewById(R.id.Title_AboutUs);
+        .findViewById(R.id.Title_FB_BuzzwordsApp);
     aboutusButton.setOnClickListener(mAboutUsListener);
 
     View button = (View) this.findViewById(R.id.Title_PlayButton);
@@ -443,6 +464,10 @@ public class Title extends Activity {
     label = (TextView) this.findViewById(R.id.Title_RulesText);
     label.startAnimation(this.translateLabels(1));
     label.setTypeface(antonFont);
+    label = (TextView) this.findViewById(R.id.Title_FB_Tagline);
+    label.setAnimation(this.fadeFacebookTagline());
+    label.setTypeface(antonFont);
+    label.setVisibility(View.INVISIBLE);
 
   }
 
@@ -481,7 +506,7 @@ public class Title extends Activity {
     // Re-enable things
     this.findViewById(R.id.Title_RulesButton).setEnabled(true);
     this.findViewById(R.id.Title_BuzzButton).setEnabled(true);
-    this.findViewById(R.id.Title_AboutUs).setEnabled(true);
+    this.findViewById(R.id.Title_FB_BuzzwordsApp).setEnabled(true);
     this.findViewById(R.id.Title_PlayButton).setEnabled(true);
     this.findViewById(R.id.Title_PlayDelegate).setEnabled(true);
     this.findViewById(R.id.Title_BuzzDelegate).setEnabled(true);

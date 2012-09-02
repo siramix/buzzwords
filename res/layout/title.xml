@@ -22,17 +22,7 @@
 	android:layout_width="fill_parent" 
 	android:background="@drawable/bg_generic"
 	android:clipChildren="false">
-
-	<ImageButton android:id="@+id/Title_AboutUs" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_alignParentBottom="true" 
-		android:layout_marginRight="5dp"
-		android:layout_marginBottom="5dp" 
-		android:background="@drawable/title_logo_mini_selector"
-		/>
-
+	
 	<LinearLayout android:id="@+id/Title_Banner"
 		android:layout_width="wrap_content"
 		android:orientation="horizontal" 
@@ -171,36 +161,67 @@
 
 		</RelativeLayout>
 		
-		<RelativeLayout android:id="@+id/Title_Menu_4"
-			android:layout_width="fill_parent" 
-			android:layout_height="fill_parent"
-			android:layout_weight="1" 
-			android:layout_marginLeft="30dp">
-			
-			<TextView android:id="@+id/Title_RulesText"
-				android:text="Rules" 
-				android:textSize="42dp" 
-				android:textColor="@color/teamA_primary"
-				android:layout_height="wrap_content" 
-				android:layout_width="wrap_content"
-				android:layout_marginLeft="80dp" 
-				android:layout_marginTop="10dp" 
-				android:gravity="center_vertical"
-				android:layout_centerVertical="true"
-				/>
-				
-			<ImageButton android:id="@+id/Title_RulesButton"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content" 
-				android:background="@drawable/title_rules"
-				android:layout_centerVertical="true"
-				/>
-				
-			<View  android:id="@+id/Title_RulesDelegate"
-				android:layout_height="fill_parent"
-				android:layout_width="200dp"
-				/>
+		<RelativeLayout
+		    android:id="@+id/Title_Menu_4"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:layout_marginLeft="30dp"
+		    android:layout_weight="1" >
 
+		    <TextView
+		        android:id="@+id/Title_RulesText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:layout_marginLeft="80dp"
+		        android:layout_marginTop="10dp"
+		        android:gravity="center_vertical"
+		        android:text="Rules"
+		        android:textColor="@color/teamA_primary"
+		        android:textSize="42dp" />
+
+		    <ImageButton
+		        android:id="@+id/Title_RulesButton"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:background="@drawable/title_rules" />
+
+		    <View
+		        android:id="@+id/Title_RulesDelegate"
+		        android:layout_width="200dp"
+		        android:layout_height="fill_parent" />
+
+		</RelativeLayout>
+
+		<RelativeLayout
+		    android:id="@+id/Title_FB_Layout"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" 
+		    android:layout_gravity="right">
+
+		    <ImageButton
+		        android:id="@+id/Title_FB_BuzzwordsApp"
+		        android:layout_width="38dp"
+		        android:layout_height="38dp"
+		        android:layout_alignParentRight="true"
+		        android:layout_alignParentTop="true"
+		        android:background="@drawable/button_fb_selector"
+		        android:clickable="true"
+		        android:contentDescription="@string/description_fb_buzzwordsapp" />
+
+		    <TextView
+		        android:id="@+id/Title_FB_Tagline"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:layout_toLeftOf="@+id/Title_FB_BuzzwordsApp"
+		        android:paddingRight="5dp"
+		        android:text="@string/tagline_fb_buzzwordsapp"
+		        android:textColor="@color/text_subtext"
+		        android:textSize="18dp" android:paddingTop="15dp"/>
+		    
 		</RelativeLayout>
 
 	</LinearLayout>

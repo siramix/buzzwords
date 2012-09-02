@@ -88,4 +88,12 @@
   <string name="URI_amazon_market_buzzwords">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwords</string>
   <string name="URI_amazon_market_buzzwordslite">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite</string>
   
+  <!--  URI for about us page -->
+  <string name="URI_fb_buzzwordsapp">https://www.facebook.com/buzzwordsapp</string>
+  <string name="URI_fb_launcher_buzzwordsapp">fb://page/472759256084535</string>
+  <string name="settings_scorechange_summary">Current score change is </string>
+
+  <!--  Accessibility Strings -->
+  <string name="description_fb_buzzwordsapp">Link to Buzzwords App on Facebook</string>
+  <string name="tagline_fb_buzzwordsapp">Find us on Facebook</string>
 </resources>
