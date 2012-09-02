@@ -1072,7 +1072,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/Rules_FinalThoughts_Text01"
-					android:text="If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or by clicking the ram icon on the title page.  Or email us at buzzwords@siramix.com or tweet @siramixlabs."
+					android:text="If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or email us at buzzwords@siramix.com any time.  Feel free to reach out on Facebook as well!"
 					android:textSize="16dp"
 					android:padding="5dp"
 					/>
