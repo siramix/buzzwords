@@ -877,6 +877,7 @@ public class TurnActivity extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "setupUIProperties()");
     }
+    
     mPauseOverlay.setVisibility(View.INVISIBLE);
     mPauseOverlay.setOnClickListener(mPauseListener);
 
@@ -1101,11 +1102,22 @@ public class TurnActivity extends Activity {
     this.setupViewReferences();
 
     this.setupUIProperties();
-
+    
     this.showDialog(DIALOG_READY_ID);
 
     this.mCounter = setupTurnTimer();
 
+  }
+  
+  /**
+   * Helper function ensures we use the same view when setting
+   * KeepScreenOn
+   * @param sleep
+   */
+  private void setSleepAllowed(boolean sleep)
+  {
+    View view = this.findViewById(R.id.Turn_MasterLayout);
+    view.setKeepScreenOn(!sleep);
   }
 
   /**
@@ -1215,45 +1227,8 @@ public class TurnActivity extends Activity {
           .setPositiveButton("Start!", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-              mIsPaused = false;
               dialog.dismiss();
-              TurnActivity.this.showCard();
-              mIsBack = true;
-              TurnActivity.this.startTimer();
-              
-              // Play back sound to differentiate from normal clicks
-              SoundManager sm = SoundManager.getInstance(TurnActivity.this
-                  .getBaseContext());
-              sm.playSound(SoundManager.Sound.BACK);
-
-              // Start the turn music
-              BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
-                  .getApplication();
-              GameManager gm = application.getGameManager();
-
-              int musicId = R.raw.mus_countdown;
-              // If music is enabled, select the appropriate track
-              if (mMusicEnabled) {
-                switch (gm.getTurnTime()) {
-                case 30000:
-                  musicId = R.raw.mus_round_30;
-                  break;
-                case 60000:
-                  musicId = R.raw.mus_round_60;
-                  break;
-                case 90000:
-                  musicId = R.raw.mus_round_90;
-                  break;
-                }
-              }
-
-              MediaPlayer mp = application.createMusicPlayer(TurnActivity.this
-                  .getBaseContext(), musicId);
-              // If music is not enabled, it will start the countdown track at
-              // 10 seconds
-              if (mMusicEnabled) {
-                mp.start();
-              }
+              startGame();
             }
           });
       
@@ -1308,6 +1283,8 @@ public class TurnActivity extends Activity {
     }
     mIsPaused = false;
 
+    setSleepAllowed(false);
+    
     if (!mTurnIsOver) {
       this.resumeTurnTimer();
 
@@ -1343,6 +1320,10 @@ public class TurnActivity extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "pauseGameTurn()");
     }
+    
+    // Allow phone to sleep while paused
+    setSleepAllowed(true);
+    
     mIsPaused = true;
     mPauseOverlay.setVisibility(View.VISIBLE);
 
@@ -1382,6 +1363,54 @@ public class TurnActivity extends Activity {
 
       // Hide TimesUp text when pause after time has expired
       mTimesUpText.setVisibility(View.INVISIBLE);
+    }
+  }
+  
+  /**
+   * Helper function to tell all game elements to start
+   */
+  private void startGame()
+  {
+
+    mIsPaused = false;
+    TurnActivity.this.showCard();
+    mIsBack = true;
+    TurnActivity.this.startTimer();
+   
+    setSleepAllowed(false);
+    
+    // Play back sound to differentiate from normal clicks
+    SoundManager sm = SoundManager.getInstance(TurnActivity.this
+        .getBaseContext());
+    sm.playSound(SoundManager.Sound.BACK);
+
+    // Start the turn music
+    BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
+        .getApplication();
+    GameManager gm = application.getGameManager();
+
+    int musicId = R.raw.mus_countdown;
+    // If music is enabled, select the appropriate track
+    if (mMusicEnabled) {
+      switch (gm.getTurnTime()) {
+      case 30000:
+        musicId = R.raw.mus_round_30;
+        break;
+      case 60000:
+        musicId = R.raw.mus_round_60;
+        break;
+      case 90000:
+        musicId = R.raw.mus_round_90;
+        break;
+      }
+    }
+
+    MediaPlayer mp = application.createMusicPlayer(TurnActivity.this
+        .getBaseContext(), musicId);
+    // If music is not enabled, it will start the countdown track at
+    // 10 seconds
+    if (mMusicEnabled) {
+      mp.start();
     }
   }
 

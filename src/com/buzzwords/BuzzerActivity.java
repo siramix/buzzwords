@@ -89,10 +89,13 @@ public class BuzzerActivity extends Activity {
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
     this.setContentView(R.layout.buzzer);
-
+    
     ImageButton buzzButton = (ImageButton) this
         .findViewById(R.id.Buzzer_Button);
     buzzButton.setOnTouchListener(mBuzzTouch);
+    
+    // Prevent the device from sleeping while buzzing
+    buzzButton.setKeepScreenOn(true);
   }
 
 }
