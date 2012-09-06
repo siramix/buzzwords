@@ -39,7 +39,7 @@ import android.util.Log;
  */
 /**
  * @author elrowe
- *
+ * 
  */
 public class GameManager {
   /**
@@ -54,7 +54,7 @@ public class GameManager {
 
   // Create a thread for updating the playcount for each card
   private Thread mUpdateThread;
-  
+
   /**
    * The position in the list of card ids (where we are in the "deck")
    */
@@ -70,7 +70,7 @@ public class GameManager {
   /**
    * The maximum number of rounds for this game
    */
-  private int mNumRounds;
+  private int mTurnLimitPerTeam;
 
   /**
    * The index of the round being played
@@ -80,13 +80,13 @@ public class GameManager {
   /**
    * Number of turns to play
    */
-  private int mTurnLimit;
-  
+  private int mTotalRounds;
+
   /**
    * Number of points to play to
    */
   private int mScoreLimit;
-  
+
   /**
    * The current game's mode
    */
@@ -116,47 +116,42 @@ public class GameManager {
    * Time for the Timer in milliseconds
    */
   private int mTurnTime;
-  
+
   /**
    * The various game modes that are selected in game setup
    */
-  public enum GameType{
-	  TURNS (0, R.string.gameManager_gameType_turns, R.string.gameManager_gameType_turns_param),
-	  SCORE (1, R.string.gameManager_gameType_score, R.string.gameManager_gameType_score_param), 
-	  FREEPLAY (2, R.string.gameManager_gameType_freeplay, -1);
-	  
-	  private int index;
-	  private int nameID;
-	  private int paramNameID;
-	  
-	  GameType(int index, int nameID, int paramNameID)
-	  {
-		  this.index = index;
-		  this.nameID = nameID;
-		  this.paramNameID = paramNameID;
-	  }
-	  
-	  public int getIndex()
-	  {
-		  return index;		  
-	  }
-	  
-	  public String getName(Context context)
-	  {
-		  return context.getString(nameID);
-	  }
-	  
-	  public String getParamName(Context context)
-	  {
-	    if(paramNameID > 0)
-	    {
-	      return context.getString(paramNameID);
-	    }
-	    else
-	    {
-	      return "";
-	    }
-	  }
+  public enum GameType {
+    TURNS(0, R.string.gameManager_gameType_turns,
+        R.string.gameManager_gameType_turns_param), SCORE(1,
+        R.string.gameManager_gameType_score,
+        R.string.gameManager_gameType_score_param), FREEPLAY(2,
+        R.string.gameManager_gameType_freeplay, -1);
+
+    private int index;
+    private int nameID;
+    private int paramNameID;
+
+    GameType(int index, int nameID, int paramNameID) {
+      this.index = index;
+      this.nameID = nameID;
+      this.paramNameID = paramNameID;
+    }
+
+    public int getIndex() {
+      return index;
+    }
+
+    public String getName(Context context) {
+      return context.getString(nameID);
+    }
+
+    public String getParamName(Context context) {
+      if (paramNameID > 0) {
+        return context.getString(paramNameID);
+      } else {
+        return "";
+      }
+    }
   }
 
   /**
@@ -187,15 +182,18 @@ public class GameManager {
 
     // Set score values for game
     // Value for correct cards
-    mRwsValueRules[0] = Integer.valueOf(sp.getString(Consts.PREFKEY_RIGHT_SCORE, "1"));
+    mRwsValueRules[0] = Integer.valueOf(sp.getString(
+        Consts.PREFKEY_RIGHT_SCORE, "1"));
     // Value for wrong cards
-    mRwsValueRules[1] = Integer.valueOf(sp.getString(Consts.PREFKEY_WRONG_SCORE, "-1"));
+    mRwsValueRules[1] = Integer.valueOf(sp.getString(
+        Consts.PREFKEY_WRONG_SCORE, "-1"));
     // Set skip value to 0 if skip penalty is not on
-    mRwsValueRules[2] = Integer.valueOf(sp.getString(Consts.PREFKEY_SKIP_SCORE, "0"));
+    mRwsValueRules[2] = Integer.valueOf(sp.getString(Consts.PREFKEY_SKIP_SCORE,
+        "0"));
     // Value for NOTSET
     mRwsValueRules[3] = 0;
     mDeck = new Deck(context);
-    
+
   }
 
   /**
@@ -209,11 +207,10 @@ public class GameManager {
       Log.d(TAG, "getNextCard()");
     }
     ++mCardPosition;
-    if(mCardPosition >= mCurrentCards.size()) {
+    if (mCardPosition >= mCurrentCards.size()) {
       mCurrentCard = mDeck.dealCard();
       mCurrentCards.addLast(mCurrentCard);
-    }
-    else {
+    } else {
       mCurrentCard = mCurrentCards.get(mCardPosition);
     }
     return mCurrentCard;
@@ -244,7 +241,7 @@ public class GameManager {
    * @param teams
    *          a string array of team names
    * @param mode
-   * 		  GameType for this game (play to score, or number of rounds)
+   *          GameType for this game (play to score, or number of rounds)
    * @param modeInfo
    *          the number of rounds to play, or the points to play to
    */
@@ -260,23 +257,22 @@ public class GameManager {
     mTeamIterator = teams.iterator();
     mCurrentTeam = mTeamIterator.next();
     mCurrentGameLimit = mode;
-    switch (mCurrentGameLimit)
-    {
-    	case TURNS:
-    		mNumRounds = modeInfo;
-    	    mTurnLimit = mTeams.size() * mNumRounds;
-    		mScoreLimit = -1;
-    		break;
-    	case SCORE:
-    		mNumRounds = -1;
-    	    mTurnLimit = -1;
-    		mScoreLimit = modeInfo;
-    		break;
-    	case FREEPLAY:
-    		mNumRounds = -1;
-    	    mTurnLimit = -1;
-    		mScoreLimit = -1;
-    		break;
+    switch (mCurrentGameLimit) {
+    case TURNS:
+      mTurnLimitPerTeam = modeInfo;
+      mTotalRounds = mTeams.size() * mTurnLimitPerTeam;
+      mScoreLimit = -1;
+      break;
+    case SCORE:
+      mTurnLimitPerTeam = -1;
+      mTotalRounds = -1;
+      mScoreLimit = modeInfo;
+      break;
+    case FREEPLAY:
+      mTurnLimitPerTeam = -1;
+      mTotalRounds = -1;
+      mScoreLimit = -1;
+      break;
     }
     mCurrentTurn++;
   }
@@ -294,29 +290,27 @@ public class GameManager {
     mCardPosition = -1;
     mCurrentTurn++;
   }
-  
+
   /*
    * Add the results of the current turn into the current team's score.
    */
-  public void addTurnScore()
-  {
-	  int score = mCurrentTeam.getScore() + getTurnScore();
-	  mCurrentTeam.setScore(score);
+  public void addTurnScore() {
+    int score = mCurrentTeam.getScore() + getTurnScore();
+    mCurrentTeam.setScore(score);
   }
-  
+
   /*
-   * Ammend turn score by the result of a given card.  This is used when a card 
+   * Ammend turn score by the result of a given card. This is used when a card
    * is reviewed.
    */
-  public void ammendCard(int changedCardIndex, int rws)
-  {
-	  int prevTurnScore = getTurnScore();
-      Card curCard = mCurrentCards.get(changedCardIndex);
-      curCard.setRws(rws);
-      // new score is current score (which included previous turn score) plus
-      // the difference
-      int newScore = mCurrentTeam.getScore() + (getTurnScore() - prevTurnScore);
-	  mCurrentTeam.setScore(newScore);
+  public void ammendCard(int changedCardIndex, int rws) {
+    int prevTurnScore = getTurnScore();
+    Card curCard = mCurrentCards.get(changedCardIndex);
+    curCard.setRws(rws);
+    // new score is current score (which included previous turn score) plus
+    // the difference
+    int newScore = mCurrentTeam.getScore() + (getTurnScore() - prevTurnScore);
+    mCurrentTeam.setScore(newScore);
   }
 
   public void incrementActiveTeamIndex() {
@@ -343,8 +337,8 @@ public class GameManager {
   }
 
   /**
-   * Checks on the deck's caches to make sure enough cards have been
-   * stored to play a turn.
+   * Checks on the deck's caches to make sure enough cards have been stored to
+   * play a turn.
    */
   public void maintainDeck() {
     Log.d(TAG, "maintainDeck()");
@@ -355,19 +349,18 @@ public class GameManager {
     Log.d(TAG, "packsCurrent(LinkedList<Pack>)");
     return mDeck.packsRequireUpdate(serverPacks);
   }
-  
+
   /**
-   * Call the Deck function that installs all 'starter' decks.  This
-   * should only get called on first run.
+   * Call the Deck function that installs all 'starter' decks. This should only
+   * get called on first run.
    */
   public void installStarterPacks() {
     mDeck.installStarterPacks();
   }
-  
-  
+
   public synchronized void installPack(final Pack pack) {
     // TODO This should probably be in a thread (mInstallThread)
-    // Though I ran into problems with the database state 
+    // Though I ran into problems with the database state
     try {
       mDeck.installPack(pack);
     } catch (RuntimeException e) {
@@ -375,11 +368,14 @@ public class GameManager {
       e.printStackTrace();
     }
   }
-  
+
   /**
    * Attempt to remove the pack with _id == packId
-   * @param packId the id of the pack to remove
-   * @param removeDialog a dialog that is shown to users during removal
+   * 
+   * @param packId
+   *          the id of the pack to remove
+   * @param removeDialog
+   *          a dialog that is shown to users during removal
    */
   public synchronized void uninstallPack(final int packId) {
     // TODO This should probably be in a thread (mInstallThread)
@@ -387,40 +383,41 @@ public class GameManager {
     try {
       mDeck.uninstallPack(packId);
     } catch (RuntimeException e) {
-      Log.e(TAG, "Unable to install pack: " +String.valueOf(packId));
+      Log.e(TAG, "Unable to install pack: " + String.valueOf(packId));
       e.printStackTrace();
     }
   }
-  
+
   /**
-   * The game manager will have the Deck update the play date for
-   * any cards the Deck has marked as "seen".  Runs inside a thread.
+   * The game manager will have the Deck update the play date for any cards the
+   * Deck has marked as "seen". Runs inside a thread.
    */
   public void updateSeenFields() {
     mUpdateThread = new Thread(new Runnable() {
       public void run() {
         mDeck.updateSeenFields();
-        }
-      });
+      }
+    });
     mUpdateThread.start();
   }
-  
+
   /**
-   * The game manager will have the Deck update the play date for
-   * any cards passed into this method.  This is being used for
-   * Turn Summary which will have a list of seen cards to pass in.
-   * Runs inside a thread.
-   * @param cardsToUpdate - A linked list of cards to update
+   * The game manager will have the Deck update the play date for any cards
+   * passed into this method. This is being used for Turn Summary which will
+   * have a list of seen cards to pass in. Runs inside a thread.
+   * 
+   * @param cardsToUpdate
+   *          - A linked list of cards to update
    */
   public void updateSeenFields(final List<Card> cardsToUpdate) {
     mUpdateThread = new Thread(new Runnable() {
       public void run() {
         mDeck.updateSeenFields(cardsToUpdate);
-        }
-      });
+      }
+    });
     mUpdateThread.start();
   }
-  
+
   /**
    * Adds the current card to the active cards
    * 
@@ -464,43 +461,35 @@ public class GameManager {
    * 
    * @return true if the game should end instead of advancing to another turn
    */
-  public boolean shouldGameEnd()
-  {
-    if( BuzzWordsApplication.DEBUG )
-    {
-      Log.d( TAG, "shouldGameEnd()" );
+  public boolean shouldGameEnd() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "shouldGameEnd()");
     }
     boolean ret = false;
-    switch ( mCurrentGameLimit )
-    {
-      case TURNS:
-        ret = getNumberOfTurnsRemaining() == 0;
-        break;
-      case SCORE:
-        Iterator<Team> itr = mTeams.iterator();
-        boolean isScoreLimitReached = false;
-        for( itr = mTeams.iterator(); itr.hasNext(); )
-        {
-          if( itr.next().getScore() >= mScoreLimit )
-          {
-            isScoreLimitReached = true;
-            break;
-          }
+    switch (mCurrentGameLimit) {
+    case TURNS:
+      ret = getNumberOfTurnsRemaining() == 0;
+      break;
+    case SCORE:
+      Iterator<Team> itr = mTeams.iterator();
+      boolean isScoreLimitReached = false;
+      for (itr = mTeams.iterator(); itr.hasNext();) {
+        if (itr.next().getScore() >= mScoreLimit) {
+          isScoreLimitReached = true;
+          break;
         }
-        // When score limit is reached, make sure all teams have had
-        // equal number of turns.
-        if( isScoreLimitReached )
-        {
-          ret = mCurrentTurn % mTeams.size() == 0; 
-        }
-        else
-        {
-          ret = false;
-        }
-        break;
-      case FREEPLAY:
+      }
+      // When score limit is reached, make sure all teams have had
+      // equal number of turns.
+      if (isScoreLimitReached) {
+        ret = mCurrentTurn % mTeams.size() == 0;
+      } else {
         ret = false;
-        break;
+      }
+      break;
+    case FREEPLAY:
+      ret = false;
+      break;
     }
     return ret;
   }
@@ -575,12 +564,13 @@ public class GameManager {
 
   /**
    * Return the Deck for the game.
+   * 
    * @return Deck
    */
   public Deck getDeck() {
     return mDeck;
   }
-  
+
   /**
    * Return the maximum number of rounds in this game
    * 
@@ -590,9 +580,9 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetNumRounds()");
     }
-    return mNumRounds;
+    return mTurnLimitPerTeam;
   }
-  
+
   /**
    * Returns the point limit for the current game
    * 
@@ -600,9 +590,9 @@ public class GameManager {
    */
   public int getScoreLimit() {
     if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "GetNumRounds()");
-      }	  
-	  return mScoreLimit;
+      Log.d(TAG, "GetNumRounds()");
+    }
+    return mScoreLimit;
   }
 
   /**
@@ -610,32 +600,28 @@ public class GameManager {
    * 
    * @return the game limit, no matter what the mode. -1 for free play
    */
-  public int getGameLimitValue()
-  {
+  public int getGameLimitValue() {
     int limit;
-    if( mCurrentGameLimit == GameType.TURNS ) {
-      limit = mTurnLimit;
-    }
-    else if( mCurrentGameLimit == GameType.SCORE ) {
+    if (mCurrentGameLimit == GameType.TURNS) {
+      limit = mTurnLimitPerTeam;
+    } else if (mCurrentGameLimit == GameType.SCORE) {
       limit = mScoreLimit;
-    }
-    else {
+    } else {
       limit = -1;
     }
     return limit;
   }
-  
+
   /**
    * Returns the game mode for the current game
    * 
    * @return the game mode for the current game
    */
-  public GameType getGameType()
-  {
+  public GameType getGameType() {
     if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "getGameType()");
-      }
-	  return mCurrentGameLimit;
+      Log.d(TAG, "getGameType()");
+    }
+    return mCurrentGameLimit;
   }
 
   /**
@@ -651,24 +637,25 @@ public class GameManager {
   }
 
   /**
-   * Returns the number of remaining Turns in Turns GameType.
-   * If the GameType is not Turns, it returns -1.
+   * Returns the number of remaining Turns in Turns GameType. If the GameType is
+   * not Turns, it returns -1.
    * 
    * @returns the number of turns until the turn limit is reached
    */
   private int getNumberOfTurnsRemaining() {
     if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "GetNumberOfTurnsRemaining()");
-      }
-    
-    if(mCurrentGameLimit != GameType.TURNS)
-    	return -1;
-    
-    return mTurnLimit - mCurrentTurn;
+      Log.d(TAG, "GetNumberOfTurnsRemaining()");
+    }
+
+    if (mCurrentGameLimit != GameType.TURNS)
+      return -1;
+
+    return mTotalRounds - mCurrentTurn;
   }
 
   /**
    * Return a Linked List of all Packs that are currently installed.
+   * 
    * @return
    */
   public LinkedList<Pack> getInstalledPacks() {
