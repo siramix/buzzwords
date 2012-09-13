@@ -64,7 +64,7 @@
   <string name="packInfoPurchaseTypeKey">com.buzzwords.packPurchaseType</string>
   
   <!-- Pack Purchasing dialog strings -->
-  <string name="packpurchase_title">Phrase Packs</string>
+  <string name="packpurchase_title">Select Word Packs</string>
   <string name="packpurchase_unlockedheader">Your Packs</string>
   <string name="packpurchase_lockedheader">Purchasable Packs</string>
   <string name="packpurchase_button">Confirm</string>

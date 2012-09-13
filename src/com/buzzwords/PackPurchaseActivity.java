@@ -219,6 +219,10 @@ public class PackPurchaseActivity extends Activity {
     int percentSeen = (int) Math.round(
         ((float) totalSeen / (float) totalCards) * 100.00);
     percentagePlayed.setText(String.valueOf(percentSeen));
+    
+    ProgressBar progress = (ProgressBar) this.findViewById(R.id.PackPurchase_Progress);
+    progress.setProgress((float) totalSeen / (float) totalCards);
+    progress.setTotal(totalCards);
 
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
     btn.setOnClickListener(mGameSetupListener);

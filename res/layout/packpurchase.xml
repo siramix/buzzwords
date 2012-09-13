@@ -109,6 +109,16 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <com.buzzwords.ProgressBar
+        android:id="@+id/PackPurchase_Progress"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" >
+
+    </com.buzzwords.ProgressBar>
+
     <TextView 
         android:id="@+id/PackPurchase_NUMSEEN"
         android:layout_width="wrap_content"
