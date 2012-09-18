@@ -220,7 +220,7 @@ public class PackPurchaseActivity extends Activity {
         ((float) totalSeen / (float) totalCards) * 100.00);
     percentagePlayed.setText(String.valueOf(percentSeen));
     
-    ProgressBar progress = (ProgressBar) this.findViewById(R.id.PackPurchase_Progress);
+    ProgressBarView progress = (ProgressBarView) this.findViewById(R.id.PackPurchase_Progress);
     progress.setProgress((float) totalSeen / (float) totalCards);
     progress.setTotal(totalCards);
 
