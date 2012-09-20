@@ -20,12 +20,10 @@ package com.buzzwords;
 import java.io.IOException;
 
 import android.content.Context;
-import android.content.res.Resources.Theme;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -321,7 +319,10 @@ public class PackPurchaseRowLayout extends FrameLayout {
 
     // Set new pack attributes
     mTitle.setText(mPack.getName());
-    mIcon.setImageDrawable(retrievePackIcon(pack));
+    Bitmap icon = retrievePackIcon(pack);
+    if (icon != null) {
+      mIcon.setImageBitmap(icon);
+    }
 
     // Assign click listeners based on the pack's purchase state
     if (mIsPackPurchased) {
@@ -372,27 +373,23 @@ public class PackPurchaseRowLayout extends FrameLayout {
    * @param pack that needs an icon
    * @return the icon drawable
    */
-  private Drawable retrievePackIcon(Pack pack) {
-    int iconId = this.getResources().getIdentifier(pack.getIconName(), "drawable", "com.buzzwords");
-    // Set a default pack icon if no other icon can be found.
-    Drawable packIcon = this.getResources().getDrawable(R.drawable.starter_icon);;
-    if (iconId != 0) {
-      Log.v(TAG, "Icon found in resources: " + pack.getIconName());
-      packIcon = this.getResources().getDrawable(iconId);
-    } else if (PackIconUtils.packIconCached(pack.getIconName(), mContext)) {
-      Log.v(TAG, "Cached icon found: " + pack.getIconName());
-      packIcon = PackIconUtils.getPackIconFilev2(pack.getIconName(), mContext);
-    } else if (PackIconUtils.packIconCached(pack.getIconName(), mContext) == false){
-      Log.v(TAG, "Fetching pack icon from server: " + pack.getName());
-      PackClient.getInstance().fetchIconOnThread(mPack.getIconPath(), mIcon);
-      // Now cache it since it never existed
+  private Bitmap retrievePackIcon(Pack pack) {
+    Bitmap packIcon = null;
+    // First check cache, then hit server
+    if (PackIconUtils.packIconCached(pack.getIconName(), mContext)) {
+      packIcon = PackIconUtils.getCachedIcon(pack.getIconName(), mContext);
+    } else {
       packIcon = PackClient.getInstance().fetchIconForPack(pack.getIconPath());
       if (packIcon != null) {
+        // Now cache it since it was not found locally
         PackIconUtils.storeIcon(pack.getIconName(), packIcon, mContext);
       } else {
         Log.w(TAG, "Pack icon " + pack.getIconName() + " not retrieved from server, using default.");
       }
-    } 
+    }
+    if (packIcon != null) {
+      packIcon = PackIconUtils.scaleIcon(packIcon, mContext);
+    }
     
     return packIcon;
   }

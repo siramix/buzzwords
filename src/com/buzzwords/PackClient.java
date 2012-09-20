@@ -37,6 +37,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
@@ -63,7 +65,8 @@ public class PackClient {
    */
   private static PackClient mInstance = null;
   
-  private static Map<String, Drawable> mDrawableMap;
+//  private static Map<String, Drawable> mDrawableMap;
+  private static Map<String, Bitmap> mBitmapMap;
 
   /**
    * Return the instance of the PackClient object
@@ -74,8 +77,11 @@ public class PackClient {
     if(mInstance == null) {
       mInstance = new PackClient();
     }
-    if(mDrawableMap == null) {
-      mDrawableMap = new HashMap<String, Drawable>();
+//    if(mDrawableMap == null) {
+//      mDrawableMap = new HashMap<String, Drawable>();
+//    }
+    if(mBitmapMap == null) {
+      mBitmapMap = new HashMap<String, Bitmap>();
     }
     return mInstance;
   }
@@ -120,23 +126,19 @@ public class PackClient {
    * pack stored on our servers.
    * http://stackoverflow.com/questions/541966/android-how-do-i-do-a-lazy-load-of-images-in-listview
    * @param urlString reference to file
-   * @return Drawable icon
+   * @return Bitmap icon
    */
-  public Drawable fetchIconForPack(String iconPath)  {
+  public Bitmap fetchIconForPack(String iconPath)  {
     final String urlString = URL_BASE + iconPath;
     try {
       InputStream is = fetch(urlString);
-      Drawable drawable = Drawable.createFromStream(is, "src");
-
-      if (drawable != null) {
-          mDrawableMap.put(urlString, drawable);
-          Log.v(TAG, "fetched a drawable: " + drawable.getBounds() + ", "
-                  + drawable.getIntrinsicHeight() + "," + drawable.getIntrinsicWidth() + ", "
-                  + drawable.getMinimumHeight() + "," + drawable.getMinimumWidth());
+      Bitmap bitmap = BitmapFactory.decodeStream(is);
+      if (bitmap != null) {
+        mBitmapMap.put(urlString, bitmap);
       } else {
         Log.w(this.getClass().getSimpleName(), "could not get thumbnail");
       }
-      return drawable;
+      return bitmap;
     } catch (MalformedURLException e) {
         Log.e(TAG, "fetchIconForPack failed for url:" + urlString, e);
         return null;
@@ -155,23 +157,22 @@ public class PackClient {
     final String urlString = URL_BASE + iconPath;
     
     // We've already retrieved it
-    if (mDrawableMap.containsKey(urlString)) {
-        imageView.setImageDrawable(mDrawableMap.get(urlString));
+    if (mBitmapMap.containsKey(urlString)) {
+      imageView.setImageBitmap(mBitmapMap.get(urlString));
     }
   
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message message) {
-            imageView.setImageDrawable((Drawable) message.obj);
+          imageView.setImageBitmap((Bitmap) message.obj);
         }
     };
   
     Thread thread = new Thread() {
         @Override
         public void run() {
-            Log.e(TAG, urlString);
-            Drawable drawable = fetchIconForPack(iconPath);
-            Message message = handler.obtainMessage(1, drawable);
+            Bitmap bitmap = fetchIconForPack(iconPath);
+            Message message = handler.obtainMessage(1, bitmap);
             handler.sendMessage(message);
         }
     };

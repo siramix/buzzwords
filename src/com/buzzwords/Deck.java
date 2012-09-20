@@ -95,7 +95,6 @@ public class Deck {
 
   private Pack mStarterPack;
   
-  
   private Context mContext;
   
   private DeckOpenHelper mDatabaseOpenHelper;
@@ -196,6 +195,10 @@ public class Deck {
    */
   public void installPack(Pack pack) throws RuntimeException {
     Log.d(TAG, "INSTALLING PACK: \n" + pack.getName());
+    // If pack is out of date, delete the icon
+    if (mDatabaseOpenHelper.packInstalled(pack.getId(), pack.getVersion()) == pack.getId()) {
+      PackIconUtils.deleteIcon(pack.getIconName(), mContext);
+    }
     mDatabaseOpenHelper.installPackFromServer(pack);
   }
   
@@ -215,13 +218,25 @@ public class Deck {
    */
   public synchronized void uninstallPack(int packId) {
     Log.d(TAG, "REMOVING PACK: " + packId);
-    String packIdStr = String.valueOf(packId);
-    if (mDatabaseOpenHelper.getPackFromDB(packIdStr) != null) {
-        mDatabaseOpenHelper.uninstallPack(packIdStr);
+    Pack pack = getPackFromDB(packId); 
+    if (pack != null) {
+      PackIconUtils.deleteIcon(pack.getIconName(), mContext);
+      mDatabaseOpenHelper.uninstallPack(String.valueOf(packId));
     }
     else {
       Log.d(TAG, "PackId " + String.valueOf(packId) + " not found in database.");
     }
+  }
+  
+  /**
+   * Helper method to retrieve the pack from the database given a pack Id.
+   * This allows us to do things to packs using pack attributes like pack icon
+   * name which is used before deletion of a pack.
+   * @param packId to get
+   * @return Pack data from db, instantiated as a Pack
+   */
+  public Pack getPackFromDB(int packId) {
+    return mDatabaseOpenHelper.getPackFromDB(String.valueOf(packId));
   }
   
   /**
@@ -742,6 +757,7 @@ public class Deck {
         }
       }
       else {
+        // TODO This is duplicate code.  Let's look at this again later.
         // Close the db on exception to prevent closing db issues.
         try {
           cardItr = PackClient.getInstance().getCardsForPack(serverPack);
@@ -768,6 +784,7 @@ public class Deck {
      */
     private synchronized void installPack(Pack pack, CardJSONIterator cardItr) {
       Log.d(TAG, "installPack: " + pack.getName() + "v" + String.valueOf(pack.getVersion()));
+      
       // TODO We are getting close() errors that reference this line below.  Cannot figure out why.
       mDatabase = getWritableDatabase();
       
