@@ -46,7 +46,7 @@ public class ProgressBarView extends RelativeLayout {
   private TextView mTitle;
   private TextView mFraction;
 
-  private float mProgress;
+  private int mProgress;
   private int mTotal;
 
   /**
@@ -142,10 +142,9 @@ public class ProgressBarView extends RelativeLayout {
         borderPadding);
 
     // Set stub values
-    float DEFAULT_PROGRESS = 0.75f;
+    int DEFAULT_PROGRESS = 750;
     int DEFAULT_TOTAL = 1000;
-    setTotal(DEFAULT_TOTAL);
-    setProgress(DEFAULT_PROGRESS);
+    setProgress(DEFAULT_PROGRESS, DEFAULT_TOTAL);
 
     mBarLayout.addView(mProgressFill);
     mBarLayout.addView(mRemainingFill);
@@ -192,17 +191,14 @@ public class ProgressBarView extends RelativeLayout {
   /**
    * Set all the data that this segment of the ComboPercentageBar can represent.
    * 
-   * @param percent
+   * @param numerator
    *          the numerator on the progress (not a percent)
+   * @param denominator
+   *          the denomiator on the progress (total)
    */
-  public void setProgress(float numerator) {
+  public void setProgress(int numerator, int denominator) {
     mProgress = numerator;
-    updateFraction();
-    updateSegmentWeights();
-  }
-
-  public void setTotal(int total) {
-    mTotal = total;
+    mTotal = denominator;
     updateFraction();
     updateSegmentWeights();
   }
@@ -231,7 +227,7 @@ public class ProgressBarView extends RelativeLayout {
     // Calculate weights for the two segments
     if (mTotal != 0) {
       mProgressFill.setVisibility(View.VISIBLE);
-      float percent = mProgress / mTotal;
+      float percent = (float)mProgress / mTotal;
       fillWeight = 1 - percent;
       remainderWeight = percent;
     } else {

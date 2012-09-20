@@ -111,7 +111,8 @@
   <string name="packInfo_confirm_nobuy">OK</string>
   <string name="packInfo_confirm_buy">Buy</string>
   <string name="packInfo_cancel">Cancel</string>
-  <string name="packInfo_alreadyOwned">You already have this pack!</string>
+  <string name="packInfo_alreadyowned">You already have this pack!</string>
+  <string name="packInfo_cardsinpack">Cards in Pack: %s</string>
   
   <!--  Pack Info Buttons -->
   <string name="packInfo_button_free">Download (Free)</string>

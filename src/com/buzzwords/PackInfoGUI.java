@@ -19,6 +19,7 @@ package com.buzzwords;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,6 +51,8 @@ public class PackInfoGUI extends Activity {
   private PackPurchaseRowLayout mPackTitle;
   private TextView mPackDescription;
   private TextView mPackIsOwnedText;
+  private ProgressBarView mProgressBar;
+  private TextView mCardsInPack;
   
   /*
    * Reference to the pack this activity is displaying
@@ -71,6 +74,8 @@ public class PackInfoGUI extends Activity {
     mPackDescription = (TextView) this.findViewById(R.id.PackInfo_Description);
     mPackTitle = (PackPurchaseRowLayout) this.findViewById(R.id.PackInfo_TitlePackRow);
     mPackIsOwnedText = (TextView) this.findViewById(R.id.PackInfo_AlreadyOwnedText);
+    mCardsInPack = (TextView) this.findViewById(R.id.PackInfo_CardInPack);
+    mProgressBar = (ProgressBarView) this.findViewById(R.id.PackInfo_ProgressBarView);
   }
 
   /**
@@ -128,6 +133,11 @@ public class PackInfoGUI extends Activity {
 
     setupViewReferences();
 
+    // Set Anton font on appropriate views
+    Typeface antonFont = Typeface.createFromAsset(getAssets(),
+        "fonts/Anton.ttf");
+    mCardsInPack.setTypeface(antonFont);
+    
     setupPackDataViews();
     
     setupButtons();
@@ -143,6 +153,22 @@ public class PackInfoGUI extends Activity {
     mPackDescription.setText(mPack.getDescription());
   }
 
+  /*
+   * Sets the progress on the ProgressBar and shows it. Hides the Cards In Pack.
+   */
+  private void setProgressVisible(boolean isVisible) {
+    if (isVisible) {
+      mCardsInPack.setVisibility(View.GONE);
+      mProgressBar.setVisibility(View.VISIBLE);
+      mProgressBar.setProgress(mPack.getNumCardsSeen(), mPack.getSize());
+    } else {
+      mCardsInPack.setVisibility(View.VISIBLE);
+      mProgressBar.setVisibility(View.GONE);
+      mCardsInPack.setText(
+          getResources().getString(R.string.packInfo_cardsinpack,
+          Integer.toString(mPack.getNumCardsSeen())));
+    }
+  }
  
   /* 
    * Setup the view and buttons based on the purchasability of the pack
@@ -160,10 +186,13 @@ public class PackInfoGUI extends Activity {
       mButtonAccept.setText(this.getResources().
           getString(PackPurchaseConsts.PURCHASE_LABEL_IDS[mPurchaseType]));
       mButtonAccept.setTag(PackPurchaseConsts.PURCHASE_RESULT_CODES[mPurchaseType]);
+      // Do not show progress for unpurchased packs
+      setProgressVisible(false);
     }
     //TODO Edward we need to handle the case where billing service is not available
     else
     {
+      setProgressVisible(true);
       mButtonCancel.setVisibility(View.GONE);
       mPackIsOwnedText.setVisibility(View.VISIBLE);
       mButtonAccept.setText(this.getResources().getString(R.string.packInfo_confirm_nobuy));
