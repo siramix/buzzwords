@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 
@@ -32,7 +33,7 @@ import android.widget.LinearLayout;
  * @author The PhraseCraze Team
  * 
  */
-public class ProgressBarView extends LinearLayout {
+public class ProgressBarView extends RelativeLayout {
 
   private Context mContext;
 
@@ -67,12 +68,18 @@ public class ProgressBarView extends LinearLayout {
 
   // Initialize the member variables
   private void initializeMembers(Context context) {
+    int id = 0;
     mContext = context;
     mBarLayout = new LinearLayout(mContext);
+    mBarLayout.setId(++id);
     mProgressFill = new FrameLayout(mContext);
+    mProgressFill.setId(++id);
     mRemainingFill = new FrameLayout(mContext);
+    mRemainingFill.setId(++id);
     mTitle = new TextView(mContext);
+    mTitle.setId(++id);
     mFraction = new TextView(mContext);
+    mFraction.setId(++id);
   }
 
   @Override
@@ -82,12 +89,14 @@ public class ProgressBarView extends LinearLayout {
     final float DENSITY = this.getResources().getDisplayMetrics().density;
 
     // Setup initial parameters of the main layout
-    this.setOrientation(LinearLayout.VERTICAL);
-    this.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
-        LayoutParams.FILL_PARENT));
+    this.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+        LayoutParams.WRAP_CONTENT));
 
     // Setup the Title
     mTitle.setGravity(Gravity.LEFT);
+    RelativeLayout.LayoutParams titleParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    titleParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+    mTitle.setLayoutParams(titleParams);
     mTitle.setText("Cards Played");
     mTitle.setTextSize(20);
     mTitle.setTextColor(this.getResources().getColor(R.color.white));
@@ -99,11 +108,14 @@ public class ProgressBarView extends LinearLayout {
     }
     
     // Setup the Fraction
-    mFraction.setGravity(Gravity.RIGHT);
-    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-    params.gravity = Gravity.RIGHT | Gravity.BOTTOM;
-    mFraction.setLayoutParams(params);
+    RelativeLayout.LayoutParams fractionParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    fractionParams.addRule(RelativeLayout.ALIGN_RIGHT, mBarLayout.getId());
+    fractionParams.addRule(RelativeLayout.ALIGN_BOTTOM, mBarLayout.getId());
+    mFraction.setLayoutParams(fractionParams);
     mFraction.setTextSize(18);
+    mFraction.setTextColor(this.getResources().getColor(R.color.white));
+    mFraction.setGravity(Gravity.RIGHT);
+    mFraction.setPadding(0, 0, (int) (DENSITY * 5 + 0.5f), 0);
     if (!this.isInEditMode()) {
       Typeface antonFont = Typeface.createFromAsset(mContext.getAssets(),
           "fonts/Anton.ttf");
@@ -112,13 +124,15 @@ public class ProgressBarView extends LinearLayout {
     
     
     // Setup the Bar layout. This is for the group of bar pieces and labels
-    mBarLayout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
-        LayoutParams.FILL_PARENT));
+    RelativeLayout.LayoutParams barParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int) (DENSITY * 30 + 0.5f));
+    barParams.addRule(RelativeLayout.BELOW, mTitle.getId());
+    mBarLayout.setPadding(0, (int) (DENSITY * -5 + 0.5f), 0, 0);
+    mBarLayout.setLayoutParams(barParams);
     mBarLayout.setOrientation(LinearLayout.HORIZONTAL);
 
     // Setup each segment in the bar layout
     int borderPadding = (int) (DENSITY * 2 + 0.5f);
-    setupSegment(mProgressFill, this.getResources().getColor(R.color.teamB_primary), 0, borderPadding);
+    setupSegment(mProgressFill, this.getResources().getColor(R.color.packPurchaseSelected), 0, borderPadding);
     setupSegment(mRemainingFill, this.getResources().getColor(R.color.genericBG_trim), borderPadding, borderPadding);
     
     // Set stub values
@@ -126,17 +140,16 @@ public class ProgressBarView extends LinearLayout {
     int DEFAULT_TOTAL = 1000;
     setTotal(DEFAULT_TOTAL);
     setProgress(DEFAULT_PROGRESS);
-    
-    // Add the fraction to the appropriate frame
-    mFraction.setPadding(0, 0, (int) (DENSITY * 5 + 0.5f), 0);
-    mRemainingFill.addView(mFraction);
-    
+
     mBarLayout.addView(mProgressFill);
     mBarLayout.addView(mRemainingFill);
-    
+
     // Construct the entire element
     this.addView(mTitle);
     this.addView(mBarLayout);
+    this.addView(mFraction);
+ 
+    
   }
  
   private void setupSegment(FrameLayout segment, int color, int innerPadding, int outerPadding) {
@@ -144,14 +157,14 @@ public class ProgressBarView extends LinearLayout {
       int paddingLTRB[] = {outerPadding, outerPadding, innerPadding, outerPadding};
     
       // Setup each segment in the bar layout
-      segment.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+      segment.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,
           LayoutParams.FILL_PARENT));
       segment.setPadding(paddingLTRB[0], paddingLTRB[1], paddingLTRB[2], paddingLTRB[3]);
       segment.setBackgroundColor(this.getResources().getColor(R.color.black));
 
       // Setup the colored section of the bar
       View foreground = new View(mContext);
-      foreground.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+      foreground.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,
           LayoutParams.FILL_PARENT));
       foreground.setBackgroundColor(color);
       
@@ -188,7 +201,11 @@ public class ProgressBarView extends LinearLayout {
    */
   private void updateFraction()
   {
-    mFraction.setText((int)(mProgress*mTotal) + "/" + mTotal);
+    if (mTotal == 0) {
+      mFraction.setText("No Packs Selected");
+    } else {
+      mFraction.setText((int) (mProgress * mTotal) + "/" + mTotal);
+    }
   }
 
   /*
@@ -206,7 +223,13 @@ public class ProgressBarView extends LinearLayout {
     LinearLayout.LayoutParams remainingParams = (LinearLayout.LayoutParams) mRemainingFill
         .getLayoutParams();
     remainingParams.weight = mProgress;
-    mRemainingFill.setLayoutParams(remainingParams); 
+    mRemainingFill.setLayoutParams(remainingParams);
+
+    if (mTotal == 0) {
+      mProgressFill.setVisibility(View.GONE);
+    } else {
+      mProgressFill.setVisibility(View.VISIBLE);
+    }
 
     // Force the view to redraw itself
     this.invalidate();

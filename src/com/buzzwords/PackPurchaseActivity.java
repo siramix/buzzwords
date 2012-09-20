@@ -25,15 +25,11 @@ import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -204,25 +200,8 @@ public class PackPurchaseActivity extends Activity {
       e1.printStackTrace();
     }
     
-    //TODO Edward this is here for you to clean up
-    TextView percentagePlayed = (TextView) this.findViewById(R.id.PackPurchase_TMP_PERCENTAGE);
-    TextView numSeen = (TextView) this.findViewById(R.id.PackPurchase_NUMSEEN);
-    TextView totalCardCount = (TextView) this.findViewById(R.id.PackPurchase_TOTALCARDS);
-    int totalSeen = 0;
-    int totalCards = 0;
-    for (Pack pack : unlockedPacks) {
-      totalSeen += pack.getNumCardsSeen();
-      totalCards += pack.getSize();
-    }
-    numSeen.setText(String.valueOf(totalSeen));
-    totalCardCount.setText("/" + String.valueOf(totalCards));
-    int percentSeen = (int) Math.round(
-        ((float) totalSeen / (float) totalCards) * 100.00);
-    percentagePlayed.setText(String.valueOf(percentSeen));
-    
-    ProgressBarView progress = (ProgressBarView) this.findViewById(R.id.PackPurchase_Progress);
-    progress.setProgress((float) totalSeen / (float) totalCards);
-    progress.setTotal(totalCards);
+    // Update the appropriate card count views
+    updateCardCountViews();
 
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
     btn.setOnClickListener(mGameSetupListener);
@@ -485,6 +464,7 @@ public class PackPurchaseActivity extends Activity {
     @Override
     public void onPackSelected(Pack pack, boolean selectionStatus) {
       setPackSelectedPref(pack, selectionStatus);
+      updateCardCountViews();
 
       // play confirm sound when points are added
       SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
@@ -605,6 +585,27 @@ public class PackPurchaseActivity extends Activity {
         Context.MODE_PRIVATE).edit();
     packPrefsEdit.putBoolean(String.valueOf(pack.getId()), onoff);
     packPrefsEdit.commit();
+  }
+  
+  /**
+   * Updates the card counts and the views that display them.
+   */
+  private void updateCardCountViews()
+  {
+    int totalSeen = 0;
+    int totalCards = 0;
+
+    for (Pack pack : mGameManager.getInstalledPacks()) {
+      if (getPackSelectedPref(pack)) {
+        totalSeen += pack.getNumCardsSeen();
+        totalCards += pack.getSize();
+      }
+    }
+    
+    ProgressBarView progress = (ProgressBarView) this.findViewById(R.id.PackPurchase_Progress);
+    progress.setProgress((float) totalSeen / (float) totalCards);
+    progress.setTotal(totalCards);
+
   }
 
   /**

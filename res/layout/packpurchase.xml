@@ -119,30 +119,13 @@
     <com.buzzwords.ProgressBarView
         android:id="@+id/PackPurchase_Progress"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" >
+        android:layout_marginRight="10dp" 
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
 
     </com.buzzwords.ProgressBarView>
-
-    <TextView 
-        android:id="@+id/PackPurchase_NUMSEEN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="TMP-NUMSEEN"/>
-    <TextView 
-        android:id="@+id/PackPurchase_TOTALCARDS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="TMP-TOTALCARDS"/>
-    <TextView 
-        android:id="@+id/PackPurchase_TMP_PERCENTAGE"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="TMP-PERCENTAGE"/>
 
     <LinearLayout
         android:id="@+id/PackPurchase_Buttons"
