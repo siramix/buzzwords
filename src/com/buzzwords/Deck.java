@@ -114,7 +114,7 @@ public class Deck {
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
     setPackData();
-    mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", "icons/starter_icon.png",
+    mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", "packs/icons/starter_icon.png",
         "Description of pack1", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true);
   }
 

@@ -19,10 +19,14 @@ package com.buzzwords;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -32,7 +36,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.widget.ImageView;
 
 
 /**
@@ -53,6 +62,8 @@ public class PackClient {
    * Members
    */
   private static PackClient mInstance = null;
+  
+  private static Map<String, Drawable> mDrawableMap;
 
   /**
    * Return the instance of the PackClient object
@@ -62,6 +73,9 @@ public class PackClient {
     Log.d(TAG, "getInstance");
     if(mInstance == null) {
       mInstance = new PackClient();
+    }
+    if(mDrawableMap == null) {
+      mDrawableMap = new HashMap<String, Drawable>();
     }
     return mInstance;
   }
@@ -99,6 +113,84 @@ public class PackClient {
     in = doHTTPGet(URL_BASE+packPath);
     ret = PackParser.parseCards(in);
     return ret;
+  }
+  
+  /**
+   * Retrieve an image from a provided url, in this case an icon for each purchasable
+   * pack stored on our servers.
+   * http://stackoverflow.com/questions/541966/android-how-do-i-do-a-lazy-load-of-images-in-listview
+   * @param urlString reference to file
+   * @return Drawable icon
+   */
+  public Drawable fetchIconForPack(String iconPath)  {
+    final String urlString = URL_BASE + iconPath;
+    try {
+      InputStream is = fetch(urlString);
+      Drawable drawable = Drawable.createFromStream(is, "src");
+
+      if (drawable != null) {
+          mDrawableMap.put(urlString, drawable);
+          Log.v(TAG, "fetched a drawable: " + drawable.getBounds() + ", "
+                  + drawable.getIntrinsicHeight() + "," + drawable.getIntrinsicWidth() + ", "
+                  + drawable.getMinimumHeight() + "," + drawable.getMinimumWidth());
+      } else {
+        Log.w(this.getClass().getSimpleName(), "could not get thumbnail");
+      }
+      return drawable;
+    } catch (MalformedURLException e) {
+        Log.e(TAG, "fetchIconForPack failed for url:" + urlString, e);
+        return null;
+    } catch (IOException e) {
+        Log.e(TAG, "fetchIconForPack failed for url:" + urlString, e);
+        return null;
+    }
+  }
+
+  /**
+   * Retrieve an icon within a thread
+   * @param iconPath path to our icon in form of packs/icons/imgname.type
+   * @param imageView to update with image
+   */
+  public void fetchIconOnThread(final String iconPath, final ImageView imageView) {
+    final String urlString = URL_BASE + iconPath;
+    
+    // We've already retrieved it
+    if (mDrawableMap.containsKey(urlString)) {
+        imageView.setImageDrawable(mDrawableMap.get(urlString));
+    }
+  
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {
+            imageView.setImageDrawable((Drawable) message.obj);
+        }
+    };
+  
+    Thread thread = new Thread() {
+        @Override
+        public void run() {
+            Log.e(TAG, urlString);
+            Drawable drawable = fetchIconForPack(iconPath);
+            Message message = handler.obtainMessage(1, drawable);
+            handler.sendMessage(message);
+        }
+    };
+    thread.start();
+  }
+
+  /**
+   * Perform a simple request for content, returning all content at once.  This
+   * is being implemented for pack icon retrieval.
+   * @param urlString
+   * @return
+   * @throws MalformedURLException
+   * @throws IOException
+   */
+  private InputStream fetch(String urlString) throws MalformedURLException, IOException {
+    DefaultHttpClient httpClient = new DefaultHttpClient();
+    HttpGet request = new HttpGet(urlString);
+    HttpResponse response = httpClient.execute(request);
+    return response.getEntity().getContent();
   }
 
   /**

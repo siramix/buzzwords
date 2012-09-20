@@ -125,7 +125,10 @@ public class Pack implements Serializable {
    * @return the pack's icon name (can get resource id from this)
    */
   public String getIconName() {
-    String iconName = TextUtils.split(mIconPath, "/")[1];
+    if (mIconPath == null) {
+      return "";
+    }
+    String iconName = TextUtils.split(mIconPath, "/")[2];
     iconName = TextUtils.split(iconName, "\\.")[0];
     return iconName;
   }
