@@ -603,7 +603,7 @@ public class PackPurchaseActivity extends Activity {
     }
     
     ProgressBarView progress = (ProgressBarView) this.findViewById(R.id.PackPurchase_Progress);
-    progress.setProgress((float) totalSeen / (float) totalCards);
+    progress.setProgress(totalSeen);
     progress.setTotal(totalCards);
 
   }

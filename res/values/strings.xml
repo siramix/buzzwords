@@ -66,7 +66,8 @@
   <!-- Pack Purchasing dialog strings -->
   <string name="packpurchase_title">Select Word Packs</string>
   <string name="packpurchase_unlockedheader">Your Packs</string>
-  <string name="packpurchase_lockedheader">Purchasable Packs</string>
+  <string name="packpurchase_lockedheader">Available Packs</string>
+  <string name="packpurchase_nopacksselected">No Packs Selected</string>
   <string name="packpurchase_button">Confirm</string>
   <string name="packpurchase_restoring_packs">Restoring your purchases&#8230;</string>
   

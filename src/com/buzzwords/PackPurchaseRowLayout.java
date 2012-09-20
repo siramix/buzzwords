@@ -18,7 +18,6 @@
 package com.buzzwords;
 
 import android.content.Context;
-import android.content.res.Resources.Theme;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
@@ -126,7 +125,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
         LayoutParams.WRAP_CONTENT));
     int padding = (int) (DENSITY * 1 + 0.5f);
     this.setPadding(0, padding, 0, padding);
-    this.setBackgroundColor(R.color.black);
+    this.setBackgroundColor(this.getResources().getColor(R.color.black));
 
     // Initialize Layout that stores the contents
     mContents.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
