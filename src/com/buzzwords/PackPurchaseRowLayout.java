@@ -17,13 +17,16 @@
  ****************************************************************************/
 package com.buzzwords;
 
+import java.io.IOException;
+
 import android.content.Context;
-import android.content.res.Resources.Theme;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -126,7 +129,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
         LayoutParams.WRAP_CONTENT));
     int padding = (int) (DENSITY * 1 + 0.5f);
     this.setPadding(0, padding, 0, padding);
-    this.setBackgroundColor(R.color.black);
+    this.setBackgroundColor(getResources().getColor(R.color.black));
 
     // Initialize Layout that stores the contents
     mContents.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
@@ -305,6 +308,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
    *          The pack this Layout represents
    * @param isSelected
    *          Specify whether the pack is selected for the game
+   * @throws IOException 
    */
   public void setPack(Pack pack, Boolean isSelected, Boolean isRowOdd) {
     // Setup new members
@@ -315,7 +319,10 @@ public class PackPurchaseRowLayout extends FrameLayout {
 
     // Set new pack attributes
     mTitle.setText(mPack.getName());
-    mIcon.setImageDrawable(this.getResources().getDrawable(mPack.getIconID()));
+    Bitmap icon = retrievePackIcon(pack);
+    if (icon != null) {
+      mIcon.setImageBitmap(icon);
+    }
 
     // Assign click listeners based on the pack's purchase state
     if (mIsPackPurchased) {
@@ -359,6 +366,34 @@ public class PackPurchaseRowLayout extends FrameLayout {
     mPackInfoListener = listener;
   }
 
+  /**
+   * First searches for the pack icon in resources, then checks if it is cached,
+   * then if neither is doable, looks online for the pack icon and caches it.  If
+   * none of these work, it will just set to a default icon.
+   * @param pack that needs an icon
+   * @return the icon drawable
+   */
+  private Bitmap retrievePackIcon(Pack pack) {
+    Bitmap packIcon = null;
+    // First check cache, then hit server
+    if (PackIconUtils.packIconCached(pack.getIconName(), mContext)) {
+      packIcon = PackIconUtils.getCachedIcon(pack.getIconName(), mContext);
+    } else {
+      packIcon = PackClient.getInstance().fetchIconForPack(pack.getIconPath());
+      if (packIcon != null) {
+        // Now cache it since it was not found locally
+        PackIconUtils.storeIcon(pack.getIconName(), packIcon, mContext);
+      } else {
+        Log.w(TAG, "Pack icon " + pack.getIconName() + " not retrieved from server, using default.");
+      }
+    }
+    if (packIcon != null) {
+      packIcon = PackIconUtils.scaleIcon(packIcon, mContext);
+    }
+    
+    return packIcon;
+  }
+  
   /**
    * Get the pack that is associated with this layout
    */

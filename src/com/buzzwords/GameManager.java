@@ -52,6 +52,11 @@ public class GameManager {
    */
   private Deck mDeck;
 
+  /**
+   * The current application context
+   */
+  private Context mContext;
+  
   // Create a thread for updating the playcount for each card
   private Thread mUpdateThread;
 
@@ -168,6 +173,7 @@ public class GameManager {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(context);
 
+    mContext = context;
     mCurrentRound = 0;
     mCurrentTurn = 0;
     mCardPosition = -1;
