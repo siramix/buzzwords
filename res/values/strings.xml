@@ -66,7 +66,8 @@
   <!-- Pack Purchasing dialog strings -->
   <string name="packpurchase_title">Select Word Packs</string>
   <string name="packpurchase_unlockedheader">Your Packs</string>
-  <string name="packpurchase_lockedheader">Purchasable Packs</string>
+  <string name="packpurchase_lockedheader">Available Packs</string>
+  <string name="packpurchase_nopacksselected">No Packs Selected</string>
   <string name="packpurchase_button">Confirm</string>
   <string name="packpurchase_restoring_packs">Restoring your purchases&#8230;</string>
   
@@ -110,7 +111,8 @@
   <string name="packInfo_confirm_nobuy">OK</string>
   <string name="packInfo_confirm_buy">Buy</string>
   <string name="packInfo_cancel">Cancel</string>
-  <string name="packInfo_alreadyOwned">You already have this pack!</string>
+  <string name="packInfo_alreadyowned">You already have this pack!</string>
+  <string name="packInfo_cardsinpack">Cards in Pack: %s</string>
   
   <!--  Pack Info Buttons -->
   <string name="packInfo_button_free">Download (Free)</string>

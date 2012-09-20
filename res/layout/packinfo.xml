@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- 
+<!--
 /*****************************************************************************
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,22 +14,117 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
- -->
- 
+-->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="wrap_content" android:background="@drawable/bg_generic">
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/PackInfo_Title">
-        <include android:layout_width="wrap_content" android:layout_height="wrap_content" layout="@layout/packpurchaserow" android:id="@+id/PackInfo_TitlePackRow"></include>
-        <View android:layout_width="wrap_content" android:background="@color/genericBG_trim" android:layout_height="4dp" android:id="@+id/PackInfo_Spacer"></View>
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_generic"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/PackInfo_Title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <include
+            android:id="@+id/PackInfo_TitlePackRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/packpurchaserow" >
+        </include>
+
+        <View
+            android:id="@+id/PackInfo_Spacer"
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:background="@color/genericBG_trim" >
+        </View>
     </LinearLayout>
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/PackInfo_ContentsGroup">
-        <TextView android:paddingRight="10dp" android:paddingLeft="10dp" android:textSize="18sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="A perfect cross-section of the English language. This pack is an essential part to any complete Buzzwords deck." android:id="@+id/PackInfo_Description"></TextView>
-        <LinearLayout android:layout_width="fill_parent" android:layout_marginTop="5dp" android:id="@+id/PackInfo_Buttons" android:padding="5dp" android:layout_height="50dp">
-            <com.buzzwords.AntonButton android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="Cancel" android:layout_weight="1" android:id="@+id/PackInfo_Buttons_Cancel" android:background="@drawable/button_generic" style="@style/BuzzWordsButton" android:layout_gravity="center" android:layout_marginRight="2dp" android:visibility="gone"></com.buzzwords.AntonButton>
-            <TextView android:layout_weight="1" android:gravity="center" android:layout_height="fill_parent" android:layout_width="fill_parent" android:textSize="16sp" android:id="@+id/PackInfo_AlreadyOwnedText" android:text="@string/packInfo_alreadyOwned"></TextView>
-            <com.buzzwords.AntonButton android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/PackInfo_Buttons_Accept" android:text="OK" android:background="@drawable/button_generic" android:layout_gravity="center" android:layout_height="fill_parent" style="@style/BuzzWordsButton" android:layout_marginLeft="2dp"></com.buzzwords.AntonButton>
+
+    <LinearLayout
+        android:id="@+id/PackInfo_ContentsGroup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/PackInfo_Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="A perfect cross-section of the English language. This pack is an essential part to any complete Buzzwords deck."
+            android:textSize="18sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/PackInfo_CardInPack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/packInfo_cardsinpack"
+            android:textSize="20sp" 
+            android:padding="5dp"/>
+
+        <com.buzzwords.ProgressBarView
+            android:id="@+id/PackInfo_ProgressBarView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp" >
+        </com.buzzwords.ProgressBarView>
+
+        <LinearLayout
+            android:id="@+id/PackInfo_Buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:padding="5dp" >
+
+            <com.buzzwords.AntonButton
+                android:id="@+id/PackInfo_Buttons_Cancel"
+                style="@style/BuzzWordsButton"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_generic"
+                android:text="Cancel"
+                android:visibility="gone" >
+            </com.buzzwords.AntonButton>
+
+            <TextView
+                android:id="@+id/PackInfo_AlreadyOwnedText"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/packInfo_alreadyowned"
+                android:textSize="16sp" >
+            </TextView>
+
+            <com.buzzwords.AntonButton
+                android:id="@+id/PackInfo_Buttons_Accept"
+                style="@style/BuzzWordsButton"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_generic"
+                android:text="OK" >
+            </com.buzzwords.AntonButton>
         </LinearLayout>
     </LinearLayout>
-    <View android:layout_width="wrap_content" android:background="@color/genericBG_trim" android:layout_weight="1" android:layout_height="4dp" android:id="@+id/PackInfo_BottomSpacer"></View>
-        
+
+    <View
+        android:id="@+id/PackInfo_BottomSpacer"
+        android:layout_width="wrap_content"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:background="@color/genericBG_trim" >
+    </View>
+
 </LinearLayout>

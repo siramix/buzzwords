@@ -45,8 +45,8 @@ public class ProgressBarView extends RelativeLayout {
   private FrameLayout mRemainingFill;
   private TextView mTitle;
   private TextView mFraction;
-  
-  private float mProgress;
+
+  private int mProgress;
   private int mTotal;
 
   /**
@@ -85,7 +85,7 @@ public class ProgressBarView extends RelativeLayout {
   @Override
   public void onFinishInflate() {
     super.onFinishInflate();
-    
+
     final float DENSITY = this.getResources().getDisplayMetrics().density;
 
     // Setup initial parameters of the main layout
@@ -94,7 +94,8 @@ public class ProgressBarView extends RelativeLayout {
 
     // Setup the Title
     mTitle.setGravity(Gravity.LEFT);
-    RelativeLayout.LayoutParams titleParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    RelativeLayout.LayoutParams titleParams = new RelativeLayout.LayoutParams(
+        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     titleParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
     mTitle.setLayoutParams(titleParams);
     mTitle.setText("Cards Played");
@@ -106,9 +107,10 @@ public class ProgressBarView extends RelativeLayout {
           "fonts/Anton.ttf");
       mTitle.setTypeface(antonFont);
     }
-    
+
     // Setup the Fraction
-    RelativeLayout.LayoutParams fractionParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    RelativeLayout.LayoutParams fractionParams = new RelativeLayout.LayoutParams(
+        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     fractionParams.addRule(RelativeLayout.ALIGN_RIGHT, mBarLayout.getId());
     fractionParams.addRule(RelativeLayout.ALIGN_BOTTOM, mBarLayout.getId());
     mFraction.setLayoutParams(fractionParams);
@@ -121,10 +123,10 @@ public class ProgressBarView extends RelativeLayout {
           "fonts/Anton.ttf");
       mFraction.setTypeface(antonFont);
     }
-    
-    
+
     // Setup the Bar layout. This is for the group of bar pieces and labels
-    RelativeLayout.LayoutParams barParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int) (DENSITY * 30 + 0.5f));
+    RelativeLayout.LayoutParams barParams = new RelativeLayout.LayoutParams(
+        LayoutParams.WRAP_CONTENT, (int) (DENSITY * 30 + 0.5f));
     barParams.addRule(RelativeLayout.BELOW, mTitle.getId());
     mBarLayout.setPadding(0, (int) (DENSITY * -5 + 0.5f), 0, 0);
     mBarLayout.setLayoutParams(barParams);
@@ -132,14 +134,17 @@ public class ProgressBarView extends RelativeLayout {
 
     // Setup each segment in the bar layout
     int borderPadding = (int) (DENSITY * 2 + 0.5f);
-    setupSegment(mProgressFill, this.getResources().getColor(R.color.packPurchaseSelected), 0, borderPadding);
-    setupSegment(mRemainingFill, this.getResources().getColor(R.color.genericBG_trim), borderPadding, borderPadding);
-    
+    setupSegment(mProgressFill,
+        this.getResources().getColor(R.color.packPurchaseSelected), 0,
+        borderPadding);
+    setupSegment(mRemainingFill,
+        this.getResources().getColor(R.color.genericBG_trim), borderPadding,
+        borderPadding);
+
     // Set stub values
-    float DEFAULT_PROGRESS = 0.75f;
+    int DEFAULT_PROGRESS = 750;
     int DEFAULT_TOTAL = 1000;
-    setTotal(DEFAULT_TOTAL);
-    setProgress(DEFAULT_PROGRESS);
+    setProgress(DEFAULT_PROGRESS, DEFAULT_TOTAL);
 
     mBarLayout.addView(mProgressFill);
     mBarLayout.addView(mRemainingFill);
@@ -148,29 +153,34 @@ public class ProgressBarView extends RelativeLayout {
     this.addView(mTitle);
     this.addView(mBarLayout);
     this.addView(mFraction);
- 
-    
-  }
- 
-  private void setupSegment(FrameLayout segment, int color, int innerPadding, int outerPadding) {
 
-      int paddingLTRB[] = {outerPadding, outerPadding, innerPadding, outerPadding};
-    
-      // Setup each segment in the bar layout
-      segment.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,
-          LayoutParams.FILL_PARENT));
-      segment.setPadding(paddingLTRB[0], paddingLTRB[1], paddingLTRB[2], paddingLTRB[3]);
-      segment.setBackgroundColor(this.getResources().getColor(R.color.black));
-
-      // Setup the colored section of the bar
-      View foreground = new View(mContext);
-      foreground.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,
-          LayoutParams.FILL_PARENT));
-      foreground.setBackgroundColor(color);
-      
-      segment.addView(foreground);
   }
-  
+
+  /*
+   * Helper function establishes consistent attributes to each segment
+   */
+  private void setupSegment(FrameLayout segment, int color, int innerPadding,
+      int outerPadding) {
+
+    int paddingLTRB[] = { outerPadding, outerPadding, innerPadding,
+        outerPadding };
+
+    // Setup each segment in the bar layout
+    segment.setLayoutParams(new LinearLayout.LayoutParams(
+        LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+    segment.setPadding(paddingLTRB[0], paddingLTRB[1], paddingLTRB[2],
+        paddingLTRB[3]);
+    segment.setBackgroundColor(this.getResources().getColor(R.color.black));
+
+    // Setup the colored section of the bar
+    View foreground = new View(mContext);
+    foreground.setLayoutParams(new LinearLayout.LayoutParams(
+        LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+    foreground.setBackgroundColor(color);
+
+    segment.addView(foreground);
+  }
+
   /*
    * Set the title of this percentage bar
    */
@@ -181,30 +191,27 @@ public class ProgressBarView extends RelativeLayout {
   /**
    * Set all the data that this segment of the ComboPercentageBar can represent.
    * 
-   * @param percent
-   *          the amount of progress to render as a percent of the total
+   * @param numerator
+   *          the numerator on the progress (not a percent)
+   * @param denominator
+   *          the denomiator on the progress (total)
    */
-  public void setProgress(float percent) {
-    mProgress = percent;
+  public void setProgress(int numerator, int denominator) {
+    mProgress = numerator;
+    mTotal = denominator;
     updateFraction();
     updateSegmentWeights();
   }
 
-  public void setTotal(int total)
-  {
-    mTotal = total;
-    updateFraction();
-    updateSegmentWeights();
-  }
   /*
    * Updates the fraction that displays the progress numbers
    */
-  private void updateFraction()
-  {
+  private void updateFraction() {
     if (mTotal == 0) {
-      mFraction.setText("No Packs Selected");
+      mFraction.setText(this.getResources().getString(
+          R.string.packpurchase_nopacksselected));
     } else {
-      mFraction.setText((int) (mProgress * mTotal) + "/" + mTotal);
+      mFraction.setText((int) mProgress + "/" + mTotal);
     }
   }
 
@@ -213,23 +220,32 @@ public class ProgressBarView extends RelativeLayout {
    * on the previously supplied segment values.
    */
   public void updateSegmentWeights() {
-    
+
+    float fillWeight;
+    float remainderWeight;
+
+    // Calculate weights for the two segments
+    if (mTotal != 0) {
+      mProgressFill.setVisibility(View.VISIBLE);
+      float percent = (float)mProgress / mTotal;
+      fillWeight = 1 - percent;
+      remainderWeight = percent;
+    } else {
+      mProgressFill.setVisibility(View.GONE);
+      fillWeight = 1;
+      remainderWeight = 0;
+    }
+
     // Assign the progress percentage as a weight
     LinearLayout.LayoutParams fillParams = (LinearLayout.LayoutParams) mProgressFill
         .getLayoutParams();
-    fillParams.weight = (1 - mProgress);
-    mProgressFill.setLayoutParams(fillParams); 
-    
+    fillParams.weight = fillWeight;
+    mProgressFill.setLayoutParams(fillParams);
+
     LinearLayout.LayoutParams remainingParams = (LinearLayout.LayoutParams) mRemainingFill
         .getLayoutParams();
-    remainingParams.weight = mProgress;
+    remainingParams.weight = remainderWeight;
     mRemainingFill.setLayoutParams(remainingParams);
-
-    if (mTotal == 0) {
-      mProgressFill.setVisibility(View.GONE);
-    } else {
-      mProgressFill.setVisibility(View.VISIBLE);
-    }
 
     // Force the view to redraw itself
     this.invalidate();
