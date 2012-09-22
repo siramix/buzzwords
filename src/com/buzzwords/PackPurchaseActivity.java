@@ -400,7 +400,13 @@ public class PackPurchaseActivity extends Activity {
   private void storeRequestId(String requestId, String key) {
       requestIds.put(requestId, key);
   }
-  
+
+  /**
+   * In an async task, look through all of our pack prefs for the user and go 
+   * through the process of checking purchase status for each pack.  If purchased,
+   * check for an update. If it is not purchased, ensure the pack is uninstalled.
+   * If it is the starter pack, make sure it is always installed and updated.
+   */
   public class PackSyncronizer extends AsyncTask <Pack, Void, Integer>
   {
     private ProgressDialog dialog;
@@ -425,13 +431,13 @@ public class PackPurchaseActivity extends Activity {
         if (isPackPurchased) {
           gm.installPack(packs[i]);
         } 
-        // Uninstall pack if it is not purchased and is a premium pack
+        // Uninstall pack if it is not purchased and is not the starter pack
         else if (isPackPurchased == false && 
-            packs[i].getPurchaseType() != PackPurchaseConsts.PACKTYPE_FREE) {
+            packs[i].getPurchaseType() != PackPurchaseConsts.PACKTYPE_STARTER) {
           gm.uninstallPack(packs[i].getId());
         }
-        // Update free and starter packs
-        else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_FREE) {
+        // Always check for starter pack update
+        else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_STARTER) {
           gm.installPack(packs[i]);
         }
         else {

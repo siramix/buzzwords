@@ -103,7 +103,7 @@
   <string name="toast_packpurchase_notwitter">Sorry, we could not detect any Twitter clients.</string>
   <string name="toast_packpurchase_nofacebook">Sorry, we could not detect any Facebook clients.</string>
   <string name="toast_packpurchase_nogoogleplus">Sorry, we could not detect any Google+ clients.</string>
-  <string name="toast_packpurchase_nointerneterror">No internet connection detected.  We can only show your purchased packs.</string>
+  <string name="toast_packpurchase_nointerneterror">No internet connection detected.  We can only show your installed packs.</string>
   <string name="toast_packpurchase_siramixdownerror">Sorry, there were problems connecting to our store.  We can only show your purchased packs.</string>
   <string name="toast_packpurchase_nopackselected">Please select at least one pack to play.</string>
   

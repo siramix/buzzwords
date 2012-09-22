@@ -72,9 +72,6 @@ public class PackClient {
     if(mInstance == null) {
       mInstance = new PackClient();
     }
-//    if(mDrawableMap == null) {
-//      mDrawableMap = new HashMap<String, Drawable>();
-//    }
     if(mBitmapMap == null) {
       mBitmapMap = new HashMap<String, Bitmap>();
     }
