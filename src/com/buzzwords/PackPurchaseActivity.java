@@ -163,6 +163,10 @@ public class PackPurchaseActivity extends Activity {
     refreshAllPackLayouts();
   }
 
+  /**
+   * Update the list of packs to include correct purchased and unpurchased lists.
+   * First populates purchased then goes online to get list of unpurchased packs.
+   */
   protected void refreshAllPackLayouts() {
     Log.d(TAG, "refreshAllPackLayouts");
     // Get our current context
@@ -178,25 +182,21 @@ public class PackPurchaseActivity extends Activity {
     LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
     LinkedList<Pack> unlockedPacks = new LinkedList<Pack>();
     unlockedPacks = mGameManager.getInstalledPacks();
-
-    //TODO these http pack requests should be in their own methods (getLockedPacksFromServer...)
+    populatePackLayout(unlockedPacks, unlockedPackLayout);
+    
     // First try to get the online packs, if no internet, just use local packs
     try {
       mServerPacks = client.getServerPacks();
       lockedPacks = getUnownedPacks(mServerPacks, unlockedPacks);
-      populatePackLayout(unlockedPacks, unlockedPackLayout);
-      //TODO maybe we want to put this on the purchase button isntead
       populatePackLayout(lockedPacks, paidPackLayout);
     } catch (IOException e1) {
-      populatePackLayout(unlockedPacks, unlockedPackLayout);
       showToast(getString(R.string.toast_packpurchase_nointerneterror));
       e1.printStackTrace();
     } catch (URISyntaxException e1) {
-      populatePackLayout(unlockedPacks, unlockedPackLayout);
       showToast(getString(R.string.toast_packpurchase_siramixdownerror));
       e1.printStackTrace();
     } catch (JSONException e1) {
-      // TODO Auto-generated catch block
+      Log.e(TAG, "Error parsing pack JSON from server.");
       e1.printStackTrace();
     }
     
@@ -209,9 +209,9 @@ public class PackPurchaseActivity extends Activity {
 
   /**
    * Remove from lockedPacks those packs that are already installed.
-   * @param lockedPacks
-   * @param localPacks
-   * @return
+   * @param lockedPacks all locked packs
+   * @param localPacks packs to exclude from list
+   * @return list of unpurchased packs
    */
   private LinkedList<Pack> getUnownedPacks(LinkedList<Pack> lockedPacks, LinkedList<Pack> installedPacks) {
     Log.d(TAG, "removeLocalPacks");
