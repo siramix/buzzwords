@@ -160,7 +160,7 @@ public class PackInfoGUI extends Activity {
       mProgressBar.setVisibility(View.GONE);
       mCardsInPack.setText(
           getResources().getString(R.string.packInfo_cardsinpack,
-          Integer.toString(mPack.getNumCardsSeen())));
+          Integer.toString(mPack.getServerSize())));
     }
   }
  
