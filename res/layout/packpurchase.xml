@@ -102,6 +102,16 @@
                     android:textSize="24dp" />
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/PackPurchase_PaidPackPlaceholderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="16sp"
+                android:text="" />
+            
             <LinearLayout
                 android:id="@+id/PackPurchase_PaidPackSets"
                 android:layout_width="fill_parent"
@@ -112,15 +122,7 @@
                 android:orientation="vertical" >
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/PackPurchase_PaidPackPlaceholderText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textSize="16sp" 
-                android:text="" />
+            
 
         </LinearLayout>
     </ScrollView>
