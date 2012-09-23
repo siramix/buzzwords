@@ -23,8 +23,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,6 +42,11 @@ public class PackPurchaseActivity extends Activity {
   // To be used for tooltips to help guide users
   private Toast mHelpToast = null;
 
+  /**
+   * flag used for stopping music OnStop() event.
+   */
+  private boolean mContinueMusic;
+  
   List<View> mPackLineList;
   
   // Our pack lists as retrieved from the server
@@ -66,6 +73,7 @@ public class PackPurchaseActivity extends Activity {
     private static final int FACEBOOK_REQUEST_CODE = 12;
     private static final int PACKINFO_REQUEST_CODE = 14;
 
+    
   /**
    * PlayGameListener plays an animation on the view that will result in
    * launching GameSetup
@@ -74,6 +82,9 @@ public class PackPurchaseActivity extends Activity {
     public void onClick(View v) {
       Log.d(TAG, "PlayGameListener OnClick()");
 
+      // Carry music into GameSetup
+      mContinueMusic = true;
+      
       // play confirm sound
       SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
           .getBaseContext());
@@ -161,6 +172,20 @@ public class PackPurchaseActivity extends Activity {
     super.onResume();
     PurchasingManager.initiateGetUserIdRequest();
     refreshAllPackLayouts();
+    
+    // Resume Title Music
+    BuzzWordsApplication application = (BuzzWordsApplication) this
+        .getApplication();
+    MediaPlayer mp = application.getMusicPlayer();
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
+        .getBaseContext());
+    if (sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
+      if (!mp.isPlaying()) {
+        mp.start();
+      }
+    }
+    // set flag to let onStop handle music
+    mContinueMusic = false;
   }
 
   protected void refreshAllPackLayouts() {
@@ -691,6 +716,29 @@ public class PackPurchaseActivity extends Activity {
     }
     mHelpToast.show();
   }
+  
+
+  /**
+   * Override onPause for music continuation
+   */
+  @Override
+  public void onPause() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onPause()");
+    }
+    super.onPause();
+    if (!mContinueMusic) {
+      BuzzWordsApplication application = (BuzzWordsApplication) this
+          .getApplication();
+      MediaPlayer mp = application.getMusicPlayer();
+      SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
+          .getBaseContext());
+      if (mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
+        mp.pause();
+      }
+    }
+  }
+
 
   /**
    * Called when this activity is no longer visible.
