@@ -153,7 +153,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <TextView
+        <com.buzzwords.FrancoisOneTextView
             android:id="@+id/TurnSummary_GameTypeInfo"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

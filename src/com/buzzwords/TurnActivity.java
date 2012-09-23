@@ -942,58 +942,10 @@ public class TurnActivity extends Activity {
     ImageView timerFrame = (ImageView) this.findViewById(R.id.Turn_TimerFrame);
     timerFrameBG.setColorFilter(getResources().getColor(R.color.genericBG_trim), Mode.MULTIPLY);
     timerFrame.setBackgroundDrawable(timerFrameBG);
-
-    // Set fonts on views that require custom fonts
-    setCustomFonts();
     
     // Set background gradient
     this.findViewById(R.id.Turn_Root).setBackgroundResource(
         curTeam.getGradient());
-  }
-  /*
-   * Sets the fonts on views that require special fonts
-   */
-  private void setCustomFonts()
-  {
-    // Set font on Paused text
-    Typeface font = Typeface.createFromAsset(getAssets(),
-        "fonts/FrancoisOne.ttf");
-    TextView text = (TextView) this.findViewById(R.id.Turn_PausedText);
-    text.setTypeface(font);
-    text = (TextView) this.findViewById(R.id.Turn_PausedSubText);
-    text.setTypeface(font);
-    text = (TextView) this.findViewById(R.id.Turn_TimesUp);
-    text.setTypeface(font);
-    
-    // Set fonts on card views
-    setCardFonts();   
-  }
-  
-  /*
-   * Sets fonts on all the text views for the cards
-   */
-  private void setCardFonts()
-  {
-    Typeface francoisFont = Typeface.createFromAsset(getAssets(),
-        "fonts/FrancoisOne.ttf");
-    TextView view = (TextView) findViewById(R.id.Turn_CardTitleA);
-    view.setTypeface(francoisFont);
-    view = (TextView) findViewById(R.id.Turn_CardTitleB);
-    view.setTypeface(francoisFont);
-    
-    LinearLayout badWords = (LinearLayout) findViewById(R.id.Turn_CardA_BadWords); 
-    for(int i = 0; i < badWords.getChildCount(); i++)
-    {
-      view = (TextView) badWords.getChildAt(i);
-      view.setTypeface(francoisFont);
-    }
-    badWords = (LinearLayout) findViewById(R.id.Turn_CardB_BadWords); 
-    for(int i = 0; i < badWords.getChildCount(); i++)
-    {
-      view = (TextView) badWords.getChildAt(i);
-      view.setTypeface(francoisFont);
-    }
-
   }
 
   /**

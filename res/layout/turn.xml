@@ -22,7 +22,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/bg_bluegradient" >
 
-    <TextView
+    <com.buzzwords.FrancoisOneTextView
         android:id="@+id/Turn_TimesUp"
         style="@style/TurnNotify"
         android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
         android:orientation="vertical"
         android:visibility="invisible" >
 
-        <TextView
+        <com.buzzwords.FrancoisOneTextView
             android:id="@+id/Turn_PausedText"
             style="@style/TurnNotify"
             android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
             android:textColor="@color/white"
             android:textSize="60dp" />
 
-        <TextView
+        <com.buzzwords.FrancoisOneTextView
             android:id="@+id/Turn_PausedSubText"
             style="@style/TurnNotifySubText"
             android:layout_width="wrap_content"
@@ -175,7 +175,7 @@
                     android:layout_centerInParent="true"
                     android:orientation="vertical" >
 
-                    <TextView
+                    <com.buzzwords.FrancoisOneTextView
                         android:id="@+id/Turn_CardTitleA"
                         style="@style/CardTitle" />
 
@@ -186,23 +186,23 @@
                         android:layout_below="@id/Turn_CardTitleA"
                         android:orientation="vertical" >
 
-                        <TextView
+                        <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord0"
                             style="@style/BadWordText" />
 
-                        <TextView
+                        <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord1"
                             style="@style/BadWordText" />
 
-                        <TextView
+                        <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord2"
                             style="@style/BadWordText" />
 
-                        <TextView
+                        <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord3"
                             style="@style/BadWordText" />
 
-                        <TextView
+                        <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord4"
                             style="@style/BadWordText" />
                     </LinearLayout>
@@ -229,7 +229,7 @@
                     android:layout_centerInParent="true"
                     android:orientation="vertical" >
 
-                    <TextView
+                    <com.buzzwords.FrancoisOneTextView
                         android:id="@+id/Turn_CardTitleB"
                         style="@style/CardTitle" />
 
@@ -240,23 +240,23 @@
                         android:layout_gravity="center"
                         android:orientation="vertical" >
 
-                        <TextView
+                        <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardB_BadWord0"
                             style="@style/BadWordText" />
 
-                        <TextView
+                        <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardB_BadWord1"
                             style="@style/BadWordText" />
 
-                        <TextView
+                        <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardB_BadWord2"
                             style="@style/BadWordText" />
 
-                        <TextView
+                        <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardB_BadWord3"
                             style="@style/BadWordText" />
 
-                        <TextView
+                        <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardB_BadWord4"
                             style="@style/BadWordText" />
                     </LinearLayout>
