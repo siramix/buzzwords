@@ -22,15 +22,19 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -218,38 +222,74 @@ public class PackPurchaseActivity extends Activity {
    * show a list that filters out packs user already owns.
    */
   private void displayLockedPacks() {
+    TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
+    // TODO Fix the font for this to FrancoisOne
+    placeHolderText.setText(getString(R.string.packpurchase_accessing_internet));
+    placeHolderText.setVisibility(View.VISIBLE);
+    
     LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
     paidPackLayout.removeAllViewsInLayout();
-    TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
-    placeHolderText.setText(getString(R.string.packpurchase_accessing_internet));
-    // TODO Fix the font for this to FrancoisOne
-    PackClient client = PackClient.getInstance();
-    LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
     
-    // First try to get the online packs, if no internet, just use local packs
-    try {
-      //TODO This getServerPacks line can hang.  FIX IT!!!!!
-      mServerPacks = client.getServerPacks();
+    // TODO Refactor this piece of code which duplicates code inside the thread
+    // The purpose to this is to not reload the server packs or refresh this list
+    // if the packs are already in memory.
+    if (mServerPacks.isEmpty()) {
+      fetchPurchasablePacksOnThread();
+    } else {
+      LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
+      paidPackLayout.removeAllViewsInLayout();
       lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
-      placeHolderText.setText("");
+      placeHolderText.setVisibility(View.GONE);
       populatePackLayout(lockedPacks, paidPackLayout);
-    } catch (IOException e1) {
-      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
-      mServerError = true;
-      e1.printStackTrace();
-    } catch (URISyntaxException e1) {
-      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
-      mServerError = true;
-      e1.printStackTrace();
-    } catch (JSONException e1) {
-      Log.e(TAG, "Error parsing pack JSON from server.");
-      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
-      mServerError = true;
-      e1.printStackTrace();
     }
     
     // Update the appropriate card count views
     updateCardCountViews();
+  }
+  
+  /**
+   * Retrieve the pack list within a thread.  
+   */
+  public void fetchPurchasablePacksOnThread() {
+    final PackClient client = PackClient.getInstance();
+    final TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {
+          LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
+          LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
+          paidPackLayout.removeAllViewsInLayout();
+          lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
+          placeHolderText.setVisibility(View.GONE);
+          populatePackLayout(lockedPacks, paidPackLayout);
+        }
+    };
+  
+    Thread thread = new Thread() {
+        @Override
+        public void run() {
+          try {
+            mServerPacks = client.getServerPacks();
+            Message message = handler.obtainMessage(1, mServerPacks);
+            handler.sendMessage(message);
+          } catch (IOException e1) {
+            placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+            mServerError = true;
+            e1.printStackTrace();
+          } catch (URISyntaxException e1) {
+            placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+            mServerError = true;
+            e1.printStackTrace();
+          } catch (JSONException e1) {
+            Log.e(TAG, "Error parsing pack JSON from server.");
+            placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+            mServerError = true;
+            e1.printStackTrace();
+          }
+        }
+    };
+    
+    thread.start();
   }
 
   /**
