@@ -20,7 +20,6 @@ package com.buzzwords;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -133,13 +132,6 @@ public class EditTeamName extends Activity {
     this.setContentView(R.layout.editteamname);
 
     setupViewReferences();
-
-    // Set fonts on titles
-    Typeface antonFont = Typeface.createFromAsset(getAssets(),
-        "fonts/Anton.ttf");
-
-    TextView label = (TextView) this.findViewById(R.id.EditTeamName_Title);
-    label.setTypeface(antonFont);
 
     // Get the team from the passed in Bundle
     Intent curIntent = this.getIntent();

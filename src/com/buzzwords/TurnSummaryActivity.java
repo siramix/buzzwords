@@ -27,7 +27,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -204,17 +203,6 @@ public class TurnSummaryActivity extends Activity {
       count++;
     }
     list.addView(layout);
-
-    // Set fonts
-    Typeface antonFont = Typeface.createFromAsset(getAssets(),
-        "fonts/Anton.ttf");
-
-    // Set font on Title text
-    TextView scoreTitle = (TextView) findViewById(R.id.TurnSummary_ScoreboardTitle);
-    scoreTitle.setTypeface(antonFont);
-
-    TextView resultsTitle = (TextView) findViewById(R.id.TurnSummary_Title);
-    resultsTitle.setTypeface(antonFont);
     
     // TODO This should be in a thread, but I'm not sure how to access the game from inside the thread
     game.maintainDeck();

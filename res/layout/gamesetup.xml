@@ -35,7 +35,7 @@
             android:layout_height="fill_parent"
             android:orientation="vertical" >
 
-            <TextView
+            <com.buzzwords.AntonTextView
                 android:id="@+id/GameSetup_Title"
                 style="@style/ActivityHeader"
                 android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                     android:layout_centerVertical="true"
                     android:background="@color/genericBG_trim" />
 
-                <TextView
+                <com.buzzwords.AntonTextView
                     android:id="@+id/GameSetup_TeamsTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
                         android:layout_centerVertical="true"
                         android:background="@color/genericBG_trim" />
 
-                    <TextView
+                    <com.buzzwords.AntonTextView
                         android:id="@+id/GameSetup_GameType_Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -225,7 +225,7 @@
                         android:layout_centerVertical="true"
                         android:background="@color/genericBG_trim" />
 
-                    <TextView
+                    <com.buzzwords.AntonTextView
                         android:id="@+id/GameSetup_GameTypeParameter_Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -258,7 +258,7 @@
                         android:layout_height="60dp"
                         android:background="@drawable/button_minus" />
 
-                    <TextView
+                    <com.buzzwords.AntonTextView
                         android:id="@+id/GameSetup_GameTypeParameter_Value"
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"

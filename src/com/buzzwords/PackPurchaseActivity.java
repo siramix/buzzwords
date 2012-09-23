@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -32,7 +31,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class PackPurchaseActivity extends Activity {
@@ -136,16 +134,6 @@ public class PackPurchaseActivity extends Activity {
 
     // Detect Social Clients
     detectClients();
-    
-    // set fonts on titles
-    Typeface antonFont = Typeface.createFromAsset(getAssets(),
-        "fonts/Anton.ttf");
-    TextView header = (TextView) this.findViewById(R.id.PackPurchase_Title);
-    header.setTypeface(antonFont);
-    header = (TextView) this.findViewById(R.id.PackPurchase_UnlockedPackTitle);
-    header.setTypeface(antonFont);
-    header = (TextView) this.findViewById(R.id.PackPurchase_PaidPackTitle);
-    header.setTypeface(antonFont);
     
     // Instantiate all of our lists for programmatic adding of packs to view
     mPackLineList = new LinkedList<View>();

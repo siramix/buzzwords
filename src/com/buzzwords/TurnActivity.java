@@ -955,12 +955,6 @@ public class TurnActivity extends Activity {
    */
   private void setCustomFonts()
   {
-    Typeface antonFont = Typeface.createFromAsset(getAssets(),
-        "fonts/Anton.ttf");
-    // Set font on Title text
-    TextView timerText = (TextView) findViewById(R.id.Turn_Timer);
-    timerText.setTypeface(antonFont);
-
     // Set font on Paused text
     Typeface font = Typeface.createFromAsset(getAssets(),
         "fonts/FrancoisOne.ttf");

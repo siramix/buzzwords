@@ -59,7 +59,7 @@
             android:textSize="18sp" >
         </TextView>
 
-        <TextView
+        <com.buzzwords.AntonTextView
             android:id="@+id/PackInfo_CardInPack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

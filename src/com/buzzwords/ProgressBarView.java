@@ -18,13 +18,11 @@
 package com.buzzwords;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.LinearLayout;
 
 /**
@@ -43,8 +41,8 @@ public class ProgressBarView extends RelativeLayout {
   private LinearLayout mBarLayout;
   private FrameLayout mProgressFill;
   private FrameLayout mRemainingFill;
-  private TextView mTitle;
-  private TextView mFraction;
+  private AntonTextView mTitle;
+  private AntonTextView mFraction;
 
   private int mProgress;
   private int mTotal;
@@ -76,9 +74,9 @@ public class ProgressBarView extends RelativeLayout {
     mProgressFill.setId(++id);
     mRemainingFill = new FrameLayout(mContext);
     mRemainingFill.setId(++id);
-    mTitle = new TextView(mContext);
+    mTitle = new AntonTextView(mContext);
     mTitle.setId(++id);
-    mFraction = new TextView(mContext);
+    mFraction = new AntonTextView(mContext);
     mFraction.setId(++id);
   }
 
@@ -102,11 +100,6 @@ public class ProgressBarView extends RelativeLayout {
     mTitle.setTextSize(20);
     mTitle.setTextColor(this.getResources().getColor(R.color.white));
     mTitle.setPadding((int) (DENSITY * 5 + 0.5f), 0, 0, 0);
-    if (!this.isInEditMode()) {
-      Typeface antonFont = Typeface.createFromAsset(mContext.getAssets(),
-          "fonts/Anton.ttf");
-      mTitle.setTypeface(antonFont);
-    }
 
     // Setup the Fraction
     RelativeLayout.LayoutParams fractionParams = new RelativeLayout.LayoutParams(
@@ -118,11 +111,6 @@ public class ProgressBarView extends RelativeLayout {
     mFraction.setTextColor(this.getResources().getColor(R.color.white));
     mFraction.setGravity(Gravity.RIGHT);
     mFraction.setPadding(0, 0, (int) (DENSITY * 5 + 0.5f), 0);
-    if (!this.isInEditMode()) {
-      Typeface antonFont = Typeface.createFromAsset(mContext.getAssets(),
-          "fonts/Anton.ttf");
-      mFraction.setTypeface(antonFont);
-    }
 
     // Setup the Bar layout. This is for the group of bar pieces and labels
     RelativeLayout.LayoutParams barParams = new RelativeLayout.LayoutParams(

@@ -392,9 +392,6 @@ public class GameSetupActivity extends Activity {
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		
 		restorePreferences();
-
-		setAntonFonts();
-
 	}
   
   /**
@@ -483,31 +480,6 @@ public class GameSetupActivity extends Activity {
           .findViewById(R.id.GameSetup_GameTypeParameter_HintButton);
       hintButton.setTag(getString(hintID));
     }
-  }
-
-  /**
-   * Setup the Anton font on any textviews that need it.
-   * Should extend TextView as AntonTextView which would automatically
-   * do this.
-   */
-  private void setAntonFonts()
-  {
-    Typeface antonFont = Typeface.createFromAsset(getAssets(),
-        "fonts/Anton.ttf");
-    
-    TextView label = (TextView) this.findViewById(R.id.GameSetup_Title);
-    label.setTypeface(antonFont);
-    label = (TextView) this.findViewById(R.id.GameSetup_TeamsTitle);
-    label.setTypeface(antonFont);
-    label = (TextView) this
-        .findViewById(R.id.GameSetup_GameTypeParameter_Title);
-    label.setTypeface(antonFont);
-    label = (TextView) this
-        .findViewById(R.id.GameSetup_GameType_Text);
-    label.setTypeface(antonFont);
-    label = (TextView) this
-        .findViewById(R.id.GameSetup_GameTypeParameter_Value);
-    label.setTypeface(antonFont);
   }
 
   /**

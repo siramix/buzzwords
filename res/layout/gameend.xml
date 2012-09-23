@@ -22,7 +22,7 @@
     android:background="@drawable/bg_generic"
     android:orientation="vertical" >
 
-    <TextView
+    <com.buzzwords.AntonTextView
         android:id="@+id/GameEnd_Title"
         style="@style/ActivityHeader"
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
         android:layout_marginTop="-10dp"
         android:includeFontPadding="false"
         android:text="Game Over" >
-    </TextView>
+    </com.buzzwords.AntonTextView>
 
     <RelativeLayout
         android:id="@+id/GameEnd_ScoreboardHeader_Group"
@@ -49,7 +49,7 @@
             android:background="@color/genericBG_trim" >
         </View>
 
-        <TextView
+        <com.buzzwords.AntonTextView
             android:id="@+id/GameEnd_ScoreboardHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             android:text="Final Scores"
             android:textColor="@color/white"
             android:textSize="24dp" >
-        </TextView>
+        </com.buzzwords.AntonTextView>
     </RelativeLayout>
 
     <LinearLayout
@@ -103,7 +103,7 @@
         android:layout_height="fill_parent"
         android:layout_weight="1" >
 
-        <TextView
+        <com.buzzwords.AntonTextView
             android:id="@+id/GameEnd_WinnerText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -113,9 +113,9 @@
             android:text="Green Goblins"
             android:textColor="@color/teamB_primary"
             android:textSize="50dp" >
-        </TextView>
+        </com.buzzwords.AntonTextView>
 
-        <TextView
+        <com.buzzwords.AntonTextView
             android:id="@+id/GameEnd_Winner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
             android:text="Winner:"
             android:textColor="@color/white"
             android:textSize="32dp" >
-        </TextView>
+        </com.buzzwords.AntonTextView>
     </RelativeLayout>
 
     <RelativeLayout

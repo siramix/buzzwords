@@ -24,7 +24,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -358,18 +357,6 @@ public class GameEndActivity extends Activity {
       text.setTextColor(mResources.getColor(teams.get(0).getPrimaryColor()));
       text.setText(teams.get(0).getName());
     }
-
-    // Set Anton fonts
-    Typeface antonFont = Typeface.createFromAsset(getAssets(),
-        "fonts/Anton.ttf");
-    text = (TextView) findViewById(R.id.GameEnd_WinnerText);
-    text.setTypeface(antonFont);
-    text = (TextView) findViewById(R.id.GameEnd_Winner);
-    text.setTypeface(antonFont);
-    text = (TextView) findViewById(R.id.GameEnd_Title);
-    text.setTypeface(antonFont);
-    text = (TextView) findViewById(R.id.GameEnd_ScoreboardHeader);
-    text.setTypeface(antonFont);
 
     // Set onclick listeners for game end buttons
     Button mainMenuButton = (Button) this.findViewById(R.id.GameEnd_MainMenu);

@@ -30,7 +30,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -424,16 +423,13 @@ public class TitleActivity extends Activity {
       tempButton.startAnimation(stretch(i));
     }
     
-    // Initialize Labels with animation and font
-    Typeface antonFont = Typeface.createFromAsset(getAssets(),
-        "fonts/Anton.ttf");
+    // Initialize Labels with animation
     TextView tempLabel;
     int[] labels = {R.id.Title_BuzzText, R.id.Title_SettingsText, R.id.Title_RulesText};
     for(int i = 0; i < labels.length; i++)
     {
       tempLabel = (TextView) this.findViewById(labels[i]);
       tempLabel.startAnimation(fadeLabels(i));
-      tempLabel.setTypeface(antonFont);
     }
   }
 

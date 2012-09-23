@@ -19,7 +19,6 @@ package com.buzzwords;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,7 +51,7 @@ public class PackInfoGUI extends Activity {
   private TextView mPackDescription;
   private TextView mPackIsOwnedText;
   private ProgressBarView mProgressBar;
-  private TextView mCardsInPack;
+  private AntonTextView mCardsInPack;
   
   /*
    * Reference to the pack this activity is displaying
@@ -74,7 +73,7 @@ public class PackInfoGUI extends Activity {
     mPackDescription = (TextView) this.findViewById(R.id.PackInfo_Description);
     mPackTitle = (PackPurchaseRowLayout) this.findViewById(R.id.PackInfo_TitlePackRow);
     mPackIsOwnedText = (TextView) this.findViewById(R.id.PackInfo_AlreadyOwnedText);
-    mCardsInPack = (TextView) this.findViewById(R.id.PackInfo_CardInPack);
+    mCardsInPack = (AntonTextView) this.findViewById(R.id.PackInfo_CardInPack);
     mProgressBar = (ProgressBarView) this.findViewById(R.id.PackInfo_ProgressBarView);
   }
 
@@ -132,11 +131,6 @@ public class PackInfoGUI extends Activity {
     mPurchaseType = mPack.getPurchaseType();
 
     setupViewReferences();
-
-    // Set Anton font on appropriate views
-    Typeface antonFont = Typeface.createFromAsset(getAssets(),
-        "fonts/Anton.ttf");
-    mCardsInPack.setTypeface(antonFont);
     
     setupPackDataViews();
     

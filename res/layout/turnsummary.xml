@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ****************************************************************************/
+ ****************************************************************************/
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +26,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <TextView
+        <com.buzzwords.AntonTextView
             android:id="@+id/TurnSummary_Title"
             style="@style/ActivityHeader"
             android:layout_width="wrap_content"
@@ -44,7 +44,6 @@
             android:layout_marginRight="5dp"
             android:text="@string/button_menu" >
         </com.buzzwords.AntonButton>
-
     </RelativeLayout>
 
     <ImageView
@@ -103,7 +102,7 @@
             android:background="@color/genericBG_trim" >
         </View>
 
-        <TextView
+        <com.buzzwords.AntonTextView
             android:id="@+id/TurnSummary_ScoreboardTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,7 +112,7 @@
             android:text="Scores"
             android:textColor="@color/white"
             android:textSize="24dp" >
-        </TextView>
+        </com.buzzwords.AntonTextView>
     </RelativeLayout>
 
     <LinearLayout
@@ -153,7 +152,7 @@
         android:id="@+id/TurnSummary_BottomGroup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-
+
         <TextView
             android:id="@+id/TurnSummary_GameTypeInfo"
             android:layout_width="fill_parent"
@@ -292,7 +291,6 @@
             android:layout_weight="1"
             android:text="Next Team"
             android:textSize="16dp" >
-
         </com.buzzwords.AntonButton>
     </LinearLayout>
 
