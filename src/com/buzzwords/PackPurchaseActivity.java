@@ -60,6 +60,12 @@ public class PackPurchaseActivity extends Activity {
   private String mCurrentUser;
   // Mapping of our requestIds to unlockable content
   public Map<String, String> requestIds;
+  
+  /**
+   * Flag for whether user can connect to our site, set on each refresh.
+   */
+  private boolean mServerError = false;
+  
   /**
    * Request Code constants for social media sharing
    */
@@ -169,8 +175,8 @@ public class PackPurchaseActivity extends Activity {
    */
   protected void refreshAllPackLayouts() {
     Log.d(TAG, "refreshAllPackLayouts");
-    // Get our current context
-
+    mServerError = false;
+    
     // Populate and display list of cards
     LinearLayout unlockedPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_UnlockedPackSets);
     LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
@@ -184,6 +190,7 @@ public class PackPurchaseActivity extends Activity {
     unlockedPacks = mGameManager.getInstalledPacks();
     populatePackLayout(unlockedPacks, unlockedPackLayout);
     
+    // TODO This should really be done after user's local packs are displayed and screen is loaded.
     // First try to get the online packs, if no internet, just use local packs
     try {
       mServerPacks = client.getServerPacks();
@@ -191,12 +198,15 @@ public class PackPurchaseActivity extends Activity {
       populatePackLayout(lockedPacks, paidPackLayout);
     } catch (IOException e1) {
       showToast(getString(R.string.toast_packpurchase_nointerneterror));
+      mServerError = true;
       e1.printStackTrace();
     } catch (URISyntaxException e1) {
       showToast(getString(R.string.toast_packpurchase_siramixdownerror));
+      mServerError = true;
       e1.printStackTrace();
     } catch (JSONException e1) {
       Log.e(TAG, "Error parsing pack JSON from server.");
+      mServerError = true;
       e1.printStackTrace();
     }
     
@@ -308,7 +318,8 @@ public class PackPurchaseActivity extends Activity {
     Pack[] packArray = mServerPacks.toArray(new Pack[mServerPacks.size()]);
     try {
       // Don't call syncronize unless SYNCED preference is true or some packs are out of date
-      if (syncRequired || updateRequired) {
+      // and we have successfully retrieved packs from our server.
+      if ((syncRequired || updateRequired) && mServerError == false) {
         new PackSyncronizer().execute(packArray);
       }
     } catch (RuntimeException e) {
@@ -452,10 +463,11 @@ public class PackPurchaseActivity extends Activity {
     {
       dialog.dismiss();
       refreshAllPackLayouts();
-      
-      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
-      syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
-      syncPrefEditor.commit();
+      if (mServerError == false) {
+        syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
+        syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
+        syncPrefEditor.commit();
+      }
       
       findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
     }

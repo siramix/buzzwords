@@ -364,9 +364,12 @@ public class GameManager {
     mDeck.installStarterPacks();
   }
 
+  /**
+   * Check Deck for pack's status.  Update if out of date, or install 
+   * if not found.  Otherwise do nothing.
+   * @param pack to install/update/check status
+   */
   public synchronized void installPack(final Pack pack) {
-    // TODO This should probably be in a thread (mInstallThread)
-    // Though I ran into problems with the database state
     try {
       mDeck.installPack(pack);
     } catch (RuntimeException e) {
@@ -384,8 +387,6 @@ public class GameManager {
    *          a dialog that is shown to users during removal
    */
   public synchronized void uninstallPack(final int packId) {
-    // TODO This should probably be in a thread (mInstallThread)
-    // Though I ran into problems with the database state
     try {
       mDeck.uninstallPack(packId);
     } catch (RuntimeException e) {
