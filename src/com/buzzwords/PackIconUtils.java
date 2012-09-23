@@ -32,7 +32,6 @@ import android.util.Log;
 public class PackIconUtils {
 
   public static String TAG = "PackIconsUtils";
-  
   public static String ICON_DIRECTORY = "icons";
   public static int ICON_DP = 32;
 

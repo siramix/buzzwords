@@ -11,6 +11,7 @@ import java.util.Map;
 import org.json.JSONException;
 
 import com.amazon.inapp.purchasing.PurchasingManager;
+import com.buzzwords.R.string;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -31,6 +32,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class PackPurchaseActivity extends Activity {
@@ -46,6 +48,9 @@ public class PackPurchaseActivity extends Activity {
   private boolean mContinueMusic;
   
   List<View> mPackLineList;
+  
+  // Our local packs.
+  private LinkedList<Pack> mUnlockedPacks;
   
   // Our pack lists as retrieved from the server
   private LinkedList<Pack> mServerPacks;
@@ -65,6 +70,12 @@ public class PackPurchaseActivity extends Activity {
   private String mCurrentUser;
   // Mapping of our requestIds to unlockable content
   public Map<String, String> requestIds;
+  
+  /**
+   * Flag for whether user can connect to our site, set on each refresh.
+   */
+  private boolean mServerError = false;
+  
   /**
    * Request Code constants for social media sharing
    */
@@ -137,8 +148,6 @@ public class PackPurchaseActivity extends Activity {
     
     // Instantiate all of our lists for programmatic adding of packs to view
     mPackLineList = new LinkedList<View>();
-    
-    refreshAllPackLayouts();
   }
 
   
@@ -176,55 +185,78 @@ public class PackPurchaseActivity extends Activity {
     mContinueMusic = false;
   }
 
+  /**
+   * Update the list of packs to include correct purchased and unpurchased lists.
+   * First populates purchased then goes online to get list of unpurchased packs.
+   */
   protected void refreshAllPackLayouts() {
     Log.d(TAG, "refreshAllPackLayouts");
-    // Get our current context
+    mServerError = false;
+    
+    displayUnlockedPacks();
+    displayLockedPacks();
 
+    Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
+    btn.setOnClickListener(mGameSetupListener);
+  }
+  
+  /**
+   * Helper method that displays just the top list of packs.
+   */
+  private void displayUnlockedPacks() {
     // Populate and display list of cards
     LinearLayout unlockedPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_UnlockedPackSets);
-    LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
-    
     unlockedPackLayout.removeAllViewsInLayout();
-    paidPackLayout.removeAllViewsInLayout();
 
+    mUnlockedPacks = mGameManager.getInstalledPacks();
+    populatePackLayout(mUnlockedPacks, unlockedPackLayout);
+  }
+  
+  /**
+   * Helper method that connects to the server and displays any packs the user
+   * has not already purchased.  Must be called after displayUnlockedPacks to 
+   * show a list that filters out packs user already owns.
+   */
+  private void displayLockedPacks() {
+    LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
+    paidPackLayout.removeAllViewsInLayout();
+    TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
+    placeHolderText.setText(getString(R.string.packpurchase_accessing_internet));
+    // TODO Fix the font for this to FrancoisOne
     PackClient client = PackClient.getInstance();
     LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
-    LinkedList<Pack> unlockedPacks = new LinkedList<Pack>();
-    unlockedPacks = mGameManager.getInstalledPacks();
-
-    //TODO these http pack requests should be in their own methods (getLockedPacksFromServer...)
+    
     // First try to get the online packs, if no internet, just use local packs
     try {
+      //TODO This getServerPacks line can hang.  FIX IT!!!!!
       mServerPacks = client.getServerPacks();
-      lockedPacks = getUnownedPacks(mServerPacks, unlockedPacks);
-      populatePackLayout(unlockedPacks, unlockedPackLayout);
-      //TODO maybe we want to put this on the purchase button isntead
+      lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
+      placeHolderText.setText("");
       populatePackLayout(lockedPacks, paidPackLayout);
     } catch (IOException e1) {
-      populatePackLayout(unlockedPacks, unlockedPackLayout);
-      showToast(getString(R.string.toast_packpurchase_nointerneterror));
+      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+      mServerError = true;
       e1.printStackTrace();
     } catch (URISyntaxException e1) {
-      populatePackLayout(unlockedPacks, unlockedPackLayout);
-      showToast(getString(R.string.toast_packpurchase_siramixdownerror));
+      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+      mServerError = true;
       e1.printStackTrace();
     } catch (JSONException e1) {
-      // TODO Auto-generated catch block
+      Log.e(TAG, "Error parsing pack JSON from server.");
+      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+      mServerError = true;
       e1.printStackTrace();
     }
     
     // Update the appropriate card count views
     updateCardCountViews();
-
-    Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
-    btn.setOnClickListener(mGameSetupListener);
   }
 
   /**
    * Remove from lockedPacks those packs that are already installed.
-   * @param lockedPacks
-   * @param localPacks
-   * @return
+   * @param lockedPacks all locked packs
+   * @param localPacks packs to exclude from list
+   * @return list of unpurchased packs
    */
   private LinkedList<Pack> getUnownedPacks(LinkedList<Pack> lockedPacks, LinkedList<Pack> installedPacks) {
     Log.d(TAG, "removeLocalPacks");
@@ -254,8 +286,7 @@ public class PackPurchaseActivity extends Activity {
    * @param insertionPoint
    *          The linearlayout at which to insert the rows of packs
    */
-  private void populatePackLayout(List<Pack> packlist,
-      LinearLayout insertionPoint) {
+  private void populatePackLayout(List<Pack> packlist, LinearLayout insertionPoint) {
     int count = 0;
 
     // Instantiate all our views for programmatic layout creation
@@ -321,7 +352,8 @@ public class PackPurchaseActivity extends Activity {
     Pack[] packArray = mServerPacks.toArray(new Pack[mServerPacks.size()]);
     try {
       // Don't call syncronize unless SYNCED preference is true or some packs are out of date
-      if (syncRequired || updateRequired) {
+      // and we have successfully retrieved packs from our server.
+      if ((syncRequired || updateRequired) && mServerError == false) {
         new PackSyncronizer().execute(packArray);
       }
     } catch (RuntimeException e) {
@@ -413,7 +445,13 @@ public class PackPurchaseActivity extends Activity {
   private void storeRequestId(String requestId, String key) {
       requestIds.put(requestId, key);
   }
-  
+
+  /**
+   * In an async task, look through all of our pack prefs for the user and go 
+   * through the process of checking purchase status for each pack.  If purchased,
+   * check for an update. If it is not purchased, ensure the pack is uninstalled.
+   * If it is the starter pack, make sure it is always installed and updated.
+   */
   public class PackSyncronizer extends AsyncTask <Pack, Void, Integer>
   {
     private ProgressDialog dialog;
@@ -438,13 +476,13 @@ public class PackPurchaseActivity extends Activity {
         if (isPackPurchased) {
           gm.installPack(packs[i]);
         } 
-        // Uninstall pack if it is not purchased and is a premium pack
+        // Uninstall pack if it is not purchased and is not the starter pack
         else if (isPackPurchased == false && 
-            packs[i].getPurchaseType() != PackPurchaseConsts.PACKTYPE_FREE) {
+            packs[i].getPurchaseType() != PackPurchaseConsts.PACKTYPE_STARTER) {
           gm.uninstallPack(packs[i].getId());
         }
-        // Update free and starter packs
-        else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_FREE) {
+        // Always check for starter pack update
+        else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_STARTER) {
           gm.installPack(packs[i]);
         }
         else {
@@ -459,10 +497,11 @@ public class PackPurchaseActivity extends Activity {
     {
       dialog.dismiss();
       refreshAllPackLayouts();
-      
-      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
-      syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
-      syncPrefEditor.commit();
+      if (mServerError == false) {
+        syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
+        syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
+        syncPrefEditor.commit();
+      }
       
       findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
     }
@@ -689,6 +728,7 @@ public class PackPurchaseActivity extends Activity {
   void setCurrentUser(final String currentUser){
       this.mCurrentUser = currentUser;
   }
+
   
   /**
    * Handle showing a toast or refreshing an existing toast

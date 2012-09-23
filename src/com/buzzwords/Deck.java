@@ -731,6 +731,7 @@ public class Deck {
      * @param serverPack Pack of cards to install
      * @throws IOException
      * @throws URISyntaxException
+     * @return true if sync successful (up to date/installed) false for failure to install
      */
     public synchronized void installPackFromServer(Pack serverPack) {
       Log.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
@@ -749,25 +750,14 @@ public class Deck {
           cardItr = PackClient.getInstance().getCardsForPack(serverPack);
           installPack(serverPack, cardItr);
         } catch (IOException e) {
-          RuntimeException userException = new RuntimeException(e);
-          throw userException;
+          Log.e(TAG, "Encountered IOException installing pack from server.");
+          e.printStackTrace();
         } catch (URISyntaxException e) {
-          RuntimeException userException = new RuntimeException(e);
-          throw userException;
-        }
-      }
-      else {
-        // TODO This is duplicate code.  Let's look at this again later.
-        // Close the db on exception to prevent closing db issues.
-        try {
-          cardItr = PackClient.getInstance().getCardsForPack(serverPack);
-          installPack(serverPack, cardItr);
-        } catch (IOException e) {
-          RuntimeException userException = new RuntimeException(e);
-          throw userException;
-        } catch (URISyntaxException e) {
-          RuntimeException userException = new RuntimeException(e);
-          throw userException;
+          // TODO See why patrick had it doing this for both of these catch statements
+//          RuntimeException userException = new RuntimeException(e);
+//          throw userException;
+          Log.e(TAG, "Encountered URISyntaxException installing pack from server.");
+          e.printStackTrace();
         }
       }
       Log.d(TAG, "DONE loading words.");
