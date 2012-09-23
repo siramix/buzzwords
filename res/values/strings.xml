@@ -70,6 +70,8 @@
   <string name="packpurchase_nopacksselected">No Packs Selected</string>
   <string name="packpurchase_button">Confirm</string>
   <string name="packpurchase_restoring_packs">Restoring your purchases&#8230;</string>
+  <string name="packpurchase_accessing_internet">Looking for online packs&#8230;</string>
+  <string name="packpurchase_nointernet">Could not access the online store. We can only show your installed packs.</string>
   
   <!-- Turn Summary Strings -->
   <string name="button_menu">Menu</string>
@@ -103,7 +105,6 @@
   <string name="toast_packpurchase_notwitter">Sorry, we could not detect any Twitter clients.</string>
   <string name="toast_packpurchase_nofacebook">Sorry, we could not detect any Facebook clients.</string>
   <string name="toast_packpurchase_nogoogleplus">Sorry, we could not detect any Google+ clients.</string>
-  <string name="toast_packpurchase_nointerneterror">No internet connection detected.  We can only show your installed packs.</string>
   <string name="toast_packpurchase_siramixdownerror">Sorry, there were problems connecting to our store.  We can only show your purchased packs.</string>
   <string name="toast_packpurchase_nopackselected">Please select at least one pack to play.</string>
   

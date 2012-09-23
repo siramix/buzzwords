@@ -11,6 +11,7 @@ import java.util.Map;
 import org.json.JSONException;
 
 import com.amazon.inapp.purchasing.PurchasingManager;
+import com.buzzwords.R.string;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -23,6 +24,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +44,9 @@ public class PackPurchaseActivity extends Activity {
   private Toast mHelpToast = null;
 
   List<View> mPackLineList;
+  
+  // Our local packs.
+  private LinkedList<Pack> mUnlockedPacks;
   
   // Our pack lists as retrieved from the server
   private LinkedList<Pack> mServerPacks;
@@ -144,8 +150,6 @@ public class PackPurchaseActivity extends Activity {
     
     // Instantiate all of our lists for programmatic adding of packs to view
     mPackLineList = new LinkedList<View>();
-    
-    refreshAllPackLayouts();
   }
 
   
@@ -174,47 +178,68 @@ public class PackPurchaseActivity extends Activity {
    * First populates purchased then goes online to get list of unpurchased packs.
    */
   protected void refreshAllPackLayouts() {
+    Log.e(TAG, "REFRESHING");
+    
     Log.d(TAG, "refreshAllPackLayouts");
     mServerError = false;
     
+    displayUnlockedPacks();
+    displayLockedPacks();
+
+    Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
+    btn.setOnClickListener(mGameSetupListener);
+  }
+  
+  /**
+   * Helper method that displays just the top list of packs.
+   */
+  private void displayUnlockedPacks() {
     // Populate and display list of cards
     LinearLayout unlockedPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_UnlockedPackSets);
-    LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
-    
     unlockedPackLayout.removeAllViewsInLayout();
-    paidPackLayout.removeAllViewsInLayout();
 
+    mUnlockedPacks = mGameManager.getInstalledPacks();
+    populatePackLayout(mUnlockedPacks, unlockedPackLayout);
+  }
+  
+  /**
+   * Helper method that connects to the server and displays any packs the user
+   * has not already purchased.  Must be called after displayUnlockedPacks to 
+   * show a list that filters out packs user already owns.
+   */
+  private void displayLockedPacks() {
+    LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
+    paidPackLayout.removeAllViewsInLayout();
+    TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
+    placeHolderText.setText(getString(R.string.packpurchase_accessing_internet));
+    // TODO Fix the font for this to FrancoisOne
     PackClient client = PackClient.getInstance();
     LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
-    LinkedList<Pack> unlockedPacks = new LinkedList<Pack>();
-    unlockedPacks = mGameManager.getInstalledPacks();
-    populatePackLayout(unlockedPacks, unlockedPackLayout);
     
-    // TODO This should really be done after user's local packs are displayed and screen is loaded.
     // First try to get the online packs, if no internet, just use local packs
     try {
+      //TODO This getServerPacks line can hang.  FIX IT!!!!!
       mServerPacks = client.getServerPacks();
-      lockedPacks = getUnownedPacks(mServerPacks, unlockedPacks);
+      lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
+      placeHolderText.setText("");
       populatePackLayout(lockedPacks, paidPackLayout);
     } catch (IOException e1) {
-      showToast(getString(R.string.toast_packpurchase_nointerneterror));
+      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
       mServerError = true;
       e1.printStackTrace();
     } catch (URISyntaxException e1) {
-      showToast(getString(R.string.toast_packpurchase_siramixdownerror));
+      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
       mServerError = true;
       e1.printStackTrace();
     } catch (JSONException e1) {
       Log.e(TAG, "Error parsing pack JSON from server.");
+      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
       mServerError = true;
       e1.printStackTrace();
     }
     
     // Update the appropriate card count views
     updateCardCountViews();
-
-    Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
-    btn.setOnClickListener(mGameSetupListener);
   }
 
   /**
@@ -251,8 +276,7 @@ public class PackPurchaseActivity extends Activity {
    * @param insertionPoint
    *          The linearlayout at which to insert the rows of packs
    */
-  private void populatePackLayout(List<Pack> packlist,
-      LinearLayout insertionPoint) {
+  private void populatePackLayout(List<Pack> packlist, LinearLayout insertionPoint) {
     int count = 0;
 
     // Instantiate all our views for programmatic layout creation
@@ -694,6 +718,7 @@ public class PackPurchaseActivity extends Activity {
   void setCurrentUser(final String currentUser){
       this.mCurrentUser = currentUser;
   }
+
   
   /**
    * Handle showing a toast or refreshing an existing toast
