@@ -230,6 +230,7 @@ public class PackPurchaseActivity extends Activity {
     LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
     paidPackLayout.removeAllViewsInLayout();
     
+    boolean syncRequired = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
     // TODO Refactor this piece of code which duplicates code inside the thread
     // The purpose to this is to not reload the server packs or refresh this list
     // if the packs are already in memory.
@@ -513,7 +514,12 @@ public class PackPurchaseActivity extends Activity {
         Log.d(TAG, "SYNCING PACK: " + packs[i].getName());
         boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
         if (isPackPurchased) {
-          gm.installPack(packs[i]);
+          try {
+            gm.installPack(packs[i]);
+          } catch (RuntimeException e) {
+            showToast("Encountered an error during pack installation.");
+            e.printStackTrace();
+          }
         } 
         // Uninstall pack if it is not purchased and is not the starter pack
         else if (isPackPurchased == false && 
@@ -522,7 +528,12 @@ public class PackPurchaseActivity extends Activity {
         }
         // Always check for starter pack update
         else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_STARTER) {
-          gm.installPack(packs[i]);
+          try {
+            gm.installPack(packs[i]);
+          } catch (RuntimeException e) {
+            showToast("Encountered an error during pack installation.");
+            e.printStackTrace();
+          }
         }
         else {
           Log.e(TAG, "Failed to update or install packId: " + packs[i].getId() + " name: " + packs[i].getName());
@@ -804,7 +815,6 @@ public class PackPurchaseActivity extends Activity {
       }
     }
   }
-
 
   /**
    * Called when this activity is no longer visible.

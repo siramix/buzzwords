@@ -190,6 +190,7 @@ public class Deck {
   /**
    * Take a Pack object and pull in cards from the server into the database. 
    * @param pack
+   * @throws RuntimeException 
    * @throws IOException
    * @throws URISyntaxException
    */
@@ -205,8 +206,9 @@ public class Deck {
   /**
    * Install all of the packs that the app comes with.  This ultimately
    * will be just one pack.
+   * @throws RuntimeException 
    */
-  public synchronized void installStarterPacks() {
+  public synchronized void installStarterPacks() throws RuntimeException {
     Log.d(TAG, "INSTALLING STARTER PACKS");
     mDatabaseOpenHelper.installStarterPacks(mStarterPack);
   }
@@ -264,6 +266,7 @@ public class Deck {
     for (Pack serverPack : serverPacks) {
       int packStatus = mDatabaseOpenHelper.packInstalled(serverPack.getId(), serverPack.getVersion());
       if (packStatus != PACK_CURRENT && packStatus != PACK_NOT_PRESENT) {
+        Log.d(TAG, "Pack requires update: " + serverPack.getName());
         return true;
       }
     }
@@ -478,6 +481,20 @@ public class Deck {
     Log.d(TAG, "END BACK CACHE");
     Log.d(TAG, "========================");
   }
+
+  /**
+   * Helper method to throw a user exception, logging an error
+   * message and the stacktrace before throwing the exception.
+   * @param e error to print stacktrace for
+   * @param msg to log
+   * @throws RuntimeException TODO
+   */
+  static private void throwUserException(Exception e, String msg) throws RuntimeException {
+    Log.e(TAG, msg);
+    e.printStackTrace();
+    RuntimeException userException = new RuntimeException(e);
+    throw userException;
+  }
   
   
   /**
@@ -511,8 +528,9 @@ public class Deck {
     /**
      * Install all the packs that come with the app into the database.
      * Since the pack
+     * @throws RuntimeException 
      */
-    public synchronized void installStarterPacks(Pack starterPack) {
+    public synchronized void installStarterPacks(Pack starterPack) throws RuntimeException {
       Log.d(TAG, "installStarterPacks()");
       installPackFromResource(starterPack, R.raw.starter);
     }
@@ -700,8 +718,9 @@ public class Deck {
      * 
      * @param packName the name of the file to digest
      * @param resId the resource of the pack file to digest
+     * @throws RuntimeException 
      */
-    public synchronized void installPackFromResource(Pack pack, int resId) {
+    public synchronized void installPackFromResource(Pack pack, int resId) throws RuntimeException {
       Log.d(TAG, "Installing pack from resource " + String.valueOf(resId));
 
       BufferedReader packJSON = new BufferedReader(new InputStreamReader(
@@ -713,8 +732,7 @@ public class Deck {
           packBuilder.append(line).append("\n");
         }
       } catch (IOException e) {
-        Log.e(TAG,"Problem installing pack " + pack.getName() + " from resource.");
-        e.printStackTrace();
+        throwUserException(e, "IOException installing pack " + pack.getName() + " from resource.");
       }
       CardJSONIterator cardItr = PackParser.parseCards(packBuilder);
       
@@ -732,8 +750,9 @@ public class Deck {
      * @throws IOException
      * @throws URISyntaxException
      * @return true if sync successful (up to date/installed) false for failure to install
+     * @throws RuntimeException 
      */
-    public synchronized void installPackFromServer(Pack serverPack) {
+    public synchronized void installPackFromServer(Pack serverPack) throws RuntimeException {
       Log.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
       int packId = packInstalled(serverPack.getId(), serverPack.getVersion());
 
@@ -741,6 +760,7 @@ public class Deck {
       
       // Don't add a pack if it's already there
       if (packId == PACK_CURRENT) {
+        Log.d(TAG, "No update required, pack " + serverPack.getName() + " current.");
         return;
       }
       if(packId == PACK_NOT_PRESENT) { 
@@ -750,14 +770,19 @@ public class Deck {
           cardItr = PackClient.getInstance().getCardsForPack(serverPack);
           installPack(serverPack, cardItr);
         } catch (IOException e) {
-          Log.e(TAG, "Encountered IOException installing pack from server.");
-          e.printStackTrace();
+          throwUserException(e, "Encountered IOException installing pack from server.");
         } catch (URISyntaxException e) {
-          // TODO See why patrick had it doing this for both of these catch statements
-//          RuntimeException userException = new RuntimeException(e);
-//          throw userException;
-          Log.e(TAG, "Encountered URISyntaxException installing pack from server.");
-          e.printStackTrace();
+          throwUserException(e, "Encountered URISyntaxException installing pack from server.");
+        }
+      } else {
+        // Close the db on exception to prevent closing db issues.
+        try {
+          cardItr = PackClient.getInstance().getCardsForPack(serverPack);
+          installPack(serverPack, cardItr);
+        } catch (IOException e) {
+          throwUserException(e, "Encountered IOException installing pack from server.");
+        } catch (URISyntaxException e) {
+          throwUserException(e, "Encountered URISyntaxException installing pack from server.");
         }
       }
       Log.d(TAG, "DONE loading words.");
