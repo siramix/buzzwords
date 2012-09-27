@@ -42,7 +42,8 @@
         android:layout_centerHorizontal="true"
         android:text="Rules"
         android:textColor="@color/title"
-        android:textSize="28dp" />
+        android:textSize="28dp" 
+        android:layout_marginTop="-5dp" />
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -62,32 +63,23 @@
 
                 <RelativeLayout
                     android:id="@+id/Rules_SubHeader_Basics"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_Section_Basics"
                     android:layout_marginTop="7dp" >
 
                     <View
-                        android:id="@+id/Rules_SubHeader_Basics_BG"
+                        android:id="@+id/Rules_SubHeader_Basics_Bar"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
+                        android:layout_height="4dp"
+                        android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
-                    <View
-                        android:id="@+id/Rules_SubHeader_Basics_Fill"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_margin="4dp"
-                        android:background="@color/genericBG" />
-
-                    <TextView
+                    <com.buzzwords.AntonTextView
                         android:id="@+id/Rules_SubHeader_Basics_Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="Basics"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20dp" />
+                        style="@style/RulesSubHeader"
+                        android:text="Basics" />
+
                 </RelativeLayout>
 
                 <TextView
@@ -239,33 +231,24 @@
                 android:layout_below="@id/Rules_Section_Basics"
                 android:layout_marginTop="7dp" >
 
+                
                 <RelativeLayout
                     android:id="@+id/Rules_SubHeader_Gameplay"
-                    android:layout_width="125dp"
-                    android:layout_height="35dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_Section_Gameplay" >
 
                     <View
-                        android:id="@+id/Rules_SubHeader_Buzzing_BG"
+                        android:id="@+id/Rules_SubHeader_Buzzing_Bar"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
+                        android:layout_height="4dp"
+                        android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
-                    <View
-                        android:id="@+id/Rules_SubHeader_Buzzing_Fill"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_margin="4dp"
-                        android:background="@color/genericBG" />
-
-                    <TextView
+                    <com.buzzwords.AntonTextView
                         android:id="@+id/Rules_SubHeader_Buzzing_Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
                         android:text="Gameplay"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20dp" />
+                        style="@style/RulesSubHeader"/>
                 </RelativeLayout>
 
                 <TextView
@@ -410,31 +393,21 @@
 
                 <RelativeLayout
                     android:id="@+id/Rules_SubHeader_Screens"
-                    android:layout_width="160dp"
-                    android:layout_height="35dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_Section_Screens" >
 
                     <View
-                        android:id="@+id/Rules_SubHeader_Screens_BG"
+                        android:id="@+id/Rules_SubHeader_Screens_Bar"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
+                        android:layout_height="4dp"
+                        android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
-                    <View
-                        android:id="@+id/Rules_SubHeader_Screens_Fill"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_margin="4dp"
-                        android:background="@color/genericBG" />
-
-                    <TextView
+                    <com.buzzwords.AntonTextView
                         android:id="@+id/Rules_SubHeader_Screens_Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
                         android:text="Sample Screens"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20dp" />
+                        style="@style/RulesSubHeader"/>
                 </RelativeLayout>
 
                 <TextView
@@ -568,31 +541,21 @@
 
                 <RelativeLayout
                     android:id="@+id/Rules_SubHeader_Buzzing"
-                    android:layout_width="125dp"
-                    android:layout_height="35dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_Section_Buzzing" >
 
                     <View
-                        android:id="@+id/Rules_SubHeader_Buzzing_BG"
+                        android:id="@+id/Rules_SubHeader_Buzzing_Bar"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:background="@color/genericBG_trim" />
-
-                    <View
-                        android:id="@+id/Rules_SubHeader_Buzzing_Fill"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_margin="4dp"
-                        android:background="@color/genericBG" />
-
-                    <TextView
-                        android:id="@+id/Rules_SubHeader_Buzzing_Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="4dp"
                         android:layout_centerInParent="true"
+                        android:background="@color/genericBG_trim" />
+                    
+                    <com.buzzwords.AntonTextView
+                        android:id="@+id/Rules_SubHeader_Buzzing_Text"
                         android:text="Buzzing"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20dp" />
+                        style="@style/RulesSubHeader"/>
                 </RelativeLayout>
 
                 <TextView
@@ -777,31 +740,22 @@
 
                 <RelativeLayout
                     android:id="@+id/Rules_SubHeader_Example"
-                    android:layout_width="150dp"
-                    android:layout_height="35dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_Section_Example" >
 
                     <View
-                        android:id="@+id/Rules_SubHeader_Example_BG"
+                        android:id="@+id/Rules_SubHeader_Example_Bar"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
+                        android:layout_height="4dp"
+                        android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
-                    <View
-                        android:id="@+id/Rules_SubHeader_Example_Fill"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_margin="4dp"
-                        android:background="@color/genericBG" />
-
-                    <TextView
+                    <com.buzzwords.AntonTextView
                         android:id="@+id/Rules_SubHeader_Example_Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
                         android:text="Example Game"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20dp" />
+                        style="@style/RulesSubHeader"/>
+                    
                 </RelativeLayout>
 
                 <TextView
@@ -1062,31 +1016,21 @@
 
                 <RelativeLayout
                     android:id="@+id/Rules_SubHeader_FinalThoughts"
-                    android:layout_width="150dp"
-                    android:layout_height="35dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_Section_FinalThoughts" >
 
                     <View
-                        android:id="@+id/Rules_SubHeader_FinalThoughts_BG"
+                        android:id="@+id/Rules_SubHeader_FinalThoughts_Bar"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
+                        android:layout_height="4dp"
+                        android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
-                    <View
-                        android:id="@+id/Rules_SubHeader_FinalThoughts_Fill"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_margin="4dp"
-                        android:background="@color/genericBG" />
-
-                    <TextView
+                    <com.buzzwords.AntonTextView
                         android:id="@+id/Rules_SubHeader_FinalThoughts_Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
                         android:text="Final Thoughts"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20dp" />
+                        style="@style/RulesSubHeader"/>
                 </RelativeLayout>
 
                 <TextView
