@@ -272,6 +272,7 @@ public class PackPurchaseActivity extends Activity {
             mServerPacks = client.getServerPacks();
             Message message = handler.obtainMessage(1, mServerPacks);
             handler.sendMessage(message);
+            // do my pref setting so I don't sync again
           } catch (IOException e1) {
             placeHolderText.setText(getString(R.string.packpurchase_nointernet));
             mServerError = true;
@@ -380,20 +381,18 @@ public class PackPurchaseActivity extends Activity {
     boolean syncRequired = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
     boolean updateRequired = mGameManager.packsRequireUpdate(mServerPacks);
     String previousUser = getSyncPreferences().getString(Consts.PREFKEY_LAST_USER, getCurrentUser());
-    
-    // If user has switched, trigger a re-sync
-    if (!previousUser.equals(getCurrentUser())) {
-      syncRequired = true;
-    }
-    
+
+    // If user has switched, trigger a re-sync (note the 'or equals')
+    syncRequired |= !previousUser.equals(getCurrentUser());
+
     Log.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
     Log.d(TAG, "   UPDATE REQUIRED: " + updateRequired);
     
     Pack[] packArray = mServerPacks.toArray(new Pack[mServerPacks.size()]);
     try {
-      // Don't call syncronize unless SYNCED preference is true or some packs are out of date
+      // Don't call synchronize unless SYNCED preference is true or some packs are out of date
       // and we have successfully retrieved packs from our server.
-      if ((syncRequired || updateRequired) && mServerError == false) {
+      if ((syncRequired || updateRequired) && !mServerError) {
         new PackSyncronizer().execute(packArray);
       }
     } catch (RuntimeException e) {
@@ -537,12 +536,11 @@ public class PackPurchaseActivity extends Activity {
     {
       dialog.dismiss();
       refreshAllPackLayouts();
-      if (mServerError == false) {
-        syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
-        syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
-        syncPrefEditor.commit();
-      }
-      
+
+      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
+      syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
+      syncPrefEditor.commit();
+
       findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
     }
   }

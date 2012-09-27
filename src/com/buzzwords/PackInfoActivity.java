@@ -31,12 +31,12 @@ import android.widget.TextView;
  * 
  * @author Siramix Labs
  */
-public class PackInfoGUI extends Activity {
+public class PackInfoActivity extends Activity {
 
   /**
    * Static string used to refer to this class, in debug output for example.
    */
-  private static final String TAG = "PackInfoGUI";
+  private static final String TAG = "PackInfoActivity";
 
   /*
    * References to button views
@@ -84,7 +84,7 @@ public class PackInfoGUI extends Activity {
   private final OnClickListener mCancelListener = new OnClickListener() {
     public void onClick(View v) {
       // play back sound
-      SoundManager sm = SoundManager.getInstance(PackInfoGUI.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(PackInfoActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.BACK);
       
       finish();
@@ -99,10 +99,10 @@ public class PackInfoGUI extends Activity {
       Intent outIntent = new Intent();
       outIntent.putExtra(getString(R.string.packBundleKey), mPack);
       // Set result
-      PackInfoGUI.this.setResult((Integer) v.getTag(), outIntent);
+      PackInfoActivity.this.setResult((Integer) v.getTag(), outIntent);
       
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(PackInfoGUI.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(PackInfoActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
       
       finish();

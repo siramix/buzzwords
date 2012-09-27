@@ -159,7 +159,7 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name=".PackInfoGUI"
+            android:name=".PackInfoActivity"
             android:label=""
             android:theme="@style/NoTitleDialog"
             android:screenOrientation="portrait">
