@@ -178,11 +178,11 @@ public class Deck {
    * @return Linked List of all local Packs
    */
   public LinkedList<Pack> getLocalPacks() {
+    Log.d(TAG, "getLocalPacks()");
     LinkedList<Pack> localPacks = mDatabaseOpenHelper.getAllPacksFromDB();
     for (Pack pack : localPacks) {
       pack.setSize(mDatabaseOpenHelper.countCards(pack));
       pack.setNumCardsSeen(mDatabaseOpenHelper.countNumSeen(pack));
-      Log.d(TAG, pack.toString());
     }
     return localPacks;
   }

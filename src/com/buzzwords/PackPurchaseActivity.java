@@ -196,6 +196,7 @@ public class PackPurchaseActivity extends Activity {
   protected void refreshAllPackLayouts() {
     Log.d(TAG, "refreshAllPackLayouts");
     mServerError = false;
+    mUnlockedPacks = mGameManager.getInstalledPacks();
     
     displayUnlockedPacks();
     displayLockedPacks();
@@ -211,8 +212,6 @@ public class PackPurchaseActivity extends Activity {
     // Populate and display list of cards
     LinearLayout unlockedPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_UnlockedPackSets);
     unlockedPackLayout.removeAllViewsInLayout();
-
-    mUnlockedPacks = mGameManager.getInstalledPacks();
     populatePackLayout(mUnlockedPacks, unlockedPackLayout);
   }
   
@@ -230,7 +229,6 @@ public class PackPurchaseActivity extends Activity {
     LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
     paidPackLayout.removeAllViewsInLayout();
     
-    boolean syncRequired = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
     // TODO Refactor this piece of code which duplicates code inside the thread
     // The purpose to this is to not reload the server packs or refresh this list
     // if the packs are already in memory.
@@ -545,9 +543,9 @@ public class PackPurchaseActivity extends Activity {
     @Override
     protected void onPostExecute(Integer result)
     {
-      dialog.dismiss();
       refreshAllPackLayouts();
-
+      dialog.dismiss();
+      
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
       syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
       syncPrefEditor.commit();
@@ -696,7 +694,7 @@ public class PackPurchaseActivity extends Activity {
     int totalSeen = 0;
     int totalCards = 0;
 
-    for (Pack pack : mGameManager.getInstalledPacks()) {
+    for (Pack pack : mUnlockedPacks) {
       if (getPackSelectedPref(pack)) {
         totalSeen += pack.getNumCardsSeen();
         totalCards += pack.getSize();
