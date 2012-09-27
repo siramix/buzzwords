@@ -352,15 +352,16 @@ public class GameManager {
   }
 
   public boolean packsRequireUpdate(LinkedList<Pack> serverPacks) {
-    Log.d(TAG, "packsCurrent(LinkedList<Pack>)");
+    Log.d(TAG, "packsRequireUpdate(LinkedList<Pack>)");
     return mDeck.packsRequireUpdate(serverPacks);
   }
 
   /**
    * Call the Deck function that installs all 'starter' decks. This should only
    * get called on first run.
+   * @throws Exception 
    */
-  public void installStarterPacks() {
+  public void installStarterPacks() throws RuntimeException {
     mDeck.installStarterPacks();
   }
 
@@ -368,14 +369,10 @@ public class GameManager {
    * Check Deck for pack's status.  Update if out of date, or install 
    * if not found.  Otherwise do nothing.
    * @param pack to install/update/check status
+   * @throws Exception 
    */
-  public synchronized void installPack(final Pack pack) {
-    try {
-      mDeck.installPack(pack);
-    } catch (RuntimeException e) {
-      Log.e(TAG, "Unable to install pack: " + pack.getName());
-      e.printStackTrace();
-    }
+  public synchronized void installPack(final Pack pack) throws RuntimeException {
+    mDeck.installPack(pack);
   }
 
   /**

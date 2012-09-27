@@ -196,6 +196,7 @@ public class PackPurchaseActivity extends Activity {
   protected void refreshAllPackLayouts() {
     Log.d(TAG, "refreshAllPackLayouts");
     mServerError = false;
+    mUnlockedPacks = mGameManager.getInstalledPacks();
     
     displayUnlockedPacks();
     displayLockedPacks();
@@ -211,8 +212,6 @@ public class PackPurchaseActivity extends Activity {
     // Populate and display list of cards
     LinearLayout unlockedPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_UnlockedPackSets);
     unlockedPackLayout.removeAllViewsInLayout();
-
-    mUnlockedPacks = mGameManager.getInstalledPacks();
     populatePackLayout(mUnlockedPacks, unlockedPackLayout);
   }
   
@@ -513,7 +512,12 @@ public class PackPurchaseActivity extends Activity {
         Log.d(TAG, "SYNCING PACK: " + packs[i].getName());
         boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
         if (isPackPurchased) {
-          gm.installPack(packs[i]);
+          try {
+            gm.installPack(packs[i]);
+          } catch (RuntimeException e) {
+            showToast("Encountered an error during pack installation.");
+            e.printStackTrace();
+          }
         } 
         // Uninstall pack if it is not purchased and is not the starter pack
         else if (isPackPurchased == false && 
@@ -522,7 +526,12 @@ public class PackPurchaseActivity extends Activity {
         }
         // Always check for starter pack update
         else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_STARTER) {
-          gm.installPack(packs[i]);
+          try {
+            gm.installPack(packs[i]);
+          } catch (RuntimeException e) {
+            showToast("Encountered an error during pack installation.");
+            e.printStackTrace();
+          }
         }
         else {
           Log.e(TAG, "Failed to update or install packId: " + packs[i].getId() + " name: " + packs[i].getName());
@@ -534,9 +543,9 @@ public class PackPurchaseActivity extends Activity {
     @Override
     protected void onPostExecute(Integer result)
     {
-      dialog.dismiss();
       refreshAllPackLayouts();
-
+      dialog.dismiss();
+      
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
       syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
       syncPrefEditor.commit();
@@ -685,7 +694,7 @@ public class PackPurchaseActivity extends Activity {
     int totalSeen = 0;
     int totalCards = 0;
 
-    for (Pack pack : mGameManager.getInstalledPacks()) {
+    for (Pack pack : mUnlockedPacks) {
       if (getPackSelectedPref(pack)) {
         totalSeen += pack.getNumCardsSeen();
         totalCards += pack.getSize();
@@ -804,7 +813,6 @@ public class PackPurchaseActivity extends Activity {
       }
     }
   }
-
 
   /**
    * Called when this activity is no longer visible.

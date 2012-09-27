@@ -17,7 +17,7 @@
   <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
   <string name="IntentEditTeamName">com.buzzwords.intent.action.EDITTEAMNAME</string>
   <string name="IntentPackPurchase">com.buzzwords.intent.action.WORDPACKPURCHASE</string>
-  <string name="IntentPackInfo">com.buzzwords.intent.action.WORDPACKINFOGUI</string>
+  <string name="IntentPackInfo">com.buzzwords.intent.action.PACKINFO</string>
   
   <!-- Global Prefkey IDs -->
   <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
