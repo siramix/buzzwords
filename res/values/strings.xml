@@ -86,9 +86,14 @@
   <!-- EditTeamName dialog Strings -->
   <string name="editTeamName_hint">Choose a new name for %s team.</string>
   <string name="editTeamName_title">Edit Team Name</string>
-  <string name="editTeamName_accept">Accept</string>
-  <string name="editTeamName_cancel">Cancel</string>
 
+  <!-- GameEnd Strings-->
+  <string name="gameEnd_title">Game Over</string>
+  <string name="gameEnd_scoreboardHeader">Final Scores</string>
+  <string name="gameEnd_winner">Winner:</string>
+  <string name="gameEnd_button_mainMenu">Main Menu</string>
+  <string name="gameEnd_button_rematch">Rematch</string>
+  
   <!-- Word Pack purchasing Screen -->
   <string name="toast_wordpurchase_nopackselected">Select at least one of Your Packs to play.</string>
 	<string name="packpurchase_facebook_subject">SUBJECT></string>
@@ -167,7 +172,10 @@
   <string name="description_review_button_skip">Button that marks the card as a skip</string>
   <string name="description_review_button_right">Button that marks the card as right</string>
   <string name="description_review_button_clear">Button that marks the card as unset</string>
+  <string name="description_gameend_button_mainmenu">Button to go to Main Menu</string>
+  <string name="description_gameend_button_rematch">Button to replay the game with the current game settings</string>
   
   <!--  Temporary Strings -->
-  <string name="test1">Word 1</string>
+  <string name="test_temp1">Word 1</string>
+  <string name="test_team">Green Goblins</string>
 </resources>

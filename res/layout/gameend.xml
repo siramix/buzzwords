@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ****************************************************************************/
+ ****************************************************************************/
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,7 +31,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="-5dp"
         android:includeFontPadding="false"
-        android:text="Game Over" >
+        android:text="@string/gameEnd_title" >
     </com.buzzwords.AntonTextView>
 
     <RelativeLayout
@@ -56,7 +56,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:gravity="center"
-            android:text="Final Scores"
+            android:text="@string/gameEnd_scoreboardHeader"
             android:textColor="@color/white"
             android:textSize="24dp" >
         </com.buzzwords.AntonTextView>
@@ -100,7 +100,7 @@
     <RelativeLayout
         android:id="@+id/GameEnd_WinnerGroup"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:layout_weight="1" >
 
         <com.buzzwords.AntonTextView
@@ -110,7 +110,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:maxLines="3"
-            android:text="Green Goblins"
+            android:text="@string/test_team"
             android:textColor="@color/teamB_primary"
             android:textSize="50dp" >
         </com.buzzwords.AntonTextView>
@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/GameEnd_WinnerText"
             android:layout_centerHorizontal="true"
-            android:text="Winner:"
+            android:text="@string/gameEnd_winner"
             android:textColor="@color/white"
             android:textSize="32dp" >
         </com.buzzwords.AntonTextView>
@@ -137,7 +137,9 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_alignParentLeft="true"
-            android:text="Main Menu" android:textSize="20dp">
+            android:contentDescription="@string/description_gameend_button_mainmenu"
+            android:text="@string/gameEnd_button_mainMenu"
+            android:textSize="20dp" >
         </com.buzzwords.AntonButton>
 
         <com.buzzwords.AntonButton
@@ -146,7 +148,9 @@
             android:layout_height="60dp"
             android:layout_alignBaseline="@+id/GameEnd_MainMenu"
             android:layout_alignParentRight="true"
-            android:text="Rematch" android:textSize="20dp">
+            android:contentDescription="@string/description_gameend_button_rematch"
+            android:text="@string/gameEnd_button_rematch"
+            android:textSize="20dp" >
         </com.buzzwords.AntonButton>
     </RelativeLayout>
 

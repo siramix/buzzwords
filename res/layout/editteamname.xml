@@ -47,7 +47,6 @@
             android:textColor="@color/white"
             android:textSize="24dp" >
         </com.buzzwords.AntonTextView>
-
     </RelativeLayout>
 
     <EditText
