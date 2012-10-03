@@ -30,7 +30,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:gravity="center"
-        android:text="Time&apos;s Up!"
+        android:text="@string/turn_timesup"
         android:textColor="@color/white"
         android:visibility="invisible" />
 
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Paused"
+            android:text="@string/turn_paused"
             android:textColor="@color/white"
             android:textSize="60dp" />
 
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Tap to Unpause" />
+            android:text="@string/turn_paused_subtext" />
     </LinearLayout>
 
     <LinearLayout
@@ -115,7 +115,8 @@
                         android:layout_alignRight="@id/Turn_TimerFrame"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="4dp"
-                        android:src="@drawable/icon_timer" />
+                        android:src="@drawable/icon_timer" 
+                        android:contentDescription="@string/description_turn_timericon"/>
 
                     <com.buzzwords.AntonTextView
                         android:id="@+id/Turn_Timer"
@@ -137,7 +138,7 @@
                     android:layout_marginBottom="1dp"
                     android:layout_marginLeft="1dp"
                     android:layout_marginTop="1dp"
-                    android:text="Menu" >
+                    android:text="@string/button_menu" >
                 </com.buzzwords.AntonButton>
             </LinearLayout>
 
@@ -183,7 +184,6 @@
                         android:id="@+id/Turn_CardA_BadWords"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/Turn_CardTitleA"
                         android:orientation="vertical" >
 
                         <com.buzzwords.FrancoisOneTextView
@@ -292,7 +292,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/button_skip_selector" />
+                android:background="@drawable/button_skip_selector" 
+                android:contentDescription="@string/description_button_skip"/>
 
             <ImageButton
                 android:id="@+id/Turn_ButtonWrong"
@@ -301,7 +302,8 @@
                 android:layout_alignRight="@id/Turn_ButtonSkip"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="99dp"
-                android:background="@drawable/button_wrong_selector" />
+                android:background="@drawable/button_wrong_selector" 
+                android:contentDescription="@string/description_button_wrong"/>
 
             <ImageButton
                 android:id="@+id/Turn_ButtonCorrect"
@@ -310,7 +312,8 @@
                 android:layout_alignLeft="@id/Turn_ButtonSkip"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="99dp"
-                android:background="@drawable/button_right_selector" />
+                android:background="@drawable/button_right_selector" 
+                android:contentDescription="@string/description_button_right"/>
         </RelativeLayout>
     </LinearLayout>
 

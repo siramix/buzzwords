@@ -73,7 +73,7 @@ public class TurnSummaryActivity extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "mMenuListener OnClick()");
       }
-      
+
       TurnSummaryActivity.this.openOptionsMenu();
     }
   };
@@ -179,7 +179,7 @@ public class TurnSummaryActivity extends Activity {
       // Set Row end icon
       ImageView cardIcon = (ImageView) realLine.getChildAt(4);
       setCardIcon(cardIcon, card);
-      
+
       mCardViewList.add(cardIcon);
       mCardLineList.add(realLine);
 
@@ -189,39 +189,47 @@ public class TurnSummaryActivity extends Activity {
       AlphaAnimation alpha = new AlphaAnimation(0.2f, 0.2f);
       alpha.setFillAfter(true);
       lightBar.startAnimation(alpha);
-      
+
       ImageView rowEnd = (ImageView) realLine.getChildAt(2);
       Drawable d = getResources().getDrawable(R.drawable.turnsum_row_end_white);
-      // Don't need to mutate, since all row end pieces should be the same color.
-      d.setColorFilter(getResources().getColor(R.color.genericBG_trim), Mode.MULTIPLY);
+      // Don't need to mutate, since all row end pieces should be the same
+      // color.
+      d.setColorFilter(getResources().getColor(R.color.genericBG_trim),
+          Mode.MULTIPLY);
       rowEnd.setBackgroundDrawable(d);
-      
+
       // Assign the card review listener to the row
       realLine.setOnClickListener(mCardIconListener);
-      
+
       // increment to next line
       count++;
     }
     list.addView(layout);
-    
-    // TODO This should be in a thread, but I'm not sure how to access the game from inside the thread
+
+    // TODO This should be in a thread, but I'm not sure how to access the game
+    // from inside the thread
     game.maintainDeck();
-    
+
     // Update the scoreboard views
     updateScoreViews();
 
     // Update numRounds
-    TextView gametypeInfo = (TextView) this.findViewById(R.id.TurnSummary_GameTypeInfo);
+    TextView gametypeInfo = (TextView) this
+        .findViewById(R.id.TurnSummary_GameTypeInfo);
     switch (game.getGameType()) {
     case TURNS:
-      gametypeInfo.setText("Round: " + game.getCurrentRound() + "/"
-          + game.getNumRounds());
+      gametypeInfo.setText(this.getResources().getString(
+          R.string.turnSummary_round)
+          + game.getCurrentRound() + "/" + game.getNumRounds());
       break;
     case SCORE:
-      gametypeInfo.setText("Score Limit: " + game.getGameLimitValue());
+      gametypeInfo.setText(this.getResources().getString(
+          R.string.turnSummary_scorelimit)
+          + game.getGameLimitValue());
       break;
     case FREEPLAY:
-      gametypeInfo.setText("Free Play");
+      gametypeInfo.setText(this.getResources().getString(
+          R.string.turnSummary_freeplay));
     }
 
     // Update Turn Order display
@@ -231,7 +239,7 @@ public class TurnSummaryActivity extends Activity {
     Button playGameButton = (Button) this
         .findViewById(R.id.TurnSummary_NextTurn);
     playGameButton.setOnClickListener(mNextTurnListener);
-    
+
     // Bind menu button
     Button menuButton = (Button) this.findViewById(R.id.TurnSummary_Menu);
     menuButton.setOnClickListener(mMenuListener);
@@ -260,7 +268,7 @@ public class TurnSummaryActivity extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreateOptionsMenu()");
     }
-    
+
     menu.add(0, R.string.menu_EndGame, 0, R.string.menu_EndGame_Title);
     menu.add(0, R.string.menu_Rules, 0, R.string.menu_Rules_Title);
 
@@ -313,8 +321,8 @@ public class TurnSummaryActivity extends Activity {
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound
-              SoundManager sm = SoundManager.getInstance(TurnSummaryActivity.this
-                  .getBaseContext());
+              SoundManager sm = SoundManager
+                  .getInstance(TurnSummaryActivity.this.getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
               BuzzWordsApplication application = (BuzzWordsApplication) TurnSummaryActivity.this
                   .getApplication();
@@ -326,8 +334,8 @@ public class TurnSummaryActivity extends Activity {
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
               // Play confirmation sound
-              SoundManager sm = SoundManager.getInstance(TurnSummaryActivity.this
-                  .getBaseContext());
+              SoundManager sm = SoundManager
+                  .getInstance(TurnSummaryActivity.this.getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
               dialog.cancel();
             }
@@ -377,7 +385,8 @@ public class TurnSummaryActivity extends Activity {
     // Update Turn score total
     TextView turnTotal = (TextView) this
         .findViewById(R.id.TurnSummary_TurnScore);
-    turnTotal.setText("Total: " + Integer.toString(game.getTurnScore()));
+    turnTotal.setText(this.getResources().getString(R.string.turnSummary_total)
+        + Integer.toString(game.getTurnScore()));
   }
 
   /**
@@ -485,21 +494,17 @@ public class TurnSummaryActivity extends Activity {
 
     super.onActivityResult(requestCode, resultCode, data);
   }
-  
+
   /*
    * Sets the specified image to the card's RWS drawable
    */
-  private void setCardIcon(ImageView icon, Card card)
-  {
+  private void setCardIcon(ImageView icon, Card card) {
     // Set Row end icon
     int iconID = card.getRowEndDrawableId();
-    if(iconID > 0)
-    {
-      //cardIcon.setImageResource(iconID);
+    if (iconID > 0) {
+      // cardIcon.setImageResource(iconID);
       icon.setImageDrawable(getResources().getDrawable(iconID));
-    }
-    else
-    {
+    } else {
       icon.setImageDrawable(null);
     }
   }

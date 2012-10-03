@@ -41,7 +41,7 @@
         android:includeFontPadding="false"
         android:maxLines="1"
         android:scrollHorizontally="true"
-        android:text="Franklin DelanoRooooo"
+        android:text="@string/test_longcardname"
         android:textColor="#FFFFFF"
         android:textSize="26dp" />
 

@@ -68,6 +68,11 @@
     <string name="cancel">Cancel</string>
     <string name="button_menu">Menu</string>
 
+    <!-- Activity Title -->
+    <string name="title_button_label_buzz">Buzz</string>
+    <string name="title_button_label_settings">Settings</string>
+    <string name="title_button_label_rules">Rules</string>
+    
     <!-- Activity PackPurchase -->
     <string name="packpurchase_title">Select Word Packs</string>
     <string name="packpurchase_unlockedheader">Your Packs</string>
@@ -85,8 +90,19 @@
     <string name="toast_packpurchase_siramixdownerror">Sorry, there were problems connecting to our store.  We can only show your purchased packs.</string>
     <string name="toast_packpurchase_nopackselected">Select at least one of Your Packs to play.</string>
 
+    <!-- Activity Turn -->
+    <string name="turn_timesup">Time\'s Up!</string>
+    <string name="turn_paused">Paused</string>
+    <string name="turn_paused_subtext">Tap to Unpause</string>
+    
     <!-- Activity TurnSummary -->
-
+    <string name="turnSummary_title">Results</string>
+    <string name="turnSummary_total">Total: </string>
+    <string name="turnSummary_scores_header">Scores</string>
+    <string name="turnSummary_scorelimit">Score Limit: </string>
+    <string name="turnSummary_freeplay">Free Play</string>
+    <string name="turnSummary_round">Round: </string>
+    <string name="turnSummary_button_next">Next Team</string>
 
     <!-- Activity Card Review -->
     <string name="button_notset">Clear</string>
@@ -165,11 +181,17 @@
     <string name="description_splash_logo">The awesome Ram logo of Siramix</string>
     <string name="description_splash_siramix">Siramix</string>
     <string name="description_fb_buzzwordsapp">Link to Buzzwords App on Facebook</string>
+    <string name="description_title_starburst">A burst of light from Buzzword\'s signature lightning bolt</string>
+    <string name="description_title_title">Buzzwords title</string>
+    <string name="description_title_button_buzz">Button to enter Buzz mode</string>
+    <string name="description_title_button_settings">Button to edit settings</string>
+    <string name="description_title_button_rules">Button to read the rules</string>
     <string name="description_buzzer_title">The Buzzer\'s title</string>
     <string name="description_buzzer_button">The Buzzer button</string>
-    <string name="description_review_button_wrong">Button that marks the card as wrong</string>
-    <string name="description_review_button_skip">Button that marks the card as a skip</string>
-    <string name="description_review_button_right">Button that marks the card as right</string>
+    <string name="description_turn_timericon">Timer icon</string>
+    <string name="description_button_wrong">Button that marks the card as wrong</string>
+    <string name="description_button_skip">Button that marks the card as a skip</string>
+    <string name="description_button_right">Button that marks the card as right</string>
     <string name="description_review_button_clear">Button that marks the card as unset</string>
     <string name="description_gameend_button_mainmenu">Button to go to Main Menu</string>
     <string name="description_gameend_button_rematch">Button to replay the game with the current game settings</string>
@@ -180,5 +202,6 @@
     <string name="test_header">Header</string>
     <string name="test_number">7</string>
     <string name="test_packdescription">A perfect cross-section of the English language. This pack is an essential part to any complete Buzzwords deck.</string>
+    <string name="test_longcardname">Franklin DelanoRooooo</string>
 
 </resources>

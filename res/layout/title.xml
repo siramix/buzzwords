@@ -38,7 +38,8 @@
             android:layout_width="1000dp"
             android:layout_height="1000dp"
             android:layout_gravity="center"
-            android:src="@drawable/title_starburst" />
+            android:src="@drawable/title_starburst" 
+            android:contentDescription="@string/description_title_starburst" />
     </FrameLayout>
 
     <ImageView
@@ -49,7 +50,8 @@
         android:layout_marginBottom="15dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/title_title"
-        android:clickable="true" />
+        android:clickable="true" 
+        android:contentDescription="@string/description_title_title" />
 
     <Button
         android:id="@+id/Title_Button_Play"
@@ -84,7 +86,7 @@
                 android:layout_marginLeft="80dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:text="Buzz"
+                android:text="@string/title_button_label_buzz"
                 android:textColor="@color/teamC_primary"
                 android:textSize="44dp" />
 
@@ -93,7 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/title_buzzer_normal" />
+                android:background="@drawable/title_buzzer_normal" 
+                android:contentDescription="@string/description_title_button_buzz" />
 
             <View
                 android:id="@+id/Title_BuzzDelegate"
@@ -116,7 +119,7 @@
                 android:layout_marginLeft="80dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:text="Settings"
+                android:text="@string/title_button_label_settings"
                 android:textColor="@color/teamD_primary"
                 android:textSize="44dp" />
 
@@ -125,7 +128,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/title_settings_normal" />
+                android:background="@drawable/title_settings_normal" 
+                android:contentDescription="@string/description_title_button_settings"/>
 
             <View
                 android:id="@+id/Title_SettingsDelegate"
@@ -148,7 +152,7 @@
                 android:layout_marginLeft="80dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:text="Rules"
+                android:text="@string/title_button_label_rules"
                 android:textColor="@color/teamA_primary"
                 android:textSize="44dp" />
 
@@ -157,7 +161,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/title_rules_normal" />
+                android:background="@drawable/title_rules_normal" 
+                android:contentDescription="@string/description_title_button_rules"/>
 
             <View
                 android:id="@+id/Title_RulesDelegate"

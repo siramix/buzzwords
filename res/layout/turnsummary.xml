@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="-5dp"
-            android:text="Results" />
+            android:text="@string/turnSummary_title" />
 
         <com.buzzwords.AntonButton
             android:id="@+id/TurnSummary_Menu"
@@ -63,7 +63,7 @@
     <ScrollView
         android:id="@+id/TurnSummary_CardList"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1" >
     </ScrollView>
 
@@ -82,7 +82,7 @@
         android:gravity="right"
         android:minWidth="130dp"
         android:paddingRight="10dp"
-        android:text="Total: 0"
+        android:text="@string/turnSummary_total"
         android:textSize="32dp"
         android:textStyle="bold" >
     </TextView>
@@ -109,7 +109,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:gravity="center"
-            android:text="Scores"
+            android:text="@string/turnSummary_scores_header"
             android:textColor="@color/white"
             android:textSize="24dp" >
         </com.buzzwords.AntonTextView>
@@ -159,7 +159,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
-            android:text="Score Limit: 14"
+            android:text="@string/turnSummary_scorelimit"
             android:textSize="18dp" />
 
         <LinearLayout
@@ -289,7 +289,7 @@
             android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="Next Team"
+            android:text="@string/turnSummary_button_next"
             android:textSize="16dp" >
         </com.buzzwords.AntonButton>
     </LinearLayout>

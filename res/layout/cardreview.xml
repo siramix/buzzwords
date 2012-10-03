@@ -143,7 +143,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@drawable/button_skip_desaturated"
-            android:contentDescription="@string/description_review_button_skip" >
+            android:contentDescription="@string/description_button_skip" >
         </ImageButton>
 
         <ImageButton
@@ -154,7 +154,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="99dp"
             android:background="@drawable/button_wrong_desaturated"
-            android:contentDescription="@string/description_review_button_wrong" >
+            android:contentDescription="@string/description_button_wrong" >
         </ImageButton>
 
         <ImageButton
@@ -165,7 +165,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="99dp"
             android:background="@drawable/button_right_desaturated"
-            android:contentDescription="@string/description_review_button_right" >
+            android:contentDescription="@string/description_button_right" >
         </ImageButton>
     </RelativeLayout>
 
