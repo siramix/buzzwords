@@ -12,7 +12,8 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    </uses-permission>
 
     <application
         android:name="com.buzzwords.BuzzWordsApplication"
@@ -20,12 +21,14 @@
         android:icon="@drawable/icon"
         android:label="@string/AppName"
         android:theme="@style/BuzzWordsTheme" >
-        <receiver android:name = "com.amazon.inapp.purchasing.ResponseReceiver" >
+        <receiver android:name="com.amazon.inapp.purchasing.ResponseReceiver" >
             <intent-filter>
-                <action android:name = "com.amazon.inapp.purchasing.NOTIFY"
-                        android:permission = "com.amazon.inapp.purchasing.Permission.NOTIFY" />
+                <action
+                    android:name="com.amazon.inapp.purchasing.NOTIFY"
+                    android:permission="com.amazon.inapp.purchasing.Permission.NOTIFY" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".SplashScreenActivity"
             android:label="@string/AppName"
@@ -51,10 +54,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".PackPurchaseActivity" android:label="@string/AppName"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".PackPurchaseActivity"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.buzzwords.intent.action.WORDPACKPURCHASE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -158,16 +164,19 @@
                 </category>
             </intent-filter>
         </activity>
-        <activity 
+        <activity
             android:name=".PackInfoActivity"
             android:label=""
-            android:theme="@style/NoTitleDialog"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleDialog" >
             <intent-filter>
-                <action android:name="com.buzzwords.intent.action.PACKINFO"></action>
-                <category android:name="android.intent.category.DEFAULT"></category>
+                <action android:name="com.buzzwords.intent.action.PACKINFO" >
+                </action>
+
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
             </intent-filter>
-         </activity>
+        </activity>
     </application>
 
 </manifest>

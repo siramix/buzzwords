@@ -121,7 +121,7 @@ public class PackPurchaseActivity extends Activity {
         startActivity(new Intent(PackPurchaseActivity.this.getApplication()
             .getString(R.string.IntentGameSetup), getIntent().getData()));
       } else {
-        showToast(getString(R.string.toast_wordpurchase_nopackselected));
+        showToast(getString(R.string.toast_packpurchase_nopackselected));
       }
     }
   };

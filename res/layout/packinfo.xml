@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="A perfect cross-section of the English language. This pack is an essential part to any complete Buzzwords deck."
+            android:text="@string/test_packdescription"
             android:textSize="18sp" >
         </TextView>
 
@@ -91,7 +91,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_generic"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:visibility="gone" >
             </com.buzzwords.AntonButton>
 
@@ -114,7 +114,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_generic"
-                android:text="OK" >
+                android:text="@string/confirm">
             </com.buzzwords.AntonButton>
         </LinearLayout>
     </LinearLayout>

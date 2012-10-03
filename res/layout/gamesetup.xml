@@ -26,13 +26,13 @@
     <ScrollView
         android:id="@+id/GameSetup_ScrollView"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:layout_weight="1" >
 
         <LinearLayout
             android:id="@+id/GameSetup_ScrollInnerLayout"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="0dp"
             android:orientation="vertical" >
 
             <com.buzzwords.AntonTextView
@@ -43,7 +43,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="-5dp"
-                android:text="Game Setup" />
+                android:text="@string/gameSetup_title" />
 
             <RelativeLayout
                 android:id="@+id/GameSetup_TeamHeader"
@@ -66,7 +66,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
-                    android:text="Teams"
+                    android:text="@string/gameSetup_teams_header"
                     android:textColor="@color/white"
                     android:textSize="24dp" />
 
@@ -130,7 +130,7 @@
             <LinearLayout
                 android:id="@+id/GameSetup_GameType_Group"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:paddingTop="10dp" >
@@ -155,7 +155,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:gravity="center"
-                        android:text="Game Type"
+                        android:text="@string/gameSetup_gametype_header"
                         android:textColor="@color/white"
                         android:textSize="24dp" />
 
@@ -232,7 +232,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:gravity="center"
-                        android:text="Turns"
+                        android:text="@string/test_header"
                         android:textColor="@color/white"
                         android:textSize="24dp" />
 
@@ -265,7 +265,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="-5dp"
                         android:gravity="center"
-                        android:text="7"
+                        android:text="@string/test_number"
                         android:textSize="48dp" />
 
                     <Button
@@ -291,9 +291,8 @@
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_gravity="right"
-        android:text="Start Game"
+        android:text="@string/gameSetup_button_startgame"
         android:textSize="20sp" >
-
     </com.buzzwords.AntonButton>
 
 </LinearLayout>

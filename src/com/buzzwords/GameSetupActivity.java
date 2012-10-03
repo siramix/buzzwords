@@ -96,21 +96,6 @@ public class GameSetupActivity extends Activity {
 	public static String TAG = "GameSetup";
 
 	/**
-	 * Creates the animation that fades in the helper text
-	 * 
-	 * @return the animation that fades in the helper text
-	 */
-	private Animation fadeInHelpText(long delay) {
-		if (BuzzWordsApplication.DEBUG) {
-			Log.d(TAG, "FadeInHelpText()");
-		}
-		Animation fade = new AlphaAnimation(0.0f, 1.0f);
-		fade.setStartOffset(delay);
-		fade.setDuration(2000);
-		return fade;
-	}
-
-	/**
 	 * Watches the button that handles hand-off to the Turn activity.
 	 */
 	private final OnClickListener mStartGameListener = new OnClickListener() {

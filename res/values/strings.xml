@@ -1,181 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <!-- Application Name -->
-  <string name="AppName">Buzzwords</string>
+    <!-- Application Name -->
+    <string name="AppName">Buzzwords</string>
 
-  <!-- Intent Designations -->
-  <string name="IntentTitle">com.buzzwords.intent.action.TITLE</string>
-  <string name="IntentSettings">com.buzzwords.intent.action.SETTINGS</string>
-  <string name="IntentRules">com.buzzwords.intent.action.RULES</string>
-  <string name="IntentBuzzer">com.buzzwords.intent.action.BUZZER</string>
-  <string name="IntentAboutUs">com.buzzwords.intent.action.ABOUTUS</string>
-  <string name="IntentGameSetup">com.buzzwords.intent.action.GAMESETUP</string>
-  <string name="IntentTurn">com.buzzwords.intent.action.TURN</string>
-  <string name="IntentTurnSummary">com.buzzwords.intent.action.TURNSUMMARY</string>
-  <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
-  <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
-  <string name="IntentEditTeamName">com.buzzwords.intent.action.EDITTEAMNAME</string>
-  <string name="IntentPackPurchase">com.buzzwords.intent.action.WORDPACKPURCHASE</string>
-  <string name="IntentPackInfo">com.buzzwords.intent.action.PACKINFO</string>
-  
-  <!-- Global Prefkey IDs -->
-  <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
-  <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
-  <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
-  <string name="PREFKEY_GAMETYPE">com.buzzwords.prefkey.GAMETYPE</string>
-  <string name="PREFKEY_GAMELIMIT_TURNS">com.buzzwords.prefkey.GAMELIMIT_TURNS</string>
-  <string name="PREFKEY_GAMELIMIT_SCORE">com.buzzwords.prefkey.GAMELIMIT_SCORE</string>
+    <!-- Intent Designations -->
+    <string name="IntentTitle">com.buzzwords.intent.action.TITLE</string>
+    <string name="IntentSettings">com.buzzwords.intent.action.SETTINGS</string>
+    <string name="IntentRules">com.buzzwords.intent.action.RULES</string>
+    <string name="IntentBuzzer">com.buzzwords.intent.action.BUZZER</string>
+    <string name="IntentAboutUs">com.buzzwords.intent.action.ABOUTUS</string>
+    <string name="IntentGameSetup">com.buzzwords.intent.action.GAMESETUP</string>
+    <string name="IntentTurn">com.buzzwords.intent.action.TURN</string>
+    <string name="IntentTurnSummary">com.buzzwords.intent.action.TURNSUMMARY</string>
+    <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
+    <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
+    <string name="IntentEditTeamName">com.buzzwords.intent.action.EDITTEAMNAME</string>
+    <string name="IntentPackPurchase">com.buzzwords.intent.action.WORDPACKPURCHASE</string>
+    <string name="IntentPackInfo">com.buzzwords.intent.action.PACKINFO</string>
 
-  <!-- Menus -->
-  <string name="menu_EndTurn">MENU_ENDTURN</string>
-  <string name="menu_EndTurn_Title">End Turn</string>
-  <string name="menu_EndTurn_Text">Are you sure you want to end your turn?</string>
-  <string name="menu_EndGame">MENU_ENDGAME</string>
-  <string name="menu_EndGame_Title">End Game</string>
-  <string name="menu_EndGame_Text">Are you sure you want to end the current game?</string>
-  <string name="menu_Rules">MENU_RULES</string>
-  <string name="menu_Rules_Title">Rules</string>
+    <!-- Global Prefkey IDs -->
+    <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
+    <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
+    <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
+    <string name="PREFKEY_GAMETYPE">com.buzzwords.prefkey.GAMETYPE</string>
+    <string name="PREFKEY_GAMELIMIT_TURNS">com.buzzwords.prefkey.GAMELIMIT_TURNS</string>
+    <string name="PREFKEY_GAMELIMIT_SCORE">com.buzzwords.prefkey.GAMELIMIT_SCORE</string>
 
-  <!-- Team names -->
-  <string name="teamnameA">Blue</string>
-  <string name="teamnameB">Green</string>
-  <string name="teamnameC">Red</string>
-  <string name="teamnameD">Yellow</string>
+    <!-- Menus -->
+    <string name="menu_EndTurn">MENU_ENDTURN</string>
+    <string name="menu_EndTurn_Title">End Turn</string>
+    <string name="menu_EndTurn_Text">Are you sure you want to end your turn?</string>
+    <string name="menu_EndGame">MENU_ENDGAME</string>
+    <string name="menu_EndGame_Title">End Game</string>
+    <string name="menu_EndGame_Text">Are you sure you want to end the current game?</string>
+    <string name="menu_Rules">MENU_RULES</string>
+    <string name="menu_Rules_Title">Rules</string>
 
-  <!--  Game Manager -->
-  <string name="gameManager_gameType_turns">Turn Limit</string>
-  <string name="gameManager_gameType_turns_param">Turns</string>
-  <string name="gameManager_gameType_score">Score Limit</string>
-  <string name="gameManager_gameType_score_param">Points</string>
-  <string name="gameManager_gameType_freeplay">Free Play</string>
-  
-  <!-- Bundle Keys -->
-  <string name="cardBundleKey">com.buzzwords.card</string>
-  <string name="packBundleKey">com.buzzwords.pack</string>
-  <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
-  <string name="cardStateBundleKey">com.buzzwords.cardState</string>
-  <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
-  <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
-  <string name="teamBundleKey">com.buzzwords.team</string>
-  <string name="teamNameBundleKey">com.buzzwords.teamName</string>
-  <string name="packInfoIsPackSelectedBundleKey">com.buzzwords.isPackSelected</string>
-  <string name="packInfoIsPackRowOddBundleKey">com.buzzwords.isPackRowOdd</string>
-  <string name="packInfoPurchaseTypeKey">com.buzzwords.packPurchaseType</string>
-  
-  <!--  Generic Strings -->
-  <string name="confirm">Accept</string>
-  <string name="cancel">Cancel</string>
-  
-  <!-- Pack Purchasing dialog strings -->
-  <string name="packpurchase_title">Select Word Packs</string>
-  <string name="packpurchase_unlockedheader">Your Packs</string>
-  <string name="packpurchase_lockedheader">Available Packs</string>
-  <string name="packpurchase_nopacksselected">No Packs Selected</string>
-  <string name="packpurchase_button">Confirm</string>
-  <string name="packpurchase_restoring_packs">Restoring your purchases&#8230;</string>
-  <string name="packpurchase_accessing_internet">Looking for online packs&#8230;</string>
-  <string name="packpurchase_nointernet">Could not access the online store. We can only show your installed packs.</string>
-  
-  <!-- Turn Summary Strings -->
-  <string name="button_menu">Menu</string>
-  
-   <!-- Card Review Strings -->
-   <string name="button_notset">Clear</string>
-  
-  <!-- EditTeamName dialog Strings -->
-  <string name="editTeamName_hint">Choose a new name for %s team.</string>
-  <string name="editTeamName_title">Edit Team Name</string>
+    <!-- Team names -->
+    <string name="teamnameA">Blue</string>
+    <string name="teamnameB">Green</string>
+    <string name="teamnameC">Red</string>
+    <string name="teamnameD">Yellow</string>
 
-  <!-- GameEnd Strings-->
-  <string name="gameEnd_title">Game Over</string>
-  <string name="gameEnd_scoreboardHeader">Final Scores</string>
-  <string name="gameEnd_winner">Winner:</string>
-  <string name="gameEnd_button_mainMenu">Main Menu</string>
-  <string name="gameEnd_button_rematch">Rematch</string>
-  
-  <!-- Word Pack purchasing Screen -->
-  <string name="toast_wordpurchase_nopackselected">Select at least one of Your Packs to play.</string>
-	<string name="packpurchase_facebook_subject">SUBJECT></string>
-	<string name="packpurchase_facebook_text">TEXT></string>
-	 
-  <!-- Rate Us dialogs -->
-  <string name="rateUsFirstDialog_title">We want your feedback!</string>
-  <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
+    <!-- Game Manager -->
+    <string name="gameManager_gameType_turns">Turn Limit</string>
+    <string name="gameManager_gameType_turns_param">Turns</string>
+    <string name="gameManager_gameType_score">Score Limit</string>
+    <string name="gameManager_gameType_score_param">Points</string>
+    <string name="gameManager_gameType_freeplay">Free Play</string>
+
+    <!-- Bundle Keys -->
+    <string name="cardBundleKey">com.buzzwords.card</string>
+    <string name="packBundleKey">com.buzzwords.pack</string>
+    <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
+    <string name="cardStateBundleKey">com.buzzwords.cardState</string>
+    <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
+    <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
+    <string name="teamBundleKey">com.buzzwords.team</string>
+    <string name="teamNameBundleKey">com.buzzwords.teamName</string>
+    <string name="packInfoIsPackSelectedBundleKey">com.buzzwords.isPackSelected</string>
+    <string name="packInfoIsPackRowOddBundleKey">com.buzzwords.isPackRowOdd</string>
+    <string name="packInfoPurchaseTypeKey">com.buzzwords.packPurchaseType</string>
+
+    <!-- Generic Strings -->
+    <string name="confirm">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="button_menu">Menu</string>
+
+    <!-- Activity PackPurchase -->
+    <string name="packpurchase_title">Select Word Packs</string>
+    <string name="packpurchase_unlockedheader">Your Packs</string>
+    <string name="packpurchase_lockedheader">Available Packs</string>
+    <string name="packpurchase_nopacksselected">No Packs Selected</string>
+    <string name="packpurchase_button">Confirm</string>
+    <string name="packpurchase_restoring_packs">Restoring your purchases&#8230;</string>
+    <string name="packpurchase_accessing_internet">Looking for online packs&#8230;</string>
+    <string name="packpurchase_nointernet">Could not access the online store. We can only show your installed packs.</string>
+    <string name="packpurchase_facebook_subject">SUBJECT></string>
+    <string name="packpurchase_facebook_text">TEXT></string>
+    <string name="toast_packpurchase_notwitter">Sorry, we could not detect any Twitter clients.</string>
+    <string name="toast_packpurchase_nofacebook">Sorry, we could not detect any Facebook clients.</string>
+    <string name="toast_packpurchase_nogoogleplus">Sorry, we could not detect any Google+ clients.</string>
+    <string name="toast_packpurchase_siramixdownerror">Sorry, there were problems connecting to our store.  We can only show your purchased packs.</string>
+    <string name="toast_packpurchase_nopackselected">Select at least one of Your Packs to play.</string>
+
+    <!-- Activity TurnSummary -->
+
+
+    <!-- Activity Card Review -->
+    <string name="button_notset">Clear</string>
+
+    <!-- Dialog EditTeamName -->
+    <string name="editTeamName_hint">Choose a new name for %s team.</string>
+    <string name="editTeamName_title">Edit Team Name</string>
+
+    <!-- Activity GameEnd -->
+    <string name="gameEnd_title">Game Over</string>
+    <string name="gameEnd_scoreboardHeader">Final Scores</string>
+    <string name="gameEnd_winner">Winner:</string>
+    <string name="gameEnd_button_mainMenu">Main Menu</string>
+    <string name="gameEnd_button_rematch">Rematch</string>
+
+    <!-- Dialog RateUs -->
+    <string name="rateUsFirstDialog_title">We want your feedback!</string>
+    <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
      Would you mind taking a minute to provide some feedback?</string>
-
-  <string name="rateUsSecondDialog_title">We still want your feedback!</string>
-  <string name="rateUsSecondDialog_text">Wow you\'ve played a LOT, which means your opinion is especially valuable to us!
+    <string name="rateUsSecondDialog_title">We still want your feedback!</string>
+    <string name="rateUsSecondDialog_text">Wow you\'ve played a LOT, which means your opinion is especially valuable to us!
      We won\'t bug you again but would you mind providing some feedback?</string>
+    <string name="rateUsDialog_positiveBtn">Rate</string>
+    <string name="rateUsDialog_neutralBtn">Later</string>
+    <string name="rateUsDialog_negativeBtn">Never</string>
 
-  <string name="rateUsDialog_positiveBtn">Rate</string>
-  <string name="rateUsDialog_neutralBtn">Later</string>
-  <string name="rateUsDialog_negativeBtn">Never</string>
+    <!-- Activity PackInfo -->
+    <string name="packInfo_confirm_nobuy">OK</string>
+    <string name="packInfo_confirm_buy">Buy</string>
+    <string name="packInfo_cancel">Cancel</string>
+    <string name="packInfo_alreadyowned">You already have this pack!</string>
+    <string name="packInfo_cardsinpack">Cards in Pack: %s</string>
+    <string name="packInfo_button_free">Download (Free)</string>
+    <string name="packInfo_button_pay">Purchase</string>
+    <string name="packInfo_button_tweet">Tweet It</string>
+    <string name="packInfo_button_facebook">Post It</string>
+    <string name="packInfo_button_googleplus">Post It</string>
 
-  <!--  Word Pack Purchasing text -->
-  <string name="toast_packpurchase_notwitter">Sorry, we could not detect any Twitter clients.</string>
-  <string name="toast_packpurchase_nofacebook">Sorry, we could not detect any Facebook clients.</string>
-  <string name="toast_packpurchase_nogoogleplus">Sorry, we could not detect any Google+ clients.</string>
-  <string name="toast_packpurchase_siramixdownerror">Sorry, there were problems connecting to our store.  We can only show your purchased packs.</string>
-  <string name="toast_packpurchase_nopackselected">Please select at least one pack to play.</string>
-  
-  <!--  Pack Info dialog -->
-  <string name="packInfo_confirm_nobuy">OK</string>
-  <string name="packInfo_confirm_buy">Buy</string>
-  <string name="packInfo_cancel">Cancel</string>
-  <string name="packInfo_alreadyowned">You already have this pack!</string>
-  <string name="packInfo_cardsinpack">Cards in Pack: %s</string>
-  
-  <!--  Pack Info Buttons -->
-  <string name="packInfo_button_free">Download (Free)</string>
-  <string name="packInfo_button_pay">Purchase</string>
-  <string name="packInfo_button_tweet">Tweet It</string>
-  <string name="packInfo_button_facebook">Post It</string>
-  <string name="packInfo_button_googleplus">Post It</string>
-  
-  <!--  Game Setup dialog -->
-  <string name="gameSetup_hint_teams">Tap teams to add or remove them. Tap the pencil to rename a team.</string>
-  <string name="gameSetup_hint_GameType">Game limit determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
-  <string name="gameSetup_hint_turns">Set the number of turns each team will take.</string>
-  <string name="gameSetup_hint_score">Set the number of points a team needs to win. All teams will play an equal number of turns.</string>
-  
-  <!-- Text for the dialog on their first play of the game -->
-  <string name="openingDialog_title">First Time?</string>
-  <string name="openingDialog_text">Thank you for trying Buzzwords!
+    <!-- Activity GameSetup -->
+    <string name="gameSetup_title">Game Setup</string>
+    <string name="gameSetup_teams_header">Teams</string>
+    <string name="gameSetup_gametype_header">Game Type</string>
+    <string name="gameSetup_button_startgame">Start Game</string>
+    <string name="gameSetup_hint_teams">Tap teams to add or remove them. Tap the pencil to rename a team.</string>
+    <string name="gameSetup_hint_GameType">Game limit determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
+    <string name="gameSetup_hint_turns">Set the number of turns each team will take.</string>
+    <string name="gameSetup_hint_score">Set the number of points a team needs to win. All teams will play an equal number of turns.</string>
+
+    <!-- Settings -->
+    <string name="settings_scorechange_summary">Current score change is </string>
+
+    <!-- Dialog FirstOpen -->
+    <string name="openingDialog_title">First Time?</string>
+    <string name="openingDialog_text">Thank you for trying Buzzwords!
       This is a party game meant to be played with a group.
       If you\'ve played Taboo™ before, you\'ll know just what to do.</string>
-  <string name="openingDialog_positiveBtn">View Rules</string>
-  <string name="openingDialog_negativeBtn">I\'ve Got This</string>
+    <string name="openingDialog_positiveBtn">View Rules</string>
+    <string name="openingDialog_negativeBtn">I\'ve Got This</string>
 
-  <!-- Installation dialogs -->
-  <string name="progressDialog_install_text">Installing Words&#8230;</string>
-  <string name="progressDialog_uninstall_text">Syncing Words with market&#8230;</string>
-  <string name="progressDialog_update_text">Updating Words&#8230;</string>
-      
-  <!--  Rate Us URI for app store -->
-  <string name="URI_buzzwords_redirect">http://www.siramix.com/buzzwordsappstore</string>
-  <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwords</string>
-  <string name="URI_android_market_buzzwordslite">https://market.android.com/details?id=com.buzzwordslite</string>
-  <string name="URI_amazon_market_buzzwords">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwords</string>
-  <string name="URI_amazon_market_buzzwordslite">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite</string>
-  
-  <!--  URI for about us page -->
-  <string name="URI_fb_buzzwordsapp">https://www.facebook.com/buzzwordsapp</string>
-  
-  <string name="settings_scorechange_summary">Current score change is </string>
+    <!-- Dialog Installation -->
+    <string name="progressDialog_install_text">Installing Words&#8230;</string>
+    <string name="progressDialog_uninstall_text">Syncing Words with market&#8230;</string>
+    <string name="progressDialog_update_text">Updating Words&#8230;</string>
 
-  <!--  Accessibility Strings -->
-  <string name="description_fb_buzzwordsapp">Link to Buzzwords App on Facebook</string>
-  <string name="description_buzzer_title">The Buzzer\'s title</string>
-  <string name="description_buzzer_button">The Buzzer button</string>
-  <string name="description_review_button_wrong">Button that marks the card as wrong</string>
-  <string name="description_review_button_skip">Button that marks the card as a skip</string>
-  <string name="description_review_button_right">Button that marks the card as right</string>
-  <string name="description_review_button_clear">Button that marks the card as unset</string>
-  <string name="description_gameend_button_mainmenu">Button to go to Main Menu</string>
-  <string name="description_gameend_button_rematch">Button to replay the game with the current game settings</string>
-  
-  <!--  Temporary Strings -->
-  <string name="test_temp1">Word 1</string>
-  <string name="test_team">Green Goblins</string>
+    <!-- URIs for Rate Us -->
+    <string name="URI_buzzwords_redirect">http://www.siramix.com/buzzwordsappstore</string>
+    <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwords</string>
+    <string name="URI_android_market_buzzwordslite">https://market.android.com/details?id=com.buzzwordslite</string>
+    <string name="URI_amazon_market_buzzwords">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwords</string>
+    <string name="URI_amazon_market_buzzwordslite">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite</string>
+
+    <!-- URI for About us page -->
+    <string name="URI_fb_buzzwordsapp">https://www.facebook.com/buzzwordsapp</string>
+
+    <!-- Accessibility Strings -->
+    <string name="description_splash_logo">The awesome Ram logo of Siramix</string>
+    <string name="description_splash_siramix">Siramix</string>
+    <string name="description_fb_buzzwordsapp">Link to Buzzwords App on Facebook</string>
+    <string name="description_buzzer_title">The Buzzer\'s title</string>
+    <string name="description_buzzer_button">The Buzzer button</string>
+    <string name="description_review_button_wrong">Button that marks the card as wrong</string>
+    <string name="description_review_button_skip">Button that marks the card as a skip</string>
+    <string name="description_review_button_right">Button that marks the card as right</string>
+    <string name="description_review_button_clear">Button that marks the card as unset</string>
+    <string name="description_gameend_button_mainmenu">Button to go to Main Menu</string>
+    <string name="description_gameend_button_rematch">Button to replay the game with the current game settings</string>
+
+    <!-- Temporary Strings -->
+    <string name="test_word1">Word 1</string>
+    <string name="test_team">Green Goblins</string>
+    <string name="test_header">Header</string>
+    <string name="test_number">7</string>
+    <string name="test_packdescription">A perfect cross-section of the English language. This pack is an essential part to any complete Buzzwords deck.</string>
+
 </resources>
