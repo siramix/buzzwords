@@ -63,6 +63,10 @@
   <string name="packInfoIsPackRowOddBundleKey">com.buzzwords.isPackRowOdd</string>
   <string name="packInfoPurchaseTypeKey">com.buzzwords.packPurchaseType</string>
   
+  <!--  Generic Strings -->
+  <string name="confirm">Accept</string>
+  <string name="cancel">Cancel</string>
+  
   <!-- Pack Purchasing dialog strings -->
   <string name="packpurchase_title">Select Word Packs</string>
   <string name="packpurchase_unlockedheader">Your Packs</string>
@@ -79,15 +83,17 @@
    <!-- Card Review Strings -->
    <string name="button_notset">Clear</string>
   
-  <!-- For EditTeamName dialog -->
+  <!-- EditTeamName dialog Strings -->
   <string name="editTeamName_hint">Choose a new name for %s team.</string>
+  <string name="editTeamName_title">Edit Team Name</string>
+  <string name="editTeamName_accept">Accept</string>
+  <string name="editTeamName_cancel">Cancel</string>
 
   <!-- Word Pack purchasing Screen -->
   <string name="toast_wordpurchase_nopackselected">Select at least one of Your Packs to play.</string>
 	<string name="packpurchase_facebook_subject">SUBJECT></string>
 	<string name="packpurchase_facebook_text">TEXT></string>
-	
-  
+	 
   <!-- Rate Us dialogs -->
   <string name="rateUsFirstDialog_title">We want your feedback!</string>
   <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
@@ -155,4 +161,13 @@
 
   <!--  Accessibility Strings -->
   <string name="description_fb_buzzwordsapp">Link to Buzzwords App on Facebook</string>
+  <string name="description_buzzer_title">The Buzzer\'s title</string>
+  <string name="description_buzzer_button">The Buzzer button</string>
+  <string name="description_review_button_wrong">Button that marks the card as wrong</string>
+  <string name="description_review_button_skip">Button that marks the card as a skip</string>
+  <string name="description_review_button_right">Button that marks the card as right</string>
+  <string name="description_review_button_clear">Button that marks the card as unset</string>
+  
+  <!--  Temporary Strings -->
+  <string name="test1">Word 1</string>
 </resources>

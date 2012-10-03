@@ -43,7 +43,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:gravity="center"
-            android:text="Edit Team Name"
+            android:text="@string/editTeamName_title"
             android:textColor="@color/white"
             android:textSize="24dp" >
         </com.buzzwords.AntonTextView>
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
-        android:text="Choose a new name for Red Team"
+        android:text="@string/editTeamName_hint"
         android:textColor="@color/white"
         android:textSize="16dp" >
     </TextView>
@@ -83,7 +83,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Accept" >
+            android:text="@string/confirm" >
         </Button>
 
         <Button
@@ -91,7 +91,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel" >
+            android:text="@string/cancel" >
         </Button>
     </LinearLayout>
 

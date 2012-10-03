@@ -24,25 +24,27 @@
 	android:orientation="vertical">
 	
 	<!--  The Buzzer Mode label -->
-	<ImageView 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:layout_marginTop="20dp" 
-		android:background="@drawable/buzzer_title"
-		android:layout_gravity="center"
-		/>
+
+	<ImageView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:layout_marginTop="20dp"
+	    android:background="@drawable/buzzer_title"
+	    android:contentDescription="@string/description_buzzer_title" />
 		
 	<!--  Relative layout allows button to be centered -->
 	<RelativeLayout 
 		android:layout_height="fill_parent"
 		android:layout_width="fill_parent">
 		
-		<ImageButton android:id="@+id/Buzzer_Button"
-			android:background="@drawable/buzzer_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:layout_centerInParent="true"
-			/>
+		<ImageButton
+		    android:id="@+id/Buzzer_Button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerInParent="true"
+		    android:background="@drawable/buzzer_button"
+		    android:contentDescription="@string/description_buzzer_button" />
 			
 	</RelativeLayout>
 	
