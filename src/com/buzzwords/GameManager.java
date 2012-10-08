@@ -255,6 +255,7 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "StartGame()");
     }
+    mDeck.setPackData();
     mTeams = teams;
     Iterator<Team> itr = teams.iterator();
     for (itr = teams.iterator(); itr.hasNext();) {
@@ -348,7 +349,7 @@ public class GameManager {
    */
   public void maintainDeck() {
     Log.d(TAG, "maintainDeck()");
-    mDeck.fillCachesIfLow();
+    mDeck.fillCacheIfLow();
   }
 
   public boolean packsRequireUpdate(LinkedList<Pack> serverPacks) {

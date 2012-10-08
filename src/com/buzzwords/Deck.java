@@ -69,25 +69,19 @@ public class Deck {
   private static final String DATABASE_NAME = "buzzwords";  
   private static final int DATABASE_VERSION = 3;
   
-  protected static final int BACK_CACHE_MAXSIZE = 80;
-  protected static final int FRONT_CACHE_MAXSIZE = 20;
+  protected static final int CACHE_MAXSIZE = 140;
+  protected static final int CACHE_TURNSIZE = 20;
   
   private static final int PACK_CURRENT = -1;
   private static final int PACK_NOT_PRESENT = -2;
-  
-  // After taking the top 1/DIVSOR Cards from a pack, throw back a percentage of them 
-  private static final int THROW_BACK_PERCENTAGE = 0;
-  
+
   // This is the sum of all Cards in selected Packs
   private int mTotalPlayableCards;
   
-  // A list of back Cards used for refreshing the deck.  Will be filled after it reaches 0.
-  private LinkedList<Card> mBackCache;
+  // A list of Cards in memory. Will be filled when <= ~ a turn of cards.
+  private LinkedList<Card> mCache;
   
-  // Front Cache will be topped off every turn
-  private LinkedList<Card> mFrontCache;
-  
-  // Should be wiped every time the mbackCache is cleared
+  // Tracks seen cards. Should be wiped every time the cache is refreshed.  
   private LinkedList<Card> mDiscardPile;
   
   // List of all packs selected for the Deck
@@ -108,46 +102,46 @@ public class Deck {
   public Deck(Context context) {
     mContext = context;
     mDatabaseOpenHelper = new DeckOpenHelper(context);
-    mBackCache = new LinkedList<Card>();
-    mFrontCache = new LinkedList<Card>();
+    mCache = new LinkedList<Card>();
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
-    setPackData();
     mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", "packs/icons/starter_icon.png",
         "Description of pack1", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true);
   }
 
   /**
-   * Get a card from the top of the Front Cache queue.  Once
+   * Get a card from the top of the Cache queue.  Once
    * this reaches the bottom of the deck, we should top off the Deck which
    * will in turn trigger a pull from packs to refill the cache.
    * @return a card reference
    */
   public Card dealCard() {
     Card ret;
-    if (mFrontCache.isEmpty()) {
-      this.topOffFrontCache();
+    // This shouldn't happen unless a lot of cards are played in one turn (CACHE_TURNSIZE)
+    if (mCache.isEmpty()) {
+      Log.i(TAG, "Filling entire cache mid-turn. This is expensive.");
+      mDatabaseOpenHelper.updateSeenFields(mDiscardPile);
+      mDiscardPile.clear();
+      this.fillCache();
     }
-    ret = mFrontCache.removeFirst();
+    ret = mCache.removeFirst();
     Log.i(TAG, " Dealing ::" + ret.getTitle() + " Pack: " + ret.getPack().getName());
     mDiscardPile.add(ret);
     return ret;
   }
   
   /**
-   * If there aren't enough cards in the back cache to fill the 
-   * front-facing cache at least once, fill up both caches.  This
-   * should be called during downtime since it could be a costly
-   * database pull.
+   * If there aren't enough cards in the cache to play one more turn,
+   * clear it and fill it back up. This should be called during downtime
+   * since it could be a costly database pull.
    */
-  public void fillCachesIfLow() {
-    Log.d(TAG, "fillCachesIfLow()");
-    topOffFrontCache();
-    if (mBackCache.size() < FRONT_CACHE_MAXSIZE) {
-      Log.d(TAG, "...Back Cache size was low (" + mBackCache.size() + "), filling...");
-      mBackCache.clear();
-      fillBackCache();
-      Log.d(TAG, "...filled. Back Cache size is now " + mBackCache.size());
+  public void fillCacheIfLow() {
+    Log.d(TAG, "fillCacheIfLow()");
+    if (mCache.size() < CACHE_TURNSIZE) {
+      Log.d(TAG, "...Cache size was low (" + mCache.size() + "), filling...");
+      mCache.clear();
+      fillCache();
+      Log.d(TAG, "...filled. Cache size is now " + mCache.size());
     }
   }
   
@@ -272,50 +266,16 @@ public class Deck {
     }
     return false;
   }
-  
-  /**
-   * Fill the front cache to maximum size by popping off the back cache.
-   */
-  private void topOffFrontCache() {
-    Log.d(TAG, "topOffFrontCache()");
-    int lack = FRONT_CACHE_MAXSIZE - mFrontCache.size();
-    Log.d(TAG, "*** Front Cache Size: " + mFrontCache.size());
-    Log.d(TAG, "*** Lack: " + String.valueOf(lack));    
-    Log.d(TAG, "*** Current Back Cache Size: " + String.valueOf(mBackCache.size()));
-    
-    for (int i=0; i<lack; ++i) {
-      mFrontCache.add(popBackCache());
-    }
-    printDeck();
-  }
-
-  /**
-   * Get the card from the top of the cache
-   * 
-   * @return a card reference
-   */
-  private Card popBackCache() {
-    Card ret;
-    // If we reach this scenario it means a lot of cards were looked at during a turn
-    // Otherwise it should be filled by a GameManager.maintainDeck call
-    if (mBackCache.isEmpty()) {
-      mDatabaseOpenHelper.updateSeenFields(mDiscardPile);
-      mDiscardPile.clear();
-      this.fillBackCache();
-    }
-    ret = mBackCache.removeFirst();
-    Log.d(TAG, " Popped " + ret.getTitle() + " from cache.");
-    return ret;
-  }
-  
 
   /**
    * Instantiate the list of Selected Packs and then modify any
    * member variables of Pack that can be determined at time of
    * Deck creation.  This includes number of playable phrases
-   * and pack weights.
+   * and pack weights.  ONLY call this method after packs have been
+   * selected.
    */
-  private void setPackData() {
+  public void setPackData() {
+    Log.d(TAG, "setPackData()");
     instantiateSelectedPacks();
     mTotalPlayableCards = 0;
     LinkedList<Pack> packList = new LinkedList<Pack>();
@@ -324,34 +284,28 @@ public class Deck {
     }
     mTotalPlayableCards += mDatabaseOpenHelper.countCards(packList);
     setPackWeights();
+    calculatePackDistribution();
   }
   
   /**
    * Prepare for a game by caching the cards necessary for the entire game.  
-   * Ideally we should only do this in between games. 
+   * Ideally we should only do this in between games to get a good cross-section
+   * of the selected packs.
    */
-  private void fillBackCache() {
-    Log.d(TAG, "fillBackCache()");
+  private void fillCache() {
+    Log.d(TAG, "fillCache()");
     printDeck();
-    Log.i(TAG, "filling back cache...");
     mDatabaseOpenHelper = new DeckOpenHelper(mContext);
-    
-    // 1. Allocate lack to all selected packs
-    Log.d(TAG, "1. Allocate lack ");
-    int lack = Deck.BACK_CACHE_MAXSIZE - mBackCache.size();
-    allocateCardsToPull(lack);
-    
-    // 2. Fill our cache up with cards from all selected packs (using sorting algorithm)
-    //    Separate seen and unseen cards for handling the end of deck 
-    //    (when unseen must take priority)
-    Log.d(TAG, "2. Pull Calculations ");
-    LinkedList<Card> activeCards = new LinkedList<Card>();
-    activeCards.addAll(mFrontCache);
-    activeCards.addAll(mBackCache);
+
+    // Fill our cache up with cards from all selected packs (using sorting algorithm)
+    // Separate seen and unseen cards for handling the end of deck 
+    // (when unseen must take priority)
+    Log.d(TAG, "Pull Calculations ");
     LinkedList<Card> unseenCards = new LinkedList<Card>();
     LinkedList<Card> seenCards = new LinkedList<Card>();
+    // Pull cards from each pack into our cache, choosing unseen ones first.
     for (int i=0; i<mSelectedPacks.size(); ++i) {
-      LinkedList<Card> pulledCards = mDatabaseOpenHelper.pullFromPack(mSelectedPacks.get(i), activeCards);
+      LinkedList<Card> pulledCards = mDatabaseOpenHelper.pullFromPack(mSelectedPacks.get(i));
       for (Card card : pulledCards) {
         if (card.hasBeenSeen()) {
           seenCards.add(card);
@@ -365,8 +319,8 @@ public class Deck {
     // 3. Now shuffle
     Collections.shuffle(seenCards);
     Collections.shuffle(unseenCards);
-    mBackCache.addAll(unseenCards);
-    mBackCache.addAll(seenCards);
+    mCache.addAll(unseenCards);
+    mCache.addAll(seenCards);
     
     mDatabaseOpenHelper.close();
     Log.i(TAG, "filled.");
@@ -420,29 +374,27 @@ public class Deck {
   }
   
   /**
-   * Determine based on a lack in the Back Cache how many
+   * Determine based on the size of the Cache how many
    * cards should be pulled from each deck.  After determining
    * the portion each Pack should pull, allocate the remaining
    * cards randomly to the teams.
-   * @param lack the number of cards the Back Cache is short by
    */
-  private void allocateCardsToPull(int lack) {
-    Log.d(TAG, "allocateCardsToPull()");
-    Log.d(TAG, "** lack: " + lack);
+  private void calculatePackDistribution() {
+    Log.d(TAG, "calculatePackDistribution()");
     
-    // Divide up evenly the lack
+    // Divide up evenly the size of the cache
     int allocated = 0;
     Log.d(TAG, "SELECTED PACKS LENGTH: " + mSelectedPacks.size());
     for (Pack curPack : mSelectedPacks) {
-      int numToPull = (int) Math.floor(lack * curPack.getWeight());
+      int numToPull = (int) Math.floor(CACHE_MAXSIZE * curPack.getWeight());
       curPack.setNumToPullNext(numToPull);
       allocated += numToPull;
       Log.d(TAG, curPack.toString());
     }
     
-    // Allocate randomly any of the lack that remains
+    // Allocate randomly the remaining cache to fill
     Random randomizer = new Random();
-    int remainder = lack - allocated;
+    int remainder = CACHE_MAXSIZE - allocated;
     Log.d(TAG, "Assigning remainder of " + remainder + " cards.");
     for (int i=0; i<remainder; ++i) {
       int packIndex = randomizer.nextInt(mSelectedPacks.size()-1);
@@ -466,20 +418,13 @@ public class Deck {
   public void printDeck() {
     Log.d(TAG, "printDeck...");
     Log.d(TAG, "========================");
-    Log.d(TAG, "FRONT CACHE: ");
-    Log.d(TAG, "Front Cache Size is " + mFrontCache.size());
-    for (int i=0; i<mFrontCache.size(); ++i) {
-      Log.d(TAG, "..." + mFrontCache.get(i).getTitle());
+    Log.d(TAG, "CACHE: ");
+    Log.d(TAG, "Size is " + mCache.size());
+    for (int i=0; i<mCache.size(); ++i) {
+      Log.d(TAG, "..." + mCache.get(i).getTitle());
     }
-    Log.d(TAG, "END FRONT CACHE");
+    Log.d(TAG, "END CACHE");
     Log.d(TAG, "------------------------");
-    Log.d(TAG, "BACK CACHE: ");
-    Log.d(TAG, "Back Cache Size is " + mBackCache.size());
-    for (int i=0; i<mBackCache.size(); ++i) {
-      Log.d(TAG, "..." + mBackCache.get(i).getTitle());
-    }
-    Log.d(TAG, "END BACK CACHE");
-    Log.d(TAG, "========================");
   }
 
   /**
@@ -974,12 +919,11 @@ public class Deck {
      * Generates and returns a LinkedList of Cards from the database for a specific pack.  First,
      * we request all the cards from the db sorted by date.  Then we calculate how many of the 
      * Cards should be returned based on the pack's weight relative to the total number of selected
-     * cards.  Then, just to shake things up we take a few extra, and remove an equal number at random
+     * cards.
      * @param pack The pack from which to pull cards
-     * @param cardsToExclude a Linked List of Cards that should not be included in the cache
      * @return
      */
-    public synchronized LinkedList<Card> pullFromPack(Pack pack, LinkedList<Card> cardsToExclude) {
+    private synchronized LinkedList<Card> pullFromPack(Pack pack) {
       Log.d(TAG, "pullFromPack(" + pack.getName() + ")");
       // Do this first since it needs it's own db interaction
       int numPlayThroughs = calcNumPlaythroughs(pack);
@@ -989,32 +933,27 @@ public class Deck {
       LinkedList<Card> returnCards = new LinkedList<Card>();
       int packid = pack.getId();
       int targetNum = pack.getNumToPullNext();
-      int surplusNum = (int) Math.floor(
-                (float) targetNum * ((float) Deck.THROW_BACK_PERCENTAGE / 100.00));
       
       // Build our arguments for SQL
       String[] args = new String[3];
       args[0] = String.valueOf(packid);
-      args[1] = buildCardIdString(cardsToExclude);
       
       // Get the playable cards from pack, sorted by playdate
       Cursor res = mDatabase.query(CardColumns.TABLE_NAME, CardColumns.COLUMNS,
-            CardColumns.PACK_ID + " = " + args[0] + " AND " +
-            CardColumns._ID + " NOT IN (" + args[1] + ")",
+            CardColumns.PACK_ID + " = " + args[0],
             null, null, null, CardColumns.PLAY_DATE + " asc");
       res.moveToFirst();
       
       // The number of cards to return from any given pack will use the following formula:
-      // (WEIGHT OF PACK) * lack + SURPLUS --> Then we randomly take out X cards where X = SURPLUS
-      
-      Log.d(TAG, "** Deck.BackCacheSize: " + Deck.BACK_CACHE_MAXSIZE);
-      Log.d(TAG, "** Pack.numToPullNext: " + targetNum);
-      Log.d(TAG, "** this.surplusnum: " + surplusNum);
-      Log.d(TAG, "** this.numPlayable (excludes active): " + res.getCount());
+      // (WEIGHT OF PACK) * CACHE-SIZE
+      Log.d(TAG, "** this.numInPack: " + res.getCount());
+      Log.d(TAG, "** Pack.numToPull: " + targetNum);
+      Log.d(TAG, "** Pack.weight: " + pack.getWeight());
       Log.d(TAG, "** Pack.size: " + pack.getSize());
 
-      // Add cards to what will be the Cache, including a surplus
-      while (!res.isAfterLast() && res.getPosition() < (targetNum + surplusNum)) {
+      // Add cards to what will be the Cache, setting cards seen more than others within
+      // the pack to true.
+      while (!res.isAfterLast() && res.getPosition() < (targetNum)) {
         Card card = new Card(res.getInt(0), res.getString(1), res.getString(2), pack);
         if (res.getInt(4) > numPlayThroughs) {
           card.setSeen(true);
@@ -1023,18 +962,6 @@ public class Deck {
         res.moveToNext();
       }
       Log.d(TAG, "**" + returnCards.size() + " phrases added.");
-      
-      // Throw out x surplus cards at random
-      Random r = new Random();
-      int removeCount = 0;
-      int randIndex = 0;
-      while (removeCount < surplusNum) {
-        randIndex = r.nextInt(returnCards.size()-1);
-        Log.d(TAG, "**removing: " + returnCards.get(randIndex).getTitle());
-        returnCards.remove(randIndex);
-        removeCount++;
-      }
-      Log.d(TAG, "**" + removeCount + " phrases thrown out.");
       
       res.close();
       mDatabase.close();

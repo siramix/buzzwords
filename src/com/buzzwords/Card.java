@@ -277,7 +277,7 @@ public class Card implements Serializable {
   }
 
   /**
-   * Return whether the card has been seen or not
+   * Return whether the card has been seen more than others in the pack
    * @return
    */
   public boolean hasBeenSeen() {
