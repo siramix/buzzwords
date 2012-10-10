@@ -225,6 +225,14 @@ public class Deck {
   }
   
   /**
+   * Shuffle all cards in the database by setting the date played to a year
+   * between 1000 and 1999.  Also set the play count to 0.
+   */
+  public void shuffleAllPacks() {
+    mDatabaseOpenHelper.shuffleAllPacks();
+  }
+  
+  /**
    * Helper method to retrieve the pack from the database given a pack Id.
    * This allows us to do things to packs using pack attributes like pack icon
    * name which is used before deletion of a pack.
@@ -812,11 +820,14 @@ public class Deck {
      */
     private synchronized static long insertCard(Card card, int packId, SQLiteDatabase db) {
       Log.d(TAG, "insertCard(" + card.getTitle() + ")");
+      Random randomizer = new Random();
+      // Get a random year to make sure installations have different play orders.
+      final int randYear = randomizer.nextInt(1970);
       ContentValues initialValues = new ContentValues();
       initialValues.put(CardColumns._ID, card.getId());
       initialValues.put(CardColumns.TITLE, card.getTitle());
       initialValues.put(CardColumns.BADWORDS, card.getBadWordsString());
-      initialValues.put(CardColumns.PLAY_DATE, 0);
+      initialValues.put(CardColumns.PLAY_DATE, randYear + "-01-01 00:00:00");
       initialValues.put(CardColumns.TIMES_SEEN, 0);
       initialValues.put(CardColumns.PACK_ID, packId);
       return db.insert(CardColumns.TABLE_NAME, null, initialValues);
@@ -876,6 +887,25 @@ public class Deck {
              + " SET " + CardColumns.PLAY_DATE + " = datetime('now'), "
                        + CardColumns.TIMES_SEEN + " = " + CardColumns.TIMES_SEEN + " + 1"
              + " WHERE " + CardColumns._ID + " in(" + ids + ");");
+        mDatabase.setTransactionSuccessful();
+      } finally {
+        mDatabase.endTransaction();
+      }
+    }
+    
+    /**
+     * Sets all cards in database to a random year between 1970 and 2001.  Also sets
+     * the times seen to 0 for every card.  The biggest priority is that
+     * this ensures users get a totally reordered deck.
+     */
+    public synchronized void shuffleAllPacks() {
+      final String RAND_DATE_STR = "datetime(abs(random())%1000000000, 'unixepoch')";
+      mDatabase = getWritableDatabase();
+      mDatabase.beginTransaction();
+      try {
+        mDatabase.execSQL("UPDATE " + CardColumns.TABLE_NAME
+            + " SET " + CardColumns.PLAY_DATE + " = " + RAND_DATE_STR + ","
+                      + CardColumns.TIMES_SEEN + " = 0;");
         mDatabase.setTransactionSuccessful();
       } finally {
         mDatabase.endTransaction();

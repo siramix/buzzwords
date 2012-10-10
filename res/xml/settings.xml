@@ -113,20 +113,40 @@
 				android:entries="@array/numbuzzwords"
 				android:entryValues="@array/numbuzzwords_values"
 				android:summary="" 
-				android:defaultValue="5"/>
+				android:defaultValue="5"
+				/>
 		
 		</PreferenceCategory>
-			
+		
 	</PreferenceScreen>
 	
-	<PreferenceCategory android:title="App Info">
+	<PreferenceCategory android:title="App Data">
 		
+		<PreferenceScreen
+			android:key="com.buzzwords.RESET_PACK_SCREEN"
+			android:title="Manage Deck"
+			android:summary="Shuffle deck and forget game progress.">
+			
+			<PreferenceCategory android:title="Reset">
+				
+				<Preference 
+					android:key="com.buzzwords.RESET_PACKS"
+					android:enabled="true"
+					android:selectable="true"
+					android:summary="Forgets all progress and shuffles cards."
+					android:title="Shuffle All Packs"
+					/>
+				
+			</PreferenceCategory>
+			
+		</PreferenceScreen>
+	
 		<Preference 
-			android:key="app_version" 
-			android:title="Version" 
-			android:selectable="false" 
-			android:enabled="false">
-		</Preference>
+			android:key="app_version"
+			android:title="Version"
+			android:selectable="false"
+			android:enabled="false"
+			/>
 		
 	</PreferenceCategory>
 

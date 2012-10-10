@@ -46,9 +46,10 @@ public class Consts {
     public static final String PREFKEY_SFX = "com.buzzwords.SFX_ENABLED";
     public static final String PREFKEY_SKIP = "com.buzzwords.ALLOW_SKIP";
     public static final String PREFKEY_GESTURES= "com.buzzwords.ALLOW_GESTURES";
-    public static final String PREFKEY_RIGHT_SCORE= "com.buzzwords.RIGHT_SCORE";
-    public static final String PREFKEY_WRONG_SCORE= "com.buzzwords.WRONG_SCORE";
-    public static final String PREFKEY_SKIP_SCORE= "com.buzzwords.SKIP_SCORE";
+    public static final String PREFKEY_RIGHT_SCORE = "com.buzzwords.RIGHT_SCORE";
+    public static final String PREFKEY_WRONG_SCORE = "com.buzzwords.WRONG_SCORE";
+    public static final String PREFKEY_SKIP_SCORE = "com.buzzwords.SKIP_SCORE";
+    public static final String PREFKEY_RESET_PACKS = "com.buzzwords.RESET_PACKS";
     public static final String PREFKEY_DB_INITIALIZED = "com.buzzwords.DB_INITIALIZED";
     public static final String PREFKEY_SYNC_REQUIRED = "com.buzzwords.PACK_SYNC_REQUIRED";
     public static final String PREFKEY_LAST_USER = "com.buzzwords.PACK_SYNC_LAST_USER";
