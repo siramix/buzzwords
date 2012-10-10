@@ -19,6 +19,9 @@ package com.buzzwords;
 
 import com.buzzwords.R;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -27,10 +30,12 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 /**
  * The Settings class handles the setting of exposed preferences
@@ -38,10 +43,26 @@ import android.view.KeyEvent;
  * @author Siramix Labs
  */
 public class SettingsPreferenceActivity extends PreferenceActivity {
+  
+  final private int RESET_CARDS_DIALOG = -1;
+  
+  // Track the current shown toast
+  private Toast mHelpToast = null;
 
   private boolean mContinueMusic = false; // Flag to continue music across
                                           // Activities
 
+  private OnPreferenceClickListener mPrefClickListener = new OnPreferenceClickListener() {
+    
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+      if (preference.getKey().equals(Consts.PREFKEY_RESET_PACKS)) {
+        showDialog(RESET_CARDS_DIALOG);
+      }
+      return false;
+    }
+  };
+  
   /**
    * Watch the settings to update any changes (like start up music, reset
    * subtext, etc.)
@@ -116,6 +137,10 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
     this.updateScorePreferenceSummary(Consts.PREFKEY_WRONG_SCORE);
     this.updateScorePreferenceSummary(Consts.PREFKEY_SKIP_SCORE);
 
+    // Register onclick listener
+    Preference resetPref = (Preference) findPreference(Consts.PREFKEY_RESET_PACKS);
+    resetPref.setOnPreferenceClickListener(mPrefClickListener);
+    
     // Update the version preference caption to the existing app version
     Preference version = findPreference("app_version");
     try {
@@ -183,6 +208,62 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
 
     return super.onKeyUp(keyCode, event);
   }
+  
+  /**
+   * Handle creation of dialogs used in TurnSummary
+   */
+  @Override
+  protected Dialog onCreateDialog(int id) {
+    Dialog dialog = null;
+    AlertDialog.Builder builder = null;
+
+    switch (id) {
+    case RESET_CARDS_DIALOG:
+      builder = new AlertDialog.Builder(this);
+      builder.setTitle(getString(R.string.shuffleDialog_title));
+      builder.setMessage(getString(R.string.shuffleDialog_text))
+          .setPositiveButton(getString(R.string.shuffleDialog_positiveBtn),
+               new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              // Play confirmation sound
+              SoundManager sm = SoundManager
+                  .getInstance(getBaseContext());
+              sm.playSound(SoundManager.Sound.CONFIRM);
+              Deck deck = new Deck(getBaseContext());
+              deck.shuffleAllPacks();
+              showToast(getString(R.string.toast_settings_shuffled));
+            }
+          }).setNegativeButton(this.getString(R.string.shuffleDialog_negativeBtn),
+              new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              // Play confirmation sound
+              SoundManager sm = SoundManager
+                  .getInstance(getBaseContext());
+              sm.playSound(SoundManager.Sound.CONFIRM);
+              dialog.cancel();
+            }
+          });
+      dialog = builder.create();
+      break;
+    default:
+      dialog = null;
+    }
+    return dialog;
+  }
+  
+  /**
+   * Handle showing a toast or refreshing an existing toast
+   */
+  private void showToast(String text) {
+    if(mHelpToast == null) {
+      mHelpToast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+    } else {
+      mHelpToast.setText(text);
+      mHelpToast.setDuration(Toast.LENGTH_LONG);
+    }
+    mHelpToast.show();
+  }
+
 
   /**
    * Override onPause to prevent activity specific processes from running while
@@ -228,7 +309,7 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
     if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
       mp.start();
     }
-
+    
     // Register preference listener with SharedPreferences
     sp.registerOnSharedPreferenceChangeListener(mPrefListener);
 
