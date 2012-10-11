@@ -115,6 +115,7 @@
     <string name="gameEnd_title">Game Over</string>
     <string name="gameEnd_scoreboardHeader">Final Scores</string>
     <string name="gameEnd_winner">Winner:</string>
+    <string name="gameEnd_tie">Tie Game!</string>
     <string name="gameEnd_button_mainMenu">Main Menu</string>
     <string name="gameEnd_button_rematch">Rematch</string>
 
@@ -150,7 +151,58 @@
     <string name="gameSetup_hint_GameType">Game limit determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
     <string name="gameSetup_hint_turns">Set the number of turns each team will take.</string>
     <string name="gameSetup_hint_score">Set the number of points a team needs to win. All teams will play an equal number of turns.</string>
-
+    
+    <!-- Activity Rules -->
+    <string name="rules_title">Rules</string>
+    <string name="rules_basics_subheader">Basics</string>
+    <string name="rules_basics_text1">At its core, Buzzwords is a team game that pits friends against friends in cutthroat wordplay action. Here are the basics:</string>
+    <string name="rules_basics_text2">Divide all players into teams of two or more.</string>
+    <string name="rules_basics_text3">Each turn, a team assigns a presenter who must try to get their team to guess as many secret words as possible without saying certain \'buzz\'words.</string>
+    <string name="rules_basics_text4">An opposing player enforces the list of \'buzz\'words.</string>
+    <string name="rules_basics_text5">Points are awarded for each successfully guessed word.</string>
+    <string name="rules_basics_text6">The team that has the most points at the end of the game wins!</string>
+    <string name="rules_houserules_subheader">House Rules: </string>
+    <string name="rules_gameplay_subheader">Gameplay</string>
+    <string name="rules_gameplay_text1">Let\'s take a look at the buttons you\'ll encounter while playing.</string>
+    <string name="rules_gameplay_text2">Right Button: For when your team guesses the card correctly. +1 Point by default.</string>
+    <string name="rules_gameplay_text3">Skip Button: For when you are not up to the challenge of the current word. No penalty by default.</string>
+    <string name="rules_gameplay_text4">Wrong Button: For when you get called out by the other team for using a \'buzz\'word. -1 Point by default.</string>
+    <string name="rules_gameplay_text5">Back Button (phone): You can use the back button on your Android device to go back one card.  Don\'t worry if you messed up more than once. You can always fix the results on Turn Summary.</string>
+    <string name="rules_gameplay_text6">Gestures can also be used perform actions. Swipe up for right (think thumbs up), down for wrong (thumbs down), left for skip, and right for back.</string>
+    <string name="rules_gameplay_text7">The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don\'t worry, it will pause if anyone calls and interrupts your intense game of Buzzwords.</string>
+    <string name="rules_screens_subheader">Sample Screens</string>
+    <string name="rules_screens_text1">Now let\'s take a look at the screens you\'ll encounter while playing.</string>
+    <string name="rules_screens_text2">Setup Screen: Here you choose which teams will play. You then select your game mode. You can play for a set number of turns or until a team scores a set number of points. Or you can just play forever with Free Play.</string>
+    <string name="rules_screens_text3">Turn Screen: This is where the fun happens. At the top of the screen is the word you want people to guess. Below that are the five words that you may not use. Have someone police you and make you hit the wrong button if you miss one. If your team guesses the word, hit the green check mark and get a new word.</string>
+    <string name="rules_screens_text4">Turn Results: Touch any word to review a card\'s \'buzz\'words and correct the results. Click Next Team when you are ready to pass the phone.</string>
+    <string name="rules_screens_text5">Buzz Mode: If you have a second phone you can use it as a buzzer to aid in calling out the opponent. Just run the second phone in buzz mode and when a foul is committed, buzz ruthlessly.</string>
+    <string name="rules_buzzing_subheader">Buzzing</string>
+    <string name="rules_buzzing_text1">This is where the game gets contentious. Simply put, using part of any word on the list of \'buzz\'words or a related form of the word is a buzzable offense. Once a \'buzz\'word has been guessed by anyone on the team, it is free for use by the presenter. To keep the peace, here are some recommended \"buzz worthy\" offenses.</string>
+    <string name="rules_buzzing_text2">Explicitly rhyming or phonetically hinting towards any \'buzz\'word. If you\'re saying \"rhymes with\" or \"sounds like\", you\'re heading to buzz city.</string>
+    <string name="rules_buzzing_text3">Hinting at the spelling or form of the word in any way. \"Starts with,\" \"has x syllables,\" \"short/long word\" are all phrases that should be avoided.</string>
+    <string name="rules_buzzing_text4">Saying enough of a bad word for people to know what you were going to say.</string>
+    <string name="rules_buzzing_text5">Speaking \'buzz\'words in another language.</string>
+    <string name="rules_buzzing_text6">Saying any tense of a \'buzz\'word. For example saying \"ate\" when \"eat\" is a \'buzz\' word.</string>
+    <string name="rules_buzzing_text7">Using your body in any way. This includes pointing, grabbing objects, eye rolling, and break dancing.</string>
+    <string name="rules_buzzing_text8">Changing a word into an acronym or saying the words that an acronym stands for. For example saying \"Central Intelligence Agency\" for \"CIA\".</string>
+    <string name="rules_buzzing_text9">Singing and humming are encouraged, provided you don\'t sing a \'buzz\'word or gesture. Substituting unrelated words, even \'blank\', for \'buzz\'words is appropriate as well. Remember, if your team uses any of the \'buzz\'words, you are then free to use that word yourself.</string>
+    <string name="rules_example_subheader">Example Game</string>
+    <string name="rules_example_text1">Finally, let\'s go through an example game to help you get started.</string>
+    <string name="rules_example_text2">Sally and three of her close friends are out camping and realize they forgot to bring any games. But Sally comes to the rescue and pulls out her Android phone with Buzzwords! The group praises her foresight and excitedly divides up into two teams of two.</string>
+    <string name="rules_example_text3">Sally opens the app and taps Play to enter the Pack Purchase screen. After selecting the packs of cards they wish to play, they press \"Confirm\" to enter the Game Setup screen. The group divides into two teams, yellow and green, and Sally highlights those colors.</string>
+    <string name="rules_example_text4">Since they want to each play 4 times they set it to 8 turns (#teams X #times for each player = #turns). Sally taps Start Game to play!</string>
+    <string name="rules_example_text5">Sally starts off presenting for the Yellow Team and Rob, sitting to her left, monitors Sally on behalf of the Green Team. Sally\'s first word to present is Sandwich, which includes the \'buzz\'words bread, butter, eat, lunch, and sub. She starts by saying,</string>
+    <string name="rules_example_text6">\"OK. This is something you eat for lunch.\"</string>
+    <string name="rules_example_text7">Rob, who is an astute buzzer, calls her out on her multiple transgressions and Sally is forced to hit the X button.</string>
+    <string name="rules_example_text8">Sally unfortunately can\'t get her team to guess the next word and time runs up. Her turn totals an embarassing -1 points.</string>
+    <string name="rules_example_text9">But Sally is given a chance for redemption. She passes the phone to her right, to Zack on the Green team and then looks over his shoulder to call him out.</string>
+    <string name="rules_example_text10">She\'s so on top of it that Zack ends up with -3 points. The group decides to cut him a break and on the Turn Results screen they change one word to a \"skip,\" making him only lose his team 2 points.</string>
+    <string name="rules_example_text11">Zack passes the phone to his right and assumes the monitoring role, eager to exact his revenge.</string>
+    <string name="rules_example_text12">And the excitement continues until the friends see the glimmer of dawn and realize they\'ve had WAY TOO MUCH FUN!</string>
+    <string name="rules_final_subheader">Final Thoughts</string>
+    <string name="rules_final_text1">We hope you enjoy playing Buzzwords!</string>
+    <string name="rules_final_text2">If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or by clicking the ram icon on the title page. Or email us at buzzwords@siramix.com or tweet @siramixlabs.</string>
+    
     <!-- Settings -->
     <string name="settings_scorechange_summary">Current score change is </string>
     <string name="toast_settings_shuffled">All packs have been shuffled.</string>
