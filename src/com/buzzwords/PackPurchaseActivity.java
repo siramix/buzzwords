@@ -11,7 +11,6 @@ import java.util.Map;
 import org.json.JSONException;
 
 import com.amazon.inapp.purchasing.PurchasingManager;
-import com.buzzwords.R.string;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -22,7 +21,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -34,8 +33,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -222,24 +221,18 @@ public class PackPurchaseActivity extends Activity {
    */
   private void displayLockedPacks() {
     TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
-    // TODO Fix the font for this to FrancoisOne
-    placeHolderText.setText(getString(R.string.packpurchase_accessing_internet));
+    Typeface francois = Typeface.createFromAsset(getAssets(), "fonts/FrancoisOne.ttf");
     placeHolderText.setVisibility(View.VISIBLE);
+    placeHolderText.setTypeface(francois);
     
     LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
     paidPackLayout.removeAllViewsInLayout();
     
-    // TODO Refactor this piece of code which duplicates code inside the thread
-    // The purpose to this is to not reload the server packs or refresh this list
-    // if the packs are already in memory.
+    // Don't reload the server packs or refresh the list if packs are already in memory.
     if (mServerPacks.isEmpty()) {
       fetchPurchasablePacksOnThread();
     } else {
-      LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
-      paidPackLayout.removeAllViewsInLayout();
-      lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
-      placeHolderText.setVisibility(View.GONE);
-      populatePackLayout(lockedPacks, paidPackLayout);
+      populateLockedPackLayout();
     }
     
     // Update the appropriate card count views
@@ -252,15 +245,11 @@ public class PackPurchaseActivity extends Activity {
   public void fetchPurchasablePacksOnThread() {
     final PackClient client = PackClient.getInstance();
     final TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
+    final ProgressBar placeHolderImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message message) {
-          LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
-          LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
-          paidPackLayout.removeAllViewsInLayout();
-          lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
-          placeHolderText.setVisibility(View.GONE);
-          populatePackLayout(lockedPacks, paidPackLayout);
+          populateLockedPackLayout();
         }
     };
   
@@ -271,18 +260,21 @@ public class PackPurchaseActivity extends Activity {
             mServerPacks = client.getServerPacks();
             Message message = handler.obtainMessage(1, mServerPacks);
             handler.sendMessage(message);
-            // do my pref setting so I don't sync again
+            // TODO do my pref setting so I don't sync again (I don't know what this means)
           } catch (IOException e1) {
             placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+            placeHolderImage.setVisibility(View.GONE);
             mServerError = true;
             e1.printStackTrace();
           } catch (URISyntaxException e1) {
             placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+            placeHolderImage.setVisibility(View.GONE);
             mServerError = true;
             e1.printStackTrace();
           } catch (JSONException e1) {
             Log.e(TAG, "Error parsing pack JSON from server.");
             placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+            placeHolderImage.setVisibility(View.GONE);
             mServerError = true;
             e1.printStackTrace();
           }
@@ -312,6 +304,27 @@ public class PackPurchaseActivity extends Activity {
     }
     
     return unownedPackList;
+  }
+  
+  /**
+   * Populate the list of purchasable packs.  Handle special cases like removing
+   * the loading bar and changing or removing the placeholder text.
+   */
+  private void populateLockedPackLayout() {
+    LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
+    LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
+    TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
+    ProgressBar placeHolderImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
+    paidPackLayout.removeAllViewsInLayout();
+    lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
+    if (lockedPacks.size() == 0) {
+      placeHolderText.setText(getString(R.string.packpurchase_allpurchased));
+    }
+    else {
+      placeHolderText.setVisibility(View.GONE);
+    }
+    placeHolderImage.setVisibility(View.GONE);
+    populatePackLayout(lockedPacks, paidPackLayout);
   }
   
   /**

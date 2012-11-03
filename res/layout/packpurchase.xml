@@ -101,6 +101,14 @@
                     android:textColor="@color/white"
                     android:textSize="24dp" />
             </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/PackPurchase_PaidPackPlaceholderImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:progress="@android:integer/config_shortAnimTime" />
 
             <TextView
                 android:id="@+id/PackPurchase_PaidPackPlaceholderText"
@@ -120,6 +128,7 @@
                 android:background="@color/black"
                 android:longClickable="false"
                 android:orientation="vertical" >
+
             </LinearLayout>
 
             

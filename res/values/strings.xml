@@ -82,6 +82,7 @@
     <string name="packpurchase_restoring_packs">Restoring your purchases&#8230;</string>
     <string name="packpurchase_accessing_internet">Looking for online packs&#8230;</string>
     <string name="packpurchase_nointernet">Could not access the online store. We can only show your installed packs.</string>
+    <string name="packpurchase_allpurchased">Thanks for supporting us! We currently have no packs available but are always working on more.</string>
     <string name="packpurchase_facebook_subject">SUBJECT></string>
     <string name="packpurchase_facebook_text">TEXT></string>
     <string name="toast_packpurchase_notwitter">Sorry, we could not detect any Twitter clients.</string>
