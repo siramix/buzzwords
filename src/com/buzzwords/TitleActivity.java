@@ -25,11 +25,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -278,9 +280,18 @@ public class TitleActivity extends Activity {
       SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
-      Uri uri = Uri.parse(getApplication().getString(R.string.URI_fb_buzzwordsapp));
-      Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-      startActivity(intent);
+      
+      // Launch Facebook, if not found, launch a browser intent
+      try {
+        String url = getApplication().getString(R.string.URI_fb_launcher_buzzwordsapp);
+        Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(facebookIntent);
+      } catch (ActivityNotFoundException e) {
+        Uri uri = Uri.parse(getApplication().getString(R.string.URI_fb_buzzwordsapp));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+        browserIntent.setDataAndType(uri, "text/plain");
+        startActivity(browserIntent);
+      }
 
     }
   }; // End AboutUsListener
@@ -341,6 +352,16 @@ public class TitleActivity extends Activity {
     alpha.setDuration(500);
     alpha.setStartOffset(labelNum * 200);
     return alpha;
+  }
+  
+  private Animation fadeFacebookTagline() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "TranslateLabels()");
+    }
+    Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+    fadeOut.setStartOffset(3000);
+    fadeOut.setDuration(2000);
+    return fadeOut;
   }
 
   /*
@@ -431,6 +452,12 @@ public class TitleActivity extends Activity {
       tempLabel = (TextView) this.findViewById(labels[i]);
       tempLabel.startAnimation(fadeLabels(i));
     }
+    TextView tagline;
+    Typeface anton = Typeface.createFromAsset(getAssets(), "fonts/Anton.ttf");
+    tagline = (TextView) this.findViewById(R.id.Title_FB_Tagline);
+    tagline.setTypeface(anton);
+    tagline.setAnimation(this.fadeFacebookTagline());
+    tagline.setVisibility(View.INVISIBLE);
   }
 
   /**

@@ -202,7 +202,7 @@
     <string name="rules_example_text12">And the excitement continues until the friends see the glimmer of dawn and realize they\'ve had WAY TOO MUCH FUN!</string>
     <string name="rules_final_subheader">Final Thoughts</string>
     <string name="rules_final_text1">We hope you enjoy playing Buzzwords!</string>
-    <string name="rules_final_text2">If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or by clicking the ram icon on the title page. Or email us at buzzwords@siramix.com or tweet @siramixlabs.</string>
+    <string name="rules_final_text2">If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or email us at buzzwords@siramix.com any time.  Feel free to reach out on Facebook as well!</string>
     
     <!-- Settings -->
     <string name="settings_scorechange_summary">Current score change is </string>
@@ -234,6 +234,8 @@
 
     <!-- URI for About us page -->
     <string name="URI_fb_buzzwordsapp">https://www.facebook.com/buzzwordsapp</string>
+    <string name="URI_fb_launcher_buzzwordsapp">fb://page/472759256084535</string>
+    <string name="tagline_fb_buzzwordsapp">Find us on Facebook</string>
 
     <!-- Accessibility Strings -->
     <string name="description_splash_logo">The awesome Ram logo of Siramix</string>
