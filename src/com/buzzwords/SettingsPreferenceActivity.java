@@ -54,7 +54,6 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
 
   private OnPreferenceClickListener mPrefClickListener = new OnPreferenceClickListener() {
     
-    @Override
     public boolean onPreferenceClick(Preference preference) {
       if (preference.getKey().equals(Consts.PREFKEY_RESET_PACKS)) {
         showDialog(RESET_CARDS_DIALOG);

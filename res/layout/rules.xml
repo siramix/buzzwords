@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Rules"
+        android:text="@string/rules_title"
         android:textColor="@color/title"
         android:textSize="28dp" 
         android:layout_marginTop="-3dp" />
@@ -78,7 +78,7 @@
                     <com.buzzwords.AntonTextView
                         android:id="@+id/Rules_SubHeader_Basics_Text"
                         style="@style/RulesSubHeader"
-                        android:text="Basics" />
+                        android:text="@string/rules_basics_subheader" />
 
                 </RelativeLayout>
 
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_SubHeader_Basics"
                     android:padding="8dp"
-                    android:text="At its core, Buzzwords is a team game that pits friends against friends in cutthroat wordplay action. Here are the basics:"
+                    android:text="@string/rules_basics_text1"
                     android:textSize="16dp" />
 
                 <RelativeLayout
@@ -106,7 +106,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Divide all players into teams of two or more."
+                        android:text="@string/rules_basics_text2"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -127,7 +127,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Each turn, a team assigns a presenter who must try to get their team to guess as many secret words as possible without saying certain &apos;buzz&apos; words."
+                        android:text="@string/rules_basics_text3"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -148,7 +148,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="An opposing player enforces the list of &apos;buzz&apos; words."
+                        android:text="@string/rules_basics_text4"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -169,7 +169,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Points are awarded for each successfully guessed word."
+                        android:text="@string/rules_basics_text5"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -190,7 +190,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="The team that has the most points at the end of the game wins!"
+                        android:text="@string/rules_basics_text6"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -209,17 +209,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_SubHeader_Basics"
-                    android:text="House Rules: "
+                    android:text="@string/rules_houserules_subheader"
                     android:textSize="16dp"
                     android:visibility="gone" />
 
+                
+                <!-- Display house rules like RWS scoring and turn limit here -->
                 <TextView
                     android:id="@+id/Rules_Preferences"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_PreferencesHeader"
-                    android:layout_marginLeft="10dip"
-                    android:text="CURRENT SETTINGS LIKE RWS, SKIP PENALTY, ROUND TIME GO HERE"
+                    android:layout_marginLeft="10dp"
                     android:textSize="16dp"
                     android:visibility="gone" />
             </RelativeLayout>
@@ -231,7 +232,6 @@
                 android:layout_below="@id/Rules_Section_Basics"
                 android:layout_marginTop="7dp" >
 
-                
                 <RelativeLayout
                     android:id="@+id/Rules_SubHeader_Gameplay"
                     android:layout_width="fill_parent"
@@ -239,15 +239,15 @@
                     android:layout_below="@id/Rules_Section_Gameplay" >
 
                     <View
-                        android:id="@+id/Rules_SubHeader_Buzzing_Bar"
+                        android:id="@+id/Rules_SubHeader_Gameplay_Bar"
                         android:layout_width="fill_parent"
                         android:layout_height="4dp"
                         android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
                     <com.buzzwords.AntonTextView
-                        android:id="@+id/Rules_SubHeader_Buzzing_Text"
-                        android:text="Gameplay"
+                        android:id="@+id/Rules_SubHeader_Gameplay_Text"
+                        android:text="@string/rules_gameplay_subheader"
                         style="@style/RulesSubHeader"/>
                 </RelativeLayout>
 
@@ -257,7 +257,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_SubHeader_Gameplay"
                     android:padding="8dp"
-                    android:text="Let&apos;s take a look at the buttons you&apos;ll encounter while playing."
+                    android:text="@string/rules_gameplay_text1"
                     android:textSize="16dp" />
 
                 <RelativeLayout
@@ -279,7 +279,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/button_right_normal"
-                            android:contentDescription="Right button icon"
+                            android:contentDescription="@string/description_button_right"
                             android:scaleType="centerCrop" />
 
                         <TextView
@@ -287,7 +287,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
-                            android:text="Right Button:  For when your team guesses the card correctly. +1 Point."
+                            android:text="@string/rules_gameplay_text2"
                             android:textSize="16dp" />
                     </LinearLayout>
 
@@ -302,17 +302,14 @@
                             android:id="@+id/Rules_Gameplay_SkipButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/Rules_SkipIconCouple"
                             android:background="@drawable/button_skip_normal" />
 
                         <TextView
                             android:id="@+id/Rules_GameplayText03"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/Rules_GameplayText02"
-                            android:layout_toRightOf="@+id/Rules_Gameplay_SkipButton"
                             android:padding="8dp"
-                            android:text="Skip Button:  For when you are not up to the challenge of the current word. No penalty."
+                            android:text="@string/rules_gameplay_text3"
                             android:textSize="16dp" />
                     </LinearLayout>
 
@@ -327,17 +324,14 @@
                             android:id="@+id/Rules_Gameplay_WrongButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/Rules_WrongIconCouple"
                             android:background="@drawable/button_wrong_normal" />
 
                         <TextView
                             android:id="@+id/Rules_GameplayText04"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/Rules_GameplayText03"
-                            android:layout_toRightOf="@+id/Rules_Gameplay_WrongButton"
                             android:padding="8dp"
-                            android:text="Wrong Button:  For when you get called out by the other team for using a &apos;buzz&apos; word. -1 Point."
+                            android:text="@string/rules_gameplay_text4"
                             android:textSize="16dp" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -348,30 +342,18 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_Gameplay_IconsDescriptions"
                     android:padding="8dp"
-                    android:text="Back Button (phone):  You can use the back button on your Android device to go back one card.  Don&apos;t worry if you messed up more than once.  You can always fix the results on Turn Summary."
+                    android:text="@string/rules_gameplay_text5"
                     android:textSize="16dp" />
-
-                <TextView
-                    android:id="@+id/Rules_GameplayTextGesturesNew"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/Rules_GameplayTextBack"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="8dp"
-                    android:text="NEW!"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/Rules_GameplayTextGestures"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/Rules_GameplayTextGesturesNew"
+                    android:layout_below="@id/Rules_GameplayTextBack"
                     android:paddingBottom="8dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="Gestures can now be used perform actions.  Swipe up for right (think thumbs up), down for wrong (thumbs down), left for skip, and right for back."
+                    android:text="@string/rules_gameplay_text6"
                     android:textSize="16dp" />
 
                 <TextView
@@ -380,7 +362,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_GameplayTextGestures"
                     android:padding="8dp"
-                    android:text="The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don&apos;t worry, it will pause if anyone calls and interrupts your intense game of Buzzwords."
+                    android:text="@string/rules_gameplay_text7"
                     android:textSize="16dp" />
             </RelativeLayout>
 
@@ -406,7 +388,7 @@
 
                     <com.buzzwords.AntonTextView
                         android:id="@+id/Rules_SubHeader_Screens_Text"
-                        android:text="Sample Screens"
+                        android:text="@string/rules_screens_subheader"
                         style="@style/RulesSubHeader"/>
                 </RelativeLayout>
 
@@ -416,7 +398,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_SubHeader_Screens"
                     android:padding="8dp"
-                    android:text="Now let&apos;s take a look at the screens you&apos;ll encounter while playing."
+                    android:text="@string/rules_screens_text1"
                     android:textSize="16dp" />
 
                 <RelativeLayout
@@ -439,7 +421,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:padding="8dp"
-                            android:text="Setup Screen: Here you choose which teams will play.  You then select how many turns each team will present.  4 teams with 4 turns a piece means 16 times presenting."
+                            android:text="@string/rules_screens_text2"
                             android:textSize="16dp" />
 
                         <ImageView
@@ -469,7 +451,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
-                            android:text="Turn Screen:  This is where the fun happens.  At the top of the screen is the word you want people to guess.  Below that are the five words that you may not use.  Have someone police you and make you hit the wrong button if you miss one.  If your team guesses the word, hit the green check mark and get a new word."
+                            android:text="@string/rules_screens_text3"
                             android:textSize="16dp" />
                     </LinearLayout>
 
@@ -486,7 +468,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:padding="8dp"
-                            android:text="Turn Results:  Touch any word to review a card&apos;s buzzwords and correct the results.  Click Next Team when you are ready to pass the phone."
+                            android:text="@string/rules_screens_text4"
                             android:textSize="16dp" />
 
                         <ImageView
@@ -507,7 +489,6 @@
                             android:id="@+id/Rules_Screens_Buzzmode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/Rules_BuzzmodeCouple"
                             android:background="@drawable/rules_buzzer_ss"
                             android:padding="3dp" />
 
@@ -516,7 +497,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="8dp"
-                            android:text="Buzz Mode: If you have a second phone you can use it as a buzzer to aid in calling out the opponent.  Just run the second phone in buzz mode and when a foul is committed, buzz ruthlessly."
+                            android:text="@string/rules_screens_text5"
                             android:textSize="16dp" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -544,7 +525,7 @@
                     
                     <com.buzzwords.AntonTextView
                         android:id="@+id/Rules_SubHeader_Buzzing_Text"
-                        android:text="Buzzing"
+                        android:text="@string/rules_buzzing_subheader"
                         style="@style/RulesSubHeader"/>
                 </RelativeLayout>
 
@@ -554,7 +535,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_SubHeader_Buzzing"
                     android:padding="8dp"
-                    android:text="This is where the game gets contentious.  Simply put, using part of any word on the list of buzz-words or a related form of the word is a buzzable offense.  Once a &apos;buzz&apos; word has been guessed by anyone on the team, it is free for use by the presenter.  To keep the peace, here are some recommended &apos;buzz worthy&apos; offenses."
+                    android:text="@string/rules_buzzing_text1"
                     android:textSize="16dp" />
 
                 <RelativeLayout
@@ -572,7 +553,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Explicitly rhyming or phonetically hinting towards any &apos;buzz&apos; word.  If you&apos;re saying &quot;rhymes with&quot; or &quot;sounds like&quot;, you&apos;re heading to buzz city."
+                        android:text="@string/rules_buzzing_text2"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -593,7 +574,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Hinting at the spelling or form of the word in any way.  &quot;Starts with,&quot; &quot;has x syllables,&quot; &quot;short/long word&quot; are all phrases that should be avoided."
+                        android:text="@string/rules_buzzing_text3"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -614,7 +595,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Saying enough of a bad word for people to know what you were going to say."
+                        android:text="@string/rules_buzzing_text4"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -635,7 +616,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Speaking &apos;buzz&apos; words in another language."
+                        android:text="@string/rules_buzzing_text5"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -656,7 +637,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Saying any tense of a &apos;buzz&apos; word.  For example saying &quot;ate&quot; when &quot;eat&quot; is a &apos;buzz&apos; word."
+                        android:text="@string/rules_buzzing_text6"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -677,7 +658,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Using your body in any way.  This includes pointing, grabbing objects, eye rollings, or dancing.  "
+                        android:text="@string/rules_buzzing_text7"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -698,7 +679,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Changing a word into an acronym or saying the words that an acronym stands for.  For example saying &apos;Central Intelligence Agency&apos; for &apos;CIA&apos;."
+                        android:text="@string/rules_buzzing_text8"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -713,11 +694,11 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/Rules_BuzzingText07"
+                    android:id="@+id/Rules_BuzzingText09"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_BuzzingBullettedList"
-                    android:text="Singing and humming are encouraged, provided you don&apos;t sing a &apos;buzz&apos; word or gesture.  Substituting unrelated words, even &apos;blank&apos;, for &apos;buzz&apos; words is appropriate as well.  Remember, if your team uses any of the &apos;buzz&apos; words, you are then free to use that word yourself."
+                    android:text="@string/rules_buzzing_text9"
                     android:textSize="16dp" />
             </RelativeLayout>
 
@@ -743,7 +724,7 @@
 
                     <com.buzzwords.AntonTextView
                         android:id="@+id/Rules_SubHeader_Example_Text"
-                        android:text="Example Game"
+                        android:text="@string/rules_example_subheader"
                         style="@style/RulesSubHeader"/>
                     
                 </RelativeLayout>
@@ -754,7 +735,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_SubHeader_Example"
                     android:padding="8dp"
-                    android:text="Finally, let&apos;s go through an example game to help you get started."
+                    android:text="@string/rules_example_text1"
                     android:textSize="16dp" />
 
                 <RelativeLayout
@@ -772,7 +753,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Sally and three of her close friends are out camping and realize they forgot to bring any games.   But Sally comes to the rescue and pulls out her Android phone with Buzzwords!   The group praises her foresight and excitedly divides up into two teams of two."
+                        android:text="@string/rules_example_text2"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -793,7 +774,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Sally opens the app and taps Play to enter the Game Setup screen.  The group divides into two teams, yellow and green, and Sally highlights those colors."
+                        android:text="@string/rules_example_text3"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -814,7 +795,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Since they want to each play 4 times they set it to 8 turns (#teams X #times for each player = #turns).  Sally taps Start Game to play!"
+                        android:text="@string/rules_example_text4"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -835,7 +816,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Sally starts off presenting for the Yellow Team and Rob, sitting to her left, monitors Sally on behalf of the Green Team.  Sally&apos;s first word to present is Sandwich, which includes the &apos;buzz&apos; words bread, butter, eat, lunch, and sub.  She starts by saying,"
+                        android:text="@string/rules_example_text5"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -856,7 +837,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="&apos;OK...this is something you eat for lunch.&apos;"
+                        android:text="@string/rules_example_text6"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -877,7 +858,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Rob, who is an astute buzzer, calls her out on her multiple transgressions and Sally is forced to hit the X button."
+                        android:text="@string/rules_example_text7"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -898,7 +879,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Sally unfortunately can&apos;t get her team to guess the next word and time runs up.  Her turn totals an embarassing -1 points."
+                        android:text="@string/rules_example_text8"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -919,7 +900,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="But Sally is given a chance for redemption.  She passes the phone to her right, to Zack on the Green team and then looks over his shoulder to call him out."
+                        android:text="@string/rules_example_text9"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -940,7 +921,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="She&apos;s so on top of it that Zack ends up with -3 points.  The group decides to cut him a break and on the Turn Results screen they change one word to a &quot;skip&quot;, making him only lose his team 2 points."
+                        android:text="@string/rules_example_text10"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -961,7 +942,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Zack passes the phone to his right and assumes the monitoring role, eager to exact his revenge."
+                        android:text="@string/rules_example_text11"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -982,7 +963,7 @@
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="And the excitement continues until the friends see the glimmer of dawn and realize they&apos;ve had WAY TOO MUCH FUN!"
+                        android:text="@string/rules_example_text12"
                         android:textColor="@color/text_subtext"
                         android:textSize="16dp" />
 
@@ -1019,7 +1000,7 @@
 
                     <com.buzzwords.AntonTextView
                         android:id="@+id/Rules_SubHeader_FinalThoughts_Text"
-                        android:text="Final Thoughts"
+                        android:text="@string/rules_final_subheader"
                         style="@style/RulesSubHeader"/>
                 </RelativeLayout>
 
@@ -1029,7 +1010,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_SubHeader_FinalThoughts"
                     android:padding="5dp"
-                    android:text="We hope you enjoy playing Buzzwords!"
+                    android:text="@string/rules_final_text1"
                     android:textSize="16dp" />
 
                 <TextView
@@ -1038,7 +1019,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_FinalThoughts_Text01"
                     android:padding="5dp"
-                    android:text="If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or by clicking the ram icon on the title page.  Or email us at buzzwords@siramix.com or tweet @siramixlabs."
+                    android:text="@string/rules_final_text2"
                     android:textSize="16dp" />
             </RelativeLayout>
         </RelativeLayout>

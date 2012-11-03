@@ -19,8 +19,12 @@ package com.buzzwords;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -38,6 +42,11 @@ public class PackInfoActivity extends Activity {
    */
   private static final String TAG = "PackInfoActivity";
 
+  /**
+   * flag used for stopping music OnStop() event.
+   */
+  private boolean mContinueMusic = false;
+  
   /*
    * References to button views
    */
@@ -87,6 +96,8 @@ public class PackInfoActivity extends Activity {
       SoundManager sm = SoundManager.getInstance(PackInfoActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.BACK);
       
+      mContinueMusic = true;
+      
       finish();
     }
   };
@@ -104,6 +115,8 @@ public class PackInfoActivity extends Activity {
       // play confirm sound
       SoundManager sm = SoundManager.getInstance(PackInfoActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
+      
+      mContinueMusic = true;
       
       finish();
     }
@@ -194,5 +207,65 @@ public class PackInfoActivity extends Activity {
       // Set the result to return for the button
       mButtonAccept.setTag(RESULT_CANCELED);
     }
+  }
+
+  /**
+   * Override back button to carry music on back to the previous activity
+   */
+  @Override
+  public boolean onKeyUp(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+        && !event.isCanceled()) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "BackKeyUp()");
+      }
+      // Flag to keep music playing
+      mContinueMusic = true;
+    }
+
+    return super.onKeyUp(keyCode, event);
+  }
+  
+  /**
+   * Override onPause for music continuation
+   */
+  @Override
+  public void onPause() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onPause()");
+    }
+    super.onPause();
+    if (!mContinueMusic) {
+      BuzzWordsApplication application = (BuzzWordsApplication) this
+          .getApplication();
+      MediaPlayer mp = application.getMusicPlayer();
+      SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
+          .getBaseContext());
+      if (mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
+        mp.pause();
+      }
+    }
+  }
+
+  /**
+   * Override OnResume to resume activity specific processes
+   */
+  @Override
+  public void onResume() {
+    if (BuzzWordsApplication.DEBUG) {
+      Log.d(TAG, "onResume()");
+    }
+    super.onResume();
+
+    BuzzWordsApplication application = (BuzzWordsApplication) this
+        .getApplication();
+    MediaPlayer mp = application.getMusicPlayer();
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
+        .getBaseContext());
+    if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
+      mp.start();
+    }
+
+    mContinueMusic = false;
   }
 }

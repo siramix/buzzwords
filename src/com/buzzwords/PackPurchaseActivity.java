@@ -601,6 +601,9 @@ public class PackPurchaseActivity extends Activity {
           .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
      
+      // Carry music into Pack Info
+      mContinueMusic = true;
+      
       // Show pack info activity
       showPackInfo(pack); 
     }

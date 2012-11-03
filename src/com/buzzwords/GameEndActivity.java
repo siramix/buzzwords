@@ -351,7 +351,7 @@ public class GameEndActivity extends Activity {
     if (tieGame) {
       // Set text to Tie game!
       text.setTextColor(mResources.getColor(R.color.white));
-      text.setText("Tie Game!");
+      text.setText(mResources.getString(R.string.gameEnd_tie));
     } else {
       // Announce winning team
       text.setTextColor(mResources.getColor(teams.get(0).getPrimaryColor()));
