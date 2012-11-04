@@ -509,6 +509,7 @@ public class PackPurchaseActivity extends Activity {
     final SharedPreferences userPurchases = getSharedPreferencesForCurrentUser();
     final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
     final GameManager gm = new GameManager(PackPurchaseActivity.this);
+    private boolean error = false;
     
     @Override
     protected void onPreExecute() {
@@ -523,12 +524,16 @@ public class PackPurchaseActivity extends Activity {
     protected Integer doInBackground(Pack... packs) {
       for (int i=0; i<packs.length; ++i) {
         Log.d(TAG, "SYNCING PACK: " + packs[i].getName());
+        error = false;
         boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
+        //Install or update the pack if it is purchased
         if (isPackPurchased) {
           try {
             gm.installPack(packs[i]);
           } catch (RuntimeException e) {
-            showToast("Encountered an error during pack installation.");
+            error = true;
+            Log.e(TAG, "Failed to update or install packId: " + 
+                packs[i].getId() + " name: " + packs[i].getName());
             e.printStackTrace();
           }
         } 
@@ -542,13 +547,15 @@ public class PackPurchaseActivity extends Activity {
           try {
             gm.installPack(packs[i]);
           } catch (RuntimeException e) {
-            showToast("Encountered an error during pack installation.");
+            error = true;
+            Log.e(TAG, "Failed to update or install packId: " + 
+                packs[i].getId() + " name: " + packs[i].getName());
             e.printStackTrace();
           }
         }
         else {
-          Log.e(TAG, "Failed to update or install packId: " + packs[i].getId() + " name: " + packs[i].getName());
-        }
+          Log.e(TAG, "Failed to update or install packId: " + 
+              packs[i].getId() + " name: " + packs[i].getName());        }
       }
       return 0; 
     }
@@ -558,7 +565,9 @@ public class PackPurchaseActivity extends Activity {
     {
       refreshAllPackLayouts();
       dialog.dismiss();
-      
+      if (error) {
+        showToast("Encountered an error during pack installation.");
+      }
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
       syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
       syncPrefEditor.commit();

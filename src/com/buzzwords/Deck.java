@@ -755,7 +755,6 @@ public class Deck {
       
       // TODO We are getting close() errors that reference this line below.  Cannot figure out why.
       mDatabase = getWritableDatabase();
-      
       // Add the pack and all cards in a single transaction.
       mDatabase.beginTransaction();
       try {
