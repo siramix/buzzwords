@@ -24,6 +24,8 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -194,7 +196,7 @@ public class PackPurchaseActivity extends Activity {
    */
   protected void refreshAllPackLayouts() {
     Log.d(TAG, "refreshAllPackLayouts");
-    mServerError = false;
+    mServerError = !isNetworkAvailable();
     mUnlockedPacks = mGameManager.getInstalledPacks();
     
     displayUnlockedPacks();
@@ -221,6 +223,7 @@ public class PackPurchaseActivity extends Activity {
    */
   private void displayLockedPacks() {
     TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
+    ProgressBar placeHolderImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
     Typeface francois = Typeface.createFromAsset(getAssets(), "fonts/FrancoisOne.ttf");
     placeHolderText.setVisibility(View.VISIBLE);
     placeHolderText.setTypeface(francois);
@@ -231,6 +234,9 @@ public class PackPurchaseActivity extends Activity {
     // Don't reload the server packs or refresh the list if packs are already in memory.
     if (mServerPacks.isEmpty()) {
       fetchPurchasablePacksOnThread();
+    } else if (mServerError) {
+      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+      placeHolderImage.setVisibility(View.GONE);
     } else {
       populateLockedPackLayout();
     }
@@ -566,7 +572,7 @@ public class PackPurchaseActivity extends Activity {
       refreshAllPackLayouts();
       dialog.dismiss();
       if (error) {
-        showToast("Encountered an error during pack installation.");
+        showToast(getString(R.string.toast_packpurchase_installfailed));
       }
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
       syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
@@ -729,6 +735,17 @@ public class PackPurchaseActivity extends Activity {
     ProgressBarView progress = (ProgressBarView) this.findViewById(R.id.PackPurchase_Progress);
     progress.setProgress(totalSeen, totalCards);
 
+  }
+  
+  /**
+   * Perform a basic internet connection check.
+   * @return
+   */
+  private boolean isNetworkAvailable() {
+    ConnectivityManager connectivityManager 
+          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+    return activeNetworkInfo != null;
   }
 
   /**
