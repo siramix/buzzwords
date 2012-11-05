@@ -194,7 +194,7 @@ public class Deck {
     if (mDatabaseOpenHelper.packInstalled(pack.getId(), pack.getVersion()) == pack.getId()) {
       PackIconUtils.deleteIcon(pack.getIconName(), mContext);
     }
-    mDatabaseOpenHelper.installPackFromServer(pack);
+    mDatabaseOpenHelper.installOrUpdatePackFromServer(pack);
   }
   
   /**
@@ -705,7 +705,7 @@ public class Deck {
      * @return true if sync successful (up to date/installed) false for failure to install
      * @throws RuntimeException 
      */
-    public synchronized void installPackFromServer(Pack serverPack) throws RuntimeException {
+    public synchronized void installOrUpdatePackFromServer(Pack serverPack) throws RuntimeException {
       Log.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
       int packId = packInstalled(serverPack.getId(), serverPack.getVersion());
 

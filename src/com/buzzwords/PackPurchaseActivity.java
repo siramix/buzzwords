@@ -204,6 +204,9 @@ public class PackPurchaseActivity extends Activity {
 
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
     btn.setOnClickListener(mGameSetupListener);
+    
+    // Update the appropriate card count views
+    updateCardCountViews();
   }
   
   /**
@@ -240,9 +243,6 @@ public class PackPurchaseActivity extends Activity {
     } else {
       populateLockedPackLayout();
     }
-    
-    // Update the appropriate card count views
-    updateCardCountViews();
   }
   
   /**
@@ -397,25 +397,30 @@ public class PackPurchaseActivity extends Activity {
   protected void syncronizePacks() {
     Log.d(TAG, "SYNCRONIZING PACKS...");
     boolean syncRequired = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+    boolean syncInProgress = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, false);
     boolean updateRequired = mGameManager.packsRequireUpdate(mServerPacks);
     String previousUser = getSyncPreferences().getString(Consts.PREFKEY_LAST_USER, getCurrentUser());
 
     // If user has switched, trigger a re-sync (note the 'or equals')
     syncRequired |= !previousUser.equals(getCurrentUser());
 
-    Log.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
-    Log.d(TAG, "   UPDATE REQUIRED: " + updateRequired);
+    Log.v(TAG, "   SYNC_REQUIRED: " + syncRequired);
+    Log.v(TAG, "   UPDATE REQUIRED: " + updateRequired);
+    Log.v(TAG, "   SYNC IN PROGRESS: " + syncInProgress);
     
-    Pack[] packArray = mServerPacks.toArray(new Pack[mServerPacks.size()]);
-    try {
-      // Don't call synchronize unless SYNCED preference is true or some packs are out of date
-      // and we have successfully retrieved packs from our server.
-      if ((syncRequired || updateRequired) && !mServerError) {
+    // Don't call synchronize unless SYNCED preference is true or some packs are out of date
+    // and we have successfully retrieved packs from our server. Also avoid race conditions
+    // where synchronizePacks is called by PackPurchaseObserver multiple times by checking
+    // for syncing in progress.
+    if ((syncRequired || updateRequired) && !mServerError && !syncInProgress) {
+      Pack[] packArray = mServerPacks.toArray(new Pack[mServerPacks.size()]);
+      try {
         new PackSyncronizer().execute(packArray);
       }
-    } catch (RuntimeException e) {
-      Log.e(TAG, "Encountered an error syncronizing packs.");
-      e.printStackTrace();
+      catch (RuntimeException e) {
+        Log.e(TAG, "Encountered an error syncronizing packs.");
+        e.printStackTrace();
+      }
     }
   }
 
@@ -514,6 +519,8 @@ public class PackPurchaseActivity extends Activity {
     private ProgressDialog dialog;
     final SharedPreferences userPurchases = getSharedPreferencesForCurrentUser();
     final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
+    final SharedPreferences packSelectionPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
+        Context.MODE_PRIVATE);
     final GameManager gm = new GameManager(PackPurchaseActivity.this);
     private boolean error = false;
     
@@ -524,6 +531,8 @@ public class PackPurchaseActivity extends Activity {
           null,
           getString(R.string.progressDialog_update_text), 
           true);
+      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, true);
+      syncPrefEditor.commit();
     }
     
     @Override
@@ -532,13 +541,18 @@ public class PackPurchaseActivity extends Activity {
         Log.d(TAG, "SYNCING PACK: " + packs[i].getName());
         error = false;
         boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
-        //Install or update the pack if it is purchased
+        //Install or update the pack if it is purchased.  Select it if it's a new pack.
         if (isPackPurchased) {
           try {
+            boolean selection = true;
+            if (packSelectionPrefs.contains(String.valueOf(packs[i].getId()))) {
+              selection = getPackSelectedPref(packs[i]);
+            }
             gm.installPack(packs[i]);
+            setPackSelectedPref(packs[i], selection);
           } catch (RuntimeException e) {
             error = true;
-            Log.e(TAG, "Failed to update or install packId: " + 
+            Log.e(TAG, "Failed to update or install purchased packId: " + 
                 packs[i].getId() + " name: " + packs[i].getName());
             e.printStackTrace();
           }
@@ -547,6 +561,7 @@ public class PackPurchaseActivity extends Activity {
         else if (isPackPurchased == false && 
             packs[i].getPurchaseType() != PackPurchaseConsts.PACKTYPE_STARTER) {
           gm.uninstallPack(packs[i].getId());
+          setPackSelectedPref(packs[i], false);
         }
         // Always check for starter pack update
         else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_STARTER) {
@@ -554,7 +569,7 @@ public class PackPurchaseActivity extends Activity {
             gm.installPack(packs[i]);
           } catch (RuntimeException e) {
             error = true;
-            Log.e(TAG, "Failed to update or install packId: " + 
+            Log.e(TAG, "Failed to update or install starter packId: " + 
                 packs[i].getId() + " name: " + packs[i].getName());
             e.printStackTrace();
           }
@@ -575,6 +590,7 @@ public class PackPurchaseActivity extends Activity {
         showToast(getString(R.string.toast_packpurchase_installfailed));
       }
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
+      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, false);
       syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
       syncPrefEditor.commit();
 
@@ -798,7 +814,7 @@ public class PackPurchaseActivity extends Activity {
    * @return SharedPreferences file for all users.
    */
   protected SharedPreferences getSyncPreferences() {
-    final SharedPreferences syncPrefs = getSharedPreferences(Consts.PREFFILE_SYNC_REQUIRED, Context.MODE_PRIVATE);
+    final SharedPreferences syncPrefs = getSharedPreferences(Consts.PREFFILE_SYNC_PREFS, Context.MODE_PRIVATE);
     return syncPrefs;
   }
   
