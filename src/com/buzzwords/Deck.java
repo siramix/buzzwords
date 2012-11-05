@@ -756,8 +756,8 @@ public class Deck {
       // TODO We are getting close() errors that reference this line below.  Cannot figure out why.
       mDatabase = getWritableDatabase();
       // Add the pack and all cards in a single transaction.
-      mDatabase.beginTransaction();
       try {
+        mDatabase.beginTransaction();
         Card curCard = null;
         while(cardItr.hasNext()) {
           curCard = cardItr.next();
@@ -767,6 +767,9 @@ public class Deck {
         mDatabase.setTransactionSuccessful();
       } finally {
         mDatabase.endTransaction();
+      }
+      if (mDatabase.isOpen()) {
+        mDatabase.close();
       }
     }
     
@@ -781,13 +784,16 @@ public class Deck {
 
       String[] whereArgs = new String[] { packId };
       // Add the pack and all cards in a single transaction.
-      mDatabase.beginTransaction();
       try {
+        mDatabase.beginTransaction();
         mDatabase.delete(CardColumns.TABLE_NAME, CardColumns.PACK_ID + "=?", whereArgs);
         mDatabase.delete(PackColumns.TABLE_NAME, PackColumns._ID + "=?", whereArgs);
         mDatabase.setTransactionSuccessful();
       } finally {
         mDatabase.endTransaction();
+      }
+      if (mDatabase.isOpen()) {
+        mDatabase.close();
       }
     }
     
