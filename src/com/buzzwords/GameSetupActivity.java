@@ -27,12 +27,10 @@ import com.buzzwords.GameManager.GameType;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteException;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -46,8 +44,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.animation.Animation;
-import android.view.animation.AlphaAnimation;
 
 /**
  * This activity class is responsible for gathering game information before the
@@ -61,7 +57,6 @@ public class GameSetupActivity extends Activity {
 	private LinkedList<Team> mTeamList = new LinkedList<Team>();
 	private static SharedPreferences mGameSetupPrefs;
 	private static SharedPreferences.Editor mGameSetupPrefEditor;
-	private static SharedPreferences mPackPrefs;
 
 	// Store game limit parameters
 	private final int mGAMELIMIT_MIN = 1;
@@ -388,9 +383,6 @@ public class GameSetupActivity extends Activity {
     GameSetupActivity.mGameSetupPrefs = getSharedPreferences(PREFS_NAME, 0);
     GameSetupActivity.mGameSetupPrefEditor = GameSetupActivity.mGameSetupPrefs
         .edit();
-    // Get our pack preferences
-    GameSetupActivity.mPackPrefs = getSharedPreferences(
-        Consts.PREFFILE_PACK_SELECTIONS, Context.MODE_PRIVATE);
 
     // Assign teams to TeamSelectLayouts
     TeamSelectLayout teamSelect;

@@ -19,7 +19,6 @@ import java.util.Map;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.amazon.inapp.purchasing.BasePurchasingObserver;
@@ -367,9 +366,9 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                         userPrefEditor.commit();
                         syncPrefEditor.commit();
                         break;
-                    case SUBSCRIPTION:
-                        // Do nothing because Buzzwords does not use any subscriptions.
-                        break;
+                    default:
+                      // Buzzwords does not use Subscription, or Consumable items.
+                      break;
                     }
                     printReceipt(receipt);
                 }
