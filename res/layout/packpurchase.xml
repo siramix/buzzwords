@@ -13,7 +13,8 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ****************************************************************************/
+ ****************************************************************************/
+
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -65,7 +66,7 @@
                     android:gravity="center"
                     android:text="@string/packpurchase_unlockedheader"
                     android:textColor="@color/white"
-                    android:textSize="24dp" />
+                    android:textSize="24sp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -99,9 +100,9 @@
                     android:gravity="center"
                     android:text="@string/packpurchase_lockedheader"
                     android:textColor="@color/white"
-                    android:textSize="24dp" />
+                    android:textSize="24sp" />
             </RelativeLayout>
-
+            
             <ProgressBar
                 android:id="@+id/PackPurchase_PaidPackPlaceholderImage"
                 android:layout_width="wrap_content"

@@ -1,5 +1,7 @@
 package com.buzzwords;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -35,6 +37,6 @@ public class AntonButton extends Button {
     }
     
     // Set buttons to always use upper case
-    this.setText(this.getText().toString().toUpperCase());
+    this.setText(this.getText().toString().toUpperCase(Locale.getDefault()));
   }
 }
