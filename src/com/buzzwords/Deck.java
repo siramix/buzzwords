@@ -896,6 +896,9 @@ public class Deck {
       } finally {
         mDatabase.endTransaction();
       }
+      if (mDatabase.isOpen()) {
+        mDatabase.close();
+      }
     }
     
     /**
@@ -914,6 +917,9 @@ public class Deck {
         mDatabase.setTransactionSuccessful();
       } finally {
         mDatabase.endTransaction();
+      }
+      if (mDatabase.isOpen()) {
+        mDatabase.close();
       }
     }
 
