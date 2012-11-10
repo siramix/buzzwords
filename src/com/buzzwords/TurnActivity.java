@@ -25,7 +25,6 @@ import android.app.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.view.GestureDetector.SimpleOnGestureListener;

@@ -68,8 +68,6 @@ public class BuzzWordsApplication extends Application {
   }
 
   public void onCreate() {
-    storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
-    storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
     switch (BuzzWordsApplication.MARKET) {
       case ANDROID:
         storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_android_market_buzzwordslite));
@@ -79,6 +77,10 @@ public class BuzzWordsApplication extends Application {
         storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_amazon_market_buzzwordslite));
         storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_amazon_market_buzzwords));
         break;    
+      default:
+        storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
+        storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
+        break;
     }
   }
   
