@@ -372,10 +372,6 @@ public class Deck {
     Log.d(TAG, "setPackWeights()");
     Log.d(TAG, "** mTotalPlayableCards: " + mTotalPlayableCards);
 
-    //TODO This is a place for refactoring.  The getSize call is NOT guaranteed to
-    // be accurate.  This could cause real probs.  We really need to have size
-    // be queried for and then cached in all cases except for when pulling from the 
-    // server.  Really, we should probably have two size variables under Pack.
     for (Pack curPack : mSelectedPacks) {
       curPack.setWeight((float) curPack.getSize() / (float) mTotalPlayableCards);
     }
@@ -440,7 +436,7 @@ public class Deck {
    * message and the stacktrace before throwing the exception.
    * @param e error to print stacktrace for
    * @param msg to log
-   * @throws RuntimeException TODO
+   * @throws RuntimeException
    */
   static private void throwUserException(Exception e, String msg) throws RuntimeException {
     Log.e(TAG, msg);
@@ -513,8 +509,6 @@ public class Deck {
       
       args[0] = String.valueOf(pack.getId());
       
-      //TODO For code review, we are counting size every time we instantiatePacks.
-      // Perhaps it would be better to make sure Packs.size stays current?
       Cursor countQuery = mDatabase.rawQuery("SELECT * " + 
           " FROM " + CardColumns.TABLE_NAME + 
           " WHERE " + CardColumns.PACK_ID + " IN (" + args[0] + ")", null);
@@ -538,8 +532,6 @@ public class Deck {
       
       args[0] = buildPackIdString(packs);
       
-      //TODO For code review, we are counting size every time we instantiatePacks.
-      // Perhaps it would be better to make sure Packs.size stays current?
       Cursor countQuery = mDatabase.rawQuery("SELECT * " + 
           " FROM " + CardColumns.TABLE_NAME + 
           " WHERE " + CardColumns.PACK_ID + " IN (" + args[0] + ")", null);
@@ -753,7 +745,6 @@ public class Deck {
     private synchronized void installPack(Pack pack, CardJSONIterator cardItr) {
       Log.d(TAG, "installPack: " + pack.getName() + "v" + String.valueOf(pack.getVersion()));
       
-      // TODO We are getting close() errors that reference this line below.  Cannot figure out why.
       mDatabase = getWritableDatabase();
       // Add the pack and all cards in a single transaction.
       try {
