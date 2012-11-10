@@ -125,7 +125,7 @@
 		<PreferenceScreen
 			android:key="com.buzzwords.RESET_PACK_SCREEN"
 			android:title="Manage Deck"
-			android:summary="Shuffle deck and forget game progress.">
+			android:summary="Forget game progress and shuffle deck.">
 			
 			<PreferenceCategory android:title="Reset">
 				

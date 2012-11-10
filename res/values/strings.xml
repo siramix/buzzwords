@@ -209,7 +209,7 @@
     <string name="settings_scorechange_summary">Current score change is </string>
     <string name="toast_settings_shuffled">All packs have been shuffled.</string>
     <string name="shuffleDialog_title">Shuffle All Packs?</string>
-    <string name="shuffleDialog_text">Progress on all packs will be reset and all cards reordered.  Cards you have seen recently could be placed on top of the deck.  Are you sure you want to reshuffle?</string>
+    <string name="shuffleDialog_text">Buzzwords handles shuffling on its own, but this will let you force a shuffle.  You will still keep all of your cards, but progress on all packs will be reset and all cards reordered. Are you sure you want to reshuffle?</string>
     <string name="shuffleDialog_positiveBtn">Yes, Shuffle!</string>
     <string name="shuffleDialog_negativeBtn">Nevermind!</string>
     
