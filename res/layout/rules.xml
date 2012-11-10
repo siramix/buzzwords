@@ -42,7 +42,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/rules_title"
         android:textColor="@color/title"
-        android:textSize="28dp" 
+        android:textSize="28sp" 
         android:layout_marginTop="-3dp" />
 
     <ScrollView
@@ -89,7 +89,7 @@
                     android:layout_below="@id/Rules_SubHeader_Basics"
                     android:padding="8dp"
                     android:text="@string/rules_basics_text1"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <RelativeLayout
                     android:id="@+id/Rules_BullettedList"
@@ -108,7 +108,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_basics_text2"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_Bullet02"
@@ -129,7 +129,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_basics_text3"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_Bullet03"
@@ -150,7 +150,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_basics_text4"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_Bullet04"
@@ -171,7 +171,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_basics_text5"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_Bullet05"
@@ -192,7 +192,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_basics_text6"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_Bullet06"
@@ -210,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_SubHeader_Basics"
                     android:text="@string/rules_houserules_subheader"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:visibility="gone" />
 
                 
@@ -221,7 +221,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_PreferencesHeader"
                     android:layout_marginLeft="10dp"
-                    android:textSize="16dp"
+                    android:textSize="16sp"
                     android:visibility="gone" />
             </RelativeLayout>
 
@@ -258,7 +258,7 @@
                     android:layout_below="@id/Rules_SubHeader_Gameplay"
                     android:padding="8dp"
                     android:text="@string/rules_gameplay_text1"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <RelativeLayout
                     android:id="@+id/Rules_Gameplay_IconsDescriptions"
@@ -267,73 +267,41 @@
                     android:layout_below="@id/Rules_GameplayText01"
                     android:padding="10dp" >
 
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/Rules_RightIconCouple"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Rules_Gameplay_IconsDescriptions"
-                        android:padding="5dp" >
+                        android:padding="5dp"
+                        android:drawablePadding="5dp"
+                        android:text="@string/rules_gameplay_text2"
+                        android:textSize="16sp" 
+                        android:drawableLeft="@drawable/button_right_normal">
+                    </TextView>
 
-                        <ImageView
-                            android:id="@+id/Rules_Gameplay_RightButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/button_right_normal"
-                            android:contentDescription="@string/description_button_right"
-                            android:scaleType="centerCrop" />
-
-                        <TextView
-                            android:id="@+id/Rules_GameplayText02"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="@string/rules_gameplay_text2"
-                            android:textSize="16dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/Rules_SkipIconCouple"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Rules_RightIconCouple"
-                        android:padding="5dp" >
+                        android:padding="5dp"
+                        android:drawablePadding="5dp"
+                        android:text="@string/rules_gameplay_text3"
+                        android:textSize="16sp"
+                        android:drawableLeft="@drawable/button_skip_normal">
+                    </TextView>
 
-                        <ImageView
-                            android:id="@+id/Rules_Gameplay_SkipButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/button_skip_normal" />
-
-                        <TextView
-                            android:id="@+id/Rules_GameplayText03"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="@string/rules_gameplay_text3"
-                            android:textSize="16dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/Rules_WrongIconCouple"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Rules_SkipIconCouple"
-                        android:padding="5dp" >
-
-                        <ImageView
-                            android:id="@+id/Rules_Gameplay_WrongButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/button_wrong_normal" />
-
-                        <TextView
-                            android:id="@+id/Rules_GameplayText04"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="@string/rules_gameplay_text4"
-                            android:textSize="16dp" />
-                    </LinearLayout>
+                        android:padding="5dp"
+                        android:drawablePadding="5dp"
+                        android:text="@string/rules_gameplay_text4"
+                        android:textSize="16sp"
+                        android:drawableLeft="@drawable/button_wrong_normal" >
+                    </TextView>
                 </RelativeLayout>
 
                 <TextView
@@ -343,7 +311,7 @@
                     android:layout_below="@id/Rules_Gameplay_IconsDescriptions"
                     android:padding="8dp"
                     android:text="@string/rules_gameplay_text5"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/Rules_GameplayTextGestures"
@@ -354,7 +322,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="@string/rules_gameplay_text6"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/Rules_GameplayTextPausing"
@@ -363,7 +331,7 @@
                     android:layout_below="@id/Rules_GameplayTextGestures"
                     android:padding="8dp"
                     android:text="@string/rules_gameplay_text7"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -399,7 +367,7 @@
                     android:layout_below="@id/Rules_SubHeader_Screens"
                     android:padding="8dp"
                     android:text="@string/rules_screens_text1"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <RelativeLayout
                     android:id="@+id/Rules_Screens_ScreenDescriptions"
@@ -408,98 +376,53 @@
                     android:layout_below="@id/Rules_ScreensText01"
                     android:padding="5dp" >
 
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/Rules_SetupCouple"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Rules_Screens_ScreenDescriptions"
-                        android:padding="5dp" >
+                        android:padding="5dp" 
+                        android:drawablePadding="5dp"
+                        android:drawableLeft="@drawable/rules_setup_ss"
+                        android:text="@string/rules_screens_text2"
+                        android:textSize="16sp" >
+                    </TextView>
 
-                        <TextView
-                            android:id="@+id/Rules_ScreensText02"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:padding="8dp"
-                            android:text="@string/rules_screens_text2"
-                            android:textSize="16dp" />
-
-                        <ImageView
-                            android:id="@+id/Rules_Screens_Setup"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rules_setup_ss"
-                            android:contentDescription="Setup Screen Image" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/Rules_TurnCouple"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Rules_SetupCouple"
-                        android:padding="5dp" >
+                        android:padding="5dp"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@drawable/rules_greenturn_ss"
+                        android:text="@string/rules_screens_text3"
+                        android:textSize="16sp" >
+                    </TextView>
 
-                        <ImageView
-                            android:id="@+id/Rules_Screens_BlueTurn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="30dp"
-                            android:background="@drawable/rules_greenturn_ss" />
-
-                        <TextView
-                            android:id="@+id/Rules_ScreensText03"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="@string/rules_screens_text3"
-                            android:textSize="16dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/Rules_TurnSumCouple"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Rules_TurnCouple"
-                        android:padding="5dp" >
+                        android:padding="5dp"
+                        android:drawablePadding="5dp"
+                        android:drawableLeft="@drawable/rules_turnsum_ss"
+                        android:text="@string/rules_screens_text4"
+                        android:textSize="16sp">
+                    </TextView>
 
-                        <TextView
-                            android:id="@+id/Rules_Screens_Text04"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:padding="8dp"
-                            android:text="@string/rules_screens_text4"
-                            android:textSize="16dp" />
-
-                        <ImageView
-                            android:id="@+id/Rules_Screens_TurnSum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rules_turnsum_ss" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/Rules_BuzzmodeCouple"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/Rules_TurnSumCouple"
-                        android:padding="5dp" >
-
-                        <ImageView
-                            android:id="@+id/Rules_Screens_Buzzmode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rules_buzzer_ss"
-                            android:padding="3dp" />
-
-                        <TextView
-                            android:id="@+id/Rules_Screens_Text05"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="@string/rules_screens_text5"
-                            android:textSize="16dp" />
-                    </LinearLayout>
+                        android:padding="5dp"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@drawable/rules_buzzer_ss"
+                        android:text="@string/rules_screens_text5"
+                        android:textSize="16sp"  >
+                    </TextView>
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -536,7 +459,7 @@
                     android:layout_below="@id/Rules_SubHeader_Buzzing"
                     android:padding="8dp"
                     android:text="@string/rules_buzzing_text1"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <RelativeLayout
                     android:id="@+id/Rules_BuzzingBullettedList"
@@ -555,7 +478,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_buzzing_text2"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_BuzzingBullet02"
@@ -576,7 +499,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_buzzing_text3"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_BuzzingBullet03"
@@ -597,7 +520,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_buzzing_text4"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_BuzzingBullet04"
@@ -618,7 +541,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_buzzing_text5"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_BuzzingBullet05"
@@ -639,7 +562,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_buzzing_text6"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_BuzzingBullet06"
@@ -660,7 +583,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_buzzing_text7"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_BuzzingBullet07"
@@ -681,7 +604,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_buzzing_text8"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_BuzzingBullet08"
@@ -699,7 +622,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Rules_BuzzingBullettedList"
                     android:text="@string/rules_buzzing_text9"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -736,7 +659,7 @@
                     android:layout_below="@id/Rules_SubHeader_Example"
                     android:padding="8dp"
                     android:text="@string/rules_example_text1"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <RelativeLayout
                     android:id="@+id/Rules_ExampleBullettedList"
@@ -755,7 +678,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text2"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_ExampleBullet02"
@@ -776,7 +699,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text3"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_ExampleBullet03"
@@ -797,7 +720,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text4"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_ExampleBullet04"
@@ -818,7 +741,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text5"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_ExampleBullet05"
@@ -839,7 +762,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text6"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_ExampleBullet06"
@@ -860,7 +783,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text7"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/ExampleBullet07"
@@ -881,7 +804,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text8"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_ExampleBullet08"
@@ -902,7 +825,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text9"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_ExampleBullet09"
@@ -923,7 +846,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text10"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_ExampleBullet10"
@@ -944,7 +867,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text11"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_ExampleBullet11"
@@ -965,7 +888,7 @@
                         android:paddingRight="10dp"
                         android:text="@string/rules_example_text12"
                         android:textColor="@color/text_subtext"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <View
                         android:id="@+id/Rules_ExampleBullet12"
@@ -1011,7 +934,7 @@
                     android:layout_below="@id/Rules_SubHeader_FinalThoughts"
                     android:padding="5dp"
                     android:text="@string/rules_final_text1"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/Rules_FinalThoughts_Text02"
@@ -1020,7 +943,7 @@
                     android:layout_below="@id/Rules_FinalThoughts_Text01"
                     android:padding="5dp"
                     android:text="@string/rules_final_text2"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>

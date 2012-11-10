@@ -88,7 +88,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/title_button_label_buzz"
                 android:textColor="@color/teamC_primary"
-                android:textSize="44dp" />
+                android:textSize="44sp" />
 
             <ImageButton
                 android:id="@+id/Title_BuzzButton"
@@ -121,7 +121,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/title_button_label_settings"
                 android:textColor="@color/teamD_primary"
-                android:textSize="44dp" />
+                android:textSize="44sp" />
 
             <ImageButton
                 android:id="@+id/Title_SettingsButton"
@@ -154,7 +154,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/title_button_label_rules"
                 android:textColor="@color/teamA_primary"
-                android:textSize="44dp" />
+                android:textSize="44sp" />
 
             <ImageButton
                 android:id="@+id/Title_RulesButton"
@@ -201,7 +201,7 @@
                 android:paddingTop="15dp"
                 android:text="@string/tagline_fb_buzzwordsapp"
                 android:textColor="@color/text_subtext"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
     
         </RelativeLayout>
     

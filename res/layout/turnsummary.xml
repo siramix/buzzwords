@@ -13,7 +13,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ****************************************************************************/
+*****************************************************************************/ 
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -111,7 +111,7 @@
             android:gravity="center"
             android:text="@string/turnSummary_scores_header"
             android:textColor="@color/white"
-            android:textSize="24dp" >
+            android:textSize="24sp" >
         </com.buzzwords.AntonTextView>
     </RelativeLayout>
 
@@ -160,7 +160,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/turnSummary_scorelimit"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
 
         <LinearLayout
             android:id="@+id/TurnSummary_TurnOrder"
@@ -290,7 +290,7 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:text="@string/turnSummary_button_next"
-            android:textSize="16dp" >
+            android:textSize="16sp" >
         </com.buzzwords.AntonButton>
     </LinearLayout>
 

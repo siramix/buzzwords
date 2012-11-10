@@ -68,7 +68,7 @@
                     android:gravity="center"
                     android:text="@string/gameSetup_teams_header"
                     android:textColor="@color/white"
-                    android:textSize="24dp" />
+                    android:textSize="24sp" />
 
                 <Button
                     android:id="@+id/GameSetup_TeamsHintButton"
@@ -157,7 +157,7 @@
                         android:gravity="center"
                         android:text="@string/gameSetup_gametype_header"
                         android:textColor="@color/white"
-                        android:textSize="24dp" />
+                        android:textSize="24sp" />
 
                     <Button
                         android:id="@+id/GameSetup_GameType_HintButton"
@@ -183,7 +183,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
                         android:text="@string/gameManager_gameType_turns"
-                        android:textSize="22dp" />
+                        android:textSize="22sp" />
 
                     <RadioButton
                         android:id="@+id/GameSetup_GameType_Radio_Score"
@@ -192,7 +192,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
                         android:text="@string/gameManager_gameType_score"
-                        android:textSize="22dp" />
+                        android:textSize="22sp" />
 
                     <RadioButton
                         android:id="@+id/GameSetup_GameType_Radio_Free"
@@ -201,7 +201,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_weight="1"
                         android:text="@string/gameManager_gameType_freeplay"
-                        android:textSize="22dp" />
+                        android:textSize="22sp" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -234,7 +234,7 @@
                         android:gravity="center"
                         android:text="@string/test_header"
                         android:textColor="@color/white"
-                        android:textSize="24dp" />
+                        android:textSize="24sp" />
 
                     <Button
                         android:id="@+id/GameSetup_GameTypeParameter_HintButton"
@@ -266,7 +266,7 @@
                         android:layout_marginTop="-5dp"
                         android:gravity="center"
                         android:text="@string/test_number"
-                        android:textSize="48dp" />
+                        android:textSize="48sp" />
 
                     <Button
                         android:id="@+id/GameSetup_GameTypeParameter_Plus"

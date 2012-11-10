@@ -13,8 +13,8 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- ****************************************************************************/
--->
+*****************************************************************************/ 
+ -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -112,7 +112,7 @@
             android:maxLines="3"
             android:text="@string/test_team"
             android:textColor="@color/teamB_primary"
-            android:textSize="50dp" >
+            android:textSize="50sp" >
         </com.buzzwords.AntonTextView>
 
         <com.buzzwords.AntonTextView
@@ -123,7 +123,7 @@
             android:layout_centerHorizontal="true"
             android:text="@string/gameEnd_winner"
             android:textColor="@color/white"
-            android:textSize="32dp" >
+            android:textSize="32sp" >
         </com.buzzwords.AntonTextView>
     </RelativeLayout>
 

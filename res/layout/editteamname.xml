@@ -45,7 +45,7 @@
             android:gravity="center"
             android:text="@string/editTeamName_title"
             android:textColor="@color/white"
-            android:textSize="24dp" >
+            android:textSize="24sp" >
         </com.buzzwords.AntonTextView>
     </RelativeLayout>
 
@@ -69,7 +69,7 @@
         android:layout_marginBottom="10dp"
         android:text="@string/editTeamName_hint"
         android:textColor="@color/white"
-        android:textSize="16dp" >
+        android:textSize="16sp" >
     </TextView>
 
     <LinearLayout

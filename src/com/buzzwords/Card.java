@@ -2,6 +2,7 @@ package com.buzzwords;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import com.buzzwords.R;
@@ -77,7 +78,7 @@ public class Card implements Serializable {
     StringTokenizer tok = new StringTokenizer(commaSeparated);
 
     while (tok.hasMoreTokens()) {
-      ret.add(tok.nextToken(",").toUpperCase());
+      ret.add(tok.nextToken(",").toUpperCase(Locale.getDefault()));
     }
 
     return ret;
