@@ -519,8 +519,6 @@ public class PackPurchaseActivity extends Activity {
     private ProgressDialog dialog;
     final SharedPreferences userPurchases = getSharedPreferencesForCurrentUser();
     final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
-    final SharedPreferences packSelectionPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
-        Context.MODE_PRIVATE);
     final GameManager gm = new GameManager(PackPurchaseActivity.this);
     private boolean error = false;
     
@@ -544,12 +542,7 @@ public class PackPurchaseActivity extends Activity {
         //Install or update the pack if it is purchased.  Select it if it's a new pack.
         if (isPackPurchased) {
           try {
-            boolean selection = true;
-            if (packSelectionPrefs.contains(String.valueOf(packs[i].getId()))) {
-              selection = getPackSelectedPref(packs[i]);
-            }
             gm.installPack(packs[i]);
-            setPackSelectedPref(packs[i], selection);
           } catch (RuntimeException e) {
             error = true;
             Log.e(TAG, "Failed to update or install purchased packId: " + 
@@ -561,7 +554,6 @@ public class PackPurchaseActivity extends Activity {
         else if (isPackPurchased == false && 
             packs[i].getPurchaseType() != PackPurchaseConsts.PACKTYPE_STARTER) {
           gm.uninstallPack(packs[i].getId());
-          setPackSelectedPref(packs[i], false);
         }
         // Always check for starter pack update
         else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_STARTER) {
