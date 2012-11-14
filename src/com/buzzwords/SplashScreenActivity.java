@@ -17,14 +17,9 @@
  ****************************************************************************/
 package com.buzzwords;
 
-import java.util.List;
-
 import com.buzzwords.R;
 import com.buzzwords.SoundManager;
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningTaskInfo;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,48 +62,15 @@ public class SplashScreenActivity extends Activity {
     }
     super.onCreate(savedInstanceState);
 
-    // Do workaround for people who launch Buzzwords from the installation
-    // prompt
-    if (shouldApplicationLaunch()) {
-      setContentView(R.layout.splashscreen);
+    setContentView(R.layout.splashscreen);
 
-      // Initialize the soundManager during splash
-      SoundManager.getInstance(this.getBaseContext());
+    // Initialize the soundManager during splash
+    SoundManager.getInstance(this.getBaseContext());
 
-      // Fade in the logo
-      this.fadeIn();
-    } else {
-      finish();
-    }
+    // Fade in the logo
+    this.fadeIn();
   }
 
-  /**
-   * Workaround for bug where launching from Installation uses a different
-   * filter to invoke the Activity, causing a new activity to be brought to the
-   * top of the stack instead of resuming from the topmost activity.
-   * 
-   * @return true if the application should launch
-   */
-  private boolean shouldApplicationLaunch() {
-    final ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-    final List<RunningTaskInfo> runningTasks = am.getRunningTasks(1024);
-
-    if (!runningTasks.isEmpty()) {
-      final String ourAppPackageName = getPackageName();
-      RunningTaskInfo taskInfo;
-      final int size = runningTasks.size();
-      for (int i = 0; i < size; i++) {
-        taskInfo = runningTasks.get(i);
-        if (ourAppPackageName.equals(taskInfo.baseActivity.getPackageName())) {
-          // Only allow the application to launch if the splash screen is the
-          // only activity from this package that is running
-          return taskInfo.numActivities == 1;
-        }
-      }
-    }
-
-    return true;
-  }
   
   /**
    * Handle interrupts to the splash screen
@@ -133,9 +95,8 @@ public class SplashScreenActivity extends Activity {
 
       // Workaround for HTC - Hero firmware version 2.1
       // For some reason, clearing the animation does not call
-      // EndAnimation
-      // listener on this
-      // platform. We'd like to rely on that event to call exitSplash().
+      // EndAnimation listener on this platform.
+      // We'd like to rely on that event to call exitSplash().
       SplashScreenActivity.this.exitSplash();
       return true;
     } else {
