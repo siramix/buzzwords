@@ -19,7 +19,8 @@
         android:configChanges="keyboardHidden"
         android:icon="@drawable/icon"
         android:label="@string/AppName"
-        android:theme="@style/BuzzWordsTheme" >
+        android:theme="@style/BuzzWordsTheme" 
+        android:allowBackup="true">
         <receiver 
             android:name="com.amazon.inapp.purchasing.ResponseReceiver" 
             android:exported="false">

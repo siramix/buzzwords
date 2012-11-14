@@ -33,20 +33,20 @@ import com.buzzwords.R;
  * 
  */
 public enum Team implements Serializable {
-  TEAMA("Blue", R.color.teamA_primary,
+  TEAMA(R.string.teamnameA, R.color.teamA_primary,
       R.color.teamA_secondary, R.color.teamA_complement, R.drawable.bg_bluegradient, 
-      "teamA_enabled"), TEAMB("Green",
+      "teamA_enabled"), TEAMB(R.string.teamnameB,
       R.color.teamB_primary, R.color.teamB_secondary,  R.color.teamB_complement,
       R.drawable.bg_greengradient, "teamB_enabled"), TEAMC(
-      "Red", R.color.teamC_primary,  R.color.teamC_secondary,
+      R.string.teamnameC, R.color.teamC_primary,  R.color.teamC_secondary,
       R.color.teamC_complement, R.drawable.bg_redgradient, "teamC_enabled"), TEAMD(
-      "Yellow", R.color.teamD_primary, R.color.teamD_secondary,
+      R.string.teamnameD, R.color.teamD_primary, R.color.teamD_secondary,
       R.color.teamD_complement, R.drawable.bg_yellowgradient, "teamD_enabled");
 
   // Team name
   private String mName;
-  // Team default name
-  private final String mDefaultName;
+  // Team default name as resource ID
+  private final int mDefaultName;
   
   // Team colors
   private final int mPrimary;
@@ -67,8 +67,7 @@ public enum Team implements Serializable {
   /*
    * Construct a Team
    */
-  private Team(String name, int primary, int secondary, int complement, int gradient, String key) {
-    mName = name;
+  private Team(int name, int primary, int secondary, int complement, int gradient, String key) {
     mDefaultName = name;
     mComplement = complement;
     mSecondary = secondary;
@@ -91,11 +90,11 @@ public enum Team implements Serializable {
   }
   
   /**
-   * Returns the Team's original name as a String
+   * Returns the Team's original name as a String Resource ID
    * 
    * @return the default name
    */
-  public String getDefaultName() {
+  public int getDefaultName() {
     return mDefaultName;
   }
 
@@ -161,11 +160,7 @@ public enum Team implements Serializable {
    * getDefaultName()
    */
   public void setName(String name) {
-    if(name.length() > 0) {
-      this.mName = name;
-    } else {
-      this.mName = this.mDefaultName;
-    }
+    mName = name;
   }
 
 

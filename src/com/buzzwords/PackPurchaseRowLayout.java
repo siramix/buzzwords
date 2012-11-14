@@ -245,7 +245,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
       } else {
         // Purchased pack is not chosen
         setViewAttributes(
-            getResources().getColor(R.color.packPurchaseUnSelected2),
+            getResources().getColor(R.color.packPurchaseUnSelected),
             getResources().getColor(R.color.genericBG_trimDark), getResources()
                 .getColor(R.color.genericBG_trim), R.drawable.button_info,
             false);
