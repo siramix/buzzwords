@@ -85,7 +85,7 @@
 
                 <RelativeLayout
                     android:id="@+id/Turn_TimerBar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" >
 
@@ -153,7 +153,7 @@
         <ViewFlipper
             android:id="@+id/Turn_ViewFlipper"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="0dp"
             android:layout_weight="1" >
 
             <RelativeLayout

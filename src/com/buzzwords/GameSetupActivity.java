@@ -270,15 +270,21 @@ public class GameSetupActivity extends Activity {
 
 			if (curTeamName != null && curTeam != null) {
 
-				// Set the team name and update the layout
+        String defaultName = getString(curTeam.getDefaultName());
+        // If they blanked out the name, restore it to default
+        if(curTeamName.length() == 0)
+        {
+          curTeamName = defaultName;
+        }
+        // Set the team name and update the layout
 				curTeam.setName(curTeamName);
 				TeamSelectLayout teamSelect = (TeamSelectLayout) this
 						.findViewById(TEAM_SELECT_LAYOUTS[curTeam.ordinal()]);
 				teamSelect.setTeam(curTeam);
 
 				// Set the name as a pref
-				mGameSetupPrefEditor.putString(curTeam.getDefaultName(),
-						curTeam.getName());
+				mGameSetupPrefEditor.putString(defaultName,
+				    curTeamName);
 				mGameSetupPrefEditor.commit();
 
 			}
@@ -389,8 +395,9 @@ public class GameSetupActivity extends Activity {
     Team curTeam;
     for (int i = 0; i < TEAM_SELECT_LAYOUTS.length; ++i) {
       curTeam = Team.values()[i];
+      String defaultName = getString(curTeam.getDefaultName());
       String curTeamName = mGameSetupPrefs.getString(
-          curTeam.getDefaultName(), curTeam.getDefaultName());
+          defaultName, defaultName);
       curTeam.setName(curTeamName);
       teamSelect = (TeamSelectLayout) this
           .findViewById(TEAM_SELECT_LAYOUTS[i]);

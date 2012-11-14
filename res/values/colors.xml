@@ -36,9 +36,11 @@
   <color name="teamB_complement">
     #2c6922
   </color>
+  <!-- Unused TeamB Highlight but this would be it if we need it
   <color name="teamB_highlight">
     #91c751
   </color>
+   -->
   <color name="teamC_primary">
     #AC2D20
   </color>
@@ -90,10 +92,7 @@
     <color name="packPurchaseSelected">
     #4a6071
   </color>
-  <color name="packPurchaseUnSelected">
-    #2f4350
-  </color>
-    <color name="packPurchaseUnSelected2">
+    <color name="packPurchaseUnSelected">
     #292929
   </color>
 </resources>

@@ -146,7 +146,8 @@ public class EditTeamName extends Activity {
 
     // Initialize hint text
     TextView hint = (TextView) this.findViewById(R.id.EditTeamName_Hint);
-    hint.setText(getString(R.string.editTeamName_hint, mTeam.getDefaultName()));
+    String name = getString(mTeam.getDefaultName());
+    hint.setText(getString(R.string.editTeamName_hint, name));
 
     // Set listener for accept
     mButtonCancel.setOnClickListener(mCancelListener);
