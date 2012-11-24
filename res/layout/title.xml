@@ -66,7 +66,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/Title_Button_Play"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="40dp"
         android:clipChildren="false"
         android:orientation="vertical" >
 
@@ -171,38 +171,46 @@
         </RelativeLayout>
 
     </LinearLayout>
-            
+
         <RelativeLayout
             android:id="@+id/Title_FB_Layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
             android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:orientation="vertical" >
-            
+            android:layout_marginRight="8dp">
+
+            <ImageButton
+                android:id="@+id/Title_Button_Credits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/button_info"
+                android:contentDescription="@string/description_title_button_credits" />
+
             <ImageButton
                 android:id="@+id/Title_FB_BuzzwordsApp"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
-                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/button_fb_selector"
                 android:clickable="true"
                 android:contentDescription="@string/description_fb_buzzwordsapp" />
-            
+
             <TextView
                 android:id="@+id/Title_FB_Tagline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/Title_FB_BuzzwordsApp"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/Title_FB_BuzzwordsApp"
                 android:paddingRight="5dp"
                 android:paddingTop="15dp"
                 android:text="@string/tagline_fb_buzzwordsapp"
                 android:textColor="@color/text_subtext"
                 android:textSize="18sp" />
-    
+
         </RelativeLayout>
     
 </RelativeLayout>

@@ -260,9 +260,29 @@ public class TitleActivity extends Activity {
       startActivity(new Intent(
           getApplication().getString(R.string.IntentRules), getIntent()
               .getData()));
-
     }
   }; // End RulesListener
+  
+  /**
+   * Listener to determine when the Credits button is clicked.
+   */
+  private OnClickListener mCreditsListener = new OnClickListener() {
+    public void onClick(View v) {
+      if (BuzzWordsApplication.DEBUG) {
+        Log.d(TAG, "CredistListener OnClick()");
+      }
+      v.setEnabled(false);
+      mContinueMusic = true;
+
+      // play confirm sound
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
+
+      startActivity(new Intent(
+          getApplication().getString(R.string.IntentCredits), getIntent()
+              .getData()));
+    }
+  }; // End CreditsListener
 
   /**
    * Listener to determine when the About Us button is clicked on the title
@@ -434,6 +454,10 @@ public class TitleActivity extends Activity {
     ImageButton aboutusButton = (ImageButton) this
         .findViewById(R.id.Title_FB_BuzzwordsApp);
     aboutusButton.setOnClickListener(mAboutUsListener);
+    
+    ImageButton creditsButton = (ImageButton) this
+        .findViewById(R.id.Title_Button_Credits);
+    creditsButton.setOnClickListener(mCreditsListener);
 
     // Initialize button animations
     View tempButton;
@@ -500,6 +524,7 @@ public class TitleActivity extends Activity {
     this.findViewById(R.id.Title_BuzzDelegate).setEnabled(true);
     this.findViewById(R.id.Title_SettingsDelegate).setEnabled(true);
     this.findViewById(R.id.Title_RulesDelegate).setEnabled(true);
+    this.findViewById(R.id.Title_Button_Credits).setEnabled(true);
 
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this

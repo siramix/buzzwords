@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/genericBG_trim">
+
+        <com.buzzwords.AntonTextView
+            android:id="@+id/Credits_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/credits_title"
+            android:textColor="@color/title"
+            android:textSize="28sp" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:background="#555555" />
+        
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/Credits_Edward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:drawableLeft="@drawable/credits_edward"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="@string/credits_edward" />
+
+            <TextView
+                android:id="@+id/Credits_Lucas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/credits_lucas"
+                android:gravity="center_vertical"
+                android:text="@string/credits_lucas" />
+
+            <TextView
+                android:id="@+id/Credits_Patrick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/credits_patrick"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="@string/credits_patrick" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" >
+
+                <View
+                    android:id="@+id/Credits_Acknowledgements_Bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="4dp"
+                    android:layout_centerInParent="true"
+                    android:background="@color/genericBG_trim" />
+
+                <com.buzzwords.AntonTextView
+                    android:id="@+id/Credits_Acknowledgements_Header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/RulesSubHeader"
+                    android:text="@string/credits_acknowledgements_subheader"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/Credits_Kevin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/credits_kevin" />
+
+            <TextView
+                android:id="@+id/Credits_Others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/credits_others" />
+
+            <TextView
+                android:id="@+id/Credits_Fonts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/credits_fonts" />
+
+            <com.buzzwords.AntonTextView
+                android:id="@+id/Credits_Anton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/credits_font_anton" />
+
+            <com.buzzwords.FrancoisOneTextView
+                android:id="@+id/Credits_FrancoisOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/credits_font_francoisone" />
+
+            <TextView
+                android:id="@+id/Credits_LuckiestGuy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/credits_font_luckiestguy" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

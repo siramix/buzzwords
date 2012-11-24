@@ -17,6 +17,7 @@
     <string name="IntentEditTeamName">com.buzzwords.intent.action.EDITTEAMNAME</string>
     <string name="IntentPackPurchase">com.buzzwords.intent.action.WORDPACKPURCHASE</string>
     <string name="IntentPackInfo">com.buzzwords.intent.action.PACKINFO</string>
+    <string name="IntentCredits">com.buzzwords.intent.action.CREDITS</string>
 
     <!-- Global Prefkey IDs -->
     <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
@@ -191,6 +192,20 @@
     <string name="rules_final_text1">We hope you enjoy playing Buzzwords!</string>
     <string name="rules_final_text2">If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or email us at buzzwords@siramix.com any time.  Feel free to reach out on Facebook as well!</string>
     
+    <!-- Activity Credits -->
+    <string name="credits_title">The Team</string>
+    <string name="credits_edward">Edward Rowe works as a video game programmer near Durham, NC. He programmed the user interface, game logic, and did most of the art for Buzzwords.</string>
+    <string name="credits_lucas">Lucas Rowe is a software tester in Raleigh, NC. He programmed the in-app-purchasing for Packs, card shuffling algorithms, and wrote many of the words with Edward.</string>
+    <string name="credits_patrick">Patrick Reynolds is currently a programmer who does medical software in Carborro, NC. He is also working on his PHD in Computer Science from UNC Chapel Hill. He programmed the tools used to create words.</string>
+    <string name="credits_acknowledgements_subheader">Acknowledgements</string>
+    <string name="credits_kevin">Sounds and music were created by Kevin Mabie.</string>
+    <string name="credits_fonts">Use of all fonts is permitted under the SIL Open Font License, Version 1.1.</string>
+    <string name="credits_font_anton">Anton font by Vernon Adams</string>
+    <string name="credits_font_francoisone">Francois One font by Vernon Adams</string>
+    <string name="credits_font_luckiestguy">Luckiest Guy font, used in our icon, created by Brian J. Bonislawsky</string>
+    <string name="credits_others">Thank you to our friends and family who helped us create and test Buzzwords!</string>
+    
+    
     <!-- Settings -->
     <string name="settings_scorechange_summary">Current score change is </string>
     <string name="toast_settings_shuffled">All packs have been shuffled.</string>
@@ -227,6 +242,7 @@
     <string name="description_splash_logo">The awesome Ram logo of Siramix</string>
     <string name="description_splash_siramix">Siramix</string>
     <string name="description_fb_buzzwordsapp">Link to Buzzwords App on Facebook</string>
+    <string name="description_title_button_credits">Button to get info about the developers</string>
     <string name="description_title_starburst">A burst of light from Buzzword\'s signature lightning bolt</string>
     <string name="description_title_title">Buzzwords title</string>
     <string name="description_title_button_buzz">Button to enter Buzz mode</string>
