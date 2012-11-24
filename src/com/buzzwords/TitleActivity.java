@@ -269,7 +269,7 @@ public class TitleActivity extends Activity {
   private OnClickListener mCreditsListener = new OnClickListener() {
     public void onClick(View v) {
       if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "CredistListener OnClick()");
+        Log.d(TAG, "CreditsListener OnClick()");
       }
       v.setEnabled(false);
       mContinueMusic = true;
