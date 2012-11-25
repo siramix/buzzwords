@@ -25,8 +25,10 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.TextView;
 
 /**
  * This activity class is responsible for displaying the rules of buzzwords to
@@ -59,6 +61,8 @@ public class CreditsActivity extends Activity {
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
     this.setContentView(R.layout.credits);
+    TextView t2 = (TextView) findViewById(R.id.Credits_Lucas_Link);
+    t2.setMovementMethod(LinkMovementMethod.getInstance());
   }
 
   /**
