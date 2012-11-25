@@ -106,7 +106,7 @@ public class GameManager {
   /**
    * The set of cards that have been activated in the latest turn
    */
-  private LinkedList<Card> mCurrentCards;
+  private LinkedList<Card> mCardsDealtDuringTurn;
 
   /**
    * An array indicating scoring for right, wrong, and skip (in that order)
@@ -172,7 +172,7 @@ public class GameManager {
     mCurrentRound = 0;
     mCurrentTurn = 0;
     mCardPosition = -1;
-    mCurrentCards = new LinkedList<Card>();
+    mCardsDealtDuringTurn = new LinkedList<Card>();
 
     mTurnTime = Integer.valueOf(sp.getString(Consts.PREFKEY_TIMER, "60")) * 1000;
 
@@ -208,11 +208,11 @@ public class GameManager {
       Log.d(TAG, "getNextCard()");
     }
     ++mCardPosition;
-    if (mCardPosition >= mCurrentCards.size()) {
+    if (mCardPosition >= mCardsDealtDuringTurn.size()) {
       mCurrentCard = mDeck.dealCard();
-      mCurrentCards.addLast(mCurrentCard);
+      mCardsDealtDuringTurn.addLast(mCurrentCard);
     } else {
-      mCurrentCard = mCurrentCards.get(mCardPosition);
+      mCurrentCard = mCardsDealtDuringTurn.get(mCardPosition);
     }
     return mCurrentCard;
   }
@@ -231,7 +231,7 @@ public class GameManager {
     if (mCardPosition < 0) {
       mCardPosition = 0;
     }
-    mCurrentCard = mCurrentCards.get(mCardPosition);
+    mCurrentCard = mCardsDealtDuringTurn.get(mCardPosition);
     return mCurrentCard;
   }
 
@@ -250,8 +250,12 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "StartGame()");
     }
+    // Initialize the deck and fill the cache
     mDeck.setPackData();
+    fillDeckIfLow();
+    
     mTeams = teams;
+    // Set team scores to 0
     Iterator<Team> itr = teams.iterator();
     for (itr = teams.iterator(); itr.hasNext();) {
       itr.next().setScore(0);
@@ -287,8 +291,9 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "NextTurn()");
     }
+    fillDeckIfLow();
     this.incrementActiveTeamIndex();
-    mCurrentCards.clear();
+    mCardsDealtDuringTurn.clear();
     mCardPosition = -1;
     mCurrentTurn++;
   }
@@ -307,7 +312,7 @@ public class GameManager {
    */
   public void ammendCard(int changedCardIndex, int rws) {
     int prevTurnScore = getTurnScore();
-    Card curCard = mCurrentCards.get(changedCardIndex);
+    Card curCard = mCardsDealtDuringTurn.get(changedCardIndex);
     curCard.setRws(rws);
     // new score is current score (which included previous turn score) plus
     // the difference
@@ -335,15 +340,15 @@ public class GameManager {
     mTeamIterator = mTeams.iterator();
 
     // clear current cards so that scoreboards don't add turn score in
-    mCurrentCards.clear();
+    mCardsDealtDuringTurn.clear();
   }
 
   /**
    * Checks on the deck's caches to make sure enough cards have been stored to
    * play a turn.
    */
-  public void maintainDeck() {
-    Log.d(TAG, "maintainDeck()");
+  private void fillDeckIfLow() {
+    Log.d(TAG, "fillDeckIfLow()");
     mDeck.fillCacheIfLow();
   }
 
@@ -402,23 +407,6 @@ public class GameManager {
   }
 
   /**
-   * The game manager will have the Deck update the play date for any cards
-   * passed into this method. This is being used for Turn Summary which will
-   * have a list of seen cards to pass in. Runs inside a thread.
-   * 
-   * @param cardsToUpdate
-   *          - A linked list of cards to update
-   */
-  public void updateSeenFields(final List<Card> cardsToUpdate) {
-    mUpdateThread = new Thread(new Runnable() {
-      public void run() {
-        mDeck.updateSeenFields(cardsToUpdate);
-      }
-    });
-    mUpdateThread.start();
-  }
-
-  /**
    * Adds the current card to the active cards
    * 
    * @param rws
@@ -452,7 +440,7 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetCurrentCards()");
     }
-    return mCurrentCards;
+    return mCardsDealtDuringTurn;
   }
 
   /**
@@ -505,7 +493,7 @@ public class GameManager {
       Log.d(TAG, "GetTurnScore()");
     }
     int ret = 0;
-    for (Iterator<Card> it = mCurrentCards.iterator(); it.hasNext();) {
+    for (Iterator<Card> it = mCardsDealtDuringTurn.iterator(); it.hasNext();) {
       Card card = it.next();
       ret += mRwsValueRules[card.getRws()];
     }
@@ -633,6 +621,7 @@ public class GameManager {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "GetTurnTime()");
     }
+    
     return mTurnTime;
   }
 

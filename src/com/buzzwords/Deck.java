@@ -69,7 +69,7 @@ public class Deck {
   private static final String DATABASE_NAME = "buzzwords";  
   private static final int DATABASE_VERSION = 3;
   
-  protected static final int CACHE_MAXSIZE = 140;
+  protected static final int CACHE_MAXSIZE = 100;
   protected static final int CACHE_TURNSIZE = 20;
   
   private static final int PACK_CURRENT = -1;
@@ -120,8 +120,8 @@ public class Deck {
     // This shouldn't happen unless a lot of cards are played in one turn (CACHE_TURNSIZE)
     if (mCache.isEmpty()) {
       Log.i(TAG, "Filling entire cache mid-turn. This is expensive.");
-      mDatabaseOpenHelper.updateSeenFields(mDiscardPile);
-      mDiscardPile.clear();
+      // We must mark seen now so that we won't re-pull these same cards during fillCache
+      updateSeenFields();
       this.fillCache();
     }
     ret = mCache.removeFirst();
@@ -150,22 +150,10 @@ public class Deck {
    * should be called when we pause the game or a turn ends.
    */
   public void updateSeenFields() {
-    this.updateSeenFields(mDiscardPile);
+    mDatabaseOpenHelper.updateSeenFields(mDiscardPile);
     mDiscardPile.clear();
   }
 
-  /**
-   * Updates the playdate and times_seen for any cards passed in.  This
-   * list of cards will be cleared 
-   * @param cardsToUpdate - a Linked List of cards that will have their playdate
-   *                        updated to today's date.
-   */
-  public void updateSeenFields(List<Card> cardsToUpdate) {
-    DeckOpenHelper helper = new Deck.DeckOpenHelper(
-        mContext);      
-    helper.updateSeenFields(cardsToUpdate);
-    helper.close();
-  }
   
   /**
    * Retrieve a Linked List of all Packs that a user has installed in their database.
@@ -285,12 +273,7 @@ public class Deck {
   public void setPackData() {
     Log.d(TAG, "setPackData()");
     instantiateSelectedPacks();
-    mTotalPlayableCards = 0;
-    LinkedList<Pack> packList = new LinkedList<Pack>();
-    for (Pack pack : mSelectedPacks) {
-      packList.add(pack);
-    }
-    mTotalPlayableCards += mDatabaseOpenHelper.countCards(packList);
+    mTotalPlayableCards = mDatabaseOpenHelper.countCards(mSelectedPacks);
     setPackWeights();
     calculatePackDistribution();
   }
@@ -303,8 +286,7 @@ public class Deck {
   private void fillCache() {
     Log.d(TAG, "fillCache()");
     printDeck();
-    mDatabaseOpenHelper = new DeckOpenHelper(mContext);
-
+    
     // Fill our cache up with cards from all selected packs (using sorting algorithm)
     // Separate seen and unseen cards for handling the end of deck 
     // (when unseen must take priority)
@@ -315,7 +297,7 @@ public class Deck {
     for (int i=0; i<mSelectedPacks.size(); ++i) {
       LinkedList<Card> pulledCards = mDatabaseOpenHelper.pullFromPack(mSelectedPacks.get(i));
       for (Card card : pulledCards) {
-        if (card.hasBeenSeen()) {
+        if (card.hasBeenSeenMoreThanOthers()) {
           seenCards.add(card);
         }
         else {
@@ -324,12 +306,11 @@ public class Deck {
       }
     }
     
-    // 3. Now shuffle
+    // Now shuffle, allowing unseen priority
     Collections.shuffle(seenCards);
     Collections.shuffle(unseenCards);
     mCache.addAll(unseenCards);
     mCache.addAll(seenCards);
-    
     mDatabaseOpenHelper.close();
     Log.i(TAG, "filled.");
     printDeck();
@@ -401,7 +382,7 @@ public class Deck {
     int remainder = CACHE_MAXSIZE - allocated;
     Log.d(TAG, "Assigning remainder of " + remainder + " cards.");
     for (int i=0; i<remainder; ++i) {
-      int packIndex = randomizer.nextInt(mSelectedPacks.size()-1);
+      int packIndex = randomizer.nextInt(mSelectedPacks.size());
       Pack pack = mSelectedPacks.get(packIndex);
       pack.setNumToPullNext(pack.getNumToPullNext()+1);
       Log.d(TAG, "..added a remainder to " + pack.getName());
@@ -521,8 +502,8 @@ public class Deck {
 
     /**
      * Returns an integer count of all phrases associated with the passed in pack names
-     * @param packFileNames The filenames of all packs to be counted
-     * @return -1 if no phrases found, otherwise the number of phrases found
+     * @param packs A list of packs whose cards will be counted
+     * @return -1 if no cards counted, otherwise the number of cards counted
      */
     public synchronized int countCards(LinkedList<Pack> packs) {
       Log.d(TAG, "countCards(LinkedList<Pack>)");
@@ -613,7 +594,7 @@ public class Deck {
     }
 
     /**
-     * Count the number of seen cards in a given pack at least once.
+     * Count the number of cards in a given pack that have been seen at least once.
      * @param pack the pack to count
      * @return
      */
@@ -948,8 +929,8 @@ public class Deck {
 
     
     /**
-     * Generates and returns a LinkedList of Cards from the database for a specific pack.  First,
-     * we request all the cards from the db sorted by date.  Then we calculate how many of the 
+     * Generates and returns a LinkedList of Cards from the database for a specific pack. First,
+     * we request all the cards from the db sorted by date. Then we calculate how many of the 
      * Cards should be returned based on the pack's weight relative to the total number of selected
      * cards.
      * @param pack The pack from which to pull cards
@@ -959,7 +940,6 @@ public class Deck {
       Log.d(TAG, "pullFromPack(" + pack.getName() + ")");
       // Do this first since it needs it's own db interaction
       int numPlayThroughs = calcNumPlaythroughs(pack);
-      
       mDatabase = getWritableDatabase();
       
       LinkedList<Card> returnCards = new LinkedList<Card>();
@@ -967,13 +947,12 @@ public class Deck {
       int targetNum = pack.getNumToPullNext();
       
       // Build our arguments for SQL
-      String[] args = new String[3];
-      args[0] = String.valueOf(packid);
+      String[] args = new String[] {String.valueOf(packid), String.valueOf(targetNum)};
       
       // Get the playable cards from pack, sorted by playdate
       Cursor res = mDatabase.query(CardColumns.TABLE_NAME, CardColumns.COLUMNS,
             CardColumns.PACK_ID + " = " + args[0],
-            null, null, null, CardColumns.PLAY_DATE + " asc");
+            null, null, null, CardColumns.PLAY_DATE + " asc, " + CardColumns.TIMES_SEEN + " asc", args[1]);
       res.moveToFirst();
       
       // The number of cards to return from any given pack will use the following formula:
@@ -985,10 +964,10 @@ public class Deck {
 
       // Add cards to what will be the Cache, setting cards seen more than others within
       // the pack to true.
-      while (!res.isAfterLast() && res.getPosition() < (targetNum)) {
+      while (!res.isAfterLast()) {
         Card card = new Card(res.getInt(0), res.getString(1), res.getString(2), pack);
         if (res.getInt(4) > numPlayThroughs) {
-          card.setSeen(true);
+          card.setSeenMoreThanOthers(true);
         }
         returnCards.add(card);
         res.moveToNext();

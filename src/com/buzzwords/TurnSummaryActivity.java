@@ -206,10 +206,6 @@ public class TurnSummaryActivity extends Activity {
     }
     list.addView(layout);
 
-    // TODO This should be in a thread, but I'm not sure how to access the game
-    // from inside the thread
-    game.maintainDeck();
-
     // Update the scoreboard views
     updateScoreViews();
 

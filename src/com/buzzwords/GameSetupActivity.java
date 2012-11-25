@@ -123,7 +123,6 @@ public class GameSetupActivity extends Activity {
 			while (keepLooping) {
 				try {
 					GameManager gm = new GameManager(GameSetupActivity.this);
-					gm.maintainDeck();
 					gm.startGame(mTeamList,
 							GameType.values()[mGameType],
 							mGameLimits[mGameType]);
