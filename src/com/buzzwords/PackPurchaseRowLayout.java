@@ -174,7 +174,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
         .getColor(R.color.genericBG_trim), Mode.MULTIPLY);
 
     // Initialize Price
-    mPrice.setText("$1.99");
+    mPrice.setText("");
     RelativeLayout.LayoutParams priceParams = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     priceParams.addRule(RelativeLayout.ALIGN_RIGHT, mRowEndBG.getId());
@@ -251,7 +251,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
             false);
       }
     } else {
-      // Render a generic PackInfo row
+      // Render a generic PackInfo row or a Purchaseable row
       if (mIsPackPurchased) {
         bgColor = R.color.packPurchaseSelected;
       }
@@ -320,6 +320,8 @@ public class PackPurchaseRowLayout extends FrameLayout {
     // Set new pack attributes
     mTitle.setText(mPack.getName());
     retrieveAndSetPackIcon(pack);
+
+    mPrice.setText(pack.getPrice());
     
     // Assign click listeners based on the pack's purchase state
     if (mIsPackPurchased) {
@@ -329,6 +331,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
       mContents.setOnClickListener(mPackInfoRequestedListener);
       mInfoButton.setOnClickListener(null);
     }
+    
 
     invalidate();
   }

@@ -45,6 +45,7 @@ public class Pack implements Serializable {
   private int mPurchaseType;
   private int mServerSize;
   private int mVersion;
+  private String mPrice;
   
   // Model fields for app at playtime
   private int mSize;
@@ -59,7 +60,7 @@ public class Pack implements Serializable {
    * Default constructor
    */
   public Pack() {
-    this(-1, "","", "","", -1, -1, PackPurchaseConsts.PACKTYPE_UNSET, false);
+    this(-1, "","", "","", -1, -1, PackPurchaseConsts.PACKTYPE_UNSET, false, "");
     Log.d(TAG, "null consructor Pack()");
   }
 
@@ -76,7 +77,7 @@ public class Pack implements Serializable {
    * @param installed (whether the pack has been installed yet)
    */
   public Pack(int id, String name, String path, String iconPath, String description,
-              int serverSize, int purchaseType, int version, boolean installed) {
+              int serverSize, int purchaseType, int version, boolean installed, String price) {
     Log.d(TAG, "constructor Pack(args)");
     mId = id;
     mName = name;
@@ -91,6 +92,7 @@ public class Pack implements Serializable {
     mNumCardsSeen = -1;
     mNumToPullNext = -1;
     mInstalled = installed;
+    mPrice = price;
   }
   
   /**
@@ -139,6 +141,13 @@ public class Pack implements Serializable {
    */
   public int getVersion() {
     return mVersion;
+  }
+
+  /**
+   * @return the price for the Pack as a String
+   */
+  public String getPrice() {
+    return mPrice;
   }
   
   /**

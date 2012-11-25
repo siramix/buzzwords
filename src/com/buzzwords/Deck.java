@@ -106,7 +106,7 @@ public class Deck {
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
     mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", "packs/icons/packicon_classic1.png",
-        "Description of pack1", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true);
+        "Description of pack1", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
   }
 
   /**
@@ -557,7 +557,7 @@ public class Deck {
         while (!packQuery.isAfterLast()) {
           pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
               packQuery.getString(3), packQuery.getString(4), -1, 
-              packQuery.getInt(5), packQuery.getInt(6), true);
+              packQuery.getInt(5), packQuery.getInt(6), true, "");
           ret.add(pack);
           packQuery.moveToNext();
         }
@@ -586,7 +586,7 @@ public class Deck {
       if (packQuery.moveToFirst()) {
         pack = new Pack(packQuery.getInt(0), packQuery.getString(1), packQuery.getString(2),
                         packQuery.getString(3), packQuery.getString(4), -1, 
-                        packQuery.getInt(5), packQuery.getInt(6), true);
+                        packQuery.getInt(5), packQuery.getInt(6), true, "");
       }
       packQuery.close();
       mDatabase.close();

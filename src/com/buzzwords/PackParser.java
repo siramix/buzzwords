@@ -69,9 +69,10 @@ public class PackParser {
     int curPurchaseType= curPack.getInt("purchase_type");
     String curDescription = curPack.getString("description");
     int curVersion = curPack.getInt("version");
+    String curPrice = curPack.getString("price");
     int curSize = curPack.getInt("size");
     Pack pack = new Pack(curId, curName, curPath, curIconPath, curDescription, 
-                         curSize, curPurchaseType, curVersion, false);
+                         curSize, curPurchaseType, curVersion, false, curPrice);
     return pack;
   }
 
