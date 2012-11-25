@@ -27,6 +27,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -185,6 +186,16 @@ public class CardReviewActivity extends Activity {
       text = (TextView) badWords.getChildAt(i);
       text.setTypeface(font);
     }
+    
+
+    // Force the dialog to fill the screen
+    LayoutParams params = getWindow().getAttributes();
+    params.height = LayoutParams.FILL_PARENT;
+    params.width = LayoutParams.FILL_PARENT;
+    // Remove status bar because for some reason it comes back
+    params.flags |= LayoutParams.FLAG_FULLSCREEN;
+    getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+    
   }
   
   /**
@@ -271,7 +282,6 @@ public class CardReviewActivity extends Activity {
     if (BuzzWordsApplication.DEBUG) {
       Log.d(TAG, "onCreate()");
     }
-    
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
     

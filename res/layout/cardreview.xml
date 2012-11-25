@@ -22,6 +22,16 @@
     android:background="@drawable/bg_cardreviewgradient"
     android:orientation="vertical" >
 
+    <com.buzzwords.AntonButton
+        android:id="@+id/CardReview_ButtonNoScore"
+        style="@style/BuzzWordsButton"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/description_review_button_clear"
+        android:text="@string/button_notset" />
+
     <RelativeLayout
         android:id="@+id/CardReview_CardLayout"
         android:layout_width="fill_parent"
@@ -98,18 +108,6 @@
                 </TextView>
             </LinearLayout>
         </LinearLayout>
-
-        <com.buzzwords.AntonButton
-            android:id="@+id/CardReview_ButtonNoScore"
-            style="@style/BuzzWordsButton"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:contentDescription="@string/description_review_button_clear"
-            android:text="@string/button_notset" />
     </RelativeLayout>
 
     <!-- Grouping for buttons on the bottom -->
