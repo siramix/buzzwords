@@ -24,21 +24,20 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.ImageView;
 
 
 /**
@@ -59,9 +58,6 @@ public class PackClient {
    * Members
    */
   private static PackClient mInstance = null;
-  
-//  private static Map<String, Drawable> mDrawableMap;
-  private static Map<String, Bitmap> mBitmapMap;
 
   /**
    * Return the instance of the PackClient object
@@ -71,9 +67,6 @@ public class PackClient {
     Log.d(TAG, "getInstance");
     if(mInstance == null) {
       mInstance = new PackClient();
-    }
-    if(mBitmapMap == null) {
-      mBitmapMap = new HashMap<String, Bitmap>();
     }
     return mInstance;
   }
@@ -120,15 +113,13 @@ public class PackClient {
    * @param urlString reference to file
    * @return Bitmap icon
    */
-  public Bitmap fetchIconForPack(String iconPath)  {
+  private static Bitmap fetchIconForPack(String iconPath)  {
     final String urlString = URL_BASE + iconPath;
     try {
       InputStream is = fetch(urlString);
       Bitmap bitmap = BitmapFactory.decodeStream(is);
-      if (bitmap != null) {
-        mBitmapMap.put(urlString, bitmap);
-      } else {
-        Log.w(this.getClass().getSimpleName(), "could not get thumbnail");
+      if (bitmap == null) {
+        Log.w(TAG, "Could not get thumbnail");
       }
       return bitmap;
     } catch (MalformedURLException e) {
@@ -145,25 +136,26 @@ public class PackClient {
    * @param iconPath path to our icon in form of packs/icons/imgname.type
    * @param imageView to update with image
    */
-  public void fetchIconOnThread(final String iconPath, final ImageView imageView) {
-    final String urlString = URL_BASE + iconPath;
-    
-    // We've already retrieved it
-    if (mBitmapMap.containsKey(urlString)) {
-      imageView.setImageBitmap(mBitmapMap.get(urlString));
-    }
-  
+  public static void fetchIconOnThread(final Pack pack, final PackPurchaseRowLayout packRow, final Context context) {
+
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message message) {
-          imageView.setImageBitmap((Bitmap) message.obj);
+          Bitmap packIcon = (Bitmap) message.obj;
+          if (packIcon != null) {
+            packIcon = PackIconUtils.scaleIcon(packIcon, context);
+            packRow.setPackIcon(packIcon);
+            PackIconUtils.storeIcon(pack.getIconName(), packIcon, context);
+          } else {
+            Log.e(TAG, "Fetched icon response was null for " + pack.getIconPath());
+          }
         }
     };
   
     Thread thread = new Thread() {
         @Override
         public void run() {
-            Bitmap bitmap = fetchIconForPack(iconPath);
+            Bitmap bitmap = fetchIconForPack(pack.getIconPath());
             Message message = handler.obtainMessage(1, bitmap);
             handler.sendMessage(message);
         }
@@ -179,7 +171,7 @@ public class PackClient {
    * @throws MalformedURLException
    * @throws IOException
    */
-  private InputStream fetch(String urlString) throws MalformedURLException, IOException {
+  private static InputStream fetch(String urlString) throws MalformedURLException, IOException {
     DefaultHttpClient httpClient = new DefaultHttpClient();
     HttpGet request = new HttpGet(urlString);
     HttpResponse response = httpClient.execute(request);

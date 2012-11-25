@@ -74,7 +74,7 @@ public class PackIconUtils {
    * @param context of application
    * @return true if icon found, false otherwise
    */
-  public static boolean packIconCached(String iconName, Context context) {
+  public static boolean isPackIconCached(String iconName, Context context) {
     String path = buildIconPath(iconName, context);
     File iconFile = new File(path);
     return iconFile.exists();

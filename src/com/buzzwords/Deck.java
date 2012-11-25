@@ -105,7 +105,7 @@ public class Deck {
     mCache = new LinkedList<Card>();
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
-    mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", "packs/icons/starter_icon.png",
+    mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", "packs/icons/packicon_classic1.png",
         "Description of pack1", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true);
   }
 

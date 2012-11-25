@@ -26,7 +26,6 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -140,6 +139,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
     // Add a placeholder for the icon
     mIcon.setImageDrawable(this.getResources().getDrawable(
         R.drawable.placholder_pack_icon));
+    mIcon.setVisibility(View.INVISIBLE);
     RelativeLayout.LayoutParams iconParams = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     iconParams.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -319,11 +319,8 @@ public class PackPurchaseRowLayout extends FrameLayout {
 
     // Set new pack attributes
     mTitle.setText(mPack.getName());
-    Bitmap icon = retrievePackIcon(pack);
-    if (icon != null) {
-      mIcon.setImageBitmap(icon);
-    }
-
+    retrieveAndSetPackIcon(pack);
+    
     // Assign click listeners based on the pack's purchase state
     if (mIsPackPurchased) {
       mContents.setOnClickListener(mSelectPackListener);
@@ -368,32 +365,31 @@ public class PackPurchaseRowLayout extends FrameLayout {
 
   /**
    * First searches for the pack icon in resources, then checks if it is cached,
-   * then if neither is doable, looks online for the pack icon and caches it.  If
-   * none of these work, it will just set to a default icon.
+   * then if neither is doable, looks online for the pack icon and caches it. If
+   * none of these work, it will leave it set as the default icon.
    * @param pack that needs an icon
    * @return the icon drawable
    */
-  private Bitmap retrievePackIcon(Pack pack) {
-    Bitmap packIcon = null;
+  private void retrieveAndSetPackIcon(Pack pack) {
     // First check cache, then hit server
-    if (PackIconUtils.packIconCached(pack.getIconName(), mContext)) {
-      packIcon = PackIconUtils.getCachedIcon(pack.getIconName(), mContext);
+    if (PackIconUtils.isPackIconCached(pack.getIconName(), mContext)) {
+      setPackIcon(PackIconUtils.getCachedIcon(pack.getIconName(), mContext));
     } else {
-      packIcon = PackClient.getInstance().fetchIconForPack(pack.getIconPath());
-      if (packIcon != null) {
-        // Now cache it since it was not found locally
-        PackIconUtils.storeIcon(pack.getIconName(), packIcon, mContext);
-      } else {
-        Log.w(TAG, "Pack icon " + pack.getIconName() + " not retrieved from server, using default.");
-      }
+      PackClient.fetchIconOnThread(pack, this, mContext);
     }
-    if (packIcon != null) {
-      packIcon = PackIconUtils.scaleIcon(packIcon, mContext);
-    }
-    
-    return packIcon;
   }
-  
+
+  /**
+   * Sets the pack icon for the pack row and shows it (default is invisible)
+   * @param icon - image to display for the icon view
+   */
+  public void setPackIcon(Bitmap icon) {
+    if (icon != null) {
+      mIcon.setImageBitmap(icon);
+      mIcon.setVisibility(View.VISIBLE);
+    }
+  }
+
   /**
    * Get the pack that is associated with this layout
    */
