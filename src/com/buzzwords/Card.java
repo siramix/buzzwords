@@ -60,9 +60,9 @@ public class Card implements Serializable {
   private Pack mPack;
   
   /**
-   * Set to true when we know a card has been seen
+   * Set to true when we know a card has been seen more than others in pack
    */
-  private boolean mSeen;
+  private boolean mSeenMoreThanOthers;
   
   /**
    * Function for breaking a string into an array list of strings based on the
@@ -179,7 +179,7 @@ public class Card implements Serializable {
     mTitle = title;
     mBadWords = badWords;
     mPack = pack;
-    mSeen = false;
+    mSeenMoreThanOthers = false; 
   }
 
   /**
@@ -281,16 +281,16 @@ public class Card implements Serializable {
    * Return whether the card has been seen more than others in the pack
    * @return
    */
-  public boolean hasBeenSeen() {
-    return mSeen;
+  public boolean hasBeenSeenMoreThanOthers() {
+    return mSeenMoreThanOthers;
   }
   
   /**
    * Set whether the card has been seen or not
    * @param trueFalse
    */
-  public void setSeen(boolean bool) {
-    mSeen = bool;
+  public void setSeenMoreThanOthers(boolean bool) {
+    mSeenMoreThanOthers = bool;
   }
   
   /**
