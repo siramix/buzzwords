@@ -74,6 +74,11 @@ public class TurnSummaryActivity extends Activity {
         Log.d(TAG, "mMenuListener OnClick()");
       }
 
+      // play confirm sound
+      SoundManager sm = SoundManager.getInstance(TurnSummaryActivity.this
+          .getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
+
       TurnSummaryActivity.this.openOptionsMenu();
     }
   };
@@ -117,6 +122,12 @@ public class TurnSummaryActivity extends Activity {
         Log.d(TAG, Integer.toString(cardIndex));
       }
 
+      // play confirm sound
+      SoundManager sm = SoundManager.getInstance(TurnSummaryActivity.this
+          .getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
+
+      
       Card curCard = mCardList.get(cardIndex);
 
       Intent cardReviewIntent = new Intent(
