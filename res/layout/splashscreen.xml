@@ -17,9 +17,10 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Splash_Root"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bg_generic" >
+    android:background="@color/black" >
 
     <LinearLayout
         android:id="@+id/Splash_LogoGroup"
