@@ -708,7 +708,7 @@ public class PackPurchaseActivity extends Activity {
     SharedPreferences packSelectionPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
         Context.MODE_PRIVATE);
 
-    return packSelectionPrefs.getBoolean(String.valueOf(pack.getId()), false);
+    return packSelectionPrefs.getBoolean(String.valueOf(pack.getId()), true);
   }
 
   /**
