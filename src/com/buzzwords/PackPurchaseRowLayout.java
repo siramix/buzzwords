@@ -61,7 +61,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
   private boolean mIsPackEnabled;
   private boolean mIsRowOdd;
   private boolean mIsPackPurchased;
-
+  
   /*
    * Listeners for click events on this row
    */
@@ -159,6 +159,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
     mTitle.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     mTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28);
     mTitle.setWidth((int) (DENSITY * 190 + 0.5f));
+    mTitle.setMaxLines(1);
     mTitle.setEllipsize(TruncateAt.END);
     mTitle.setHorizontallyScrolling(true);
     mTitle.setTextColor(this.getResources().getColor(R.color.text_default));
@@ -263,6 +264,35 @@ public class PackPurchaseRowLayout extends FrameLayout {
       setViewAttributes(getResources().getColor(bgColor), 0, getResources()
           .getColor(R.color.white), 0, !mIsPackPurchased);
     }
+
+    // Scale the text to fit the view
+    final int TEXTVIEW_WIDTH = (int) ((getDesiredTitleWidth() - mTitle
+        .getPaddingLeft()) * this.getResources().getDisplayMetrics().density + 0.5f);
+    int size = 28;
+    mTitle.setTextSize(size);
+    while (mTitle.getPaint().measureText(mPack.getName()) > TEXTVIEW_WIDTH) {
+      if (size < 20) {
+        break;
+      }
+      mTitle.setTextSize(--size);
+    }
+  }
+
+  /*
+   * Returns the desired width for the title based on how the view is used. The
+   * layout should really be a linear layout with the title on fill parent and
+   * weighted.
+   */
+  private int getDesiredTitleWidth()
+  {
+    if(mIsRowClickable && mIsPackPurchased)
+      return 250;
+    else if (mIsRowClickable && !mIsPackPurchased)
+      return 178;
+    else if (!mIsRowClickable && mIsPackPurchased)
+      return 270;
+    else
+      return 145;
   }
 
   /**
@@ -412,6 +442,11 @@ public class PackPurchaseRowLayout extends FrameLayout {
    * selection events
    */
   public void setRowClickable(boolean isClickable) {
+    // Must resize the text when used in PackInfo cause of padding
+    // on the dialog. This is kinda hacky.
+    final float DENSITY = this.getResources().getDisplayMetrics().density;
+    mTitle.setWidth((int) (DENSITY * getDesiredTitleWidth() + 0.5f));
+    
     mIsRowClickable = isClickable;
     mContents.setClickable(mIsRowClickable);
     mInfoButton.setClickable(mIsRowClickable);

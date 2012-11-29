@@ -203,6 +203,9 @@ public class TeamSelectLayout extends RelativeLayout {
     int size = INITIAL_TEXTSIZE;
     mTeamText.setTextSize(size);
     while (mTeamText.getPaint().measureText(mTeam.getName()) > TEXTVIEW_WIDTH) {
+      if(size < 20) {
+        break;
+      }
       mTeamText.setTextSize(--size);
     }
 
