@@ -20,6 +20,7 @@ package com.buzzwords;
 import android.content.Context;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -44,7 +45,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
 
   private LinearLayout mContents;
   private TextView mStanding;
-  private AutoResizeTextView mTeamText;
+  private TextView mTeamText;
 
   private TextView mScore;
 
@@ -123,7 +124,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
     mStanding.setVisibility(View.GONE);
 
     // Initialize TeamName
-    mTeamText = new AutoResizeTextView(mContext);
+    mTeamText = new TextView(mContext);
 
     mTeamText.setText("Null Teambalamoramofamo");
     mTeamText.setIncludeFontPadding(false);
@@ -134,7 +135,8 @@ public class ScoreboardRowLayout extends RelativeLayout {
     mTeamText.setPadding((int) (DENSITY * 10 + 0.5f), 0, 0, 0);
     mTeamText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-    mTeamText.setMaxLines(1);
+    mTeamText.setEllipsize(TruncateAt.END);
+    mTeamText.setHorizontallyScrolling(true);
 
     // Initialize Score view
     mScore = new TextView(mContext);

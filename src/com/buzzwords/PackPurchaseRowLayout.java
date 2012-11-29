@@ -24,6 +24,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -50,7 +51,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
   // View members
   private RelativeLayout mContents;
   private ImageView mIcon;
-  private AutoResizeTextView mTitle;
+  private TextView mTitle;
   private TextView mPrice;
   private ImageView mRowEndBG;
   private ImageButton mInfoButton;
@@ -60,9 +61,6 @@ public class PackPurchaseRowLayout extends FrameLayout {
   private boolean mIsPackEnabled;
   private boolean mIsRowOdd;
   private boolean mIsPackPurchased;
-
-  private final int INITIAL_TEXTSIZE = 28;
-  private final int INITIAL_TEXTWIDTH = 175;
 
   /*
    * Listeners for click events on this row
@@ -105,7 +103,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
     mContents = new RelativeLayout(mContext);
     mIcon = new ImageView(mContext);
     mIcon.setId(++id);
-    mTitle = new AutoResizeTextView(mContext);
+    mTitle = new TextView(mContext);
     mTitle.setId(++id);
     mPrice = new TextView(mContext);
     mPrice.setId(++id);
@@ -159,10 +157,10 @@ public class PackPurchaseRowLayout extends FrameLayout {
     mTitle.setLayoutParams(titleTextParams);
     mTitle.setPadding((int) (DENSITY * 5 + 0.5f), 0, 0, 0);
     mTitle.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-    mTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, INITIAL_TEXTSIZE);
-    mTitle.setWidth((int) (DENSITY * INITIAL_TEXTWIDTH + 0.5f));
-    mTitle.setMinTextSize(22);
-    mTitle.setMaxLines(1);
+    mTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28);
+    mTitle.setWidth((int) (DENSITY * 190 + 0.5f));
+    mTitle.setEllipsize(TruncateAt.END);
+    mTitle.setHorizontallyScrolling(true);
     mTitle.setTextColor(this.getResources().getColor(R.color.text_default));
 
     // Initialize End Group and add contents
@@ -235,7 +233,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
   @Override
   protected void onDraw(Canvas canvas) {
     int bgColor;
-    
+
     if (mIsRowClickable && mIsPackPurchased) {
       // Render a purchased pack that is not in PackInfo
       if (mIsPackEnabled) {
@@ -253,7 +251,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
             false);
       }
     } else {
-      // Render a generic PackInfo row or a Purchaseable rowa
+      // Render a generic PackInfo row or a Purchaseable row
       if (mIsPackPurchased) {
         bgColor = R.color.packPurchaseSelected;
       }
@@ -264,18 +262,6 @@ public class PackPurchaseRowLayout extends FrameLayout {
       }
       setViewAttributes(getResources().getColor(bgColor), 0, getResources()
           .getColor(R.color.white), 0, !mIsPackPurchased);
-      
-      //mTitle.resizeText();
-      /*
-      // Scale the text to fit the view
-      final int TEXTVIEW_WIDTH = (int) ((textViewWidth - mTitle
-          .getPaddingLeft()) * this.getResources().getDisplayMetrics().density + 0.5f);
-      int size = INITIAL_TEXTSIZE;
-      mTitle.setTextSize(size);
-      while (mTitle.getPaint().measureText(mPack.getName()) > TEXTVIEW_WIDTH) {
-        mTitle.setTextSize(--size);
-      }
-      */
     }
   }
 
@@ -426,10 +412,6 @@ public class PackPurchaseRowLayout extends FrameLayout {
    * selection events
    */
   public void setRowClickable(boolean isClickable) {
-    // Resize width of view to account for padding around dialog
-    int width = isClickable ? INITIAL_TEXTWIDTH : 140;
-    mTitle.setWidth((int) (this.getResources().getDisplayMetrics().density
-        * width + 0.5f));
     mIsRowClickable = isClickable;
     mContents.setClickable(mIsRowClickable);
     mInfoButton.setClickable(mIsRowClickable);
