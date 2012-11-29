@@ -27,7 +27,6 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -50,12 +49,9 @@ public class TeamSelectLayout extends RelativeLayout {
   private LinearLayout mButtons;
   private FrameLayout mFrame;
   private View mFrameForeground;
-  private TextView mTeamText;
+  private AutoResizeTextView mTeamText;
   private View mButtonAddTeam;
   private ImageButton mButtonEditTeamName;
-
-  private final int INITIAL_TEXTSIZE = 32;
-  private final int INITIAL_TEXTWIDTH = 270;
 
   // Track if this team select is active or inactive
   private boolean mIsTeamActive;
@@ -102,6 +98,7 @@ public class TeamSelectLayout extends RelativeLayout {
 
     // Store off density in order to convert to pixels
     final float DENSITY = this.getResources().getDisplayMetrics().density;
+
     // Create the views
 
     // Initialize the group for the frame
@@ -113,7 +110,6 @@ public class TeamSelectLayout extends RelativeLayout {
     mFrame.setBackgroundColor(this.getResources().getColor(R.color.black));
 
     // Initialize foreground in frame
-
     mFrameForeground = new View(mContext);
     mFrameForeground.setBackgroundColor(this.getResources().getColor(
         R.color.genericBG));
@@ -121,14 +117,15 @@ public class TeamSelectLayout extends RelativeLayout {
         LayoutParams.FILL_PARENT));
 
     // Initialize view for team name
-    mTeamText = new TextView(mContext);
+    mTeamText = new AutoResizeTextView(mContext);
     mTeamText.setText("No team assigned");
     mTeamText.setLayoutParams(new LayoutParams((int) (DENSITY
-        * INITIAL_TEXTWIDTH + 0.5f), LayoutParams.FILL_PARENT));
+        * 270 + 0.5f), LayoutParams.FILL_PARENT));
     mTeamText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
     mTeamText.setIncludeFontPadding(false);
     mTeamText.setPadding((int) (DENSITY * 15 + 0.5f), 0, 0, 0);
-    mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, INITIAL_TEXTSIZE);
+    mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 32);
+    mTeamText.setMaxLines(1);
 
     // Add the views to frame
     mFrame.addView(mFrameForeground);
@@ -196,16 +193,6 @@ public class TeamSelectLayout extends RelativeLayout {
    */
   public void refresh() {
     mTeamText.setText(mTeam.getName());
-
-    // Scale the text to fit the view
-    final int TEXTVIEW_WIDTH = (int) ((INITIAL_TEXTWIDTH - mTeamText
-        .getPaddingLeft()) * this.getResources().getDisplayMetrics().density + 0.5f);
-    int size = INITIAL_TEXTSIZE;
-    mTeamText.setTextSize(size);
-    while (mTeamText.getPaint().measureText(mTeam.getName()) > TEXTVIEW_WIDTH) {
-      mTeamText.setTextSize(--size);
-    }
-
   }
 
   /*
