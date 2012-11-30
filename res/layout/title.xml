@@ -35,8 +35,8 @@
 
         <ImageView
             android:id="@+id/Title_Starburst"
-            android:layout_width="1000dp"
-            android:layout_height="1000dp"
+            android:layout_width="600dp"
+            android:layout_height="600dp"
             android:layout_gravity="center"
             android:src="@drawable/title_starburst" 
             android:contentDescription="@string/description_title_starburst" />

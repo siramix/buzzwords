@@ -19,7 +19,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_generic" >
+    android:background="@color/genericBG_trimDark" >
 
     <View
         android:id="@+id/Rules_Header_BG"

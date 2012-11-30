@@ -30,8 +30,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -271,6 +275,7 @@ public class TitleActivity extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "CreditsListener OnClick()");
       }
+
       v.setEnabled(false);
       mContinueMusic = true;
 
@@ -482,8 +487,21 @@ public class TitleActivity extends Activity {
     tagline.setTypeface(anton);
     tagline.setAnimation(this.fadeFacebookTagline());
     tagline.setVisibility(View.INVISIBLE);
-  }
 
+    // Force window to be 32 bit
+    getWindow().setFormat(PixelFormat.RGBA_8888);
+
+    // Force gradient Bitmap to be 32 bit (Note, I'm not sure this actually
+    // helps.)
+    BitmapFactory.Options factoryOptions = new BitmapFactory.Options();
+    factoryOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    Bitmap starburst = BitmapFactory.decodeResource(getResources(),
+        R.drawable.title_starburst, factoryOptions);
+    findViewById(R.id.Title_Starburst).setBackgroundDrawable(
+        new BitmapDrawable(starburst));
+
+  }
+  
   /**
    * Override onPause to prevent activity specific processes from running while
    * app is in background
@@ -590,10 +608,11 @@ public class TitleActivity extends Activity {
         
         displayTitleDialog();
 
-        // Animate (rotate) the starburst which would have slowed down the install process
-        View starburst = (View) findViewById(R.id.Title_Starburst);
-        starburst.startAnimation(rotateStarburst());
-      }
+      // Animate (rotate) the starburst which would have slowed down the install
+      // process
+      View starburst = (View) findViewById(R.id.Title_Starburst);
+      starburst.startAnimation(rotateStarburst());
+    }
   }
   
   /**
