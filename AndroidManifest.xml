@@ -20,9 +20,7 @@
         android:icon="@drawable/icon"
         android:label="@string/AppName"
         android:theme="@style/BuzzWordsTheme" >
-        <receiver
-            android:name="com.amazon.inapp.purchasing.ResponseReceiver"
-            android:exported="false" >
+        <receiver android:name="com.amazon.inapp.purchasing.ResponseReceiver" >
             <intent-filter>
                 <action
                     android:name="com.amazon.inapp.purchasing.NOTIFY"
