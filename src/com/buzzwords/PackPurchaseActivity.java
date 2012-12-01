@@ -110,14 +110,14 @@ public class PackPurchaseActivity extends Activity {
       Map<String, ?> packSelections = new HashMap<String, Boolean>();
       packSelections = packSelectionPrefs.getAll();
 
+      // Only advance to next screen if a pack is selected
       boolean anyPackSelected = false;
       for (String packId : packSelections.keySet()) {
-        if (packSelectionPrefs.getBoolean(packId, false) == true) {
+        if (packSelectionPrefs.getBoolean(packId, true) == true) {
           anyPackSelected = true;
         }
       }
 
-      // Only advance to next screen if a pack is selected
       if (anyPackSelected == true) {
         startActivity(new Intent(PackPurchaseActivity.this.getApplication()
             .getString(R.string.IntentGameSetup), getIntent().getData()));
@@ -484,13 +484,13 @@ public class PackPurchaseActivity extends Activity {
     // If the most recent request was to open Facebook and we return to Buzzwords, 
     // then install the Facebook pack
     if (requestCode == FACEBOOK_REQUEST_CODE) {
-      final SharedPreferences.Editor editor = getSharedPreferencesEditor();
+      final SharedPreferences.Editor userPurchases = getSharedPreferencesEditor();
       // The requires sync preference must be set globally (across users) so switching users triggers a sync
       final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
-      editor.putBoolean(String.valueOf(PackPurchaseConsts.FACEBOOK_PACK_ID), true);
+      userPurchases.putBoolean(String.valueOf(PackPurchaseConsts.FACEBOOK_PACK_ID), true);
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
       syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
-      editor.commit();
+      userPurchases.commit();
       syncPrefEditor.commit();
     }
 
@@ -697,9 +697,20 @@ public class PackPurchaseActivity extends Activity {
       }
     }
   }
+  
+  /**
+   * Return the SharedPreferences for selected packs.
+   * @return
+   */
+  public SharedPreferences getPackSelectionPrefs() {
+    final SharedPreferences packSelectionPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
+        Context.MODE_PRIVATE);
+
+    return packSelectionPrefs;
+  }
 
   /**
-   * Get the current value of the pack preferences for a given pack name
+   * Get the current value of the pack preferences for a given pack name.
    * 
    * @param packName
    * @return
@@ -708,7 +719,7 @@ public class PackPurchaseActivity extends Activity {
     SharedPreferences packSelectionPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
         Context.MODE_PRIVATE);
 
-    return packSelectionPrefs.getBoolean(String.valueOf(pack.getId()), true);
+    return packSelectionPrefs.getBoolean(String.valueOf(pack.getId()), false);
   }
 
   /**

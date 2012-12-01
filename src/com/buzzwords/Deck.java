@@ -178,10 +178,15 @@ public class Deck {
    */
   public void installPack(Pack pack) throws RuntimeException {
     Log.d(TAG, "INSTALLING PACK: \n" + pack.getName());
-    // If pack is out of date, delete the icon
-    if (mDatabaseOpenHelper.packInstalled(pack.getId(), pack.getVersion()) == pack.getId()) {
+    
+    // If pack is out of date, delete the icon and get the new
+    int packState = mDatabaseOpenHelper.packInstalled(pack.getId(), pack.getVersion());
+    if (packState == pack.getId()) {
       PackIconUtils.deleteIcon(pack.getIconName(), mContext);
+    } else if (packState == PACK_NOT_PRESENT) {
+      setPackSelectionPref(pack.getId(), true);
     }
+    
     mDatabaseOpenHelper.installOrUpdatePackFromServer(pack);
   }
   
@@ -193,6 +198,7 @@ public class Deck {
   public synchronized void installStarterPacks() throws RuntimeException {
     Log.d(TAG, "INSTALLING STARTER PACKS");
     mDatabaseOpenHelper.installStarterPacks(mStarterPack);
+    setPackSelectionPref(mStarterPack.getId(), true);
   }
   
   /** 
@@ -206,6 +212,7 @@ public class Deck {
     if (pack != null) {
       PackIconUtils.deleteIcon(pack.getIconName(), mContext);
       mDatabaseOpenHelper.uninstallPack(String.valueOf(packId));
+      setPackSelectionPref(packId, false);
     }
     else {
       Log.d(TAG, "PackId " + String.valueOf(packId) + " not found in database.");
@@ -277,6 +284,19 @@ public class Deck {
     setPackWeights();
     calculatePackDistribution();
   }
+
+  /**
+   * Change the pack preference for the passed in pack to either on or off.
+   * @param id of pack to remove (this is the preference key)
+   * @param onOff true of false (true to select)
+   */
+  public void setPackSelectionPref(int id, Boolean onOff) {
+    // Store the pack's boolean in the preferences file for pack preferences
+    SharedPreferences.Editor packPrefsEdit = mContext.getSharedPreferences(
+        Consts.PREFFILE_PACK_SELECTIONS, Context.MODE_PRIVATE).edit();
+    packPrefsEdit.putBoolean(String.valueOf(id), onOff);
+    packPrefsEdit.commit();
+  }
   
   /**
    * Prepare for a game by caching the cards necessary for the entire game.  
@@ -327,7 +347,6 @@ public class Deck {
             Consts.PREFFILE_PACK_SELECTIONS, Context.MODE_PRIVATE);
     Map<String, ?> packSelections = new HashMap<String, Boolean>();
     packSelections = packPrefs.getAll();
-    
     for (String packId : packSelections.keySet()) {
       if (packPrefs.getBoolean(packId, false) == true) {
         Pack newPack = mDatabaseOpenHelper.getPackFromDB(packId);
@@ -337,6 +356,8 @@ public class Deck {
           newPack.setSize(mDatabaseOpenHelper.countCards(packsToCount));
           mSelectedPacks.add(newPack);
         } else {
+          // Pack doesn't exist in the database, so let's unselect it
+          setPackSelectionPref(Integer.valueOf(packId), false);
           Log.w(TAG, "Preference set for pack " + String.valueOf(packId) + 
                      " which does not exist in the database. " +
                      "This may be due to changing users which will wipe purchased packs.");
