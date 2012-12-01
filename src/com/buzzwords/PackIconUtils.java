@@ -89,7 +89,7 @@ public class PackIconUtils {
     String path = buildIconPath(iconName, context);
     boolean deleted = new File(path).delete();
     if (!deleted) {
-      Log.e(TAG, "Error deleting icon: " + path);
+      Log.w(TAG, "Error deleting icon: " + path);
     }
     return deleted;
   }

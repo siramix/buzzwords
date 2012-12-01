@@ -147,7 +147,7 @@ public class PackClient {
             packRow.setPackIcon(packIcon);
             PackIconUtils.storeIcon(pack.getIconName(), packIcon, context);
           } else {
-            Log.e(TAG, "Fetched icon response was null for " + pack.getIconPath());
+            Log.w(TAG, "Fetched icon response was null for " + pack.getIconPath());
           }
         }
     };
