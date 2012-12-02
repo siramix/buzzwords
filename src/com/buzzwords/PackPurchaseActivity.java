@@ -745,10 +745,9 @@ public class PackPurchaseActivity extends Activity {
     int totalCards = 0;
 
     for (Pack pack : mUnlockedPacks) {
-      if (getPackSelectedPref(pack)) {
-        totalSeen += pack.getNumCardsSeen();
-        totalCards += pack.getSize();
-      }
+      // Could show progress on only selected packs, but we are showing all
+      totalSeen += pack.getNumCardsSeen();
+      totalCards += pack.getSize();
     }
     
     ProgressBarView progress = (ProgressBarView) this.findViewById(R.id.PackPurchase_Progress);

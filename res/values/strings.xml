@@ -70,7 +70,7 @@
     <string name="title_button_label_buzz">Buzz</string>
     <string name="title_button_label_settings">Settings</string>
     <string name="title_button_label_rules">Rules</string>
-    
+
     <!-- Activity PackPurchase -->
     <string name="packpurchase_title">Select Word Packs</string>
     <string name="packpurchase_unlockedheader">Your Packs</string>
@@ -87,7 +87,7 @@
     <string name="turn_timesup">Time\'s Up!</string>
     <string name="turn_paused">Paused</string>
     <string name="turn_paused_subtext">Tap to Unpause</string>
-    
+
     <!-- Activity TurnSummary -->
     <string name="turnSummary_title">Results</string>
     <string name="turnSummary_total">Total: </string>
@@ -125,11 +125,11 @@
 
     <!-- Activity PackInfo -->
     <string name="packInfo_confirm_nobuy">OK</string>
-    <string name="packInfo_alreadyowned">You already have this pack!</string>
+    <string name="packInfo_alreadyowned">This pack is installed</string>
     <string name="packInfo_cardsinpack">Cards in Pack: %s</string>
     <string name="packInfo_button_free">Download (Free)</string>
     <string name="packInfo_button_pay">Purchase</string>
-    <string name="packInfo_button_facebook">Post It</string>
+    <string name="packInfo_button_facebook">Like Us</string>
 
     <!-- Activity GameSetup -->
     <string name="gameSetup_title">Game Setup</string>
@@ -140,7 +140,7 @@
     <string name="gameSetup_hint_GameType">Game limit determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
     <string name="gameSetup_hint_turns">Set the number of turns each team will take.</string>
     <string name="gameSetup_hint_score">Set the number of points a team needs to win. All teams will play an equal number of turns.</string>
-    
+
     <!-- Activity Rules -->
     <string name="rules_title">Rules</string>
     <string name="rules_basics_subheader">Basics</string>
@@ -191,7 +191,7 @@
     <string name="rules_final_subheader">Final Thoughts</string>
     <string name="rules_final_text1">We hope you enjoy playing Buzzwords!</string>
     <string name="rules_final_text2">If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or email us at buzzwords@siramix.com any time.  Feel free to reach out on Facebook as well!</string>
-    
+
     <!-- Activity Credits -->
     <string name="credits_title">Buzzwords Credits</string>
     <string name="credits_team_subheader">The Team</string>
@@ -206,8 +206,7 @@
     <string name="credits_font_francoisone">Francois One font by Vernon Adams</string>
     <string name="credits_font_luckiestguy">Luckiest Guy font, used in our icon, created by Brian J. Bonislawsky</string>
     <string name="credits_others">Thank you to our friends and family who helped us create and test Buzzwords!</string>
-    
-    
+
     <!-- Settings -->
     <string name="settings_scorechange_summary">Current score change is </string>
     <string name="toast_settings_shuffled">All packs have been shuffled.</string>
@@ -215,7 +214,7 @@
     <string name="shuffleDialog_text">Buzzwords handles shuffling on its own, but this will let you force a shuffle.  You will still keep all of your cards, but progress on all packs will be reset and all cards reordered. Are you sure you want to reshuffle?</string>
     <string name="shuffleDialog_positiveBtn">Yes, Shuffle!</string>
     <string name="shuffleDialog_negativeBtn">Nevermind!</string>
-    
+
     <!-- Dialog FirstOpen -->
     <string name="openingDialog_title">First Time?</string>
     <string name="openingDialog_text">Thank you for trying Buzzwords!
