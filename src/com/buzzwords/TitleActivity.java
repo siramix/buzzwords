@@ -181,7 +181,7 @@ public class TitleActivity extends Activity {
       break;
     }
     if (on) {
-      label.setTextSize(40);
+      label.setTextSize(45);
     } else {
       label.setTextSize(42);
     }
