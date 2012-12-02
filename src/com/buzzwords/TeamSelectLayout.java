@@ -235,6 +235,13 @@ public class TeamSelectLayout extends RelativeLayout {
   public Team getTeam() {
     return mTeam;
   }
+  
+  /*
+   * Get whether the team represented by this view is Active
+   */
+  public boolean getActiveness() {
+    return mIsTeamActive;
+  }
 
   /*
    * Set the view to display as active or inactive (bright or dim, for example)
@@ -279,12 +286,10 @@ public class TeamSelectLayout extends RelativeLayout {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "AddTeamListener onClick()");
       }
-      // Toggle the view's display status
-      setActiveness(!mIsTeamActive);
 
       // Send event to any listeners
       if (mTeamAddedListener != null) {
-        mTeamAddedListener.onTeamAdded(mTeam, mIsTeamActive);
+        mTeamAddedListener.onTeamAdded(TeamSelectLayout.this, mTeam);
       }
 
     }

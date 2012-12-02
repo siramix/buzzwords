@@ -64,7 +64,11 @@ public class TurnSummaryActivity extends Activity {
   private List<Card> mCardList;
   private List<ImageView> mCardViewList;
   private List<View> mCardLineList;
+  
+  private boolean mIsActivityClosing;
 
+  
+  
   /**
    * Listener for menu button
    */
@@ -72,6 +76,10 @@ public class TurnSummaryActivity extends Activity {
     public void onClick(View v) {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "mMenuListener OnClick()");
+      }
+      // Do not let this come up if activity has moved on.
+      if (mIsActivityClosing) {
+        return;
       }
 
       // play confirm sound
@@ -91,7 +99,14 @@ public class TurnSummaryActivity extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "NextTurnListener OnClick()");
       }
+      // Throw out any queued onClicks.
+      if(!v.isEnabled()){
+        return;
+      }
+      // Set flag that tells other listeners to be disobeyed as well
+      mIsActivityClosing = true;
       v.setEnabled(false);
+      
       BuzzWordsApplication application = (BuzzWordsApplication) TurnSummaryActivity.this
           .getApplication();
       GameManager gm = application.getGameManager();
@@ -107,7 +122,6 @@ public class TurnSummaryActivity extends Activity {
         clearStackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(clearStackIntent);
       }
-
     }
   }; // End NextTurnListener
 
@@ -120,6 +134,10 @@ public class TurnSummaryActivity extends Activity {
       int cardIndex = mCardLineList.indexOf(v);
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, Integer.toString(cardIndex));
+      }
+      // Do not let this come up if activity has moved on.
+      if (mIsActivityClosing) {
+        return;
       }
 
       // play confirm sound
@@ -455,14 +473,19 @@ public class TurnSummaryActivity extends Activity {
 
   /**
    * Resume the activity when it comes to the foreground. If the calling Intent
-   * bundles a new card index and state the card in question is update
+   * bundles a new card index and state the card in question is updated
    * accordingly.
    */
   @Override
   protected void onResume() {
-
     super.onResume();
-
+    
+    // Reenable any buttons that were disabled to prevent double clicks
+    Button playGameButton = (Button) this
+        .findViewById(R.id.TurnSummary_NextTurn);
+    playGameButton.setEnabled(true);
+    
+    mIsActivityClosing = false;
   }
 
   /**

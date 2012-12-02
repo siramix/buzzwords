@@ -52,6 +52,11 @@ public class PackPurchaseActivity extends Activity {
    */
   private boolean mContinueMusic;
   
+  /**
+   * Flag to prevent other activities from opening after one is launched
+   */
+  private boolean mIsActivityClosing;
+  
   List<View> mPackLineList;
   
   // Our local packs.
@@ -95,6 +100,10 @@ public class PackPurchaseActivity extends Activity {
   private OnClickListener mGameSetupListener = new OnClickListener() {
     public void onClick(View v) {
       Log.d(TAG, "PlayGameListener OnClick()");
+      // Throw out any queued onClicks.
+      if(!v.isEnabled()){
+        return;
+      }
 
       // Carry music into GameSetup
       mContinueMusic = true;
@@ -119,6 +128,10 @@ public class PackPurchaseActivity extends Activity {
       }
 
       if (anyPackSelected == true) {
+        // Only disable this view when we are definitely advancing
+        v.setEnabled(false);
+        mIsActivityClosing = true;
+        
         startActivity(new Intent(PackPurchaseActivity.this.getApplication()
             .getString(R.string.IntentGameSetup), getIntent().getData()));
       } else {
@@ -174,6 +187,12 @@ public class PackPurchaseActivity extends Activity {
     super.onResume();
     PurchasingManager.initiateGetUserIdRequest();
     refreshAllPackLayouts();
+    
+    // Re-enable buttons that were disabled to prevent double click.
+    Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
+    btn.setEnabled(true);
+    
+    mIsActivityClosing = false;
     
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this
@@ -598,6 +617,11 @@ public class PackPurchaseActivity extends Activity {
   private final OnPackSelectedListener mSelectPackListener = new OnPackSelectedListener() {
     @Override
     public void onPackSelected(Pack pack, boolean selectionStatus) {
+      // Don't let packs change if the activity is about to close
+      if(mIsActivityClosing){
+        return;
+      }
+      
       setPackSelectedPref(pack, selectionStatus);
       updateCardCountViews();
 
@@ -619,6 +643,12 @@ public class PackPurchaseActivity extends Activity {
 
     @Override
     public void onPackInfoRequested(Pack pack) {
+      
+      // Don't let this come up if they've already advanced
+      if(mIsActivityClosing){
+        return;
+      }
+      
       // play confirm sound when points are added
       SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
           .getBaseContext());

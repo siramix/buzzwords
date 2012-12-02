@@ -74,6 +74,11 @@ public class TitleActivity extends Activity {
    * flag used for stopping music OnStop() event.
    */
   private boolean mContinueMusic;
+  
+  /**
+   * Flag to prevent other activities from opening after one is launched
+   */
+  private boolean mIsActivityClosing;
 
   private SharedPreferences mSharedPrefs;
 
@@ -176,7 +181,7 @@ public class TitleActivity extends Activity {
       break;
     }
     if (on) {
-      label.setTextSize(45);
+      label.setTextSize(40);
     } else {
       label.setTextSize(42);
     }
@@ -191,7 +196,13 @@ public class TitleActivity extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "PlayGameListener OnClick()");
       }
+      // Throw out any queued onClicks.
+      if(!v.isEnabled() || mIsActivityClosing){
+        return;
+      }
+      mIsActivityClosing = true;
       v.setEnabled(false);
+      
       mContinueMusic = true;
 
       // play confirm sound
@@ -212,6 +223,11 @@ public class TitleActivity extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "PlayGameListener OnClick()");
       }
+      // Throw out any queued onClicks.
+      if(!v.isEnabled() || mIsActivityClosing){
+        return;
+      }
+      mIsActivityClosing = true;
       v.setEnabled(false);
       mContinueMusic = false;
 
@@ -233,6 +249,11 @@ public class TitleActivity extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "SettingsListener OnClick()");
       }
+      // Throw out any queued onClicks.
+      if(!v.isEnabled() || mIsActivityClosing){
+        return;
+      }
+      mIsActivityClosing = true;
       v.setEnabled(false);
       mContinueMusic = true;
 
@@ -254,6 +275,11 @@ public class TitleActivity extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "RulesListener OnClick()");
       }
+      // Throw out any queued onClicks.
+      if(!v.isEnabled() || mIsActivityClosing){
+        return;
+      }
+      mIsActivityClosing = true;
       v.setEnabled(false);
       mContinueMusic = true;
 
@@ -275,7 +301,11 @@ public class TitleActivity extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "CreditsListener OnClick()");
       }
-
+      // Throw out any queued onClicks.
+      if(!v.isEnabled() || mIsActivityClosing){
+        return;
+      }
+      mIsActivityClosing = true;
       v.setEnabled(false);
       mContinueMusic = true;
 
@@ -298,6 +328,11 @@ public class TitleActivity extends Activity {
       if (BuzzWordsApplication.DEBUG) {
         Log.d(TAG, "AboutUsListener OnClick()");
       }
+      // Throw out any queued onClicks.
+      if(!v.isEnabled() || mIsActivityClosing){
+        return;
+      }
+      mIsActivityClosing = true;
       v.setEnabled(false);
       mContinueMusic = false;
 
@@ -433,9 +468,6 @@ public class TitleActivity extends Activity {
     new InstallerAndAnimator().execute();
     
     // Assign listeners to the delegate buttons
-    View playbutton = (View) this.findViewById(R.id.Title_Button_Play);
-    playbutton.setOnClickListener(mPlayGameListener);
-
     View delegate = (View) this.findViewById(R.id.Title_BuzzDelegate);
     delegate.setOnTouchListener(mTouchPlayListener);
     delegate.setOnClickListener(mBuzzerListener);
@@ -448,13 +480,8 @@ public class TitleActivity extends Activity {
     delegate.setOnTouchListener(mTouchPlayListener);
     delegate.setOnClickListener(mRulesListener);
 
-    ImageButton rulesButton = (ImageButton) this
-        .findViewById(R.id.Title_RulesButton);
-    rulesButton.setOnClickListener(mRulesListener);
-
-    ImageButton buzzerButton = (ImageButton) this
-        .findViewById(R.id.Title_BuzzButton);
-    buzzerButton.setOnClickListener(mBuzzerListener);
+    View playbutton = (View) this.findViewById(R.id.Title_Button_Play);
+    playbutton.setOnClickListener(mPlayGameListener);
 
     ImageButton aboutusButton = (ImageButton) this
         .findViewById(R.id.Title_FB_BuzzwordsApp);
@@ -533,10 +560,10 @@ public class TitleActivity extends Activity {
       Log.d(TAG, "onResume()");
     }
     super.onResume();
+    
+    mIsActivityClosing = false;
 
     // Re-enable things
-    this.findViewById(R.id.Title_RulesButton).setEnabled(true);
-    this.findViewById(R.id.Title_BuzzButton).setEnabled(true);
     this.findViewById(R.id.Title_FB_BuzzwordsApp).setEnabled(true);
     this.findViewById(R.id.Title_Button_Play).setEnabled(true);
     this.findViewById(R.id.Title_BuzzDelegate).setEnabled(true);
