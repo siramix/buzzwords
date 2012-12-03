@@ -1,23 +1,16 @@
 {
-  "2" : {
+  "100" : {
     "itemType": "ENTITLED",
     "price": 0.99,
-	"title": "Basic",
-	"description": "Button Clicker - Now in Blue!",
+    "title": "Extra Buzzwords",
+    "description": "A pack of extra buzzwords for anyone who wants to beef up their original buzzwords deck.",
     "smallIconUrl": "http://siramix.com/buzzwords/packs/packs/icons/packicon_classic2.png"
   },
-  "4" : {
+  "200" : {
     "itemType": "ENTITLED",
     "price": 0.99,
-	"title": "Amazon Pack 2",
-	"description": "Button Clicker - Now in Green!",
-    "smallIconUrl": "http://some/image.jpg"
-  },
-  "5" : {
-    "itemType": "ENTITLED",
-    "price": 0.99,
-	"title": "Winter Holidays",
-	"description": "Description hosted by Amazon for the Holiday Pack!",
-    "smallIconUrl": "http://siramix.com/buzzwords/packs/packs/icons/winter_holidays.png"
+    "title": "Winter Holidays",
+    "description": "Celebrate the holiday season with this festive set of wintery words.",
+    "smallIconUrl": "http://siramix.com/buzzwords/packs/packs/icons/packicon_christmas.png"
   }
 }

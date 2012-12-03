@@ -88,6 +88,7 @@ public class Deck {
   private LinkedList<Pack> mSelectedPacks;
 
   private Pack mStarterPack;
+  private Pack mStarterPack2;
   
   private Context mContext;
   
@@ -105,8 +106,12 @@ public class Deck {
     mCache = new LinkedList<Card>();
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
-    mStarterPack = new Pack(1, "starterPack", "freepacks/starterPack.json", "packs/icons/packicon_classic1.png",
-        "Description of pack1", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
+    mStarterPack = new Pack(1, "buzzwords_i", "packs/buzzwords_i.json", "packs/icons/packicon_classic1.png",
+        "The first of two pre-installed packs that include a mix of words from every catagory.", 
+        500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
+    mStarterPack2 = new Pack(2, "buzzwords_ii", "packs/buzzwords_ii.json", "packs/icons/packicon_classic2.png",
+        "The second of two pre-installed packs that include a mix of words from every catagory.", 
+        500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
   }
 
   /**
@@ -198,7 +203,9 @@ public class Deck {
   public synchronized void installStarterPacks() throws RuntimeException {
     Log.d(TAG, "INSTALLING STARTER PACKS");
     mDatabaseOpenHelper.installStarterPacks(mStarterPack);
+    mDatabaseOpenHelper.installStarterPacks(mStarterPack2);
     setPackSelectionPref(mStarterPack.getId(), true);
+    setPackSelectionPref(mStarterPack2.getId(), true);
   }
   
   /** 
@@ -483,7 +490,8 @@ public class Deck {
      */
     public synchronized void installStarterPacks(Pack starterPack) throws RuntimeException {
       Log.d(TAG, "installStarterPacks()");
-      installPackFromResource(starterPack, R.raw.starter);
+      installPackFromResource(starterPack, R.raw.buzzwords_i);
+      installPackFromResource(starterPack, R.raw.buzzwords_ii);
     }
     
     /**

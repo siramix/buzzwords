@@ -75,6 +75,7 @@ public class Pack implements Serializable {
    * @param purchaseType
    * @param version
    * @param installed (whether the pack has been installed yet)
+   * @param price
    */
   public Pack(int id, String name, String path, String iconPath, String description,
               int serverSize, int purchaseType, int version, boolean installed, String price) {
