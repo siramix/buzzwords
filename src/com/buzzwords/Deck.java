@@ -106,10 +106,10 @@ public class Deck {
     mCache = new LinkedList<Card>();
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
-    mStarterPack = new Pack(1, "buzzwords_i", "packs/buzzwords_i.json", "packs/icons/packicon_classic1.png",
+    mStarterPack = new Pack(1, "Buzzwords I", "packs/buzzwords_i.json", "packs/icons/packicon_classic1.png",
         "The first of two pre-installed packs that include a mix of words from every catagory.", 
         500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
-    mStarterPack2 = new Pack(2, "buzzwords_ii", "packs/buzzwords_ii.json", "packs/icons/packicon_classic2.png",
+    mStarterPack2 = new Pack(2, "Buzzwords II", "packs/buzzwords_ii.json", "packs/icons/packicon_classic2.png",
         "The second of two pre-installed packs that include a mix of words from every catagory.", 
         500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
   }
