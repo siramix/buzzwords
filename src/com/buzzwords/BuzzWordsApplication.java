@@ -36,6 +36,7 @@ public class BuzzWordsApplication extends Application {
   public static final boolean DEBUG = true;
   public static final boolean DEBUG_TIMERTICKS = false;
   public static final Markets MARKET = Markets.AMAZON;
+  public static final boolean USE_TEST_PACKS = true;
   public static Uri storeURI_Buzzwords;
   public static Uri storeURI_BuzzwordsLite;
   public static enum Markets {

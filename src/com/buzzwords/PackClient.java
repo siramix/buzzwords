@@ -52,6 +52,7 @@ public class PackClient {
    * URL Constants
    */
   private static final String URL_BASE = "http://siramix.com/buzzwords/packs/";
+  private static final String TEST_URL_BASE = "http://siramix.com/buzzwords/testpacks/";
   private static final String PACK_LIST_URL = "packs.json";
   
   /**
@@ -70,6 +71,21 @@ public class PackClient {
     }
     return mInstance;
   }
+  
+  /**
+   * Return the appropriate base URL for the packs data, depending on whether
+   * our USE_TEST_PACKS flag in BuzzwordsApplication is set or not.
+   * @return test or live pack baseUrl
+   */
+  public static String getPacksBaseURL() {
+    String baseURL;
+    if (BuzzWordsApplication.USE_TEST_PACKS) {
+      baseURL = TEST_URL_BASE;
+    } else {
+      baseURL = URL_BASE;
+    }
+    return baseURL;
+  }
 
   /**
    * Get all of the packs available on the server
@@ -82,7 +98,7 @@ public class PackClient {
     Log.d(TAG, "getServerPacks");
     StringBuilder in = null;
     LinkedList<Pack> ret = null;
-    in = doHTTPGet(URL_BASE+PACK_LIST_URL);
+    in = doHTTPGet(getPacksBaseURL()+PACK_LIST_URL);
     ret = PackParser.parsePacks(in);
     return ret;
   }
@@ -101,7 +117,7 @@ public class PackClient {
     StringBuilder in = null;
     CardJSONIterator ret = null;
     String packPath = pack.getPath();
-    in = doHTTPGet(URL_BASE+packPath);
+    in = doHTTPGet(getPacksBaseURL()+packPath);
     ret = PackParser.parseCards(in);
     return ret;
   }
@@ -114,7 +130,7 @@ public class PackClient {
    * @return Bitmap icon
    */
   private static Bitmap fetchIconForPack(String iconPath)  {
-    final String urlString = URL_BASE + iconPath;
+    final String urlString = getPacksBaseURL() + iconPath;
     try {
       InputStream is = fetch(urlString);
       Bitmap bitmap = BitmapFactory.decodeStream(is);
