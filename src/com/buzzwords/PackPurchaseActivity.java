@@ -236,7 +236,6 @@ public class PackPurchaseActivity extends Activity {
    */
   private void displayLockedPacks() {
     TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
-    ProgressBar placeHolderImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
     Typeface francois = Typeface.createFromAsset(getAssets(), "fonts/FrancoisOne.ttf");
     placeHolderText.setVisibility(View.VISIBLE);
     placeHolderText.setTypeface(francois);
@@ -247,9 +246,6 @@ public class PackPurchaseActivity extends Activity {
     // Don't reload the server packs or refresh the list if packs are already in memory.
     if (mServerPacks.isEmpty()) {
       fetchPurchasablePacksOnThread();
-    } else if (mServerError) {
-      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
-      placeHolderImage.setVisibility(View.GONE);
     } else {
       populateLockedPackLayout();
     }
@@ -260,8 +256,6 @@ public class PackPurchaseActivity extends Activity {
    */
   public void fetchPurchasablePacksOnThread() {
     final PackClient client = PackClient.getInstance();
-    final TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
-    final ProgressBar placeHolderImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message message) {
@@ -274,26 +268,23 @@ public class PackPurchaseActivity extends Activity {
         public void run() {
           try {
             mServerPacks = client.getServerPacks();
-            Message message = handler.obtainMessage(1, mServerPacks);
-            handler.sendMessage(message);
-            // TODO do my pref setting so I don't sync again (I don't know what this means)
           } catch (IOException e1) {
-            placeHolderText.setText(getString(R.string.packpurchase_nointernet));
-            placeHolderImage.setVisibility(View.GONE);
+            Log.e(TAG, "Error occurred during I/O of serverPacks.");
             mServerError = true;
+            Log.e(TAG, e1.toString());
             e1.printStackTrace();
           } catch (URISyntaxException e1) {
-            placeHolderText.setText(getString(R.string.packpurchase_nointernet));
-            placeHolderImage.setVisibility(View.GONE);
             mServerError = true;
+            Log.e(TAG, e1.toString());
             e1.printStackTrace();
           } catch (JSONException e1) {
             Log.e(TAG, "Error parsing pack JSON from server.");
-            placeHolderText.setText(getString(R.string.packpurchase_nointernet));
-            placeHolderImage.setVisibility(View.GONE);
             mServerError = true;
+            Log.e(TAG, e1.toString());
             e1.printStackTrace();
           }
+          Message message = handler.obtainMessage(1, mServerPacks);
+          handler.sendMessage(message);
         }
     };
     
@@ -333,10 +324,11 @@ public class PackPurchaseActivity extends Activity {
     ProgressBar placeHolderImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
     paidPackLayout.removeAllViewsInLayout();
     lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
-    if (lockedPacks.size() == 0) {
+    if (lockedPacks.size() == 0 && !mServerError) {
       placeHolderText.setText(getString(R.string.packpurchase_allpurchased));
-    }
-    else {
+    } else if (mServerError) {
+      placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+    } else {
       placeHolderText.setVisibility(View.GONE);
     }
     placeHolderImage.setVisibility(View.GONE);
