@@ -340,21 +340,19 @@ public class TitleActivity extends Activity {
       SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
-      
       // Launch Facebook, if not found, launch a browser intent
+      String url = getApplication().getString(R.string.URI_fb_launcher_buzzwordsapp);
+      Intent facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
       try {
-        String url = getApplication().getString(R.string.URI_fb_launcher_buzzwordsapp);
-        Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(facebookIntent);
+        startActivity(facebookOrBrowserIntent);
       } catch (ActivityNotFoundException e) {
         Uri uri = Uri.parse(getApplication().getString(R.string.URI_fb_buzzwordsapp));
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW);
-        browserIntent.setDataAndType(uri, "text/plain");
-        startActivity(browserIntent);
+        facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW);
+        facebookOrBrowserIntent.setDataAndType(uri, "text/plain");
+        startActivity(facebookOrBrowserIntent);
       }
-
     }
-  }; // End AboutUsListener
+  };
 
   /**
    * Returns the animation that scales in buttons
