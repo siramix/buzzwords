@@ -14,18 +14,18 @@ import com.amazon.inapp.purchasing.PurchasingManager;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -66,12 +66,6 @@ public class PackPurchaseActivity extends Activity {
   private LinkedList<Pack> mServerPacks;
   
   private GameManager mGameManager;
-
-  /**
-   * This block of maps stores our lists of clients
-   */
-  HashMap<String, String> mKnownFacebookClients;
-  HashMap<String, ActivityInfo> mFoundFacebookClients;
 
   /**
    * This block of variables is for Amazon In-App Purchases
@@ -160,9 +154,6 @@ public class PackPurchaseActivity extends Activity {
 
     // Setup the view
     this.setContentView(R.layout.packpurchase);
-
-    // Detect Social Clients
-    detectClients();
     
     // Instantiate all of our lists for programmatic adding of packs to view
     mPackLineList = new LinkedList<View>();
@@ -448,19 +439,18 @@ public class PackPurchaseActivity extends Activity {
    */
   private void openFacebookClient()
   {
-    ComponentName targetComponent = getClientComponentName(mFoundFacebookClients);
-
-    if (targetComponent != null) {
-      Intent facebookIntent = new Intent(Intent.ACTION_SEND);
-      facebookIntent.setComponent(targetComponent);
-      String intentType = ("text/plain");
-      facebookIntent.setType(intentType);
-      facebookIntent.putExtra(Intent.EXTRA_TEXT, BuzzWordsApplication.storeURI_Buzzwords.toString());
-      startActivityForResult(facebookIntent, FACEBOOK_REQUEST_CODE);
-    } else {
-      showToast(getString(R.string.toast_packpurchase_nofacebook));
+    // Launch Facebook, if not found, launch a browser intent
+    String url = getApplication().getString(R.string.URI_fb_launcher_buzzwordsapp);
+    Intent facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    try {
+      startActivityForResult(facebookOrBrowserIntent, FACEBOOK_REQUEST_CODE);
+    } catch (ActivityNotFoundException e) {
+      Uri uri = Uri.parse(getApplication().getString(R.string.URI_fb_buzzwordsapp));
+      facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW);
+      facebookOrBrowserIntent.setDataAndType(uri, "text/plain");
+      startActivityForResult(facebookOrBrowserIntent, FACEBOOK_REQUEST_CODE);
     }
-  };
+  }
 
   /**
    * Listen for the result of a pack info click, purchase click, or social post click.
@@ -689,44 +679,7 @@ public class PackPurchaseActivity extends Activity {
     
     startActivityForResult(intent, PACKINFO_REQUEST_CODE);
   }
-  
-  /**
-   * http://blogrescue.com/2011/12/android-development-send-tweet-action/
-   */
-  private void buildKnownClientsList() {
-    Log.d(TAG, "buildKnownClientsList()");
-    mKnownFacebookClients = new HashMap<String, String>();
-    mKnownFacebookClients.put("Facebook",
-        "com.facebook.katana.ShareLinkActivity");
-    mKnownFacebookClients.put("FriendCaster",
-        "uk.co.senab.blueNotifyFree.activity.PostToFeedActivity");
-  }
 
-  /**
-   * http://blogrescue.com/2011/12/android-development-send-tweet-action/
-   * 
-   * @return
-   */
-  public void detectClients() {
-    Log.d(TAG, "detectClients()");
-
-    buildKnownClientsList();
-    mFoundFacebookClients = new HashMap<String, ActivityInfo>();
-
-    Intent intent = new Intent(Intent.ACTION_SEND);
-    intent.setType("text/plain");
-    PackageManager pm = getPackageManager();
-    List<ResolveInfo> activityList = pm.queryIntentActivities(intent, 0);
-
-    for (int i = 0; i < activityList.size(); i++) {
-      ResolveInfo app = (ResolveInfo) activityList.get(i);
-      ActivityInfo activity = app.activityInfo;
-      Log.d(TAG, "******* --> " + activity.name);
-      if (mKnownFacebookClients.containsValue(activity.name)) {
-        mFoundFacebookClients.put(activity.name, activity);
-      }
-    }
-  }
   
   /**
    * Return the SharedPreferences for selected packs.
