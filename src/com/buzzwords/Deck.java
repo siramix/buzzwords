@@ -178,8 +178,6 @@ public class Deck {
    * Take a Pack object and pull in cards from the server into the database. 
    * @param pack
    * @throws RuntimeException 
-   * @throws IOException
-   * @throws URISyntaxException
    */
   public void installPack(Pack pack) throws RuntimeException {
     Log.d(TAG, "INSTALLING PACK: \n" + pack.getName());
