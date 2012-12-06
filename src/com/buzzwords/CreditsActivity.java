@@ -25,10 +25,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.TextView;
 
 /**
  * This activity class is responsible for displaying the rules of buzzwords to
