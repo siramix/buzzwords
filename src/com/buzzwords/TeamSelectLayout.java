@@ -19,7 +19,6 @@ package com.buzzwords;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -64,8 +63,6 @@ public class TeamSelectLayout extends RelativeLayout {
 
   private OnTeamAddedListener mTeamAddedListener;
   private OnTeamEditedListener mTeamEditedListener;
-
-  private static String TAG = "TeamSelectLayout";
 
   /**
    * @param context
@@ -268,9 +265,6 @@ public class TeamSelectLayout extends RelativeLayout {
    */
   private final OnClickListener mEditTeamListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "AddTeamListener onClick()");
-      }
       // Send event to any listeners
       if (mTeamEditedListener != null) {
         mTeamEditedListener.onTeamEdited(mTeam);
@@ -283,10 +277,6 @@ public class TeamSelectLayout extends RelativeLayout {
    */
   private final OnClickListener mAddTeamListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "AddTeamListener onClick()");
-      }
-
       // Send event to any listeners
       if (mTeamAddedListener != null) {
         mTeamAddedListener.onTeamAdded(TeamSelectLayout.this, mTeam);

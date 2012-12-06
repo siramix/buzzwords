@@ -33,7 +33,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -69,9 +68,6 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
   private OnSharedPreferenceChangeListener mPrefListener = new OnSharedPreferenceChangeListener() {
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
         String key) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "onSharedPreferencesChanged()");
-      }
       if (key.equals(Consts.PREFKEY_MUSIC)) {
         // Start or stop the music
         BuzzWordsApplication application = (BuzzWordsApplication) SettingsPreferenceActivity.this
@@ -118,9 +114,6 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
 
     mContinueMusic = false;
 
@@ -150,7 +143,7 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
                   0).versionName);
     } catch (NameNotFoundException e) {
       e.printStackTrace();
-      Log.e(TAG, e.getMessage());
+      SafeLog.e(TAG, e.getMessage());
     }
   }
 
@@ -198,9 +191,6 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
   public boolean onKeyUp(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled()) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "BackKeyUp()");
-      }
       // Keep music playing
       mContinueMusic = true;
     }
@@ -270,9 +260,6 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
    */
   @Override
   public void onPause() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onPause()");
-    }
     super.onPause();
 
     // Unregister settings listeners
@@ -294,9 +281,6 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
    */
   @Override
   public void onResume() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onResume()");
-    }
     super.onResume();
 
     // Resume Title Music

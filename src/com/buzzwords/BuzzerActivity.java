@@ -22,7 +22,6 @@ import com.buzzwords.R;
 import android.app.Activity;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -82,9 +81,6 @@ public class BuzzerActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 

@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.util.Log;
 
 /**
  * Utility class for parsing input streams of JSON data into packs and cards.
@@ -42,7 +41,6 @@ public class PackParser {
    * @throws JSONException if the json is malformed
    */
   public static LinkedList<Pack> parsePacks(StringBuilder builder) throws IOException, JSONException {
-    Log.d(TAG, "parsePacks");
     LinkedList<Pack> packList = new LinkedList<Pack>();
     Scanner scan = new Scanner(builder.toString());
     while (scan.hasNextLine()) {
@@ -59,8 +57,8 @@ public class PackParser {
    * @throws JSONException if the json is invalid in some way
    */
   public static Pack stringToPack(String strPack) throws JSONException {
-    Log.d(TAG, "stringToPack");
-    Log.d(TAG, "--> " + strPack);
+    SafeLog.d(TAG, "stringToPack");
+    SafeLog.d(TAG, "--> " + strPack);
     JSONObject curPack = new JSONObject(strPack);
     int curId = curPack.getInt("_id");
     String curName = curPack.getString("name");
@@ -83,8 +81,8 @@ public class PackParser {
    * @throws JSONException if the json is invalid in some way
    */
   public static Card stringToCard(String strCard) throws JSONException {
-    Log.d(TAG, "stringToCard");
-    Log.d(TAG, "--> " + strCard);
+    SafeLog.d(TAG, "stringToCard");
+    SafeLog.d(TAG, "--> " + strCard);
     JSONObject curCard = new JSONObject(strCard);
     String curName = curCard.getString("title");
     int curId = curCard.getInt("_id");
@@ -100,7 +98,6 @@ public class PackParser {
    * @return an iterator of cards
    */
   public static CardJSONIterator parseCards(StringBuilder builder) {
-    Log.d(TAG, "parseCards");
     return new CardJSONIterator(builder);
   }
 

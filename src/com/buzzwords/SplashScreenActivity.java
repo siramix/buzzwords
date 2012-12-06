@@ -22,7 +22,6 @@ import com.buzzwords.SoundManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -39,11 +38,6 @@ import android.widget.ImageView;
  */
 public class SplashScreenActivity extends Activity {
 
-  /**
-   * Logging tag
-   */
-  public static String TAG = "SplashScreen";
-
   // Length of time splash screen will show.
   protected int SPLASHTIME = 3000;
 
@@ -57,9 +51,6 @@ public class SplashScreenActivity extends Activity {
    *          Bundle of saved state used for re-creation
    */
   public void onCreate(Bundle savedInstanceState) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.splashscreen);
@@ -78,14 +69,7 @@ public class SplashScreenActivity extends Activity {
    * @return true if the event was consumed
    */
   public boolean onTouchEvent(MotionEvent event) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onTouchEvent()");
-    }
-
     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "onTouchEvent->ActionDown()");
-      }
       // Clearing the animations causes animEnd event to fire
       ImageView logotext = (ImageView) this.findViewById(R.id.Splash_LogoText);
       ImageView logoram = (ImageView) this.findViewById(R.id.Splash_LogoRam);
@@ -110,9 +94,6 @@ public class SplashScreenActivity extends Activity {
   private final AnimationListener mFadeListener = new AnimationListener() {
 
     public void onAnimationEnd(Animation animation) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "onAnimEnd()");
-      }
       SplashScreenActivity.this.exitSplash();
     }
 
@@ -128,10 +109,6 @@ public class SplashScreenActivity extends Activity {
    * images and then calls the title activity.
    */
   synchronized private void exitSplash() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "exitSplash()");
-    }
-
     // Do nothing if the splash has already been cancelled once
     if (mSplashDone) {
       return;
@@ -155,10 +132,6 @@ public class SplashScreenActivity extends Activity {
    * Retrieves the logo images and fades them in using AlphaAnimation.
    */
   private void fadeIn() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "fadeIn()");
-    }
-
     // Build animation for text and logo images
     AlphaAnimation textfadein = new AlphaAnimation(0, 1);
     AlphaAnimation ramfadein = new AlphaAnimation(0, 1);

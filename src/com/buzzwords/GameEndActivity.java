@@ -27,7 +27,6 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -213,9 +212,6 @@ public class GameEndActivity extends Activity {
    */
   private final OnClickListener mMainMenuListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "MainMenuListener onClick()");
-      }
       // Play confirm sound
       SoundManager sm = SoundManager.getInstance(GameEndActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
@@ -232,9 +228,6 @@ public class GameEndActivity extends Activity {
    */
   private final OnClickListener mRematchListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "RematchListener onClick()");
-      }
       v.setEnabled(false);
 
       BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
@@ -257,10 +250,6 @@ public class GameEndActivity extends Activity {
    */
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
-
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -377,9 +366,7 @@ public class GameEndActivity extends Activity {
   @Override
   public void onStop() {
     super.onStop();
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onStop()");
-    }
+    SafeLog.d(TAG, "onStop()");
   }
 
   /**
@@ -388,9 +375,7 @@ public class GameEndActivity extends Activity {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onDestroy()");
-    }
+    SafeLog.d(TAG, "onDestroy()");
   }
 
   /**

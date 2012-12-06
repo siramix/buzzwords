@@ -46,7 +46,6 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * The Deck represents the stack of all cards in the game. We interact with a
@@ -124,13 +123,12 @@ public class Deck {
     Card ret;
     // This shouldn't happen unless a lot of cards are played in one turn (CACHE_TURNSIZE)
     if (mCache.isEmpty()) {
-      Log.i(TAG, "Filling entire cache mid-turn. This is expensive.");
+      SafeLog.d(TAG, "Filling entire cache mid-turn. This is expensive.");
       // We must mark seen now so that we won't re-pull these same cards during fillCache
       updateSeenFields();
       this.fillCache();
     }
     ret = mCache.removeFirst();
-    Log.i(TAG, " Dealing ::" + ret.getTitle() + " Pack: " + ret.getPack().getName());
     mDiscardPile.add(ret);
     return ret;
   }
@@ -141,12 +139,11 @@ public class Deck {
    * since it could be a costly database pull.
    */
   public void fillCacheIfLow() {
-    Log.d(TAG, "fillCacheIfLow()");
     if (mCache.size() < CACHE_TURNSIZE) {
-      Log.d(TAG, "...Cache size was low (" + mCache.size() + "), filling...");
+      SafeLog.d(TAG, "Cache size was low (" + mCache.size() + "), filling...");
       mCache.clear();
       fillCache();
-      Log.d(TAG, "...filled. Cache size is now " + mCache.size());
+      SafeLog.d(TAG, "filled. Cache size is now " + mCache.size());
     }
   }
   
@@ -165,7 +162,6 @@ public class Deck {
    * @return Linked List of all local Packs
    */
   public LinkedList<Pack> getLocalPacks() {
-    Log.d(TAG, "getLocalPacks()");
     LinkedList<Pack> localPacks = mDatabaseOpenHelper.getAllPacksFromDB();
     for (Pack pack : localPacks) {
       pack.setSize(mDatabaseOpenHelper.countCards(pack));
@@ -180,8 +176,6 @@ public class Deck {
    * @throws RuntimeException 
    */
   public void installPack(Pack pack) throws RuntimeException {
-    Log.d(TAG, "INSTALLING PACK: \n" + pack.getName());
-    
     // If pack is out of date, delete the icon and get the new
     int packState = mDatabaseOpenHelper.packInstalled(pack.getId(), pack.getVersion());
     if (packState == pack.getId()) {
@@ -199,7 +193,6 @@ public class Deck {
    * @throws RuntimeException 
    */
   public synchronized void installStarterPacks() throws RuntimeException {
-    Log.d(TAG, "INSTALLING STARTER PACKS");
     mDatabaseOpenHelper.installStarterPacks(mStarterPack);
     mDatabaseOpenHelper.installStarterPacks(mStarterPack2);
     setPackSelectionPref(mStarterPack.getId(), true);
@@ -212,7 +205,7 @@ public class Deck {
    * @param packId to remove
    */
   public synchronized void uninstallPack(int packId) {
-    Log.d(TAG, "REMOVING PACK: " + packId);
+    SafeLog.d(TAG, "REMOVING PACK: " + packId);
     Pack pack = getPackFromDB(packId); 
     if (pack != null) {
       PackIconUtils.deleteIcon(pack.getIconName(), mContext);
@@ -220,7 +213,7 @@ public class Deck {
       setPackSelectionPref(packId, false);
     }
     else {
-      Log.d(TAG, "PackId " + String.valueOf(packId) + " not found in database.");
+      SafeLog.d(TAG, "PackId " + String.valueOf(packId) + " not found in database.");
     }
   }
   
@@ -249,7 +242,6 @@ public class Deck {
    * @return true if installed - false if not
    */
   public boolean isPackInstalled(int packId) {
-    Log.d(TAG, "isPackInstalled(" + String.valueOf(packId) + ")");
     if (mDatabaseOpenHelper.packInstalled(packId, 0)  == PACK_NOT_PRESENT ) {
       return false;
     }
@@ -263,12 +255,10 @@ public class Deck {
    * @return true if any pack needs to be updated, false otherwise
    */
   public boolean packsRequireUpdate(LinkedList<Pack> serverPacks) {
-    Log.d(TAG, "Checking local pack status...");
-    
     for (Pack serverPack : serverPacks) {
       int packStatus = mDatabaseOpenHelper.packInstalled(serverPack.getId(), serverPack.getVersion());
       if (packStatus != PACK_CURRENT && packStatus != PACK_NOT_PRESENT) {
-        Log.d(TAG, "Pack requires update: " + serverPack.getName());
+        SafeLog.d(TAG, "Pack requires update: " + serverPack.getName());
         return true;
       }
     }
@@ -283,7 +273,6 @@ public class Deck {
    * selected.
    */
   public void setPackData() {
-    Log.d(TAG, "setPackData()");
     instantiateSelectedPacks();
     mTotalPlayableCards = mDatabaseOpenHelper.countCards(mSelectedPacks);
     setPackWeights();
@@ -309,13 +298,9 @@ public class Deck {
    * of the selected packs.
    */
   private void fillCache() {
-    Log.d(TAG, "fillCache()");
-    printDeck();
-    
     // Fill our cache up with cards from all selected packs (using sorting algorithm)
     // Separate seen and unseen cards for handling the end of deck 
     // (when unseen must take priority)
-    Log.d(TAG, "Pull Calculations ");
     LinkedList<Card> unseenCards = new LinkedList<Card>();
     LinkedList<Card> seenCards = new LinkedList<Card>();
     // Pull cards from each pack into our cache, choosing unseen ones first.
@@ -337,8 +322,6 @@ public class Deck {
     mCache.addAll(unseenCards);
     mCache.addAll(seenCards);
     mDatabaseOpenHelper.close();
-    Log.i(TAG, "filled.");
-    printDeck();
   }
   
   /**
@@ -347,7 +330,6 @@ public class Deck {
    * in the Deck object.
    */
   private void instantiateSelectedPacks() {
-    Log.d(TAG, "instantiateSelectedPacks()");
     SharedPreferences packPrefs = mContext.getSharedPreferences(
             Consts.PREFFILE_PACK_SELECTIONS, Context.MODE_PRIVATE);
     Map<String, ?> packSelections = new HashMap<String, Boolean>();
@@ -363,7 +345,7 @@ public class Deck {
         } else {
           // Pack doesn't exist in the database, so let's unselect it
           setPackSelectionPref(Integer.valueOf(packId), false);
-          Log.w(TAG, "Preference set for pack " + String.valueOf(packId) + 
+          SafeLog.w(TAG, "Preference set for pack " + String.valueOf(packId) + 
                      " which does not exist in the database. " +
                      "This may be due to changing users which will wipe purchased packs.");
         }
@@ -376,9 +358,6 @@ public class Deck {
    * playable cards selected by the user.
    */
   private void setPackWeights() {
-    Log.d(TAG, "setPackWeights()");
-    Log.d(TAG, "** mTotalPlayableCards: " + mTotalPlayableCards);
-
     for (Pack curPack : mSelectedPacks) {
       curPack.setWeight((float) curPack.getSize() / (float) mTotalPlayableCards);
     }
@@ -391,27 +370,22 @@ public class Deck {
    * cards randomly to the teams.
    */
   private void calculatePackDistribution() {
-    Log.d(TAG, "calculatePackDistribution()");
-    
     // Divide up evenly the size of the cache
     int allocated = 0;
-    Log.d(TAG, "SELECTED PACKS LENGTH: " + mSelectedPacks.size());
     for (Pack curPack : mSelectedPacks) {
       int numToPull = (int) Math.floor(CACHE_MAXSIZE * curPack.getWeight());
       curPack.setNumToPullNext(numToPull);
       allocated += numToPull;
-      Log.d(TAG, curPack.toString());
+      SafeLog.d(TAG, curPack.toString());
     }
     
     // Allocate randomly the remaining cache to fill
     Random randomizer = new Random();
     int remainder = CACHE_MAXSIZE - allocated;
-    Log.d(TAG, "Assigning remainder of " + remainder + " cards.");
     for (int i=0; i<remainder; ++i) {
       int packIndex = randomizer.nextInt(mSelectedPacks.size());
       Pack pack = mSelectedPacks.get(packIndex);
       pack.setNumToPullNext(pack.getNumToPullNext()+1);
-      Log.d(TAG, "..added a remainder to " + pack.getName());
     }
   }
   
@@ -422,21 +396,6 @@ public class Deck {
   public Pack getStarterPack() {
     return mStarterPack;
   }
-  
-  /**
-   * Debugging function.  Can be removed later.
-   */
-  public void printDeck() {
-    Log.d(TAG, "printDeck...");
-    Log.d(TAG, "========================");
-    Log.d(TAG, "CACHE: ");
-    Log.d(TAG, "Size is " + mCache.size());
-    for (int i=0; i<mCache.size(); ++i) {
-      Log.d(TAG, "..." + mCache.get(i).getTitle());
-    }
-    Log.d(TAG, "END CACHE");
-    Log.d(TAG, "------------------------");
-  }
 
   /**
    * Helper method to throw a user exception, logging an error
@@ -446,7 +405,7 @@ public class Deck {
    * @throws RuntimeException
    */
   static private void throwUserException(Exception e, String msg) throws RuntimeException {
-    Log.e(TAG, msg);
+    SafeLog.e(TAG, msg);
     e.printStackTrace();
     RuntimeException userException = new RuntimeException(e);
     throw userException;
@@ -487,7 +446,6 @@ public class Deck {
      * @throws RuntimeException 
      */
     public synchronized void installStarterPacks(Pack starterPack) throws RuntimeException {
-      Log.d(TAG, "installStarterPacks()");
       installPackFromResource(starterPack, R.raw.buzzwords_i);
       installPackFromResource(starterPack, R.raw.buzzwords_ii);
     }
@@ -510,7 +468,6 @@ public class Deck {
      * @return -1 if no phrases found, otherwise the number of phrases found
      */
     public synchronized int countCards(Pack pack) {
-      Log.d(TAG, "countCards(" + pack.getName() + ")");
       mDatabase = getWritableDatabase();
       
       String[] args = new String[2];
@@ -533,7 +490,6 @@ public class Deck {
      * @return -1 if no cards counted, otherwise the number of cards counted
      */
     public synchronized int countCards(LinkedList<Pack> packs) {
-      Log.d(TAG, "countCards(LinkedList<Pack>)");
       mDatabase = getWritableDatabase();
       
       String[] args = new String[2];
@@ -557,7 +513,6 @@ public class Deck {
      * @return the number of packs
      */
     public synchronized int countPacks() {
-      Log.d(TAG, "countPacks()");
       mDatabase = getReadableDatabase();
       
       int ret = (int) DatabaseUtils.queryNumEntries(mDatabase, PackColumns.TABLE_NAME);
@@ -571,7 +526,7 @@ public class Deck {
      * @return LinkedList of Packs that use has already installed
      */
     public synchronized LinkedList<Pack> getAllPacksFromDB() {
-      Log.d(TAG, "getAllPacksFromDB()");
+      SafeLog.d(TAG, "getAllPacksFromDB()");
       mDatabase = getReadableDatabase();
       
       Cursor packQuery = mDatabase.query(PackColumns.TABLE_NAME, PackColumns.COLUMNS,
@@ -601,7 +556,6 @@ public class Deck {
      * @return Instantiated Pack object if exists, null otherwise 
      */
     public synchronized Pack getPackFromDB(String packId) {
-      Log.d(TAG, "getPackFromDB(" + String.valueOf(packId) + ")");
       mDatabase = getReadableDatabase();
       
       String[] id = new String[] {packId};
@@ -626,7 +580,6 @@ public class Deck {
      * @return
      */
     public synchronized int countNumSeen(Pack pack) {
-      Log.d(TAG, "countNumSeen(" + pack.getName() + ")");
       mDatabase = getReadableDatabase();
       
       String id = String.valueOf(pack.getId());
@@ -648,7 +601,6 @@ public class Deck {
      * @return number of playthroughs
      */
     public synchronized int calcNumPlaythroughs(Pack pack) {
-      Log.d(TAG, "setNumPlaythroughs(" + String.valueOf(pack.getId()) + ")");
       mDatabase = getReadableDatabase();
       
       String[] id = new String[] {String.valueOf(pack.getId())};
@@ -674,7 +626,7 @@ public class Deck {
      * @throws RuntimeException 
      */
     public synchronized void installPackFromResource(Pack pack, int resId) throws RuntimeException {
-      Log.d(TAG, "Installing pack from resource " + String.valueOf(resId));
+      SafeLog.d(TAG, "Installing pack from resource (" + pack.getName() + ")");
 
       BufferedReader packJSON = new BufferedReader(new InputStreamReader(
           mHelperContext.getResources().openRawResource(resId)));
@@ -691,7 +643,7 @@ public class Deck {
       
       installPack(pack, cardItr);
       
-      Log.d(TAG, "DONE loading words.");
+      SafeLog.d(TAG, "DONE loading words.");
     }
 
     /**
@@ -706,14 +658,14 @@ public class Deck {
      * @throws RuntimeException 
      */
     public synchronized void installOrUpdatePackFromServer(Pack serverPack) throws RuntimeException {
-      Log.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
+      SafeLog.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
       int packId = packInstalled(serverPack.getId(), serverPack.getVersion());
 
       CardJSONIterator cardItr;
       
       // Don't add a pack if it's already there
       if (packId == PACK_CURRENT) {
-        Log.d(TAG, "No update required, pack " + serverPack.getName() + " current.");
+        SafeLog.d(TAG, "No update required, pack " + serverPack.getName() + " current.");
         return;
       }
       if(packId == PACK_NOT_PRESENT) { 
@@ -738,7 +690,7 @@ public class Deck {
           throwUserException(e, "Encountered URISyntaxException installing pack from server.");
         }
       }
-      Log.d(TAG, "DONE loading words.");
+      SafeLog.d(TAG, "DONE loading words.");
     }
     
     /**
@@ -751,7 +703,7 @@ public class Deck {
      * @param cardItr
      */
     private synchronized void installPack(Pack pack, CardJSONIterator cardItr) {
-      Log.d(TAG, "installPack: " + pack.getName() + "v" + String.valueOf(pack.getVersion()));
+      SafeLog.d(TAG, "installPack: " + pack.getName() + "v" + String.valueOf(pack.getVersion()));
       
       mDatabase = getWritableDatabase();
       // Add the pack and all cards in a single transaction.
@@ -778,7 +730,7 @@ public class Deck {
      * @param packId to remove
      */
     private synchronized void uninstallPack(String packId) {
-      Log.d(TAG, "removePack: " + String.valueOf(packId));
+      SafeLog.d(TAG, "uninstallPack(" + packId + ")");
       mDatabase = getWritableDatabase();
 
       String[] whereArgs = new String[] { packId };
@@ -823,7 +775,6 @@ public class Deck {
      * @return The new id of the row where the card was inserted, -1 if error
      */
     private synchronized static long insertCard(Card card, int packId, SQLiteDatabase db) {
-      Log.d(TAG, "insertCard(" + card.getTitle() + ")");
       Random randomizer = new Random();
       // Get a random year to make sure installations have different play orders.
       final int randYear = randomizer.nextInt(1970);
@@ -845,7 +796,6 @@ public class Deck {
      * @return The number of rows affected
      */
     private synchronized static long updateCard(Card card, int packId, SQLiteDatabase db) {
-      Log.d(TAG, "updateCard(" + card.getTitle() + ")");
       String[] whereArgs = new String[] { String.valueOf(card.getId()) };
       ContentValues initialValues = new ContentValues();
       initialValues.put(CardColumns.TITLE, card.getTitle());
@@ -863,8 +813,6 @@ public class Deck {
      * @return the row ID of the newly inserted row, or -1 if an error occurred
      */
     public synchronized static long upsertPack(Pack pack, SQLiteDatabase db) {
-      Log.d(TAG, "upsertPack(" + pack.getName() + ")");
-      
       ContentValues packValues = new ContentValues();
       packValues.put(PackColumns._ID, pack.getId());
       packValues.put(PackColumns.NAME, pack.getName());
@@ -964,7 +912,6 @@ public class Deck {
      * @return
      */
     private synchronized LinkedList<Card> pullFromPack(Pack pack) {
-      Log.d(TAG, "pullFromPack(" + pack.getName() + ")");
       // Do this first since it needs it's own db interaction
       int numPlayThroughs = calcNumPlaythroughs(pack);
       mDatabase = getWritableDatabase();
@@ -984,10 +931,6 @@ public class Deck {
       
       // The number of cards to return from any given pack will use the following formula:
       // (WEIGHT OF PACK) * CACHE-SIZE
-      Log.d(TAG, "** this.numInPack: " + res.getCount());
-      Log.d(TAG, "** Pack.numToPull: " + targetNum);
-      Log.d(TAG, "** Pack.weight: " + pack.getWeight());
-      Log.d(TAG, "** Pack.size: " + pack.getSize());
 
       // Add cards to what will be the Cache, setting cards seen more than others within
       // the pack to true.
@@ -999,7 +942,6 @@ public class Deck {
         returnCards.add(card);
         res.moveToNext();
       }
-      Log.d(TAG, "**" + returnCards.size() + " phrases added.");
       
       res.close();
       mDatabase.close();
@@ -1042,7 +984,7 @@ public class Deck {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-      Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+      SafeLog.w(TAG, "Upgrading database from version " + oldVersion + " to "
           + newVersion + ", which will destroy all old data");
       db.execSQL("DROP TABLE IF EXISTS cards;");
       db.execSQL("DROP TABLE IF EXISTS cache;");

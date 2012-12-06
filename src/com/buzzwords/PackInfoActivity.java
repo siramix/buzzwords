@@ -23,7 +23,6 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -216,11 +215,7 @@ public class PackInfoActivity extends Activity {
   public boolean onKeyUp(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled()) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "BackKeyUp()");
-      }
-      // Flag to keep music playing
-      mContinueMusic = true;
+      mContinueMusic = true; // Flag to keep music playing
     }
 
     return super.onKeyUp(keyCode, event);
@@ -231,10 +226,9 @@ public class PackInfoActivity extends Activity {
    */
   @Override
   public void onPause() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onPause()");
-    }
     super.onPause();
+    SafeLog.d(TAG, "onPause()");
+
     if (!mContinueMusic) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
           .getApplication();
@@ -252,10 +246,8 @@ public class PackInfoActivity extends Activity {
    */
   @Override
   public void onResume() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onResume()");
-    }
     super.onResume();
+    SafeLog.d(TAG, "onResume()");
 
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();

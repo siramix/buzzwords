@@ -31,7 +31,6 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -74,9 +73,6 @@ public class TurnSummaryActivity extends Activity {
    */
   private final OnClickListener mMenuListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "mMenuListener OnClick()");
-      }
       // Do not let this come up if activity has moved on.
       if (mIsActivityClosing) {
         return;
@@ -96,9 +92,6 @@ public class TurnSummaryActivity extends Activity {
    */
   private final OnClickListener mNextTurnListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "NextTurnListener OnClick()");
-      }
       // Throw out any queued onClicks.
       if(!v.isEnabled()){
         return;
@@ -132,9 +125,7 @@ public class TurnSummaryActivity extends Activity {
   private final OnClickListener mCardIconListener = new OnClickListener() {
     public void onClick(View v) {
       int cardIndex = mCardLineList.indexOf(v);
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, Integer.toString(cardIndex));
-      }
+
       // Do not let this come up if activity has moved on.
       if (mIsActivityClosing) {
         return;
@@ -163,9 +154,6 @@ public class TurnSummaryActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
 
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -290,13 +278,8 @@ public class TurnSummaryActivity extends Activity {
    */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreateOptionsMenu()");
-    }
-
     menu.add(0, R.string.menu_EndGame, 0, R.string.menu_EndGame_Title);
     menu.add(0, R.string.menu_Rules, 0, R.string.menu_Rules_Title);
-
     return true;
   }
 
@@ -305,9 +288,6 @@ public class TurnSummaryActivity extends Activity {
    */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onOptionsItemSelected()");
-    }
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     // Handle item selection
     switch (item.getItemId()) {
@@ -333,9 +313,6 @@ public class TurnSummaryActivity extends Activity {
    */
   @Override
   protected Dialog onCreateDialog(int id) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreateDialog(" + id + ")");
-    }
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
 
@@ -378,9 +355,6 @@ public class TurnSummaryActivity extends Activity {
    * Update the views to display the proper scores for the current round
    */
   private void updateScoreViews() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "UpdateScoreViews()");
-    }
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
     GameManager game = application.getGameManager();
@@ -418,9 +392,6 @@ public class TurnSummaryActivity extends Activity {
    * Updates the widget group for turn order display
    */
   private void updateTurnOrderDisplay() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "UpdateTurnOrderDisplay()");
-    }
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
     GameManager game = application.getGameManager();

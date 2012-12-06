@@ -25,7 +25,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
@@ -50,10 +49,6 @@ public class RulesActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
-
     mContinueMusic = false;
 
     // Force volume controls to affect Media volume
@@ -90,11 +85,7 @@ public class RulesActivity extends Activity {
   public boolean onKeyUp(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled()) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "BackKeyUp()");
-      }
-      // Flag to keep music playing
-      mContinueMusic = true;
+      mContinueMusic = true; // Flag to keep music playing
     }
 
     return super.onKeyUp(keyCode, event);
@@ -106,10 +97,9 @@ public class RulesActivity extends Activity {
    */
   @Override
   public void onPause() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onPause()");
-    }
     super.onPause();
+    SafeLog.d(TAG, "onPause()");
+
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
     MediaPlayer mp = application.getMusicPlayer();
@@ -128,10 +118,8 @@ public class RulesActivity extends Activity {
    */
   @Override
   public void onResume() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onResume()");
-    }
     super.onResume();
+    SafeLog.d(TAG, "onResume()");
 
     // Resume Title Music -- Only do this if we paused DURING rules
     if (mIsMusicPaused) {

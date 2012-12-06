@@ -21,7 +21,6 @@ import android.app.Application;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
 
 /**
  * Class extending the standard android application. This allows us to refer to
@@ -63,9 +62,6 @@ public class BuzzWordsApplication extends Application {
    */
   public BuzzWordsApplication() {
     super();
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "BuzzWordsApplication()");
-    }
   }
 
   public void onCreate() {
@@ -89,9 +85,6 @@ public class BuzzWordsApplication extends Application {
    * @return a reference to the game manager
    */
   public GameManager getGameManager() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetGameManager()");
-    }
     return this.mGameManager;
   }
 
@@ -100,9 +93,6 @@ public class BuzzWordsApplication extends Application {
    *          - a reference to the game manager
    */
   public void setGameManager(GameManager gm) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "SetGameManager()");
-    }
     this.mGameManager = gm;
   }
 
@@ -114,9 +104,7 @@ public class BuzzWordsApplication extends Application {
    * @return a reference to the media player
    */
   public MediaPlayer createMusicPlayer(Context context, int id) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "CreateMusicPlayer(" + context + "," + id + ")");
-    }
+    SafeLog.d(TAG, "CreateMusicPlayer(" + context + "," + id + ")");
     // Clean up resources. This fixed a leak issue caused by starting many games
     // over and over.
     if (mMediaPlayer != null) {
@@ -130,9 +118,6 @@ public class BuzzWordsApplication extends Application {
    * @return a reference to the current media player
    */
   public MediaPlayer getMusicPlayer() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetMusicPlayer()");
-    }
     return mMediaPlayer;
   }
 }

@@ -27,7 +27,6 @@ import com.buzzwords.Pack;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * @author Siramix Labs
@@ -162,9 +161,7 @@ public class GameManager {
    *          required for game to instantiate the database
    */
   public GameManager(Context context) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GameManager()");
-    }
+    SafeLog.d(TAG, "GameManager()");
 
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(context);
@@ -176,9 +173,6 @@ public class GameManager {
 
     mTurnTime = Integer.valueOf(sp.getString(Consts.PREFKEY_TIMER, "60")) * 1000;
 
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "Turn time is " + mTurnTime);
-    }
     mRwsValueRules = new int[4];
 
     // Set score values for game
@@ -204,9 +198,6 @@ public class GameManager {
    * @return the card we want
    */
   public Card getNextCard() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getNextCard()");
-    }
     ++mCardPosition;
     if (mCardPosition >= mCardsDealtDuringTurn.size()) {
       mCurrentCard = mDeck.dealCard();
@@ -223,10 +214,6 @@ public class GameManager {
    * @return the previous card in the deck
    */
   public Card getPreviousCard() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getPreviousCard()");
-    }
-
     --mCardPosition;
     if (mCardPosition < 0) {
       mCardPosition = 0;
@@ -247,9 +234,8 @@ public class GameManager {
    *          the number of rounds to play, or the points to play to
    */
   public void startGame(List<Team> teams, GameType mode, int modeInfo) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "StartGame()");
-    }
+    SafeLog.d(TAG, "StartGame()");
+
     // Initialize the deck and fill the cache
     mDeck.setPackData();
     fillDeckIfLow();
@@ -288,9 +274,7 @@ public class GameManager {
    * This function also empties the collection of active cards.
    */
   public void nextTurn() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "NextTurn()");
-    }
+    SafeLog.d(TAG, "NextTurn()");
     fillDeckIfLow();
     this.incrementActiveTeamIndex();
     mCardsDealtDuringTurn.clear();
@@ -334,9 +318,7 @@ public class GameManager {
    * Write turn and game relevant data to the database.
    */
   public void endGame() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "EndGame()");
-    }
+    SafeLog.d(TAG, "EndGame()");
     mTeamIterator = mTeams.iterator();
 
     // clear current cards so that scoreboards don't add turn score in
@@ -348,12 +330,18 @@ public class GameManager {
    * play a turn.
    */
   private void fillDeckIfLow() {
-    Log.d(TAG, "fillDeckIfLow()");
+    SafeLog.d(TAG, "fillDeckIfLow()");
     mDeck.fillCacheIfLow();
   }
 
+  /**
+   * Compare the packs passed into this method against those installed to
+   * determine if an update of a pack is needed.
+   * @param serverPacks to compare against installed packs
+   * @return true if any pack needs update
+   */
   public boolean packsRequireUpdate(LinkedList<Pack> serverPacks) {
-    Log.d(TAG, "packsRequireUpdate(LinkedList<Pack>)");
+    SafeLog.d(TAG, "packsRequireUpdate(LinkedList<Pack>)");
     return mDeck.packsRequireUpdate(serverPacks);
   }
 
@@ -388,7 +376,7 @@ public class GameManager {
     try {
       mDeck.uninstallPack(packId);
     } catch (RuntimeException e) {
-      Log.e(TAG, "Unable to install pack: " + String.valueOf(packId));
+      SafeLog.e(TAG, "Unable to install pack: " + String.valueOf(packId));
       e.printStackTrace();
     }
   }
@@ -413,9 +401,6 @@ public class GameManager {
    *          the right, wrong, skip status
    */
   public void processCard(int rws) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "ProcessCard(" + rws + ")");
-    }
     mCurrentCard.setRws(rws);
   }
 
@@ -425,9 +410,6 @@ public class GameManager {
    * @return the card currently in play
    */
   public Card getCurrentCard() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetCurrentCard()");
-    }
     return mCurrentCard;
   }
 
@@ -437,9 +419,6 @@ public class GameManager {
    * @return list of all cards from the current turn
    */
   public LinkedList<Card> getCurrentCards() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetCurrentCards()");
-    }
     return mCardsDealtDuringTurn;
   }
 
@@ -450,9 +429,8 @@ public class GameManager {
    * @return true if the game should end instead of advancing to another turn
    */
   public boolean shouldGameEnd() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "shouldGameEnd()");
-    }
+    SafeLog.d(TAG, "shouldGameEnd()");
+
     boolean ret = false;
     switch (mCurrentGameLimit) {
     case TURNS:
@@ -489,9 +467,6 @@ public class GameManager {
    * @return score for the round
    */
   public int getTurnScore() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetTurnScore()");
-    }
     int ret = 0;
     for (Iterator<Card> it = mCardsDealtDuringTurn.iterator(); it.hasNext();) {
       Card card = it.next();
@@ -506,9 +481,6 @@ public class GameManager {
    * @return a list of the currently playing team objects
    */
   public List<Team> getTeams() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetTeams()");
-    }
     return mTeams;
   }
 
@@ -518,9 +490,6 @@ public class GameManager {
    * @return a reference to the team currently playing
    */
   public Team getActiveTeam() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetActiveTeamIndex()");
-    }
     return mCurrentTeam;
   }
 
@@ -531,9 +500,6 @@ public class GameManager {
    *         teamIds[]
    */
   public int getNumTeams() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetNumTeams()");
-    }
     return mTeams.size();
   }
 
@@ -544,9 +510,6 @@ public class GameManager {
    * @return int representing the number of rounds thus far in a game
    */
   public int getCurrentRound() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetCurrentRound()");
-    }
     return mCurrentRound + 1;
   }
 
@@ -565,9 +528,6 @@ public class GameManager {
    * @return the maximum number of rounds in this game
    */
   public int getNumRounds() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetNumRounds()");
-    }
     return mTurnLimitPerTeam;
   }
 
@@ -577,9 +537,6 @@ public class GameManager {
    * @return the points a team needs to reach in order to win
    */
   public int getScoreLimit() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetNumRounds()");
-    }
     return mScoreLimit;
   }
 
@@ -606,9 +563,6 @@ public class GameManager {
    * @return the game mode for the current game
    */
   public GameType getGameType() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getGameType()");
-    }
     return mCurrentGameLimit;
   }
 
@@ -618,10 +572,6 @@ public class GameManager {
    * @return integer representing the number of milliseconds in each turn.
    */
   public int getTurnTime() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetTurnTime()");
-    }
-    
     return mTurnTime;
   }
 
@@ -632,10 +582,6 @@ public class GameManager {
    * @returns the number of turns until the turn limit is reached
    */
   private int getNumberOfTurnsRemaining() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetNumberOfTurnsRemaining()");
-    }
-
     if (mCurrentGameLimit != GameType.TURNS)
       return -1;
 

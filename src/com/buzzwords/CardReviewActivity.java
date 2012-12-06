@@ -24,7 +24,6 @@ import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
@@ -39,12 +38,7 @@ import android.widget.TextView;
  * @author Siramix Labs
  */
 public class CardReviewActivity extends Activity {
-
-  /**
-   * Static string used to refer to this class, in debug output for example.
-   */
-  private static final String TAG = "CardReview";
-
+  
   /**
    * Text elements
    */
@@ -74,9 +68,6 @@ public class CardReviewActivity extends Activity {
    */
   private final OnClickListener mCorrectClickListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "CorrectClickListener OnClick()");
-      }
       v.setEnabled(false);
       setCardState(Card.RIGHT);
       SoundManager sm = SoundManager.getInstance(CardReviewActivity.this
@@ -91,9 +82,6 @@ public class CardReviewActivity extends Activity {
    */
   private final OnClickListener mWrongClickListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "WrongClickListener OnClick()");
-      }
       v.setEnabled(false);
       setCardState(Card.WRONG);
       SoundManager sm = SoundManager.getInstance(CardReviewActivity.this
@@ -108,9 +96,6 @@ public class CardReviewActivity extends Activity {
    */
   private final OnClickListener mSkipClickListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "SkipClickListener OnClick()");
-      }
       v.setEnabled(false);
       setCardState(Card.SKIP);
       SoundManager sm = SoundManager.getInstance(CardReviewActivity.this
@@ -125,9 +110,6 @@ public class CardReviewActivity extends Activity {
    */
   private final OnClickListener mNoScoreClickListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "NoScoreClickListener OnClick()");
-      }
       v.setEnabled(false);
       setCardState(Card.NOTSET);
       SoundManager sm = SoundManager.getInstance(CardReviewActivity.this
@@ -279,9 +261,6 @@ public class CardReviewActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
     

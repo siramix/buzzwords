@@ -23,7 +23,6 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,11 +36,6 @@ import android.widget.TextView;
  * @author Siramix Labs
  */
 public class EditTeamName extends Activity {
-
-  /**
-   * Static string used to refer to this class, in debug output for example.
-   */
-  private static final String TAG = "EditTeamName";
 
   private Team mTeam;
 
@@ -74,9 +68,6 @@ public class EditTeamName extends Activity {
    */
   private final OnClickListener mCancelListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "Cancel onClick()");
-      }
       v.setEnabled(false);
       // Keep music playing
       mContinueMusic = true;
@@ -95,9 +86,6 @@ public class EditTeamName extends Activity {
    */
   private final OnClickListener mAcceptListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "Cancel onClick()");
-      }
       v.setEnabled(false);
 
       // Cache the team name
@@ -125,9 +113,6 @@ public class EditTeamName extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
 
     this.setContentView(R.layout.editteamname);
 
@@ -161,9 +146,7 @@ public class EditTeamName extends Activity {
   public boolean onKeyUp(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled()) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "BackKeyUp()");
-      }
+
       // Keep music playing
       mContinueMusic = true;
     }
@@ -175,10 +158,8 @@ public class EditTeamName extends Activity {
    */
   @Override
   public void onPause() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onPause()");
-    }
     super.onPause();
+    
     if (!mContinueMusic) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
           .getApplication();
@@ -196,9 +177,6 @@ public class EditTeamName extends Activity {
    */
   @Override
   public void onResume() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onResume()");
-    }
     super.onResume();
 
     // Resume Title Music

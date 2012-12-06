@@ -4,10 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.StringTokenizer;
-
 import com.buzzwords.R;
-
-import android.util.Log;
 
 /**
  * The Card class is a simple container class for storing data associated with
@@ -20,11 +17,6 @@ public class Card implements Serializable {
    * 
    */
   private static final long serialVersionUID = -5094548104192852941L;
-
-  /**
-   * Static string used to refer to this class, in debug output for example.
-   */
-  private static final String TAG = "Card";
 
   /**
    * R-W-S Constants
@@ -89,9 +81,6 @@ public class Card implements Serializable {
    * user hits back). These IDs must differ from those on Turn Result Screen.
    */
   public static int getCardMarkDrawableId(int cardRWS) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "getCardMarkDrawableId()");
-    }
     switch (cardRWS) {
     case RIGHT:
       return R.drawable.stamp_right;
@@ -117,9 +106,6 @@ public class Card implements Serializable {
    * Copy Constructor
    */
   public Card(Card rhs) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "Card( Card )");
-    }
     ArrayList<String> bws = new ArrayList<String>(rhs.getBadWords());
     this.init(rhs.getId(), rhs.getRws(), rhs.getTitle(), bws, rhs.getPack());
   }
@@ -196,7 +182,6 @@ public class Card implements Serializable {
    * @param rws
    */
   public void setRws(int rws) {
-    Log.d(TAG, "setRws(" + String.valueOf(rws) + ")");
     mRws = rws;
   }
 
@@ -215,7 +200,6 @@ public class Card implements Serializable {
    * @param title
    */
   public void setTitle(String title) {
-    Log.d(TAG, "setTitle()");
     mTitle = title;
   }
 
@@ -244,7 +228,6 @@ public class Card implements Serializable {
    * @param badWords
    */
   public void setBadWords(ArrayList<String> badWords) {
-    Log.d(TAG, "setBadWords(ArrayList<String>)");
     mBadWords = badWords;
   }
 
@@ -254,7 +237,6 @@ public class Card implements Serializable {
    * @param commaSeparated
    */
   public void setBadWords(String commaSeparated) {
-    Log.d(TAG, "setBadWords(String)");
     mBadWords = Card.bustString(commaSeparated);
   }
 

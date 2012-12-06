@@ -22,8 +22,6 @@ import java.util.Scanner;
 
 import org.json.JSONException;
 
-import android.util.Log;
-
 /**
  * Iterator for processing a JSON-filled buffered reader into cards. This is
  * helpful for processing large JSON object collections in a sane, yet
@@ -38,7 +36,6 @@ import android.util.Log;
  */
 public class CardJSONIterator implements Iterator<Card> {
 
-  private static final String TAG = "CardJSONIterator";
   /**
    * The internal buffered reader
    */
@@ -50,7 +47,6 @@ public class CardJSONIterator implements Iterator<Card> {
    * @param reader
    */
   public CardJSONIterator(StringBuilder builder) {
-    Log.d(TAG, "Constructor");
     mScanner = new Scanner(builder.toString());
   }
 
@@ -58,7 +54,6 @@ public class CardJSONIterator implements Iterator<Card> {
    * @return true if the buffered reader is "ready"
    */
   public boolean hasNext() {
-    Log.d(TAG, "hasNext");
     return mScanner.hasNextLine();
   }
 
@@ -68,7 +63,6 @@ public class CardJSONIterator implements Iterator<Card> {
    * @return the card from the reader or null if an exception occurs
    */
   public Card next() {
-    Log.d(TAG, "next");
     String strCard = mScanner.nextLine();
     Card card = null;
     try {
@@ -84,7 +78,6 @@ public class CardJSONIterator implements Iterator<Card> {
    * incoming stream, we just burn a line off the reader.
    */
   public void remove() {
-    Log.d(TAG, "remove");
     mScanner.nextLine();
   }
 

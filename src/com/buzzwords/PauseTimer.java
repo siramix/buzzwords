@@ -18,7 +18,6 @@
 package com.buzzwords;
 
 import android.os.CountDownTimer;
-import android.util.Log;
 
 /**
  * Adds pause and resume capabilities to CountDownTimer. Requires implementation
@@ -47,26 +46,16 @@ public abstract class PauseTimer {
 
     public InternalTimer(long millisInFuture, long countDownInterval) {
       super(millisInFuture, countDownInterval);
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "InternalTimer(" + millisInFuture + "," + countDownInterval
-          + ")");
-      }
     }
 
     @Override
     public void onFinish() {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "onFinish()");
-      }
       PauseTimer.this.onFinish();
       PauseTimer.this.mTimerActive = false;
     }
 
     @Override
     public void onTick(long millisUntilFinished) {
-      if (BuzzWordsApplication.DEBUG_TIMERTICKS) {
-        Log.d(TAG, "onTick(" + millisUntilFinished + ")");
-      }
       PauseTimer.this.mTimeRemaining = millisUntilFinished;
       PauseTimer.this.onTick();
     }
@@ -77,9 +66,6 @@ public abstract class PauseTimer {
    * .start()
    */
   public PauseTimer(long timeToCount) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "PauseTimer(" + timeToCount + ")");
-    }
     this.mTimer = new InternalTimer(timeToCount, TICK);
     this.mTimeRemaining = timeToCount;
   }
@@ -98,9 +84,6 @@ public abstract class PauseTimer {
    * Start the timer countdown from the initialized time
    */
   public void start() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "start()");
-    }
     this.mTimer.start();
     this.mTimerActive = true;
   }
@@ -109,9 +92,7 @@ public abstract class PauseTimer {
    * Pause an active timer. Use resume() to resume.
    */
   public void pause() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "pause()");
-    }
+    SafeLog.d(TAG, "pause()");
     if (this.mTimerActive) {
       this.mTimerActive = false;
       this.mTimer.cancel();
@@ -122,9 +103,7 @@ public abstract class PauseTimer {
    * Resume the timer from the time when last paused.
    */
   public void resume() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "resume()");
-    }
+    SafeLog.d(TAG, "resume()");
     if (!this.mTimerActive) {
       this.mTimer = new InternalTimer(mTimeRemaining, TICK);
       this.mTimer.start();
@@ -139,9 +118,6 @@ public abstract class PauseTimer {
    * already expired
    */
   public boolean isActive() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "isActive()");
-    }
     return this.mTimerActive;
   }
 

@@ -18,9 +18,7 @@
 package com.buzzwords;
 
 import java.io.Serializable;
-
 import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * Helpful structure for holding pack metadata. You can also attach cards to
@@ -54,14 +52,11 @@ public class Pack implements Serializable {
   private int mNumToPullNext;
   private boolean mInstalled;
   
-  private static final String TAG = "Pack";
-  
   /**
    * Default constructor
    */
   public Pack() {
     this(-1, "","", "","", -1, -1, PackPurchaseConsts.PACKTYPE_UNSET, false, "");
-    Log.d(TAG, "null consructor Pack()");
   }
 
   /**
@@ -79,7 +74,6 @@ public class Pack implements Serializable {
    */
   public Pack(int id, String name, String path, String iconPath, String description,
               int serverSize, int purchaseType, int version, boolean installed, String price) {
-    Log.d(TAG, "constructor Pack(args)");
     mId = id;
     mName = name;
     mPath = path;

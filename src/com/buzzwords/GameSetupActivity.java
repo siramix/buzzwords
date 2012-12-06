@@ -35,7 +35,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -100,9 +99,6 @@ public class GameSetupActivity extends Activity {
    */
   private final OnClickListener mStartGameListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "StartGameListener onClick()");
-      }
       // Throw out any queued onClicks.
       if (!v.isEnabled() || mIsActivityClosing) {
         return;
@@ -221,9 +217,6 @@ public class GameSetupActivity extends Activity {
    */
   private final OnClickListener mAddPointLimit = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "mAddPointLimit onClick()");
-      }
       // Throw out call if they have started the game
       if(mIsActivityClosing){
         return;
@@ -248,9 +241,6 @@ public class GameSetupActivity extends Activity {
    */
   private final OnClickListener mHintListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "mHintListener onClick()");
-      }
       // Throw out call if they have started the game
       if(mIsActivityClosing){
         return;
@@ -264,9 +254,6 @@ public class GameSetupActivity extends Activity {
    */
   private final OnClickListener mGameTypeListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "mAddPointLimit onClick()");
-      }
       // Throw out call if they have started the game
       if(mIsActivityClosing){
         return;
@@ -388,9 +375,6 @@ public class GameSetupActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
 
     // Setup the view
     this.setContentView(R.layout.gamesetup);
@@ -510,9 +494,6 @@ public class GameSetupActivity extends Activity {
    */
   @Override
   protected Dialog onCreateDialog(int id) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreateDialog(" + id + ")");
-    }
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
 
@@ -543,9 +524,6 @@ public class GameSetupActivity extends Activity {
   public boolean onKeyUp(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled()) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "BackKeyUp()");
-      }
       // Flag to keep music playing
       mContinueMusic = true;
     }
@@ -559,13 +537,8 @@ public class GameSetupActivity extends Activity {
    */
   @Override
   public void onPause() {
-    if (BuzzWordsApplication.DEBUG) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "onPause()");
-      }
-    }
     super.onPause();
-
+    SafeLog.d(TAG, "onPause()");
     // Pause the music unless going to an Activity where it is supposed to
     // continue through
     BuzzWordsApplication application = (BuzzWordsApplication) this
@@ -599,10 +572,8 @@ public class GameSetupActivity extends Activity {
    */
   @Override
   public void onResume() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onResume()");
-    }
     super.onResume();
+    SafeLog.d(TAG, "onResume()");
 
     mIsActivityClosing = false;
 

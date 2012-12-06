@@ -10,7 +10,6 @@ import java.io.InputStream;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 /*****************************************************************************
  *  Buzzwords is a family friendly word game for mobile phones.
@@ -48,12 +47,12 @@ public class PackIconUtils {
       in = new FileInputStream(path);
       Bitmap bitmap = BitmapFactory.decodeStream(in);
       if (bitmap == null) {
-        Log.e(TAG, "Cached bitmap " + path + " decoded as null.");
+        SafeLog.e(TAG, "Cached bitmap " + path + " decoded as null.");
         return null;
       }
       return bitmap;
     } catch (FileNotFoundException e) {
-      Log.e(TAG, "Could not find cached bitmap file " + path);
+      SafeLog.e(TAG, "Could not find cached bitmap file " + path);
       e.printStackTrace();
       return null;
     } finally {
@@ -61,7 +60,7 @@ public class PackIconUtils {
           try {
             in.close();
           } catch (IOException e) {
-            Log.e(TAG, "IOException while closing cache file input stream for " + path);
+            SafeLog.e(TAG, "IOException while closing cache file input stream for " + path);
             e.printStackTrace();
           }
         }
@@ -89,7 +88,7 @@ public class PackIconUtils {
     String path = buildIconPath(iconName, context);
     boolean deleted = new File(path).delete();
     if (!deleted) {
-      Log.w(TAG, "Error deleting icon: " + path);
+      SafeLog.w(TAG, "Error deleting icon: " + path);
     }
     return deleted;
   }
@@ -114,11 +113,11 @@ public class PackIconUtils {
         try {
           out.close();
         } catch (IOException e) {
-          Log.e(TAG, "Encountered I/O error storing icon " + outFile.getAbsolutePath());
+          SafeLog.e(TAG, "Encountered I/O error storing icon " + outFile.getAbsolutePath());
           e.printStackTrace();
         }
       } catch (FileNotFoundException e) {
-        Log.e(TAG, "Encountered File not found exception: " + outFile.getAbsolutePath());
+        SafeLog.e(TAG, "Encountered File not found exception: " + outFile.getAbsolutePath());
         e.printStackTrace();
       }
       return true;
@@ -133,18 +132,18 @@ public class PackIconUtils {
    * @return new Bitmap with height and width suitable for display density
    */
   public static Bitmap scaleIcon(Bitmap bitmap, Context context) {
-    Log.v(TAG, "Scaling image...");
-    Log.v(TAG, "width: " + bitmap.getWidth());
-    Log.v(TAG, "height: " + bitmap.getHeight());
-    Log.v(TAG, "densityBefore: " + bitmap.getDensity());
+    SafeLog.d(TAG, "Scaling image...");
+    SafeLog.d(TAG, "width: " + bitmap.getWidth());
+    SafeLog.d(TAG, "height: " + bitmap.getHeight());
+    SafeLog.d(TAG, "densityBefore: " + bitmap.getDensity());
     
     final float density = context.getResources().getDisplayMetrics().density;
     int p = (int) (ICON_DP * density + 0.5f);
     bitmap = Bitmap.createScaledBitmap(bitmap, p, p, true);
     
-    Log.v(TAG, "widthAfter: " + bitmap.getWidth());
-    Log.v(TAG, "heightAfter: " + bitmap.getHeight());
-    Log.v(TAG, "densityAfter: " + bitmap.getDensity());
+    SafeLog.d(TAG, "widthAfter: " + bitmap.getWidth());
+    SafeLog.d(TAG, "heightAfter: " + bitmap.getHeight());
+    SafeLog.d(TAG, "densityAfter: " + bitmap.getDensity());
     
     return bitmap;
   }

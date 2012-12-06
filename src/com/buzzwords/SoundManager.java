@@ -24,7 +24,6 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class SoundManager {
 
@@ -74,9 +73,7 @@ public class SoundManager {
    * @param baseContext
    */
   private void initSoundManager(Context baseContext) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "initSoundManager()");
-    }
+    SafeLog.d(TAG, "initSoundManager()");
     mContext = baseContext;
     mAudioManager = (AudioManager) mContext
         .getSystemService(Context.AUDIO_SERVICE);
@@ -87,9 +84,7 @@ public class SoundManager {
    * Load all the sounds for the game
    */
   private void loadSounds() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "loadSounds()");
-    }
+    SafeLog.d(TAG, "loadSounds()");
     mSoundIds = new int[Sound.values().length];
     mSoundIds[Sound.RIGHT.ordinal()] = mSoundPool.load(mContext,
         R.raw.fx_right, 1);
@@ -118,7 +113,6 @@ public class SoundManager {
    * @return the id of the sound in the sound pool
    */
   public int playSound(Sound fxIndex) {
-
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(mContext);
     

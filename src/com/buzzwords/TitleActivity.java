@@ -42,7 +42,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -193,9 +192,6 @@ public class TitleActivity extends Activity {
    */
   private OnClickListener mPlayGameListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "PlayGameListener OnClick()");
-      }
       // Throw out any queued onClicks.
       if(!v.isEnabled() || mIsActivityClosing){
         return;
@@ -220,9 +216,6 @@ public class TitleActivity extends Activity {
    */
   private OnClickListener mBuzzerListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "PlayGameListener OnClick()");
-      }
       // Throw out any queued onClicks.
       if(!v.isEnabled() || mIsActivityClosing){
         return;
@@ -246,9 +239,6 @@ public class TitleActivity extends Activity {
    */
   private OnClickListener mSettingsListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "SettingsListener OnClick()");
-      }
       // Throw out any queued onClicks.
       if(!v.isEnabled() || mIsActivityClosing){
         return;
@@ -272,9 +262,6 @@ public class TitleActivity extends Activity {
    */
   private OnClickListener mRulesListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "RulesListener OnClick()");
-      }
       // Throw out any queued onClicks.
       if(!v.isEnabled() || mIsActivityClosing){
         return;
@@ -298,9 +285,6 @@ public class TitleActivity extends Activity {
    */
   private OnClickListener mCreditsListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "CreditsListener OnClick()");
-      }
       // Throw out any queued onClicks.
       if(!v.isEnabled() || mIsActivityClosing){
         return;
@@ -325,9 +309,6 @@ public class TitleActivity extends Activity {
    */
   private OnClickListener mAboutUsListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "AboutUsListener OnClick()");
-      }
       // Throw out any queued onClicks.
       if(!v.isEnabled() || mIsActivityClosing){
         return;
@@ -413,9 +394,6 @@ public class TitleActivity extends Activity {
   }
   
   private Animation fadeFacebookTagline() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "TranslateLabels()");
-    }
     Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
     fadeOut.setStartOffset(3000);
     fadeOut.setDuration(2000);
@@ -440,9 +418,6 @@ public class TitleActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
     mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
     
@@ -533,10 +508,9 @@ public class TitleActivity extends Activity {
    */
   @Override
   public void onPause() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onPause()");
-    }
     super.onPause();
+    SafeLog.d(TAG, "onPause()");
+
     if (!mContinueMusic) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
           .getApplication();
@@ -554,10 +528,8 @@ public class TitleActivity extends Activity {
    */
   @Override
   public void onResume() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onResume()");
-    }
     super.onResume();
+    SafeLog.d(TAG, "onResume()");
     
     mIsActivityClosing = false;
 
@@ -679,9 +651,6 @@ public class TitleActivity extends Activity {
    */
   private void delayRateReminder()
   {
-	if (BuzzWordsApplication.DEBUG) {
-		Log.d(TAG, "delayRateReminder()");
-	}
     // Prepare to edit preference for mute reminder bool
     BuzzWordsApplication application = (BuzzWordsApplication) getApplication();    
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
@@ -696,9 +665,6 @@ public class TitleActivity extends Activity {
    */
   private void muteRateReminder()
   {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "muteRateReminder()");
-    }
     // Prepare to edit preference for mute reminder bool
     BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
@@ -730,9 +696,6 @@ public class TitleActivity extends Activity {
    */
   @Override
   protected Dialog onCreateDialog(int id) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreateDialog(" + id + ")");
-    }
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
     

@@ -25,10 +25,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.TextView;
 
 /**
  * This activity class is responsible for displaying the rules of buzzwords to
@@ -51,10 +48,6 @@ public class CreditsActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
-
     mContinueMusic = false;
 
     // Force volume controls to affect Media volume
@@ -70,9 +63,6 @@ public class CreditsActivity extends Activity {
   public boolean onKeyUp(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled()) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "BackKeyUp()");
-      }
       // Flag to keep music playing
       mContinueMusic = true;
     }
@@ -86,9 +76,6 @@ public class CreditsActivity extends Activity {
    */
   @Override
   public void onPause() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onPause()");
-    }
     super.onPause();
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
@@ -105,9 +92,6 @@ public class CreditsActivity extends Activity {
    */
   @Override
   public void onResume() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onResume()");
-    }
     super.onResume();
 
     // Resume Title Music -- Only do this if we paused DURING credits

@@ -19,7 +19,6 @@ import java.util.Map;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.amazon.inapp.purchasing.BasePurchasingObserver;
 import com.amazon.inapp.purchasing.GetUserIdResponse;
@@ -63,7 +62,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      */
     @Override
     public void onSdkAvailable(final boolean isSandboxMode) {
-        Log.v(TAG, "onSdkAvailable recieved: Response -" + isSandboxMode);
+        SafeLog.d(TAG, "onSdkAvailable recieved: Response -" + isSandboxMode);
         PurchasingManager.initiateGetUserIdRequest();
     }
 
@@ -77,9 +76,9 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      */
     @Override
     public void onGetUserIdResponse(final GetUserIdResponse getUserIdResponse) {
-        Log.v(TAG, "onGetUserIdResponse recieved: Response -" + getUserIdResponse);
-        Log.v(TAG, "RequestId:" + getUserIdResponse.getRequestId());
-        Log.v(TAG, "IdRequestStatus:" + getUserIdResponse.getUserIdRequestStatus());
+        SafeLog.d(TAG, "onGetUserIdResponse recieved: Response -" + getUserIdResponse);
+        SafeLog.d(TAG, "RequestId:" + getUserIdResponse.getRequestId());
+        SafeLog.d(TAG, "IdRequestStatus:" + getUserIdResponse.getUserIdRequestStatus());
         new GetUserIdAsyncTask().execute(getUserIdResponse);
     }
 
@@ -94,9 +93,9 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      */
     @Override
     public void onItemDataResponse(final ItemDataResponse itemDataResponse) {
-        Log.v(TAG, "onItemDataResponse recieved");
-        Log.v(TAG, "ItemDataRequestStatus" + itemDataResponse.getItemDataRequestStatus());
-        Log.v(TAG, "ItemDataRequestId" + itemDataResponse.getRequestId());
+        SafeLog.d(TAG, "onItemDataResponse recieved");
+        SafeLog.d(TAG, "ItemDataRequestStatus" + itemDataResponse.getItemDataRequestStatus());
+        SafeLog.d(TAG, "ItemDataRequestId" + itemDataResponse.getRequestId());
         new ItemDataAsyncTask().execute(itemDataResponse);
     }
 
@@ -110,8 +109,8 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      */
     @Override
     public void onPurchaseResponse(final PurchaseResponse purchaseResponse) {
-        Log.v(TAG, "onPurchaseResponse recieved");
-        Log.v(TAG, "PurchaseRequestStatus:" + purchaseResponse.getPurchaseRequestStatus());
+        SafeLog.d(TAG, "onPurchaseResponse recieved");
+        SafeLog.d(TAG, "PurchaseRequestStatus:" + purchaseResponse.getPurchaseRequestStatus());
         new PurchaseAsyncTask().execute(purchaseResponse);
     }
 
@@ -126,17 +125,17 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      */
     @Override
     public void onPurchaseUpdatesResponse(final PurchaseUpdatesResponse purchaseUpdatesResponse) {
-        Log.v(TAG, "onPurchaseUpdatesRecived recieved: Response -" + purchaseUpdatesResponse);
-        Log.v(TAG, "PurchaseUpdatesRequestStatus:" + purchaseUpdatesResponse.getPurchaseUpdatesRequestStatus());
-        Log.v(TAG, "RequestID:" + purchaseUpdatesResponse.getRequestId());
+        SafeLog.d(TAG, "onPurchaseUpdatesRecived recieved: Response -" + purchaseUpdatesResponse);
+        SafeLog.d(TAG, "PurchaseUpdatesRequestStatus:" + purchaseUpdatesResponse.getPurchaseUpdatesRequestStatus());
+        SafeLog.d(TAG, "RequestID:" + purchaseUpdatesResponse.getRequestId());
         new PurchaseUpdatesAsyncTask().execute(purchaseUpdatesResponse);
     }
 
     /*
-     * Helper method to print out relevant receipt information to the log.
+     * Helper method to print out relevant receipt information to the SafeLog.d
      */
     private void printReceipt(final Receipt receipt) {
-        Log.v(
+        SafeLog.d(
             TAG,
             String.format("Receipt: ItemType: %s Sku: %s SubscriptionPeriod: %s", receipt.getItemType(),
                 receipt.getSku(), receipt.getSubscriptionPeriod()));
@@ -182,7 +181,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 baseActivity.setCurrentUser(userId);
                 return true;
             } else {
-                Log.v(TAG, "onGetUserIdResponse: Unable to get user ID.");
+                SafeLog.d(TAG, "onGetUserIdResponse: Unable to get user ID.");
                 return false;
             }
         }
@@ -215,7 +214,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
             case SUCCESSFUL_WITH_UNAVAILABLE_SKUS:
                 // Skus that you can not purchase will be here.
                 for (final String s : itemDataResponse.getUnavailableSkus()) {
-                    Log.v(TAG, "Unavailable SKU:" + s);
+                    SafeLog.d(TAG, "Unavailable SKU:" + s);
                 }
             case SUCCESSFUL:
                 // Information you'll want to display about your IAP items is here
@@ -223,7 +222,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 final Map<String, Item> items = itemDataResponse.getItemData();
                 for (final String key : items.keySet()) {
                     Item i = items.get(key);
-                    Log.v(TAG, String.format("Item: %s\n Type: %s\n SKU: %s\n Price: %s\n Description: %s\n", 
+                    SafeLog.d(TAG, String.format("Item: %s\n Type: %s\n SKU: %s\n Price: %s\n Description: %s\n", 
                         i.getTitle(), i.getItemType(), i.getSku(), i.getPrice(), i.getDescription()));
                 }
                 break;
@@ -298,7 +297,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                  * If the purchase failed for some reason, (The customer canceled the order, or some other
                  * extraneous circumstance happens) the application ignores the request and logs the failure.
                  */
-                Log.v(TAG, "Failed purchase for request" + baseActivity.requestIds.get(purchaseResponse.getRequestId()));
+                SafeLog.d(TAG, "Failed purchase for request" + baseActivity.requestIds.get(purchaseResponse.getRequestId()));
                 return false;
             case INVALID_SKU:
                 /*
@@ -306,7 +305,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                  * This can happen when there is a sku mismatch between what is sent from the application and what
                  * currently exists on the dev portal.
                  */
-                Log.v(TAG, "Invalid Sku for request " + baseActivity.requestIds.get(purchaseResponse.getRequestId()));
+                SafeLog.d(TAG, "Invalid Sku for request " + baseActivity.requestIds.get(purchaseResponse.getRequestId()));
                 return false;
             }
             return false;
@@ -342,7 +341,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
              * revoked skus set.
              */
             for (final String sku : purchaseUpdatesResponse.getRevokedSkus()) {
-                Log.v(TAG, "Revoked Sku:" + sku);
+                SafeLog.d(TAG, "Revoked Sku:" + sku);
                 final String key = getKey(sku);
                 userPrefEditor.putBoolean(key, false);
                 syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
@@ -385,7 +384,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 userPrefEditor.putString(OFFSET, newOffset.toString());
                 userPrefEditor.commit();
                 if (purchaseUpdatesResponse.isMore()) {
-                    Log.v(TAG, "Initiating Another Purchase Updates with offset: " + newOffset.toString());
+                    SafeLog.d(TAG, "Initiating Another Purchase Updates with offset: " + newOffset.toString());
                     PurchasingManager.initiatePurchaseUpdatesRequest(newOffset);
                 }
                 return true;
