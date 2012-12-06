@@ -38,8 +38,8 @@
             android:layout_width="600dp"
             android:layout_height="600dp"
             android:layout_gravity="center"
-            android:src="@drawable/title_starburst" 
-            android:contentDescription="@string/description_title_starburst" />
+            android:contentDescription="@string/description_title_starburst"
+            android:src="@drawable/title_starburst" />
     </FrameLayout>
 
     <ImageView
@@ -50,7 +50,7 @@
         android:layout_marginBottom="15dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/title_title"
-        android:clickable="true" 
+        android:clickable="true"
         android:contentDescription="@string/description_title_title" />
 
     <Button
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/title_buzzer_normal" 
+                android:background="@drawable/title_buzzer_normal"
                 android:contentDescription="@string/description_title_button_buzz" />
 
             <View
@@ -128,8 +128,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/title_settings_normal" 
-                android:contentDescription="@string/description_title_button_settings"/>
+                android:background="@drawable/title_settings_normal"
+                android:contentDescription="@string/description_title_button_settings" />
 
             <View
                 android:id="@+id/Title_SettingsDelegate"
@@ -161,56 +161,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/title_rules_normal" 
-                android:contentDescription="@string/description_title_button_rules"/>
+                android:background="@drawable/title_rules_normal"
+                android:contentDescription="@string/description_title_button_rules" />
 
             <View
                 android:id="@+id/Title_RulesDelegate"
                 android:layout_width="200dp"
                 android:layout_height="fill_parent" />
         </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Title_FB_Layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp" 
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/Title_FB_Tagline"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:gravity="bottom|right"
+            android:text="@string/tagline_fb_buzzwordsapp"
+            android:textColor="@color/text_subtext"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/Title_FB_BuzzwordsApp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_fb_selector"
+            android:clickable="true"
+            android:contentDescription="@string/description_fb_buzzwordsapp" />
+
+        <ImageButton
+            android:id="@+id/Title_Button_Credits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/button_info"
+            android:contentDescription="@string/description_title_button_credits" />
 
     </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/Title_FB_Layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp">
-
-            <ImageButton
-                android:id="@+id/Title_Button_Credits"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_margin="10dp"
-                android:background="@drawable/button_info"
-                android:contentDescription="@string/description_title_button_credits" />
-
-            <ImageButton
-                android:id="@+id/Title_FB_BuzzwordsApp"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/button_fb_selector"
-                android:clickable="true"
-                android:contentDescription="@string/description_fb_buzzwordsapp" />
-
-            <TextView
-                android:id="@+id/Title_FB_Tagline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_toLeftOf="@+id/Title_FB_BuzzwordsApp"
-                android:paddingRight="5dp"
-                android:paddingTop="15dp"
-                android:text="@string/tagline_fb_buzzwordsapp"
-                android:textColor="@color/text_subtext"
-                android:textSize="18sp" />
-
-        </RelativeLayout>
-    
 </RelativeLayout>
