@@ -61,8 +61,6 @@ public class CreditsActivity extends Activity {
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
     this.setContentView(R.layout.credits);
-    TextView t2 = (TextView) findViewById(R.id.Credits_Lucas_Link);
-    t2.setMovementMethod(LinkMovementMethod.getInstance());
   }
 
   /**

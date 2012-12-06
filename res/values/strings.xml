@@ -195,10 +195,9 @@
     <!-- Activity Credits -->
     <string name="credits_title">Buzzwords Credits</string>
     <string name="credits_team_subheader">The Team</string>
-    <string name="credits_edward">Edward Rowe works as a video game programmer near Durham, NC. He programmed the user interface, game logic, and did most of the art for Buzzwords.</string>
-    <string name="credits_lucas">Lucas Rowe is a software tester in Raleigh, NC. He programmed the in-app-purchasing for Packs, card shuffling algorithms, and wrote many of the words with Edward.</string>
-    <string name="credits_lucas_link"><a href="https://plus.google.com/108280177693858055231/">Lucas on Google</a></string>
-    <string name="credits_patrick">Patrick Reynolds is currently a programmer who does medical software in Carborro, NC. He is also working on his PHD in Computer Science from UNC Chapel Hill. He programmed the tools used to create words.</string>
+    <string name="credits_edward"><b>Edward Rowe\nGameplay Programmer</b>\nEd works as a video game programmer near Durham, NC.</string>
+    <string name="credits_lucas"><b>Lucas Rowe\nBackend Programmer</b>\nLucas is currently a QA Engineer in Raleigh, NC.</string>
+    <string name="credits_patrick"><b>Patrick Reynolds\nTools/Backend Programmer</b>\nPatrick is a programmer in Carborro, NC and is also working on his PHD in Computer Science from UNC Chapel Hill.</string>
     <string name="credits_acknowledgements_subheader">Acknowledgements</string>
     <string name="credits_kevin">Sounds and music were created by Kevin Mabie.</string>
     <string name="credits_fonts">Use of all fonts is permitted under the SIL Open Font License, Version 1.1.</string>

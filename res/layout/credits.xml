@@ -61,7 +61,7 @@
 
             <TextView
                 android:id="@+id/Credits_Edward"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -72,34 +72,26 @@
 
             <TextView
                 android:id="@+id/Credits_Lucas"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:drawablePadding="5dp"
-                android:drawableRight="@drawable/credits_lucas"
-                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/credits_lucas"
+                android:gravity="left|center_vertical"
                 android:text="@string/credits_lucas" />
 
             <TextView
-                android:id="@+id/Credits_Lucas_Link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:paddingRight="5dp"
-                android:text="@string/credits_lucas_link" />
-
-            <TextView
                 android:id="@+id/Credits_Patrick"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:drawableLeft="@drawable/credits_patrick"
                 android:drawablePadding="5dp"
-                android:gravity="center_vertical"
+                android:gravity="left|center_vertical"
                 android:text="@string/credits_patrick" />
 
             <RelativeLayout
