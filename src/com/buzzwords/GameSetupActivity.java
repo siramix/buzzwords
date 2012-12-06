@@ -124,7 +124,6 @@ public class GameSetupActivity extends Activity {
       // Create a GameManager to manage attributes about the current game.
       // the while loop around the try-catch block makes sure the database
       // has loaded before actually starting the game.
-      // TODO I don't think this looping is necessary anymore
       BuzzWordsApplication application = (BuzzWordsApplication) GameSetupActivity.this
           .getApplication();
       boolean keepLooping = true;

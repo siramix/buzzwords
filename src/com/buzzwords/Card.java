@@ -100,8 +100,7 @@ public class Card implements Serializable {
     case SKIP:
       return R.drawable.stamp_skip;
     case NOTSET:
-      //TODO Edward fill this in with the right drawable for NotSet
-      return 3;
+      return R.drawable.turnsum_notset;
     default:
       return -1;
     }

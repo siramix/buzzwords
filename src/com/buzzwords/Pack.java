@@ -201,7 +201,10 @@ public class Pack implements Serializable {
     return mNumToPullNext;
   }
   
-  // TODO This may need to tie to purchase status instead of "in db" or not.
+  /**
+   * Return whether the pack exists in the database
+   * @return
+   */
   public boolean isInstalled() {
     return mInstalled;
   }
