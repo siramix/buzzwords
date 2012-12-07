@@ -5,7 +5,7 @@
         <item name="android:soundEffectsEnabled">false</item>
         <item name="android:buttonStyle">@style/BuzzWordsButton</item>
         <item name="android:radioButtonStyle">@style/BuzzWordsRadioButton</item>
-        <item name="android:windowBackground">@drawable/bg_generic</item>
+        <item name="android:windowBackground">@color/genericBG_trimDark</item>
 		<item name="android:windowNoTitle">true</item>
     </style>
 </resources>
