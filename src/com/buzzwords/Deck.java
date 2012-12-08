@@ -901,10 +901,11 @@ public class Deck {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
       SafeLog.w(TAG, "Upgrading database from version " + oldVersion + " to "
           + newVersion + ", which will destroy all old data");
-      db.execSQL("DROP TABLE IF EXISTS cards;");
       db.execSQL("DROP TABLE IF EXISTS cache;");
-      db.execSQL("CREATE TABLE IF NOT EXISTS " + CardColumns.TABLE_NAME + ";");
-      db.execSQL("CREATE TABLE IF NOT EXISTS " + PackColumns.TABLE_NAME + ";");
+      db.execSQL("DROP TABLE IF EXISTS " + CardColumns.TABLE_NAME + ";");
+      db.execSQL("DROP TABLE IF EXISTS " + PackColumns.TABLE_NAME + ";");
+      db.execSQL(PackColumns.TABLE_CREATE);
+      db.execSQL(CardColumns.TABLE_CREATE);
       onCreate(db);
     }
 

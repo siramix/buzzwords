@@ -37,7 +37,7 @@ public class PackColumns implements BaseColumns {
 
   public static final String[] COLUMNS = {_ID, NAME, PATH, ICON_PATH, DESCRIPTION, PURCHASE_TYPE, VERSION};
 
-  public static final String TABLE_CREATE = "CREATE TABLE " 
+  public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " 
       + TABLE_NAME + "( " +
           _ID + " INTEGER PRIMARY KEY, " +
           NAME + " TEXT, " +

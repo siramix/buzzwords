@@ -35,7 +35,7 @@ public class CardColumns implements BaseColumns {
 
   public static final String[] COLUMNS = {_ID, TITLE, BADWORDS, PLAY_DATE, TIMES_SEEN, PACK_ID};
 
-  public static final String TABLE_CREATE = "CREATE TABLE "
+  public static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
       + TABLE_NAME + "( " +
       _ID + " INTEGER PRIMARY KEY, " +
       TITLE + " TEXT, " +
