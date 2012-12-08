@@ -89,10 +89,4 @@
   <color name="cardreview_WordText">
   	#141414
   </color>
-    <color name="packPurchaseSelected">
-    #4a6071
-  </color>
-    <color name="packPurchaseUnSelected">
-    #292929
-  </color>
 </resources>

@@ -20,7 +20,6 @@ package com.buzzwords;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -178,24 +177,7 @@ public class Deck {
     }
     return localPacks;
   }
-  
-  /**
-   * Take a Pack object and pull in cards from the server into the database. 
-   * @param pack
-   * @throws RuntimeException 
-   */
-  public void installPack(Pack pack) throws RuntimeException {
-    // If pack is out of date, delete the icon and get the new
-    int packState = mDatabaseOpenHelper.packInstalled(pack.getId(), pack.getVersion());
-    if (packState == pack.getId()) {
-      PackIconUtils.deleteIcon(pack.getIconName(), mContext);
-    } else if (packState == PACK_NOT_PRESENT) {
-      setPackSelectionPref(pack.getId(), true);
-    }
-    
-    mDatabaseOpenHelper.installOrUpdatePackFromServer(pack);
-  }
-  
+
   /**
    * Install all of the packs that the app comes with.  This ultimately
    * will be just one pack.
@@ -214,24 +196,7 @@ public class Deck {
     setPackSelectionPref(mStarterPack2.getId(), true);
     */
   }
-  
-  /** 
-   * Delete the pack and phrases associated with a given Pack Id.  Will first
-   * check that the pack exists before attempting to perform any deletions.
-   * @param packId to remove
-   */
-  public synchronized void uninstallPack(int packId) {
-    SafeLog.d(TAG, "REMOVING PACK: " + packId);
-    Pack pack = getPackFromDB(packId); 
-    if (pack != null) {
-      PackIconUtils.deleteIcon(pack.getIconName(), mContext);
-      mDatabaseOpenHelper.uninstallPack(String.valueOf(packId));
-      setPackSelectionPref(packId, false);
-    }
-    else {
-      SafeLog.d(TAG, "PackId " + String.valueOf(packId) + " not found in database.");
-    }
-  }
+
   
   /**
    * Shuffle all cards in the database by setting the date played to a year
@@ -668,53 +633,6 @@ public class Deck {
     }
 
     /**
-     * Take a Pack and determine whether it needs to be updated, installed, or ignored.
-     * If Pack needs to be installed, request the cards to install from the server and 
-     * perform installation.
-     * 
-     * @param serverPack Pack of cards to install
-     * @throws IOException
-     * @throws URISyntaxException
-     * @return true if sync successful (up to date/installed) false for failure to install
-     * @throws RuntimeException 
-     */
-    public synchronized void installOrUpdatePackFromServer(Pack serverPack) throws RuntimeException {
-      SafeLog.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
-      int packId = packInstalled(serverPack.getId(), serverPack.getVersion());
-
-      CardJSONIterator cardItr;
-      
-      // Don't add a pack if it's already there
-      if (packId == PACK_CURRENT) {
-        SafeLog.d(TAG, "No update required, pack " + serverPack.getName() + " current.");
-        return;
-      }
-      if(packId == PACK_NOT_PRESENT) { 
-        // I BELIEVE that we could get a database lock issues when an exception is thrown here.
-        // To prevent this, close the db on exception. 
-        try {
-          cardItr = PackClient.getInstance().getCardsForPack(serverPack);
-          installPack(serverPack, cardItr);
-        } catch (IOException e) {
-          throwUserException(e, "Encountered IOException installing pack from server.");
-        } catch (URISyntaxException e) {
-          throwUserException(e, "Encountered URISyntaxException installing pack from server.");
-        }
-      } else {
-        // Close the db on exception to prevent closing db issues.
-        try {
-          cardItr = PackClient.getInstance().getCardsForPack(serverPack);
-          installPack(serverPack, cardItr);
-        } catch (IOException e) {
-          throwUserException(e, "Encountered IOException installing pack from server.");
-        } catch (URISyntaxException e) {
-          throwUserException(e, "Encountered URISyntaxException installing pack from server.");
-        }
-      }
-      SafeLog.d(TAG, "DONE loading words.");
-    }
-    
-    /**
      * Replaces or inserts a new row into the Packs table and then replaces or inserts
      * rows into the Cards table for each card in that pack.
      * 
@@ -744,31 +662,7 @@ public class Deck {
         mDatabase.close();
       }
     }
-    
-    /** 
-     * Delete the pack and cards associated with a given Pack Id.  Will first
-     * check that the pack exists before attempting to perform any deletions.
-     * @param packId to remove
-     */
-    private synchronized void uninstallPack(String packId) {
-      SafeLog.d(TAG, "uninstallPack(" + packId + ")");
-      mDatabase = getWritableDatabase();
 
-      String[] whereArgs = new String[] { packId };
-      // Add the pack and all cards in a single transaction.
-      try {
-        mDatabase.beginTransaction();
-        mDatabase.delete(CardColumns.TABLE_NAME, CardColumns.PACK_ID + "=?", whereArgs);
-        mDatabase.delete(PackColumns.TABLE_NAME, PackColumns._ID + "=?", whereArgs);
-        mDatabase.setTransactionSuccessful();
-      } finally {
-        mDatabase.endTransaction();
-      }
-      if (mDatabase.isOpen()) {
-        mDatabase.close();
-      }
-    }
-    
     /**
      * Replaces existing card if it exists, otherwise inserts the card in the Cards table.
      * 
