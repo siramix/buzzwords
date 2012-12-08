@@ -102,13 +102,13 @@ public class RulesActivity extends Activity {
 
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
     // If music is playing, we must pause it and flag to resume it onResume().
     // This solves the problem where Rules was never playing music to begin with
     // (which happens
     // when entering Rules from Turn or TurnSummary
     if (!mContinueMusic && mp.isPlaying()) {
-      mp.pause();
+      application.cleanUpMusicPlayer();
       mIsMusicPaused = true;
     }
   }
@@ -125,7 +125,7 @@ public class RulesActivity extends Activity {
     if (mIsMusicPaused) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
           .getApplication();
-      MediaPlayer mp = application.getMusicPlayer();
+      MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
           .getBaseContext());
       if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {

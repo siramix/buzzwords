@@ -79,10 +79,10 @@ public class CreditsActivity extends Activity {
     super.onPause();
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
     // If music is playing, we must pause it and flag to resume it onResume().
     if (!mContinueMusic && mp.isPlaying()) {
-      mp.pause();
+      application.cleanUpMusicPlayer();
       mIsMusicPaused = true;
     }
   }
@@ -98,7 +98,7 @@ public class CreditsActivity extends Activity {
     if (mIsMusicPaused) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
           .getApplication();
-      MediaPlayer mp = application.getMusicPlayer();
+      MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
           .getBaseContext());
       if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {

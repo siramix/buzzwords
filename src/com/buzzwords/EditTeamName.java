@@ -163,11 +163,11 @@ public class EditTeamName extends Activity {
     if (!mContinueMusic) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
           .getApplication();
-      MediaPlayer mp = application.getMusicPlayer();
+      MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
           .getBaseContext());
       if (mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
-        mp.pause();
+        application.cleanUpMusicPlayer();
       }
     }
   }
@@ -182,7 +182,7 @@ public class EditTeamName extends Activity {
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
     if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {

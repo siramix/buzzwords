@@ -220,7 +220,8 @@ public class TurnActivity extends Activity {
 
     if (!mTurnIsOver && mCounter.isActive()) {
       mCounter.pause();
-      mTimerfill.startAnimation(timerAnimation(TurnActivity.TIMERANIM_PAUSE_ID));
+      mTimerfill
+          .startAnimation(timerAnimation(TurnActivity.TIMERANIM_PAUSE_ID));
     }
   }
 
@@ -233,7 +234,8 @@ public class TurnActivity extends Activity {
 
     if (!mTurnIsOver && !mCounter.isActive()) {
       mCounter.resume();
-      mTimerfill.startAnimation(timerAnimation(TurnActivity.TIMERANIM_RESUME_ID));
+      mTimerfill
+          .startAnimation(timerAnimation(TurnActivity.TIMERANIM_RESUME_ID));
     }
   }
 
@@ -285,21 +287,19 @@ public class TurnActivity extends Activity {
       TurnActivity.this.pauseGame();
     }
   };
-  
+
   /**
    * Listener for menu button
    */
   private final OnClickListener mMenuButtonListener = new OnClickListener() {
     public void onClick(View v) {
-      if(!mIsPaused)
-      {
-        TurnActivity.this.pauseGame();       
+      if (!mIsPaused) {
+        TurnActivity.this.pauseGame();
       }
-      
+
       TurnActivity.this.openOptionsMenu();
     }
   };
-
 
   /**
    * Listener for the 'Correct' button. It deals with the flip to the next card.
@@ -345,7 +345,8 @@ public class TurnActivity extends Activity {
         // Resume must wait for music to seek back to the correct elapsed time
         BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
             .getApplication();
-        MediaPlayer mp = application.getMusicPlayer();
+        MediaPlayer mp = application.getMusicPlayer(TurnActivity.this
+            .getBaseContext());
         int elapsedtime;
         if (mMusicEnabled) {
           elapsedtime = mGameManager.getTurnTime()
@@ -669,19 +670,20 @@ public class TurnActivity extends Activity {
 
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
-    
-    int numBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_NUM_BUZZWORDS, "5"));
+
+    int numBuzzwords = Integer.valueOf(sp.getString(
+        Consts.PREFKEY_NUM_BUZZWORDS, "5"));
     int maxBuzzwords = wordLayout.getChildCount();
-    
+
     for (int i = 0; i < maxBuzzwords; ++i) {
       text = (TextView) wordLayout.getChildAt(i);
       text.setText(badwords.get(i));
       text.setTextColor(color);
     }
-    
+
     int numToHide = maxBuzzwords - numBuzzwords;
     for (int i = 1; i <= numToHide; ++i) {
-      wordLayout.getChildAt(maxBuzzwords-i).setVisibility(View.GONE);
+      wordLayout.getChildAt(maxBuzzwords - i).setVisibility(View.GONE);
     }
   }
 
@@ -736,10 +738,14 @@ public class TurnActivity extends Activity {
    */
   protected void endTurn() {
     BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
-            .getApplication();
+        .getApplication();
+    
+    // Clean up Music resources
+    application.cleanUpMusicPlayer();
+    
     GameManager gm = application.getGameManager();
     gm.addTurnScore();
-    
+
     startActivity(new Intent(getString(R.string.IntentTurnSummary), getIntent()
         .getData()));
   }
@@ -795,10 +801,9 @@ public class TurnActivity extends Activity {
     } else {
       mSkipButton.setVisibility(View.INVISIBLE);
     }
-    
+
     // assign click to menu button
     mMenuButton.setOnClickListener(mMenuButtonListener);
-
 
     // Listen for all gestures
     mSwipeDetector = new GestureDetector(mSwipeListener);
@@ -834,13 +839,15 @@ public class TurnActivity extends Activity {
     // Color timer fill
     Team curTeam = mGameManager.getActiveTeam();
     barFill.setImageResource(curTeam.getPrimaryColor());
-    
+
     // Set Turn Timer frame color
-    Drawable timerFrameBG = getResources().getDrawable(R.drawable.gameend_row_end_white);
+    Drawable timerFrameBG = getResources().getDrawable(
+        R.drawable.gameend_row_end_white);
     ImageView timerFrame = (ImageView) this.findViewById(R.id.Turn_TimerFrame);
-    timerFrameBG.setColorFilter(getResources().getColor(R.color.genericBG_trim), Mode.MULTIPLY);
+    timerFrameBG.setColorFilter(
+        getResources().getColor(R.color.genericBG_trim), Mode.MULTIPLY);
     timerFrame.setBackgroundDrawable(timerFrameBG);
-    
+
     // Set background gradient
     this.findViewById(R.id.Turn_Root).setBackgroundResource(
         curTeam.getGradient());
@@ -875,12 +882,12 @@ public class TurnActivity extends Activity {
                 .getDefaultSharedPreferences(getBaseContext());
 
             // Only play ticking when sound effects are enabled
-            if (sp.getBoolean(Consts.PREFKEY_SFX, true))
-            {
+            if (sp.getBoolean(Consts.PREFKEY_SFX, true)) {
               mIsTicking = true;
               BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
                   .getApplication();
-              MediaPlayer mp = application.getMusicPlayer();
+              MediaPlayer mp = application.getMusicPlayer(TurnActivity.this
+                  .getBaseContext());
               mp.start();
             }
           }
@@ -937,20 +944,19 @@ public class TurnActivity extends Activity {
     this.setupViewReferences();
 
     this.setupUIProperties();
-    
+
     this.showDialog(DIALOG_READY_ID);
 
     this.mCounter = setupTurnTimer();
 
   }
-  
+
   /**
-   * Helper function ensures we use the same view when setting
-   * KeepScreenOn
+   * Helper function ensures we use the same view when setting KeepScreenOn
+   * 
    * @param sleep
    */
-  private void setSleepAllowed(boolean sleep)
-  {
+  private void setSleepAllowed(boolean sleep) {
     View view = this.findViewById(R.id.Turn_MasterLayout);
     view.setKeepScreenOn(!sleep);
   }
@@ -969,7 +975,7 @@ public class TurnActivity extends Activity {
     }
     mGameManager.updateSeenFields();
   }
-  
+
   /**
    * Display a dialog when the search is requested
    */
@@ -986,7 +992,7 @@ public class TurnActivity extends Activity {
   protected Dialog onCreateDialog(int id) {
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
-    
+
     switch (id) {
     case DIALOG_ENDTURN_ID:
       builder = new AlertDialog.Builder(this);
@@ -1023,6 +1029,10 @@ public class TurnActivity extends Activity {
 
               BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
                   .getApplication();
+              
+              // Clean up music resources
+              application.cleanUpMusicPlayer();
+              
               GameManager gm = application.getGameManager();
               // Add whatever score they've gotten in this turn
               gm.addTurnScore();
@@ -1042,17 +1052,17 @@ public class TurnActivity extends Activity {
           });
       dialog = builder.create();
       break;
-    case DIALOG_READY_ID:     
-      
+    case DIALOG_READY_ID:
+
       // Play team ready sound
-      SoundManager sm = SoundManager.getInstance(TurnActivity.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TurnActivity.this
+          .getBaseContext());
       sm.playSound(SoundManager.Sound.TEAMREADY);
 
-      String curTeam = mGameManager.getActiveTeam().getName();      
-      
+      String curTeam = mGameManager.getActiveTeam().getName();
+
       builder = new AlertDialog.Builder(this);
-      builder.setMessage("Ready " + curTeam + "?")
-          .setCancelable(false)
+      builder.setMessage("Ready " + curTeam + "?").setCancelable(false)
           .setPositiveButton("Start!", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
@@ -1060,15 +1070,16 @@ public class TurnActivity extends Activity {
               startGame();
             }
           });
-      
+
       dialog = builder.create();
 
-      // We add an onDismiss listener to handle the case in which a user attempts
+      // We add an onDismiss listener to handle the case in which a user
+      // attempts
       // to search on the ready dialog
       dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
         public void onDismiss(DialogInterface dialog) {
-          if(mIsPaused) {
+          if (mIsPaused) {
             showDialog(DIALOG_READY_ID);
           }
         }
@@ -1108,7 +1119,7 @@ public class TurnActivity extends Activity {
     mIsPaused = false;
 
     setSleepAllowed(false);
-    
+
     if (!mTurnIsOver) {
       this.resumeTurnTimer();
 
@@ -1123,7 +1134,7 @@ public class TurnActivity extends Activity {
       mBuzzerButton.setEnabled(true);
       mSkipButton.setEnabled(true);
       mNextButton.setEnabled(true);
-      
+
       // Allow timer to pause the game again
       mTimerGroup.setEnabled(true);
 
@@ -1143,10 +1154,9 @@ public class TurnActivity extends Activity {
   protected void pauseGame() {
     SafeLog.d(TAG, "pauseGame()");
 
-    
     // Allow phone to sleep while paused
     setSleepAllowed(true);
-    
+
     mIsPaused = true;
     mPauseOverlay.setVisibility(View.VISIBLE);
 
@@ -1157,7 +1167,8 @@ public class TurnActivity extends Activity {
     // Stop music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(TurnActivity.this
+        .getBaseContext());
     if (mp.isPlaying()) {
       mp.pause();
     }
@@ -1167,7 +1178,7 @@ public class TurnActivity extends Activity {
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     sm.playSound(SoundManager.Sound.TEAMREADY);
 
-    // Make timer group allow unpause while paused. 
+    // Make timer group allow unpause while paused.
     mTimerGroup.setEnabled(false);
 
     if (!mTurnIsOver) {
@@ -1188,7 +1199,7 @@ public class TurnActivity extends Activity {
       mTimesUpText.setVisibility(View.INVISIBLE);
     }
   }
-  
+
   /**
    * Helper function to tell all game elements to start
    */
@@ -1197,9 +1208,9 @@ public class TurnActivity extends Activity {
     TurnActivity.this.showCard();
     mIsBack = true;
     TurnActivity.this.startTimer();
-   
+
     setSleepAllowed(false);
-    
+
     // Play back sound to differentiate from normal clicks
     SoundManager sm = SoundManager.getInstance(TurnActivity.this
         .getBaseContext());
@@ -1226,8 +1237,8 @@ public class TurnActivity extends Activity {
       }
     }
 
-    MediaPlayer mp = application.createMusicPlayer(TurnActivity.this
-        .getBaseContext(), musicId);
+    MediaPlayer mp = application.createMusicPlayer(
+        TurnActivity.this.getBaseContext(), musicId);
     // If music is not enabled, it will start the countdown track at
     // 10 seconds
     if (mMusicEnabled) {
@@ -1246,7 +1257,7 @@ public class TurnActivity extends Activity {
 
     return true;
   }
-  
+
   /**
    * Handler for key down events. This will start tracking the back button event
    * so we can properly catch it and move back between cards instead of
@@ -1262,7 +1273,7 @@ public class TurnActivity extends Activity {
     // Consume the search button
     else if (keyCode == KeyEvent.KEYCODE_SEARCH) {
       return false;
-    }    
+    }
     return super.onKeyDown(keyCode, event);
   }
 

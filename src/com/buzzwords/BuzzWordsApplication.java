@@ -56,6 +56,11 @@ public class BuzzWordsApplication extends Application {
    * MediaPlayer for music
    */
   private MediaPlayer mMediaPlayer;
+  
+  /**
+   * Track last played music track, to restore it on resume
+   */
+  private int mTrackID;
 
   /**
    * Default constructor
@@ -110,6 +115,7 @@ public class BuzzWordsApplication extends Application {
     if (mMediaPlayer != null) {
       mMediaPlayer.release();
     }
+    mTrackID = id;
     mMediaPlayer = MediaPlayer.create(context, id);
     return mMediaPlayer;
   }
@@ -117,7 +123,25 @@ public class BuzzWordsApplication extends Application {
   /**
    * @return a reference to the current media player
    */
-  public MediaPlayer getMusicPlayer() {
+  public MediaPlayer getMusicPlayer(Context context) {
+    if(mMediaPlayer == null)
+    {
+      mMediaPlayer = MediaPlayer.create(context, mTrackID);
+    }
     return mMediaPlayer;
+  }
+  
+  /**
+   * Clean up resources required by the media player. This should
+   * be called whenever you know there will be no music.
+   */
+  public void cleanUpMusicPlayer() {
+    if (mMediaPlayer != null) {
+      if (mMediaPlayer.isPlaying()) {
+        mMediaPlayer.stop();
+      }
+      mMediaPlayer.release();
+      mMediaPlayer = null;
+    }
   }
 }

@@ -130,8 +130,14 @@ public class GameSetupActivity extends Activity {
               mGameLimits[mGameType]);
           application.setGameManager(gm);
           keepLooping = false;
+          
+          // Disable other buttons and this one to prevent double clicks
           mIsActivityClosing = true;
           v.setEnabled(false);
+
+          // Release the Music Manager
+          application.cleanUpMusicPlayer();
+          
         } catch (SQLiteException e) {
           keepLooping = true;
         }
@@ -142,7 +148,7 @@ public class GameSetupActivity extends Activity {
           getIntent().getData()));
 
       // Stop the music
-      MediaPlayer mp = application.getMusicPlayer();
+      MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
       mp.stop();
     }
   };
@@ -543,9 +549,9 @@ public class GameSetupActivity extends Activity {
     // continue through
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
     if (!mContinueMusic && mp.isPlaying()) {
-      mp.pause();
+      application.cleanUpMusicPlayer();
     }
 
     // Store off game's attributes as preferences. This is done in Pause to
@@ -580,7 +586,7 @@ public class GameSetupActivity extends Activity {
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
     if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {

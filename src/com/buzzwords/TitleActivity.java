@@ -63,7 +63,7 @@ import android.view.animation.ScaleAnimation;
  * @author Siramix Labs
  */
 public class TitleActivity extends Activity {
-  
+
   /**
    * logging tag
    */
@@ -73,7 +73,7 @@ public class TitleActivity extends Activity {
    * flag used for stopping music OnStop() event.
    */
   private boolean mContinueMusic;
-  
+
   /**
    * Flag to prevent other activities from opening after one is launched
    */
@@ -137,10 +137,12 @@ public class TitleActivity extends Activity {
    */
   private void highlightDelegateItems(int id, boolean on) {
     ImageButton button;
-    TextView label = (TextView) TitleActivity.this.findViewById(R.id.Title_BuzzText);
+    TextView label = (TextView) TitleActivity.this
+        .findViewById(R.id.Title_BuzzText);
     switch (id) {
     case R.id.Title_BuzzDelegate:
-      button = (ImageButton) TitleActivity.this.findViewById(R.id.Title_BuzzButton);
+      button = (ImageButton) TitleActivity.this
+          .findViewById(R.id.Title_BuzzButton);
       label = (TextView) TitleActivity.this.findViewById(R.id.Title_BuzzText);
       if (on) {
         button.setBackgroundResource(R.drawable.title_buzzer_onclick);
@@ -153,8 +155,10 @@ public class TitleActivity extends Activity {
       }
       break;
     case R.id.Title_SettingsDelegate:
-      button = (ImageButton) TitleActivity.this.findViewById(R.id.Title_SettingsButton);
-      label = (TextView) TitleActivity.this.findViewById(R.id.Title_SettingsText);
+      button = (ImageButton) TitleActivity.this
+          .findViewById(R.id.Title_SettingsButton);
+      label = (TextView) TitleActivity.this
+          .findViewById(R.id.Title_SettingsText);
       if (on) {
         button.setBackgroundResource(R.drawable.title_settings_onclick);
         label.setTextColor(TitleActivity.this.getResources().getColor(
@@ -166,7 +170,8 @@ public class TitleActivity extends Activity {
       }
       break;
     case R.id.Title_RulesDelegate:
-      button = (ImageButton) TitleActivity.this.findViewById(R.id.Title_RulesButton);
+      button = (ImageButton) TitleActivity.this
+          .findViewById(R.id.Title_RulesButton);
       label = (TextView) TitleActivity.this.findViewById(R.id.Title_RulesText);
       if (on) {
         button.setBackgroundResource(R.drawable.title_rules_onclick);
@@ -193,16 +198,17 @@ public class TitleActivity extends Activity {
   private OnClickListener mPlayGameListener = new OnClickListener() {
     public void onClick(View v) {
       // Throw out any queued onClicks.
-      if(!v.isEnabled() || mIsActivityClosing){
+      if (!v.isEnabled() || mIsActivityClosing) {
         return;
       }
       mIsActivityClosing = true;
       v.setEnabled(false);
-      
+
       mContinueMusic = true;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this
+          .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(TitleActivity.this.getApplication().getString(
@@ -217,7 +223,7 @@ public class TitleActivity extends Activity {
   private OnClickListener mBuzzerListener = new OnClickListener() {
     public void onClick(View v) {
       // Throw out any queued onClicks.
-      if(!v.isEnabled() || mIsActivityClosing){
+      if (!v.isEnabled() || mIsActivityClosing) {
         return;
       }
       mIsActivityClosing = true;
@@ -225,7 +231,8 @@ public class TitleActivity extends Activity {
       mContinueMusic = false;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this
+          .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(getApplication()
@@ -240,7 +247,7 @@ public class TitleActivity extends Activity {
   private OnClickListener mSettingsListener = new OnClickListener() {
     public void onClick(View v) {
       // Throw out any queued onClicks.
-      if(!v.isEnabled() || mIsActivityClosing){
+      if (!v.isEnabled() || mIsActivityClosing) {
         return;
       }
       mIsActivityClosing = true;
@@ -248,7 +255,8 @@ public class TitleActivity extends Activity {
       mContinueMusic = true;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this
+          .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(TitleActivity.this.getApplication().getString(
@@ -263,7 +271,7 @@ public class TitleActivity extends Activity {
   private OnClickListener mRulesListener = new OnClickListener() {
     public void onClick(View v) {
       // Throw out any queued onClicks.
-      if(!v.isEnabled() || mIsActivityClosing){
+      if (!v.isEnabled() || mIsActivityClosing) {
         return;
       }
       mIsActivityClosing = true;
@@ -271,7 +279,8 @@ public class TitleActivity extends Activity {
       mContinueMusic = true;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this
+          .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(
@@ -279,14 +288,14 @@ public class TitleActivity extends Activity {
               .getData()));
     }
   }; // End RulesListener
-  
+
   /**
    * Listener to determine when the Credits button is clicked.
    */
   private OnClickListener mCreditsListener = new OnClickListener() {
     public void onClick(View v) {
       // Throw out any queued onClicks.
-      if(!v.isEnabled() || mIsActivityClosing){
+      if (!v.isEnabled() || mIsActivityClosing) {
         return;
       }
       mIsActivityClosing = true;
@@ -294,12 +303,12 @@ public class TitleActivity extends Activity {
       mContinueMusic = true;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this
+          .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
-      startActivity(new Intent(
-          getApplication().getString(R.string.IntentCredits), getIntent()
-              .getData()));
+      startActivity(new Intent(getApplication().getString(
+          R.string.IntentCredits), getIntent().getData()));
     }
   }; // End CreditsListener
 
@@ -310,7 +319,7 @@ public class TitleActivity extends Activity {
   private OnClickListener mAboutUsListener = new OnClickListener() {
     public void onClick(View v) {
       // Throw out any queued onClicks.
-      if(!v.isEnabled() || mIsActivityClosing){
+      if (!v.isEnabled() || mIsActivityClosing) {
         return;
       }
       mIsActivityClosing = true;
@@ -318,16 +327,20 @@ public class TitleActivity extends Activity {
       mContinueMusic = false;
 
       // play confirm sound
-      SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
+      SoundManager sm = SoundManager.getInstance(TitleActivity.this
+          .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       // Launch Facebook, if not found, launch a browser intent
-      String url = getApplication().getString(R.string.URI_fb_launcher_buzzwordsapp);
-      Intent facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+      String url = getApplication().getString(
+          R.string.URI_fb_launcher_buzzwordsapp);
+      Intent facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW,
+          Uri.parse(url));
       try {
         startActivity(facebookOrBrowserIntent);
       } catch (ActivityNotFoundException e) {
-        Uri uri = Uri.parse(getApplication().getString(R.string.URI_fb_buzzwordsapp));
+        Uri uri = Uri.parse(getApplication().getString(
+            R.string.URI_fb_buzzwordsapp));
         facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW);
         facebookOrBrowserIntent.setDataAndType(uri, "text/plain");
         startActivity(facebookOrBrowserIntent);
@@ -392,7 +405,7 @@ public class TitleActivity extends Activity {
     alpha.setStartOffset(labelNum * 200);
     return alpha;
   }
-  
+
   private Animation fadeFacebookTagline() {
     Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
     fadeOut.setStartOffset(3000);
@@ -420,14 +433,14 @@ public class TitleActivity extends Activity {
     super.onCreate(savedInstanceState);
     mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
-    
+
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.createMusicPlayer(this.getBaseContext(),
-        R.raw.mus_title);
+    MediaPlayer mp = application.createMusicPlayer(
+        application.getBaseContext(), R.raw.mus_title);
 
     mp.setLooping(true);
 
@@ -439,7 +452,7 @@ public class TitleActivity extends Activity {
     // Setup the Main Title Screen view
     this.setContentView(R.layout.title);
     new InstallerAndAnimator().execute();
-    
+
     // Assign listeners to the delegate buttons
     View delegate = (View) this.findViewById(R.id.Title_BuzzDelegate);
     delegate.setOnTouchListener(mTouchPlayListener);
@@ -459,25 +472,25 @@ public class TitleActivity extends Activity {
     ImageButton aboutusButton = (ImageButton) this
         .findViewById(R.id.Title_FB_BuzzwordsApp);
     aboutusButton.setOnClickListener(mAboutUsListener);
-    
+
     ImageButton creditsButton = (ImageButton) this
         .findViewById(R.id.Title_Button_Credits);
     creditsButton.setOnClickListener(mCreditsListener);
 
     // Initialize button animations
     View tempButton;
-    int[] buttons = {R.id.Title_BuzzButton, R.id.Title_SettingsButton, R.id.Title_RulesButton};
-    for(int i = 0; i < buttons.length; i++)
-    {
+    int[] buttons = { R.id.Title_BuzzButton, R.id.Title_SettingsButton,
+        R.id.Title_RulesButton };
+    for (int i = 0; i < buttons.length; i++) {
       tempButton = (View) this.findViewById(buttons[i]);
       tempButton.startAnimation(stretch(i));
     }
-    
+
     // Initialize Labels with animation
     TextView tempLabel;
-    int[] labels = {R.id.Title_BuzzText, R.id.Title_SettingsText, R.id.Title_RulesText};
-    for(int i = 0; i < labels.length; i++)
-    {
+    int[] labels = { R.id.Title_BuzzText, R.id.Title_SettingsText,
+        R.id.Title_RulesText };
+    for (int i = 0; i < labels.length; i++) {
       tempLabel = (TextView) this.findViewById(labels[i]);
       tempLabel.startAnimation(fadeLabels(i));
     }
@@ -501,7 +514,7 @@ public class TitleActivity extends Activity {
         new BitmapDrawable(starburst));
 
   }
-  
+
   /**
    * Override onPause to prevent activity specific processes from running while
    * app is in background
@@ -514,11 +527,11 @@ public class TitleActivity extends Activity {
     if (!mContinueMusic) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
           .getApplication();
-      MediaPlayer mp = application.getMusicPlayer();
+      MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
           .getBaseContext());
       if (mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
-        mp.pause();
+        application.cleanUpMusicPlayer();
       }
     }
   }
@@ -530,7 +543,7 @@ public class TitleActivity extends Activity {
   public void onResume() {
     super.onResume();
     SafeLog.d(TAG, "onResume()");
-    
+
     mIsActivityClosing = false;
 
     // Re-enable things
@@ -544,7 +557,7 @@ public class TitleActivity extends Activity {
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
     if (sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
@@ -556,54 +569,47 @@ public class TitleActivity extends Activity {
     mContinueMusic = false;
   }
 
-  /** 
-   * Run the installation in an Async Task.  This puts the intensive task of installing
-   * on a separate thread that once complete will dismiss the progress dialog and start
-   * the title screen's animation.  After the first run this task will only be used
-   * for animating the title screen.
+  /**
+   * Run the installation in an Async Task. This puts the intensive task of
+   * installing on a separate thread that once complete will dismiss the
+   * progress dialog and start the title screen's animation. After the first run
+   * this task will only be used for animating the title screen.
    */
-  private class InstallerAndAnimator extends AsyncTask <Void, Void, Boolean>
-  {
-      private ProgressDialog dialog;
-      private SharedPreferences prefs;
-      private boolean initialized;
-      
-      @Override
-      protected void onPreExecute()
-      {
-        prefs = getPreferences(Context.MODE_PRIVATE);
-        initialized = prefs.getBoolean(Consts.PREFKEY_DB_INITIALIZED, false);
-        if (!initialized) {
-          dialog = ProgressDialog.show(
-            TitleActivity.this,
-            null,
-            getString(R.string.progressDialog_install_text), 
-            true);
-        }
+  private class InstallerAndAnimator extends AsyncTask<Void, Void, Boolean> {
+    private ProgressDialog dialog;
+    private SharedPreferences prefs;
+    private boolean initialized;
+
+    @Override
+    protected void onPreExecute() {
+      prefs = getPreferences(Context.MODE_PRIVATE);
+      initialized = prefs.getBoolean(Consts.PREFKEY_DB_INITIALIZED, false);
+      if (!initialized) {
+        dialog = ProgressDialog.show(TitleActivity.this, null,
+            getString(R.string.progressDialog_install_text), true);
+      }
+    }
+
+    @Override
+    protected Boolean doInBackground(Void... params) {
+      if (!initialized) {
+        GameManager gm = new GameManager(TitleActivity.this);
+        gm.installStarterPacks();
+      }
+      return true;
+
+    }
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+      if (!initialized) {
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putBoolean(Consts.PREFKEY_DB_INITIALIZED, true);
+        edit.commit();
+        dialog.dismiss();
       }
 
-      @Override
-      protected Boolean doInBackground(Void... params)
-      {
-        if (!initialized) {
-          GameManager gm = new GameManager(TitleActivity.this);
-          gm.installStarterPacks();
-        }
-        return true;
-        
-      }
-
-      @Override
-      protected void onPostExecute(Boolean result)
-      {
-        if (!initialized) {
-          SharedPreferences.Editor edit = prefs.edit();
-          edit.putBoolean(Consts.PREFKEY_DB_INITIALIZED, true);
-          edit.commit();
-          dialog.dismiss();
-        }
-        
-        displayTitleDialog();
+      displayTitleDialog();
 
       // Animate (rotate) the starburst which would have slowed down the install
       // process
@@ -611,69 +617,72 @@ public class TitleActivity extends Activity {
       starburst.startAnimation(rotateStarburst());
     }
   }
-  
+
   /**
-   * The Title screen should only show one dialog.  We can call this after the
-   * installation check completes.  This method ensures that the correct dialog
+   * The Title screen should only show one dialog. We can call this after the
+   * installation check completes. This method ensures that the correct dialog
    * displays for the Title screen depending on things like times played.
    */
   private void displayTitleDialog() {
     // Capture our play count to decide whether to show the Rate Us dialog
     if (mSharedPrefs == null) {
-      mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getBaseContext());
+      mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this
+          .getBaseContext());
     }
-        
-    int playCount = mSharedPrefs.getInt(getResources()
-                                      .getString(R.string.PREFKEY_PLAYCOUNT), 0);
-    boolean showReminder = mSharedPrefs.getBoolean(getResources()
-                                      .getString(R.string.PREFKEY_SHOWREMINDER), false);
-    boolean showFirstRun = mSharedPrefs.getBoolean(getResources()
-                                      .getString(R.string.PREFKEY_SHOWFIRSTRUN), true);
+
+    int playCount = mSharedPrefs.getInt(
+        getResources().getString(R.string.PREFKEY_PLAYCOUNT), 0);
+    boolean showReminder = mSharedPrefs.getBoolean(
+        getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
+    boolean showFirstRun = mSharedPrefs.getBoolean(
+        getResources().getString(R.string.PREFKEY_SHOWFIRSTRUN), true);
 
     // If playCount is 0. Show them the first-time dialog
     if (playCount == 0 && showFirstRun) {
       showDialog(DIALOG_FIRST_TIME);
     }
-    
+
     // If 3 plays have been done and reminder is not muted, show dialog
     if (showReminder) {
       if (playCount < 6) {
         showDialog(DIALOG_RATEUS_FIRST);
-      }
-      else {
+      } else {
         showDialog(DIALOG_RATEUS_SECOND);
       }
     }
   }
-  
+
   /**
    * Sets the boolean preference for muting the Rate Us dialog to true.
    */
-  private void delayRateReminder()
-  {
-    // Prepare to edit preference for mute reminder bool
-    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();    
-    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
-    SharedPreferences.Editor prefEditor = sp.edit();   
-    
-    prefEditor.putBoolean(this.getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
-    prefEditor.commit();    
-  }
-  
-  /**
-   * Sets the boolean preference for muting the Rate Us dialog to true.
-   */
-  private void muteRateReminder()
-  {
+  private void delayRateReminder() {
     // Prepare to edit preference for mute reminder bool
     BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
-    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(application.getBaseContext());
     SharedPreferences.Editor prefEditor = sp.edit();
-    
-    // 7 and false will mean the user has seen the second dialog and muted it 
-    prefEditor.putInt(this.getResources().getString(R.string.PREFKEY_PLAYCOUNT),7);
-    prefEditor.putBoolean(this.getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
-    
+
+    prefEditor.putBoolean(
+        this.getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
+    prefEditor.commit();
+  }
+
+  /**
+   * Sets the boolean preference for muting the Rate Us dialog to true.
+   */
+  private void muteRateReminder() {
+    // Prepare to edit preference for mute reminder bool
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(application.getBaseContext());
+    SharedPreferences.Editor prefEditor = sp.edit();
+
+    // 7 and false will mean the user has seen the second dialog and muted it
+    prefEditor.putInt(
+        this.getResources().getString(R.string.PREFKEY_PLAYCOUNT), 7);
+    prefEditor.putBoolean(
+        this.getResources().getString(R.string.PREFKEY_SHOWREMINDER), false);
+
     prefEditor.commit();
   }
 
@@ -683,10 +692,12 @@ public class TitleActivity extends Activity {
   private void muteFirstRunDialog() {
     // Prepare to edit preference for mute reminder bool
     BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
-    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(application.getBaseContext());
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(application.getBaseContext());
     SharedPreferences.Editor prefEditor = sp.edit();
 
-    prefEditor.putBoolean(this.getResources().getString(R.string.PREFKEY_SHOWFIRSTRUN), false);
+    prefEditor.putBoolean(
+        this.getResources().getString(R.string.PREFKEY_SHOWFIRSTRUN), false);
 
     prefEditor.commit();
   }
@@ -698,92 +709,97 @@ public class TitleActivity extends Activity {
   protected Dialog onCreateDialog(int id) {
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
-    
+
     switch (id) {
     /**
-     * When players have played X times, show a dialog asking them to rate us or put it
-     * off until later.  We will provide a 'Never' option as well.
+     * When players have played X times, show a dialog asking them to rate us or
+     * put it off until later. We will provide a 'Never' option as well.
      */
     case DIALOG_RATEUS_FIRST:
-      
+
       builder = new AlertDialog.Builder(this);
       builder
-          .setTitle(
-              getResources().getString(R.string.rateUsFirstDialog_title))
-          .setMessage(     		  
-        	  getResources().getString(R.string.rateUsFirstDialog_text))
-          .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
-              new DialogInterface.OnClickListener() {            
-                public void onClick(DialogInterface dialog, int id) {                                            
-                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
+          .setTitle(getResources().getString(R.string.rateUsFirstDialog_title))
+          .setMessage(getResources().getString(R.string.rateUsFirstDialog_text))
+          .setPositiveButton(
+              getResources().getString(R.string.rateUsDialog_positiveBtn),
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                  Intent intent = new Intent(Intent.ACTION_VIEW,
+                      BuzzWordsApplication.storeURI_Buzzwords);
                   startActivity(intent);
                   muteRateReminder();
                 }
-          })
-          .setNegativeButton(getResources().getString(R.string.rateUsDialog_neutralBtn),
-	              new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int id) {
-	                  delayRateReminder();
-	                }
-	        }
-            );
+              })
+          .setNegativeButton(
+              getResources().getString(R.string.rateUsDialog_neutralBtn),
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                  delayRateReminder();
+                }
+              });
       dialog = builder.create();
       break;
-    
+
     /**
      * The second more urgent dialog shows after 6 plays
      */
     case DIALOG_RATEUS_SECOND:
       builder = new AlertDialog.Builder(this);
       builder
-          .setTitle(
-              getResources().getString(R.string.rateUsSecondDialog_title))
+          .setTitle(getResources().getString(R.string.rateUsSecondDialog_title))
           .setMessage(
-            getResources().getString(R.string.rateUsSecondDialog_text))
-          .setPositiveButton(getResources().getString(R.string.rateUsDialog_positiveBtn), 
-              new DialogInterface.OnClickListener() {            
-                public void onClick(DialogInterface dialog, int id) {                                            
-                  Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
+              getResources().getString(R.string.rateUsSecondDialog_text))
+          .setPositiveButton(
+              getResources().getString(R.string.rateUsDialog_positiveBtn),
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                  Intent intent = new Intent(Intent.ACTION_VIEW,
+                      BuzzWordsApplication.storeURI_Buzzwords);
                   startActivity(intent);
                   muteRateReminder();
                 }
-          }).setNegativeButton(getResources().getString(R.string.rateUsDialog_negativeBtn), 
-                new DialogInterface.OnClickListener() {
-                  public void onClick(DialogInterface dialog, int which) {
-                    muteRateReminder();
-            }
-          });
+              })
+          .setNegativeButton(
+              getResources().getString(R.string.rateUsDialog_negativeBtn),
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                  muteRateReminder();
+                }
+              });
       dialog = builder.create();
       break;
     case DIALOG_FIRST_TIME:
       builder = new AlertDialog.Builder(this);
       builder
-          .setTitle(
-              getResources().getString(R.string.openingDialog_title))
-          .setMessage(
-            getResources().getString(R.string.openingDialog_text))
-          .setPositiveButton(getResources().getString(R.string.openingDialog_positiveBtn), 
+          .setTitle(getResources().getString(R.string.openingDialog_title))
+          .setMessage(getResources().getString(R.string.openingDialog_text))
+          .setPositiveButton(
+              getResources().getString(R.string.openingDialog_positiveBtn),
               new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
 
                   mContinueMusic = true;
                   // play confirm sound
-                  SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
+                  SoundManager sm = SoundManager.getInstance(TitleActivity.this
+                      .getBaseContext());
                   sm.playSound(SoundManager.Sound.CONFIRM);
                   muteFirstRunDialog();
-                  startActivity(new Intent(
-                      getApplication().getString(R.string.IntentRules), getIntent()
-                          .getData()));
+                  startActivity(new Intent(getApplication().getString(
+                      R.string.IntentRules), getIntent().getData()));
                 }
-          }).setNegativeButton(getResources().getString(R.string.openingDialog_negativeBtn), 
-                new DialogInterface.OnClickListener() {
-                  public void onClick(DialogInterface dialog, int which) {
-                    // play confirm sound
-                    SoundManager sm = SoundManager.getInstance(TitleActivity.this.getBaseContext());
-                    sm.playSound(SoundManager.Sound.CONFIRM);
-                    muteFirstRunDialog();
-            }
-          });
+              })
+          .setNegativeButton(
+              getResources().getString(R.string.openingDialog_negativeBtn),
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                  // play confirm sound
+                  SoundManager sm = SoundManager.getInstance(TitleActivity.this
+                      .getBaseContext());
+                  sm.playSound(SoundManager.Sound.CONFIRM);
+                  muteFirstRunDialog();
+                }
+              });
       dialog = builder.create();
       break;
     default:
@@ -791,5 +807,5 @@ public class TitleActivity extends Activity {
     }
     return dialog;
   }
-  
+
 }

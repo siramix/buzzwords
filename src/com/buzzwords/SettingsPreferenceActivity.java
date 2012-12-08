@@ -72,7 +72,7 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
         // Start or stop the music
         BuzzWordsApplication application = (BuzzWordsApplication) SettingsPreferenceActivity.this
             .getApplication();
-        MediaPlayer mp = application.getMusicPlayer();
+        MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
         if (sharedPreferences.getBoolean(Consts.PREFKEY_MUSIC, true)) {
           if (!mp.isPlaying()) {
             mp.start();
@@ -270,9 +270,9 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
     // Pause music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
     if (!mContinueMusic && mp.isPlaying()) {
-      mp.pause();
+      application.cleanUpMusicPlayer();
     }
   }
 
@@ -286,7 +286,7 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
     if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {

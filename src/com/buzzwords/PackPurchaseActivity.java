@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -187,7 +188,7 @@ public class PackPurchaseActivity extends Activity {
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
     if (sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
@@ -821,7 +822,19 @@ public class PackPurchaseActivity extends Activity {
     }
     mHelpToast.show();
   }
-  
+
+  /**
+   * Override back button to carry music on back to the Title activity
+   */
+  @Override
+  public boolean onKeyUp(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+        && !event.isCanceled()) {
+      mContinueMusic = true; // Flag to keep music playing
+    }
+
+    return super.onKeyUp(keyCode, event);
+  }
 
   /**
    * Override onPause for music continuation
@@ -834,11 +847,11 @@ public class PackPurchaseActivity extends Activity {
     if (!mContinueMusic) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
           .getApplication();
-      MediaPlayer mp = application.getMusicPlayer();
+      MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
           .getBaseContext());
       if (mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
-        mp.pause();
+        application.cleanUpMusicPlayer();
       }
     }
   }
