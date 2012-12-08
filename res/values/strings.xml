@@ -15,8 +15,6 @@
     <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
     <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
     <string name="IntentEditTeamName">com.buzzwords.intent.action.EDITTEAMNAME</string>
-    <string name="IntentPackPurchase">com.buzzwords.intent.action.WORDPACKPURCHASE</string>
-    <string name="IntentPackInfo">com.buzzwords.intent.action.PACKINFO</string>
     <string name="IntentCredits">com.buzzwords.intent.action.CREDITS</string>
 
     <!-- Global Prefkey IDs -->
@@ -57,9 +55,6 @@
     <string name="cardStateBundleKey">com.buzzwords.cardState</string>
     <string name="teamBundleKey">com.buzzwords.team</string>
     <string name="teamNameBundleKey">com.buzzwords.teamName</string>
-    <string name="packInfoIsPackSelectedBundleKey">com.buzzwords.isPackSelected</string>
-    <string name="packInfoIsPackRowOddBundleKey">com.buzzwords.isPackRowOdd</string>
-    <string name="packInfoPurchaseTypeKey">com.buzzwords.packPurchaseType</string>
 
     <!-- Generic Strings -->
     <string name="confirm">OK</string>
@@ -70,18 +65,6 @@
     <string name="title_button_label_buzz">Buzz</string>
     <string name="title_button_label_settings">Settings</string>
     <string name="title_button_label_rules">Rules</string>
-
-    <!-- Activity PackPurchase -->
-    <string name="packpurchase_title">Select Word Packs</string>
-    <string name="packpurchase_unlockedheader">Your Packs</string>
-    <string name="packpurchase_lockedheader">Available Packs</string>
-    <string name="packpurchase_nopacksselected">No Packs Selected</string>
-    <string name="packpurchase_button">Confirm</string>
-    <string name="packpurchase_nointernet">Could not access the online store. We can only show your installed packs.</string>
-    <string name="packpurchase_allpurchased">Thanks for supporting us! We currently have no packs available but check back for more.</string>
-    <string name="toast_packpurchase_nofacebook">Sorry, we could not detect any Facebook apps.</string>
-    <string name="toast_packpurchase_installfailed">Sorry, we encountered an error installing a pack. Please try again later.</string>
-    <string name="toast_packpurchase_nopackselected">Select at least one of Your Packs to play.</string>
 
     <!-- Activity Turn -->
     <string name="turn_timesup">Time\'s Up!</string>
@@ -122,14 +105,6 @@
     <string name="rateUsDialog_positiveBtn">Rate</string>
     <string name="rateUsDialog_neutralBtn">Later</string>
     <string name="rateUsDialog_negativeBtn">Never</string>
-
-    <!-- Activity PackInfo -->
-    <string name="packInfo_confirm_nobuy">OK</string>
-    <string name="packInfo_alreadyowned">This pack is installed</string>
-    <string name="packInfo_cardsinpack">Cards in Pack: %s</string>
-    <string name="packInfo_button_free">Download (Free)</string>
-    <string name="packInfo_button_pay">Purchase</string>
-    <string name="packInfo_button_facebook">Like Us</string>
 
     <!-- Activity GameSetup -->
     <string name="gameSetup_title">Game Setup</string>
@@ -178,7 +153,7 @@
     <string name="rules_example_subheader">Example Game</string>
     <string name="rules_example_text1">Finally, let\'s go through an example game to help you get started.</string>
     <string name="rules_example_text2">Sally and three of her close friends are out camping and realize they forgot to bring any games. But Sally comes to the rescue and pulls out her Android phone with Buzzwords! The group praises her foresight and excitedly divides up into two teams of two.</string>
-    <string name="rules_example_text3">Sally opens the app and taps Play to enter the Pack Purchase screen. After selecting the packs of cards they wish to play, they press \"Confirm\" to enter the Game Setup screen. The group divides into two teams, yellow and green, and Sally highlights those colors.</string>
+    <string name="rules_example_text3">Sally opens the app and taps Play to enter the Game Setup screen. The group divides into two teams, yellow and green, and Sally highlights those colors.</string>
     <string name="rules_example_text4">Since they want to each play 4 times they set it to 8 turns (#teams X #times for each player = #turns). Sally taps Start Game to play!</string>
     <string name="rules_example_text5">Sally starts off presenting for the Yellow Team and Rob, sitting to her left, monitors Sally on behalf of the Green Team. Sally\'s first word to present is Sandwich, which includes the \'buzz\'words bread, butter, eat, lunch, and sub. She starts by saying,</string>
     <string name="rules_example_text6">\"OK. This is something you eat for lunch.\"</string>
