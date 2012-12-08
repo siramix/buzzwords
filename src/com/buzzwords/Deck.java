@@ -87,7 +87,8 @@ public class Deck {
   private LinkedList<Pack> mSelectedPacks;
 
   private Pack mStarterPack;
-  private Pack mStarterPack2;
+  //TODO Swap this code in when cutting a release build
+  //private Pack mStarterPack2;
   
   private Context mContext;
   
@@ -105,12 +106,20 @@ public class Deck {
     mCache = new LinkedList<Card>();
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
+
+    // Lite version code
+    mStarterPack = new Pack(0, "Lite Pack", "packs/lite_pack.json", "packs/icons/packicon_classic1.png",
+        "A sample pack of 125 Buzzwords.", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
+    /*
+    // TODO Swap this code in when cutting release builds of full version.
+    // Full version code
     mStarterPack = new Pack(1, "Buzzwords I", "packs/buzzwords_i.json", "packs/icons/packicon_classic1.png",
         "The first of two pre-installed packs that include a mix of words from every catagory.", 
         500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
     mStarterPack2 = new Pack(2, "Buzzwords II", "packs/buzzwords_ii.json", "packs/icons/packicon_classic2.png",
         "The second of two pre-installed packs that include a mix of words from every catagory.", 
         500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
+    */
   }
 
   /**
@@ -193,10 +202,17 @@ public class Deck {
    * @throws RuntimeException 
    */
   public synchronized void installStarterPacks() throws RuntimeException {
+    // Lite code
+    mDatabaseOpenHelper.installStarterPacks(mStarterPack);
+    setPackSelectionPref(mStarterPack.getId(), true);
+    
+    /* TODO Swap this code in when cutting a release build
+    // Full version code
     mDatabaseOpenHelper.installStarterPacks(mStarterPack);
     mDatabaseOpenHelper.installStarterPacks(mStarterPack2);
     setPackSelectionPref(mStarterPack.getId(), true);
     setPackSelectionPref(mStarterPack2.getId(), true);
+    */
   }
   
   /** 
@@ -446,8 +462,13 @@ public class Deck {
      * @throws RuntimeException 
      */
     public synchronized void installStarterPacks(Pack starterPack) throws RuntimeException {
+      // Lite Version code
+      installPackFromResource(starterPack, R.raw.lite_pack);
+      /* TODO Swap this code in when cutting a release build
+      // Full Version code
       installPackFromResource(starterPack, R.raw.buzzwords_i);
       installPackFromResource(starterPack, R.raw.buzzwords_ii);
+      */
     }
     
     /**
