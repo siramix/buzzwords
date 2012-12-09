@@ -63,11 +63,9 @@ public class TurnSummaryActivity extends Activity {
   private List<Card> mCardList;
   private List<ImageView> mCardViewList;
   private List<View> mCardLineList;
-  
+
   private boolean mIsActivityClosing;
 
-  
-  
   /**
    * Listener for menu button
    */
@@ -93,13 +91,13 @@ public class TurnSummaryActivity extends Activity {
   private final OnClickListener mNextTurnListener = new OnClickListener() {
     public void onClick(View v) {
       // Throw out any queued onClicks.
-      if(!v.isEnabled()){
+      if (!v.isEnabled()) {
         return;
       }
       // Set flag that tells other listeners to be disobeyed as well
       mIsActivityClosing = true;
       v.setEnabled(false);
-      
+
       BuzzWordsApplication application = (BuzzWordsApplication) TurnSummaryActivity.this
           .getApplication();
       GameManager gm = application.getGameManager();
@@ -136,7 +134,6 @@ public class TurnSummaryActivity extends Activity {
           .getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
 
-      
       Card curCard = mCardList.get(cardIndex);
 
       Intent cardReviewIntent = new Intent(
@@ -226,24 +223,8 @@ public class TurnSummaryActivity extends Activity {
     // Update the scoreboard views
     updateScoreViews();
 
-    // Update numRounds
-    TextView gametypeInfo = (TextView) this
-        .findViewById(R.id.TurnSummary_GameTypeInfo);
-    switch (game.getGameType()) {
-    case TURNS:
-      gametypeInfo.setText(this.getResources().getString(
-          R.string.turnSummary_round)
-          + game.getCurrentRound() + "/" + game.getNumRounds());
-      break;
-    case SCORE:
-      gametypeInfo.setText(this.getResources().getString(
-          R.string.turnSummary_scorelimit)
-          + game.getGameLimitValue());
-      break;
-    case FREEPLAY:
-      gametypeInfo.setText(this.getResources().getString(
-          R.string.turnSummary_freeplay));
-    }
+    // Show turns / points remaining
+    updateGameProgressViews();
 
     // Update Turn Order display
     updateTurnOrderDisplay();
@@ -257,20 +238,6 @@ public class TurnSummaryActivity extends Activity {
     Button menuButton = (Button) this.findViewById(R.id.TurnSummary_Menu);
     menuButton.setOnClickListener(mMenuListener);
 
-    // Handle activity changes for final turn
-    if (game.shouldGameEnd()) {
-      // Change "Next Team" button
-      playGameButton.setText("Game Results");
-      // Change round display
-      gametypeInfo.setText("Game Over");
-      // Hide scoreboard for suspense
-      LinearLayout scores = (LinearLayout) this
-          .findViewById(R.id.TurnSummary_ScoreGroup);
-      scores.setVisibility(View.INVISIBLE);
-      RelativeLayout scoreHeader = (RelativeLayout) this
-          .findViewById(R.id.TurnSummary_ScoreboardTitle_Group);
-      scoreHeader.setVisibility(View.INVISIBLE);
-    }
   }
 
   /**
@@ -349,6 +316,67 @@ public class TurnSummaryActivity extends Activity {
     }
     return dialog;
 
+  }
+
+  /**
+   * Updates the views that show turns remaining, points remaining, or GameOver
+   * when game should end.
+   */
+  private void updateGameProgressViews() {
+    BuzzWordsApplication application = (BuzzWordsApplication) this
+        .getApplication();
+    GameManager game = application.getGameManager();
+
+    Button playGameButton = (Button) this
+        .findViewById(R.id.TurnSummary_NextTurn);
+    TextView gametypeInfo = (TextView) this
+        .findViewById(R.id.TurnSummary_GameTypeInfo);
+
+    // Handle activity changes for final turn
+    if (game.shouldGameEnd()) {
+      // Hide scoreboard for suspense
+      LinearLayout scores = (LinearLayout) this
+          .findViewById(R.id.TurnSummary_ScoreGroup);
+      scores.setVisibility(View.INVISIBLE);
+      RelativeLayout scoreHeader = (RelativeLayout) this
+          .findViewById(R.id.TurnSummary_ScoreboardTitle_Group);
+      scoreHeader.setVisibility(View.INVISIBLE);
+
+      // Change round display
+      gametypeInfo.setText("Game Over");
+
+      // Change "Next Team" button
+      playGameButton.setText("Game Results");
+    } else {
+      // Show scoreboards if previously hidden
+      LinearLayout scores = (LinearLayout) this
+          .findViewById(R.id.TurnSummary_ScoreGroup);
+      scores.setVisibility(View.VISIBLE);
+      RelativeLayout scoreHeader = (RelativeLayout) this
+          .findViewById(R.id.TurnSummary_ScoreboardTitle_Group);
+      scoreHeader.setVisibility(View.VISIBLE);
+
+      // Show Turn Progress or Points progress
+      switch (game.getGameType()) {
+      case TURNS:
+        gametypeInfo.setText(this.getResources().getString(
+            R.string.turnSummary_round)
+            + game.getCurrentRound() + "/" + game.getNumRounds());
+        break;
+      case SCORE:
+        gametypeInfo.setText(this.getResources().getString(
+            R.string.turnSummary_scorelimit)
+            + game.getGameLimitValue());
+        break;
+      case FREEPLAY:
+        gametypeInfo.setText(this.getResources().getString(
+            R.string.turnSummary_freeplay));
+      }
+
+      // Restore text to next button
+      playGameButton.setText(getResources().getString(
+          R.string.turnSummary_button_next));
+    }
   }
 
   /**
@@ -450,12 +478,12 @@ public class TurnSummaryActivity extends Activity {
   @Override
   protected void onResume() {
     super.onResume();
-    
+
     // Reenable any buttons that were disabled to prevent double clicks
     Button playGameButton = (Button) this
         .findViewById(R.id.TurnSummary_NextTurn);
     playGameButton.setEnabled(true);
-    
+
     mIsActivityClosing = false;
   }
 
@@ -490,7 +518,11 @@ public class TurnSummaryActivity extends Activity {
       ImageView curImageView = mCardViewList.get(curCardIndex);
       setCardIcon(curImageView, curCard);
 
+      // Update the scoreboard to relfect the changes
       TurnSummaryActivity.this.updateScoreViews();
+      // Handle re-showing the score limit, scoreboard, etc. in case
+      // new scores have invalidated end game condition.
+      TurnSummaryActivity.this.updateGameProgressViews();
     }
 
     super.onActivityResult(requestCode, resultCode, data);
