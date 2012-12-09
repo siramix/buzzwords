@@ -9,9 +9,6 @@
         android:minSdkVersion="5"
         android:targetSdkVersion="16" />
 
-    <uses-permission android:name="com.android.vending.BILLING" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name="com.buzzwords.BuzzWordsApplication"
         android:allowBackup="true"
