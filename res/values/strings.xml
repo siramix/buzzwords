@@ -172,9 +172,9 @@
     <!-- Activity Credits -->
     <string name="credits_title">Buzzwords Credits</string>
     <string name="credits_team_subheader">The Team</string>
-    <string name="credits_edward"><b>Edward Rowe\nGameplay Programmer</b>\nEd works as a video game programmer near Durham, NC.</string>
-    <string name="credits_lucas"><b>Lucas Rowe\nBackend Programmer</b>\nLucas is currently a QA Engineer in Raleigh, NC.</string>
-    <string name="credits_patrick"><b>Patrick Reynolds\nTools/Backend Programmer</b>\nPatrick is a programmer in Carborro, NC and is also working on his PHD in Computer Science from UNC Chapel Hill.</string>
+    <string name="credits_edward"><b>Edward Rowe\nProgrammer</b>\nEd works as a video game programmer near Durham, NC.</string>
+    <string name="credits_lucas"><b>Lucas Rowe\nProgrammer</b>\nLucas is currently a QA Engineer in Raleigh, NC.</string>
+    <string name="credits_patrick"><b>Patrick Reynolds\nProgrammer</b>\nPatrick is a programmer in Carborro, NC and is also working on his PHD in Computer Science from UNC Chapel Hill.</string>
     <string name="credits_acknowledgements_subheader">Acknowledgements</string>
     <string name="credits_kevin">Sounds and music were created by Kevin Mabie.</string>
     <string name="credits_fonts">Use of all fonts is permitted under the SIL Open Font License, Version 1.1.</string>
