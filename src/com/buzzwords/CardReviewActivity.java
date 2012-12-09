@@ -38,7 +38,7 @@ import android.widget.TextView;
  * @author Siramix Labs
  */
 public class CardReviewActivity extends Activity {
-  
+
   /**
    * Text elements
    */
@@ -126,8 +126,8 @@ public class CardReviewActivity extends Activity {
 
     mTitleView = (TextView) this.findViewById(R.id.CardReview_CardTitle);
 
-    int numToHide = MAX_BUZZWORDS- mNumBuzzwords;
-    
+    int numToHide = MAX_BUZZWORDS - mNumBuzzwords;
+
     mBadWordViews = new TextView[5];
     mBadWordViews[0] = (TextView) this
         .findViewById(R.id.CardReview_Card_BadWord0);
@@ -140,17 +140,18 @@ public class CardReviewActivity extends Activity {
     mBadWordViews[4] = (TextView) this
         .findViewById(R.id.CardReview_Card_BadWord4);
 
-    for(int i=1; i<=numToHide; ++i) {
-      mBadWordViews[MAX_BUZZWORDS-i].setVisibility(View.GONE);
+    for (int i = 1; i <= numToHide; ++i) {
+      mBadWordViews[MAX_BUZZWORDS - i].setVisibility(View.GONE);
     }
-    
+
     mCorrectButton = (ImageButton) this
         .findViewById(R.id.CardReview_ButtonCorrect);
     mWrongButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonWrong);
     mSkipButton = (ImageButton) this.findViewById(R.id.CardReview_ButtonSkip);
-    mNoScoreButton = (AntonButton) this.findViewById(R.id.CardReview_ButtonNoScore);
+    mNoScoreButton = (AntonButton) this
+        .findViewById(R.id.CardReview_ButtonNoScore);
   }
-  
+
   /**
    * Setup any visual properties of the UI
    */
@@ -160,15 +161,13 @@ public class CardReviewActivity extends Activity {
         "fonts/FrancoisOne.ttf");
     TextView text = (TextView) this.findViewById(R.id.CardReview_CardTitle);
     text.setTypeface(font);
-    
+
     // Set font on badwords
-    LinearLayout badWords = (LinearLayout) findViewById(R.id.CardReview_Card_BadWords); 
-    for(int i = 0; i < badWords.getChildCount(); i++)
-    {
+    LinearLayout badWords = (LinearLayout) findViewById(R.id.CardReview_Card_BadWords);
+    for (int i = 0; i < badWords.getChildCount(); i++) {
       text = (TextView) badWords.getChildAt(i);
       text.setTypeface(font);
     }
-    
 
     // Force the dialog to fill the screen
     LayoutParams params = getWindow().getAttributes();
@@ -177,9 +176,9 @@ public class CardReviewActivity extends Activity {
     // Remove status bar because for some reason it comes back
     params.flags |= LayoutParams.FLAG_FULLSCREEN;
     getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
-    
+
   }
-  
+
   /**
    * Setup the button OnClickListeners
    */
@@ -201,8 +200,7 @@ public class CardReviewActivity extends Activity {
 
     mCorrectButton
         .setBackgroundResource(R.drawable.button_review_right_selector);
-    mWrongButton
-        .setBackgroundResource(R.drawable.button_review_wrong_selector);
+    mWrongButton.setBackgroundResource(R.drawable.button_review_wrong_selector);
     mSkipButton.setBackgroundResource(R.drawable.button_review_skip_selector);
 
     switch (state) {
@@ -232,12 +230,6 @@ public class CardReviewActivity extends Activity {
       mBadWordViews[i].setText(card.getBadWords().get(i));
     }
     this.setCardState(card.getRws());
-    
-    // When not set, hide "clear" button (status is already cleared)
-    if (card.getRws() == Card.NOTSET)
-    {
-      mNoScoreButton.setVisibility(View.GONE);
-    }
   }
 
   /**
@@ -263,17 +255,18 @@ public class CardReviewActivity extends Activity {
     super.onCreate(savedInstanceState);
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
-    
-    mNumBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_NUM_BUZZWORDS, "5"));
+
+    mNumBuzzwords = Integer.valueOf(sp.getString(Consts.PREFKEY_NUM_BUZZWORDS,
+        "5"));
 
     this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
     this.setContentView(R.layout.cardreview);
 
     this.setupViewReferences();
-    
+
     this.setupUIProperties();
-    
+
     this.setupListeners();
 
     Intent curIntent = this.getIntent();
