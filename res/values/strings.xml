@@ -79,6 +79,8 @@
     <string name="turnSummary_freeplay">Free Play</string>
     <string name="turnSummary_round">Round: </string>
     <string name="turnSummary_button_next">Next Team</string>
+    <string name="turnSummary_button_results">Game Results</string>
+    <string name="turnSummary_gameover">Game Over</string>
 
     <!-- Activity Card Review -->
     <string name="button_notset">Clear</string>

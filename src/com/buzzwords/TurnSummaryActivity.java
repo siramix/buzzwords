@@ -343,10 +343,11 @@ public class TurnSummaryActivity extends Activity {
       scoreHeader.setVisibility(View.INVISIBLE);
 
       // Change round display
-      gametypeInfo.setText("Game Over");
-
+      gametypeInfo.setText(this.getResources().getString(
+          R.string.turnSummary_gameover));
       // Change "Next Team" button
-      playGameButton.setText("Game Results");
+      playGameButton.setText(this.getResources().getString(
+          R.string.turnSummary_button_results));
     } else {
       // Show scoreboards if previously hidden
       LinearLayout scores = (LinearLayout) this
