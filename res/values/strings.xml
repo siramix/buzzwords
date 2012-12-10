@@ -38,8 +38,8 @@
     <string name="menu_GoPro_Title">Go Pro</string>
     
     <!-- Upgrade Dialog -->
-    <string name = "upgradeDialog_text">Want the full BuzzWords experience with a full deck of 1000 Words? Buy the full version today!</string>
-    <string name = "upgradeDialog_positiveButton">Yeah!</string>
+    <string name = "upgradeDialog_text">Mastered the lite version? Go Pro and get all 1000 cards.\n\nThanks for your support!</string>
+    <string name = "upgradeDialog_positiveButton">Marketplace</string>
     <string name = "upgradeDialog_negativeButton">Not Yet</string>
     
 
