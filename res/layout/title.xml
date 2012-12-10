@@ -179,6 +179,16 @@
         android:layout_marginBottom="8dp" 
         android:padding="5dp">
 
+        <com.buzzwordslite.AntonTextView
+            android:id="@+id/Title_Lite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:text="@string/title_lite"
+            android:textSize="24sp"
+            android:layout_marginTop="-8dp" />
+
         <TextView
             android:id="@+id/Title_FB_Tagline"
             android:layout_width="0dp"
