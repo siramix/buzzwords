@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="BuzzWordsButton" parent="@android:style/Widget.Button">
+    <item name="android:textColor">@color/buttonText</item>
+    <item name="android:background">@drawable/button_generic</item>
+  </style>
+  <style name="BuzzWordsRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+    <item name="android:button">@drawable/radio</item>
+  </style>
+  <style name="CardTitle" parent="@android:style/TextAppearance">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_alignParentTop">true</item>
+    <item name="android:layout_centerInParent">true</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:typeface">serif</item>
+    <item name="android:textSize">32sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">#FFF</item>
+    <item name="android:paddingTop">10dp</item>
+    <item name="android:paddingBottom">10dp</item>
+    <item name="android:shadowColor">#000000</item>
+    <item name="android:shadowDx">1</item>
+    <item name="android:shadowDy">1</item>
+    <item name="android:shadowRadius">3</item>
+  </style>
+  <style name="BadWordText" parent="@android:style/TextAppearance">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_gravity">center_horizontal</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:textSize">24sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:gravity">center</item>
+  </style>
+    <style name="CardTitleReview" parent="@android:style/TextAppearance">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_alignParentTop">true</item>
+    <item name="android:layout_centerInParent">true</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:typeface">serif</item>
+    <item name="android:textSize">32sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">#FFF</item>
+    <item name="android:paddingTop">10dp</item>
+    <item name="android:paddingBottom">10dp</item>
+    <item name="android:shadowColor">#000000</item>
+    <item name="android:shadowDx">1</item>
+    <item name="android:shadowDy">1</item>
+    <item name="android:shadowRadius">3</item>
+  </style>
+  <style name="BadWordTextReview" parent="@android:style/TextAppearance">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_gravity">center_horizontal</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:textSize">24sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:gravity">center</item>
+  </style>
+  <style name="EditTeamNameDialog" parent="android:style/Theme.Dialog">
+   <item name="android:windowNoTitle">true</item>
+  </style>
+</resources>

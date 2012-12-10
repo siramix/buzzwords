@@ -1,91 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <!-- Application Name -->
-  <string name="AppName">Buzzwords</string>
+    <!-- Application Name -->
+    <string name="AppName">Buzzwords</string>
 
-  <!-- Intent Designations -->
-  <string name="IntentTitle">com.buzzwords.intent.action.TITLE</string>
-  <string name="IntentSettings">com.buzzwords.intent.action.SETTINGS</string>
-  <string name="IntentRules">com.buzzwords.intent.action.RULES</string>
-  <string name="IntentBuzzer">com.buzzwords.intent.action.BUZZER</string>
-  <string name="IntentAboutUs">com.buzzwords.intent.action.ABOUTUS</string>
-  <string name="IntentGameSetup">com.buzzwords.intent.action.GAMESETUP</string>
-  <string name="IntentTurn">com.buzzwords.intent.action.TURN</string>
-  <string name="IntentTurnSummary">com.buzzwords.intent.action.TURNSUMMARY</string>
-  <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
-  <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
-  <string name="IntentEditTeamName">com.buzzwords.intent.action.EDITTEAMNAME</string>
+    <!-- Intent Designations -->
+    <string name="IntentTitle">com.buzzwords.intent.action.TITLE</string>
+    <string name="IntentSettings">com.buzzwords.intent.action.SETTINGS</string>
+    <string name="IntentRules">com.buzzwords.intent.action.RULES</string>
+    <string name="IntentBuzzer">com.buzzwords.intent.action.BUZZER</string>
+    <string name="IntentGameSetup">com.buzzwords.intent.action.GAMESETUP</string>
+    <string name="IntentTurn">com.buzzwords.intent.action.TURN</string>
+    <string name="IntentTurnSummary">com.buzzwords.intent.action.TURNSUMMARY</string>
+    <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
+    <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
+    <string name="IntentEditTeamName">com.buzzwords.intent.action.EDITTEAMNAME</string>
+    <string name="IntentCredits">com.buzzwords.intent.action.CREDITS</string>
 
-  <!-- Global Prefkey IDs -->
-  <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
-  <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
-  <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
+    <!-- Global Prefkey IDs -->
+    <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
+    <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
+    <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
+    <string name="PREFKEY_GAMETYPE">com.buzzwords.prefkey.GAMETYPE</string>
+    <string name="PREFKEY_GAMELIMIT_TURNS">com.buzzwords.prefkey.GAMELIMIT_TURNS</string>
+    <string name="PREFKEY_GAMELIMIT_SCORE">com.buzzwords.prefkey.GAMELIMIT_SCORE</string>
 
-  <!-- Menu Designations -->
-  <string name="menu_EndGame">MENU_ENDGAME</string>
-  <string name="menu_Rules">MENU_RULES</string>
+    <!-- Menus -->
+    <string name="menu_EndTurn">MENU_ENDTURN</string>
+    <string name="menu_EndTurn_Title">End Turn</string>
+    <string name="menu_EndTurn_Text">Are you sure you want to end your turn?</string>
+    <string name="menu_EndGame">MENU_ENDGAME</string>
+    <string name="menu_EndGame_Title">End Game</string>
+    <string name="menu_EndGame_Text">Are you sure you want to end the current game?</string>
+    <string name="menu_Rules">MENU_RULES</string>
+    <string name="menu_Rules_Title">Rules</string>
 
-  <!-- Team names -->
-  <string name="teamnameA">Blue</string>
-  <string name="teamnameB">Green</string>
-  <string name="teamnameC">Red</string>
-  <string name="teamnameD">Yellow</string>
+    <!-- Team names -->
+    <string name="teamnameA">Blue</string>
+    <string name="teamnameB">Green</string>
+    <string name="teamnameC">Red</string>
+    <string name="teamnameD">Yellow</string>
 
-  <!-- Bundle Keys -->
-  <string name="cardBundleKey">com.buzzwords.card</string>
-  <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
-  <string name="cardStateBundleKey">com.buzzwords.cardState</string>
-  <string name="scrollXBundleKey">com.buzzwords.scrollY</string>
-  <string name="scrollYBundleKey">com.buzzwords.scrollY</string>
-  <string name="teamBundleKey">com.buzzwords.team</string>
-  <string name="teamNameBundleKey">com.buzzwords.teamName</string>
-  
-  <!-- For EditTeamName dialog -->
-  <string name="editTeamName_hint">Choose a new name for %s team.</string>
+    <!-- Game Manager -->
+    <string name="gameManager_gameType_turns">Turn Limit</string>
+    <string name="gameManager_gameType_turns_param">Turns</string>
+    <string name="gameManager_gameType_score">Score Limit</string>
+    <string name="gameManager_gameType_score_param">Points</string>
+    <string name="gameManager_gameType_freeplay">Free Play</string>
 
-  <!-- For end game dialog -->
-  <string name="endGameDialog_title">Confirm End Game</string>
-  <string name="endGameDialog_text">Are you sure you want to end the current game?</string>
+    <!-- Bundle Keys -->
+    <string name="cardBundleKey">com.buzzwords.card</string>
+    <string name="packBundleKey">com.buzzwords.pack</string>
+    <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
+    <string name="cardStateBundleKey">com.buzzwords.cardState</string>
+    <string name="teamBundleKey">com.buzzwords.team</string>
+    <string name="teamNameBundleKey">com.buzzwords.teamName</string>
 
-  <!-- For pause game dialog -->
-  <string name="pauseGameDialog_title">Game Paused</string>
-  <string name="pauseGameDialog_text">Paused</string>
+    <!-- Generic Strings -->
+    <string name="confirm">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="button_menu">Menu</string>
 
-  <!-- Rate Us dialogs -->
-  <string name="rateUsFirstDialog_title">We want your feedback!</string>
-  <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
+    <!-- Activity Title -->
+    <string name="title_button_label_buzz">Buzz</string>
+    <string name="title_button_label_settings">Settings</string>
+    <string name="title_button_label_rules">Rules</string>
+
+    <!-- Activity Turn -->
+    <string name="turn_timesup">Time\'s Up!</string>
+    <string name="turn_paused">Paused</string>
+    <string name="turn_paused_subtext">Tap to Unpause</string>
+
+    <!-- Activity TurnSummary -->
+    <string name="turnSummary_title">Results</string>
+    <string name="turnSummary_total">Total: </string>
+    <string name="turnSummary_scores_header">Scores</string>
+    <string name="turnSummary_scorelimit">Score Limit: </string>
+    <string name="turnSummary_freeplay">Free Play</string>
+    <string name="turnSummary_round">Round: </string>
+    <string name="turnSummary_button_next">Next Team</string>
+    <string name="turnSummary_button_results">Game Results</string>
+    <string name="turnSummary_gameover">Game Over</string>
+
+    <!-- Activity Card Review -->
+    <string name="button_notset">Clear</string>
+
+    <!-- Dialog EditTeamName -->
+    <string name="editTeamName_hint">Choose a new name for %s team.</string>
+    <string name="editTeamName_title">Edit Team Name</string>
+
+    <!-- Activity GameEnd -->
+    <string name="gameEnd_title">Game Over</string>
+    <string name="gameEnd_scoreboardHeader">Final Scores</string>
+    <string name="gameEnd_winner">Winner:</string>
+    <string name="gameEnd_tie">Tie Game!</string>
+    <string name="gameEnd_button_mainMenu">Main Menu</string>
+    <string name="gameEnd_button_rematch">Rematch</string>
+
+    <!-- Dialog RateUs -->
+    <string name="rateUsFirstDialog_title">We want your feedback!</string>
+    <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
      Would you mind taking a minute to provide some feedback?</string>
-
-  <string name="rateUsSecondDialog_title">We still want your feedback!</string>
-  <string name="rateUsSecondDialog_text">Wow you\'ve played a LOT, which means your opinion is especially valuable to us!
+    <string name="rateUsSecondDialog_title">We still want your feedback!</string>
+    <string name="rateUsSecondDialog_text">Wow you\'ve played a LOT, which means your opinion is especially valuable to us!
      We won\'t bug you again but would you mind providing some feedback?</string>
+    <string name="rateUsDialog_positiveBtn">Rate</string>
+    <string name="rateUsDialog_neutralBtn">Later</string>
+    <string name="rateUsDialog_negativeBtn">Never</string>
 
-  <string name="rateUsDialog_positiveBtn">Rate</string>
-  <string name="rateUsDialog_neutralBtn">Later</string>
-  <string name="rateUsDialog_negativeBtn">Never</string>
+    <!-- Activity GameSetup -->
+    <string name="gameSetup_title">Game Setup</string>
+    <string name="gameSetup_teams_header">Teams</string>
+    <string name="gameSetup_gametype_header">Game Type</string>
+    <string name="gameSetup_button_startgame">Start Game</string>
+    <string name="gameSetup_hint_teams">Tap teams to add or remove them. Tap the pencil to rename a team.</string>
+    <string name="gameSetup_hint_GameType">Game limit determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
+    <string name="gameSetup_hint_turns">Set the number of turns each team will take.</string>
+    <string name="gameSetup_hint_score">Set the number of points a team needs to win. All teams will play an equal number of turns.</string>
 
-  <!-- Text for the dialog on their first play of the game -->
-  <string name="openingDialog_title">First Time?</string>
-  <string name="openingDialog_text">Thank you for trying Buzzwords!
+    <!-- Activity Rules -->
+    <string name="rules_title">Rules</string>
+    <string name="rules_basics_subheader">Basics</string>
+    <string name="rules_basics_text1">At its core, Buzzwords is a team game that pits friends against friends in cutthroat wordplay action. Here are the basics:</string>
+    <string name="rules_basics_text2">Divide all players into teams of two or more.</string>
+    <string name="rules_basics_text3">Each turn, a team assigns a presenter who must try to get their team to guess as many secret words as possible without saying certain \'buzz\'words.</string>
+    <string name="rules_basics_text4">An opposing player enforces the list of \'buzz\'words.</string>
+    <string name="rules_basics_text5">Points are awarded for each successfully guessed word.</string>
+    <string name="rules_basics_text6">The team that has the most points at the end of the game wins!</string>
+    <string name="rules_houserules_subheader">House Rules: </string>
+    <string name="rules_gameplay_subheader">Gameplay</string>
+    <string name="rules_gameplay_text1">Let\'s take a look at the buttons you\'ll encounter while playing.</string>
+    <string name="rules_gameplay_text2">Right Button: For when your team guesses the card correctly. +1 Point by default.</string>
+    <string name="rules_gameplay_text3">Skip Button: For when you are not up to the challenge of the current word. No penalty by default.</string>
+    <string name="rules_gameplay_text4">Wrong Button: For when you get called out by the other team for using a \'buzz\'word. -1 Point by default.</string>
+    <string name="rules_gameplay_text5">Back Button (phone): You can use the back button on your Android device to go back one card.  Don\'t worry if you messed up more than once. You can always fix the results on Turn Summary.</string>
+    <string name="rules_gameplay_text6">Gestures can also be used perform actions. Swipe up for right (think thumbs up), down for wrong (thumbs down), left for skip, and right for back.</string>
+    <string name="rules_gameplay_text7">The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don\'t worry, it will pause if anyone calls and interrupts your intense game of Buzzwords.</string>
+    <string name="rules_screens_subheader">Sample Screens</string>
+    <string name="rules_screens_text1">Now let\'s take a look at the screens you\'ll encounter while playing.</string>
+    <string name="rules_screens_text2">Setup Screen: Here you choose which teams will play. You then select your game mode. You can play for a set number of turns or until a team scores a set number of points. Or you can just play forever with Free Play.</string>
+    <string name="rules_screens_text3">Turn Screen: This is where the fun happens. At the top of the screen is the word you want people to guess. Below that are the five words that you may not use. Have someone police you and make you hit the wrong button if you miss one. If your team guesses the word, hit the green check mark and get a new word.</string>
+    <string name="rules_screens_text4">Turn Results: Touch any word to review a card\'s \'buzz\'words and correct the results. Click Next Team when you are ready to pass the phone.</string>
+    <string name="rules_screens_text5">Buzz Mode: If you have a second phone you can use it as a buzzer to aid in calling out the opponent. Just run the second phone in buzz mode and when a foul is committed, buzz ruthlessly.</string>
+    <string name="rules_buzzing_subheader">Buzzing</string>
+    <string name="rules_buzzing_text1">This is where the game gets contentious. Simply put, using part of any word on the list of \'buzz\'words or a related form of the word is a buzzable offense. Once a \'buzz\'word has been guessed by anyone on the team, it is free for use by the presenter. To keep the peace, here are some recommended \"buzz worthy\" offenses.</string>
+    <string name="rules_buzzing_text2">Explicitly rhyming or phonetically hinting towards any \'buzz\'word. If you\'re saying \"rhymes with\" or \"sounds like\", you\'re heading to buzz city.</string>
+    <string name="rules_buzzing_text3">Hinting at the spelling or form of the word in any way. \"Starts with,\" \"has x syllables,\" \"short/long word\" are all phrases that should be avoided.</string>
+    <string name="rules_buzzing_text4">Saying enough of a bad word for people to know what you were going to say.</string>
+    <string name="rules_buzzing_text5">Speaking \'buzz\'words in another language.</string>
+    <string name="rules_buzzing_text6">Saying any tense of a \'buzz\'word. For example saying \"ate\" when \"eat\" is a \'buzz\' word.</string>
+    <string name="rules_buzzing_text7">Using your body in any way. This includes pointing, grabbing objects, eye rolling, and break dancing.</string>
+    <string name="rules_buzzing_text8">Changing a word into an acronym or saying the words that an acronym stands for. For example saying \"Central Intelligence Agency\" for \"CIA\".</string>
+    <string name="rules_buzzing_text9">Singing and humming are encouraged, provided you don\'t sing a \'buzz\'word or gesture. Substituting unrelated words, even \'blank\', for \'buzz\'words is appropriate as well. Remember, if your team uses any of the \'buzz\'words, you are then free to use that word yourself.</string>
+    <string name="rules_example_subheader">Example Game</string>
+    <string name="rules_example_text1">Finally, let\'s go through an example game to help you get started.</string>
+    <string name="rules_example_text2">Sally and three of her close friends are out camping and realize they forgot to bring any games. But Sally comes to the rescue and pulls out her Android phone with Buzzwords! The group praises her foresight and excitedly divides up into two teams of two.</string>
+    <string name="rules_example_text3">Sally opens the app and taps Play to enter the Game Setup screen. The group divides into two teams, yellow and green, and Sally highlights those colors.</string>
+    <string name="rules_example_text4">Since they want to each play 4 times they set it to 8 turns (#teams X #times for each player = #turns). Sally taps Start Game to play!</string>
+    <string name="rules_example_text5">Sally starts off presenting for the Yellow Team and Rob, sitting to her left, monitors Sally on behalf of the Green Team. Sally\'s first word to present is Sandwich, which includes the \'buzz\'words bread, butter, eat, lunch, and sub. She starts by saying,</string>
+    <string name="rules_example_text6">\"OK. This is something you eat for lunch.\"</string>
+    <string name="rules_example_text7">Rob, who is an astute buzzer, calls her out on her multiple transgressions and Sally is forced to hit the X button.</string>
+    <string name="rules_example_text8">Sally unfortunately can\'t get her team to guess the next word and time runs up. Her turn totals an embarrassing -1 points.</string>
+    <string name="rules_example_text9">But Sally is given a chance for redemption. She passes the phone to her right, to Zack on the Green team and then looks over his shoulder to call him out.</string>
+    <string name="rules_example_text10">She\'s so on top of it that Zack ends up with -3 points. The group decides to cut him a break and on the Turn Results screen they change one word to a \"skip,\" making him only lose his team 2 points.</string>
+    <string name="rules_example_text11">Zack passes the phone to his right and assumes the monitoring role, eager to exact his revenge.</string>
+    <string name="rules_example_text12">And the excitement continues until the friends see the glimmer of dawn and realize they\'ve had WAY TOO MUCH FUN!</string>
+    <string name="rules_final_subheader">Final Thoughts</string>
+    <string name="rules_final_text1">We hope you enjoy playing Buzzwords!</string>
+    <string name="rules_final_text2">If you have any more questions about the rules, we want to hear from you!  You can find our site at siramix.com or email us at buzzwords@siramix.com any time.  Feel free to reach out on Facebook as well!</string>
+
+    <!-- Activity Credits -->
+    <string name="credits_title">Buzzwords Credits</string>
+    <string name="credits_team_subheader">The Team</string>
+    <string name="credits_edward"><b>Edward Rowe\nProgrammer</b>\nEd works as a video game programmer near Durham, NC.</string>
+    <string name="credits_lucas"><b>Lucas Rowe\nProgrammer</b>\nLucas is currently a QA Engineer in Raleigh, NC.</string>
+    <string name="credits_patrick"><b>Patrick Reynolds\nProgrammer</b>\nPatrick is a programmer in Carborro, NC and is also working on his PHD in Computer Science from UNC Chapel Hill.</string>
+    <string name="credits_acknowledgements_subheader">Acknowledgements</string>
+    <string name="credits_kevin">Sounds and music were created by Kevin Mabie.</string>
+    <string name="credits_fonts">Use of all fonts is permitted under the SIL Open Font License, Version 1.1.</string>
+    <string name="credits_font_anton">Anton font by Vernon Adams</string>
+    <string name="credits_font_francoisone">Francois One font by Vernon Adams</string>
+    <string name="credits_font_luckiestguy">Luckiest Guy font, used in our icon, created by Brian J. Bonislawsky</string>
+    <string name="credits_others">Thank you to our friends and family who helped us create and test Buzzwords!</string>
+
+    <!-- Settings -->
+    <string name="settings_scorechange_summary">Current score change is </string>
+    <string name="toast_settings_shuffled">All packs have been shuffled.</string>
+    <string name="shuffleDialog_title">Shuffle All Packs?</string>
+    <string name="shuffleDialog_text">Buzzwords handles shuffling on its own, but this will let you force a shuffle.  You will still keep all of your cards, but progress on all packs will be reset and all cards reordered. Are you sure you want to reshuffle?</string>
+    <string name="shuffleDialog_positiveBtn">Yes, Shuffle!</string>
+    <string name="shuffleDialog_negativeBtn">Nevermind!</string>
+
+    <!-- Dialog FirstOpen -->
+    <string name="openingDialog_title">First Time?</string>
+    <string name="openingDialog_text">Thank you for trying Buzzwords!
       This is a party game meant to be played with a group.
       If you\'ve played Taboo™ before, you\'ll know just what to do.</string>
-  <string name="openingDialog_positiveBtn">View Rules</string>
-  <string name="openingDialog_negativeBtn">I\'ve Got This</string>
+    <string name="openingDialog_positiveBtn">View Rules</string>
+    <string name="openingDialog_negativeBtn">I\'ve Got This</string>
 
-  <!--  Rate Us URI for app store -->
-  <string name="URI_buzzwords_redirect">http://www.siramix.com/buzzwordsappstore</string>
-  <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwords</string>
-  <string name="URI_android_market_buzzwordslite">https://market.android.com/details?id=com.buzzwordslite</string>
-  <string name="URI_amazon_market_buzzwords">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwords</string>
-  <string name="URI_amazon_market_buzzwordslite">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite</string>
-  
-  <!--  URI for about us page -->
-  <string name="URI_fb_buzzwordsapp">https://www.facebook.com/buzzwordsapp</string>
-  <string name="URI_fb_launcher_buzzwordsapp">fb://page/472759256084535</string>
-  <string name="settings_scorechange_summary">Current score change is </string>
+    <!-- Dialog Installation -->
+    <string name="progressDialog_install_text">Installing Words&#8230;</string>
+    <string name="progressDialog_update_text">Updating Words&#8230;</string>
 
-  <!--  Accessibility Strings -->
-  <string name="description_fb_buzzwordsapp">Link to Buzzwords App on Facebook</string>
-  <string name="tagline_fb_buzzwordsapp">Find us on Facebook</string>
+    <!-- URIs for Rate Us -->
+    <string name="URI_buzzwords_redirect">http://www.siramix.com/buzzwordsappstore</string>
+    <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwords</string>
+    <string name="URI_android_market_buzzwordslite">https://market.android.com/details?id=com.buzzwordslite</string>
+    <string name="URI_amazon_market_buzzwords">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwords</string>
+    <string name="URI_amazon_market_buzzwordslite">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite</string>
+
+    <!-- URI for About us page -->
+    <string name="URI_fb_buzzwordsapp">https://www.facebook.com/buzzwordsapp</string>
+    <string name="URI_fb_launcher_buzzwordsapp">fb://page/472759256084535</string>
+    <string name="tagline_fb_buzzwordsapp">Find us on Facebook</string>
+
+    <!-- Accessibility Strings -->
+    <string name="description_splash_logo">The awesome Ram logo of Siramix</string>
+    <string name="description_splash_siramix">Siramix</string>
+    <string name="description_fb_buzzwordsapp">Link to Buzzwords App on Facebook</string>
+    <string name="description_title_button_credits">Button to get info about the developers</string>
+    <string name="description_title_starburst">A burst of light from Buzzword\'s signature lightning bolt</string>
+    <string name="description_title_title">Buzzwords title</string>
+    <string name="description_title_button_buzz">Button to enter Buzz mode</string>
+    <string name="description_title_button_settings">Button to edit settings</string>
+    <string name="description_title_button_rules">Button to read the rules</string>
+    <string name="description_buzzer_title">The Buzzer\'s title</string>
+    <string name="description_buzzer_button">The Buzzer button</string>
+    <string name="description_turn_timericon">Timer icon</string>
+    <string name="description_button_wrong">Button that marks the card as wrong</string>
+    <string name="description_button_skip">Button that marks the card as a skip</string>
+    <string name="description_button_right">Button that marks the card as right</string>
+    <string name="description_review_button_clear">Button that marks the card as unset</string>
+    <string name="description_gameend_button_mainmenu">Button to go to Main Menu</string>
+    <string name="description_gameend_button_rematch">Button to replay the game with the current game settings</string>
+
+    <!-- Temporary Strings -->
+    <string name="test_word1">Word 1</string>
+    <string name="test_team">Green Goblins</string>
+    <string name="test_header">Header</string>
+    <string name="test_number">7</string>
+    <string name="test_packdescription">A perfect cross-section of the English language. This pack is an essential part to any complete Buzzwords deck.</string>
+    <string name="test_longcardname">Franklin DelanoRooooo</string>
+
 </resources>

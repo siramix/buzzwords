@@ -18,6 +18,8 @@
 package com.buzzwords;
 
 import android.content.Context;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -96,7 +98,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
         LayoutParams.WRAP_CONTENT));
     int padding = (int) (DENSITY * 1 + 0.5f);
     mFrame.setPadding(0, padding, 0, padding);
-    mFrame.setBackgroundColor(R.color.black);
+    mFrame.setBackgroundColor(this.getResources().getColor(R.color.black));
 
     // Background for the layout
     mBackground = new View(mContext);
@@ -138,8 +140,6 @@ public class ScoreboardRowLayout extends RelativeLayout {
 
     // Initialize Score view
     mScore = new TextView(mContext);
-    mScore.setBackgroundDrawable(getResources().getDrawable(
-        R.drawable.gameend_row_end_blank));
     mScore.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
         LayoutParams.FILL_PARENT));
     mScore.setText("0");
@@ -210,8 +210,7 @@ public class ScoreboardRowLayout extends RelativeLayout {
       this.setVisibility(View.VISIBLE);
 
       mBackground.setBackgroundResource(mTeam.getPrimaryColor());
-      mScore.setBackgroundDrawable(getResources().getDrawable(
-          mTeam.getGameEndPiece()));
+      setRowEndBG(mContext.getResources().getColor(mTeam.getComplementaryColor()));
       // Show scores and team names
       mTeamText.setVisibility(View.VISIBLE);
       mScore.setVisibility(View.VISIBLE);
@@ -220,10 +219,21 @@ public class ScoreboardRowLayout extends RelativeLayout {
 
       mBackground.setBackgroundColor(getResources().getColor(
           R.color.gameend_blankrow));
-      mScore.setBackgroundDrawable(getResources().getDrawable(
-          R.drawable.gameend_row_end_blank));
+      setRowEndBG(mContext.getResources().getColor(R.color.gameend_blankrow));
       mTeamText.setVisibility(View.INVISIBLE);
       mScore.setVisibility(View.INVISIBLE);
     }
+  }
+  
+  /*
+   * Helper function assigns the proper color and drawable to the row end element
+   */
+  private void setRowEndBG(int desiredColor)
+  {
+    Drawable scoreBG = mContext.getResources().getDrawable(R.drawable.gameend_row_end_white);
+    // Mutate call allows for different constant state on drawable, so we can affect
+    // each instance individually
+    scoreBG.mutate().setColorFilter(desiredColor, Mode.MULTIPLY);
+    mScore.setBackgroundDrawable(scoreBG);
   }
 }

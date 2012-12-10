@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- 
+<!--
 /*****************************************************************************
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,235 +14,199 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
- -->
-
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="fill_parent"
-	android:layout_width="fill_parent" 
-	android:background="@drawable/bg_generic"
-	android:clipChildren="false">
-	
-	<LinearLayout android:id="@+id/Title_Banner"
-		android:layout_width="wrap_content"
-		android:orientation="horizontal" 
-		android:layout_height="fill_parent">
-		
-		<View android:id="@+id/Title_Banner_Trim1" 
-			android:layout_height="wrap_content" 
-			android:background="@color/genericBG_trim"
-			android:layout_width="5dp"
-			/>
-			
-		<View android:id="@+id/Title_Banner_BG" 
-			android:layout_height="fill_parent"
-			android:layout_width="60dp" 
-			android:background="@color/black"
-			/>
-			
-		<View android:id="@+id/Title_Banner_Trim2" 
-			android:layout_height="wrap_content" 
-			android:background="@color/genericBG_trim"
-			android:layout_width="5dp"
-			/>
-			
-	</LinearLayout>
-	
-	<LinearLayout android:id="@+id/Title_Menu"
-		android:orientation="vertical" 
-		android:clipChildren="false"
-		android:layout_width="fill_parent" 
-		android:layout_centerVertical="true"
-		android:layout_height="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/genericBG_trimDark"
+    android:clipChildren="false" >
 
-		<ImageView android:id="@+id/Title_Title"
-			android:layout_height="wrap_content" 
-			android:layout_width="wrap_content"
-			android:background="@drawable/title_title" 
-			android:layout_gravity="center"
-			android:layout_marginTop="20dp" 
-			android:layout_marginBottom="15dp"
-			/>
-			
-		<RelativeLayout android:id="@+id/Title_Menu_1"
-			android:layout_height="fill_parent" 
-			android:layout_weight="1"
-			android:layout_width="wrap_content" 
-			android:layout_marginLeft="30dp">
-			
-			<TextView android:id="@+id/Title_PlayText"
-				android:text="Play" 
-				android:textColor="@color/teamB_primary" 
-				android:layout_height="wrap_content"
-				android:layout_width="wrap_content" 
-				android:layout_marginLeft="80dp"
-				android:layout_marginTop="10dp" 
-				android:gravity="center"
-				android:textSize="42dp" 
-				android:layout_centerVertical="true"
-				/>
-				
-			<ImageButton android:id="@+id/Title_PlayButton"
-				android:background="@drawable/title_play"
-				android:layout_centerVertical="true" 
-				android:layout_height="wrap_content"
-				android:layout_width="wrap_content"
-				/>
+    <View
+        android:id="@+id/Title_BackgroundAnchor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-			<View android:id="@+id/Title_PlayDelegate"
-				android:layout_height="fill_parent" 
-				android:layout_width="180dp"
-				/>
+    <FrameLayout
+        android:id="@+id/Title_StarburstContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="10dp" >
 
-		</RelativeLayout>
-		
-		<RelativeLayout android:id="@+id/Title_Menu_2"
-			android:clipChildren="false" 
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent" 
-			android:layout_weight="1"
-			android:layout_marginLeft="30dp">
-			
-			<TextView android:id="@+id/Title_BuzzText"
-				android:textSize="42dp" 
-				android:text="Buzz"
-				android:textColor="@color/teamC_primary" 
-				android:gravity="center_vertical" 
-				android:layout_height="wrap_content"
-				android:layout_width="wrap_content" 
-				android:layout_marginLeft="80dp"
-				android:layout_marginTop="10dp" 
-				android:layout_centerVertical="true"
-				/>
-				
-			<ImageButton android:id="@+id/Title_BuzzButton"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content" 
-				android:background="@drawable/title_buzzer"
-				android:layout_centerVertical="true"
-				/>
+        <ImageView
+            android:id="@+id/Title_Starburst"
+            android:layout_width="600dp"
+            android:layout_height="600dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/description_title_starburst"
+            android:src="@drawable/title_starburst" />
+    </FrameLayout>
 
-			<View android:id="@+id/Title_BuzzDelegate"
-				android:layout_height="fill_parent" 
-				android:layout_width="200dp"
-				/>
+    <ImageView
+        android:id="@+id/Title_Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/title_title"
+        android:clickable="true"
+        android:contentDescription="@string/description_title_title" />
 
-		</RelativeLayout>
-		
-		<RelativeLayout android:id="@+id/Title_Menu_3"
-			android:layout_width="fill_parent" 
-			android:layout_height="fill_parent"
-			android:layout_weight="1" 
-			android:layout_marginLeft="30dp">
-			
-			<TextView android:layout_width="wrap_content"
-				android:textSize="42dp" 
-				android:id="@+id/Title_SettingsText"
-				android:text="Settings" 
-				android:textColor="@color/teamD_primary"
-				android:gravity="center_vertical" 
-				android:layout_height="wrap_content" 
-				android:layout_marginLeft="80dp"
-				android:layout_marginTop="10dp" 
-				android:layout_centerVertical="true"
-				/>
-				
-			<ImageButton android:id="@+id/Title_SettingsButton"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content" 
-				android:background="@drawable/title_settings"
-				android:layout_centerVertical="true"
-				/>
-				
-			<View android:id="@+id/Title_SettingsDelegate"
-				android:layout_width="240dp" 
-				android:layout_height="fill_parent"
-				/>
+    <Button
+        android:id="@+id/Title_Button_Play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Title_Title"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_title_play" />
 
-		</RelativeLayout>
-		
-		<RelativeLayout
-		    android:id="@+id/Title_Menu_4"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
-		    android:layout_marginLeft="30dp"
-		    android:layout_weight="1" >
+    <LinearLayout
+        android:id="@+id/Title_Menu"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/Title_Button_Play"
+        android:layout_marginBottom="40dp"
+        android:clipChildren="false"
+        android:orientation="vertical" >
 
-		    <TextView
-		        android:id="@+id/Title_RulesText"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_centerVertical="true"
-		        android:layout_marginLeft="80dp"
-		        android:layout_marginTop="10dp"
-		        android:gravity="center_vertical"
-		        android:text="Rules"
-		        android:textColor="@color/teamA_primary"
-		        android:textSize="42dp" />
+        <RelativeLayout
+            android:id="@+id/Title_Menu_2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
+            android:clipChildren="false" >
 
-		    <ImageButton
-		        android:id="@+id/Title_RulesButton"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_centerVertical="true"
-		        android:background="@drawable/title_rules" />
+            <com.buzzwords.AntonTextView
+                android:id="@+id/Title_BuzzText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:text="@string/title_button_label_buzz"
+                android:textColor="@color/teamC_primary"
+                android:textSize="44sp" />
 
-		    <View
-		        android:id="@+id/Title_RulesDelegate"
-		        android:layout_width="200dp"
-		        android:layout_height="fill_parent" />
+            <ImageButton
+                android:id="@+id/Title_BuzzButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/title_buzzer_normal"
+                android:contentDescription="@string/description_title_button_buzz" />
 
-		</RelativeLayout>
+            <View
+                android:id="@+id/Title_BuzzDelegate"
+                android:layout_width="200dp"
+                android:layout_height="fill_parent" />
+        </RelativeLayout>
 
-		<RelativeLayout
-		    android:id="@+id/Title_FB_Layout"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" 
-		    android:layout_gravity="right">
+        <RelativeLayout
+            android:id="@+id/Title_Menu_3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1" >
 
-		    <ImageButton
-		        android:id="@+id/Title_FB_BuzzwordsApp"
-		        android:layout_width="38dp"
-		        android:layout_height="38dp"
-		        android:layout_alignParentRight="true"
-		        android:layout_alignParentTop="true"
-		        android:background="@drawable/button_fb_selector"
-		        android:clickable="true"
-		        android:contentDescription="@string/description_fb_buzzwordsapp" />
+            <com.buzzwords.AntonTextView
+                android:id="@+id/Title_SettingsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:text="@string/title_button_label_settings"
+                android:textColor="@color/teamD_primary"
+                android:textSize="44sp" />
 
-		    <TextView
-		        android:id="@+id/Title_FB_Tagline"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_centerVertical="true"
-		        android:layout_toLeftOf="@+id/Title_FB_BuzzwordsApp"
-		        android:paddingRight="5dp"
-		        android:text="@string/tagline_fb_buzzwordsapp"
-		        android:textColor="@color/text_subtext"
-		        android:textSize="18dp" android:paddingTop="15dp"/>
-		    
-		</RelativeLayout>
+            <ImageButton
+                android:id="@+id/Title_SettingsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/title_settings_normal"
+                android:contentDescription="@string/description_title_button_settings" />
 
-	</LinearLayout>
-	
-	<LinearLayout android:id="@+id/Title_Banner_Hider" 
-		android:layout_width="wrap_content"
-		android:orientation="horizontal" 
-		android:layout_height="fill_parent"
-		android:layout_alignLeft="@id/Title_Banner">
-		
-		<View android:id="@+id/Title_Banner_Hider_BG"
-			android:layout_height="wrap_content"
-			android:background="@color/genericBG_trim"
-			android:layout_width="5dp"
-			/>
-			
-		<View android:id="@+id/Title_Banner_Hider_BG" 
-			android:background="@color/black" 
-			android:layout_width="25dp" 
-			android:layout_height="wrap_content"
-			/>
+            <View
+                android:id="@+id/Title_SettingsDelegate"
+                android:layout_width="240dp"
+                android:layout_height="fill_parent" />
+        </RelativeLayout>
 
-	</LinearLayout>
+        <RelativeLayout
+            android:id="@+id/Title_Menu_4"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1" >
+
+            <com.buzzwords.AntonTextView
+                android:id="@+id/Title_RulesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:text="@string/title_button_label_rules"
+                android:textColor="@color/teamA_primary"
+                android:textSize="44sp" />
+
+            <ImageButton
+                android:id="@+id/Title_RulesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/title_rules_normal"
+                android:contentDescription="@string/description_title_button_rules" />
+
+            <View
+                android:id="@+id/Title_RulesDelegate"
+                android:layout_width="200dp"
+                android:layout_height="fill_parent" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Title_FB_Layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp" 
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/Title_FB_Tagline"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:gravity="bottom|right"
+            android:text="@string/tagline_fb_buzzwordsapp"
+            android:textColor="@color/text_subtext"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/Title_FB_BuzzwordsApp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_fb_selector"
+            android:clickable="true"
+            android:contentDescription="@string/description_fb_buzzwordsapp" />
+
+        <ImageButton
+            android:id="@+id/Title_Button_Credits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/button_info"
+            android:contentDescription="@string/description_title_button_credits" />
+
+    </LinearLayout>
 
 </RelativeLayout>

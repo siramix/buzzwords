@@ -20,9 +20,10 @@ package com.buzzwords;
 import com.buzzwords.R;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.util.Log;
+import android.preference.PreferenceManager;
 
 public class SoundManager {
 
@@ -72,9 +73,7 @@ public class SoundManager {
    * @param baseContext
    */
   private void initSoundManager(Context baseContext) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "initSoundManager()");
-    }
+    SafeLog.d(TAG, "initSoundManager()");
     mContext = baseContext;
     mAudioManager = (AudioManager) mContext
         .getSystemService(Context.AUDIO_SERVICE);
@@ -85,9 +84,7 @@ public class SoundManager {
    * Load all the sounds for the game
    */
   private void loadSounds() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "loadSounds()");
-    }
+    SafeLog.d(TAG, "loadSounds()");
     mSoundIds = new int[Sound.values().length];
     mSoundIds[Sound.RIGHT.ordinal()] = mSoundPool.load(mContext,
         R.raw.fx_right, 1);
@@ -116,7 +113,14 @@ public class SoundManager {
    * @return the id of the sound in the sound pool
    */
   public int playSound(Sound fxIndex) {
-
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(mContext);
+    
+    // Don't play any sounds if SFX are disabled
+    if( !sp.getBoolean(Consts.PREFKEY_SFX, true) )
+    {
+      return 0;
+    }
     // Volume% = current volume / max volume
     float volume = (float) mAudioManager
         .getStreamVolume(AudioManager.STREAM_MUSIC)

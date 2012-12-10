@@ -19,10 +19,11 @@ package com.buzzwords;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -62,8 +63,6 @@ public class TeamSelectLayout extends RelativeLayout {
 
   private OnTeamAddedListener mTeamAddedListener;
   private OnTeamEditedListener mTeamEditedListener;
-
-  private static String TAG = "TeamSelectLayout";
 
   /**
    * @param context
@@ -108,7 +107,7 @@ public class TeamSelectLayout extends RelativeLayout {
         LayoutParams.FILL_PARENT));
     int padding = (int) (DENSITY * 1 + 0.5f);
     mFrame.setPadding(0, padding, 0, padding);
-    mFrame.setBackgroundColor(R.color.black);
+    mFrame.setBackgroundColor(this.getResources().getColor(R.color.black));
 
     // Initialize foreground in frame
 
@@ -129,9 +128,18 @@ public class TeamSelectLayout extends RelativeLayout {
     mTeamText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, INITIAL_TEXTSIZE);
 
     // Add the views to frame
-
     mFrame.addView(mFrameForeground);
     mFrame.addView(mTeamText);
+    
+    // Add single pixel bar of lightened color to give depth
+    View lightBar = new View(mContext);
+    lightBar.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+        (int) (DENSITY * 1 + 0.5f)));
+    lightBar.setBackgroundColor(getResources().getColor(R.color.white));
+    AlphaAnimation alpha = new AlphaAnimation(0.2f, 0.2f);
+    alpha.setFillAfter(true);
+    lightBar.startAnimation(alpha);
+    mFrame.addView(lightBar);
 
     // Initialize the group for the buttons
     mButtons = new LinearLayout(mContext);
@@ -140,7 +148,8 @@ public class TeamSelectLayout extends RelativeLayout {
     mButtons.setOrientation(LinearLayout.HORIZONTAL);
 
     // Initialize Add / Remove team button
-    mButtonAddTeam = new View(mContext);
+    mButtonAddTeam = new Button(mContext);
+    mButtonAddTeam.setBackgroundDrawable(null);
     mButtonAddTeam.setLayoutParams(new LinearLayout.LayoutParams(
         LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1f));
     mButtonAddTeam.setOnClickListener(mAddTeamListener);
@@ -163,6 +172,8 @@ public class TeamSelectLayout extends RelativeLayout {
     // Add groups to TeamSelectLayout
     this.addView(mFrame);
     this.addView(mButtons);
+    
+    //mButtonAddTeam.setSoundEffectsEnabled(false);
   }
 
   /**
@@ -189,6 +200,9 @@ public class TeamSelectLayout extends RelativeLayout {
     int size = INITIAL_TEXTSIZE;
     mTeamText.setTextSize(size);
     while (mTeamText.getPaint().measureText(mTeam.getName()) > TEXTVIEW_WIDTH) {
+      if(size < 20) {
+        break;
+      }
       mTeamText.setTextSize(--size);
     }
 
@@ -218,6 +232,13 @@ public class TeamSelectLayout extends RelativeLayout {
   public Team getTeam() {
     return mTeam;
   }
+  
+  /*
+   * Get whether the team represented by this view is Active
+   */
+  public boolean getActiveness() {
+    return mIsTeamActive;
+  }
 
   /*
    * Set the view to display as active or inactive (bright or dim, for example)
@@ -244,9 +265,6 @@ public class TeamSelectLayout extends RelativeLayout {
    */
   private final OnClickListener mEditTeamListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "AddTeamListener onClick()");
-      }
       // Send event to any listeners
       if (mTeamEditedListener != null) {
         mTeamEditedListener.onTeamEdited(mTeam);
@@ -259,15 +277,9 @@ public class TeamSelectLayout extends RelativeLayout {
    */
   private final OnClickListener mAddTeamListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "AddTeamListener onClick()");
-      }
-      // Toggle the view's display status
-      setActiveness(!mIsTeamActive);
-
       // Send event to any listeners
       if (mTeamAddedListener != null) {
-        mTeamAddedListener.onTeamAdded(mTeam, mIsTeamActive);
+        mTeamAddedListener.onTeamAdded(TeamSelectLayout.this, mTeam);
       }
 
     }

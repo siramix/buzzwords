@@ -16,39 +16,54 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
  -->
- 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:background="@color/black" android:layout_height="50dp">
+    android:layout_height="50dp"
+    android:background="@color/black" >
 
     <!-- Row background -->
-    <View 
+
+    <View
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/turnSummaryListItem"
-        android:layout_marginBottom="1dp"/>
-    
+        android:layout_marginBottom="1dp"
+        android:background="@color/turnSummaryListItem" />
+
     <!-- Card Title -->
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="2dp"
-        android:layout_centerVertical="true"
+
+    <com.buzzwords.FrancoisOneTextView
         android:layout_width="223dp"
-        android:text="Franklin DelanoRooooo"
-        android:textSize="26dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
         android:ellipsize="marquee"
+        android:includeFontPadding="false"
         android:maxLines="1"
         android:scrollHorizontally="true"
-        android:includeFontPadding="false"/>
-    
-    <!-- Card RWS Status -->    
+        android:text="@string/test_longcardname"
+        android:textColor="#FFFFFF"
+        android:textSize="26dp" />
+
+    <!-- Card RWS Status -->
+
     <ImageView
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/right"
-        android:layout_marginBottom="1dp"/>
-        
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/turnsum_row_end_white" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/white" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_centerVertical="true"/>
+
 </RelativeLayout>

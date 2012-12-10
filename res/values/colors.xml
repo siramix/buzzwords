@@ -12,14 +12,17 @@
   <color name="text_subtext">
   	#999999
   </color>
+  <color name="text_default">
+    #e1e1e1
+  </color>
   <color name="teamA_primary">
     #317695
   </color>
   <color name="teamA_secondary">
     #0b1920
   </color>
-  <color name="teamA_BG">
-    #317695
+  <color name="teamA_complement">
+    #1a4152
   </color>
   <color name="teamA_highlight">
     #52a2c6
@@ -30,21 +33,23 @@
   <color name="teamB_secondary">
     #1b270d
   </color>
-  <color name="teamB_BG">
-    #6FA234
-  </color> 
+  <color name="teamB_complement">
+    #2c6922
+  </color>
+  <!-- Unused TeamB Highlight but this would be it if we need it
   <color name="teamB_highlight">
     #91c751
   </color>
+   -->
   <color name="teamC_primary">
     #AC2D20
   </color>
   <color name="teamC_secondary">
     #200706
   </color>
-  <color name="teamC_BG">
-    #AC2D20
-  </color>   
+  <color name="teamC_complement">
+    #6f1d15
+  </color>
   <color name="teamC_highlight">
     #dc4c3c
   </color>
@@ -54,8 +59,8 @@
   <color name="teamD_secondary">
     #232008
   </color>
-  <color name="teamD_BG">
-    #AC9B29
+  <color name="teamD_complement">
+    #74691c
   </color>
   <color name="teamD_highlight">
     #d3c045
@@ -72,14 +77,14 @@
   <color name="genericBG_trimDark">
     #282828
   </color>
-    <color name="gameend_blankrow">
+  <color name="gameend_blankrow">
     #555555
   </color>
   <color name="buttonText">
     #FFFFFF
   </color>
   <color name="inactiveButton">
-  	#2d2d2d
+  	#323232
   </color>
   <color name="cardreview_WordText">
   	#141414

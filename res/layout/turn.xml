@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- 
+<!--
 /*****************************************************************************
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,264 +14,316 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
- -->
+-->
 
-<RelativeLayout android:id="@+id/Turn_Root"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Turn_Root"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bg_bluegradient">
+    android:background="@drawable/bg_bluegradient" >
 
-    <TextView android:id="@+id/Turn_TimesUp"
+    <com.buzzwords.FrancoisOneTextView
+        android:id="@+id/Turn_TimesUp"
+        style="@style/TurnNotify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:textSize="60dp"
-        android:textStyle="bold"
-        android:text="Time's Up!"
         android:gravity="center"
-        android:visibility="invisible"
+        android:text="@string/turn_timesup"
         android:textColor="@color/white"
-        />
+        android:visibility="invisible" />
 
-    <LinearLayout android:id="@+id/Turn_PauseTextGroup"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+    <LinearLayout
+        android:id="@+id/Turn_PauseTextGroup"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="invisible">
+        android:orientation="vertical"
+        android:visibility="invisible" >
 
-        <TextView android:id="@+id/Turn_PausedText"
+        <com.buzzwords.FrancoisOneTextView
+            android:id="@+id/Turn_PausedText"
+            style="@style/TurnNotify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="60dp"
-            android:textStyle="bold"
-            android:text="Paused"
             android:layout_gravity="center"
+            android:text="@string/turn_paused"
             android:textColor="@color/white"
-            />
+            android:textSize="60sp" />
 
-        <TextView android:id="@+id/Turn_PausedSubText"
+        <com.buzzwords.FrancoisOneTextView
+            android:id="@+id/Turn_PausedSubText"
+            style="@style/TurnNotifySubText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20dp"
             android:layout_gravity="center"
-            android:text="Tap to Unpause"
-            />
-
+            android:text="@string/turn_paused_subtext" />
     </LinearLayout>
 
-    <LinearLayout android:id="@+id/Turn_MasterLayout"
-        android:layout_height="fill_parent"
+    <LinearLayout
+        android:id="@+id/Turn_MasterLayout"
         android:layout_width="fill_parent"
-        android:orientation="vertical">
-        
-        <RelativeLayout android:id="@+id/Turn_TimerBar"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp">
-            
-            <ImageView android:id="@+id/Turn_TimerBG"
-                android:background="@color/genericBG"
-                android:layout_width="fill_parent"
-                android:layout_height="25dp"
-                />
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
-            <View android:id="@+id/Turn_TimerTrim"
-                android:layout_height="10dp"
-                android:layout_width="fill_parent"
-                android:background="@color/genericBG_trim"
-                android:layout_below="@id/Turn_TimerBG"
-                />
+        <RelativeLayout
+            android:id="@+id/Turn_HighBar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-            
-                
-            <ImageView android:id="@+id/Turn_TimerFill"
-                android:layout_alignParentTop="true"
-                android:background="@color/teamA_primary"
-                android:layout_height="23dp"
-                android:layout_marginTop="1dp"
-                android:layout_alignParentLeft="true"
+            <View
+                android:id="@+id/Turn_MenuBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@color/genericBG" />
+
+            <LinearLayout
+                android:id="@+id/Turn_TimerGroup"
                 android:layout_width="fill_parent"
-                android:layout_marginRight="40dp"
-                />
-            
-            <View android:id="@+id/Turn_TimerFrame"
-                android:layout_height="25dp"
-                android:background="@drawable/turn_timer_frame"
-                android:layout_width="70dp"
-                android:layout_alignParentRight="true"
-                />
-            <TextView android:textColor="#FFFFFF" android:textSize="22dp" android:layout_width="wrap_content" android:gravity="center" android:includeFontPadding="false" android:id="@+id/Turn_Timer" android:layout_height="24dp" android:layout_alignParentRight="true" android:paddingRight="5dp"></TextView>
-                
+                android:layout_height="40dp" >
+
+                <RelativeLayout
+                    android:id="@+id/Turn_TimerBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <ImageView
+                        android:id="@+id/Turn_TimerFill"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginRight="61dp"
+                        android:layout_marginTop="1dp"
+                        android:background="@color/teamA_primary" />
+
+                    <ImageView
+                        android:id="@+id/Turn_TimerFrame"
+                        android:layout_width="wrap_content"
+                        android:layout_height="37dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="1dp"
+                        android:background="@drawable/gameend_row_end_white" />
+
+                    <ImageView
+                        android:id="@+id/Turn_TimerIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@id/Turn_TimerFrame"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="4dp"
+                        android:src="@drawable/icon_timer" 
+                        android:contentDescription="@string/description_turn_timericon"/>
+
+                    <com.buzzwords.AntonTextView
+                        android:id="@+id/Turn_Timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/Turn_TimerIcon"
+                        android:gravity="right|center_vertical"
+                        android:includeFontPadding="false"
+                        android:paddingRight="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="26sp" />
+                </RelativeLayout>
+
+                <com.buzzwords.AntonButton
+                    android:id="@+id/Turn_TimerMenuButton"
+                    android:layout_width="60dp"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="1dp"
+                    android:text="@string/button_menu" >
+                </com.buzzwords.AntonButton>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/Turn_TimerTrim"
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:layout_below="@id/Turn_TimerGroup"
+                android:background="@color/genericBG_trim" />
         </RelativeLayout>
 
-        <ViewFlipper android:id="@+id/Turn_ViewFlipper"
+        <ViewFlipper
+            android:id="@+id/Turn_ViewFlipper"
             android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:layout_height="fill_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1" >
 
-            <RelativeLayout android:id="@+id/Turn_CardLayoutA"
+            <RelativeLayout
+                android:id="@+id/Turn_CardLayoutA"
                 android:layout_width="fill_parent"
-                android:layout_gravity="center"
-                android:layout_height="fill_parent">
-                
-                <ImageView android:id="@+id/Turn_StatusImageA"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center" >
+
+                <ImageView
+                    android:id="@+id/Turn_StatusImageA"
                     android:layout_width="50dip"
                     android:layout_height="50dip"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    />
+                    android:layout_alignParentTop="true" />
 
-                <LinearLayout android:id="@+id/Turn_CardA_Words"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_centerInParent="true"
-                    android:layout_height="wrap_content">
-                    
-                    <TextView android:id="@+id/Turn_CardTitleA"
-                        style="@style/CardTitle"/>
-                        
-                    <LinearLayout android:id="@+id/Turn_CardA_BadWords"
-                        android:layout_width="fill_parent"
-                        android:orientation="vertical"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/Turn_CardTitleA">
-                        
-                        <TextView android:id="@+id/Turn_CardA_BadWord0"
-                            style="@style/BadWordText"/>
-                            
-                        <TextView android:id="@+id/Turn_CardA_BadWord1"
-                            style="@style/BadWordText"/>
-                            
-                        <TextView android:id="@+id/Turn_CardA_BadWord2"
-                            style="@style/BadWordText"/>
-                            
-                        <TextView android:id="@+id/Turn_CardA_BadWord3"
-                            style="@style/BadWordText"/>
-                            
-                        <TextView android:id="@+id/Turn_CardA_BadWord4"
-                            style="@style/BadWordText"/>
-                            
-                    </LinearLayout>
-                    
-                </LinearLayout>
-                
-            </RelativeLayout>
-
-            <RelativeLayout android:id="@+id/Turn_CardLayoutB"
-                android:layout_width="fill_parent"
-                android:layout_gravity="center"
-                android:layout_height="fill_parent">
-                
-                <ImageView android:id="@+id/Turn_StatusImageB"
-                    android:layout_alignParentTop="true"
-                    android:layout_height="50dip"
-                    android:layout_width="50dip"
-                    android:layout_alignParentRight="true"
-                    />
-
-                <LinearLayout android:id="@+id/Turn_CardB_Words"
+                <LinearLayout
+                    android:id="@+id/Turn_CardA_Words"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:orientation="vertical">
-                    
-                    <TextView android:id="@+id/Turn_CardTitleB"
-                        style="@style/CardTitle"
-                    	/>
-                        
-                    <LinearLayout android:id="@+id/Turn_CardB_BadWords"
+                    android:orientation="vertical" >
+
+                    <com.buzzwords.FrancoisOneTextView
+                        android:id="@+id/Turn_CardTitleA"
+                        style="@style/CardTitle" />
+
+                    <LinearLayout
+                        android:id="@+id/Turn_CardA_BadWords"
                         android:layout_width="fill_parent"
-                        android:orientation="vertical"
-                        android:layout_gravity="center"
-                        android:layout_height="wrap_content">
-                        
-                        <TextView android:id="@+id/Turn_CardB_BadWord0"
-                            style="@style/BadWordText"
-                            />
-                            
-                        <TextView android:id="@+id/Turn_CardB_BadWord1"
-                            style="@style/BadWordText"
-                            />
-                            
-                        <TextView android:id="@+id/Turn_CardB_BadWord2"
-                            style="@style/BadWordText"
-                            />
-                            
-                        <TextView android:id="@+id/Turn_CardB_BadWord3"
-                            style="@style/BadWordText"
-                            />
-                            
-                        <TextView android:id="@+id/Turn_CardB_BadWord4"
-                            style="@style/BadWordText"
-                            />
-                            
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <com.buzzwords.FrancoisOneTextView
+                            android:id="@+id/Turn_CardA_BadWord0"
+                            style="@style/BadWordText" />
+
+                        <com.buzzwords.FrancoisOneTextView
+                            android:id="@+id/Turn_CardA_BadWord1"
+                            style="@style/BadWordText" />
+
+                        <com.buzzwords.FrancoisOneTextView
+                            android:id="@+id/Turn_CardA_BadWord2"
+                            style="@style/BadWordText" />
+
+                        <com.buzzwords.FrancoisOneTextView
+                            android:id="@+id/Turn_CardA_BadWord3"
+                            style="@style/BadWordText" />
+
+                        <com.buzzwords.FrancoisOneTextView
+                            android:id="@+id/Turn_CardA_BadWord4"
+                            style="@style/BadWordText" />
                     </LinearLayout>
-                    
                 </LinearLayout>
-                
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/Turn_CardLayoutB"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center" >
+
+                <ImageView
+                    android:id="@+id/Turn_StatusImageB"
+                    android:layout_width="50dip"
+                    android:layout_height="50dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true" />
+
+                <LinearLayout
+                    android:id="@+id/Turn_CardB_Words"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical" >
+
+                    <com.buzzwords.FrancoisOneTextView
+                        android:id="@+id/Turn_CardTitleB"
+                        style="@style/CardTitle" />
+
+                    <LinearLayout
+                        android:id="@+id/Turn_CardB_BadWords"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical" >
+
+                        <com.buzzwords.FrancoisOneTextView
+                            android:id="@+id/Turn_CardB_BadWord0"
+                            style="@style/BadWordText" />
+
+                        <com.buzzwords.FrancoisOneTextView
+                            android:id="@+id/Turn_CardB_BadWord1"
+                            style="@style/BadWordText" />
+
+                        <com.buzzwords.FrancoisOneTextView
+                            android:id="@+id/Turn_CardB_BadWord2"
+                            style="@style/BadWordText" />
+
+                        <com.buzzwords.FrancoisOneTextView
+                            android:id="@+id/Turn_CardB_BadWord3"
+                            style="@style/BadWordText" />
+
+                        <com.buzzwords.FrancoisOneTextView
+                            android:id="@+id/Turn_CardB_BadWord4"
+                            style="@style/BadWordText" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
         </ViewFlipper>
-        
+
         <!-- Grouping for buttons on the bottom -->
-        <RelativeLayout android:id="@+id/Turn_LowBar"
+
+        <RelativeLayout
+            android:id="@+id/Turn_LowBar"
             android:layout_width="fill_parent"
-            android:layout_height="90dp">
+            android:layout_height="90dp" >
 
-            <View android:id="@+id/Turn_LowBarBG"
+            <View
+                android:id="@+id/Turn_LowBarBG"
                 android:layout_width="fill_parent"
-                android:background="@color/genericBG"
-                android:layout_marginTop="40dp"
-                android:layout_alignParentBottom="true"
                 android:layout_height="45dp"
-                />
-                 
-            <View android:id="@+id/Turn_LowBarTrim"
-                android:layout_height="10dp"
-                android:layout_width="fill_parent"
-                android:background="@color/genericBG_trim"
-                android:layout_alignTop="@id/Turn_LowBarBG"
-                />
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="40dp"
+                android:background="@color/genericBG" />
 
-            <ImageButton android:id="@+id/Turn_ButtonSkip"
-                android:layout_height="wrap_content"
+            <View
+                android:id="@+id/Turn_LowBarTrim"
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:layout_alignTop="@id/Turn_LowBarBG"
+                android:background="@color/genericBG_trim" />
+
+            <ImageButton
+                android:id="@+id/Turn_ButtonSkip"
                 android:layout_width="wrap_content"
-                android:background="@drawable/controls_skip_selector"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                />
-                
-            <ImageButton android:id="@+id/Turn_ButtonWrong"
+                android:background="@drawable/button_skip_selector" 
+                android:contentDescription="@string/description_button_skip"/>
+
+            <ImageButton
+                android:id="@+id/Turn_ButtonWrong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignRight="@id/Turn_ButtonSkip"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="99dp"
-                android:layout_alignRight="@id/Turn_ButtonSkip"
-                android:background="@drawable/controls_wrong_selector"
-                />
-                
-            <ImageButton android:id="@+id/Turn_ButtonCorrect"
-                android:layout_height="wrap_content"
+                android:background="@drawable/button_wrong_selector" 
+                android:contentDescription="@string/description_button_wrong"/>
+
+            <ImageButton
+                android:id="@+id/Turn_ButtonCorrect"
                 android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@drawable/controls_right_selector"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/Turn_ButtonSkip"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="99dp"
-                />
-                
+                android:background="@drawable/button_right_selector" 
+                android:contentDescription="@string/description_button_right"/>
         </RelativeLayout>
-        
     </LinearLayout>
 
-    <!--  View to unpause game on touch -->
-    <View android:id="@+id/Turn_PauseImageView"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+    <!-- View to unpause game on touch -->
+
+    <View
+        android:id="@+id/Turn_PauseOverlay"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp" />
 
 </RelativeLayout>

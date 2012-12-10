@@ -1,17 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   
+
     <string-array name="turntimes">
       <item>30 seconds</item>
       <item>60 seconds (recommended)</item>
       <item>90 seconds</item>
     </string-array>
-    
+
     <string-array name="turntime_values">
       <item>30</item>
       <item>60</item>
       <item>90</item>
-        
     </string-array>
-      
+
+    <string-array name="numbuzzwords">
+      <item>0 buzzwords</item>
+      <item>1 buzzword</item>
+      <item>2 buzzwords</item>
+      <item>3 buzzwords</item>
+      <item>4 buzzwords</item>
+      <item>5 buzzwords (recommended)</item>
+    </string-array>
+
+    <string-array name="numbuzzwords_values">
+      <item>0</item>
+      <item>1</item>
+      <item>2</item>
+      <item>3</item>
+      <item>4</item>
+      <item>5</item>
+    </string-array>
+    
+     <string-array name="wrong_scores">
+      <item>-5 points</item>
+      <item>-4 points</item>
+      <item>-3 points</item>
+      <item>-2 points</item>
+      <item>-1 point (recommended)</item>
+      <item>0 points</item>
+    </string-array>
+
+    <string-array name="wrong_scores_values">
+      <item>-5</item>
+      <item>-4</item>
+      <item>-3</item>
+      <item>-2</item>
+      <item>-1</item>
+      <item>0</item>
+    </string-array>
+    
+    <string-array name="skip_scores">
+      <item>-5 points</item>
+      <item>-4 points</item>
+      <item>-3 points</item>
+      <item>-2 points</item>
+      <item>-1 points</item>
+      <item>0 points (recommmended)</item>
+    </string-array>
+
+    <string-array name="skip_scores_values">
+      <item>-5</item>
+      <item>-4</item>
+      <item>-3</item>
+      <item>-2</item>
+      <item>-1</item>
+      <item>0</item>
+    </string-array>
+    
+    <string-array name="right_scores">
+      <item>5 points</item>
+      <item>4 points</item>
+      <item>3 points</item>
+      <item>2 points</item>
+      <item>1 point (recommended)</item>
+      <item>0 points</item>
+    </string-array>
+
+    <string-array name="right_scores_values">
+      <item>5</item>
+      <item>4</item>
+      <item>3</item>
+      <item>2</item>
+      <item>1</item>
+      <item>0</item>
+    </string-array>
 </resources>

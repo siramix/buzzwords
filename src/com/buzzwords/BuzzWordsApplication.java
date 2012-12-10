@@ -21,7 +21,6 @@ import android.app.Application;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
 
 /**
  * Class extending the standard android application. This allows us to refer to
@@ -35,7 +34,8 @@ public class BuzzWordsApplication extends Application {
    */
   public static final boolean DEBUG = true;
   public static final boolean DEBUG_TIMERTICKS = false;
-  public static final Markets MARKET = Markets.ANDROID;
+  public static final Markets MARKET = Markets.AMAZON;
+  public static final boolean USE_TEST_PACKS = true;
   public static Uri storeURI_Buzzwords;
   public static Uri storeURI_BuzzwordsLite;
   public static enum Markets {
@@ -56,20 +56,20 @@ public class BuzzWordsApplication extends Application {
    * MediaPlayer for music
    */
   private MediaPlayer mMediaPlayer;
+  
+  /**
+   * Track last played music track, to restore it on resume
+   */
+  private int mTrackID;
 
   /**
    * Default constructor
    */
   public BuzzWordsApplication() {
     super();
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "BuzzWordsApplication()");
-    }
   }
 
   public void onCreate() {
-    storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
-    storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
     switch (BuzzWordsApplication.MARKET) {
       case ANDROID:
         storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_android_market_buzzwordslite));
@@ -79,6 +79,10 @@ public class BuzzWordsApplication extends Application {
         storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_amazon_market_buzzwordslite));
         storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_amazon_market_buzzwords));
         break;    
+      default:
+        storeURI_BuzzwordsLite = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
+        storeURI_Buzzwords = Uri.parse(getApplicationContext().getString(R.string.URI_buzzwords_redirect));
+        break;
     }
   }
   
@@ -86,9 +90,6 @@ public class BuzzWordsApplication extends Application {
    * @return a reference to the game manager
    */
   public GameManager getGameManager() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetGameManager()");
-    }
     return this.mGameManager;
   }
 
@@ -97,9 +98,6 @@ public class BuzzWordsApplication extends Application {
    *          - a reference to the game manager
    */
   public void setGameManager(GameManager gm) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "SetGameManager()");
-    }
     this.mGameManager = gm;
   }
 
@@ -111,14 +109,13 @@ public class BuzzWordsApplication extends Application {
    * @return a reference to the media player
    */
   public MediaPlayer createMusicPlayer(Context context, int id) {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "CreateMusicPlayer(" + context + "," + id + ")");
-    }
+    SafeLog.d(TAG, "CreateMusicPlayer(" + context + "," + id + ")");
     // Clean up resources. This fixed a leak issue caused by starting many games
     // over and over.
     if (mMediaPlayer != null) {
       mMediaPlayer.release();
     }
+    mTrackID = id;
     mMediaPlayer = MediaPlayer.create(context, id);
     return mMediaPlayer;
   }
@@ -126,10 +123,25 @@ public class BuzzWordsApplication extends Application {
   /**
    * @return a reference to the current media player
    */
-  public MediaPlayer getMusicPlayer() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "GetMusicPlayer()");
+  public MediaPlayer getMusicPlayer(Context context) {
+    if(mMediaPlayer == null)
+    {
+      mMediaPlayer = MediaPlayer.create(context, mTrackID);
     }
     return mMediaPlayer;
+  }
+  
+  /**
+   * Clean up resources required by the media player. This should
+   * be called whenever you know there will be no music.
+   */
+  public void cleanUpMusicPlayer() {
+    if (mMediaPlayer != null) {
+      if (mMediaPlayer.isPlaying()) {
+        mMediaPlayer.stop();
+      }
+      mMediaPlayer.release();
+      mMediaPlayer = null;
+    }
   }
 }

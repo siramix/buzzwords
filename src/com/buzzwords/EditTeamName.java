@@ -20,11 +20,9 @@ package com.buzzwords;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,11 +36,6 @@ import android.widget.TextView;
  * @author Siramix Labs
  */
 public class EditTeamName extends Activity {
-
-  /**
-   * Static string used to refer to this class, in debug output for example.
-   */
-  private static final String TAG = "EditTeamName";
 
   private Team mTeam;
 
@@ -75,12 +68,14 @@ public class EditTeamName extends Activity {
    */
   private final OnClickListener mCancelListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "Cancel onClick()");
-      }
       v.setEnabled(false);
       // Keep music playing
       mContinueMusic = true;
+      
+      SoundManager sm = SoundManager.getInstance((EditTeamName.this
+          .getBaseContext()));
+      sm.playSound(SoundManager.Sound.BACK);
+      
       finish();
     }
   };
@@ -91,9 +86,6 @@ public class EditTeamName extends Activity {
    */
   private final OnClickListener mAcceptListener = new OnClickListener() {
     public void onClick(View v) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "Cancel onClick()");
-      }
       v.setEnabled(false);
 
       // Cache the team name
@@ -102,6 +94,10 @@ public class EditTeamName extends Activity {
       // Keep music playing
       mContinueMusic = true;
 
+      SoundManager sm = SoundManager.getInstance((EditTeamName.this
+          .getBaseContext()));
+      sm.playSound(SoundManager.Sound.CONFIRM);
+      
       // Pass back the team and the name
       Intent curIntent = new Intent();
       curIntent.putExtra(getString(R.string.teamBundleKey), mTeam);
@@ -117,20 +113,10 @@ public class EditTeamName extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onCreate()");
-    }
 
     this.setContentView(R.layout.editteamname);
 
     setupViewReferences();
-
-    // Set fonts on titles
-    Typeface antonFont = Typeface.createFromAsset(getAssets(),
-        "fonts/Anton.ttf");
-
-    TextView label = (TextView) this.findViewById(R.id.EditTeamName_Title);
-    label.setTypeface(antonFont);
 
     // Get the team from the passed in Bundle
     Intent curIntent = this.getIntent();
@@ -145,7 +131,8 @@ public class EditTeamName extends Activity {
 
     // Initialize hint text
     TextView hint = (TextView) this.findViewById(R.id.EditTeamName_Hint);
-    hint.setText(getString(R.string.editTeamName_hint, mTeam.getDefaultName()));
+    String name = getString(mTeam.getDefaultName());
+    hint.setText(getString(R.string.editTeamName_hint, name));
 
     // Set listener for accept
     mButtonCancel.setOnClickListener(mCancelListener);
@@ -159,9 +146,7 @@ public class EditTeamName extends Activity {
   public boolean onKeyUp(int keyCode, KeyEvent event) {
     if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled()) {
-      if (BuzzWordsApplication.DEBUG) {
-        Log.d(TAG, "BackKeyUp()");
-      }
+
       // Keep music playing
       mContinueMusic = true;
     }
@@ -173,18 +158,16 @@ public class EditTeamName extends Activity {
    */
   @Override
   public void onPause() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onPause()");
-    }
     super.onPause();
+    
     if (!mContinueMusic) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
           .getApplication();
-      MediaPlayer mp = application.getMusicPlayer();
+      MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
           .getBaseContext());
-      if (mp.isPlaying() && sp.getBoolean("music_enabled", true)) {
-        mp.pause();
+      if (mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
+        application.cleanUpMusicPlayer();
       }
     }
   }
@@ -194,18 +177,15 @@ public class EditTeamName extends Activity {
    */
   @Override
   public void onResume() {
-    if (BuzzWordsApplication.DEBUG) {
-      Log.d(TAG, "onResume()");
-    }
     super.onResume();
 
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
-    MediaPlayer mp = application.getMusicPlayer();
+    MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
         .getBaseContext());
-    if (!mp.isPlaying() && sp.getBoolean("music_enabled", true)) {
+    if (!mp.isPlaying() && sp.getBoolean(Consts.PREFKEY_MUSIC, true)) {
       mp.start();
     }
 
