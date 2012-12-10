@@ -22,14 +22,14 @@
 	<PreferenceCategory android:title="App Settings">
 	
 		<CheckBoxPreference 
-			android:key="com.buzzwords.MUSIC_ENABLED"
+			android:key="com.buzzwordslite.MUSIC_ENABLED"
 			android:title="Music"
 			android:summary="Enable all music"
 			android:defaultValue="true" 
 			/>
 		
 		<CheckBoxPreference 
-      android:key="com.buzzwords.SFX_ENABLED"
+      android:key="com.buzzwordslite.SFX_ENABLED"
       android:title="Sound Effects"
       android:summary="Play beeps and boops when pressing buttons"
       android:defaultValue="true" 
@@ -37,7 +37,7 @@
           
 					
 		<CheckBoxPreference 
-			android:key="com.buzzwords.ALLOW_GESTURES"
+			android:key="com.buzzwordslite.ALLOW_GESTURES"
 			android:title="Allow Gestures"
 			android:defaultValue="true"
 			android:summary="Swipe up for correct, down for wrong, left for skip, and right for back"
@@ -48,7 +48,7 @@
 	<PreferenceCategory android:title="House Rules">
 		
 		<ListPreference 
-			android:key="com.buzzwords.TURN_TIMER" 
+			android:key="com.buzzwordslite.TURN_TIMER" 
 			android:title="Turn Timer Length"
 			android:entryValues="@array/turntime_values" 
 			android:entries="@array/turntimes"
@@ -57,7 +57,7 @@
 			/>
 		
 		<CheckBoxPreference 
-			android:key="com.buzzwords.ALLOW_SKIP"
+			android:key="com.buzzwordslite.ALLOW_SKIP"
 			android:title="Allow Skipping"
 			android:defaultValue="true"
 			android:summary="If checked players may skip cards"
@@ -66,14 +66,14 @@
 	</PreferenceCategory>
 
 	<PreferenceScreen 
-		android:key="com.buzzwords.ADVANCED_RULES"
+		android:key="com.buzzwordslite.ADVANCED_RULES"
 		android:title="Advanced House Rules"
 		android:summary="Customize scoring or reduce difficulty">
 		
 		<PreferenceCategory android:title="Scoring">
 		
 			<ListPreference
-				android:key="com.buzzwords.RIGHT_SCORE"
+				android:key="com.buzzwordslite.RIGHT_SCORE"
 				android:title="Right Reward"
 				android:selectable="true"
 				android:entries="@array/right_scores"
@@ -83,7 +83,7 @@
 				/>
 			
 			<ListPreference
-				android:key="com.buzzwords.WRONG_SCORE"
+				android:key="com.buzzwordslite.WRONG_SCORE"
 				android:title="Buzz Penalty"
 				android:selectable="true"
 				android:entries="@array/wrong_scores"
@@ -93,7 +93,7 @@
 				/>
 			
 			<ListPreference
-				android:key="com.buzzwords.SKIP_SCORE"
+				android:key="com.buzzwordslite.SKIP_SCORE"
 				android:title="Skip Penalty"
 				android:selectable="true"
 				android:entries="@array/skip_scores"
@@ -107,7 +107,7 @@
 		<PreferenceCategory android:title="Difficulty">
 		
 			<ListPreference 
-				android:key="com.buzzwords.NUM_BUZZWORDS"
+				android:key="com.buzzwordslite.NUM_BUZZWORDS"
 				android:title="Number of Buzzwords"
 				android:selectable="true"
 				android:entries="@array/numbuzzwords"
@@ -123,14 +123,14 @@
 	<PreferenceCategory android:title="App Data">
 		
 		<PreferenceScreen
-			android:key="com.buzzwords.RESET_PACK_SCREEN"
+			android:key="com.buzzwordslite.RESET_PACK_SCREEN"
 			android:title="Manage Deck"
 			android:summary="Forget game progress and shuffle deck.">
 			
 			<PreferenceCategory android:title="Reset">
 				
 				<Preference 
-					android:key="com.buzzwords.RESET_PACKS"
+					android:key="com.buzzwordslite.RESET_PACKS"
 					android:enabled="true"
 					android:selectable="true"
 					android:summary="Forgets all progress and shuffles cards."

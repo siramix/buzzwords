@@ -22,7 +22,7 @@
     android:background="@drawable/bg_cardreviewgradient"
     android:orientation="vertical" >
 
-    <com.buzzwords.AntonButton
+    <com.buzzwordslite.AntonButton
         android:id="@+id/CardReview_ButtonNoScore"
         style="@style/BuzzWordsButton"
         android:layout_width="80dp"

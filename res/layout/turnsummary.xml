@@ -25,7 +25,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <com.buzzwords.AntonTextView
+        <com.buzzwordslite.AntonTextView
             android:id="@+id/TurnSummary_Title"
             style="@style/ActivityHeader"
             android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
             android:layout_marginTop="-5dp"
             android:text="@string/turnSummary_title" />
 
-        <com.buzzwords.AntonButton
+        <com.buzzwordslite.AntonButton
             android:id="@+id/TurnSummary_Menu"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:text="@string/button_menu" >
-        </com.buzzwords.AntonButton>
+        </com.buzzwordslite.AntonButton>
     </RelativeLayout>
 
     <ImageView
@@ -101,7 +101,7 @@
             android:background="@color/genericBG_trim" >
         </View>
 
-        <com.buzzwords.AntonTextView
+        <com.buzzwordslite.AntonTextView
             android:id="@+id/TurnSummary_ScoreboardTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
             android:text="@string/turnSummary_scores_header"
             android:textColor="@color/white"
             android:textSize="24sp" >
-        </com.buzzwords.AntonTextView>
+        </com.buzzwordslite.AntonTextView>
     </RelativeLayout>
 
     <LinearLayout
@@ -122,29 +122,29 @@
         android:layout_marginTop="-5dp"
         android:orientation="vertical" >
 
-        <com.buzzwords.ScoreboardRowLayout
+        <com.buzzwordslite.ScoreboardRowLayout
             android:id="@+id/TurnSummary_Scores_TeamA"
             android:layout_width="fill_parent"
             android:layout_height="30dp" >
-        </com.buzzwords.ScoreboardRowLayout>
+        </com.buzzwordslite.ScoreboardRowLayout>
 
-        <com.buzzwords.ScoreboardRowLayout
+        <com.buzzwordslite.ScoreboardRowLayout
             android:id="@+id/TurnSummary_Scores_TeamB"
             android:layout_width="fill_parent"
             android:layout_height="30dp" >
-        </com.buzzwords.ScoreboardRowLayout>
+        </com.buzzwordslite.ScoreboardRowLayout>
 
-        <com.buzzwords.ScoreboardRowLayout
+        <com.buzzwordslite.ScoreboardRowLayout
             android:id="@+id/TurnSummary_Scores_TeamC"
             android:layout_width="fill_parent"
             android:layout_height="30dp" >
-        </com.buzzwords.ScoreboardRowLayout>
+        </com.buzzwordslite.ScoreboardRowLayout>
 
-        <com.buzzwords.ScoreboardRowLayout
+        <com.buzzwordslite.ScoreboardRowLayout
             android:id="@+id/TurnSummary_Scores_TeamD"
             android:layout_width="fill_parent"
             android:layout_height="30dp" >
-        </com.buzzwords.ScoreboardRowLayout>
+        </com.buzzwordslite.ScoreboardRowLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -152,7 +152,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <com.buzzwords.FrancoisOneTextView
+        <com.buzzwordslite.FrancoisOneTextView
             android:id="@+id/TurnSummary_GameTypeInfo"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -283,14 +283,14 @@
             </LinearLayout>
         </LinearLayout>
 
-        <com.buzzwords.AntonButton
+        <com.buzzwordslite.AntonButton
             android:id="@+id/TurnSummary_NextTurn"
             android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:text="@string/turnSummary_button_next"
             android:textSize="16sp" >
-        </com.buzzwords.AntonButton>
+        </com.buzzwordslite.AntonButton>
     </LinearLayout>
 
 </LinearLayout>

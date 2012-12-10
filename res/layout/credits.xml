@@ -10,7 +10,7 @@
         android:layout_height="40dp"
         android:background="@color/genericBG_trim">
 
-        <com.buzzwords.AntonTextView
+        <com.buzzwordslite.AntonTextView
             android:id="@+id/Credits_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                     android:layout_centerInParent="true"
                     android:background="@color/genericBG_trim" />
 
-                <com.buzzwords.AntonTextView
+                <com.buzzwordslite.AntonTextView
                     android:id="@+id/Credits_Team_Header"
                     style="@style/RulesSubHeader"
                     android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
                     android:layout_centerInParent="true"
                     android:background="@color/genericBG_trim" />
 
-                <com.buzzwords.AntonTextView
+                <com.buzzwordslite.AntonTextView
                     android:id="@+id/Credits_Acknowledgements_Header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -137,14 +137,14 @@
                 android:gravity="center"
                 android:text="@string/credits_fonts" />
 
-            <com.buzzwords.AntonTextView
+            <com.buzzwordslite.AntonTextView
                 android:id="@+id/Credits_Anton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/credits_font_anton" />
 
-            <com.buzzwords.FrancoisOneTextView
+            <com.buzzwordslite.FrancoisOneTextView
                 android:id="@+id/Credits_FrancoisOne"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

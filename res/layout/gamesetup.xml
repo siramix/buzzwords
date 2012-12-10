@@ -34,7 +34,7 @@
             android:layout_height="0dp"
             android:orientation="vertical" >
 
-            <com.buzzwords.AntonTextView
+            <com.buzzwordslite.AntonTextView
                 android:id="@+id/GameSetup_Title"
                 style="@style/ActivityHeader"
                 android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                     android:layout_centerVertical="true"
                     android:background="@color/genericBG_trim" />
 
-                <com.buzzwords.AntonTextView
+                <com.buzzwordslite.AntonTextView
                     android:id="@+id/GameSetup_TeamsTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,33 +91,33 @@
                     android:layout_height="1dp"
                     android:background="@color/black" />
 
-                <com.buzzwords.TeamSelectLayout
+                <com.buzzwordslite.TeamSelectLayout
                     android:id="@+id/GameSetup_TeamALayout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1" >
-                </com.buzzwords.TeamSelectLayout>
+                </com.buzzwordslite.TeamSelectLayout>
 
-                <com.buzzwords.TeamSelectLayout
+                <com.buzzwordslite.TeamSelectLayout
                     android:id="@+id/GameSetup_TeamBLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1" >
-                </com.buzzwords.TeamSelectLayout>
+                </com.buzzwordslite.TeamSelectLayout>
 
-                <com.buzzwords.TeamSelectLayout
+                <com.buzzwordslite.TeamSelectLayout
                     android:id="@+id/GameSetup_TeamCLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1" >
-                </com.buzzwords.TeamSelectLayout>
+                </com.buzzwordslite.TeamSelectLayout>
 
-                <com.buzzwords.TeamSelectLayout
+                <com.buzzwordslite.TeamSelectLayout
                     android:id="@+id/GameSetup_TeamDLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1" >
-                </com.buzzwords.TeamSelectLayout>
+                </com.buzzwordslite.TeamSelectLayout>
 
                 <View
                     android:id="@+id/GameSetup_TeamBorderBot"
@@ -147,7 +147,7 @@
                         android:layout_centerVertical="true"
                         android:background="@color/genericBG_trim" />
 
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/GameSetup_GameType_Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
                         android:layout_centerVertical="true"
                         android:background="@color/genericBG_trim" />
 
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/GameSetup_GameTypeParameter_Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -259,7 +259,7 @@
                         android:layout_height="60dp"
                         android:background="@drawable/button_minus" />
 
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/GameSetup_GameTypeParameter_Value"
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"
@@ -287,13 +287,13 @@
 
     <!-- Select number of turns -->
 
-    <com.buzzwords.AntonButton
+    <com.buzzwordslite.AntonButton
         android:id="@+id/GameSetup_StartGameButton"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_gravity="right"
         android:text="@string/gameSetup_button_startgame"
         android:textSize="20sp" >
-    </com.buzzwords.AntonButton>
+    </com.buzzwordslite.AntonButton>
 
 </LinearLayout>

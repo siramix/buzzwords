@@ -22,7 +22,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/bg_bluegradient" >
 
-    <com.buzzwords.FrancoisOneTextView
+    <com.buzzwordslite.FrancoisOneTextView
         android:id="@+id/Turn_TimesUp"
         style="@style/TurnNotify"
         android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
         android:orientation="vertical"
         android:visibility="invisible" >
 
-        <com.buzzwords.FrancoisOneTextView
+        <com.buzzwordslite.FrancoisOneTextView
             android:id="@+id/Turn_PausedText"
             style="@style/TurnNotify"
             android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
             android:textColor="@color/white"
             android:textSize="60sp" />
 
-        <com.buzzwords.FrancoisOneTextView
+        <com.buzzwordslite.FrancoisOneTextView
             android:id="@+id/Turn_PausedSubText"
             style="@style/TurnNotifySubText"
             android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                         android:src="@drawable/icon_timer" 
                         android:contentDescription="@string/description_turn_timericon"/>
 
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/Turn_Timer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                         android:textSize="26sp" />
                 </RelativeLayout>
 
-                <com.buzzwords.AntonButton
+                <com.buzzwordslite.AntonButton
                     android:id="@+id/Turn_TimerMenuButton"
                     android:layout_width="60dp"
                     android:layout_height="fill_parent"
@@ -139,7 +139,7 @@
                     android:layout_marginLeft="1dp"
                     android:layout_marginTop="1dp"
                     android:text="@string/button_menu" >
-                </com.buzzwords.AntonButton>
+                </com.buzzwordslite.AntonButton>
             </LinearLayout>
 
             <View
@@ -176,7 +176,7 @@
                     android:layout_centerInParent="true"
                     android:orientation="vertical" >
 
-                    <com.buzzwords.FrancoisOneTextView
+                    <com.buzzwordslite.FrancoisOneTextView
                         android:id="@+id/Turn_CardTitleA"
                         style="@style/CardTitle" />
 
@@ -186,23 +186,23 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical" >
 
-                        <com.buzzwords.FrancoisOneTextView
+                        <com.buzzwordslite.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord0"
                             style="@style/BadWordText" />
 
-                        <com.buzzwords.FrancoisOneTextView
+                        <com.buzzwordslite.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord1"
                             style="@style/BadWordText" />
 
-                        <com.buzzwords.FrancoisOneTextView
+                        <com.buzzwordslite.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord2"
                             style="@style/BadWordText" />
 
-                        <com.buzzwords.FrancoisOneTextView
+                        <com.buzzwordslite.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord3"
                             style="@style/BadWordText" />
 
-                        <com.buzzwords.FrancoisOneTextView
+                        <com.buzzwordslite.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord4"
                             style="@style/BadWordText" />
                     </LinearLayout>
@@ -229,7 +229,7 @@
                     android:layout_centerInParent="true"
                     android:orientation="vertical" >
 
-                    <com.buzzwords.FrancoisOneTextView
+                    <com.buzzwordslite.FrancoisOneTextView
                         android:id="@+id/Turn_CardTitleB"
                         style="@style/CardTitle" />
 
@@ -240,23 +240,23 @@
                         android:layout_gravity="center"
                         android:orientation="vertical" >
 
-                        <com.buzzwords.FrancoisOneTextView
+                        <com.buzzwordslite.FrancoisOneTextView
                             android:id="@+id/Turn_CardB_BadWord0"
                             style="@style/BadWordText" />
 
-                        <com.buzzwords.FrancoisOneTextView
+                        <com.buzzwordslite.FrancoisOneTextView
                             android:id="@+id/Turn_CardB_BadWord1"
                             style="@style/BadWordText" />
 
-                        <com.buzzwords.FrancoisOneTextView
+                        <com.buzzwordslite.FrancoisOneTextView
                             android:id="@+id/Turn_CardB_BadWord2"
                             style="@style/BadWordText" />
 
-                        <com.buzzwords.FrancoisOneTextView
+                        <com.buzzwordslite.FrancoisOneTextView
                             android:id="@+id/Turn_CardB_BadWord3"
                             style="@style/BadWordText" />
 
-                        <com.buzzwords.FrancoisOneTextView
+                        <com.buzzwordslite.FrancoisOneTextView
                             android:id="@+id/Turn_CardB_BadWord4"
                             style="@style/BadWordText" />
                     </LinearLayout>

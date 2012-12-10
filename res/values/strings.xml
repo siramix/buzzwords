@@ -2,28 +2,28 @@
 <resources>
 
     <!-- Application Name -->
-    <string name="AppName">Buzzwords</string>
+    <string name="AppName">Buzzwords Lite</string>
 
     <!-- Intent Designations -->
-    <string name="IntentTitle">com.buzzwords.intent.action.TITLE</string>
-    <string name="IntentSettings">com.buzzwords.intent.action.SETTINGS</string>
-    <string name="IntentRules">com.buzzwords.intent.action.RULES</string>
-    <string name="IntentBuzzer">com.buzzwords.intent.action.BUZZER</string>
-    <string name="IntentGameSetup">com.buzzwords.intent.action.GAMESETUP</string>
-    <string name="IntentTurn">com.buzzwords.intent.action.TURN</string>
-    <string name="IntentTurnSummary">com.buzzwords.intent.action.TURNSUMMARY</string>
-    <string name="IntentEndGame">com.buzzwords.intent.action.GAMEEND</string>
-    <string name="IntentCardReview">com.buzzwords.intent.action.CARDREVIEW</string>
-    <string name="IntentEditTeamName">com.buzzwords.intent.action.EDITTEAMNAME</string>
-    <string name="IntentCredits">com.buzzwords.intent.action.CREDITS</string>
+    <string name="IntentTitle">com.buzzwordslite.intent.action.TITLE</string>
+    <string name="IntentSettings">com.buzzwordslite.intent.action.SETTINGS</string>
+    <string name="IntentRules">com.buzzwordslite.intent.action.RULES</string>
+    <string name="IntentBuzzer">com.buzzwordslite.intent.action.BUZZER</string>
+    <string name="IntentGameSetup">com.buzzwordslite.intent.action.GAMESETUP</string>
+    <string name="IntentTurn">com.buzzwordslite.intent.action.TURN</string>
+    <string name="IntentTurnSummary">com.buzzwordslite.intent.action.TURNSUMMARY</string>
+    <string name="IntentEndGame">com.buzzwordslite.intent.action.GAMEEND</string>
+    <string name="IntentCardReview">com.buzzwordslite.intent.action.CARDREVIEW</string>
+    <string name="IntentEditTeamName">com.buzzwordslite.intent.action.EDITTEAMNAME</string>
+    <string name="IntentCredits">com.buzzwordslite.intent.action.CREDITS</string>
 
     <!-- Global Prefkey IDs -->
-    <string name="PREFKEY_SHOWREMINDER">com.buzzwords.prefkey.SHOWREMINDER</string>
-    <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwords.prefkey.SHOWFIRSTRUN</string>
-    <string name="PREFKEY_PLAYCOUNT">com.buzzwords.prefkey.PREFKEY_PLAYCOUNT</string>
-    <string name="PREFKEY_GAMETYPE">com.buzzwords.prefkey.GAMETYPE</string>
-    <string name="PREFKEY_GAMELIMIT_TURNS">com.buzzwords.prefkey.GAMELIMIT_TURNS</string>
-    <string name="PREFKEY_GAMELIMIT_SCORE">com.buzzwords.prefkey.GAMELIMIT_SCORE</string>
+    <string name="PREFKEY_SHOWREMINDER">com.buzzwordslite.prefkey.SHOWREMINDER</string>
+    <string name="PREFKEY_SHOWFIRSTRUN">com.buzzwordslite.prefkey.SHOWFIRSTRUN</string>
+    <string name="PREFKEY_PLAYCOUNT">com.buzzwordslite.prefkey.PREFKEY_PLAYCOUNT</string>
+    <string name="PREFKEY_GAMETYPE">com.buzzwordslite.prefkey.GAMETYPE</string>
+    <string name="PREFKEY_GAMELIMIT_TURNS">com.buzzwordslite.prefkey.GAMELIMIT_TURNS</string>
+    <string name="PREFKEY_GAMELIMIT_SCORE">com.buzzwordslite.prefkey.GAMELIMIT_SCORE</string>
 
     <!-- Menus -->
     <string name="menu_EndTurn">MENU_ENDTURN</string>
@@ -34,6 +34,14 @@
     <string name="menu_EndGame_Text">Are you sure you want to end the current game?</string>
     <string name="menu_Rules">MENU_RULES</string>
     <string name="menu_Rules_Title">Rules</string>
+    <string name="menu_GoPro">MENU_GOPRO</string>
+    <string name="menu_GoPro_Title">Go Pro</string>
+    
+    <!-- Upgrade Dialog -->
+    <string name = "upgradeDialog_text">Want the full BuzzWords experience with a full deck of 1000 Words? Buy the full version today!</string>
+    <string name = "upgradeDialog_positiveButton">Yeah!</string>
+    <string name = "upgradeDialog_negativeButton">Not Yet</string>
+    
 
     <!-- Team names -->
     <string name="teamnameA">Blue</string>
@@ -49,12 +57,12 @@
     <string name="gameManager_gameType_freeplay">Free Play</string>
 
     <!-- Bundle Keys -->
-    <string name="cardBundleKey">com.buzzwords.card</string>
-    <string name="packBundleKey">com.buzzwords.pack</string>
-    <string name="cardIndexBundleKey">com.buzzwords.cardIndex</string>
-    <string name="cardStateBundleKey">com.buzzwords.cardState</string>
-    <string name="teamBundleKey">com.buzzwords.team</string>
-    <string name="teamNameBundleKey">com.buzzwords.teamName</string>
+    <string name="cardBundleKey">com.buzzwordslite.card</string>
+    <string name="packBundleKey">com.buzzwordslite.pack</string>
+    <string name="cardIndexBundleKey">com.buzzwordslite.cardIndex</string>
+    <string name="cardStateBundleKey">com.buzzwordslite.cardState</string>
+    <string name="teamBundleKey">com.buzzwordslite.team</string>
+    <string name="teamNameBundleKey">com.buzzwordslite.teamName</string>
 
     <!-- Generic Strings -->
     <string name="confirm">OK</string>
@@ -205,9 +213,9 @@
 
     <!-- URIs for Rate Us -->
     <string name="URI_buzzwords_redirect">http://www.siramix.com/buzzwordsappstore</string>
-    <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwords</string>
+    <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwordslite</string>
     <string name="URI_android_market_buzzwordslite">https://market.android.com/details?id=com.buzzwordslite</string>
-    <string name="URI_amazon_market_buzzwords">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwords</string>
+    <string name="URI_amazon_market_buzzwords">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite</string>
     <string name="URI_amazon_market_buzzwordslite">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite</string>
 
     <!-- URI for About us page -->

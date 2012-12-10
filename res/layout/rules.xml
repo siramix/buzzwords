@@ -35,7 +35,7 @@
         android:layout_marginTop="1dp"
         android:background="#555555" />
 
-    <com.buzzwords.AntonTextView
+    <com.buzzwordslite.AntonTextView
         android:id="@+id/Rules_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                         android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/Rules_SubHeader_Basics_Text"
                         style="@style/RulesSubHeader"
                         android:text="@string/rules_basics_subheader" />
@@ -245,7 +245,7 @@
                         android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/Rules_SubHeader_Gameplay_Text"
                         android:text="@string/rules_gameplay_subheader"
                         style="@style/RulesSubHeader"/>
@@ -354,7 +354,7 @@
                         android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/Rules_SubHeader_Screens_Text"
                         android:text="@string/rules_screens_subheader"
                         style="@style/RulesSubHeader"/>
@@ -446,7 +446,7 @@
                         android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
                     
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/Rules_SubHeader_Buzzing_Text"
                         android:text="@string/rules_buzzing_subheader"
                         style="@style/RulesSubHeader"/>
@@ -645,7 +645,7 @@
                         android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/Rules_SubHeader_Example_Text"
                         android:text="@string/rules_example_subheader"
                         style="@style/RulesSubHeader"/>
@@ -921,7 +921,7 @@
                         android:layout_centerInParent="true"
                         android:background="@color/genericBG_trim" />
 
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/Rules_SubHeader_FinalThoughts_Text"
                         android:text="@string/rules_final_subheader"
                         style="@style/RulesSubHeader"/>

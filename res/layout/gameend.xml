@@ -21,7 +21,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <com.buzzwords.AntonTextView
+    <com.buzzwordslite.AntonTextView
         android:id="@+id/GameEnd_Title"
         style="@style/ActivityHeader"
         android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
         android:layout_marginTop="-5dp"
         android:includeFontPadding="false"
         android:text="@string/gameEnd_title" >
-    </com.buzzwords.AntonTextView>
+    </com.buzzwordslite.AntonTextView>
 
     <RelativeLayout
         android:id="@+id/GameEnd_ScoreboardHeader_Group"
@@ -48,7 +48,7 @@
             android:background="@color/genericBG_trim" >
         </View>
 
-        <com.buzzwords.AntonTextView
+        <com.buzzwordslite.AntonTextView
             android:id="@+id/GameEnd_ScoreboardHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:text="@string/gameEnd_scoreboardHeader"
             android:textColor="@color/white"
             android:textSize="24dp" >
-        </com.buzzwords.AntonTextView>
+        </com.buzzwordslite.AntonTextView>
     </RelativeLayout>
 
     <LinearLayout
@@ -68,32 +68,32 @@
         android:layout_marginTop="-5dp"
         android:orientation="vertical" >
 
-        <com.buzzwords.ScoreboardRowLayout
+        <com.buzzwordslite.ScoreboardRowLayout
             android:id="@+id/GameEnd_Scores_1"
             android:layout_width="fill_parent"
             android:layout_height="30dp" >
-        </com.buzzwords.ScoreboardRowLayout>
+        </com.buzzwordslite.ScoreboardRowLayout>
 
-        <com.buzzwords.ScoreboardRowLayout
+        <com.buzzwordslite.ScoreboardRowLayout
             android:id="@+id/GameEnd_Scores_2"
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_marginTop="-1dp" >
-        </com.buzzwords.ScoreboardRowLayout>
+        </com.buzzwordslite.ScoreboardRowLayout>
 
-        <com.buzzwords.ScoreboardRowLayout
+        <com.buzzwordslite.ScoreboardRowLayout
             android:id="@+id/GameEnd_Scores_3"
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_marginTop="-1dp" >
-        </com.buzzwords.ScoreboardRowLayout>
+        </com.buzzwordslite.ScoreboardRowLayout>
 
-        <com.buzzwords.ScoreboardRowLayout
+        <com.buzzwordslite.ScoreboardRowLayout
             android:id="@+id/GameEnd_Scores_4"
             android:layout_width="fill_parent"
             android:layout_height="30dp"
             android:layout_marginTop="-1dp" >
-        </com.buzzwords.ScoreboardRowLayout>
+        </com.buzzwordslite.ScoreboardRowLayout>
     </LinearLayout>
 
     <RelativeLayout
@@ -102,7 +102,7 @@
         android:layout_height="0dp"
         android:layout_weight="1" >
 
-        <com.buzzwords.AntonTextView
+        <com.buzzwordslite.AntonTextView
             android:id="@+id/GameEnd_WinnerText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -112,9 +112,9 @@
             android:text="@string/test_team"
             android:textColor="@color/teamB_primary"
             android:textSize="50sp" >
-        </com.buzzwords.AntonTextView>
+        </com.buzzwordslite.AntonTextView>
 
-        <com.buzzwords.AntonTextView
+        <com.buzzwordslite.AntonTextView
             android:id="@+id/GameEnd_Winner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
             android:text="@string/gameEnd_winner"
             android:textColor="@color/white"
             android:textSize="32sp" >
-        </com.buzzwords.AntonTextView>
+        </com.buzzwordslite.AntonTextView>
     </RelativeLayout>
 
     <RelativeLayout
@@ -131,7 +131,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <com.buzzwords.AntonButton
+        <com.buzzwordslite.AntonButton
             android:id="@+id/GameEnd_MainMenu"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -139,9 +139,9 @@
             android:contentDescription="@string/description_gameend_button_mainmenu"
             android:text="@string/gameEnd_button_mainMenu"
             android:textSize="20dp" >
-        </com.buzzwords.AntonButton>
+        </com.buzzwordslite.AntonButton>
 
-        <com.buzzwords.AntonButton
+        <com.buzzwordslite.AntonButton
             android:id="@+id/GameEnd_Rematch"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -150,7 +150,7 @@
             android:contentDescription="@string/description_gameend_button_rematch"
             android:text="@string/gameEnd_button_rematch"
             android:textSize="20dp" >
-        </com.buzzwords.AntonButton>
+        </com.buzzwordslite.AntonButton>
     </RelativeLayout>
 
 </LinearLayout>

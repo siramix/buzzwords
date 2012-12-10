@@ -78,7 +78,7 @@
             android:layout_weight="1"
             android:clipChildren="false" >
 
-            <com.buzzwords.AntonTextView
+            <com.buzzwordslite.AntonTextView
                 android:id="@+id/Title_BuzzText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
             android:layout_marginLeft="30dp"
             android:layout_weight="1" >
 
-            <com.buzzwords.AntonTextView
+            <com.buzzwordslite.AntonTextView
                 android:id="@+id/Title_SettingsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             android:layout_marginLeft="30dp"
             android:layout_weight="1" >
 
-            <com.buzzwords.AntonTextView
+            <com.buzzwordslite.AntonTextView
                 android:id="@+id/Title_RulesText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
