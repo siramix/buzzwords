@@ -17,9 +17,19 @@
  ****************************************************************************/
 package com.buzzwords;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 import com.buzzwords.Card;
 import com.buzzwords.Pack;
@@ -36,11 +46,12 @@ import android.preference.PreferenceManager;
  *         new games, turns, and teams. The application shall also use this
  *         class for preparing and retrieving cards from the virtual deck.
  */
-/**
- * @author elrowe
- * 
- */
-public class GameManager {
+public class GameManager implements Serializable {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -7368165562297464438L;
+
   /**
    * logging tag
    */
@@ -51,10 +62,6 @@ public class GameManager {
    */
   private Deck mDeck;
 
-  
-  // Create a thread for updating the playcount for each card
-  private Thread mUpdateThread;
-
   /**
    * The position in the list of card ids (where we are in the "deck")
    */
@@ -63,8 +70,8 @@ public class GameManager {
   /**
    * List of team objects
    */
-  private List<Team> mTeams;
-  private Iterator<Team> mTeamIterator;
+  private ArrayList<Team> mTeams;
+  private int mTeamPosition;
   private Team mCurrentTeam;
 
   /**
@@ -189,18 +196,64 @@ public class GameManager {
     mRwsValueRules[3] = 0;
     mDeck = new Deck(context);
 
+    mTeamPosition = 0;
+
+  }
+
+  public synchronized void saveState(Context context) {
+    SafeLog.e(TAG, "saveState()");
+    try {
+      //use buffering
+      OutputStream file = context.openFileOutput(Consts.GAME_MANAGER_TEMP_FILE, Context.MODE_PRIVATE);
+      OutputStream buffer = new BufferedOutputStream(file);
+      ObjectOutput output = new ObjectOutputStream(buffer);
+      try {
+        output.writeObject(this);
+      }
+      finally{
+        output.close();
+      }
+    }  
+    catch(IOException ex){
+      SafeLog.e(TAG, "IOException while saving Game Manager state.", ex);
+      ex.printStackTrace();
+    }
+  }
+  
+  public static synchronized GameManager restoreState(Context context) {
+    SafeLog.e(TAG, "restoreState()");
+    GameManager savedGameManager = null;
+    try {
+      //use buffering
+      InputStream file = context.openFileInput(Consts.GAME_MANAGER_TEMP_FILE);
+      InputStream buffer = new BufferedInputStream( file );
+      ObjectInput input = new ObjectInputStream ( buffer );
+      try {
+        savedGameManager = (GameManager) input.readObject();
+      }
+      finally{
+        input.close();
+      }
+    }
+    catch(ClassNotFoundException ex) {
+      SafeLog.e(TAG, "ClassNotFoundException while restoring Game Manager.", ex);
+    }
+    catch(IOException ex) {
+      SafeLog.e(TAG, "IOException while restoring Game Manager.", ex);
+    }
+    return savedGameManager;
   }
 
   /**
    * Get the card indicated by the cardIdPosition. If we've dealt past the end
    * of the deck, we should prep the deck.
-   * 
+   * @param context the context for the deck
    * @return the card we want
    */
-  public Card getNextCard() {
+  public Card getNextCard(Context context) {
     ++mCardPosition;
     if (mCardPosition >= mCardsDealtDuringTurn.size()) {
-      mCurrentCard = mDeck.dealCard();
+      mCurrentCard = mDeck.dealCard(context);
       mCardsDealtDuringTurn.addLast(mCurrentCard);
     } else {
       mCurrentCard = mCardsDealtDuringTurn.get(mCardPosition);
@@ -232,13 +285,15 @@ public class GameManager {
    *          GameType for this game (play to score, or number of rounds)
    * @param modeInfo
    *          the number of rounds to play, or the points to play to
+   * @param context
+   *          the context in which the pack preferences will be dealt
    */
-  public void startGame(List<Team> teams, GameType mode, int modeInfo) {
+  public void startGame(ArrayList<Team> teams, GameType mode, int modeInfo, Context context) {
     SafeLog.d(TAG, "StartGame()");
 
     // Initialize the deck and fill the cache
-    mDeck.setPackData();
-    fillDeckIfLow();
+    mDeck.setPackData(context);
+    fillDeckIfLow(context);
     
     mTeams = teams;
     // Set team scores to 0
@@ -246,8 +301,8 @@ public class GameManager {
     for (itr = teams.iterator(); itr.hasNext();) {
       itr.next().setScore(0);
     }
-    mTeamIterator = teams.iterator();
-    mCurrentTeam = mTeamIterator.next();
+    mCurrentTeam = teams.get(0);
+    this.mTeamPosition = 1;
     mCurrentGameLimit = mode;
     switch (mCurrentGameLimit) {
     case TURNS:
@@ -272,10 +327,11 @@ public class GameManager {
   /**
    * Starts a new turn incrementing the round and/or team index as necessary.
    * This function also empties the collection of active cards.
+   * @param context the context for the deck
    */
-  public void nextTurn() {
+  public void nextTurn(Context context) {
     SafeLog.d(TAG, "NextTurn()");
-    fillDeckIfLow();
+    fillDeckIfLow(context);
     this.incrementActiveTeamIndex();
     mCardsDealtDuringTurn.clear();
     mCardPosition = -1;
@@ -305,12 +361,14 @@ public class GameManager {
   }
 
   public void incrementActiveTeamIndex() {
-    if (mTeamIterator.hasNext()) {
-      mCurrentTeam = mTeamIterator.next();
-    } else {
-      mTeamIterator = mTeams.iterator();
-      mCurrentTeam = mTeamIterator.next();
+    if(mTeamPosition >= mTeams.size()) {
+      mTeamPosition = 0;
+      mCurrentTeam = mTeams.get(mTeamPosition);
+      mTeamPosition++;
       mCurrentRound++;
+    } else {
+      mCurrentTeam = mTeams.get(mTeamPosition);
+      mTeamPosition++;
     }
   }
 
@@ -319,7 +377,7 @@ public class GameManager {
    */
   public void endGame() {
     SafeLog.d(TAG, "EndGame()");
-    mTeamIterator = mTeams.iterator();
+    mTeamPosition = 0;
 
     // clear current cards so that scoreboards don't add turn score in
     mCardsDealtDuringTurn.clear();
@@ -328,43 +386,47 @@ public class GameManager {
   /**
    * Checks on the deck's caches to make sure enough cards have been stored to
    * play a turn.
+   * @param context the context for the deck
    */
-  private void fillDeckIfLow() {
+  private void fillDeckIfLow(Context context) {
     SafeLog.d(TAG, "fillDeckIfLow()");
-    mDeck.fillCacheIfLow();
+    mDeck.fillCacheIfLow(context);
   }
 
   /**
    * Compare the packs passed into this method against those installed to
    * determine if an update of a pack is needed.
    * @param serverPacks to compare against installed packs
+   * @param context the context for the deck
    * @return true if any pack needs update
    */
-  public boolean packsRequireUpdate(LinkedList<Pack> serverPacks) {
+  public boolean packsRequireUpdate(LinkedList<Pack> serverPacks, Context context) {
     SafeLog.d(TAG, "packsRequireUpdate(LinkedList<Pack>)");
-    return mDeck.packsRequireUpdate(serverPacks);
+    return mDeck.packsRequireUpdate(serverPacks, context);
   }
 
   /**
    * Call the Deck function that installs all 'starter' decks. This should only
    * get called on first run.
+   * @param context the context in which pack preferences are dealt
    * @throws Exception 
    */
-  public void installStarterPacks() throws RuntimeException {
-    mDeck.installStarterPacks();
+  public void installStarterPacks(Context context) throws RuntimeException {
+    mDeck.installStarterPacks(context);
   }
 
   /**
    * The game manager will have the Deck update the play date for any cards the
    * Deck has marked as "seen". Runs inside a thread.
+   * @param context the context for the deck
    */
-  public void updateSeenFields() {
-    mUpdateThread = new Thread(new Runnable() {
+  public void updateSeenFields(final Context context) {
+    Thread updateThread = new Thread(new Runnable() {
       public void run() {
-        mDeck.updateSeenFields();
+        mDeck.updateSeenFields(context);
       }
     });
-    mUpdateThread.start();
+    updateThread.start();
   }
 
   /**
@@ -453,7 +515,7 @@ public class GameManager {
    * 
    * @return a list of the currently playing team objects
    */
-  public List<Team> getTeams() {
+  public ArrayList<Team> getTeams() {
     return mTeams;
   }
 
@@ -562,11 +624,10 @@ public class GameManager {
   }
 
   /**
-   * Return a Linked List of all Packs that are currently installed.
-   * 
-   * @return
+   * @param the context for the deck
+   * @return a Linked List of all Packs that are currently installed.
    */
-  public LinkedList<Pack> getInstalledPacks() {
-    return mDeck.getLocalPacks();
+  public LinkedList<Pack> getInstalledPacks(Context context) {
+    return mDeck.getLocalPacks(context);
   }
 }

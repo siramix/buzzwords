@@ -219,7 +219,7 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
                   .getInstance(getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
               Deck deck = new Deck(getBaseContext());
-              deck.shuffleAllPacks();
+              deck.shuffleAllPacks(getBaseContext());
               showToast(getString(R.string.toast_settings_shuffled));
             }
           }).setNegativeButton(this.getString(R.string.shuffleDialog_negativeBtn),

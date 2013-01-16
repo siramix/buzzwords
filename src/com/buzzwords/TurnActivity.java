@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import com.buzzwords.R;
 
 import android.app.*;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -104,6 +105,15 @@ public class TurnActivity extends Activity {
   private RelativeLayout mMenuBar;
   private RelativeLayout mTimerGroup;
   private RelativeLayout mButtonGroup;
+
+  
+  public GameManager getGameManager() {
+    if(mGameManager == null) {
+      BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
+      mGameManager = application.getGameManager();
+    }
+    return mGameManager;
+  }
 
   /**
    * Tracks the current state of the Turn as a boolean. Set to true when time
@@ -349,7 +359,7 @@ public class TurnActivity extends Activity {
             .getBaseContext());
         int elapsedtime;
         if (mMusicEnabled) {
-          elapsedtime = mGameManager.getTurnTime()
+          elapsedtime = getGameManager().getTurnTime()
               - (int) mCounter.getTimeRemaining();
         } else {
           elapsedtime = 10000 - (int) mCounter.getTimeRemaining();
@@ -646,7 +656,18 @@ public class TurnActivity extends Activity {
   protected void showCard() {
     this.setActiveCard();
 
-    Card curCard = mGameManager.getNextCard();
+    Card curCard = mGameManager.getNextCard(this.getBaseContext());
+    mCardTitle.setText(curCard.getTitle());
+    // Update the badwords
+    this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
+    // Hide the card status until marked
+    mCardStatus.setVisibility(View.INVISIBLE);
+    mIsBack = false;
+  }
+  
+  protected void showCurrentCard() {
+    this.setActiveCard();
+    Card curCard = this.getGameManager().getCurrentCard();
     mCardTitle.setText(curCard.getTitle());
     // Update the badwords
     this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
@@ -692,6 +713,7 @@ public class TurnActivity extends Activity {
    */
   protected void onTimeExpired() {
     mResultsDelay = new PauseTimer(1500) {
+
       @Override
       public void onFinish() {
         TurnActivity.this.endTurn();
@@ -743,7 +765,7 @@ public class TurnActivity extends Activity {
     // Clean up Music resources
     application.cleanUpMusicPlayer();
     
-    GameManager gm = application.getGameManager();
+    GameManager gm = this.getGameManager();
     gm.addTurnScore();
 
     startActivity(new Intent(getString(R.string.IntentTurnSummary), getIntent()
@@ -755,9 +777,7 @@ public class TurnActivity extends Activity {
    * the activity creation
    */
   protected void setupViewReferences() {
-    BuzzWordsApplication application = (BuzzWordsApplication) this
-        .getApplication();
-    mGameManager = application.getGameManager();
+    mGameManager = this.getGameManager();
 
     mPauseOverlay = (View) this.findViewById(R.id.Turn_PauseOverlay);
     mCountdownText = (TextView) findViewById(R.id.Turn_Timer);
@@ -837,7 +857,7 @@ public class TurnActivity extends Activity {
     // Change views to appropriate team color
     ImageView barFill = (ImageView) this.findViewById(R.id.Turn_TimerFill);
     // Color timer fill
-    Team curTeam = mGameManager.getActiveTeam();
+    Team curTeam = this.getGameManager().getActiveTeam();
     barFill.setImageResource(curTeam.getPrimaryColor());
 
     // Set Turn Timer frame color
@@ -858,10 +878,10 @@ public class TurnActivity extends Activity {
    * 
    * @return a reference to the turn timer
    */
-  public PauseTimer setupTurnTimer() {
+  public PauseTimer setupTurnTimer(long time) {
     // Initialize the turn timer
-    long time = mGameManager.getTurnTime();
     return new PauseTimer(time) {
+
       @Override
       public void onFinish() {
         TurnActivity.this.onTimeExpired();
@@ -914,40 +934,43 @@ public class TurnActivity extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
 
-    if (sp.getBoolean(Consts.PREFKEY_MUSIC, true))
-      mMusicEnabled = true;
-    else
-      mMusicEnabled = false;
+    mMusicEnabled = sp.getBoolean(Consts.PREFKEY_MUSIC, true);
 
     // Set local variable for skip preference to reduce calls to get
-    if (sp.getBoolean(Consts.PREFKEY_SKIP, true))
-      mSkipEnabled = true;
-    else
-      mSkipEnabled = false;
+    mSkipEnabled = sp.getBoolean(Consts.PREFKEY_SKIP, true);
 
     // Set local variable for allowing gesture preference to reduce get calls
-    if (sp.getBoolean(Consts.PREFKEY_GESTURES, true))
-      mGesturesEnabled = true;
-    else
-      mGesturesEnabled = false;
+    mGesturesEnabled = sp.getBoolean(Consts.PREFKEY_GESTURES, true);
 
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
+    // Setup the view
+    this.setContentView(R.layout.turn);
     // set which card is active
     mAIsActive = true;
     mIsBack = true;
-
-    // Setup the view
-    this.setContentView(R.layout.turn);
 
     this.setupViewReferences();
 
     this.setupUIProperties();
 
-    this.showDialog(DIALOG_READY_ID);
-
-    this.mCounter = setupTurnTimer();
+    SharedPreferences turnStatePrefs =
+        this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    boolean turnGoing = turnStatePrefs.getBoolean(Consts.PREFKEY_TURN_GOING, false);
+    if(!turnGoing) {
+      this.showDialog(DIALOG_READY_ID);
+      mCounter = setupTurnTimer(mGameManager.getTurnTime());
+    } else {
+      mAIsActive = turnStatePrefs.getBoolean(Consts.PREFKEY_A_IS_ACTIVE, true);
+      mIsBack = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_BACK, true);
+      mIsTicking = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_TICKING, false);
+      long curTime = turnStatePrefs.getLong(Consts.PREFKEY_TURN_TIME_REMAINING,
+          mGameManager.getTurnTime());
+      mCounter = setupTurnTimer(curTime);
+      this.showCurrentCard();
+      this.pauseGame();
+    }
 
   }
 
@@ -970,10 +993,23 @@ public class TurnActivity extends Activity {
     super.onPause();
     SafeLog.d(TAG, "onPause()");
 
-    if (!mIsPaused && !mTurnIsOver) {
+    SharedPreferences turnStatePrefs =
+        this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    SharedPreferences.Editor turnStatePrefsEditor = turnStatePrefs.edit();
+    if (!mIsPaused && !mTurnIsOver) { // if we are mid-turn
       this.pauseGame();
+      mGameManager.saveState(this.getBaseContext());
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_TURN_GOING, true);
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_A_IS_ACTIVE, mAIsActive);
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_BACK, mIsBack);
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_TICKING, mIsTicking);
+      turnStatePrefsEditor.putLong(Consts.PREFKEY_TURN_TIME_REMAINING, mCounter.getTimeRemaining());
+      turnStatePrefsEditor.commit();
+    } else { // If we are at the end of a turn
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_TURN_GOING, false);
+      turnStatePrefsEditor.commit();
     }
-    mGameManager.updateSeenFields();
+    mGameManager.updateSeenFields(this.getBaseContext());
   }
 
   /**
@@ -1033,7 +1069,7 @@ public class TurnActivity extends Activity {
               // Clean up music resources
               application.cleanUpMusicPlayer();
               
-              GameManager gm = application.getGameManager();
+              GameManager gm = getGameManager();
               // Add whatever score they've gotten in this turn
               gm.addTurnScore();
               gm.endGame();
@@ -1219,7 +1255,7 @@ public class TurnActivity extends Activity {
     // Start the turn music
     BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
         .getApplication();
-    GameManager gm = application.getGameManager();
+    GameManager gm = this.getGameManager();
 
     int musicId = R.raw.mus_countdown;
     // If music is enabled, select the appropriate track

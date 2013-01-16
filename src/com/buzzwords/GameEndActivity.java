@@ -234,7 +234,8 @@ public class GameEndActivity extends Activity {
 
       GameManager curgm = application.getGameManager();
       GameManager newgm = new GameManager(GameEndActivity.this);
-      newgm.startGame(curgm.getTeams(), curgm.getGameType(), curgm.getGameLimitValue());
+      newgm.startGame(curgm.getTeams(), curgm.getGameType(), curgm.getGameLimitValue(),
+          getBaseContext());
       application.setGameManager(newgm);
 
       Intent clearStackIntent = new Intent(getApplication().getString(

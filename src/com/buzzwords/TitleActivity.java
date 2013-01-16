@@ -594,7 +594,7 @@ public class TitleActivity extends Activity {
     protected Boolean doInBackground(Void... params) {
       if (!initialized) {
         GameManager gm = new GameManager(TitleActivity.this);
-        gm.installStarterPacks();
+        gm.installStarterPacks(getBaseContext());
       }
       return true;
 

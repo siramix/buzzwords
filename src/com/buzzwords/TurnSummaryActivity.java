@@ -107,7 +107,7 @@ public class TurnSummaryActivity extends Activity {
         startActivity(new Intent(getApplication().getString(
             R.string.IntentEndGame), getIntent().getData()));
       } else {
-        gm.nextTurn();
+        gm.nextTurn(getBaseContext());
         Intent clearStackIntent = new Intent(getApplication().getString(
             R.string.IntentTurn), getIntent().getData());
         clearStackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
