@@ -573,4 +573,12 @@ public class TurnSummaryActivity extends Activity {
     return super.onKeyUp(keyCode, event);
   }
 
+  @Override
+  protected void onPause() {
+    super.onPause();
+    BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
+    GameManager gm = application.getGameManager();
+    gm.saveState(this.getBaseContext());
+  }
+
 }
