@@ -672,8 +672,8 @@ public class TurnActivity extends Activity {
     // Update the badwords
     this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
     // Hide the card status until marked
-    mCardStatus.setVisibility(View.INVISIBLE);
-    mIsBack = false;
+    //mCardStatus.setVisibility(View.INVISIBLE);
+    //mIsBack = false;
   }
 
   /**
@@ -963,6 +963,9 @@ public class TurnActivity extends Activity {
       mCounter = setupTurnTimer(mGameManager.getTurnTime());
     } else {
       mAIsActive = turnStatePrefs.getBoolean(Consts.PREFKEY_A_IS_ACTIVE, true);
+      if(!mAIsActive) {
+        mViewFlipper.showNext();
+      }
       mIsBack = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_BACK, true);
       mIsTicking = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_TICKING, false);
       long curTime = turnStatePrefs.getLong(Consts.PREFKEY_TURN_TIME_REMAINING,
