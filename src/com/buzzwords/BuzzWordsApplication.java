@@ -136,7 +136,9 @@ public class BuzzWordsApplication extends Application {
     {
       SharedPreferences musicPrefs = this.getSharedPreferences(Consts.PREFFILE_MUSIC_STATE, Context.MODE_PRIVATE);
       mTrackID = musicPrefs.getInt(Consts.PREFKEY_MUSIC_RESOURCE, mTrackID);
+      boolean isLooping = musicPrefs.getBoolean(Consts.PREFKEY_MUSIC_LOOPING, false);
       mMediaPlayer = MediaPlayer.create(context, mTrackID);
+      mMediaPlayer.setLooping(isLooping);
     }
     return mMediaPlayer;
   }
