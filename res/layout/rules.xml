@@ -202,6 +202,27 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="5dp"
                         android:background="#ccc" />
+
+                    <TextView
+                        android:id="@+id/Rules_BasicText07"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/Rules_BasicText06"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="@string/rules_basics_text7"
+                        android:textColor="@color/text_subtext"
+                        android:textSize="16sp" />
+                                        
+                    <View
+                        android:id="@+id/Rules_Bullet07"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_below="@id/Rules_BasicText06"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="5dp"
+                        android:background="#ccc" />
                 </RelativeLayout>
 
                 <TextView
