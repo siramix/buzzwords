@@ -214,15 +214,67 @@ public class TurnActivity extends Activity {
   private PauseTimer mResultsDelay;
 
   /**
-   * Starts the turn timer and the animations that go along with that
+   * Setup the turn timer and return a reference to it.
+   * Also set up the fill bar associated with the timer.
+   * 
+   * @return a reference to the turn timer
    */
-  private void startTimer() {
-    mCounter.start();
-    mTimerfill.startAnimation(timerAnimation(TurnActivity.TIMERANIM_START_ID));
+  public PauseTimer createTurnTimer(long time) {
+    
+    mTimerfill.startAnimation(timerPauseAnimation(time));
+    long shownTime = (long) Math.ceil((double) time / 1000);
+    mCountdownText.setText(Long.toString(shownTime));
+    
+    // Initialize the turn timer
+    return new PauseTimer(time) {
+
+      @Override
+      public void onFinish() {
+        TurnActivity.this.onTimeExpired();
+        mCountdownText.setText("0");
+        mTurnIsOver = true;
+      }
+
+      @Override
+      public void onTick() {
+        // Update our text each second
+        long time = mCounter.getTimeRemaining();
+        long shownTime = (long) Math.ceil((double) time / 1000);
+        mCountdownText.setText(Long.toString(shownTime));
+
+        // When music is not enabled, use the ticking sound
+        if (!mMusicEnabled && !mIsTicking) {
+          if (shownTime == 10) {
+            SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(getBaseContext());
+
+            // Only play ticking when sound effects are enabled
+            if (sp.getBoolean(Consts.PREFKEY_SFX, true)) {
+              mIsTicking = true;
+              BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
+                  .getApplication();
+              MediaPlayer mp = application.getMusicPlayer(TurnActivity.this
+                  .getBaseContext());
+              mp.start();
+            }
+          }
+        }
+      }
+
+    };
+
   }
 
   /**
-   * Stops the turn timer and the animations that go along with that
+   * Starts the turn timer and the animations that go along with that
+   */
+  private void startTurnTimer() {
+    mCounter.start();
+    mTimerfill.startAnimation(timerCountdownAnimation(mCounter.getTimeRemaining()));
+  }
+
+  /**
+   * Stops the turn timer and the animations that go along with it
    */
   private void stopTurnTimer() {
     SafeLog.d(TAG, "stopTimer()");
@@ -231,7 +283,7 @@ public class TurnActivity extends Activity {
     if (!mTurnIsOver && mCounter.isActive()) {
       mCounter.pause();
       mTimerfill
-          .startAnimation(timerAnimation(TurnActivity.TIMERANIM_PAUSE_ID));
+          .startAnimation(timerPauseAnimation(mCounter.getTimeRemaining()));
     }
   }
 
@@ -245,7 +297,7 @@ public class TurnActivity extends Activity {
     if (!mTurnIsOver && !mCounter.isActive()) {
       mCounter.resume();
       mTimerfill
-          .startAnimation(timerAnimation(TurnActivity.TIMERANIM_RESUME_ID));
+          .startAnimation(timerCountdownAnimation(mCounter.getTimeRemaining()));
     }
   }
 
@@ -490,30 +542,39 @@ public class TurnActivity extends Activity {
   }
 
   /**
-   * Animation method for the timer bar that takes an integer to determine
-   * whether it is starting, resuming, or stopping animation.
-   * 
-   * @param timerCommand
-   *          an integer value of 0 for Pause, 1 for Resume, and 2 for Start
+   * Animation method for the timer bar that takes the time remaining
+   * and sets the bar to scale from the existing percent to 0 over the time. 
    * 
    * @return The animation that scales the timer as the time depletes
    */
-  private Animation timerAnimation(int timerCommand) {
-    float percentTimeLeft = ((float) mCounter.getTimeRemaining() / mGameManager
+  private Animation timerCountdownAnimation(float time) {
+    float percentTimeLeft = ((float) time / mGameManager
         .getTurnTime());
-    int duration = mGameManager.getTurnTime();
-
-    if (timerCommand == TurnActivity.TIMERANIM_RESUME_ID) {
-      duration = (int) mCounter.getTimeRemaining();
-    } else if (timerCommand == TurnActivity.TIMERANIM_PAUSE_ID) {
-      duration = Integer.MAX_VALUE;
-    }
 
     ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, 0.0f, 1.0f,
         1.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
         1.0f);
-
+    
+    int duration = (int) mCounter.getTimeRemaining();
     scaleTimer.setDuration(duration);
+    scaleTimer.setInterpolator(new LinearInterpolator());
+    return scaleTimer;
+  }
+
+  /**
+   * Pause animation allows the timer to pause at a certain percentage scale
+   * @param time represented by the paused timer
+   * @return
+   */
+  private Animation timerPauseAnimation(long time) {
+    float percentTimeLeft = ((float) time / mGameManager
+        .getTurnTime());
+
+    ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, percentTimeLeft, 1.0f,
+        1.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
+        1.0f);
+
+    scaleTimer.setFillAfter(true);
     scaleTimer.setInterpolator(new LinearInterpolator());
     return scaleTimer;
   }
@@ -874,51 +935,6 @@ public class TurnActivity extends Activity {
   }
 
   /**
-   * Setup the turn timer and return a reference to it
-   * 
-   * @return a reference to the turn timer
-   */
-  public PauseTimer setupTurnTimer(long time) {
-    // Initialize the turn timer
-    return new PauseTimer(time) {
-
-      @Override
-      public void onFinish() {
-        TurnActivity.this.onTimeExpired();
-        mCountdownText.setText("0");
-        mTurnIsOver = true;
-      }
-
-      @Override
-      public void onTick() {
-        // Update our text each second
-        long shownTime = (mCounter.getTimeRemaining() / 1000) + 1;
-        mCountdownText.setText(Long.toString(shownTime));
-
-        // When music is not enabled, use the ticking sound
-        if (!mMusicEnabled && !mIsTicking) {
-          if (shownTime == 10) {
-            SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(getBaseContext());
-
-            // Only play ticking when sound effects are enabled
-            if (sp.getBoolean(Consts.PREFKEY_SFX, true)) {
-              mIsTicking = true;
-              BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
-                  .getApplication();
-              MediaPlayer mp = application.getMusicPlayer(TurnActivity.this
-                  .getBaseContext());
-              mp.start();
-            }
-          }
-        }
-      }
-
-    };
-
-  }
-
-  /**
    * Initializes the activity to display the word you have to cause your team
    * mates to say with the words you cannot say below.
    */
@@ -960,7 +976,7 @@ public class TurnActivity extends Activity {
     boolean turnGoing = turnStatePrefs.getBoolean(Consts.PREFKEY_TURN_GOING, false);
     if(!turnGoing) {
       this.showDialog(DIALOG_READY_ID);
-      mCounter = setupTurnTimer(mGameManager.getTurnTime());
+      mCounter = createTurnTimer(mGameManager.getTurnTime());
     } else {
       mAIsActive = turnStatePrefs.getBoolean(Consts.PREFKEY_A_IS_ACTIVE, true);
       if(!mAIsActive) {
@@ -970,7 +986,7 @@ public class TurnActivity extends Activity {
       mIsTicking = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_TICKING, false);
       long curTime = turnStatePrefs.getLong(Consts.PREFKEY_TURN_TIME_REMAINING,
           mGameManager.getTurnTime());
-      mCounter = setupTurnTimer(curTime);
+      mCounter = createTurnTimer(curTime);
       this.showCurrentCard();
       this.pauseGame();
     }
@@ -1246,7 +1262,7 @@ public class TurnActivity extends Activity {
     mIsPaused = false;
     TurnActivity.this.showCard();
     mIsBack = true;
-    TurnActivity.this.startTimer();
+    TurnActivity.this.startTurnTimer();
 
     setSleepAllowed(false);
 
