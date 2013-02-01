@@ -120,6 +120,7 @@ public class TurnActivity extends Activity {
    * has expired and activity is showing the user "Time's up!"
    */
   private boolean mTurnIsOver = false;
+
   /**
    * Track when the game has paused. This will prevents code from executing
    * pointlessly if already paused.
@@ -554,8 +555,9 @@ public class TurnActivity extends Activity {
     ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, 0.0f, 1.0f,
         1.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
         1.0f);
-    
+
     int duration = (int) mCounter.getTimeRemaining();
+
     scaleTimer.setDuration(duration);
     scaleTimer.setInterpolator(new LinearInterpolator());
     return scaleTimer;
@@ -820,6 +822,7 @@ public class TurnActivity extends Activity {
    * Hands off the intent to the next turn summary activity.
    */
   protected void endTurn() {
+    mTurnIsOver = true;
     BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
         .getApplication();
     
@@ -935,6 +938,55 @@ public class TurnActivity extends Activity {
   }
 
   /**
+<<<<<<< Updated upstream
+=======
+   * Setup the turn timer and return a reference to it
+   * 
+   * @return a reference to the turn timer
+   */
+  public PauseTimer setupTurnTimer(long time) {
+
+    // Initialize the turn timer
+    return new PauseTimer(time) {
+
+      @Override
+      public void onFinish() {
+        TurnActivity.this.onTimeExpired();
+        mCountdownText.setText("0");
+        mTurnIsOver = true;
+      }
+
+      @Override
+      public void onTick() {
+        // Update our text each second
+        long shownTime = (mCounter.getTimeRemaining() / 1000) + 1;
+        mCountdownText.setText(Long.toString(shownTime));
+
+        // When music is not enabled, use the ticking sound
+        if (!mMusicEnabled && !mIsTicking) {
+          if (shownTime == 10) {
+            SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(getBaseContext());
+
+            // Only play ticking when sound effects are enabled
+            if (sp.getBoolean(Consts.PREFKEY_SFX, true)) {
+              mIsTicking = true;
+              BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
+                  .getApplication();
+              MediaPlayer mp = application.getMusicPlayer(TurnActivity.this
+                  .getBaseContext());
+              mp.start();
+            }
+          }
+        }
+      }
+
+    };
+
+  }
+
+  /**
+>>>>>>> Stashed changes
    * Initializes the activity to display the word you have to cause your team
    * mates to say with the words you cannot say below.
    */
@@ -974,8 +1026,11 @@ public class TurnActivity extends Activity {
     SharedPreferences turnStatePrefs =
         this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
     boolean turnGoing = turnStatePrefs.getBoolean(Consts.PREFKEY_TURN_GOING, false);
+    boolean resumingFromStartDialog = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_IN_TURN_START_DIALOG, false);
     if(!turnGoing) {
       this.showDialog(DIALOG_READY_ID);
+      mCounter = createTurnTimer(mGameManager.getTurnTime());
+    } else if(resumingFromStartDialog) {
       mCounter = createTurnTimer(mGameManager.getTurnTime());
     } else {
       mAIsActive = turnStatePrefs.getBoolean(Consts.PREFKEY_A_IS_ACTIVE, true);
@@ -1015,8 +1070,12 @@ public class TurnActivity extends Activity {
     SharedPreferences turnStatePrefs =
         this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
     SharedPreferences.Editor turnStatePrefsEditor = turnStatePrefs.edit();
-    if (!mIsPaused && !mTurnIsOver) { // if we are mid-turn
-      this.pauseGame();
+    
+    if(mTurnIsOver) { // if the turn is over
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_TURN_GOING, false);
+      turnStatePrefsEditor.commit();
+    } else { // If we are mid turn
+      this.pauseIfNotPaused();
       mGameManager.saveState(this.getBaseContext());
       turnStatePrefsEditor.putBoolean(Consts.PREFKEY_TURN_GOING, true);
       turnStatePrefsEditor.putBoolean(Consts.PREFKEY_A_IS_ACTIVE, mAIsActive);
@@ -1024,13 +1083,20 @@ public class TurnActivity extends Activity {
       turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_TICKING, mIsTicking);
       turnStatePrefsEditor.putLong(Consts.PREFKEY_TURN_TIME_REMAINING, mCounter.getTimeRemaining());
       turnStatePrefsEditor.commit();
-    } else { // If we are at the end of a turn
-      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_TURN_GOING, false);
-      turnStatePrefsEditor.commit();
     }
     mGameManager.updateSeenFields(this.getBaseContext());
   }
 
+  public void pauseIfNotPaused() {
+    SharedPreferences turnStatePrefs =
+        this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    boolean inStartDialog =
+        turnStatePrefs.getBoolean(Consts.PREFKEY_IS_IN_TURN_START_DIALOG, false);
+    if(!mIsPaused && !inStartDialog) {
+      this.pauseGame();
+    }
+  }
+  
   /**
    * Display a dialog when the search is requested
    */
@@ -1077,6 +1143,7 @@ public class TurnActivity extends Activity {
       builder.setMessage(this.getString(R.string.menu_EndGame_Text))
           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+              mTurnIsOver = true;
               // Play confirmation sound
               SoundManager sm = SoundManager.getInstance(TurnActivity.this
                   .getBaseContext());
@@ -1109,6 +1176,12 @@ public class TurnActivity extends Activity {
       break;
     case DIALOG_READY_ID:
 
+      SharedPreferences turnStatePrefs =
+        getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+      SharedPreferences.Editor turnStatePrefsEditor = turnStatePrefs.edit();
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_IN_TURN_START_DIALOG, true);
+      turnStatePrefsEditor.commit();
+            
       // Play team ready sound
       SoundManager sm = SoundManager.getInstance(TurnActivity.this
           .getBaseContext());
@@ -1122,6 +1195,11 @@ public class TurnActivity extends Activity {
 
             public void onClick(DialogInterface dialog, int which) {
               dialog.dismiss();
+              SharedPreferences turnStatePrefs =
+                  getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+                SharedPreferences.Editor turnStatePrefsEditor = turnStatePrefs.edit();
+              turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_IN_TURN_START_DIALOG, false);
+              turnStatePrefsEditor.commit();
               startGame();
             }
           });
@@ -1306,10 +1384,7 @@ public class TurnActivity extends Activity {
    */
   @Override
   public boolean onMenuOpened(int featureId, Menu menu) {
-    if (!mIsPaused) {
-      this.pauseGame();
-    }
-
+    pauseIfNotPaused();
     return true;
   }
 
