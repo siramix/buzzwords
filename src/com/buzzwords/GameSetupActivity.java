@@ -17,7 +17,7 @@
  ****************************************************************************/
 package com.buzzwords;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import com.buzzwords.GameManager;
 import com.buzzwords.R;
@@ -27,6 +27,7 @@ import com.buzzwords.GameManager.GameType;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,7 +54,7 @@ import android.widget.Toast;
 public class GameSetupActivity extends Activity {
 
   static final int DIALOG_TEAMERROR = 0;
-  private LinkedList<Team> mTeamList = new LinkedList<Team>();
+  private ArrayList<Team> mTeamList = new ArrayList<Team>();
   private static SharedPreferences mGameSetupPrefs;
   private static SharedPreferences.Editor mGameSetupPrefEditor;
   
@@ -127,7 +128,7 @@ public class GameSetupActivity extends Activity {
         try {
           GameManager gm = new GameManager(GameSetupActivity.this);
           gm.startGame(mTeamList, GameType.values()[mGameType],
-              mGameLimits[mGameType]);
+              mGameLimits[mGameType], getBaseContext());
           application.setGameManager(gm);
           keepLooping = false;
           
@@ -381,6 +382,14 @@ public class GameSetupActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    // This sets up the preference so the application does not think that a
+    // turn is in progress on the TurnActivity onCreate
+    SharedPreferences turnStatePrefs =
+        this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    SharedPreferences.Editor turnStatePrefsEditor = turnStatePrefs.edit();
+    turnStatePrefsEditor.putBoolean(Consts.PREFKEY_TURN_GOING, false);
+    turnStatePrefsEditor.commit();
 
     // Setup the view
     this.setContentView(R.layout.gamesetup);

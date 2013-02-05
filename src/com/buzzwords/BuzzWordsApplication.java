@@ -19,6 +19,7 @@ package com.buzzwords;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
@@ -90,7 +91,10 @@ public class BuzzWordsApplication extends Application {
    * @return a reference to the game manager
    */
   public GameManager getGameManager() {
-    return this.mGameManager;
+    if(mGameManager == null) {
+      mGameManager = GameManager.restoreState(this.getBaseContext());
+    }
+    return mGameManager;
   }
 
   /**
@@ -98,7 +102,7 @@ public class BuzzWordsApplication extends Application {
    *          - a reference to the game manager
    */
   public void setGameManager(GameManager gm) {
-    this.mGameManager = gm;
+    mGameManager = gm;
   }
 
   /**
@@ -116,6 +120,10 @@ public class BuzzWordsApplication extends Application {
       mMediaPlayer.release();
     }
     mTrackID = id;
+    SharedPreferences musicPrefs = this.getSharedPreferences(Consts.PREFFILE_MUSIC_STATE, Context.MODE_PRIVATE);
+    SharedPreferences.Editor musicPrefsEditor = musicPrefs.edit();
+    musicPrefsEditor.putInt(Consts.PREFKEY_MUSIC_RESOURCE, mTrackID);
+    musicPrefsEditor.commit();
     mMediaPlayer = MediaPlayer.create(context, id);
     return mMediaPlayer;
   }
@@ -126,7 +134,11 @@ public class BuzzWordsApplication extends Application {
   public MediaPlayer getMusicPlayer(Context context) {
     if(mMediaPlayer == null)
     {
+      SharedPreferences musicPrefs = this.getSharedPreferences(Consts.PREFFILE_MUSIC_STATE, Context.MODE_PRIVATE);
+      mTrackID = musicPrefs.getInt(Consts.PREFKEY_MUSIC_RESOURCE, mTrackID);
+      boolean isLooping = musicPrefs.getBoolean(Consts.PREFKEY_MUSIC_LOOPING, false);
       mMediaPlayer = MediaPlayer.create(context, mTrackID);
+      mMediaPlayer.setLooping(isLooping);
     }
     return mMediaPlayer;
   }
@@ -137,6 +149,11 @@ public class BuzzWordsApplication extends Application {
    */
   public void cleanUpMusicPlayer() {
     if (mMediaPlayer != null) {
+      SharedPreferences musicPrefs = this.getSharedPreferences(Consts.PREFFILE_MUSIC_STATE, Context.MODE_PRIVATE);
+      SharedPreferences.Editor musicPrefsEditor = musicPrefs.edit();
+      musicPrefsEditor.putBoolean(Consts.PREFKEY_MUSIC_LOOPING, mMediaPlayer.isLooping());
+      musicPrefsEditor.commit();
+      
       if (mMediaPlayer.isPlaying()) {
         mMediaPlayer.stop();
       }
