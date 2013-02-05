@@ -249,7 +249,6 @@ public class GameEndActivity extends Activity {
       
       mRematch = true;
       showDialog(DIALOG_BUYFULL_ID);
-
     }
   }; // End MainMenuListener
 
@@ -400,7 +399,6 @@ public class GameEndActivity extends Activity {
 
     return super.onKeyUp(keyCode, event);
   }
-  
 
   /**
    * Restarts a match with the current match's settings
@@ -411,7 +409,8 @@ public class GameEndActivity extends Activity {
 
     GameManager curgm = application.getGameManager();
     GameManager newgm = new GameManager(GameEndActivity.this);
-    newgm.startGame(curgm.getTeams(), curgm.getGameType(), curgm.getGameLimitValue());
+    newgm.startGame(curgm.getTeams(), curgm.getGameType(),
+        curgm.getGameLimitValue(), this.getBaseContext());
     application.setGameManager(newgm);
 
     Intent clearStackIntent = new Intent(getApplication().getString(
@@ -485,7 +484,14 @@ public class GameEndActivity extends Activity {
     // Re-enable things
     this.findViewById(R.id.GameEnd_MainMenu).setEnabled(true);
     this.findViewById(R.id.GameEnd_Rematch).setEnabled(true);
-    
+  }    
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
+    GameManager gm = application.getGameManager();
+    gm.saveState(this.getBaseContext());
   }
 
 }

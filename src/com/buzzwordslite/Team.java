@@ -29,17 +29,25 @@ import com.buzzwordslite.R;
  * @author BuzzWords team
  * 
  */
-public enum Team implements Serializable {
-  TEAMA(R.string.teamnameA, R.color.teamA_primary,
+public class Team implements Serializable {
+  
+  public static Team TEAMA = new Team(R.string.teamnameA, R.color.teamA_primary,
       R.color.teamA_secondary, R.color.teamA_complement, R.drawable.bg_bluegradient, 
-      "teamA_enabled"), TEAMB(R.string.teamnameB,
-      R.color.teamB_primary, R.color.teamB_secondary,  R.color.teamB_complement,
-      R.drawable.bg_greengradient, "teamB_enabled"), TEAMC(
-      R.string.teamnameC, R.color.teamC_primary,  R.color.teamC_secondary,
-      R.color.teamC_complement, R.drawable.bg_redgradient, "teamC_enabled"), TEAMD(
-      R.string.teamnameD, R.color.teamD_primary, R.color.teamD_secondary,
-      R.color.teamD_complement, R.drawable.bg_yellowgradient, "teamD_enabled");
+      "teamA_enabled", 0);
 
+  public static Team TEAMB = new Team(R.string.teamnameB,
+      R.color.teamB_primary, R.color.teamB_secondary,  R.color.teamB_complement,
+      R.drawable.bg_greengradient, "teamB_enabled", 1);
+
+  public static Team TEAMC = new Team(R.string.teamnameC, R.color.teamC_primary,
+      R.color.teamC_secondary, R.color.teamC_complement, R.drawable.bg_redgradient,
+      "teamC_enabled", 2);
+
+  public static Team TEAMD = new Team(R.string.teamnameD, R.color.teamD_primary, R.color.teamD_secondary,
+      R.color.teamD_complement, R.drawable.bg_yellowgradient, "teamD_enabled", 3);
+
+  private static Team[] mValues = {TEAMA, TEAMB, TEAMC, TEAMD};
+  
   // Team name
   private String mName;
   // Team default name as resource ID
@@ -54,6 +62,7 @@ public enum Team implements Serializable {
   private int mScore;
   // The team's preference key
   private final String mPrefKey;
+  private int mOrdinal;
 
   /*
    * Store a version ID for this serialized class
@@ -64,14 +73,29 @@ public enum Team implements Serializable {
   /*
    * Construct a Team
    */
-  private Team(int name, int primary, int secondary, int complement, int gradient, String key) {
+  private Team(int name, int primary, int secondary, int complement, int gradient, String key, int ordinal) {
     mDefaultName = name;
     mComplement = complement;
     mSecondary = secondary;
     mPrimary = primary;
     mGradient = gradient;
     mPrefKey = key;
+    mOrdinal = ordinal;
     this.setScore(0);
+  }
+
+  /**
+   * @return the ordinal value of the team
+   */
+  public int ordinal() {
+    return mOrdinal;
+  }
+
+  /**
+   * @return the statically initialized teams
+   */
+  public static Team[] values() {
+    return mValues;
   }
 
   /**

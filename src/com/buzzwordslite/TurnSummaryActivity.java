@@ -108,7 +108,7 @@ public class TurnSummaryActivity extends Activity {
         startActivity(new Intent(getApplication().getString(
             R.string.IntentEndGame), getIntent().getData()));
       } else {
-        gm.nextTurn();
+        gm.nextTurn(getBaseContext());
         Intent clearStackIntent = new Intent(getApplication().getString(
             R.string.IntentTurn), getIntent().getData());
         clearStackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -603,6 +603,14 @@ public class TurnSummaryActivity extends Activity {
     }
 
     return super.onKeyUp(keyCode, event);
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
+    GameManager gm = application.getGameManager();
+    gm.saveState(this.getBaseContext());
   }
 
 }

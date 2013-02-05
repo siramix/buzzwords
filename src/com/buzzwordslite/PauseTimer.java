@@ -17,6 +17,7 @@
  ****************************************************************************/
 package com.buzzwordslite;
 
+
 import android.os.CountDownTimer;
 
 /**
@@ -26,6 +27,7 @@ import android.os.CountDownTimer;
  * @author Siramix Labs
  */
 public abstract class PauseTimer {
+
   /**
    * Static string used to refer to this class, in debug output for example.
    */
