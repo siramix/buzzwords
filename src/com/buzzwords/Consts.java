@@ -53,13 +53,12 @@ public class Consts {
     public static final String PREFKEY_DB_INITIALIZED = "com.buzzwords.DB_INITIALIZED";
     public static final String PREFKEY_MUSIC_RESOURCE = "com.buzzwords.MUSIC_RESOURCE";
     public static final String PREFKEY_MUSIC_LOOPING = "com.buzzwords.MUSIC_LOOPING";
-    public static final String PREFKEY_TURN_GOING = "com.buzzwords.TURN_GOING";
+    public static final String PREFKEY_IS_TURN_IN_PROGRESS = "com.buzzwords.TURN_IN_PROGRESS";
     public static final String PREFKEY_A_IS_ACTIVE = "com.buzzwords.A_IS_ACTIVE";
     public static final String PREFKEY_IS_BACK = "com.buzzwords.IS_BACK";
     public static final String PREFKEY_IS_TICKING = "com.buzzwords.IS_TICKING";
     public static final String PREFKEY_IS_PAUSED = "com.buzzwords.IS_PAUSED";
-    public static final String PREFKEY_IS_TURN_OVER = "com.buzzwords.IS_TURN_OVER";
-    public static final String PREFKEY_IS_IN_TURN_START_DIALOG = "com.buzzwords.IS_IN_TURN_START_DIALOG";
+    public static final String PREFKEY_IS_TURN_IN_START_DIALOG = "com.buzzwords.IS_TURN_IN_START_DIALOG";
     public static final String PREFKEY_TURN_TIME_REMAINING = "com.buzzwords.TURN_TIME_REMAINING";
     public static final String PREFFILE_PACK_SELECTIONS = "com.buzzwords.PACK_SELECTIONS";
     public static final String PREFFILE_MUSIC_STATE = "com.buzzwords.MUSIC_STATE";
