@@ -686,8 +686,6 @@ public class TurnActivity extends Activity {
     mGameManager.getPreviousCard();
     showCurrentCard();
 
-    setupCardViewForBack();
-
     // Restore animations for future actions
     mViewFlipper.setInAnimation(inFromRightAnimation());
     mViewFlipper.setOutAnimation(outToLeftAnimation());
@@ -695,15 +693,6 @@ public class TurnActivity extends Activity {
     // Play back sound
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     sm.playSound(SoundManager.Sound.BACK);
-  }
-  
-  /**
-   * Do any changes to the UI that should occur when a card is the "back" card
-   */
-  protected void setupCardViewForBack()
-  {
-    // Show mark when going back
-    mCardStatus.setVisibility(View.VISIBLE);
   }
 
   /**
@@ -734,13 +723,10 @@ public class TurnActivity extends Activity {
    * checking.
    */
   protected void showNextCard() {
-
-    mGameManager.getNextCard(this.getBaseContext());
-    showCurrentCard();
     
-    // Hide the card status until marked
-    mCardStatus.setVisibility(View.INVISIBLE);
+    mGameManager.getNextCard(this.getBaseContext());
     mIsBack = false;
+    showCurrentCard();
   }
   
   /**
@@ -753,6 +739,14 @@ public class TurnActivity extends Activity {
     mCardTitle.setText(curCard.getTitle());
     // Update the badwords
     this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
+    
+    // Show the stamp if the card was previously viewed
+    if(mIsBack) {
+      mCardStatus.setVisibility(View.VISIBLE);
+    }
+    else {
+      mCardStatus.setVisibility(View.INVISIBLE);
+    }
   }
 
   /**
@@ -1085,9 +1079,6 @@ public class TurnActivity extends Activity {
           mGameManager.getTurnTime());
       mCounter = createTurnTimer(curTime);
       this.showCurrentCard();
-      if (mIsBack) {
-        setupCardViewForBack();
-      }
       this.pauseGame();
     } else {
       // Spoof time expired for ResultsDelay - no need in delaying if
