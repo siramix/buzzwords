@@ -671,9 +671,11 @@ public class TurnActivity extends Activity {
       return;
     }
 
+    mIsBack = true;
+
     mAIsActive = !mAIsActive;
 
-    // Reassign view to animate backwords
+    // Reassign view to animate backwards
     mViewFlipper.setInAnimation(backInFromLeftAnimation());
     mViewFlipper.setOutAnimation(backOutToRightAnimation());
 
@@ -681,22 +683,27 @@ public class TurnActivity extends Activity {
 
     this.assignActiveCardViewReferences();
     mGameManager.processCard(Card.NOTSET);
-    Card curCard = mGameManager.getPreviousCard();
-    mCardTitle.setText(curCard.getTitle());
-    // Update bad words
-    this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
-    mIsBack = true;
+    mGameManager.getPreviousCard();
+    showCurrentCard();
+
+    setupCardViewForBack();
 
     // Restore animations for future actions
     mViewFlipper.setInAnimation(inFromRightAnimation());
     mViewFlipper.setOutAnimation(outToLeftAnimation());
 
-    // Show mark when going back
-    mCardStatus.setVisibility(View.VISIBLE);
-
     // Play back sound
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     sm.playSound(SoundManager.Sound.BACK);
+  }
+  
+  /**
+   * Do any changes to the UI that should occur when a card is the "back" card
+   */
+  protected void setupCardViewForBack()
+  {
+    // Show mark when going back
+    mCardStatus.setVisibility(View.VISIBLE);
   }
 
   /**
@@ -1078,6 +1085,9 @@ public class TurnActivity extends Activity {
           mGameManager.getTurnTime());
       mCounter = createTurnTimer(curTime);
       this.showCurrentCard();
+      if (mIsBack) {
+        setupCardViewForBack();
+      }
       this.pauseGame();
     } else {
       // Spoof time expired for ResultsDelay - no need in delaying if
