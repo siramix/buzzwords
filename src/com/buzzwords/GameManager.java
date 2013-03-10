@@ -19,6 +19,7 @@ package com.buzzwords;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
@@ -200,6 +201,11 @@ public class GameManager implements Serializable {
 
   }
 
+  /**
+   * Save the state of the gameManager so that it can be restored
+   * when the application is restored.
+   * @param context
+   */
   public synchronized void saveState(Context context) {
     SafeLog.d(TAG, "saveState()");
     try {
@@ -220,6 +226,11 @@ public class GameManager implements Serializable {
     }
   }
   
+  /**
+   * Restores the gameManager to the state previously saved
+   * @param context
+   * @return
+   */
   public static synchronized GameManager restoreState(Context context) {
     SafeLog.d(TAG, "restoreState()");
     GameManager savedGameManager = null;
@@ -235,6 +246,10 @@ public class GameManager implements Serializable {
         input.close();
       }
     }
+    catch(FileNotFoundException ex)
+    {
+      SafeLog.d(TAG, "FileNotFoundException while restoring Game Manager.");
+    }
     catch(ClassNotFoundException ex) {
       SafeLog.e(TAG, "ClassNotFoundException while restoring Game Manager.", ex);
     }
@@ -242,6 +257,23 @@ public class GameManager implements Serializable {
       SafeLog.e(TAG, "IOException while restoring Game Manager.", ex);
     }
     return savedGameManager;
+  }
+  
+  /**
+   * Deletes any save state data for the Game Manager. This is used to
+   * clean up garbage saves, which occur when the application is force closed. 
+   * @param context
+   */
+  public synchronized void cleanupSaveState(Context context) {
+    SafeLog.d(TAG, "destroy()");
+    
+    SharedPreferences turnStatePrefs =
+        context.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    SharedPreferences.Editor turnStatePrefsEditor = turnStatePrefs.edit();
+    turnStatePrefsEditor.clear();
+    turnStatePrefsEditor.commit();
+    
+    context.deleteFile(Consts.GAME_MANAGER_TEMP_FILE);
   }
 
   /**
