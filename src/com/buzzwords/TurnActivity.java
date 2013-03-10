@@ -1046,29 +1046,30 @@ public class TurnActivity extends Activity {
     this.setupViewReferences();
     this.setupUIProperties();
 
-    SharedPreferences turnStatePrefs =
-        this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
-    boolean isAppRestored = turnStatePrefs.contains(Consts.PREFKEY_IS_TURN_IN_START_DIALOG);
+    SharedPreferences turnStatePrefs = this.getSharedPreferences(
+        Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    boolean isAppRestored = turnStatePrefs
+        .contains(Consts.PREFKEY_IS_TURN_IN_START_DIALOG);
 
     // Restore State of Turn based on preferences
     // Set which card is active
     mAIsActive = true;
     mIsBack = true;
-    boolean isTurnInProgress = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_TURN_IN_PROGRESS, false);
-    mIsWaitingForTeamReady = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_TURN_IN_START_DIALOG, true);
-    
-    if(mIsWaitingForTeamReady)
-    {
-      if(!isAppRestored)
-      {
+    boolean isTurnInProgress = turnStatePrefs.getBoolean(
+        Consts.PREFKEY_IS_TURN_IN_PROGRESS, false);
+    mIsWaitingForTeamReady = turnStatePrefs.getBoolean(
+        Consts.PREFKEY_IS_TURN_IN_START_DIALOG, true);
+
+    if (mIsWaitingForTeamReady) {
+      // Dialog is automatically restored by OS, so only show it if it is not a
+      // restore.
+      if (!isAppRestored) {
         this.showDialog(DIALOG_READY_ID);
       }
       mCounter = createTurnTimer(mGameManager.getTurnTime());
-    }
-    else if (isTurnInProgress)
-    {
+    } else if (isTurnInProgress) {
       mAIsActive = turnStatePrefs.getBoolean(Consts.PREFKEY_A_IS_ACTIVE, true);
-      if(!mAIsActive) {
+      if (!mAIsActive) {
         mViewFlipper.showNext();
       }
       mIsBack = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_BACK, true);
@@ -1078,13 +1079,10 @@ public class TurnActivity extends Activity {
       mCounter = createTurnTimer(curTime);
       this.showCurrentCard();
       this.pauseGame();
-    }
-    else
-    {
+    } else {
       // Spoof time expired for ResultsDelay - no need in delaying if
       // starting from a finished turn
       onDelayTimerExpired();
-      
     }
   }
 
@@ -1106,9 +1104,8 @@ public class TurnActivity extends Activity {
   public void onPause() {
     super.onPause();
     SafeLog.d(TAG, "onPause()");
-    
-    if(!mTurnTimeIsUp && !mIsWaitingForTeamReady)
-    {
+
+    if (!mTurnTimeIsUp && !mIsWaitingForTeamReady) {
       this.pauseIfNotPaused();
     }
     
@@ -1117,8 +1114,7 @@ public class TurnActivity extends Activity {
     // serializes, but the activity advances while backgrounded,
     // meaning onPause does not get called again and the Preference
     // clear is bypassed
-    if (mTurnTimeIsUp && !mExitingToNextActivity)
-    {
+    if (mTurnTimeIsUp && !mExitingToNextActivity) {
       mResultsDelay.pause();
     }
     
