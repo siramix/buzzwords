@@ -605,8 +605,7 @@ public class TurnActivity extends Activity {
     mGameManager.processCard(Card.RIGHT);
 
     // Mark the card with an icon
-    mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.RIGHT));
-    mCardStatus.setVisibility(View.VISIBLE);
+    setCardStatusView(Card.RIGHT);
 
     // Only play sound once card has been processed so we don't confuse the user
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
@@ -629,8 +628,7 @@ public class TurnActivity extends Activity {
     mGameManager.processCard(Card.WRONG);
 
     // Mark the card with an icon
-    mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.WRONG));
-    mCardStatus.setVisibility(View.VISIBLE);
+    setCardStatusView(Card.WRONG);
 
     // Only play sound once card has been processed so we don't confuse the user
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
@@ -651,8 +649,7 @@ public class TurnActivity extends Activity {
     mGameManager.processCard(Card.SKIP);
 
     // Mark the card with an icon for SKIP
-    mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.SKIP));
-    mCardStatus.setVisibility(View.VISIBLE);
+    setCardStatusView(Card.SKIP);
 
     // Only play sound once card has been processed so we don't confuse the user
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
@@ -662,6 +659,29 @@ public class TurnActivity extends Activity {
     showNextCard();
   }
 
+  /**
+   * Sets the card status view to represent the specified RWS status
+   * @param rws (from Card class)
+   */
+  protected void setCardStatusView(int rws)
+  {
+    switch(rws){
+    case Card.RIGHT:
+      mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.RIGHT));
+      mCardStatus.setVisibility(View.VISIBLE);
+      break;
+    case Card.WRONG:
+      mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.WRONG));
+      mCardStatus.setVisibility(View.VISIBLE);
+    case Card.SKIP:
+      mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.SKIP));
+      mCardStatus.setVisibility(View.VISIBLE);
+    default:
+      mCardStatus.setVisibility(View.INVISIBLE);
+      break;
+    }
+  }
+  
   /**
    * Handle when a back button is pressed (we only let the user go back one card
    * at this time.
@@ -742,12 +762,7 @@ public class TurnActivity extends Activity {
     this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
     
     // Show the card status if it has one
-    if(curCard.getRws() == Card.NOTSET) {
-      mCardStatus.setVisibility(View.INVISIBLE);
-    }
-    else {
-      mCardStatus.setVisibility(View.VISIBLE);
-    }
+    setCardStatusView(curCard.getRws());
   }
 
   /**
