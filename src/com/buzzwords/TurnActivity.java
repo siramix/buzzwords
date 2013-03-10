@@ -727,6 +727,7 @@ public class TurnActivity extends Activity {
     mGameManager.getNextCard(this.getBaseContext());
     mIsBack = false;
     showCurrentCard();
+    
   }
   
   /**
@@ -740,12 +741,12 @@ public class TurnActivity extends Activity {
     // Update the badwords
     this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
     
-    // Show the stamp if the card was previously viewed
-    if(mIsBack) {
-      mCardStatus.setVisibility(View.VISIBLE);
+    // Show the card status if it has one
+    if(curCard.getRws() == Card.NOTSET) {
+      mCardStatus.setVisibility(View.INVISIBLE);
     }
     else {
-      mCardStatus.setVisibility(View.INVISIBLE);
+      mCardStatus.setVisibility(View.VISIBLE);
     }
   }
 
