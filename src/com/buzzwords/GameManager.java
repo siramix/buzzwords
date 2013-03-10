@@ -201,7 +201,7 @@ public class GameManager implements Serializable {
   }
 
   public synchronized void saveState(Context context) {
-    SafeLog.e(TAG, "saveState()");
+    SafeLog.d(TAG, "saveState()");
     try {
       //use buffering
       OutputStream file = context.openFileOutput(Consts.GAME_MANAGER_TEMP_FILE, Context.MODE_PRIVATE);
@@ -221,7 +221,7 @@ public class GameManager implements Serializable {
   }
   
   public static synchronized GameManager restoreState(Context context) {
-    SafeLog.e(TAG, "restoreState()");
+    SafeLog.d(TAG, "restoreState()");
     GameManager savedGameManager = null;
     try {
       //use buffering
