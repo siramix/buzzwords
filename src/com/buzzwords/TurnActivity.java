@@ -605,8 +605,7 @@ public class TurnActivity extends Activity {
     mGameManager.processCard(Card.RIGHT);
 
     // Mark the card with an icon
-    mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.RIGHT));
-    mCardStatus.setVisibility(View.VISIBLE);
+    setCardStatusView(Card.RIGHT);
 
     // Only play sound once card has been processed so we don't confuse the user
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
@@ -629,8 +628,7 @@ public class TurnActivity extends Activity {
     mGameManager.processCard(Card.WRONG);
 
     // Mark the card with an icon
-    mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.WRONG));
-    mCardStatus.setVisibility(View.VISIBLE);
+    setCardStatusView(Card.WRONG);
 
     // Only play sound once card has been processed so we don't confuse the user
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
@@ -651,8 +649,7 @@ public class TurnActivity extends Activity {
     mGameManager.processCard(Card.SKIP);
 
     // Mark the card with an icon for SKIP
-    mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.SKIP));
-    mCardStatus.setVisibility(View.VISIBLE);
+    setCardStatusView(Card.SKIP);
 
     // Only play sound once card has been processed so we don't confuse the user
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
@@ -663,6 +660,31 @@ public class TurnActivity extends Activity {
   }
 
   /**
+   * Sets the card status view to represent the specified RWS status
+   * @param rws (from Card class)
+   */
+  protected void setCardStatusView(int rws)
+  {
+    switch(rws){
+    case Card.RIGHT:
+      mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.RIGHT));
+      mCardStatus.setVisibility(View.VISIBLE);
+      break;
+    case Card.WRONG:
+      mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.WRONG));
+      mCardStatus.setVisibility(View.VISIBLE);
+      break;
+    case Card.SKIP:
+      mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.SKIP));
+      mCardStatus.setVisibility(View.VISIBLE);
+      break;
+    default:
+      mCardStatus.setVisibility(View.INVISIBLE);
+      break;
+    }
+  }
+  
+  /**
    * Handle when a back button is pressed (we only let the user go back one card
    * at this time.
    */
@@ -671,9 +693,11 @@ public class TurnActivity extends Activity {
       return;
     }
 
+    mIsBack = true;
+
     mAIsActive = !mAIsActive;
 
-    // Reassign view to animate backwords
+    // Reassign view to animate backwards
     mViewFlipper.setInAnimation(backInFromLeftAnimation());
     mViewFlipper.setOutAnimation(backOutToRightAnimation());
 
@@ -681,18 +705,12 @@ public class TurnActivity extends Activity {
 
     this.assignActiveCardViewReferences();
     mGameManager.processCard(Card.NOTSET);
-    Card curCard = mGameManager.getPreviousCard();
-    mCardTitle.setText(curCard.getTitle());
-    // Update bad words
-    this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
-    mIsBack = true;
+    mGameManager.getPreviousCard();
+    showCurrentCard();
 
     // Restore animations for future actions
     mViewFlipper.setInAnimation(inFromRightAnimation());
     mViewFlipper.setOutAnimation(outToLeftAnimation());
-
-    // Show mark when going back
-    mCardStatus.setVisibility(View.VISIBLE);
 
     // Play back sound
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
@@ -727,13 +745,11 @@ public class TurnActivity extends Activity {
    * checking.
    */
   protected void showNextCard() {
-
+    
     mGameManager.getNextCard(this.getBaseContext());
+    mIsBack = false;
     showCurrentCard();
     
-    // Hide the card status until marked
-    mCardStatus.setVisibility(View.INVISIBLE);
-    mIsBack = false;
   }
   
   /**
@@ -746,6 +762,9 @@ public class TurnActivity extends Activity {
     mCardTitle.setText(curCard.getTitle());
     // Update the badwords
     this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
+    
+    // Show the card status if it has one
+    setCardStatusView(curCard.getRws());
   }
 
   /**
