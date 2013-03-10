@@ -673,9 +673,11 @@ public class TurnActivity extends Activity {
     case Card.WRONG:
       mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.WRONG));
       mCardStatus.setVisibility(View.VISIBLE);
+      break;
     case Card.SKIP:
       mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.SKIP));
       mCardStatus.setVisibility(View.VISIBLE);
+      break;
     default:
       mCardStatus.setVisibility(View.INVISIBLE);
       break;
