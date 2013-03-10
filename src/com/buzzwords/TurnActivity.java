@@ -1048,6 +1048,7 @@ public class TurnActivity extends Activity {
 
     SharedPreferences turnStatePrefs =
         this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    boolean isAppRestored = turnStatePrefs.contains(Consts.PREFKEY_IS_TURN_IN_START_DIALOG);
 
     // Restore State of Turn based on preferences
     // Set which card is active
@@ -1055,9 +1056,13 @@ public class TurnActivity extends Activity {
     mIsBack = true;
     boolean isTurnInProgress = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_TURN_IN_PROGRESS, false);
     mIsWaitingForTeamReady = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_TURN_IN_START_DIALOG, true);
+    
     if(mIsWaitingForTeamReady)
     {
-      this.showDialog(DIALOG_READY_ID);
+      if(!isAppRestored)
+      {
+        this.showDialog(DIALOG_READY_ID);
+      }
       mCounter = createTurnTimer(mGameManager.getTurnTime());
     }
     else if (isTurnInProgress)
