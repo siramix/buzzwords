@@ -235,20 +235,24 @@ public class GameManager implements Serializable {
     SafeLog.d(TAG, "restoreState()");
     GameManager savedGameManager = null;
     try {
-      //use buffering
-      InputStream file = context.openFileInput(Consts.GAME_MANAGER_TEMP_FILE);
-      InputStream buffer = new BufferedInputStream( file );
-      ObjectInput input = new ObjectInputStream ( buffer );
-      try {
-        savedGameManager = (GameManager) input.readObject();
-      }
-      finally{
-        input.close();
+      if (context.getFileStreamPath(Consts.GAME_MANAGER_TEMP_FILE).exists()) {
+        //use buffering
+        InputStream file = context.openFileInput(Consts.GAME_MANAGER_TEMP_FILE);
+        InputStream buffer = new BufferedInputStream( file );
+        ObjectInput input = new ObjectInputStream ( buffer );
+        try {
+          savedGameManager = (GameManager) input.readObject();
+        }
+        finally{
+          input.close();
+        }
+      } else {
+        SafeLog.d(TAG, "SaveState file did not exist during restoreState.");
       }
     }
     catch(FileNotFoundException ex)
     {
-      SafeLog.d(TAG, "FileNotFoundException while restoring Game Manager.");
+      SafeLog.e(TAG, "FileNotFoundException while restoring Game Manager.", ex);
     }
     catch(ClassNotFoundException ex) {
       SafeLog.e(TAG, "ClassNotFoundException while restoring Game Manager.", ex);
