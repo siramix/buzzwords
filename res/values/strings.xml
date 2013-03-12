@@ -132,10 +132,11 @@
     <string name="rules_basics_subheader">Basics</string>
     <string name="rules_basics_text1">At its core, Buzzwords is a team game that pits friends against friends in cutthroat wordplay action. Here are the basics:</string>
     <string name="rules_basics_text2">Divide all players into teams of two or more.</string>
-    <string name="rules_basics_text3">Each turn, a team assigns a presenter who must try to get their team to guess as many secret words as possible without saying certain \'buzz\'words.</string>
-    <string name="rules_basics_text4">An opposing player enforces the list of \'buzz\'words.</string>
-    <string name="rules_basics_text5">Points are awarded for each successfully guessed word.</string>
-    <string name="rules_basics_text6">The team that has the most points at the end of the game wins!</string>
+    <string name="rules_basics_text3">Each turn a team assigns a presenter who must try to get their team to guess as many secret words as possible, without saying certain \'buzz\'words.</string>
+    <string name="rules_basics_text4">Use full sentences, single words, sounds, or even singing &#8212; but no \'buzz\'words!</string>
+    <string name="rules_basics_text5">An opposing player enforces the list of \'buzz\'words.</string>
+    <string name="rules_basics_text6">Points are awarded for each successfully guessed word.</string>
+    <string name="rules_basics_text7">The team that has the most points at the end of the game wins!</string>
     <string name="rules_houserules_subheader">House Rules: </string>
     <string name="rules_gameplay_subheader">Gameplay</string>
     <string name="rules_gameplay_text1">Let\'s take a look at the buttons you\'ll encounter while playing.</string>
