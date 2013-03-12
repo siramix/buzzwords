@@ -17,7 +17,7 @@
  ****************************************************************************/
 package com.buzzwords;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import com.buzzwords.GameManager;
 import com.buzzwords.R;
@@ -53,7 +53,7 @@ import android.widget.Toast;
 public class GameSetupActivity extends Activity {
 
   static final int DIALOG_TEAMERROR = 0;
-  private LinkedList<Team> mTeamList = new LinkedList<Team>();
+  private ArrayList<Team> mTeamList = new ArrayList<Team>();
   private static SharedPreferences mGameSetupPrefs;
   private static SharedPreferences.Editor mGameSetupPrefEditor;
   
@@ -127,7 +127,7 @@ public class GameSetupActivity extends Activity {
         try {
           GameManager gm = new GameManager(GameSetupActivity.this);
           gm.startGame(mTeamList, GameType.values()[mGameType],
-              mGameLimits[mGameType]);
+              mGameLimits[mGameType], getBaseContext());
           application.setGameManager(gm);
           keepLooping = false;
           

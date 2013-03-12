@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import com.buzzwords.R;
 
 import android.app.*;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -105,16 +106,36 @@ public class TurnActivity extends Activity {
   private RelativeLayout mTimerGroup;
   private RelativeLayout mButtonGroup;
 
+  
+  public GameManager getGameManager() {
+    if(mGameManager == null) {
+      BuzzWordsApplication application = (BuzzWordsApplication) this.getApplication();
+      mGameManager = application.getGameManager();
+    }
+    return mGameManager;
+  }
+
   /**
    * Tracks the current state of the Turn as a boolean. Set to true when time
    * has expired and activity is showing the user "Time's up!"
    */
-  private boolean mTurnIsOver = false;
+  private boolean mTurnTimeIsUp = false;
+  
+  /**
+   * Track whether or not the turn is still waiting on the Team Ready
+   */
+  private boolean mIsWaitingForTeamReady = false;
+
   /**
    * Track when the game has paused. This will prevents code from executing
    * pointlessly if already paused.
    */
   private boolean mIsPaused = true;
+  
+  /**
+   * Flag tells onPause event when leaving to the next activity
+   */
+  private boolean mExitingToNextActivity = false;
 
   /**
    * This is a reference to the current game manager
@@ -164,7 +185,7 @@ public class TurnActivity extends Activity {
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
         float velocityY) {
       // Do not let them do swipes while paused or time's up!
-      if (mIsPaused || mTurnIsOver) {
+      if (mIsPaused || mTurnTimeIsUp) {
         return false;
       }
 
@@ -204,24 +225,76 @@ public class TurnActivity extends Activity {
   private PauseTimer mResultsDelay;
 
   /**
-   * Starts the turn timer and the animations that go along with that
+   * Setup the turn timer and return a reference to it.
+   * Also set up the fill bar associated with the timer.
+   * 
+   * @return a reference to the turn timer
    */
-  private void startTimer() {
-    mCounter.start();
-    mTimerfill.startAnimation(timerAnimation(TurnActivity.TIMERANIM_START_ID));
+  public PauseTimer createTurnTimer(long time) {
+    
+    mTimerfill.startAnimation(timerPauseAnimation(time));
+    long shownTime = (long) Math.ceil((double) time / 1000);
+    mCountdownText.setText(Long.toString(shownTime));
+    
+    // Initialize the turn timer
+    return new PauseTimer(time) {
+
+      @Override
+      public void onFinish() {
+        TurnActivity.this.onTimeExpired();
+        mCountdownText.setText("0");
+        mTurnTimeIsUp= true;
+      }
+
+      @Override
+      public void onTick() {
+        // Update our text each second
+        long time = mCounter.getTimeRemaining();
+        long shownTime = (long) Math.ceil((double) time / 1000);
+        mCountdownText.setText(Long.toString(shownTime));
+
+        // When music is not enabled, use the ticking sound
+        if (!mMusicEnabled && !mIsTicking) {
+          if (shownTime == 10) {
+            SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(getBaseContext());
+
+            // Only play ticking when sound effects are enabled
+            if (sp.getBoolean(Consts.PREFKEY_SFX, true)) {
+              mIsTicking = true;
+              BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
+                  .getApplication();
+              MediaPlayer mp = application.getMusicPlayer(TurnActivity.this
+                  .getBaseContext());
+              mp.start();
+            }
+          }
+        }
+      }
+
+    };
+
   }
 
   /**
-   * Stops the turn timer and the animations that go along with that
+   * Starts the turn timer and the animations that go along with that
+   */
+  private void startTurnTimer() {
+    mCounter.start();
+    mTimerfill.startAnimation(timerCountdownAnimation(mCounter.getTimeRemaining()));
+  }
+
+  /**
+   * Stops the turn timer and the animations that go along with it
    */
   private void stopTurnTimer() {
     SafeLog.d(TAG, "stopTimer()");
     SafeLog.d(TAG, Long.toString(mCounter.getTimeRemaining()));
 
-    if (!mTurnIsOver && mCounter.isActive()) {
+    if (!mTurnTimeIsUp && mCounter.isActive()) {
       mCounter.pause();
       mTimerfill
-          .startAnimation(timerAnimation(TurnActivity.TIMERANIM_PAUSE_ID));
+          .startAnimation(timerPauseAnimation(mCounter.getTimeRemaining()));
     }
   }
 
@@ -232,10 +305,10 @@ public class TurnActivity extends Activity {
     SafeLog.d(TAG, "resumeTimer()");
     SafeLog.d(TAG, Long.toString(mCounter.getTimeRemaining()));
 
-    if (!mTurnIsOver && !mCounter.isActive()) {
+    if (!mTurnTimeIsUp && !mCounter.isActive()) {
       mCounter.resume();
       mTimerfill
-          .startAnimation(timerAnimation(TurnActivity.TIMERANIM_RESUME_ID));
+          .startAnimation(timerCountdownAnimation(mCounter.getTimeRemaining()));
     }
   }
 
@@ -337,7 +410,7 @@ public class TurnActivity extends Activity {
     public void onClick(View v) {
       // If music is disabled, just resume the game immediately (don't wait for
       // music to seek unless it's begun)
-      if (mTurnIsOver || (!mMusicEnabled && !mIsTicking)) {
+      if (mTurnTimeIsUp || (!mMusicEnabled && !mIsTicking)) {
         // Turn is over when timer reaches 0. At that point, we should just not
         // resume music
         TurnActivity.this.resumeGame();
@@ -349,7 +422,7 @@ public class TurnActivity extends Activity {
             .getBaseContext());
         int elapsedtime;
         if (mMusicEnabled) {
-          elapsedtime = mGameManager.getTurnTime()
+          elapsedtime = getGameManager().getTurnTime()
               - (int) mCounter.getTimeRemaining();
         } else {
           elapsedtime = 10000 - (int) mCounter.getTimeRemaining();
@@ -480,30 +553,40 @@ public class TurnActivity extends Activity {
   }
 
   /**
-   * Animation method for the timer bar that takes an integer to determine
-   * whether it is starting, resuming, or stopping animation.
-   * 
-   * @param timerCommand
-   *          an integer value of 0 for Pause, 1 for Resume, and 2 for Start
+   * Animation method for the timer bar that takes the time remaining
+   * and sets the bar to scale from the existing percent to 0 over the time. 
    * 
    * @return The animation that scales the timer as the time depletes
    */
-  private Animation timerAnimation(int timerCommand) {
-    float percentTimeLeft = ((float) mCounter.getTimeRemaining() / mGameManager
+  private Animation timerCountdownAnimation(float time) {
+    float percentTimeLeft = ((float) time / mGameManager
         .getTurnTime());
-    int duration = mGameManager.getTurnTime();
-
-    if (timerCommand == TurnActivity.TIMERANIM_RESUME_ID) {
-      duration = (int) mCounter.getTimeRemaining();
-    } else if (timerCommand == TurnActivity.TIMERANIM_PAUSE_ID) {
-      duration = Integer.MAX_VALUE;
-    }
 
     ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, 0.0f, 1.0f,
         1.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
         1.0f);
 
+    int duration = (int) mCounter.getTimeRemaining();
+
     scaleTimer.setDuration(duration);
+    scaleTimer.setInterpolator(new LinearInterpolator());
+    return scaleTimer;
+  }
+
+  /**
+   * Pause animation allows the timer to pause at a certain percentage scale
+   * @param time represented by the paused timer
+   * @return
+   */
+  private Animation timerPauseAnimation(long time) {
+    float percentTimeLeft = ((float) time / mGameManager
+        .getTurnTime());
+
+    ScaleAnimation scaleTimer = new ScaleAnimation(percentTimeLeft, percentTimeLeft, 1.0f,
+        1.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
+        1.0f);
+
+    scaleTimer.setFillAfter(true);
     scaleTimer.setInterpolator(new LinearInterpolator());
     return scaleTimer;
   }
@@ -522,15 +605,14 @@ public class TurnActivity extends Activity {
     mGameManager.processCard(Card.RIGHT);
 
     // Mark the card with an icon
-    mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.RIGHT));
-    mCardStatus.setVisibility(View.VISIBLE);
+    setCardStatusView(Card.RIGHT);
 
     // Only play sound once card has been processed so we don't confuse the user
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     sm.playSound(SoundManager.Sound.RIGHT);
 
     // Show the next card
-    showCard();
+    showNextCard();
   }
 
   /**
@@ -546,15 +628,14 @@ public class TurnActivity extends Activity {
     mGameManager.processCard(Card.WRONG);
 
     // Mark the card with an icon
-    mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.WRONG));
-    mCardStatus.setVisibility(View.VISIBLE);
+    setCardStatusView(Card.WRONG);
 
     // Only play sound once card has been processed so we don't confuse the user
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     sm.playSound(SoundManager.Sound.WRONG);
 
     // Show the next card
-    showCard();
+    showNextCard();
   }
 
   /**
@@ -568,17 +649,41 @@ public class TurnActivity extends Activity {
     mGameManager.processCard(Card.SKIP);
 
     // Mark the card with an icon for SKIP
-    mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.SKIP));
-    mCardStatus.setVisibility(View.VISIBLE);
+    setCardStatusView(Card.SKIP);
 
     // Only play sound once card has been processed so we don't confuse the user
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     sm.playSound(SoundManager.Sound.SKIP);
 
     // Show the next card
-    showCard();
+    showNextCard();
   }
 
+  /**
+   * Sets the card status view to represent the specified RWS status
+   * @param rws (from Card class)
+   */
+  protected void setCardStatusView(int rws)
+  {
+    switch(rws){
+    case Card.RIGHT:
+      mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.RIGHT));
+      mCardStatus.setVisibility(View.VISIBLE);
+      break;
+    case Card.WRONG:
+      mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.WRONG));
+      mCardStatus.setVisibility(View.VISIBLE);
+      break;
+    case Card.SKIP:
+      mCardStatus.setBackgroundResource(Card.getCardMarkDrawableId(Card.SKIP));
+      mCardStatus.setVisibility(View.VISIBLE);
+      break;
+    default:
+      mCardStatus.setVisibility(View.INVISIBLE);
+      break;
+    }
+  }
+  
   /**
    * Handle when a back button is pressed (we only let the user go back one card
    * at this time.
@@ -588,28 +693,24 @@ public class TurnActivity extends Activity {
       return;
     }
 
+    mIsBack = true;
+
     mAIsActive = !mAIsActive;
 
-    // Reassign view to animate backwords
+    // Reassign view to animate backwards
     mViewFlipper.setInAnimation(backInFromLeftAnimation());
     mViewFlipper.setOutAnimation(backOutToRightAnimation());
 
     mViewFlipper.showNext();
 
-    this.setActiveCard();
+    this.assignActiveCardViewReferences();
     mGameManager.processCard(Card.NOTSET);
-    Card curCard = mGameManager.getPreviousCard();
-    mCardTitle.setText(curCard.getTitle());
-    // Update bad words
-    this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
-    mIsBack = true;
+    mGameManager.getPreviousCard();
+    showCurrentCard();
 
     // Restore animations for future actions
     mViewFlipper.setInAnimation(inFromRightAnimation());
     mViewFlipper.setOutAnimation(outToLeftAnimation());
-
-    // Show mark when going back
-    mCardStatus.setVisibility(View.VISIBLE);
 
     // Play back sound
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
@@ -619,7 +720,7 @@ public class TurnActivity extends Activity {
   /**
    * Updates references to reflect the A or B status of the current card
    */
-  protected void setActiveCard() {
+  protected void assignActiveCardViewReferences() {
     int curTitle;
     int curWords;
     int curStatus;
@@ -643,16 +744,27 @@ public class TurnActivity extends Activity {
    * Function for changing the currently viewed card. It does a bit of bounds
    * checking.
    */
-  protected void showCard() {
-    this.setActiveCard();
-
-    Card curCard = mGameManager.getNextCard();
+  protected void showNextCard() {
+    
+    mGameManager.getNextCard(this.getBaseContext());
+    mIsBack = false;
+    showCurrentCard();
+    
+  }
+  
+  /**
+   * Update the views for the current card to reflect the current card
+   */
+  protected void showCurrentCard() {
+    this.assignActiveCardViewReferences();
+    
+    Card curCard = this.getGameManager().getCurrentCard();
     mCardTitle.setText(curCard.getTitle());
     // Update the badwords
     this.setBadWords(mCardBadWords, curCard, mGameManager.getActiveTeam());
-    // Hide the card status until marked
-    mCardStatus.setVisibility(View.INVISIBLE);
-    mIsBack = false;
+    
+    // Show the card status if it has one
+    setCardStatusView(curCard.getRws());
   }
 
   /**
@@ -692,9 +804,10 @@ public class TurnActivity extends Activity {
    */
   protected void onTimeExpired() {
     mResultsDelay = new PauseTimer(1500) {
+
       @Override
       public void onFinish() {
-        TurnActivity.this.endTurn();
+        TurnActivity.this.onDelayTimerExpired();
       }
 
       @Override
@@ -721,33 +834,55 @@ public class TurnActivity extends Activity {
     timer.setVisibility(View.INVISIBLE);
 
     // Hide card
-    this.setActiveCard();
+    this.assignActiveCardViewReferences();
     mViewFlipper.setVisibility(View.INVISIBLE);
 
-    // turn off buttons
+    // Turn off buttons
     mBuzzerButton.setEnabled(false);
     mSkipButton.setEnabled(false);
     mNextButton.setEnabled(false);
+    mMenuButton.setEnabled(false);
+    mTimerGroup.setEnabled(false);
 
     TextView timesUpView = (TextView) this.findViewById(R.id.Turn_TimesUp);
     timesUpView.setVisibility(View.VISIBLE);
+  }
+  
+  /**
+   * Method contains everything that should happen when the
+   * second timer goes off, the one that delays before TurnSummary.
+   */
+  private void onDelayTimerExpired()
+  {
+    endTurnAndAdvance();
   }
 
   /**
    * Hands off the intent to the next turn summary activity.
    */
-  protected void endTurn() {
+  protected void endTurnAndAdvance() {
+    wrapupTurn();
+    mExitingToNextActivity = true;
+    startActivity(new Intent(getString(R.string.IntentTurnSummary), getIntent()
+        .getData()));
+  }
+  
+  /**
+   * Wrapup turn handles score and cleanup of variables that is necessary
+   * just before the Turn activity ends
+   */
+  protected void wrapupTurn()
+  {
+    // Must force flag time up in case they ended through menu
+    mTurnTimeIsUp = true;
     BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
         .getApplication();
     
     // Clean up Music resources
     application.cleanUpMusicPlayer();
     
-    GameManager gm = application.getGameManager();
+    GameManager gm = this.getGameManager();
     gm.addTurnScore();
-
-    startActivity(new Intent(getString(R.string.IntentTurnSummary), getIntent()
-        .getData()));
   }
 
   /**
@@ -755,10 +890,6 @@ public class TurnActivity extends Activity {
    * the activity creation
    */
   protected void setupViewReferences() {
-    BuzzWordsApplication application = (BuzzWordsApplication) this
-        .getApplication();
-    mGameManager = application.getGameManager();
-
     mPauseOverlay = (View) this.findViewById(R.id.Turn_PauseOverlay);
     mCountdownText = (TextView) findViewById(R.id.Turn_Timer);
     mViewFlipper = (ViewFlipper) this.findViewById(R.id.Turn_ViewFlipper);
@@ -837,7 +968,7 @@ public class TurnActivity extends Activity {
     // Change views to appropriate team color
     ImageView barFill = (ImageView) this.findViewById(R.id.Turn_TimerFill);
     // Color timer fill
-    Team curTeam = mGameManager.getActiveTeam();
+    Team curTeam = this.getGameManager().getActiveTeam();
     barFill.setImageResource(curTeam.getPrimaryColor());
 
     // Set Turn Timer frame color
@@ -858,26 +989,27 @@ public class TurnActivity extends Activity {
    * 
    * @return a reference to the turn timer
    */
-  public PauseTimer setupTurnTimer() {
+  public PauseTimer setupTurnTimer(long time) {
+
     // Initialize the turn timer
-    long time = mGameManager.getTurnTime();
     return new PauseTimer(time) {
+
       @Override
       public void onFinish() {
         TurnActivity.this.onTimeExpired();
         mCountdownText.setText("0");
-        mTurnIsOver = true;
+        mTurnTimeIsUp = true;
       }
 
       @Override
       public void onTick() {
         // Update our text each second
-        long shownTime = (mCounter.getTimeRemaining() / 1000) + 1;
-        mCountdownText.setText(Long.toString(shownTime));
+        long remainingTime = (mCounter.getTimeRemaining() / 1000) + 1;
+        mCountdownText.setText(Long.toString(remainingTime));
 
         // When music is not enabled, use the ticking sound
         if (!mMusicEnabled && !mIsTicking) {
-          if (shownTime == 10) {
+          if (remainingTime == 10) {
             SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(getBaseContext());
 
@@ -906,6 +1038,9 @@ public class TurnActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    // Setup the view
+    this.setContentView(R.layout.turn);
+
     final float scale = TurnActivity.this.getResources().getDisplayMetrics().density;
     mGestureThreshold = (int) (SWIPE_MIN_DISTANCE_DP * scale + 0.5f);
     mGestureVelocityThreshold = (int) (SWIPE_THRESHOLD_VELOCITY_DP * scale + 0.5f);
@@ -914,41 +1049,60 @@ public class TurnActivity extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
 
-    if (sp.getBoolean(Consts.PREFKEY_MUSIC, true))
-      mMusicEnabled = true;
-    else
-      mMusicEnabled = false;
+    mMusicEnabled = sp.getBoolean(Consts.PREFKEY_MUSIC, true);
 
     // Set local variable for skip preference to reduce calls to get
-    if (sp.getBoolean(Consts.PREFKEY_SKIP, true))
-      mSkipEnabled = true;
-    else
-      mSkipEnabled = false;
+    mSkipEnabled = sp.getBoolean(Consts.PREFKEY_SKIP, true);
 
     // Set local variable for allowing gesture preference to reduce get calls
-    if (sp.getBoolean(Consts.PREFKEY_GESTURES, true))
-      mGesturesEnabled = true;
-    else
-      mGesturesEnabled = false;
+    mGesturesEnabled = sp.getBoolean(Consts.PREFKEY_GESTURES, true);
 
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-    // set which card is active
-    mAIsActive = true;
-    mIsBack = true;
-
-    // Setup the view
-    this.setContentView(R.layout.turn);
+    mGameManager = this.getGameManager();
 
     this.setupViewReferences();
-
     this.setupUIProperties();
 
-    this.showDialog(DIALOG_READY_ID);
+    SharedPreferences turnStatePrefs = this.getSharedPreferences(
+        Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    boolean isAppRestored = turnStatePrefs
+        .contains(Consts.PREFKEY_IS_TURN_IN_START_DIALOG);
 
-    this.mCounter = setupTurnTimer();
+    // Restore State of Turn based on preferences
+    // Set which card is active
+    mAIsActive = true;
+    mIsBack = true;
+    boolean isTurnInProgress = turnStatePrefs.getBoolean(
+        Consts.PREFKEY_IS_TURN_IN_PROGRESS, false);
+    mIsWaitingForTeamReady = turnStatePrefs.getBoolean(
+        Consts.PREFKEY_IS_TURN_IN_START_DIALOG, true);
 
+    if (mIsWaitingForTeamReady) {
+      // Dialog is automatically restored by OS, so only show it if it is not a
+      // restore.
+      if (!isAppRestored) {
+        this.showDialog(DIALOG_READY_ID);
+      }
+      mCounter = createTurnTimer(mGameManager.getTurnTime());
+    } else if (isTurnInProgress) {
+      mAIsActive = turnStatePrefs.getBoolean(Consts.PREFKEY_A_IS_ACTIVE, true);
+      if (!mAIsActive) {
+        mViewFlipper.showNext();
+      }
+      mIsBack = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_BACK, true);
+      mIsTicking = turnStatePrefs.getBoolean(Consts.PREFKEY_IS_TICKING, false);
+      long curTime = turnStatePrefs.getLong(Consts.PREFKEY_TURN_TIME_REMAINING,
+          mGameManager.getTurnTime());
+      mCounter = createTurnTimer(curTime);
+      this.showCurrentCard();
+      this.pauseGame();
+    } else {
+      // Spoof time expired for ResultsDelay - no need in delaying if
+      // starting from a finished turn
+      onDelayTimerExpired();
+    }
   }
 
   /**
@@ -970,12 +1124,66 @@ public class TurnActivity extends Activity {
     super.onPause();
     SafeLog.d(TAG, "onPause()");
 
-    if (!mIsPaused && !mTurnIsOver) {
-      this.pauseGame();
+    if (!mTurnTimeIsUp && !mIsWaitingForTeamReady) {
+      this.pauseIfNotPaused();
     }
-    mGameManager.updateSeenFields();
+    
+    // Pause the delay timer when backgrounding. This fixes an issue
+    // when you background the app during TimesUp. Turn Pauses and
+    // serializes, but the activity advances while backgrounded,
+    // meaning onPause does not get called again and the Preference
+    // clear is bypassed
+    if (mTurnTimeIsUp && !mExitingToNextActivity) {
+      mResultsDelay.pause();
+    }
+    
+    mGameManager.updateSeenFields(this.getBaseContext());
+    
+    SharedPreferences turnStatePrefs =
+        this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    SharedPreferences.Editor turnStatePrefsEditor = turnStatePrefs.edit();
+
+    if (mExitingToNextActivity) {
+      // When exiting to TurnSummary we clear the results so that next time
+      // through we don't restore to this state
+      turnStatePrefsEditor.clear();
+    } else {
+      mGameManager.saveState(this.getBaseContext());
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_TURN_IN_START_DIALOG,
+          mIsWaitingForTeamReady);
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_TURN_IN_PROGRESS,
+          !mTurnTimeIsUp);
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_A_IS_ACTIVE, mAIsActive);
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_BACK, mIsBack);
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_TICKING, mIsTicking);
+      turnStatePrefsEditor.putLong(Consts.PREFKEY_TURN_TIME_REMAINING,
+          mCounter.getTimeRemaining());
+    }
+    turnStatePrefsEditor.commit();
+  }
+  
+  /**
+   * Restores anything that was saved off in onPause
+   */
+  @Override
+  public void onResume() {
+    super.onResume();
+    
+    if(mResultsDelay != null)
+    {
+      mResultsDelay.resume();
+    }
   }
 
+  /**
+   * Pauses the game only if it is not already paused
+   */
+  public void pauseIfNotPaused() {
+    if(!mIsPaused && !mIsWaitingForTeamReady) {
+      this.pauseGame();
+    }
+  }
+  
   /**
    * Display a dialog when the search is requested
    */
@@ -1003,7 +1211,7 @@ public class TurnActivity extends Activity {
               SoundManager sm = SoundManager.getInstance(TurnActivity.this
                   .getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
-              endTurn();
+              endTurnAndAdvance();
             }
           }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -1027,16 +1235,10 @@ public class TurnActivity extends Activity {
                   .getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
 
-              BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
-                  .getApplication();
+              wrapupTurn();
+              getGameManager().endGame();
               
-              // Clean up music resources
-              application.cleanUpMusicPlayer();
-              
-              GameManager gm = application.getGameManager();
-              // Add whatever score they've gotten in this turn
-              gm.addTurnScore();
-              gm.endGame();
+              mExitingToNextActivity = true;
               startActivity(new Intent(getString(R.string.IntentEndGame),
                   getIntent().getData()));
             }
@@ -1067,6 +1269,7 @@ public class TurnActivity extends Activity {
 
             public void onClick(DialogInterface dialog, int which) {
               dialog.dismiss();
+              mIsWaitingForTeamReady = false;
               startGame();
             }
           });
@@ -1120,10 +1323,10 @@ public class TurnActivity extends Activity {
 
     setSleepAllowed(false);
 
-    if (!mTurnIsOver) {
+    if (!mTurnTimeIsUp) {
       this.resumeTurnTimer();
 
-      this.setActiveCard();
+      this.assignActiveCardViewReferences();
 
       // Play resume sound
       SoundManager sm = SoundManager.getInstance(this.getBaseContext());
@@ -1178,13 +1381,14 @@ public class TurnActivity extends Activity {
     SoundManager sm = SoundManager.getInstance(this.getBaseContext());
     sm.playSound(SoundManager.Sound.TEAMREADY);
 
-    // Make timer group allow unpause while paused.
+    // Don't let timer unpause the game. This was just making it 
+    // really easy to double tap and pause unpause on accident
     mTimerGroup.setEnabled(false);
 
-    if (!mTurnIsOver) {
+    if (!mTurnTimeIsUp) {
       this.stopTurnTimer();
 
-      this.setActiveCard();
+      this.assignActiveCardViewReferences();
 
       mViewFlipper.setVisibility(View.INVISIBLE);
       mBuzzerButton.setEnabled(false);
@@ -1205,9 +1409,9 @@ public class TurnActivity extends Activity {
    */
   private void startGame() {
     mIsPaused = false;
-    TurnActivity.this.showCard();
+    TurnActivity.this.showNextCard();
     mIsBack = true;
-    TurnActivity.this.startTimer();
+    TurnActivity.this.startTurnTimer();
 
     setSleepAllowed(false);
 
@@ -1219,7 +1423,7 @@ public class TurnActivity extends Activity {
     // Start the turn music
     BuzzWordsApplication application = (BuzzWordsApplication) TurnActivity.this
         .getApplication();
-    GameManager gm = application.getGameManager();
+    GameManager gm = this.getGameManager();
 
     int musicId = R.raw.mus_countdown;
     // If music is enabled, select the appropriate track
@@ -1251,10 +1455,7 @@ public class TurnActivity extends Activity {
    */
   @Override
   public boolean onMenuOpened(int featureId, Menu menu) {
-    if (!mIsPaused) {
-      this.pauseGame();
-    }
-
+    pauseIfNotPaused();
     return true;
   }
 
@@ -1286,7 +1487,7 @@ public class TurnActivity extends Activity {
     // Back button should go to the previous card
     if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
         && !event.isCanceled()) {
-      if (!(mIsPaused || mTurnIsOver)) {
+      if (!(mIsPaused || mTurnTimeIsUp)) {
         this.doBack();
       }
       return true;

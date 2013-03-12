@@ -51,5 +51,29 @@ public class Consts {
     public static final String PREFKEY_SKIP_SCORE = "com.buzzwords.SKIP_SCORE";
     public static final String PREFKEY_RESET_PACKS = "com.buzzwords.RESET_PACKS";
     public static final String PREFKEY_DB_INITIALIZED = "com.buzzwords.DB_INITIALIZED";
+    public static final String PREFKEY_MUSIC_RESOURCE = "com.buzzwords.MUSIC_RESOURCE";
+    public static final String PREFKEY_MUSIC_LOOPING = "com.buzzwords.MUSIC_LOOPING";
+    public static final String PREFKEY_IS_TURN_IN_PROGRESS = "com.buzzwords.TURN_IN_PROGRESS";
+    public static final String PREFKEY_A_IS_ACTIVE = "com.buzzwords.A_IS_ACTIVE";
+    public static final String PREFKEY_IS_BACK = "com.buzzwords.IS_BACK";
+    public static final String PREFKEY_IS_TICKING = "com.buzzwords.IS_TICKING";
+    public static final String PREFKEY_IS_PAUSED = "com.buzzwords.IS_PAUSED";
+    public static final String PREFKEY_IS_TURN_IN_START_DIALOG = "com.buzzwords.IS_TURN_IN_START_DIALOG";
+    public static final String PREFKEY_TURN_TIME_REMAINING = "com.buzzwords.TURN_TIME_REMAINING";
     public static final String PREFFILE_PACK_SELECTIONS = "com.buzzwords.PACK_SELECTIONS";
+    public static final String PREFFILE_MUSIC_STATE = "com.buzzwords.MUSIC_STATE";
+    public static final String PREFFILE_TURN_STATE = "com.buzzwords.TURN_STATE";
+
+    public static final String DECK_TEMP_FILE = "cur_deck.ser";
+    public static final String GAME_MANAGER_TEMP_FILE = "cur_gm.ser";
+    public static final String TIMER_TEMP_FILE = "cur_timer.ser";
+    
+    public static final String DATABASE_NAME = "buzzwords";
+    public static final int DATABASE_VERSION = 3;
+    
+    public static final int CACHE_MAXSIZE = 100;
+    public static final int CACHE_TURNSIZE = 20;
+    
+    public static final int PACK_CURRENT = -1;
+    public static final int PACK_NOT_PRESENT = -2;
 }
