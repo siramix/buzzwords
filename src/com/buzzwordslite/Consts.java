@@ -40,7 +40,8 @@ package com.buzzwordslite;
 public class Consts {
 
     public static final boolean DEBUG = true;
-    public static final String PREFKEY_NUM_BUZZWORDS = "com.buzzwords.NUM_BUZZWORDS";
+    public static final String PREFKEY_NUM_BUZZWORDS = "com.buzzwordslitelite.NUM_BUZZWORDS";
+
     public static final String PREFKEY_TIMER = "com.buzzwordslite.TURN_TIMER";
     public static final String PREFKEY_MUSIC = "com.buzzwordslite.MUSIC_ENABLED";
     public static final String PREFKEY_SFX = "com.buzzwordslite.SFX_ENABLED";
@@ -53,13 +54,12 @@ public class Consts {
     public static final String PREFKEY_DB_INITIALIZED = "com.buzzwordslite.DB_INITIALIZED";
     public static final String PREFKEY_MUSIC_RESOURCE = "com.buzzwordslite.MUSIC_RESOURCE";
     public static final String PREFKEY_MUSIC_LOOPING = "com.buzzwordslite.MUSIC_LOOPING";
-    public static final String PREFKEY_TURN_GOING = "com.buzzwordslite.TURN_GOING";
+    public static final String PREFKEY_IS_TURN_IN_PROGRESS = "com.buzzwordslite.TURN_IN_PROGRESS";
     public static final String PREFKEY_A_IS_ACTIVE = "com.buzzwordslite.A_IS_ACTIVE";
     public static final String PREFKEY_IS_BACK = "com.buzzwordslite.IS_BACK";
     public static final String PREFKEY_IS_TICKING = "com.buzzwordslite.IS_TICKING";
     public static final String PREFKEY_IS_PAUSED = "com.buzzwordslite.IS_PAUSED";
-    public static final String PREFKEY_IS_TURN_OVER = "com.buzzwordslite.IS_TURN_OVER";
-    public static final String PREFKEY_IS_IN_TURN_START_DIALOG = "com.buzzwordslite.IS_IN_TURN_START_DIALOG";
+    public static final String PREFKEY_IS_TURN_IN_START_DIALOG = "com.buzzwordslite.IS_TURN_IN_START_DIALOG";
     public static final String PREFKEY_TURN_TIME_REMAINING = "com.buzzwordslite.TURN_TIME_REMAINING";
     public static final String PREFFILE_PACK_SELECTIONS = "com.buzzwordslite.PACK_SELECTIONS";
     public static final String PREFFILE_MUSIC_STATE = "com.buzzwordslite.MUSIC_STATE";

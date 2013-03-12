@@ -59,6 +59,12 @@ public class SplashScreenActivity extends Activity {
     // Initialize the soundManager during splash
     SoundManager.getInstance(this.getBaseContext());
 
+    // Kill any existing game states, as they are garbage
+    BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+    GameManager gameManager = application.getGameManager();
+    if (gameManager != null) {
+      gameManager.cleanupSaveState(this);
+    }
     // Fade in the logo
     this.fadeIn();
   }

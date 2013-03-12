@@ -27,7 +27,6 @@ import com.buzzwordslite.GameManager.GameType;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -382,14 +381,6 @@ public class GameSetupActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    // This sets up the preference so the application does not think that a
-    // turn is in progress on the TurnActivity onCreate
-    SharedPreferences turnStatePrefs =
-        this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
-    SharedPreferences.Editor turnStatePrefsEditor = turnStatePrefs.edit();
-    turnStatePrefsEditor.putBoolean(Consts.PREFKEY_TURN_GOING, false);
-    turnStatePrefsEditor.commit();
 
     // Setup the view
     this.setContentView(R.layout.gamesetup);
