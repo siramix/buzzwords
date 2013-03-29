@@ -9,6 +9,10 @@
         android:minSdkVersion="5"
         android:targetSdkVersion="16" />
 
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
     <application
         android:name="com.buzzwords.BuzzWordsApplication"
         android:allowBackup="true"
@@ -16,6 +20,13 @@
         android:icon="@drawable/icon"
         android:label="@string/AppName"
         android:theme="@style/BuzzWordsTheme" >
+        <receiver android:name="com.amazon.inapp.purchasing.ResponseReceiver" >
+            <intent-filter>
+                <action
+                    android:name="com.amazon.inapp.purchasing.NOTIFY"
+                    android:permission="com.amazon.inapp.purchasing.Permission.NOTIFY" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".SplashScreenActivity"
@@ -37,6 +48,16 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.buzzwords.intent.action.TITLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PackPurchaseActivity"
+            android:exported="false"
+            android:label="@string/AppName"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.WORDPACKPURCHASE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -149,6 +170,19 @@
             android:theme="@style/NoTitleDialog" >
             <intent-filter>
                 <action android:name="com.buzzwords.intent.action.EDITTEAMNAME" >
+                </action>
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PackInfoActivity"
+            android:exported="false"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleDialog" >
+            <intent-filter>
+                <action android:name="com.buzzwords.intent.action.PACKINFO" >
                 </action>
                 <category android:name="android.intent.category.DEFAULT" >
                 </category>

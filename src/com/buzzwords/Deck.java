@@ -27,6 +27,8 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -210,7 +212,25 @@ public class Deck implements Serializable {
     }
     return localPacks;
   }
-
+  
+  /**
+   * Take a Pack object and pull in cards from the server into the database. 
+   * @param pack
+   * @throws RuntimeException 
+   */
+  public void installPack(Pack pack, Context context) throws RuntimeException {
+    // If pack is out of date, delete the icon and get the new
+    DeckOpenHelper helper = DeckOpenHelper.getInstance(context);
+    int packState = helper.packInstalled(pack.getId(), pack.getVersion());
+    if (packState == pack.getId()) {
+      PackIconUtils.deleteIcon(pack.getIconName(), context);
+    } else if (packState == Consts.PACK_NOT_PRESENT) {
+      setPackSelectionPref(pack.getId(), true, context);
+    }
+    
+    helper.installOrUpdatePackFromServer(pack);
+  }
+  
   /**
    * Install all of the packs that the app comes with.  This ultimately
    * will be just one pack.
@@ -231,7 +251,25 @@ public class Deck implements Serializable {
     setPackSelectionPref(mStarterPack2.getId(), true);
     */
   }
-
+  
+  /** 
+   * Delete the pack and phrases associated with a given Pack Id.  Will first
+   * check that the pack exists before attempting to perform any deletions.
+   * @param packId to remove
+   */
+  public synchronized void uninstallPack(int packId, Context context) {
+    SafeLog.d(TAG, "REMOVING PACK: " + packId);
+    DeckOpenHelper helper = DeckOpenHelper.getInstance(context);
+    Pack pack = helper.getPackFromDB(String.valueOf(packId)); 
+    if (pack != null) {
+      PackIconUtils.deleteIcon(pack.getIconName(), context);
+      helper.uninstallPack(String.valueOf(packId));
+      setPackSelectionPref(packId, false, context);
+    }
+    else {
+      SafeLog.d(TAG, "PackId " + String.valueOf(packId) + " not found in database.");
+    }
+  }
   
   /**
    * Shuffle all cards in the database by setting the date played to a year

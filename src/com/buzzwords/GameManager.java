@@ -416,6 +416,33 @@ public class GameManager implements Serializable {
   }
 
   /**
+   * Check Deck for pack's status.  Update if out of date, or install 
+   * if not found.  Otherwise do nothing.
+   * @param pack to install/update/check status
+   * @throws Exception 
+   */
+  public synchronized void installPack(final Pack pack, Context context) throws RuntimeException {
+    mDeck.installPack(pack, context);
+  }
+
+  /**
+   * Attempt to remove the pack with _id == packId
+   * 
+   * @param packId
+   *          the id of the pack to remove
+   * @param removeDialog
+   *          a dialog that is shown to users during removal
+   */
+  public synchronized void uninstallPack(final int packId, Context context) {
+    try {
+      mDeck.uninstallPack(packId, context);
+    } catch (RuntimeException e) {
+      SafeLog.e(TAG, "Unable to install pack: " + String.valueOf(packId));
+      e.printStackTrace();
+    }
+  }
+
+  /**
    * The game manager will have the Deck update the play date for any cards the
    * Deck has marked as "seen". Runs inside a thread.
    * @param context the context for the deck

@@ -20,6 +20,7 @@ package com.buzzwords;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -258,20 +259,6 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
   }
 
   /**
-   * Helper method to throw a user exception, logging an error
-   * message and the stacktrace before throwing the exception.
-   * @param e error to print stacktrace for
-   * @param msg to log
-   * @throws RuntimeException
-   */
-  static private void throwUserException(Exception e, String msg) throws RuntimeException {
-    SafeLog.e(TAG, msg);
-    e.printStackTrace();
-    RuntimeException userException = new RuntimeException(e);
-    throw userException;
-  }
-
-  /**
    * Load the words from the JSON file using only one SQLite database. This
    * function loads the words from a json file that is stored as a resource in the project
    * 
@@ -324,6 +311,78 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
         upsertCard(curCard, pack.getId(), mDatabase);
       }
       upsertPack(pack, mDatabase);
+      mDatabase.setTransactionSuccessful();
+    } finally {
+      mDatabase.endTransaction();
+    }
+    if (mDatabase.isOpen()) {
+      mDatabase.close();
+    }
+  }
+
+  
+  /**
+   * Take a Pack and determine whether it needs to be updated, installed, or ignored.
+   * If Pack needs to be installed, request the cards to install from the server and 
+   * perform installation.
+   * 
+   * @param serverPack Pack of cards to install
+   * @throws IOException
+   * @throws URISyntaxException
+   * @return true if sync successful (up to date/installed) false for failure to install
+   * @throws RuntimeException 
+   */
+  public synchronized void installOrUpdatePackFromServer(Pack serverPack) throws RuntimeException {
+    SafeLog.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
+    int packId = packInstalled(serverPack.getId(), serverPack.getVersion());
+
+    CardJSONIterator cardItr;
+    
+    // Don't add a pack if it's already there
+    if (packId == Consts.PACK_CURRENT) {
+      SafeLog.d(TAG, "No update required, pack " + serverPack.getName() + " current.");
+      return;
+    }
+    if(packId == Consts.PACK_NOT_PRESENT) { 
+      // I BELIEVE that we could get a database lock issues when an exception is thrown here.
+      // To prevent this, close the db on exception. 
+      try {
+        cardItr = PackClient.getInstance().getCardsForPack(serverPack);
+        installPack(serverPack, cardItr);
+      } catch (IOException e) {
+        throwUserException(e, "Encountered IOException installing pack from server.");
+      } catch (URISyntaxException e) {
+        throwUserException(e, "Encountered URISyntaxException installing pack from server.");
+      }
+    } else {
+      // Close the db on exception to prevent closing db issues.
+      try {
+        cardItr = PackClient.getInstance().getCardsForPack(serverPack);
+        installPack(serverPack, cardItr);
+      } catch (IOException e) {
+        throwUserException(e, "Encountered IOException installing pack from server.");
+      } catch (URISyntaxException e) {
+        throwUserException(e, "Encountered URISyntaxException installing pack from server.");
+      }
+    }
+    SafeLog.d(TAG, "DONE loading words.");
+  }
+  
+  /** 
+   * Delete the pack and cards associated with a given Pack Id.  Will first
+   * check that the pack exists before attempting to perform any deletions.
+   * @param packId to remove
+   */
+  public synchronized void uninstallPack(String packId) {
+    SafeLog.d(TAG, "uninstallPack(" + packId + ")");
+    mDatabase = getWritableDatabase();
+
+    String[] whereArgs = new String[] { packId };
+    // Add the pack and all cards in a single transaction.
+    try {
+      mDatabase.beginTransaction();
+      mDatabase.delete(CardColumns.TABLE_NAME, CardColumns.PACK_ID + "=?", whereArgs);
+      mDatabase.delete(PackColumns.TABLE_NAME, PackColumns._ID + "=?", whereArgs);
       mDatabase.setTransactionSuccessful();
     } finally {
       mDatabase.endTransaction();
@@ -589,4 +648,19 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
       mDatabase.close();
     }
   }
+
+  /**
+   * Helper method to throw a user exception, logging an error
+   * message and the stacktrace before throwing the exception.
+   * @param e error to print stacktrace for
+   * @param msg to log
+   * @throws RuntimeException
+   */
+  static private void throwUserException(Exception e, String msg) throws RuntimeException {
+    SafeLog.e(TAG, msg);
+    e.printStackTrace();
+    RuntimeException userException = new RuntimeException(e);
+    throw userException;
+  }
+
 }
