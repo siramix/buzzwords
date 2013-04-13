@@ -50,7 +50,7 @@ public class PackClient {
    * URL Constants
    */
   private static final String URL_BASE = "http://siramix.com/buzzwords/packs/";
-  private static final String TEST_URL_BASE = "http://siramix.com/buzzwords/testpacks/";
+  private static final String TEST_URL_BASE = "https://s3.amazonaws.com/siramix.buzzwords/bw-packdata-test/";
   private static final String PACK_LIST_URL = "packs.json";
   
   /**
@@ -157,7 +157,7 @@ public class PackClient {
         public void handleMessage(Message message) {
           Bitmap packIcon = (Bitmap) message.obj;
           if (packIcon != null) {
-            packIcon = PackIconUtils.scaleIcon(packIcon, context);
+            packIcon = PackIconUtils.scaleIconForDensity(packIcon, context);
             packRow.setPackIcon(packIcon);
             PackIconUtils.storeIcon(pack.getIconName(), packIcon, context);
           } else {

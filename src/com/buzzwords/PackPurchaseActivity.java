@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONException;
 
@@ -57,7 +58,7 @@ public class PackPurchaseActivity extends Activity {
    */
   private boolean mIsActivityClosing;
   
-  List<View> mPackLineList;
+  LinkedList<View> mPackLineList;
   
   // Our local packs.
   private LinkedList<Pack> mUnlockedPacks;
@@ -110,12 +111,11 @@ public class PackPurchaseActivity extends Activity {
       SharedPreferences packSelectionPrefs = getSharedPreferences(Consts.PREFFILE_PACK_SELECTIONS,
           Context.MODE_PRIVATE);
 
-      Map<String, ?> packSelections = new HashMap<String, Boolean>();
-      packSelections = packSelectionPrefs.getAll();
+      Set<String> keySet = packSelectionPrefs.getAll().keySet();
 
       // Only advance to next screen if a pack is selected
       boolean anyPackSelected = false;
-      for (String packId : packSelections.keySet()) {
+      for (String packId : keySet) {
         if (packSelectionPrefs.getBoolean(packId, true) == true) {
           anyPackSelected = true;
         }
@@ -126,8 +126,8 @@ public class PackPurchaseActivity extends Activity {
         v.setEnabled(false);
         mIsActivityClosing = true;
         
-        startActivity(new Intent(PackPurchaseActivity.this.getApplication()
-            .getString(R.string.IntentGameSetup), getIntent().getData()));
+        startActivity(new Intent(getApplication().getString(R.string.IntentGameSetup),
+              getIntent().getData()));
       } else {
         showToast(getString(R.string.toast_packpurchase_nopackselected));
       }
@@ -144,19 +144,32 @@ public class PackPurchaseActivity extends Activity {
 
     // Initialize our packs
     mServerPacks = new LinkedList<Pack>();
-    
+
     mGameManager= new GameManager(PackPurchaseActivity.this);
 
     requestIds = new HashMap<String, String>();
-
+    
+    final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
+    syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, false);
+    syncPrefEditor.commit();
+    
     // Force volume controls to affect Media volume
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
     // Setup the view
     this.setContentView(R.layout.packpurchase);
-    
-    // Instantiate all of our lists for programmatic adding of packs to view
-    mPackLineList = new LinkedList<View>();
+  }
+
+  /**
+   * Lazy loads the packLineList which is used for populating
+   * the pack layout.
+   * @return mPackLineList
+   */
+  private LinkedList<View> getPackLineList() {
+    if (mPackLineList == null) {
+      mPackLineList = new LinkedList<View>();
+    }
+    return mPackLineList;
   }
 
   
@@ -169,7 +182,7 @@ public class PackPurchaseActivity extends Activity {
       PackPurchaseObserver packPurchaseObserver = new PackPurchaseObserver(this);
       PurchasingManager.registerObserver(packPurchaseObserver);
   }
-  
+
   /**
    * When the application resumes the application checks which customer is signed in.
    */
@@ -354,8 +367,7 @@ public class PackPurchaseActivity extends Activity {
     LinearLayout layout = new LinearLayout(this.getBaseContext());
     layout.setOrientation(LinearLayout.VERTICAL);
 
-    for (Iterator<Pack> it = packlist.iterator(); it.hasNext();) {
-      Pack curPack = it.next();
+    for (Pack curPack : packlist) {
 
       // Create a new row for this pack
       LinearLayout line = (LinearLayout) LinearLayout.inflate(
@@ -371,13 +383,14 @@ public class PackPurchaseActivity extends Activity {
       LinearLayout.LayoutParams margin = (LinearLayout.LayoutParams) row
           .getLayoutParams();
       final float DENSITY = this.getResources().getDisplayMetrics().density;
-      if(count > 0)
-      {
+      if (count > 0) {
         margin.setMargins(0, (int) (-2 * DENSITY), 0, 0);
-
       }
       row.setLayoutParams(margin);
-      mPackLineList.add(row);
+
+      // Instantiate all of our lists for programmatic adding of packs to view
+      LinkedList<View> lineListView = getPackLineList();
+      lineListView.add(row);
 
       // Set listeners for the row's click events
       row.setOnPackSelectedListener(mSelectPackListener);
@@ -404,6 +417,7 @@ public class PackPurchaseActivity extends Activity {
     String previousUser = getSyncPreferences().getString(Consts.PREFKEY_LAST_USER, getCurrentUser());
 
     // If user has switched, trigger a re-sync (note the 'or equals')
+    // TODO do this |= with updateRequired and syncInProgress
     syncRequired |= !previousUser.equals(getCurrentUser());
 
     SafeLog.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
@@ -520,6 +534,9 @@ public class PackPurchaseActivity extends Activity {
     private ProgressDialog dialog;
     final SharedPreferences userPurchases = getSharedPreferencesForCurrentUser();
     final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
+    //TODO FIX THIS.  IT CRASHES.
+//    final BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+//    final GameManager gm = application.getGameManager();
     final GameManager gm = new GameManager(PackPurchaseActivity.this);
     private boolean installOrUpdateError = false;
     
@@ -539,6 +556,7 @@ public class PackPurchaseActivity extends Activity {
       for (int i=0; i<packs.length; ++i) {
         SafeLog.d(TAG, "SYNCING PACK: " + packs[i].getName());
         boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
+
         //Install or update the pack if it is purchased.  Select it if it's a new pack.
         if (isPackPurchased) {
           try {
@@ -577,8 +595,10 @@ public class PackPurchaseActivity extends Activity {
       dialog.dismiss();
       if (installOrUpdateError) {
         showToast(getString(R.string.toast_packpurchase_installfailed));
+        syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+      } else {
+        syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
       }
-      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, false);
       syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
       syncPrefEditor.commit();

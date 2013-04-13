@@ -43,6 +43,7 @@ public class PackIconUtils {
   public static Bitmap getCachedIcon(String iconName, Context context) {
     String path = buildIconPath(iconName, context);
     InputStream in = null;
+    //TODO Clean up the returns here (no try in finally)
     try {
       in = new FileInputStream(path);
       Bitmap bitmap = BitmapFactory.decodeStream(in);
@@ -110,17 +111,17 @@ public class PackIconUtils {
       try {
         out = new FileOutputStream(outFile);
         iconBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-        try {
-          out.close();
-        } catch (IOException e) {
-          SafeLog.e(TAG, "Encountered I/O error storing icon " + outFile.getAbsolutePath());
-          e.printStackTrace();
-        }
+        out.close();
+        return true;
       } catch (FileNotFoundException e) {
         SafeLog.e(TAG, "Encountered File not found exception: " + outFile.getAbsolutePath());
         e.printStackTrace();
+        return false;
+      } catch (IOException e) {
+        SafeLog.e(TAG, "Encountered I/O error storing icon " + outFile.getAbsolutePath());
+        e.printStackTrace();
+        return false;
       }
-      return true;
   }
   
   /**
@@ -131,7 +132,7 @@ public class PackIconUtils {
    * @param context of application
    * @return new Bitmap with height and width suitable for display density
    */
-  public static Bitmap scaleIcon(Bitmap bitmap, Context context) {
+  public static Bitmap scaleIconForDensity(Bitmap bitmap, Context context) {
     SafeLog.d(TAG, "Scaling image...");
     SafeLog.d(TAG, "width: " + bitmap.getWidth());
     SafeLog.d(TAG, "height: " + bitmap.getHeight());
