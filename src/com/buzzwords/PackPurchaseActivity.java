@@ -411,24 +411,25 @@ public class PackPurchaseActivity extends Activity {
    */
   protected void syncronizePacks() {
     SafeLog.d(TAG, "SYNCRONIZING PACKS...");
-    boolean syncRequired = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+    boolean unsyncedPurchaseChange = 
+                      getSyncPreferences().getBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
     boolean syncInProgress = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, false);
     boolean updateRequired = mGameManager.packsRequireUpdate(mServerPacks, this.getBaseContext());
     String previousUser = getSyncPreferences().getString(Consts.PREFKEY_LAST_USER, getCurrentUser());
 
     // If user has switched, trigger a re-sync (note the 'or equals')
-    // TODO do this |= with updateRequired and syncInProgress
-    syncRequired |= !previousUser.equals(getCurrentUser());
+    Boolean syncRequired = (unsyncedPurchaseChange 
+        || !previousUser.equals(getCurrentUser()) || updateRequired);
 
-    SafeLog.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
+    SafeLog.d(TAG, "   SYNC_REQUIRED: " + unsyncedPurchaseChange);
     SafeLog.d(TAG, "   UPDATE REQUIRED: " + updateRequired);
     SafeLog.d(TAG, "   SYNC IN PROGRESS: " + syncInProgress);
     
-    // Don't call synchronize unless SYNCED preference is true or some packs are out of date
-    // and we have successfully retrieved packs from our server. Also avoid race conditions
-    // where synchronizePacks is called by PackPurchaseObserver multiple times by checking
-    // for syncing in progress.
-    if ((syncRequired || updateRequired) && !mServerError && !syncInProgress) {
+    // Don't call synchronize unless PREFKEY_UNSYNCED_PURCHASE_CHANGE preference is true or
+    // some packs are out of date and we have successfully retrieved packs from our server.
+    // Also avoid race conditions where synchronizePacks is called by PackPurchaseObserver
+    // multiple times by checking for syncing in progress.
+    if (syncRequired && !mServerError && !syncInProgress) {
       Pack[] packArray = mServerPacks.toArray(new Pack[mServerPacks.size()]);
       try {
         new PackSyncronizer().execute(packArray);
@@ -503,7 +504,7 @@ public class PackPurchaseActivity extends Activity {
       // The requires sync preference must be set globally (across users) so switching users triggers a sync
       final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
       userPurchases.putBoolean(String.valueOf(PackPurchaseConsts.FACEBOOK_PACK_ID), true);
-      syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+      syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
       syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
       userPurchases.commit();
       syncPrefEditor.commit();
@@ -595,9 +596,9 @@ public class PackPurchaseActivity extends Activity {
       dialog.dismiss();
       if (installOrUpdateError) {
         showToast(getString(R.string.toast_packpurchase_installfailed));
-        syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+        syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
       } else {
-        syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, false);
+        syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, false);
       }
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, false);
       syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());

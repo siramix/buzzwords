@@ -61,7 +61,7 @@ public class Consts {
     public static final String PREFKEY_IS_TURN_OVER = "com.buzzwords.IS_TURN_OVER";
     public static final String PREFKEY_IS_IN_TURN_START_DIALOG = "com.buzzwords.IS_IN_TURN_START_DIALOG";
     public static final String PREFKEY_TURN_TIME_REMAINING = "com.buzzwords.TURN_TIME_REMAINING";
-    public static final String PREFKEY_SYNC_REQUIRED = "com.buzzwords.PACK_SYNC_REQUIRED";
+    public static final String PREFKEY_UNSYNCED_PURCHASE_CHANGE = "com.buzzwords.PREFKEY_UNSYNCED_PURCHASE_CHANGE";
     public static final String PREFKEY_SYNC_IN_PROGRESS = "com.buzzwords.SYNC_IN_PROGRESS";
     public static final String PREFKEY_LAST_USER = "com.buzzwords.PACK_SYNC_LAST_USER";
     public static final String PREFKEY_FACEBOOK_REQUEST_CODE = "com.buzzwords.RECENT_REQUEST_CODE";

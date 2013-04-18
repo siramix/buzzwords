@@ -269,7 +269,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 case ENTITLED:
                     key = getKey(receipt.getSku());
                     userPrefEditor.putBoolean(key, true);
-                    syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+                    syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
                     break;
                 case SUBSCRIPTION:
                     //Nothing to do since Buzzwords doesn't use subscriptions
@@ -288,7 +288,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                  */
                 final String requestId = purchaseResponse.getRequestId();
                 userPrefEditor.putBoolean(baseActivity.requestIds.get(requestId), true);
-                syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+                syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
                 userPrefEditor.commit();
                 syncPrefEditor.commit();
                 return true;
@@ -344,7 +344,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 SafeLog.d(TAG, "Revoked Sku:" + sku);
                 final String key = getKey(sku);
                 userPrefEditor.putBoolean(key, false);
-                syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+                syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
                 userPrefEditor.commit();
                 syncPrefEditor.commit();
             }
@@ -361,7 +361,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                          * If the receipt is for an entitlement, the customer is re-entitled.
                          */
                         userPrefEditor.putBoolean(key, true);
-                        syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_REQUIRED, true);
+                        syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
                         userPrefEditor.commit();
                         syncPrefEditor.commit();
                         break;
