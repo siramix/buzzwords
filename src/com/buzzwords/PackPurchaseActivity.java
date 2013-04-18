@@ -560,7 +560,7 @@ public class PackPurchaseActivity extends Activity {
         //Install or update the pack if it is purchased.  Select it if it's a new pack.
         if (isPackPurchased) {
           try {
-            gm.installPack(packs[i], getBaseContext());
+            gm.installLatestPack(packs[i], getBaseContext());
           } catch (RuntimeException e) {
             installOrUpdateError = true;
             SafeLog.e(TAG, "Failed to update or install PURCHASED packId: " + 
@@ -576,7 +576,7 @@ public class PackPurchaseActivity extends Activity {
         // Always check for starter pack update
         else if (packs[i].getPurchaseType() == PackPurchaseConsts.PACKTYPE_STARTER) {
           try {
-            gm.installPack(packs[i], getBaseContext());
+            gm.installLatestPack(packs[i], getBaseContext());
           } catch (RuntimeException e) {
             installOrUpdateError = true;
             SafeLog.e(TAG, "Failed to update or install STARTER packId: " + 

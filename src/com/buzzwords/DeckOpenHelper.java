@@ -332,7 +332,7 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    * @return true if sync successful (up to date/installed) false for failure to install
    * @throws RuntimeException 
    */
-  public synchronized void installOrUpdatePackFromServer(Pack serverPack) throws RuntimeException {
+  public synchronized void installLatestPackFromServer(Pack serverPack) throws RuntimeException {
     SafeLog.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
     int packId = packInstalled(serverPack.getId(), serverPack.getVersion());
 

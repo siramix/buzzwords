@@ -27,8 +27,6 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -218,7 +216,7 @@ public class Deck implements Serializable {
    * @param pack
    * @throws RuntimeException 
    */
-  public void installPack(Pack pack, Context context) throws RuntimeException {
+  public void installLatestPack(Pack pack, Context context) throws RuntimeException {
     // If pack is out of date, delete the icon and get the new
     DeckOpenHelper helper = DeckOpenHelper.getInstance(context);
     int packState = helper.packInstalled(pack.getId(), pack.getVersion());
@@ -228,7 +226,7 @@ public class Deck implements Serializable {
       setPackSelectionPref(pack.getId(), true, context);
     }
     
-    helper.installOrUpdatePackFromServer(pack);
+    helper.installLatestPackFromServer(pack);
   }
   
   /**

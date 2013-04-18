@@ -421,8 +421,8 @@ public class GameManager implements Serializable {
    * @param pack to install/update/check status
    * @throws Exception 
    */
-  public synchronized void installPack(final Pack pack, Context context) throws RuntimeException {
-    mDeck.installPack(pack, context);
+  public synchronized void installLatestPack(final Pack pack, Context context) throws RuntimeException {
+    mDeck.installLatestPack(pack, context);
   }
 
   /**
