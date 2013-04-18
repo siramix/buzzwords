@@ -154,15 +154,6 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
         final SharedPreferences settings = baseActivity.getSharedPreferences(baseActivity.getCurrentUser(), Context.MODE_PRIVATE);
         return settings;
     }
-    
-    private SharedPreferences getSyncPreferences() {
-        final SharedPreferences syncPrefs = baseActivity.getSyncPreferences();
-        return syncPrefs;
-    }
-    
-    private SharedPreferences.Editor getSharedPreferencesEditor(){
-        return getSharedPreferencesForCurrentUser().edit();
-    }
 
     /*
      * Started when the Observer receives a GetUserIdResponse. The Shared Preferences file for the returned user id is
@@ -175,10 +166,8 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
             GetUserIdResponse getUserIdResponse = params[0];
 
             if (getUserIdResponse.getUserIdRequestStatus() == GetUserIdRequestStatus.SUCCESSFUL) {
-                final String userId = getUserIdResponse.getUserId();
-
                 // Each UserID has their own shared preferences file, and we'll load that file when a new user logs in.
-                baseActivity.setCurrentUser(userId);
+                baseActivity.setCurrentUser(getUserIdResponse.getUserId());
                 return true;
             } else {
                 SafeLog.d(TAG, "onGetUserIdResponse: Unable to get user ID.");
@@ -250,34 +239,25 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 // currently logged in user is different than what we have so update the state
                 baseActivity.setCurrentUser(purchaseResponse.getUserId());                
                 PurchasingManager.initiatePurchaseUpdatesRequest(Offset.fromString(baseActivity.getSharedPreferences(baseActivity.getCurrentUser(), Context.MODE_PRIVATE)
-                                                                                   .getString(OFFSET, Offset.BEGINNING.toString())));                
+                                         .getString(OFFSET, Offset.BEGINNING.toString())));
             }
-            final SharedPreferences.Editor userPrefEditor = getSharedPreferencesEditor();
-            // The requires sync preference must be set globally (across users) so switching users triggers a sync
-            final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
             switch (purchaseResponse.getPurchaseRequestStatus()) {
             case SUCCESSFUL:
                 /*
                  * You can verify the receipt and fulfill the purchase on successful responses.
                  */
                 final Receipt receipt = purchaseResponse.getReceipt();
-                String key = "";
                 switch (receipt.getItemType()) {
                 case CONSUMABLE:
                     //Nothing to do since Buzzwords doesn't use consumables
                     break;
                 case ENTITLED:
-                    key = getKey(receipt.getSku());
-                    userPrefEditor.putBoolean(key, true);
-                    syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
+                    baseActivity.setPurchasePrefs(getKey(receipt.getSku()), true);
                     break;
                 case SUBSCRIPTION:
                     //Nothing to do since Buzzwords doesn't use subscriptions
                     break;
                 }
-                userPrefEditor.commit();
-                syncPrefEditor.commit();
-                
                 printReceipt(purchaseResponse.getReceipt());
                 return true;
             case ALREADY_ENTITLED:
@@ -287,10 +267,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                  * request id returned from the initial request with the request id stored in the response.
                  */
                 final String requestId = purchaseResponse.getRequestId();
-                userPrefEditor.putBoolean(baseActivity.requestIds.get(requestId), true);
-                syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
-                userPrefEditor.commit();
-                syncPrefEditor.commit();
+                baseActivity.setPurchasePrefs(baseActivity.requestIds.get(requestId), true);
                 return true;
             case FAILED:
                 /*
@@ -329,9 +306,8 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
         @Override
         protected Boolean doInBackground(final PurchaseUpdatesResponse... params) {
             final PurchaseUpdatesResponse purchaseUpdatesResponse = params[0];
-            final SharedPreferences.Editor userPrefEditor = getSharedPreferencesEditor();
+            final SharedPreferences.Editor userPrefEditor = getSharedPreferencesForCurrentUser().edit();
             // The requires sync preference must be set globally (across users) so switching users triggers a sync
-            final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
             final String userId = baseActivity.getCurrentUser();
             if (!purchaseUpdatesResponse.getUserId().equals(userId)) {
                 return false;
@@ -342,11 +318,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
              */
             for (final String sku : purchaseUpdatesResponse.getRevokedSkus()) {
                 SafeLog.d(TAG, "Revoked Sku:" + sku);
-                final String key = getKey(sku);
-                userPrefEditor.putBoolean(key, false);
-                syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
-                userPrefEditor.commit();
-                syncPrefEditor.commit();
+                baseActivity.setPurchasePrefs(getKey(sku), false);
             }
 
             
@@ -354,16 +326,12 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
             case SUCCESSFUL:
                 for (final Receipt receipt : purchaseUpdatesResponse.getReceipts()) {
                     final String sku = receipt.getSku();
-                    final String key = getKey(sku);
                     switch (receipt.getItemType()) {
                     case ENTITLED:
                         /*
                          * If the receipt is for an entitlement, the customer is re-entitled.
                          */
-                        userPrefEditor.putBoolean(key, true);
-                        syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
-                        userPrefEditor.commit();
-                        syncPrefEditor.commit();
+                        baseActivity.setPurchasePrefs(getKey(sku), true);
                         break;
                     default:
                       // Buzzwords does not use Subscription, or Consumable items.

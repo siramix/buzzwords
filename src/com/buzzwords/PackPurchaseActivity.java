@@ -3,7 +3,6 @@ package com.buzzwords;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -500,14 +499,7 @@ public class PackPurchaseActivity extends Activity {
     // If the most recent request was to open Facebook and we return to Buzzwords, 
     // then install the Facebook pack
     if (requestCode == FACEBOOK_REQUEST_CODE) {
-      final SharedPreferences.Editor userPurchases = getSharedPreferencesEditor();
-      // The requires sync preference must be set globally (across users) so switching users triggers a sync
-      final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
-      userPurchases.putBoolean(String.valueOf(PackPurchaseConsts.FACEBOOK_PACK_ID), true);
-      syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
-      syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
-      userPurchases.commit();
-      syncPrefEditor.commit();
+      setPurchasePrefs(String.valueOf(PackPurchaseConsts.FACEBOOK_PACK_ID), true);
     }
 
   }
@@ -824,8 +816,25 @@ public class PackPurchaseActivity extends Activity {
    * Sets current logged in user
    * @param currentUser current user to set
    */
-  void setCurrentUser(final String currentUser){
+  protected void setCurrentUser(final String currentUser){
       this.mCurrentUser = currentUser;
+  }
+  
+  /**
+   * Ensure all pertinent preferences are updated when a purchase occurs. This should
+   * be the ONE AND ONLY WAY that purchase changes are made!
+   * @param SKU of pack being purchased or unpurchased
+   * @param purchased true for purchased, false otherwise
+   */
+  protected void setPurchasePrefs(final String SKU, boolean purchased) {
+    final SharedPreferences.Editor userPurchases = getSharedPreferencesEditor();
+    // The requires sync preference must be set globally (across users) so switching users triggers a sync
+    final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
+    userPurchases.putBoolean(SKU, purchased);
+    syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
+    syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
+    userPurchases.commit();
+    syncPrefEditor.commit();
   }
 
   
