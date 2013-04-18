@@ -63,6 +63,7 @@ public class Consts {
     public static final String PREFKEY_TURN_TIME_REMAINING = "com.buzzwords.TURN_TIME_REMAINING";
     public static final String PREFKEY_UNSYNCED_PURCHASE_CHANGE = "com.buzzwords.PREFKEY_UNSYNCED_PURCHASE_CHANGE";
     public static final String PREFKEY_SYNC_IN_PROGRESS = "com.buzzwords.SYNC_IN_PROGRESS";
+    public static final String PREFKEY_CURRENT_USER = "com.buzzwords.PACK_SYNC_CURRENT_USER";
     public static final String PREFKEY_LAST_USER = "com.buzzwords.PACK_SYNC_LAST_USER";
     public static final String PREFKEY_FACEBOOK_REQUEST_CODE = "com.buzzwords.RECENT_REQUEST_CODE";
     public static final String PREFKEY_FACEBOOK_PACK_ID = "com.buzzwords.FACEBOOK_PACK_ID";

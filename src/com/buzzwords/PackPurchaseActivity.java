@@ -67,17 +67,10 @@ public class PackPurchaseActivity extends Activity {
   
   private GameManager mGameManager;
 
-  /**
-   * This block of variables is for Amazon In-App Purchases
-   */
-  // currently logged in user
-  private String mCurrentUser;
-  // Mapping of our requestIds to unlockable content
+  // Mapping of our requestIds to unlockable content (For Amazon IAP)
   public Map<String, String> requestIds;
   
-  /**
-   * Flag for whether user can connect to our site, set on each refresh.
-   */
+  // Flag for whether user can connect to our site, set on each refresh.
   private boolean mServerError = false;
   
   /**
@@ -188,6 +181,7 @@ public class PackPurchaseActivity extends Activity {
   @Override
   public void onResume() {
     super.onResume();
+    // Asynchronous call to check our current user. Flags for re-sync if needed. 
     PurchasingManager.initiateGetUserIdRequest();
     refreshAllPackLayouts();
     
@@ -414,13 +408,11 @@ public class PackPurchaseActivity extends Activity {
                       getSyncPreferences().getBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
     boolean syncInProgress = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, false);
     boolean updateRequired = mGameManager.packsRequireUpdate(mServerPacks, this.getBaseContext());
-    String previousUser = getSyncPreferences().getString(Consts.PREFKEY_LAST_USER, getCurrentUser());
 
-    // If user has switched, trigger a re-sync (note the 'or equals')
-    Boolean syncRequired = (unsyncedPurchaseChange 
-        || !previousUser.equals(getCurrentUser()) || updateRequired);
+    // If outstanding purchases or a pack is out of date
+    Boolean syncRequired = (unsyncedPurchaseChange || updateRequired);
 
-    SafeLog.d(TAG, "   SYNC_REQUIRED: " + unsyncedPurchaseChange);
+    SafeLog.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
     SafeLog.d(TAG, "   UPDATE REQUIRED: " + updateRequired);
     SafeLog.d(TAG, "   SYNC IN PROGRESS: " + syncInProgress);
     
@@ -480,7 +472,7 @@ public class PackPurchaseActivity extends Activity {
       switch(PackPurchaseConsts.PURCHASE_RESULT_CODES[resultTypeIndex])
       {
         case PackPurchaseConsts.RESULT_NOCODE:
-          final SharedPreferences settings = getSharedPreferencesForCurrentUser();
+          final SharedPreferences settings = getPurchasePrefsForCurrentUser();
           final String sku = String.valueOf(curPack.getId());
           boolean entitled = settings.getBoolean(sku, false);
           
@@ -525,7 +517,7 @@ public class PackPurchaseActivity extends Activity {
   public class PackSyncronizer extends AsyncTask <Pack, Void, Integer>
   {
     private ProgressDialog dialog;
-    final SharedPreferences userPurchases = getSharedPreferencesForCurrentUser();
+    final SharedPreferences userPurchases = getPurchasePrefsForCurrentUser();
     final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
     //TODO FIX THIS.  IT CRASHES.
 //    final BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
@@ -593,7 +585,6 @@ public class PackPurchaseActivity extends Activity {
         syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, false);
       }
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, false);
-      syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
       syncPrefEditor.commit();
 
       findViewById(R.id.PackPurchase_ScrollView).scrollTo(0, 0);
@@ -779,20 +770,20 @@ public class PackPurchaseActivity extends Activity {
   }
 
   /**
-   * Get the SharedPreferences file for the current user.
-   * @return SharedPreferences file for a user.
+   * Get the Purchase SharedPreferences file for the current user.
+   * @return SharedPreferences file for a user's purchases.
    */
-  private SharedPreferences getSharedPreferencesForCurrentUser() {
-      final SharedPreferences settings = getSharedPreferences(mCurrentUser, Context.MODE_PRIVATE);
-      return settings;
+  private SharedPreferences getPurchasePrefsForCurrentUser() {
+    final SharedPreferences settings = getSharedPreferences(getCurrentUser(), Context.MODE_PRIVATE);
+    return settings;
   }
   
   /**
    * Generate a SharedPreferences.Editor object. 
    * @return editor for Shared Preferences file.
    */
-  private SharedPreferences.Editor getSharedPreferencesEditor(){
-      return getSharedPreferencesForCurrentUser().edit();
+  private SharedPreferences.Editor getPurchasePrefsEditor(){
+    return getPurchasePrefsForCurrentUser().edit();
   }
   
   /**
@@ -809,7 +800,15 @@ public class PackPurchaseActivity extends Activity {
    * @return current user
    */
   protected String getCurrentUser(){
-    return mCurrentUser;
+    return getSyncPreferences().getString(Consts.PREFKEY_CURRENT_USER, "unset");
+  }
+  
+  /**
+   * Get the user who logged in previously to the current one
+   * @return
+   */
+  protected String getPreviousUser() {
+    return getSyncPreferences().getString(Consts.PREFKEY_LAST_USER, "unset");
   }
   
   /**
@@ -817,9 +816,21 @@ public class PackPurchaseActivity extends Activity {
    * @param currentUser current user to set
    */
   protected void setCurrentUser(final String currentUser){
-      this.mCurrentUser = currentUser;
+    final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
+    syncPrefEditor.putString(Consts.PREFKEY_CURRENT_USER, currentUser);
+    syncPrefEditor.commit();
   }
   
+  /**
+   * Set the user who logged in previously to the current one
+   * @param previousUser
+   */
+  protected void setPreviousUser(final String previousUser) {
+    final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
+    syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, previousUser);
+    syncPrefEditor.commit();
+  }
+
   /**
    * Ensure all pertinent preferences are updated when a purchase occurs. This should
    * be the ONE AND ONLY WAY that purchase changes are made!
@@ -827,12 +838,11 @@ public class PackPurchaseActivity extends Activity {
    * @param purchased true for purchased, false otherwise
    */
   protected void setPurchasePrefs(final String SKU, boolean purchased) {
-    final SharedPreferences.Editor userPurchases = getSharedPreferencesEditor();
+    final SharedPreferences.Editor userPurchases = getPurchasePrefsEditor();
     // The requires sync preference must be set globally (across users) so switching users triggers a sync
     final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
     userPurchases.putBoolean(SKU, purchased);
     syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
-    syncPrefEditor.putString(Consts.PREFKEY_LAST_USER, getCurrentUser());
     userPurchases.commit();
     syncPrefEditor.commit();
   }

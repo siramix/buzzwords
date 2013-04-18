@@ -167,7 +167,15 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
 
             if (getUserIdResponse.getUserIdRequestStatus() == GetUserIdRequestStatus.SUCCESSFUL) {
                 // Each UserID has their own shared preferences file, and we'll load that file when a new user logs in.
-                baseActivity.setCurrentUser(getUserIdResponse.getUserId());
+                final String currentUser = getUserIdResponse.getUserId();
+                baseActivity.setPreviousUser(baseActivity.getCurrentUser());
+                baseActivity.setCurrentUser(currentUser);
+                // Flag for a re-sync if user has changed
+                if (baseActivity.getPreviousUser().compareTo(currentUser) != 0) {
+                  SharedPreferences.Editor syncPrefEditor = baseActivity.getSyncPreferences().edit();
+                  syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
+                  syncPrefEditor.commit();
+                }
                 return true;
             } else {
                 SafeLog.d(TAG, "onGetUserIdResponse: Unable to get user ID.");
@@ -232,15 +240,8 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
 
         @Override
         protected Boolean doInBackground(final PurchaseResponse... params) {
-            final PurchaseResponse purchaseResponse = params[0];            
-            final String userId = baseActivity.getCurrentUser();
+            final PurchaseResponse purchaseResponse = params[0];
             
-            if (!purchaseResponse.getUserId().equals(userId)) {
-                // currently logged in user is different than what we have so update the state
-                baseActivity.setCurrentUser(purchaseResponse.getUserId());                
-                PurchasingManager.initiatePurchaseUpdatesRequest(Offset.fromString(baseActivity.getSharedPreferences(baseActivity.getCurrentUser(), Context.MODE_PRIVATE)
-                                         .getString(OFFSET, Offset.BEGINNING.toString())));
-            }
             switch (purchaseResponse.getPurchaseRequestStatus()) {
             case SUCCESSFUL:
                 /*
