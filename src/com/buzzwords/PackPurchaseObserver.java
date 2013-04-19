@@ -294,6 +294,8 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
             super.onPostExecute(success);
             if (success) {
                 baseActivity.refreshAllPackLayouts();
+            } else {
+                baseActivity.showPurchaseFailureToast();
             }
         }
     }

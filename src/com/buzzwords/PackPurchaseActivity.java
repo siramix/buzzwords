@@ -862,6 +862,13 @@ public class PackPurchaseActivity extends Activity {
     }
     mHelpToast.show();
   }
+  
+  /**
+   * Helper method for purchaser to communicate failures to user.
+   */
+  protected void showPurchaseFailureToast() {
+    showToast(getString(R.string.toast_packpurchase_purhcasefailed));
+  }
 
   /**
    * Override back button to carry music on back to the Title activity
