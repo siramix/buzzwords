@@ -112,7 +112,7 @@
                 android:layout_marginTop="15dp"
                 android:progress="@android:integer/config_shortAnimTime" />
 
-            <TextView
+            <com.buzzwords.FrancoisOneTextView
                 android:id="@+id/PackPurchase_PaidPackPlaceholderText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -20,8 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -151,6 +149,10 @@ public class PackPurchaseActivity extends Activity {
 
     // Setup the view
     this.setContentView(R.layout.packpurchase);
+    
+    // Set next button listener
+    Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
+    btn.setOnClickListener(mGameSetupListener);
   }
 
   /**
@@ -214,14 +216,15 @@ public class PackPurchaseActivity extends Activity {
   protected void refreshAllPackLayouts() {
     SafeLog.d(TAG, "refreshAllPackLayouts");
     mServerError = !isNetworkAvailable();
+    // If they don't have internet, dump cached serve packs. 
+    if (mServerError) {
+      mServerPacks.clear();
+    }
     mUnlockedPacks = mGameManager.getInstalledPacks(this.getBaseContext());
     
     displayUnlockedPacks();
-    displayLockedPacks();
+    refreshLockedPacksLayout();
 
-    Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
-    btn.setOnClickListener(mGameSetupListener);
-    
     // Update the appropriate card count views
     updateCardCountViews();
   }
@@ -232,7 +235,7 @@ public class PackPurchaseActivity extends Activity {
   private void displayUnlockedPacks() {
     // Populate and display list of cards
     LinearLayout unlockedPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_UnlockedPackSets);
-    unlockedPackLayout.removeAllViewsInLayout();
+    unlockedPackLayout.removeAllViews();
     populatePackLayout(mUnlockedPacks, unlockedPackLayout);
   }
   
@@ -241,20 +244,21 @@ public class PackPurchaseActivity extends Activity {
    * has not already purchased.  Must be called after displayUnlockedPacks to 
    * show a list that filters out packs user already owns.
    */
-  private void displayLockedPacks() {
+  private void refreshLockedPacksLayout() {
     TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
-    Typeface francois = Typeface.createFromAsset(getAssets(), "fonts/FrancoisOne.ttf");
-    placeHolderText.setVisibility(View.VISIBLE);
-    placeHolderText.setTypeface(francois);
+    placeHolderText.setVisibility(View.GONE);
+    ProgressBar progressImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
+    progressImage.setVisibility(View.VISIBLE);
     
-    LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
-    paidPackLayout.removeAllViewsInLayout();
+    LinearLayout lockedPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
+    lockedPackLayout.removeAllViews();
     
-    // Don't reload the server packs or refresh the list if packs are already in memory.
-    if (mServerPacks.isEmpty()) {
+    if (!mServerError && mServerPacks.isEmpty()) { 
+      // Don't reload the server packs or refresh the list if packs are already in memory.
       fetchPurchasablePacksOnThread();
     } else {
-      populateLockedPackLayout();
+      // Display the cached server packs
+      displayLockedPackServerResults();
     }
   }
   
@@ -266,7 +270,7 @@ public class PackPurchaseActivity extends Activity {
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message message) {
-          populateLockedPackLayout();
+          displayLockedPackServerResults();
         }
     };
   
@@ -308,9 +312,10 @@ public class PackPurchaseActivity extends Activity {
     SafeLog.d(TAG, "removeLocalPacks");
     LinkedList<Pack> unownedPackList = new LinkedList<Pack>();
     unownedPackList.addAll(lockedPacks);
-    
+
+    // Iterate through installed packs removing them from the locked packs
     for (Pack localPack : installedPacks) {
-      for (int unownedIndex=0; unownedIndex<unownedPackList.size(); ++unownedIndex) {
+      for (int unownedIndex = 0; unownedIndex < unownedPackList.size(); ++unownedIndex) {
         if (localPack.getId() == unownedPackList.get(unownedIndex).getId()) {
           unownedPackList.remove(unownedIndex);
         }
@@ -321,25 +326,29 @@ public class PackPurchaseActivity extends Activity {
   }
   
   /**
-   * Populate the list of purchasable packs.  Handle special cases like removing
-   * the loading bar and changing or removing the placeholder text.
+   * Populate the list of purchasable packs. Handle special cases like removing
+   * the loading bar and changing or removing the placeholder text. Assumes layout
+   * has been emptied.
    */
-  private void populateLockedPackLayout() {
+  private void displayLockedPackServerResults() {
+    // Hide the network progress icon
+    ProgressBar progressImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
+    progressImage.setVisibility(View.GONE);
+    
     LinkedList<Pack> lockedPacks = new LinkedList<Pack>();
     LinearLayout paidPackLayout = (LinearLayout) findViewById(R.id.PackPurchase_PaidPackSets);
     TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
-    ProgressBar placeHolderImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
-    paidPackLayout.removeAllViewsInLayout();
+    
     lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
-    if (lockedPacks.size() == 0 && !mServerError) {
-      placeHolderText.setText(getString(R.string.packpurchase_allpurchased));
-    } else if (mServerError) {
+    if (mServerError) {
+      placeHolderText.setVisibility(View.VISIBLE);
       placeHolderText.setText(getString(R.string.packpurchase_nointernet));
+    } else if (lockedPacks.size() == 0) {
+      placeHolderText.setVisibility(View.VISIBLE);
+      placeHolderText.setText(getString(R.string.packpurchase_allpurchased));
     } else {
-      placeHolderText.setVisibility(View.GONE);
+      populatePackLayout(lockedPacks, paidPackLayout);
     }
-    placeHolderImage.setVisibility(View.GONE);
-    populatePackLayout(lockedPacks, paidPackLayout);
   }
   
   /**
