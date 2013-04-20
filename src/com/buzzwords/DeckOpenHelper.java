@@ -74,22 +74,6 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
     db.execSQL(CardColumns.TABLE_CREATE);
   }
 
-  /**
-   * Install all the packs that come with the app into the database.
-   * Since the pack
-   * @param starterPack the pack in which to install
-   * @param context the context from which resources come
-   * @throws RuntimeException 
-   */
-  public synchronized void installStarterPacks(Pack starterPack, Context context) throws RuntimeException {
-    // Lite Version code
-    installPackFromResource(starterPack, R.raw.lite_pack, context);
-    /* TODO Swap this code in when cutting a release build
-    // Full Version code
-    installPackFromResource(starterPack, R.raw.buzzwords_i);
-    installPackFromResource(starterPack, R.raw.buzzwords_ii);
-    */
-  }
   
   /**
    * Count all cards in the deck quickly

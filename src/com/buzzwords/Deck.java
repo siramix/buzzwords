@@ -77,8 +77,7 @@ public class Deck implements Serializable {
   private LinkedList<Pack> mSelectedPacks;
 
   private Pack mStarterPack;
-  //TODO Swap this code in when cutting a release build
-  //private Pack mStarterPack2;
+  private Pack mStarterPack2;
   
   /**
    * Constructor
@@ -92,19 +91,16 @@ public class Deck implements Serializable {
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
 
-    // Lite version code
-    mStarterPack = new Pack(0, "Lite Pack", "packs/lite_pack.json", "packs/icons/packicon_classic1.png",
-        "A sample pack of 125 Buzzwords.", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
-    /*
-    // TODO Swap this code in when cutting release builds of full version.
-    // Full version code
+    // Stub pack (swap this in to get app running if you don't have access to buzzwords_i and _ii,
+    // which you won't if you are forking our repository).
+    // mStarterPack = new Pack(0, "Lite Pack", "packs/lite_pack.json", "packs/icons/packicon_classic1.png",
+    //    "A sample pack of 125 Buzzwords.", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
     mStarterPack = new Pack(1, "Buzzwords I", "packs/buzzwords_i.json", "packs/icons/packicon_classic1.png",
         "The first of two pre-installed packs that include a mix of words from every catagory.", 
         500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
     mStarterPack2 = new Pack(2, "Buzzwords II", "packs/buzzwords_ii.json", "packs/icons/packicon_classic2.png",
         "The second of two pre-installed packs that include a mix of words from every catagory.", 
         500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
-    */
   }
 
   public void saveState(Context context) {
@@ -230,24 +226,23 @@ public class Deck implements Serializable {
   }
   
   /**
-   * Install all of the packs that the app comes with.  This ultimately
-   * will be just one pack.
+   * Install all of the packs that the app comes with. This method will reference
+   * packs that do not exist in the repository. To fix this method, swap out the
+   * untracked buzzwords_i and _ii files with a stub pack (we use lite_pack).
    * @param context the context in which to set the pack selection preference
    * @throws RuntimeException 
    */
   public synchronized void installStarterPacks(Context context) throws RuntimeException {
-    // Lite code
     DeckOpenHelper helper = DeckOpenHelper.getInstance(context);
-    helper.installStarterPacks(mStarterPack, context);
+    // These lines will error by design. We protect our starter packs by not including
+    // them in our source code. To get the app working, comment out the R.raw.buzzwords
+    // lines and uncomment the line below as well as the code that initializes mStartPack
+    //
+    // helper.installPackFromResource(mStarterPack, R.raw.lite_pack, context);
+    helper.installPackFromResource(mStarterPack, R.raw.buzzwords_i, context);
+    helper.installPackFromResource(mStarterPack2, R.raw.buzzwords_ii, context);
     setPackSelectionPref(mStarterPack.getId(), true, context);
-    
-    /* TODO Swap this code in when cutting a release build
-    // Full version code
-    mDatabaseOpenHelper.installStarterPacks(mStarterPack);
-    mDatabaseOpenHelper.installStarterPacks(mStarterPack2);
-    setPackSelectionPref(mStarterPack.getId(), true);
-    setPackSelectionPref(mStarterPack2.getId(), true);
-    */
+    setPackSelectionPref(mStarterPack2.getId(), true, context);
   }
   
   /** 
