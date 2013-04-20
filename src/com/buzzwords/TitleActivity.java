@@ -579,6 +579,7 @@ public class TitleActivity extends Activity {
     private ProgressDialog dialog;
     private SharedPreferences prefs;
     private boolean initialized;
+    private long timeStarted = System.currentTimeMillis();
 
     @Override
     protected void onPreExecute() {
@@ -606,6 +607,14 @@ public class TitleActivity extends Activity {
         SharedPreferences.Editor edit = prefs.edit();
         edit.putBoolean(Consts.PREFKEY_DB_INITIALIZED, true);
         edit.commit();
+        // Ensure our dialog takes no less than 2.2 seconds
+        while(System.currentTimeMillis() - timeStarted < 2200){
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException e) {
+            SafeLog.e(TAG, "thread interrupted", e);
+          }
+        }
         dialog.dismiss();
       }
 

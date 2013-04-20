@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -517,6 +518,7 @@ public class PackPurchaseActivity extends Activity {
   public class PackSyncronizer extends AsyncTask <Pack, Void, Integer>
   {
     private ProgressDialog dialog;
+    private long timeStarted = System.currentTimeMillis();
     final SharedPreferences userPurchases = getPurchasePrefsForCurrentUser();
     final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
     //TODO FIX THIS.  IT CRASHES.
@@ -568,6 +570,14 @@ public class PackPurchaseActivity extends Activity {
                 packs[i].getId() + " name: " + packs[i].getName());
             e.printStackTrace();
           }
+        }
+      }
+      // Ensure our dialog takes no less than 2.2 seconds
+      while(System.currentTimeMillis() - timeStarted < 2200){
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException e) {
+          SafeLog.e(TAG, "thread interrupted", e);
         }
       }
       return 0; 
