@@ -139,7 +139,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
     // Add a placeholder for the icon
     mIcon.setImageDrawable(this.getResources().getDrawable(
         R.drawable.placholder_pack_icon));
-    mIcon.setVisibility(View.INVISIBLE);
+    mIcon.setVisibility(View.VISIBLE);
     RelativeLayout.LayoutParams iconParams = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     iconParams.addRule(RelativeLayout.CENTER_VERTICAL);
