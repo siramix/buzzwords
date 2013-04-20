@@ -43,29 +43,24 @@ public class PackIconUtils {
   public static Bitmap getCachedIcon(String iconName, Context context) {
     String path = buildIconPath(iconName, context);
     InputStream in = null;
-    //TODO Clean up the returns here (no try in finally)
+    Bitmap bitmap = null;
     try {
       in = new FileInputStream(path);
-      Bitmap bitmap = BitmapFactory.decodeStream(in);
+      bitmap = BitmapFactory.decodeStream(in);
       if (bitmap == null) {
         SafeLog.e(TAG, "Cached bitmap " + path + " decoded as null.");
-        return null;
       }
-      return bitmap;
+      if (in != null) {
+        in.close();
+      }
     } catch (FileNotFoundException e) {
       SafeLog.e(TAG, "Could not find cached bitmap file " + path);
       e.printStackTrace();
-      return null;
-    } finally {
-        if (in != null) {
-          try {
-            in.close();
-          } catch (IOException e) {
-            SafeLog.e(TAG, "IOException while closing cache file input stream for " + path);
-            e.printStackTrace();
-          }
-        }
+    } catch (IOException e) {
+      SafeLog.e(TAG, "IOException while closing cache file input stream for " + path);
+      e.printStackTrace();
     }
+    return bitmap;
   }
   
   /**
