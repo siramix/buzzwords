@@ -237,7 +237,6 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      * Once the AsyncTask returns successfully, the UI is updated.
      */
     private class PurchaseAsyncTask extends AsyncTask<PurchaseResponse, Void, Boolean> {
-
         @Override
         protected Boolean doInBackground(final PurchaseResponse... params) {
             final PurchaseResponse purchaseResponse = params[0];
@@ -293,9 +292,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
         protected void onPostExecute(final Boolean success) {
             super.onPostExecute(success);
             if (success) {
-                baseActivity.refreshAllPackLayouts();
-            } else {
-                baseActivity.showPurchaseFailureToast();
+              baseActivity.refreshAllPackLayouts();
             }
         }
     }

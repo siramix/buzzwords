@@ -158,7 +158,7 @@ public class PackClient {
           Bitmap packIcon = (Bitmap) message.obj;
           if (packIcon != null) {
             packIcon = PackIconUtils.scaleIconForDensity(packIcon, context);
-            packRow.setPackIcon(packIcon);
+            packRow.setAndScalePackIcon(packIcon);
             PackIconUtils.storeIcon(pack.getIconName(), packIcon, context);
           } else {
             SafeLog.w(TAG, "Fetched icon response was null for " + pack.getIconPath());

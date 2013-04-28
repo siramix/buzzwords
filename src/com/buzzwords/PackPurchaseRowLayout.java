@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
@@ -137,8 +138,9 @@ public class PackPurchaseRowLayout extends FrameLayout {
         R.color.gameend_blankrow));
 
     // Add a placeholder for the icon
-    mIcon.setImageDrawable(this.getResources().getDrawable(
-        R.drawable.placholder_pack_icon));
+    Bitmap placeholderIcon = BitmapFactory.decodeResource(mContext.getResources(),
+        R.drawable.placholder_pack_icon);
+    setAndScalePackIcon(placeholderIcon);
     mIcon.setVisibility(View.VISIBLE);
     RelativeLayout.LayoutParams iconParams = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -361,7 +363,6 @@ public class PackPurchaseRowLayout extends FrameLayout {
       mContents.setOnClickListener(mPackInfoRequestedListener);
       mInfoButton.setOnClickListener(null);
     }
-    
 
     invalidate();
   }
@@ -406,19 +407,20 @@ public class PackPurchaseRowLayout extends FrameLayout {
   private void retrieveAndSetPackIcon(Pack pack) {
     // First check cache, then hit server
     if (PackIconUtils.isPackIconCached(pack.getIconName(), mContext)) {
-      setPackIcon(PackIconUtils.getCachedIcon(pack.getIconName(), mContext));
+      setAndScalePackIcon(PackIconUtils.getCachedIcon(pack.getIconName(), mContext));
     } else {
       PackClient.fetchIconOnThread(pack, this, mContext);
     }
   }
 
   /**
-   * Sets the pack icon for the pack row and shows it (default is invisible)
+   * Sets the pack icon for the pack row, ensuring it is always scaled for
+   * correct display.
    * @param icon - image to display for the icon view
    */
-  public void setPackIcon(Bitmap icon) {
+  public void setAndScalePackIcon(Bitmap icon) {
     if (icon != null) {
-      mIcon.setImageBitmap(icon);
+      mIcon.setImageBitmap(PackIconUtils.scaleIconForDensity(icon, mContext));
       mIcon.setVisibility(View.VISIBLE);
     }
   }
