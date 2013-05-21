@@ -27,6 +27,7 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -367,7 +368,7 @@ public class GameEndActivity extends Activity {
   @Override
   public void onStop() {
     super.onStop();
-    SafeLog.d(TAG, "onStop()");
+    Log.d(TAG, "onStop()");
   }
 
   /**
@@ -376,7 +377,7 @@ public class GameEndActivity extends Activity {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    SafeLog.d(TAG, "onDestroy()");
+    Log.d(TAG, "onDestroy()");
   }
 
   /**

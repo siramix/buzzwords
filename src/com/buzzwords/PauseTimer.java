@@ -19,6 +19,7 @@ package com.buzzwords;
 
 
 import android.os.CountDownTimer;
+import android.util.Log;
 
 /**
  * Adds pause and resume capabilities to CountDownTimer. Requires implementation
@@ -94,7 +95,7 @@ public abstract class PauseTimer {
    * Pause an active timer. Use resume() to resume.
    */
   public void pause() {
-    SafeLog.d(TAG, "pause()");
+    Log.d(TAG, "pause()");
     if (this.mTimerActive) {
       this.mTimerActive = false;
       this.mTimer.cancel();
@@ -105,7 +106,7 @@ public abstract class PauseTimer {
    * Resume the timer from the time when last paused.
    */
   public void resume() {
-    SafeLog.d(TAG, "resume()");
+    Log.d(TAG, "resume()");
     if (!this.mTimerActive) {
       this.mTimer = new InternalTimer(mTimeRemaining, TICK);
       this.mTimer.start();

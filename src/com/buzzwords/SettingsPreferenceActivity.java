@@ -33,6 +33,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -143,7 +144,7 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
                   0).versionName);
     } catch (NameNotFoundException e) {
       e.printStackTrace();
-      SafeLog.e(TAG, e.getMessage());
+      Log.e(TAG, e.getMessage());
     }
   }
 

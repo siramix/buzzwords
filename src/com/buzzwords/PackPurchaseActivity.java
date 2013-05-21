@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -85,7 +86,6 @@ public class PackPurchaseActivity extends Activity {
    */
   private OnClickListener mGameSetupListener = new OnClickListener() {
     public void onClick(View v) {
-      SafeLog.d(TAG, "PlayGameListener OnClick()");
       // Throw out any queued onClicks.
       if(!v.isEnabled()){
         return;
@@ -131,7 +131,6 @@ public class PackPurchaseActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    SafeLog.d(TAG, "onCreate()");
 
     // Initialize our packs
     mServerPacks = new LinkedList<Pack>();
@@ -214,7 +213,6 @@ public class PackPurchaseActivity extends Activity {
    * First populates purchased then goes online to get list of unpurchased packs.
    */
   protected void refreshAllPackLayouts() {
-    SafeLog.d(TAG, "refreshAllPackLayouts");
     mServerError = !isNetworkAvailable();
     // If they don't have internet, dump cached serve packs. 
     if (mServerError) {
@@ -280,18 +278,18 @@ public class PackPurchaseActivity extends Activity {
           try {
             mServerPacks = client.getServerPacks();
           } catch (IOException e1) {
-            SafeLog.e(TAG, "Error occurred during I/O of serverPacks.");
+            Log.e(TAG, "Error occurred during I/O of serverPacks.");
             mServerError = true;
-            SafeLog.e(TAG, e1.toString());
+            Log.e(TAG, e1.toString());
             e1.printStackTrace();
           } catch (URISyntaxException e1) {
             mServerError = true;
-            SafeLog.e(TAG, e1.toString());
+            Log.e(TAG, e1.toString());
             e1.printStackTrace();
           } catch (JSONException e1) {
-            SafeLog.e(TAG, "Error parsing pack JSON from server.");
+            Log.e(TAG, "Error parsing pack JSON from server.");
             mServerError = true;
-            SafeLog.e(TAG, e1.toString());
+            Log.e(TAG, e1.toString());
             e1.printStackTrace();
           }
           Message message = handler.obtainMessage(1, mServerPacks);
@@ -309,7 +307,6 @@ public class PackPurchaseActivity extends Activity {
    * @return list of unpurchased packs
    */
   private LinkedList<Pack> getUnownedPacks(LinkedList<Pack> lockedPacks, LinkedList<Pack> installedPacks) {
-    SafeLog.d(TAG, "removeLocalPacks");
     LinkedList<Pack> unownedPackList = new LinkedList<Pack>();
     unownedPackList.addAll(lockedPacks);
 
@@ -413,7 +410,7 @@ public class PackPurchaseActivity extends Activity {
    * and install or uninstall as necessary.  This is called remotely by PackPurchaseObserver.
    */
   protected void syncronizePacks() {
-    SafeLog.d(TAG, "SYNCRONIZING PACKS...");
+    Log.d(TAG, "SYNCRONIZING PACKS...");
     boolean unsyncedPurchaseChange = 
                       getSyncPreferences().getBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
     boolean syncInProgress = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, false);
@@ -422,9 +419,9 @@ public class PackPurchaseActivity extends Activity {
     // If outstanding purchases or a pack is out of date
     Boolean syncRequired = (unsyncedPurchaseChange || updateRequired);
 
-    SafeLog.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
-    SafeLog.d(TAG, "   UPDATE REQUIRED: " + updateRequired);
-    SafeLog.d(TAG, "   SYNC IN PROGRESS: " + syncInProgress);
+    Log.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
+    Log.d(TAG, "   UPDATE REQUIRED: " + updateRequired);
+    Log.d(TAG, "   SYNC IN PROGRESS: " + syncInProgress);
     
     // Don't call synchronize unless PREFKEY_UNSYNCED_PURCHASE_CHANGE preference is true or
     // some packs are out of date and we have successfully retrieved packs from our server.
@@ -436,7 +433,7 @@ public class PackPurchaseActivity extends Activity {
         new PackSyncronizer().execute(packArray);
       }
       catch (RuntimeException e) {
-        SafeLog.e(TAG, "Encountered an error syncronizing packs.");
+        Log.e(TAG, "Encountered an error syncronizing packs.");
         e.printStackTrace();
       }
     }
@@ -550,7 +547,7 @@ public class PackPurchaseActivity extends Activity {
     @Override
     protected Integer doInBackground(Pack... packs) {
       for (int i=0; i<packs.length; ++i) {
-        SafeLog.d(TAG, "SYNCING PACK: " + packs[i].getName());
+        Log.d(TAG, "SYNCING PACK: " + packs[i].getName());
         boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
 
         //Install or update the pack if it is purchased.  Select it if it's a new pack.
@@ -559,7 +556,7 @@ public class PackPurchaseActivity extends Activity {
             gm.installLatestPack(packs[i], getBaseContext());
           } catch (RuntimeException e) {
             installOrUpdateError = true;
-            SafeLog.e(TAG, "Failed to update or install PURCHASED packId: " + 
+            Log.e(TAG, "Failed to update or install PURCHASED packId: " + 
                 packs[i].getId() + " name: " + packs[i].getName());
             e.printStackTrace();
           }
@@ -575,7 +572,7 @@ public class PackPurchaseActivity extends Activity {
             gm.installLatestPack(packs[i], getBaseContext());
           } catch (RuntimeException e) {
             installOrUpdateError = true;
-            SafeLog.e(TAG, "Failed to update or install STARTER packId: " + 
+            Log.e(TAG, "Failed to update or install STARTER packId: " + 
                 packs[i].getId() + " name: " + packs[i].getName());
             e.printStackTrace();
           }
@@ -586,7 +583,7 @@ public class PackPurchaseActivity extends Activity {
         try {
           Thread.sleep(100);
         } catch (InterruptedException e) {
-          SafeLog.e(TAG, "thread interrupted", e);
+          Log.e(TAG, "thread interrupted", e);
         }
       }
       return 0; 
@@ -770,7 +767,6 @@ public class PackPurchaseActivity extends Activity {
    */
   public ComponentName getClientComponentName(
       HashMap<String, ActivityInfo> foundClients) {
-    SafeLog.d(TAG, "getClientComponentName()");
 
     ComponentName result = null;
 
@@ -907,7 +903,6 @@ public class PackPurchaseActivity extends Activity {
    */
   @Override
   public void onPause() {
-    SafeLog.d(TAG, "onPause()");
     super.onPause();
     
     if (!mContinueMusic) {

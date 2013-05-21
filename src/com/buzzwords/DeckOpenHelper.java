@@ -32,6 +32,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * @author Siramix Labs
@@ -151,7 +152,7 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    * @return LinkedList of Packs that use has already installed
    */
   public synchronized LinkedList<Pack> getAllPacksFromDB() {
-    SafeLog.d(TAG, "getAllPacksFromDB()");
+    Log.d(TAG, "getAllPacksFromDB()");
     mDatabase = getReadableDatabase();
     
     Cursor packQuery = mDatabase.query(PackColumns.TABLE_NAME, PackColumns.COLUMNS,
@@ -253,7 +254,7 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    */
   public synchronized void installPackFromResource(Pack pack, int resId,
       Context context) throws RuntimeException {
-    SafeLog.d(TAG, "Installing pack from resource (" + pack.getName() + ")");
+    Log.d(TAG, "Installing pack from resource (" + pack.getName() + ")");
 
     BufferedReader packJSON = new BufferedReader(new InputStreamReader(
         context.getResources().openRawResource(resId)));
@@ -270,7 +271,7 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
     
     installPack(pack, cardItr);
     
-    SafeLog.d(TAG, "DONE loading words.");
+    Log.d(TAG, "DONE loading words.");
   }
 
   /**
@@ -283,7 +284,7 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    * @param cardItr
    */
   private synchronized void installPack(Pack pack, CardJSONIterator cardItr) {
-    SafeLog.d(TAG, "installPack: " + pack.getName() + "v" + String.valueOf(pack.getVersion()));
+    Log.d(TAG, "installPack: " + pack.getName() + "v" + String.valueOf(pack.getVersion()));
     
     mDatabase = getWritableDatabase();
     // Add the pack and all cards in a single transaction.
@@ -317,14 +318,14 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    * @throws RuntimeException 
    */
   public synchronized void installLatestPackFromServer(Pack serverPack) throws RuntimeException {
-    SafeLog.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
+    Log.d(TAG, "installPackFromServer(" + serverPack.getName() + ")");
     int packId = packInstalled(serverPack.getId(), serverPack.getVersion());
 
     CardJSONIterator cardItr;
     
     // Don't add a pack if it's already there
     if (packId == Consts.PACK_CURRENT) {
-      SafeLog.d(TAG, "No update required, pack " + serverPack.getName() + " current.");
+      Log.d(TAG, "No update required, pack " + serverPack.getName() + " current.");
       return;
     }
     if(packId == Consts.PACK_NOT_PRESENT) { 
@@ -349,7 +350,7 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
         throwUserException(e, "Encountered URISyntaxException installing pack from server.");
       }
     }
-    SafeLog.d(TAG, "DONE loading words.");
+    Log.d(TAG, "DONE loading words.");
   }
   
   /** 
@@ -358,7 +359,7 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    * @param packId to remove
    */
   public synchronized void uninstallPack(String packId) {
-    SafeLog.d(TAG, "uninstallPack(" + packId + ")");
+    Log.d(TAG, "uninstallPack(" + packId + ")");
     mDatabase = getWritableDatabase();
 
     String[] whereArgs = new String[] { packId };
@@ -612,7 +613,7 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    */
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    SafeLog.w(TAG, "Upgrading database from version " + oldVersion + " to "
+    Log.d(TAG, "Upgrading database from version " + oldVersion + " to "
         + newVersion + ", which will destroy all old data");
     db.execSQL("DROP TABLE IF EXISTS cache;");
     db.execSQL("DROP TABLE IF EXISTS " + CardColumns.TABLE_NAME + ";");
@@ -641,7 +642,7 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    * @throws RuntimeException
    */
   static private void throwUserException(Exception e, String msg) throws RuntimeException {
-    SafeLog.e(TAG, msg);
+    Log.e(TAG, msg);
     e.printStackTrace();
     RuntimeException userException = new RuntimeException(e);
     throw userException;

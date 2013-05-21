@@ -23,6 +23,8 @@ import java.util.Scanner;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 /**
  * Utility class for parsing input streams of JSON data into packs and cards.
  * There are times when we use iterators intstead of lists for performance
@@ -57,8 +59,8 @@ public class PackParser {
    * @throws JSONException if the json is invalid in some way
    */
   public static Pack stringToPack(String strPack) throws JSONException {
-    SafeLog.d(TAG, "stringToPack");
-    SafeLog.d(TAG, "--> " + strPack);
+    Log.d(TAG, "stringToPack");
+    Log.d(TAG, "--> " + strPack);
     JSONObject curPack = new JSONObject(strPack);
     int curId = curPack.getInt("_id");
     String curName = curPack.getString("name");
@@ -81,8 +83,8 @@ public class PackParser {
    * @throws JSONException if the json is invalid in some way
    */
   public static Card stringToCard(String strCard) throws JSONException {
-    SafeLog.d(TAG, "stringToCard");
-    SafeLog.d(TAG, "--> " + strCard);
+    Log.d(TAG, "stringToCard");
+    Log.d(TAG, "--> " + strCard);
     JSONObject curCard = new JSONObject(strCard);
     String curName = curCard.getString("title");
     int curId = curCard.getInt("_id");
