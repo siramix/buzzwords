@@ -42,6 +42,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -522,7 +523,7 @@ public class TitleActivity extends Activity {
   @Override
   public void onPause() {
     super.onPause();
-    SafeLog.d(TAG, "onPause()");
+    Log.d(TAG, "onPause()");
 
     if (!mContinueMusic) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
@@ -542,7 +543,7 @@ public class TitleActivity extends Activity {
   @Override
   public void onResume() {
     super.onResume();
-    SafeLog.d(TAG, "onResume()");
+    Log.d(TAG, "onResume()");
 
     mIsActivityClosing = false;
 
@@ -612,7 +613,7 @@ public class TitleActivity extends Activity {
           try {
             Thread.sleep(100);
           } catch (InterruptedException e) {
-            SafeLog.e(TAG, "thread interrupted", e);
+            Log.e(TAG, "thread interrupted", e);
           }
         }
         dialog.dismiss();

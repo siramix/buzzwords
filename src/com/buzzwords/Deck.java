@@ -40,6 +40,7 @@ import com.buzzwords.Deck;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * The Deck represents the stack of all cards in the game. We interact with a
@@ -117,7 +118,7 @@ public class Deck implements Serializable {
       }
     }  
     catch(IOException ex){
-      SafeLog.d(TAG, "IOException while saving Deck state.");
+      Log.d(TAG, "IOException while saving Deck state.");
     }
   }
   
@@ -136,10 +137,10 @@ public class Deck implements Serializable {
       }
     }
     catch(ClassNotFoundException ex) {
-      SafeLog.d(TAG, "ClassNotFoundException while restoring deck.");
+      Log.d(TAG, "ClassNotFoundException while restoring deck.");
     }
     catch(IOException ex) {
-      SafeLog.d(TAG, "IOException while restoring deck.");
+      Log.d(TAG, "IOException while restoring deck.");
     }
     return savedDeck;
   }
@@ -155,7 +156,7 @@ public class Deck implements Serializable {
     Card ret;
     // This shouldn't happen unless a lot of cards are played in one turn (CACHE_TURNSIZE)
     if (mCache.isEmpty()) {
-      SafeLog.d(TAG, "Filling entire cache mid-turn. This is expensive.");
+      Log.d(TAG, "Filling entire cache mid-turn. This is expensive.");
       // We must mark seen now so that we won't re-pull these same cards during fillCache
       updateSeenFields(context);
       this.fillCache(context);
@@ -173,10 +174,10 @@ public class Deck implements Serializable {
    */
   public void fillCacheIfLow(Context context) {
     if (mCache.size() < Consts.CACHE_TURNSIZE) {
-      SafeLog.d(TAG, "Cache size was low (" + mCache.size() + "), filling...");
+      Log.d(TAG, "Cache size was low (" + mCache.size() + "), filling...");
       mCache.clear();
       fillCache(context);
-      SafeLog.d(TAG, "filled. Cache size is now " + mCache.size());
+      Log.d(TAG, "filled. Cache size is now " + mCache.size());
     }
   }
   
@@ -251,7 +252,7 @@ public class Deck implements Serializable {
    * @param packId to remove
    */
   public synchronized void uninstallPack(int packId, Context context) {
-    SafeLog.d(TAG, "REMOVING PACK: " + packId);
+    Log.d(TAG, "REMOVING PACK: " + packId);
     DeckOpenHelper helper = DeckOpenHelper.getInstance(context);
     Pack pack = helper.getPackFromDB(String.valueOf(packId)); 
     if (pack != null) {
@@ -260,7 +261,7 @@ public class Deck implements Serializable {
       setPackSelectionPref(packId, false, context);
     }
     else {
-      SafeLog.d(TAG, "PackId " + String.valueOf(packId) + " not found in database.");
+      Log.d(TAG, "PackId " + String.valueOf(packId) + " not found in database.");
     }
   }
   
@@ -313,7 +314,7 @@ public class Deck implements Serializable {
     for (Pack serverPack : serverPacks) {
       int packStatus = helper.packInstalled(serverPack.getId(), serverPack.getVersion());
       if (packStatus != Consts.PACK_CURRENT && packStatus != Consts.PACK_NOT_PRESENT) {
-        SafeLog.d(TAG, "Pack requires update: " + serverPack.getName());
+        Log.d(TAG, "Pack requires update: " + serverPack.getName());
         return true;
       }
     }
@@ -407,7 +408,7 @@ public class Deck implements Serializable {
         } else {
           // Pack doesn't exist in the database, so let's unselect it
           setPackSelectionPref(Integer.valueOf(packId), false, context);
-          SafeLog.w(TAG, "Preference set for pack " + String.valueOf(packId) + 
+          Log.w(TAG, "Preference set for pack " + String.valueOf(packId) + 
                      " which does not exist in the database. " +
                      "This may be due to changing users which will wipe purchased packs.");
         }
@@ -438,7 +439,7 @@ public class Deck implements Serializable {
       int numToPull = (int) Math.floor(Consts.CACHE_MAXSIZE * curPack.getWeight());
       curPack.setNumToPullNext(numToPull);
       allocated += numToPull;
-      SafeLog.d(TAG, curPack.toString());
+      Log.d(TAG, curPack.toString());
     }
     
     // Allocate randomly the remaining cache to fill

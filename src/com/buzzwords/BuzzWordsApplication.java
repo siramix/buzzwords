@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * Class extending the standard android application. This allows us to refer to
@@ -33,7 +34,6 @@ public class BuzzWordsApplication extends Application {
   /**
    * Global Debug constant
    */
-  public static final boolean DEBUG = true;
   public static final boolean DEBUG_TIMERTICKS = false;
   public static final Markets MARKET = Markets.AMAZON;
   public static final boolean USE_TEST_PACKS = true;
@@ -113,7 +113,7 @@ public class BuzzWordsApplication extends Application {
    * @return a reference to the media player
    */
   public MediaPlayer createMusicPlayer(Context context, int id) {
-    SafeLog.d(TAG, "CreateMusicPlayer(" + context + "," + id + ")");
+    Log.d(TAG, "CreateMusicPlayer(" + context + "," + id + ")");
     // Clean up resources. This fixed a leak issue caused by starting many games
     // over and over.
     if (mMediaPlayer != null) {

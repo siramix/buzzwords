@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class SoundManager {
 
@@ -73,7 +74,7 @@ public class SoundManager {
    * @param baseContext
    */
   private void initSoundManager(Context baseContext) {
-    SafeLog.d(TAG, "initSoundManager()");
+    Log.d(TAG, "initSoundManager()");
     mContext = baseContext;
     mAudioManager = (AudioManager) mContext
         .getSystemService(Context.AUDIO_SERVICE);
@@ -84,7 +85,7 @@ public class SoundManager {
    * Load all the sounds for the game
    */
   private void loadSounds() {
-    SafeLog.d(TAG, "loadSounds()");
+    Log.d(TAG, "loadSounds()");
     mSoundIds = new int[Sound.values().length];
     mSoundIds[Sound.RIGHT.ordinal()] = mSoundPool.load(mContext,
         R.raw.fx_right, 1);

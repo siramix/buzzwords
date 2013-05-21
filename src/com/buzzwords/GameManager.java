@@ -37,6 +37,7 @@ import com.buzzwords.Pack;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * @author Siramix Labs
@@ -168,7 +169,7 @@ public class GameManager implements Serializable {
    *          required for game to instantiate the database
    */
   public GameManager(Context context) {
-    SafeLog.d(TAG, "GameManager()");
+    Log.d(TAG, "GameManager()");
 
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(context);
@@ -201,7 +202,7 @@ public class GameManager implements Serializable {
   }
 
   public synchronized void saveState(Context context) {
-    SafeLog.e(TAG, "saveState()");
+    Log.e(TAG, "saveState()");
     try {
       //use buffering
       OutputStream file = context.openFileOutput(Consts.GAME_MANAGER_TEMP_FILE, Context.MODE_PRIVATE);
@@ -215,13 +216,13 @@ public class GameManager implements Serializable {
       }
     }  
     catch(IOException ex){
-      SafeLog.e(TAG, "IOException while saving Game Manager state.", ex);
+      Log.e(TAG, "IOException while saving Game Manager state.", ex);
       ex.printStackTrace();
     }
   }
   
   public static synchronized GameManager restoreState(Context context) {
-    SafeLog.e(TAG, "restoreState()");
+    Log.e(TAG, "restoreState()");
     GameManager savedGameManager = null;
     try {
       //use buffering
@@ -236,10 +237,10 @@ public class GameManager implements Serializable {
       }
     }
     catch(ClassNotFoundException ex) {
-      SafeLog.e(TAG, "ClassNotFoundException while restoring Game Manager.", ex);
+      Log.e(TAG, "ClassNotFoundException while restoring Game Manager.", ex);
     }
     catch(IOException ex) {
-      SafeLog.e(TAG, "IOException while restoring Game Manager.", ex);
+      Log.e(TAG, "IOException while restoring Game Manager.", ex);
     }
     return savedGameManager;
   }
@@ -289,7 +290,7 @@ public class GameManager implements Serializable {
    *          the context in which the pack preferences will be dealt
    */
   public void startGame(ArrayList<Team> teams, GameType mode, int modeInfo, Context context) {
-    SafeLog.d(TAG, "StartGame()");
+    Log.d(TAG, "StartGame()");
 
     // Initialize the deck and fill the cache
     mDeck.setPackData(context);
@@ -330,7 +331,7 @@ public class GameManager implements Serializable {
    * @param context the context for the deck
    */
   public void nextTurn(Context context) {
-    SafeLog.d(TAG, "NextTurn()");
+    Log.d(TAG, "NextTurn()");
     fillDeckIfLow(context);
     this.incrementActiveTeamIndex();
     mCardsDealtDuringTurn.clear();
@@ -376,7 +377,7 @@ public class GameManager implements Serializable {
    * Write turn and game relevant data to the database.
    */
   public void endGame() {
-    SafeLog.d(TAG, "EndGame()");
+    Log.d(TAG, "EndGame()");
     mTeamPosition = 0;
 
     // clear current cards so that scoreboards don't add turn score in
@@ -389,7 +390,7 @@ public class GameManager implements Serializable {
    * @param context the context for the deck
    */
   private void fillDeckIfLow(Context context) {
-    SafeLog.d(TAG, "fillDeckIfLow()");
+    Log.d(TAG, "fillDeckIfLow()");
     mDeck.fillCacheIfLow(context);
   }
 
@@ -401,7 +402,7 @@ public class GameManager implements Serializable {
    * @return true if any pack needs update
    */
   public boolean packsRequireUpdate(LinkedList<Pack> serverPacks, Context context) {
-    SafeLog.d(TAG, "packsRequireUpdate(LinkedList<Pack>)");
+    Log.d(TAG, "packsRequireUpdate(LinkedList<Pack>)");
     return mDeck.packsRequireUpdate(serverPacks, context);
   }
 
@@ -437,7 +438,7 @@ public class GameManager implements Serializable {
     try {
       mDeck.uninstallPack(packId, context);
     } catch (RuntimeException e) {
-      SafeLog.e(TAG, "Unable to install pack: " + String.valueOf(packId));
+      Log.e(TAG, "Unable to install pack: " + String.valueOf(packId));
       e.printStackTrace();
     }
   }
@@ -491,7 +492,7 @@ public class GameManager implements Serializable {
    * @return true if the game should end instead of advancing to another turn
    */
   public boolean shouldGameEnd() {
-    SafeLog.d(TAG, "shouldGameEnd()");
+    Log.d(TAG, "shouldGameEnd()");
 
     boolean ret = false;
     switch (mCurrentGameLimit) {
