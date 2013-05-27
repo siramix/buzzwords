@@ -445,12 +445,12 @@ public class PackPurchaseActivity extends Activity {
   private void openFacebookClient()
   {
     // Launch Facebook, if not found, launch a browser intent
-    String url = getApplication().getString(R.string.URI_fb_launcher_buzzwordsapp);
+    String url = Config.buzzwordsFBAppLauncher;
     Intent facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
     try {
       startActivityForResult(facebookOrBrowserIntent, FACEBOOK_REQUEST_CODE);
     } catch (ActivityNotFoundException e) {
-      Uri uri = Uri.parse(getApplication().getString(R.string.URI_fb_buzzwordsapp));
+      Uri uri = Uri.parse(Config.buzzwordsFBPage);
       facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW);
       facebookOrBrowserIntent.setDataAndType(uri, "text/plain");
       startActivityForResult(facebookOrBrowserIntent, FACEBOOK_REQUEST_CODE);

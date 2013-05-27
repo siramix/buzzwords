@@ -333,15 +333,13 @@ public class TitleActivity extends Activity {
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       // Launch Facebook, if not found, launch a browser intent
-      String url = getApplication().getString(
-          R.string.URI_fb_launcher_buzzwordsapp);
+      String url = Config.buzzwordsFBAppLauncher;
       Intent facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW,
           Uri.parse(url));
       try {
         startActivity(facebookOrBrowserIntent);
       } catch (ActivityNotFoundException e) {
-        Uri uri = Uri.parse(getApplication().getString(
-            R.string.URI_fb_buzzwordsapp));
+        Uri uri = Uri.parse(Config.buzzwordsFBPage);
         facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW);
         facebookOrBrowserIntent.setDataAndType(uri, "text/plain");
         startActivity(facebookOrBrowserIntent);
@@ -736,7 +734,7 @@ public class TitleActivity extends Activity {
               new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                   Intent intent = new Intent(Intent.ACTION_VIEW,
-                      BuzzWordsApplication.storeURI_Buzzwords);
+                      Uri.parse(Config.storeUriBuzzwords));
                   startActivity(intent);
                   muteRateReminder();
                 }
@@ -765,7 +763,7 @@ public class TitleActivity extends Activity {
               new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                   Intent intent = new Intent(Intent.ACTION_VIEW,
-                      BuzzWordsApplication.storeURI_Buzzwords);
+                      Uri.parse(Config.storeUriBuzzwords));
                   startActivity(intent);
                   muteRateReminder();
                 }

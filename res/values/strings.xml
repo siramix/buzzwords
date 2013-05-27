@@ -229,16 +229,7 @@
     <string name="progressDialog_install_text">Installing Words&#8230;</string>
     <string name="progressDialog_update_text">Updating Words&#8230;</string>
 
-    <!-- URIs for Rate Us -->
-    <string name="URI_buzzwords_redirect">http://www.siramix.com/buzzwordsappstore</string>
-    <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwords</string>
-    <string name="URI_android_market_buzzwordslite">https://market.android.com/details?id=com.buzzwordslite</string>
-    <string name="URI_amazon_market_buzzwords">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwords</string>
-    <string name="URI_amazon_market_buzzwordslite">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite</string>
-
-    <!-- URI for About us page -->
-    <string name="URI_fb_buzzwordsapp">https://www.facebook.com/buzzwordsapp</string>
-    <string name="URI_fb_launcher_buzzwordsapp">fb://page/472759256084535</string>
+		<!--  URIs for About Us Page -->
     <string name="tagline_fb_buzzwordsapp">Find us on Facebook</string>
 
     <!-- Accessibility Strings -->
