@@ -2,3 +2,4 @@ bin/
 .settings/
 gen/
 .DS_Store
+local.properties
