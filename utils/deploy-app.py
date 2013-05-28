@@ -1,5 +1,7 @@
-import sys
 import os
+import sys
+import shutil
+import subprocess
 import argparse
 import fileinput
 
@@ -9,7 +11,7 @@ desc = "Deployment script for pre-release code changes and package building.  " 
 parser = argparse.ArgumentParser(description=desc)
 group = parser.add_mutually_exclusive_group()
 group.add_argument("-p", "--prep", help="Run this FIRST before creating a build.", action='store_true')
-group.add_argument("-b", "--build", dest='market', help="Build for which market (AMAZON or GOOGLE)")
+group.add_argument("-b", "--build", help="Run this AFTER tagging and commiting the PREP'ed code", action='store_true')
 args = parser.parse_args()
 
 
@@ -43,6 +45,7 @@ def updateAndroidManifest():
                 newVsnCode = curVsnCode + 1
             if "android:versionName" in line:
                 curVsnName = line.split("\"")[1]
+
         # Prompt user to update Version Code
         inputchar = ''
         while inputchar != 'y' and inputchar != 'n':
@@ -94,6 +97,7 @@ def updateDatabaseVersion():
             if "DATABASE_VERSION" in line:
                 curVsn = int(line.split("=")[1].strip().strip(';'))
                 newVsn = curVsn + 1
+
         # Prompt user to update Database Version
         inputchar = ''
         while inputchar != 'y' and inputchar != 'n':
@@ -118,89 +122,107 @@ def updateDatabaseVersion():
         exitDeploy()
 
 
+def pointToSecretPacks():
+    print "This is where we will update Config.java to point to the super secret pack location."
+
+
 def printGitHelp():
-    print "\nYou now must\033[91m COMMIT, PUSH, AND TAG\033[0m these changes!\n"
+    print "\nYou now must\033[94m COMMIT, PUSH, AND TAG\033[0m these changes!\n"
     print "LUCAS LOOK THIS PROCESS UP AND DOCUMENT HERE"
     print "git commit"
     print "git push"
     print "git tag"
     print "git push --tags"
-    print "\033[91m\nAfter you tag this release, rerun deploy.py and create your builds.\033[0m"
+    print "\033[94m\nAfter you tag this release, rerun deploy-app.py to create your builds.\033[0m"
 
 
-def main():
-    print "Available Deploy Tasks:"
-    print "1. Increment versions before committing to repository"
-    print "2. Create a build for Amazon or Google"
-    inputchar = ''
-    while inputchar != '1' and inputchar != '2':
-        if inputchar != '\n':
-            print "\nEnter 1 or 2:"
-        inputchar = sys.stdin.read(1)
+def buildApk(market):
+    '''
+    Echo and run the ant commands necessary to create a build for the provided
+    market. Accepts "google" or "amazon" as parameter values.
+    '''
+    print "\033[94m" + "ant config-%s" % market + "\033[0m"
+    subprocess.call(["ant", "config-%s" % market])
+    print "\033[94m" + "ant release" + "\033[0m"
+    subprocess.call(["ant", "release"])
+    copyApk(market)
 
-    if inputchar == '1':
-        print "Incrementing versions..."
-        # Tick up our versions.
-        updateAndroidManifest()
-        # Update our database version if necessary.
-        updateDatabaseVersion()
 
-        exit()
+def copyApk(market):
+    '''
+    Copies the existing buzzords.apk file to the appropriate folder in dropbox
+    depending on the provided market. Accept "google" or "amazon" as parameter values.
+    '''
+    marketApkDir = APK_VSN_DIR + market + "/"
+    try:
+        print "\033[94m" + "mkdir %s" % marketApkDir + "\033[0m"
+        subprocess.check_call(["mkdir", marketApkDir])
+        print "\033[94m" + "copy %s to %s" % (RELEASE_APK, marketApkDir) + "\033[0m"
+        shutil.copy2(RELEASE_APK, marketApkDir + "buzzwords.apk")
+    except:
+        print "\nError copying %s APK to dropbox." % market
+        print "If the folder for your apk version already exists, make sure you've updated versions or delete the existing folder."
 
-    if inputchar == '2':
-        print "Have you already committed, pushed, and tagged the release version? (y/n)"
-
-#    print "4. Set our pack URLs to secure URL"
-  # Calculate the secure URL
-  # Set the secure URL
-#    print "5. Enter AMAZON or GOOGLE to set the marketplace."
-  # Read in value
-  # Validate for AMAZON or GOOGLE
-  # Repeat if necessary
-  # If AMAZON set market to AMAZON
-  # If GOOGLE set market to GOOGLE
 
 '''
-Before Marketplace Upload
-* Set Version Code one higher than whatever is published on the store
-* Did we change the database? If so, update the database version.
-* Tag the commit i.e. git tag v1.33 && git push --tags
-* Remove Debug flag (DO NOT COMMIT)
-* Remove TEST_URL flag
-* Change the URL in PackClient to the live packs URL (for in-App-purchasing)
-* Change Market flag in BuzzwordsApplication to the relevant store
-* If FULL VSN (release-amazon as of 3-11-13): Follow the TODO inside DeckOpenHelper to install full packs.
-** Clone our private repository of words
-  git clone http://siramix.com/git/buzzwordspacks.git wordpacks/
-** Copy packs/buzzwords_i.json and packs/buzzwords_ii.json to the buzzwords codebase
-* Sign apk -- Right click project, Export - key is in dropbox
-* Verify Lite version and Full version URLs in app
-* Download onto a test device the soon to be out of date app
-
-During Marketplace Upload
-* Update screenshots
-* Review market app info
-
-After Marketplace Upload
-* Update siramix.github site
-* Update app on phone through marketplaceS
- 
-All new features are outlined in release notes.  Generally just UI changes plus the ability to name teams.
-
-We also addressed the patch issue with upsale links. All Upsale dialogs should now also link directly to the Amazon store when purchased from the Amazon store. This is also true for the "Rate-us" dialogs.
+Global variables
 '''
+manifestFile = "AndroidManifest.xml"
+for line in fileinput.input(manifestFile):
+    if "android:versionName" in line:
+        curVsnName = line.split("\"")[1]
+
+DROPBOX = os.environ['HOME'] + "/Dropbox/Siramix/"
+APK_VSN_DIR = DROPBOX + "apps/buzzwords_apks/Buzzwords-%s/" % curVsnName
+RELEASE_APK = "bin/Buzzwords-release.apk"
 
 '''
-Can we automate package creation from eclipse? signing, etc.
+Primary script functionality. Two paths depending passed arguments, PREP or BUILD.
 '''
 if args.prep:
     print "Prepping codebase for final commit..."
     updateAndroidManifest()
     updateDatabaseVersion()
     printGitHelp()
-elif args.market == "AMAZON":
-    print "AMAZON!!!"
-elif args.market == "GOOGLE":
-    print "GOOGLE!!!"
+
+elif args.build:
+    print "Have you already committed, pushed, and tagged the release version? (y/n)"
+    inputchar = sys.stdin.read(1)
+    if inputchar != 'y':
+        print "Before you can build releases, you must PREP (-p) the sourcecode for release."
+        exitDeploy()
+
+    pointToSecretPacks()
+
+    # Get our keystore from dropbox if possible
+    try:
+        print "\033[94m" + "copy %s to ./keystore" % (DROPBOX + 'keystore') + "\033[0m"
+        shutil.copy2(DROPBOX + 'keystore', 'keystore')
+    except:
+        print "Couldn't find keystore in Dropbox"
+        print "Is this your dropbox directory %s ?" % DROPBOX
+        print "If it isn't, open up this util and modify this code to point to your Dropbox (or make it modifiable)."
+
+    # Create Dropbox directory for current version of our apk
+    try:
+        print "\033[94m" + "mkdir %s" % APK_VSN_DIR + "\033[0m"
+        subprocess.check_call(["mkdir", APK_VSN_DIR])
+    except:
+        print "Error creating dropbox apk folder for current version."
+        print "If the folder for your apk version already exists, make sure you've updated versions or delete the existing folder."
+
+    # Parse configs and build new Amazon APK
+    buildApk("amazon")
+
+    # Parse configs and build new Google APK
+    buildApk("google")
+
+    # Clean up our temporary keystore
+    try:
+        print "\033[94m" + "rm keystore" + "\033[0m"
+        subprocess.check_call(["rm", "keystore"])
+    except:
+        print "Error deleting temporary keystore."
+
 else:
     parser.print_help()
