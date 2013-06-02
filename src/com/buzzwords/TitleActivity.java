@@ -333,13 +333,13 @@ public class TitleActivity extends Activity {
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       // Launch Facebook, if not found, launch a browser intent
-      String url = Config.buzzwordsFBAppLauncher;
+      String url = Consts.buzzwordsFBAppLauncher;
       Intent facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW,
           Uri.parse(url));
       try {
         startActivity(facebookOrBrowserIntent);
       } catch (ActivityNotFoundException e) {
-        Uri uri = Uri.parse(Config.buzzwordsFBPage);
+        Uri uri = Uri.parse(Consts.buzzwordsFBPage);
         facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW);
         facebookOrBrowserIntent.setDataAndType(uri, "text/plain");
         startActivity(facebookOrBrowserIntent);

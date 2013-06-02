@@ -6,12 +6,7 @@ package com.buzzwords;
  * will copy this file to src/ and make any necessary replacements.
  */
 public class Config {
-
-  public static final String packList = "packs.json";
   public static final String packBaseUri = "https://s3.amazonaws.com/siramix.buzzwords/bw-packdata-test/";
   public static final String storeUriBuzzwords = "https://market.android.com/details?id=com.buzzwords";
   public static final String storeUriBuzzwordsLite = "https://market.android.com/details?id=com.buzzwordslite";
-  
-  public static final String buzzwordsFBAppLauncher = "fb://page/472759256084535";
-  public static final String buzzwordsFBPage = "https://www.facebook.com/buzzwordsapp";
 }

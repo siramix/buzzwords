@@ -71,13 +71,17 @@ public class Consts {
     public static final String PREFFILE_MUSIC_STATE = "com.buzzwords.MUSIC_STATE";
     public static final String PREFFILE_TURN_STATE = "com.buzzwords.TURN_STATE";
 
+    public static final String packList = "packs.json";
+    public static final String buzzwordsFBAppLauncher = "fb://page/472759256084535";
+    public static final String buzzwordsFBPage = "https://www.facebook.com/buzzwordsapp";
+
     public static final String DECK_TEMP_FILE = "cur_deck.ser";
     public static final String GAME_MANAGER_TEMP_FILE = "cur_gm.ser";
     public static final String TIMER_TEMP_FILE = "cur_timer.ser";
-    
+
     public static final String DATABASE_NAME = "buzzwords";
     public static final int DATABASE_VERSION = 3;
-    
+
     public static final int CACHE_MAXSIZE = 100;
     public static final int CACHE_TURNSIZE = 20;
     

@@ -75,7 +75,7 @@ public class PackClient {
     Log.d(TAG, "getServerPacks");
     StringBuilder in = null;
     LinkedList<Pack> ret = null;
-    in = doHTTPGet(Config.packBaseUri + Config.packList);
+    in = doHTTPGet(Config.packBaseUri + Consts.packList);
     ret = PackParser.parsePacks(in);
     return ret;
   }

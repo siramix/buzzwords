@@ -60,8 +60,8 @@ def updateAndroidManifest():
 
         # Prompt user to update Verision Name
         print "\nCurrent versionName is %s" % curVsnName
-        print "What should the version name be updated to? (format: #.#)"
-        newVsnName = sys.stdin.read(4).strip("\n")
+        print "What should the version name be updated to? (format: #.##)"
+        newVsnName = sys.stdin.read(5).strip("\n")
         replaceAll(manifestFile, "android:versionName=\"%s\"" % curVsnName, "android:versionName=\"%s\"" % newVsnName)
         print "versionName updated."
 
@@ -127,7 +127,7 @@ def pointToSecretPacks():
 
 
 def printGitHelp():
-    print "\nYou now must\033[94m COMMIT, PUSH, AND TAG\033[0m these changes!\n"
+    print "\nBefore building, you must\033[94m COMMIT, PUSH, AND TAG\033[0m changes by --prep!\n"
     print "LUCAS LOOK THIS PROCESS UP AND DOCUMENT HERE"
     print "git commit"
     print "git push"
@@ -141,6 +141,7 @@ def buildApk(market):
     Echo and run the ant commands necessary to create a build for the provided
     market. Accepts "google" or "amazon" as parameter values.
     '''
+    print "Building apk for %s..." % market
     print "\033[94m" + "ant config-%s" % market + "\033[0m"
     subprocess.call(["ant", "config-%s" % market])
     print "\033[94m" + "ant release" + "\033[0m"
@@ -186,10 +187,10 @@ if args.prep:
     printGitHelp()
 
 elif args.build:
-    print "Have you already committed, pushed, and tagged the release version? (y/n)"
+    print "Have you already committed, pushed, and tagged the release (prepped) version? (y/n)"
     inputchar = sys.stdin.read(1)
     if inputchar != 'y':
-        print "Before you can build releases, you must PREP (-p) the sourcecode for release."
+        printGitHelp()
         exitDeploy()
 
     pointToSecretPacks()
@@ -210,6 +211,7 @@ elif args.build:
     except:
         print "Error creating dropbox apk folder for current version."
         print "If the folder for your apk version already exists, make sure you've updated versions or delete the existing folder."
+        exitDeploy()
 
     # Parse configs and build new Amazon APK
     buildApk("amazon")
@@ -223,6 +225,7 @@ elif args.build:
         subprocess.check_call(["rm", "keystore"])
     except:
         print "Error deleting temporary keystore."
+        exitDeploy()
 
 else:
     parser.print_help()
