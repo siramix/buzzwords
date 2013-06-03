@@ -40,6 +40,7 @@ import com.buzzwords.Deck;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * The Deck represents the stack of all cards in the game. We interact with a
@@ -77,8 +78,7 @@ public class Deck implements Serializable {
   private LinkedList<Pack> mSelectedPacks;
 
   private Pack mStarterPack;
-  //TODO Swap this code in when cutting a release build
-  //private Pack mStarterPack2;
+  private Pack mStarterPack2;
   
   /**
    * Constructor
@@ -92,19 +92,16 @@ public class Deck implements Serializable {
     mDiscardPile = new LinkedList<Card>();
     mSelectedPacks = new LinkedList<Pack>();
 
-    // Lite version code
-    mStarterPack = new Pack(0, "Lite Pack", "packs/lite_pack.json", "packs/icons/packicon_classic1.png",
-        "A sample pack of 125 Buzzwords.", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
-    /*
-    // TODO Swap this code in when cutting release builds of full version.
-    // Full version code
+    // Stub pack (swap this in to get app running if you don't have access to buzzwords_i and _ii,
+    // which you won't if you are forking our repository).
+    // mStarterPack = new Pack(0, "Lite Pack", "packs/lite_pack.json", "packs/icons/packicon_classic1.png",
+    //    "A sample pack of 125 Buzzwords.", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
     mStarterPack = new Pack(1, "Buzzwords I", "packs/buzzwords_i.json", "packs/icons/packicon_classic1.png",
         "The first of two pre-installed packs that include a mix of words from every catagory.", 
         500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
     mStarterPack2 = new Pack(2, "Buzzwords II", "packs/buzzwords_ii.json", "packs/icons/packicon_classic2.png",
         "The second of two pre-installed packs that include a mix of words from every catagory.", 
         500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
-    */
   }
 
   public void saveState(Context context) {
@@ -121,7 +118,7 @@ public class Deck implements Serializable {
       }
     }  
     catch(IOException ex){
-      SafeLog.d(TAG, "IOException while saving Deck state.");
+      Log.d(TAG, "IOException while saving Deck state.");
     }
   }
   
@@ -140,10 +137,10 @@ public class Deck implements Serializable {
       }
     }
     catch(ClassNotFoundException ex) {
-      SafeLog.d(TAG, "ClassNotFoundException while restoring deck.");
+      Log.d(TAG, "ClassNotFoundException while restoring deck.");
     }
     catch(IOException ex) {
-      SafeLog.d(TAG, "IOException while restoring deck.");
+      Log.d(TAG, "IOException while restoring deck.");
     }
     return savedDeck;
   }
@@ -159,7 +156,7 @@ public class Deck implements Serializable {
     Card ret;
     // This shouldn't happen unless a lot of cards are played in one turn (CACHE_TURNSIZE)
     if (mCache.isEmpty()) {
-      SafeLog.d(TAG, "Filling entire cache mid-turn. This is expensive.");
+      Log.d(TAG, "Filling entire cache mid-turn. This is expensive.");
       // We must mark seen now so that we won't re-pull these same cards during fillCache
       updateSeenFields(context);
       this.fillCache(context);
@@ -177,10 +174,10 @@ public class Deck implements Serializable {
    */
   public void fillCacheIfLow(Context context) {
     if (mCache.size() < Consts.CACHE_TURNSIZE) {
-      SafeLog.d(TAG, "Cache size was low (" + mCache.size() + "), filling...");
+      Log.d(TAG, "Cache size was low (" + mCache.size() + "), filling...");
       mCache.clear();
       fillCache(context);
-      SafeLog.d(TAG, "filled. Cache size is now " + mCache.size());
+      Log.d(TAG, "filled. Cache size is now " + mCache.size());
     }
   }
   
@@ -210,28 +207,63 @@ public class Deck implements Serializable {
     }
     return localPacks;
   }
-
+  
   /**
-   * Install all of the packs that the app comes with.  This ultimately
-   * will be just one pack.
+   * Take a Pack object and pull in cards from the server into the database. 
+   * @param pack
+   * @throws RuntimeException 
+   */
+  public void installLatestPack(Pack pack, Context context) throws RuntimeException {
+    // If pack is out of date, delete the icon and get the new
+    DeckOpenHelper helper = DeckOpenHelper.getInstance(context);
+    int packState = helper.packInstalled(pack.getId(), pack.getVersion());
+    if (packState == pack.getId()) {
+      PackIconUtils.deleteIcon(pack.getIconName(), context);
+    } else if (packState == Consts.PACK_NOT_PRESENT) {
+      setPackSelectionPref(pack.getId(), true, context);
+    }
+    
+    helper.installLatestPackFromServer(pack);
+  }
+  
+  /**
+   * Install all of the packs that the app comes with. This method will reference
+   * packs that do not exist in the repository. To fix this method, swap out the
+   * untracked buzzwords_i and _ii files with a stub pack (we use lite_pack).
    * @param context the context in which to set the pack selection preference
    * @throws RuntimeException 
    */
   public synchronized void installStarterPacks(Context context) throws RuntimeException {
-    // Lite code
     DeckOpenHelper helper = DeckOpenHelper.getInstance(context);
-    helper.installStarterPacks(mStarterPack, context);
+    // These lines will error by design. We protect our starter packs by not including
+    // them in our source code. To get the app working, comment out the R.raw.buzzwords
+    // lines and uncomment the line below as well as the code that initializes mStartPack
+    //
+    // helper.installPackFromResource(mStarterPack, R.raw.lite_pack, context);
+    helper.installPackFromResource(mStarterPack, R.raw.buzzwords_i, context);
+    helper.installPackFromResource(mStarterPack2, R.raw.buzzwords_ii, context);
     setPackSelectionPref(mStarterPack.getId(), true, context);
-    
-    /* TODO Swap this code in when cutting a release build
-    // Full version code
-    mDatabaseOpenHelper.installStarterPacks(mStarterPack);
-    mDatabaseOpenHelper.installStarterPacks(mStarterPack2);
-    setPackSelectionPref(mStarterPack.getId(), true);
-    setPackSelectionPref(mStarterPack2.getId(), true);
-    */
+    setPackSelectionPref(mStarterPack2.getId(), true, context);
   }
-
+  
+  /** 
+   * Delete the pack and phrases associated with a given Pack Id.  Will first
+   * check that the pack exists before attempting to perform any deletions.
+   * @param packId to remove
+   */
+  public synchronized void uninstallPack(int packId, Context context) {
+    Log.d(TAG, "REMOVING PACK: " + packId);
+    DeckOpenHelper helper = DeckOpenHelper.getInstance(context);
+    Pack pack = helper.getPackFromDB(String.valueOf(packId)); 
+    if (pack != null) {
+      PackIconUtils.deleteIcon(pack.getIconName(), context);
+      helper.uninstallPack(String.valueOf(packId));
+      setPackSelectionPref(packId, false, context);
+    }
+    else {
+      Log.d(TAG, "PackId " + String.valueOf(packId) + " not found in database.");
+    }
+  }
   
   /**
    * Shuffle all cards in the database by setting the date played to a year
@@ -282,7 +314,7 @@ public class Deck implements Serializable {
     for (Pack serverPack : serverPacks) {
       int packStatus = helper.packInstalled(serverPack.getId(), serverPack.getVersion());
       if (packStatus != Consts.PACK_CURRENT && packStatus != Consts.PACK_NOT_PRESENT) {
-        SafeLog.d(TAG, "Pack requires update: " + serverPack.getName());
+        Log.d(TAG, "Pack requires update: " + serverPack.getName());
         return true;
       }
     }
@@ -376,7 +408,7 @@ public class Deck implements Serializable {
         } else {
           // Pack doesn't exist in the database, so let's unselect it
           setPackSelectionPref(Integer.valueOf(packId), false, context);
-          SafeLog.w(TAG, "Preference set for pack " + String.valueOf(packId) + 
+          Log.w(TAG, "Preference set for pack " + String.valueOf(packId) + 
                      " which does not exist in the database. " +
                      "This may be due to changing users which will wipe purchased packs.");
         }
@@ -407,7 +439,7 @@ public class Deck implements Serializable {
       int numToPull = (int) Math.floor(Consts.CACHE_MAXSIZE * curPack.getWeight());
       curPack.setNumToPullNext(numToPull);
       allocated += numToPull;
-      SafeLog.d(TAG, curPack.toString());
+      Log.d(TAG, curPack.toString());
     }
     
     // Allocate randomly the remaining cache to fill

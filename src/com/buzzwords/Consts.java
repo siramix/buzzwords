@@ -39,7 +39,6 @@ package com.buzzwords;
  */
 public class Consts {
 
-    public static final boolean DEBUG = true;
     public static final String PREFKEY_NUM_BUZZWORDS = "com.buzzwords.NUM_BUZZWORDS";
     public static final String PREFKEY_TIMER = "com.buzzwords.TURN_TIMER";
     public static final String PREFKEY_MUSIC = "com.buzzwords.MUSIC_ENABLED";
@@ -60,17 +59,28 @@ public class Consts {
     public static final String PREFKEY_IS_PAUSED = "com.buzzwords.IS_PAUSED";
     public static final String PREFKEY_IS_TURN_IN_START_DIALOG = "com.buzzwords.IS_TURN_IN_START_DIALOG";
     public static final String PREFKEY_TURN_TIME_REMAINING = "com.buzzwords.TURN_TIME_REMAINING";
+    public static final String PREFKEY_UNSYNCED_PURCHASE_CHANGE = "com.buzzwords.PREFKEY_UNSYNCED_PURCHASE_CHANGE";
+    public static final String PREFKEY_SYNC_IN_PROGRESS = "com.buzzwords.SYNC_IN_PROGRESS";
+    public static final String PREFKEY_CURRENT_USER = "com.buzzwords.PACK_SYNC_CURRENT_USER";
+    public static final String PREFKEY_LAST_USER = "com.buzzwords.PACK_SYNC_LAST_USER";
+    public static final String PREFKEY_FACEBOOK_REQUEST_CODE = "com.buzzwords.RECENT_REQUEST_CODE";
+    public static final String PREFKEY_FACEBOOK_PACK_ID = "com.buzzwords.FACEBOOK_PACK_ID";
+    public static final String PREFFILE_SYNC_PREFS = "com.buzzwords.SYNC_PREF";
     public static final String PREFFILE_PACK_SELECTIONS = "com.buzzwords.PACK_SELECTIONS";
     public static final String PREFFILE_MUSIC_STATE = "com.buzzwords.MUSIC_STATE";
     public static final String PREFFILE_TURN_STATE = "com.buzzwords.TURN_STATE";
 
+    public static final String packList = "packs.json";
+    public static final String buzzwordsFBAppLauncher = "fb://page/472759256084535";
+    public static final String buzzwordsFBPage = "https://www.facebook.com/buzzwordsapp";
+
     public static final String DECK_TEMP_FILE = "cur_deck.ser";
     public static final String GAME_MANAGER_TEMP_FILE = "cur_gm.ser";
     public static final String TIMER_TEMP_FILE = "cur_timer.ser";
-    
+
     public static final String DATABASE_NAME = "buzzwords";
     public static final int DATABASE_VERSION = 3;
-    
+
     public static final int CACHE_MAXSIZE = 100;
     public static final int CACHE_TURNSIZE = 20;
     

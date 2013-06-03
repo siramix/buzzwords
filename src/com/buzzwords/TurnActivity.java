@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateInterpolator;
@@ -288,8 +289,8 @@ public class TurnActivity extends Activity {
    * Stops the turn timer and the animations that go along with it
    */
   private void stopTurnTimer() {
-    SafeLog.d(TAG, "stopTimer()");
-    SafeLog.d(TAG, Long.toString(mCounter.getTimeRemaining()));
+    Log.d(TAG, "stopTimer()");
+    Log.d(TAG, Long.toString(mCounter.getTimeRemaining()));
 
     if (!mTurnTimeIsUp && mCounter.isActive()) {
       mCounter.pause();
@@ -302,8 +303,8 @@ public class TurnActivity extends Activity {
    * Resumes the turn timer and the animations that go along with that
    */
   private void resumeTurnTimer() {
-    SafeLog.d(TAG, "resumeTimer()");
-    SafeLog.d(TAG, Long.toString(mCounter.getTimeRemaining()));
+    Log.d(TAG, "resumeTimer()");
+    Log.d(TAG, Long.toString(mCounter.getTimeRemaining()));
 
     if (!mTurnTimeIsUp && !mCounter.isActive()) {
       mCounter.resume();
@@ -1122,7 +1123,7 @@ public class TurnActivity extends Activity {
   @Override
   public void onPause() {
     super.onPause();
-    SafeLog.d(TAG, "onPause()");
+    Log.d(TAG, "onPause()");
 
     if (!mTurnTimeIsUp && !mIsWaitingForTeamReady) {
       this.pauseIfNotPaused();
@@ -1189,7 +1190,7 @@ public class TurnActivity extends Activity {
    */
   @Override
   public boolean onSearchRequested() {
-    SafeLog.d(TAG, "onSearchRequested()");
+    Log.d(TAG, "onSearchRequested()");
     return false;
   }
 
@@ -1317,7 +1318,7 @@ public class TurnActivity extends Activity {
    * the turn timer.
    */
   protected void resumeGame() {
-    SafeLog.d(TAG, "resumeGameTurn()");
+    Log.d(TAG, "resumeGameTurn()");
 
     mIsPaused = false;
 
@@ -1355,7 +1356,7 @@ public class TurnActivity extends Activity {
    * we pause the game through whatever pausing method.
    */
   protected void pauseGame() {
-    SafeLog.d(TAG, "pauseGame()");
+    Log.d(TAG, "pauseGame()");
 
     // Allow phone to sleep while paused
     setSleepAllowed(true);

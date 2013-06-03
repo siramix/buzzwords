@@ -35,6 +35,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -544,7 +545,7 @@ public class GameSetupActivity extends Activity {
   @Override
   public void onPause() {
     super.onPause();
-    SafeLog.d(TAG, "onPause()");
+    Log.d(TAG, "onPause()");
     // Pause the music unless going to an Activity where it is supposed to
     // continue through
     BuzzWordsApplication application = (BuzzWordsApplication) this
@@ -579,7 +580,7 @@ public class GameSetupActivity extends Activity {
   @Override
   public void onResume() {
     super.onResume();
-    SafeLog.d(TAG, "onResume()");
+    Log.d(TAG, "onResume()");
 
     mIsActivityClosing = false;
 
