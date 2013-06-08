@@ -167,6 +167,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
             GetUserIdResponse getUserIdResponse = params[0];
 
             if (getUserIdResponse.getUserIdRequestStatus() == GetUserIdRequestStatus.SUCCESSFUL) {
+                baseActivity.setUserErrorFlag(false);
                 // Each UserID has their own shared preferences file, and we'll load that file when a new user logs in.
                 final String currentUser = getUserIdResponse.getUserId();
                 baseActivity.setPreviousUser(baseActivity.getCurrentUser());
@@ -180,6 +181,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 return true;
             } else {
                 Log.d(TAG, "onGetUserIdResponse: Unable to get user ID.");
+                baseActivity.setUserErrorFlag(true);
                 return false;
             }
         }

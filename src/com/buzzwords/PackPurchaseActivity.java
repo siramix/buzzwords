@@ -73,6 +73,9 @@ public class PackPurchaseActivity extends Activity {
   // Flag for whether user can connect to our site, set on each refresh.
   private boolean mServerError = false;
   
+  // Flag for failures to get userId from Amazon's API
+  private boolean mUserError = false;
+  
   /**
    * Request Code constants for social media sharing
    */
@@ -337,7 +340,7 @@ public class PackPurchaseActivity extends Activity {
     TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
     
     lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
-    if (mServerError) {
+    if (mServerError || mUserError) {
       placeHolderText.setVisibility(View.VISIBLE);
       placeHolderText.setText(getString(R.string.packpurchase_nointernet));
     } else if (lockedPacks.size() == 0) {
@@ -860,6 +863,15 @@ public class PackPurchaseActivity extends Activity {
     syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
     userPurchases.commit();
     syncPrefEditor.commit();
+  }
+
+  /**
+   * Allow purchase observer to make changes to the user flag as the
+   * observer handles getUserId requests and can handle the failure responses.
+   * @param trueFalse
+   */
+  protected void setUserErrorFlag(boolean trueFalse) {
+    mUserError = trueFalse;
   }
 
   
