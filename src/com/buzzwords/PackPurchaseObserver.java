@@ -240,10 +240,15 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      * Once the AsyncTask returns successfully, the UI is updated.
      */
     private class PurchaseAsyncTask extends AsyncTask<PurchaseResponse, Void, Boolean> {
-        @Override
+      boolean alreadyPurchased = false;
+      boolean purchaseFailure = false;
+
+      @Override
         protected Boolean doInBackground(final PurchaseResponse... params) {
             final PurchaseResponse purchaseResponse = params[0];
-            
+            alreadyPurchased = false;
+            purchaseFailure = false;
+
             switch (purchaseResponse.getPurchaseRequestStatus()) {
             case SUCCESSFUL:
                 /*
@@ -271,6 +276,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                  */
                 final String requestId = purchaseResponse.getRequestId();
                 baseActivity.setPurchasePrefs(baseActivity.requestIds.get(requestId), true);
+                alreadyPurchased = true;
                 return true;
             case FAILED:
                 /*
@@ -278,6 +284,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                  * extraneous circumstance happens) the application ignores the request and logs the failure.
                  */
                 Log.d(TAG, "Failed purchase for request" + baseActivity.requestIds.get(purchaseResponse.getRequestId()));
+                // We can't flag this as a purchaseFailure since closing the purchase dialog activates this case.
                 return false;
             case INVALID_SKU:
                 /*
@@ -286,6 +293,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                  * currently exists on the dev portal.
                  */
                 Log.d(TAG, "Invalid Sku for request " + baseActivity.requestIds.get(purchaseResponse.getRequestId()));
+                purchaseFailure = true;
                 return false;
             }
             return false;
@@ -294,8 +302,13 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
         @Override
         protected void onPostExecute(final Boolean success) {
             super.onPostExecute(success);
+            if (alreadyPurchased){
+              baseActivity.showAlreadyPurchasedToast();
+            }
             if (success) {
               baseActivity.refreshAllPackLayouts();
+            } else if (purchaseFailure){
+              baseActivity.showPurchaseFailureToast();
             }
         }
     }

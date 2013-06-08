@@ -83,6 +83,7 @@
     <string name="toast_packpurchase_purhcasefailed">Sorry, your purchase could not be made. Please try again later.</string>
     <string name="toast_packpurchase_installfailed">Sorry, we encountered an error installing a pack. Please try again later.</string>
     <string name="toast_packpurchase_nopackselected">Select at least one of Your Packs to play.</string>
+    <string name="toast_packpurchase_alreadypurchased">You\'ve already purchased this pack. Installing it now.</string>
 
     <!-- Activity Turn -->
     <string name="turn_timesup">Time\'s Up!</string>

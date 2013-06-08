@@ -889,6 +889,13 @@ public class PackPurchaseActivity extends Activity {
     }
     mHelpToast.show();
   }
+
+  /**
+   * Method allows observer class to trigger toasts to user.
+   */
+  protected void showAlreadyPurchasedToast() {
+    showToast(getString(R.string.toast_packpurchase_alreadypurchased));
+  }
   
   /**
    * Helper method for purchaser to communicate failures to user.
