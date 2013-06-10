@@ -24,10 +24,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Custom view that represents a team and its score.
+ * Mask view creates an overlay that fills the specified area, except for
+ * a certain "Target" area. It's used to highlight spots on the screen
+ * during the tutorial.
  * 
- * @author The Buzzwords Team
- * 
+ * @author Siramix Labs
  */
 public class MaskView extends View {
 
@@ -85,6 +86,10 @@ public class MaskView extends View {
 		mTargetPadding = 0;
 	}
   
+  /**
+   * Sets a target View to be masked out by the overlay
+   * @param target - the View to highlight
+   */
   public void setTarget(View target)
   {
     mTarget = target;
@@ -92,10 +97,12 @@ public class MaskView extends View {
     mTargetHeight = mTarget.getHeight();
     mTarget.getLocationInWindow(mTargetCoords);
     
+    // If the target area is empty, don't pad it
     if (mTargetWidth + mTargetHeight == 0)
       mTargetPadding = 0;
     else
       mTargetPadding = mDefaultPadding;
+    
     invalidate();
   }
 
@@ -123,14 +130,4 @@ public class MaskView extends View {
 		canvas.drawRect(tl,lb,tr,bb, mOverlayPaint);
 
 	}
-
-  @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    
-    int width = MeasureSpec.getSize(widthMeasureSpec);
-    int height = MeasureSpec.getSize(heightMeasureSpec);
-    setMeasuredDimension(width, height);
-  }
-
 }
