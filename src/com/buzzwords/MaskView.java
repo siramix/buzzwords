@@ -33,6 +33,7 @@ import android.view.View;
 public class MaskView extends View {
 
 	private Paint mOverlayPaint;
+	private Paint mTargetStrokePaint;
 
 	private int mTargetHeight;
 	private int mTargetWidth;
@@ -43,7 +44,8 @@ public class MaskView extends View {
 	private static final int Y = 1;
 	
 	private int mTargetPadding;
-	private final int mDefaultPadding = 10;
+	private final int mDefaultPadding = 5;
+	private final int mDefaultTargetStroke = 3;
 
 	/**
 	 * @param context
@@ -83,7 +85,12 @@ public class MaskView extends View {
 		mOverlayPaint.setStyle(Paint.Style.FILL);
 		mOverlayPaint.setColor(0xAA000000);
 		
-		mTargetPadding = 0;
+    mTargetStrokePaint = new Paint();
+    mTargetStrokePaint.setStyle(Paint.Style.STROKE);
+    mTargetStrokePaint.setStrokeWidth(mDefaultTargetStroke);
+    mTargetStrokePaint.setColor(0xFFFFFFFF);
+    
+    mTargetPadding = 0;
 	}
   
   /**
@@ -128,6 +135,8 @@ public class MaskView extends View {
 		canvas.drawRect(rl,tb,tr,lb, mOverlayPaint);
 		// Draw bottom rectangle: bl = tl, bt = lb, br = tr
 		canvas.drawRect(tl,lb,tr,bb, mOverlayPaint);
+		
+		canvas.drawRect(lr, tb,rl,lb, mTargetStrokePaint);
 
 	}
 }
