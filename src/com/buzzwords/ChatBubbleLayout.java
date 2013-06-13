@@ -38,6 +38,7 @@ public class ChatBubbleLayout extends RelativeLayout {
   private FrancoisOneTextView mTextView;
   private ImageView mChatArrow;
   private ImageView mCharacter;
+  private RelativeLayout mBorder;
 
   private String mText;
 
@@ -91,37 +92,52 @@ public class ChatBubbleLayout extends RelativeLayout {
   private void init(Context context) {
     int id = 0;
     mText = "";
+    
     mTextView = new FrancoisOneTextView(context);
     mTextView.setBackgroundColor(getResources().getColor(R.color.white));
-    mTextView.setTextSize(24);
+    mTextView.setTextSize(22);
     mTextView.setTextColor(getResources().getColor(R.color.black));
     mTextView.setId(++id);
+    
     mChatArrow = new ImageView(context);
     mChatArrow.setImageDrawable(getResources().getDrawable(
         R.drawable.tutorial_chat_arrow));
     mChatArrow.setId(++id);
+    
     mCharacter = new ImageView(context);
     mCharacter.setImageDrawable(getResources().getDrawable(
         R.drawable.tutorial_buzz));
     mCharacter.setId(++id);
+    
+    mBorder = new RelativeLayout(context);
+    mBorder.setBackgroundColor(getResources().getColor(R.color.black));
+    mBorder.setId(++id);
   }
 
   @Override
   public void onFinishInflate() {
     super.onFinishInflate();
 
+
     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-    params.setMargins(10, 10, 10, 10);
     mTextView.setText(mText);
-    mTextView.setPadding(20, 10, 20, 10);
+    mTextView.setPadding(25, 10, 25, 10);
     mTextView.setLayoutParams(params);
-    this.addView(mTextView);
+
+    RelativeLayout.LayoutParams borderParams = new RelativeLayout.LayoutParams(
+        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    borderParams.setMargins(20, 10, 20, 10);
+    mBorder.setPadding(4, 4, 4, 4);
+    mBorder.setLayoutParams(borderParams);
+    mBorder.addView(mTextView);
+    
+    this.addView(mBorder);
 
     RelativeLayout.LayoutParams buzzParams = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-    buzzParams.addRule(RelativeLayout.ALIGN_RIGHT, mTextView.getId());
-    buzzParams.addRule(RelativeLayout.BELOW, mTextView.getId());
+    buzzParams.addRule(RelativeLayout.ALIGN_RIGHT, mBorder.getId());
+    buzzParams.addRule(RelativeLayout.BELOW, mBorder.getId());
     buzzParams.topMargin = -30;
     mCharacter.setLayoutParams(buzzParams);
     this.addView(mCharacter);
@@ -130,7 +146,7 @@ public class ChatBubbleLayout extends RelativeLayout {
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     arrowParams.addRule(RelativeLayout.ALIGN_TOP, mCharacter.getId());
     arrowParams.addRule(RelativeLayout.LEFT_OF, mCharacter.getId());
-    arrowParams.topMargin = 15;
+    arrowParams.topMargin = 16;
     mChatArrow.setLayoutParams(arrowParams);
     this.addView(mChatArrow);
 
