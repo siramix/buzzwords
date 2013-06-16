@@ -92,64 +92,69 @@ public class ChatBubbleLayout extends RelativeLayout {
   private void init(Context context) {
     int id = 0;
     mText = "";
-    
+
+    // Initialize the chat text
     mTextView = new FrancoisOneTextView(context);
     mTextView.setBackgroundColor(getResources().getColor(R.color.white));
     mTextView.setTextSize(22);
     mTextView.setTextColor(getResources().getColor(R.color.black));
     mTextView.setId(++id);
-    
-    mChatArrow = new ImageView(context);
-    mChatArrow.setImageDrawable(getResources().getDrawable(
-        R.drawable.tutorial_chat_arrow));
-    mChatArrow.setId(++id);
-    
-    mCharacter = new ImageView(context);
-    mCharacter.setImageDrawable(getResources().getDrawable(
-        R.drawable.tutorial_buzz));
-    mCharacter.setId(++id);
-    
-    mBorder = new RelativeLayout(context);
-    mBorder.setBackgroundColor(getResources().getColor(R.color.black));
-    mBorder.setId(++id);
-  }
-
-  @Override
-  public void onFinishInflate() {
-    super.onFinishInflate();
-
-
-    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     mTextView.setText(mText);
     mTextView.setPadding(25, 10, 25, 10);
     mTextView.setLayoutParams(params);
 
+    // Initialize the border for the chat text
+    mBorder = new RelativeLayout(context);
+    mBorder.setBackgroundColor(getResources().getColor(R.color.black));
     RelativeLayout.LayoutParams borderParams = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     borderParams.setMargins(20, 10, 20, 10);
     mBorder.setPadding(4, 4, 4, 4);
     mBorder.setLayoutParams(borderParams);
+    mBorder.setId(++id);
     mBorder.addView(mTextView);
-    
-    this.addView(mBorder);
 
+    // Initialize "Buzz", our mascot
+    mCharacter = new ImageView(context);
+    mCharacter.setImageDrawable(getResources().getDrawable(
+        R.drawable.tutorial_buzz));
     RelativeLayout.LayoutParams buzzParams = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     buzzParams.addRule(RelativeLayout.ALIGN_RIGHT, mBorder.getId());
     buzzParams.addRule(RelativeLayout.BELOW, mBorder.getId());
     buzzParams.topMargin = -30;
     mCharacter.setLayoutParams(buzzParams);
-    this.addView(mCharacter);
-
+    mCharacter.setId(++id);
+    
+    // Initialize the chat arrow
+    mChatArrow = new ImageView(context);
+    mChatArrow.setImageDrawable(getResources().getDrawable(
+        R.drawable.tutorial_chat_arrow));
     RelativeLayout.LayoutParams arrowParams = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     arrowParams.addRule(RelativeLayout.ALIGN_TOP, mCharacter.getId());
     arrowParams.addRule(RelativeLayout.LEFT_OF, mCharacter.getId());
     arrowParams.topMargin = 16;
     mChatArrow.setLayoutParams(arrowParams);
+    mChatArrow.setId(++id);
+    
+    // Add the views to the layout
+    this.addView(mBorder);
+    this.addView(mCharacter);
     this.addView(mChatArrow);
-
   }
 
+  /**
+   * Set the text for the chat bubble
+   * @param text
+   */
+  public void setText(String text)
+  {
+    mText = text;
+    mTextView.setText(mText);
+    
+    invalidate();
+  }
 }
