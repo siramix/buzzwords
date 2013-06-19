@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 
@@ -123,13 +124,11 @@ public class TutorialLayout extends RelativeLayout {
     mCurrentText = text;
     mCurrentChatLocation = chatLocation;
 
-    AlphaAnimation fadeIn = fadeInAnimation();
-    mMask.setAnimation(fadeIn);
+    mMask.setAnimation(fadeInAnimation());
     
-    TranslateAnimation slideIn = slideInChatAnimation();
-    mChat.setAnimation(slideIn);
+    mChat.setVisibility(View.INVISIBLE);
     
-    mChat.setText(mCurrentText);
+    //mChat.setText(mCurrentText);
     
     // Put the chat box in the desired location
     RelativeLayout.LayoutParams chatParams = (RelativeLayout.LayoutParams) mChat
@@ -162,7 +161,8 @@ public class TutorialLayout extends RelativeLayout {
     AnimationListener listener = new AnimationListener() 
     {
       public void onAnimationEnd(Animation animation) {
-        mMask.setTarget(mCurrentTarget);
+        mChat.setAnimation(slideInChatAnimation());        
+        mChat.setVisibility(View.VISIBLE);
       }
 
       public void onAnimationRepeat(Animation animation) {
@@ -180,10 +180,24 @@ public class TutorialLayout extends RelativeLayout {
    */
   private TranslateAnimation slideInChatAnimation()
   {
-    TranslateAnimation slideIn = new TranslateAnimation(0, 0, 1500, 0);
+    TranslateAnimation slideIn = new TranslateAnimation(0, 0, 1200, 0);
     slideIn.setFillBefore(true);
-    slideIn.setStartOffset(700);
-    slideIn.setDuration(1000);
+    slideIn.setDuration(600);
+    slideIn.setInterpolator(new OvershootInterpolator(0.6f));
+    AnimationListener listener = new AnimationListener() 
+    {
+      public void onAnimationEnd(Animation animation) {
+        mChat.setText(mCurrentText);
+        mMask.setTarget(mCurrentTarget);
+      }
+
+      public void onAnimationRepeat(Animation animation) {
+      }
+
+      public void onAnimationStart(Animation animation) {
+      }
+    };
+    slideIn.setAnimationListener(listener);
     return slideIn;
   }
 
