@@ -102,7 +102,7 @@ public class ChatBubbleLayout extends RelativeLayout {
         R.drawable.tutorial_buzz);
     Drawable chatArrowDrawable = getResources().getDrawable(
         R.drawable.tutorial_chat_arrow);
-    
+
     mText = "This is just some test text to seee what the view will actually do.";
 
     // Initialize the chat text
@@ -111,7 +111,7 @@ public class ChatBubbleLayout extends RelativeLayout {
     mTextView.setTextSize(22);
     mTextView.setTextColor(getResources().getColor(R.color.black));
     mTextView.setId(++id);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     mTextView.setText(mText);
     mTextView.setPadding(25, 10, 25, 10);
@@ -127,7 +127,7 @@ public class ChatBubbleLayout extends RelativeLayout {
     mChatBorder.setLayoutParams(borderParams);
     mChatBorder.setId(++id);
     mChatBorder.addView(mTextView);
-    
+
     // Initialize the chat arrow
     mChatArrow = new ImageView(context);
     mChatArrow.setImageDrawable(chatArrowDrawable);
@@ -139,7 +139,6 @@ public class ChatBubbleLayout extends RelativeLayout {
     arrowParams.rightMargin = characterDrawable.getMinimumWidth();
     mChatArrow.setLayoutParams(arrowParams);
     mChatArrow.setId(++id);
-    
 
     // Initialize the chat box layout, which stores the arrow and box
     mChatBox = new RelativeLayout(context);
@@ -151,7 +150,6 @@ public class ChatBubbleLayout extends RelativeLayout {
     mChatBox.addView(mChatArrow);
     mChatBox.setId(++id);
 
-    
     // Initialize "Buzz", our mascot
     mCharacter = new ImageView(context);
     mCharacter.setImageDrawable(characterDrawable);
@@ -163,52 +161,43 @@ public class ChatBubbleLayout extends RelativeLayout {
     buzzParams.rightMargin = 10;
     mCharacter.setLayoutParams(buzzParams);
     mCharacter.setId(++id);
-    
 
     // Add the views to the layout
     this.addView(mChatBox);
     this.addView(mCharacter);
-    
+
     mChatBox.setVisibility(View.INVISIBLE);
   }
 
   /**
    * Set the text for the chat bubble and shows it if necessary.
+   * 
    * @param text
    */
-  public void setText(String text)
-  {
+  public void setText(String text) {
     mText = text;
     mTextView.setText(mText);
-    
+
     invalidate();
-    
-    if(mChatBox.getVisibility() == View.INVISIBLE)
-    {
-      showChatBubble();
-    }
+
+    // Always animate up chat bubble every time text changes
+    showChatBubble();
   }
-  
+
   /**
-   * Clear the text in the chat bubble and hide it if necessary.
+   * Hide the chat box, but not Buzz himself
    */
-  public void clearText()
-  {
-    mText = "";
-    mTextView.setText(mText);
-    
+  public void hideChat() {
     mChatBox.setAnimation(scaleDownChatAnimation());
   }
-  
+
   /**
-   * Handles playing animation and setting visibility when the chat bubble should be shown.
+   * Handles playing animation and setting visibility when the chat bubble
+   * should be shown.
    */
-  private void showChatBubble()
-  {
-    mChatBox.setVisibility(View.VISIBLE);
+  private void showChatBubble() {
     mChatBox.setAnimation(scaleUpChatAnimation());
   }
-  
 
   /**
    * Returns the animation that scales in the chat box
@@ -219,17 +208,16 @@ public class ChatBubbleLayout extends RelativeLayout {
     final float SCALE_END = 1.0f;
     final int X = 0;
     final int Y = 1;
-    final float[] PIVOTS = {0.8f, 1.0f};
-    
+    final float[] PIVOTS = { 0.8f, 1.0f };
+
     ScaleAnimation scaleUp = new ScaleAnimation(SCALE_START, SCALE_END,
         SCALE_START, SCALE_END, Animation.RELATIVE_TO_SELF, PIVOTS[X],
         Animation.RELATIVE_TO_SELF, PIVOTS[Y]);
-
     scaleUp.setDuration(SCALE_DURATION);
     scaleUp.setInterpolator(new OvershootInterpolator(1.0f));
+    scaleUp.setFillAfter(true);
     return scaleUp;
   }
-  
 
   /**
    * Returns the animation that scales down the chat box
@@ -240,17 +228,15 @@ public class ChatBubbleLayout extends RelativeLayout {
     final float SCALE_END = 0.0f;
     final int X = 0;
     final int Y = 1;
-    final float[] PIVOTS = {0.8f, 1.0f};
-    
+    final float[] PIVOTS = { 0.8f, 0.9f };
+
     ScaleAnimation scaleDown = new ScaleAnimation(SCALE_START, SCALE_END,
         SCALE_START, SCALE_END, Animation.RELATIVE_TO_SELF, PIVOTS[X],
         Animation.RELATIVE_TO_SELF, PIVOTS[Y]);
 
     scaleDown.setDuration(SCALE_DURATION);
-    scaleDown.setStartOffset(500);
     scaleDown.setFillAfter(true);
     return scaleDown;
   }
-
 
 }
