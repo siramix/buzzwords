@@ -189,6 +189,10 @@ public class ChatBubbleLayout extends RelativeLayout {
    */
   public void hideChat() {
     mChatBox.setAnimation(scaleDownChatAnimation());
+    
+    // play chat disappear sound
+    SoundManager sm = SoundManager.getInstance(this.getContext());
+    sm.playSound(SoundManager.Sound.CHAT_OUT);
   }
 
   /**
@@ -197,6 +201,11 @@ public class ChatBubbleLayout extends RelativeLayout {
    */
   private void showChatBubble() {
     mChatBox.setAnimation(scaleUpChatAnimation());
+    
+    // play chat pop in sound
+    SoundManager sm = SoundManager.getInstance(this.getContext());
+    sm.playSound(SoundManager.Sound.CHAT_IN);
+    
   }
 
   /**
