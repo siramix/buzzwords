@@ -98,17 +98,35 @@ public class MaskView extends View {
    * @param target - the View to highlight
    */
   public void setTarget(View target)
+ {
+    if (target == null) {
+      clearTarget();
+    } else {
+      mTarget = target;
+      mTargetWidth = mTarget.getWidth();
+      mTargetHeight = mTarget.getHeight();
+      mTarget.getLocationInWindow(mTargetCoords);
+
+      // If the target area is empty, don't pad it
+      if (mTargetWidth + mTargetHeight == 0)
+        mTargetPadding = 0;
+      else
+        mTargetPadding = mDefaultPadding;
+    }
+    invalidate();
+  }
+  
+  /**
+   * Helper function that clears the target from the mask and reinitializes the views.
+   */
+  private void clearTarget()
   {
-    mTarget = target;
-    mTargetWidth = mTarget.getWidth();
-    mTargetHeight = mTarget.getHeight();
-    mTarget.getLocationInWindow(mTargetCoords);
-    
-    // If the target area is empty, don't pad it
-    if (mTargetWidth + mTargetHeight == 0)
-      mTargetPadding = 0;
-    else
-      mTargetPadding = mDefaultPadding;
+    mTarget = null;
+    mTargetWidth = 0;
+    mTargetHeight = 0;
+    mTargetCoords[X] = 0;
+    mTargetCoords[Y] = 0;
+    mTargetPadding = 0;
     
     invalidate();
   }
