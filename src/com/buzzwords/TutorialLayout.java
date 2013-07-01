@@ -53,6 +53,7 @@ public class TutorialLayout extends RelativeLayout {
   public final static int TOP = 2;
 
   private OnClickListener mClickListener;
+  private TutorialListener mTutorialListener;
 
   /**
    * @param context
@@ -102,10 +103,7 @@ public class TutorialLayout extends RelativeLayout {
     mMask.setLayoutParams(params);
 
     // Initialize the chat bubble
-    RelativeLayout.LayoutParams chatParams = new RelativeLayout.LayoutParams(
-        LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-    mChat.setPadding(0, 10, 0, 10);
-    mChat.setLayoutParams(chatParams);
+    initChatParameters(mChat);
 
     mTapText.setText("* Tap *");
     RelativeLayout.LayoutParams tapParams = new RelativeLayout.LayoutParams(
@@ -128,6 +126,21 @@ public class TutorialLayout extends RelativeLayout {
     // Hide the view, to be shown programatically by Activities that use this
     // Layout
     this.setVisibility(View.GONE);
+  }
+  
+  /**
+   * Initializes the LayoutParameters for the ChatBubbleLayout. This is useful
+   * because as the Layout content changes, we need to supply new layout
+   * rules to the Chat Bubble.
+   * @param ChatBubbleLayout
+   *          chat - The ChatBubbleLayout to set the LayoutParameters to
+   */
+  private void initChatParameters(ChatBubbleLayout chat)
+  {
+    RelativeLayout.LayoutParams chatParams = new RelativeLayout.LayoutParams(
+        LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+    chat.setPadding(0, 10, 0, 10);
+    chat.setLayoutParams(chatParams);
   }
 
   /**
@@ -166,6 +179,7 @@ public class TutorialLayout extends RelativeLayout {
     mCurrentChatLocation = chatLocation;
 
     // Put the chat box in the desired location
+    initChatParameters(mChat);
     RelativeLayout.LayoutParams chatParams = (RelativeLayout.LayoutParams) mChat
         .getLayoutParams();
     int rule = RelativeLayout.ALIGN_PARENT_BOTTOM;
@@ -214,17 +228,36 @@ public class TutorialLayout extends RelativeLayout {
     mMask.setAnimation(fadeOutMaskAnimation());
     // Fade the tap text out
     mTapText.setAnimation(fadeOutTapAnimation());
-
-    // Allow them to click views under the tutorial while fading
+    
+    // Allow clicks on the views below the tutorial during fade.
     this.setClickable(false);
+  }
+  
+  /**
+   * Ends the tutorial, hiding the entire layout
+   */
+  private void endTutorial()
+  {
+    // Notify the listener, in case they want to perform actions on hidden
+    if ( mTutorialListener != null) {
+      mTutorialListener.onTutorialEnded();
+    }
+    
+    // Hide the whole layout after fading
+    mMask.setTarget(null);
+    TutorialLayout.this.setVisibility(View.GONE);  
   }
 
   /**
    * Sets a listener to get callbacks when the tutorial is clicked.
    */
-  public void setListener(OnClickListener listener) {
+  public void setClickListener(OnClickListener listener) {
     mClickListener = listener;
     this.setOnClickListener(mClickListener);
+  }
+  
+  public void setTutorialListener(TutorialListener listener){
+    mTutorialListener = listener;
   }
 
   /**
@@ -239,7 +272,7 @@ public class TutorialLayout extends RelativeLayout {
     mTapText.setAnimation(fadeInTapAnimation());
   }
 
-  /*
+  /**
    * Returns an animation to play when shown
    */
   private AlphaAnimation fadeInMaskAnimation() {
@@ -262,7 +295,7 @@ public class TutorialLayout extends RelativeLayout {
     return fadeIn;
   }
 
-  /*
+  /**
    * Returns the animation that fades out the Mask
    */
   private AlphaAnimation fadeOutMaskAnimation() {
@@ -271,8 +304,7 @@ public class TutorialLayout extends RelativeLayout {
     fadeOut.setFillAfter(true);
     AnimationListener listener = new AnimationListener() {
       public void onAnimationEnd(Animation animation) {
-        // Hide the whole layout after fading
-        TutorialLayout.this.setVisibility(View.GONE);
+        endTutorial();
       }
 
       public void onAnimationRepeat(Animation animation) {
@@ -285,7 +317,7 @@ public class TutorialLayout extends RelativeLayout {
     return fadeOut;
   }
 
-  /*
+  /**
    * Returns the animation that fades in the Tap Text, enabling click events
    */
   private AlphaAnimation fadeInTapAnimation() {
@@ -321,7 +353,7 @@ public class TutorialLayout extends RelativeLayout {
     return fadeOut;
   }
 
-  /*
+  /**
    * Returns the slide in animation for the chat element
    */
   private TranslateAnimation slideInChatAnimation() {
@@ -345,7 +377,7 @@ public class TutorialLayout extends RelativeLayout {
     return slideIn;
   }
 
-  /*
+  /**
    * Returns the slide out animation for the chat element
    */
   private TranslateAnimation slideOutChatAnimation() {
