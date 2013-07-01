@@ -209,6 +209,15 @@
     <string name="credits_font_francoisone">Francois One font by Vernon Adams</string>
     <string name="credits_font_luckiestguy">Luckiest Guy font, used in our icon, created by Brian J. Bonislawsky</string>
     <string name="credits_others">Thank you to our friends and family who helped us create and test Buzzwords!</string>
+    
+    <!--  Tutorial Strings -->
+    <string name="tutorial_tapprompt">* Tap *</string>
+    <string name="tutorial_turn_guess">This is the word you are trying to get your team to guess.</string>
+    <string name="tutorial_turn_buzzwords">If you say any of these \'buzz\'words, mark the card "incorrect."</string>
+    <string name="tutorial_turn_right">Press the Check button when your team successfully guesses the guess word.</string>
+    <string name="tutorial_turn_wrong">Press the Buzz button if you say one of the \'buzz\'words.</string>
+    <string name="tutorial_turn_skip">Press the Skip button if you want to move on to another word.</string>
+    <string name="tutorial_turn_time">This is the turn timer. Try to get your team to guess as many words as possible before it expires!</string>
 
     <!-- Settings -->
     <string name="settings_scorechange_summary">Current score change is </string>

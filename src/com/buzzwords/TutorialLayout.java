@@ -105,7 +105,8 @@ public class TutorialLayout extends RelativeLayout {
     // Initialize the chat bubble
     initChatParameters(mChat);
 
-    mTapText.setText("* Tap *");
+    mTapText.setText(getResources().getString(R.string.tutorial_tapprompt));
+    mTapText.setTextColor(getResources().getColor(R.color.white));
     RelativeLayout.LayoutParams tapParams = new RelativeLayout.LayoutParams(
         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     tapParams.addRule(RelativeLayout.ALIGN_BOTTOM, mChat.getId());
@@ -114,7 +115,7 @@ public class TutorialLayout extends RelativeLayout {
     mTapText.setTextSize(22);
     mTapText.setLayoutParams(tapParams);
     mTapText.setVisibility(View.INVISIBLE);
-
+    
     // Add the views to the layout
     this.addView(mMask);
     this.addView(mChat);
