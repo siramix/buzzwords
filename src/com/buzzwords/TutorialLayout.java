@@ -278,7 +278,7 @@ public class TutorialLayout extends RelativeLayout {
    */
   private AlphaAnimation fadeInMaskAnimation() {
     AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
-    fadeIn.setDuration(1000);
+    fadeIn.setDuration(600);
     fadeIn.setFillAfter(true);
     AnimationListener listener = new AnimationListener() {
       public void onAnimationEnd(Animation animation) {
@@ -301,7 +301,7 @@ public class TutorialLayout extends RelativeLayout {
    */
   private AlphaAnimation fadeOutMaskAnimation() {
     AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
-    fadeOut.setDuration(1000);
+    fadeOut.setDuration(600);
     fadeOut.setFillAfter(true);
     AnimationListener listener = new AnimationListener() {
       public void onAnimationEnd(Animation animation) {
@@ -323,7 +323,7 @@ public class TutorialLayout extends RelativeLayout {
    */
   private AlphaAnimation fadeInTapAnimation() {
     AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
-    fadeIn.setStartOffset(800);
+    fadeIn.setStartOffset(500);
     fadeIn.setDuration(200);
     fadeIn.setFillAfter(true);
     AnimationListener listener = new AnimationListener() {
@@ -360,7 +360,7 @@ public class TutorialLayout extends RelativeLayout {
   private TranslateAnimation slideInChatAnimation() {
     TranslateAnimation slideIn = new TranslateAnimation(0, 0, 1200, 0);
     slideIn.setFillBefore(true);
-    slideIn.setDuration(600);
+    slideIn.setDuration(400);
     slideIn.setInterpolator(new OvershootInterpolator(0.6f));
     AnimationListener listener = new AnimationListener() {
       public void onAnimationEnd(Animation animation) {
@@ -386,7 +386,7 @@ public class TutorialLayout extends RelativeLayout {
     slideOut.setFillAfter(true);
     // This offset is a bit hacky. It's waiting for the chat to hide.
     slideOut.setStartOffset(300);
-    slideOut.setDuration(600);
+    slideOut.setDuration(400);
     return slideOut;
   }
 
