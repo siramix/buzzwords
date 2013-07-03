@@ -188,7 +188,7 @@ public class ChatBubbleLayout extends RelativeLayout {
    * Hide the chat box, but not Buzz himself
    */
   public void hideChat() {
-    mChatBox.setAnimation(scaleDownChatAnimation());
+    mChatBox.startAnimation(scaleDownChatAnimation());
     
     // play chat disappear sound
     SoundManager sm = SoundManager.getInstance(this.getContext());
@@ -200,7 +200,7 @@ public class ChatBubbleLayout extends RelativeLayout {
    * should be shown.
    */
   private void showChatBubble() {
-    mChatBox.setAnimation(scaleUpChatAnimation());
+    mChatBox.startAnimation(scaleUpChatAnimation());
     
     // play chat pop in sound
     SoundManager sm = SoundManager.getInstance(this.getContext());

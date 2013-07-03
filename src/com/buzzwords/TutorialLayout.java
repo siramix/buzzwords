@@ -159,7 +159,7 @@ public class TutorialLayout extends RelativeLayout {
     this.setEnabled(false);
 
     mChat.setVisibility(View.INVISIBLE);
-    mMask.setAnimation(fadeInMaskAnimation());
+    mMask.startAnimation(fadeInMaskAnimation());
   }
 
   /**
@@ -224,11 +224,11 @@ public class TutorialLayout extends RelativeLayout {
     // Have Buzz stop speaking
     mChat.hideChat();
     // Slide out Buzz
-    mChat.setAnimation(slideOutChatAnimation());
+    mChat.startAnimation(slideOutChatAnimation());
     // Fade out the mask
-    mMask.setAnimation(fadeOutMaskAnimation());
+    mMask.startAnimation(fadeOutMaskAnimation());
     // Fade the tap text out
-    mTapText.setAnimation(fadeOutTapAnimation());
+    mTapText.startAnimation(fadeOutTapAnimation());
     
     // Allow clicks on the views below the tutorial during fade.
     this.setClickable(false);
@@ -270,7 +270,7 @@ public class TutorialLayout extends RelativeLayout {
     mMask.setTarget(mCurrentTarget);
 
     // Show *Tap* text over some time.
-    mTapText.setAnimation(fadeInTapAnimation());
+    mTapText.startAnimation(fadeInTapAnimation());
   }
 
   /**
@@ -282,7 +282,7 @@ public class TutorialLayout extends RelativeLayout {
     fadeIn.setFillAfter(true);
     AnimationListener listener = new AnimationListener() {
       public void onAnimationEnd(Animation animation) {
-        mChat.setAnimation(slideInChatAnimation());
+        mChat.startAnimation(slideInChatAnimation());
         mChat.setVisibility(View.VISIBLE);
       }
 
