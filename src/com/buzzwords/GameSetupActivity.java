@@ -72,6 +72,7 @@ public class GameSetupActivity extends Activity {
   // References to views to limit calls to FindViewById
   private TextView mGameLimitView;
   private RadioGroup mRadioGroup;
+  private TutorialLayout mTutorialLayout;
 
   // Track the current shown toast
   private Toast mHelpToast = null;
@@ -83,7 +84,17 @@ public class GameSetupActivity extends Activity {
 
   // Preference keys (indicating quadrant)
   public static final String PREFS_NAME = "gamesetupprefs";
+  
+  /**
+   * Track which part of the tutorial the user is in.
+   */
+  private TutorialPage mTutorialPage;
 
+  /**
+   * Enum gives a name to each tutorial page
+   */
+  private enum TutorialPage {GAME, SCREEN, TEAMS, WIN, END, NOADVANCE};
+  
   // Flag to play music into the next Activity
   private boolean mContinueMusic = false;
 
@@ -275,6 +286,71 @@ public class GameSetupActivity extends Activity {
       sm.playSound(SoundManager.Sound.CONFIRM);
     }
   };
+  
+  /**
+   * AdvanceTutorialListener advances to the next page in the tutorial when
+   * it is clicked.
+   */
+  private OnClickListener mAdvanceTutorialListener = new OnClickListener() {
+    public void onClick(View v) {
+      // Throw out any queued onClicks.
+      if(!v.isEnabled()){
+        return;
+      }
+      
+      if(mTutorialPage != TutorialPage.NOADVANCE){
+        advanceTutorial();  
+      }
+    }
+  };
+  
+  /**
+   * Initializes and starts the tutorial
+   */
+  private void startTutorial()
+  {
+    mTutorialPage = TutorialPage.GAME;
+    advanceTutorial();
+  }
+
+  /**
+   * Advance the tutorial and the content to the next stage
+   */
+  private void advanceTutorial() {
+    // Sets the content and the next tutorial page for the given tutorial page
+    switch (mTutorialPage) {
+    case GAME:
+      mTutorialLayout.setContent(
+          getResources().getString(R.string.tutorial_gamesetup_game),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.SCREEN;
+      break;
+    case SCREEN:
+      mTutorialLayout.setContent(
+          getResources().getString(R.string.tutorial_gamesetup_screen),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.TEAMS;
+      break;
+    case TEAMS:
+      mTutorialLayout.setContent(findViewById(R.id.GameSetup_TeamLayout),
+          getResources().getString(R.string.tutorial_gamesetup_teams),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.WIN;
+      break;
+    case WIN:
+      mTutorialLayout.setContent(findViewById(R.id.GameSetup_GameType_Group),
+          getResources().getString(R.string.tutorial_gamesetup_win),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.END;
+      break;
+    case END:
+      mTutorialLayout.hide();
+      mTutorialPage = TutorialPage.NOADVANCE;
+      break;
+    case NOADVANCE:
+      break;
+    }
+  }
 
   /**
    * This function is called when the EditTeamName activity finishes. It
@@ -320,6 +396,7 @@ public class GameSetupActivity extends Activity {
   private void setupViewReferences() {
     mGameLimitView = (TextView) findViewById(R.id.GameSetup_GameTypeParameter_Value);
     mRadioGroup = (RadioGroup) findViewById(R.id.GameSetup_GameType_RadioGroup);
+    mTutorialLayout = (TutorialLayout) findViewById(R.id.GameSetup_TutorialLayout);
   }
 
   /**
@@ -396,6 +473,10 @@ public class GameSetupActivity extends Activity {
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
     restorePreferences();
+    
+    // Setup and start the tutorial
+    mTutorialLayout.setClickListener(mAdvanceTutorialListener);
+    startTutorial();
   }
 
   /**

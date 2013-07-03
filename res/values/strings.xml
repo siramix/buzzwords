@@ -212,6 +212,10 @@
     
     <!--  Tutorial Strings -->
     <string name="tutorial_tapprompt">* Tap *</string>
+    <string name="tutorial_gamesetup_game">Welcome to Buzzwords! Buzzwords is a team based party game where players take turns trying to get their team to guess specific words. </string>
+    <string name="tutorial_gamesetup_screen">On this screen you can customize the game rules to match your playstyle.</string>
+    <string name="tutorial_gamesetup_teams">Players should divide up into two, three, or four teams. Tap a team on this list to add or remove it from the game.</string>
+    <string name="tutorial_gamesetup_win">Next choose a win condition to determine how a team can win.</string>
     <string name="tutorial_packpurchase_screen">This is the Select Word Packs screen, where you choose the words you want to play with.</string>
     <string name="tutorial_packpurchase_packs">Tap on a row to select a pack. During the game, you will see random words from the selected packs.</string>
     <string name="tutorial_turn_guess">This is the word you are trying to get your team to guess.</string>
