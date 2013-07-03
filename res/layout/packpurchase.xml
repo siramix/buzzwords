@@ -14,158 +14,171 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.buzzwords"
+    android:id="@+id/PackPurchase_RootLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:background="@drawable/bg_generic">
-
-    <com.buzzwords.AntonTextView
-        android:id="@+id/PackPurchase_Title"
-        style="@style/ActivityHeader"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="-5dp"
-        android:gravity="left"
-        android:text="@string/packpurchase_title" />
-
-    <ScrollView
-        android:id="@+id/PackPurchase_ScrollView"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical" >
-
-        <LinearLayout
-            android:id="@+id/PackPurchase_Packlist"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <RelativeLayout
-                android:id="@+id/PackPurchase_UnlockedPackHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <View
-                    android:id="@+id/PackPurchase_UnlockedPackHeaderBar"
-                    android:layout_width="fill_parent"
-                    android:layout_height="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:background="@color/genericBG_trim" />
-
-                <com.buzzwords.AntonTextView
-                    android:id="@+id/PackPurchase_UnlockedPackTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@id/PackPurchase_UnlockedPackHeaderBar"
-                    android:layout_marginRight="10dp"
-                    android:gravity="center"
-                    android:text="@string/packpurchase_unlockedheader"
-                    android:textColor="@color/white"
-                    android:textSize="24sp" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/PackPurchase_UnlockedPackSets"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/black"
-                android:longClickable="false"
-                android:orientation="vertical" >
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/PackPurchase_PaidPackHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <View
-                    android:id="@+id/PackPurchase_PaidPackHeaderBar"
-                    android:layout_width="fill_parent"
-                    android:layout_height="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:background="@color/genericBG_trim" />
-
-                <com.buzzwords.AntonTextView
-                    android:id="@+id/PackPurchase_PaidPackTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@id/PackPurchase_PaidPackHeaderBar"
-                    android:layout_marginRight="10dp"
-                    android:gravity="center"
-                    android:text="@string/packpurchase_lockedheader"
-                    android:textColor="@color/white"
-                    android:textSize="24sp" />
-            </RelativeLayout>
-            
-            <ProgressBar
-                android:id="@+id/PackPurchase_PaidPackPlaceholderImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:progress="@android:integer/config_shortAnimTime" />
-
-            <com.buzzwords.FrancoisOneTextView
-                android:id="@+id/PackPurchase_PaidPackPlaceholderText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textSize="16sp"
-                android:text="" />
-            
-            <LinearLayout
-                android:id="@+id/PackPurchase_PaidPackSets"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="1dp"
-                android:background="@color/black"
-                android:longClickable="false"
-                android:orientation="vertical" >
-
-            </LinearLayout>
-
-            
-
-        </LinearLayout>
-    </ScrollView>
-
-    <View
-        android:id="@+id/PackPurchase_BottomBorder"
-        android:layout_width="fill_parent"
-        android:layout_height="4dp"
-        android:background="@color/genericBG_trim" />
-
-    <com.buzzwords.ProgressBarView
-        android:id="@+id/PackPurchase_Progress"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp" >
-    </com.buzzwords.ProgressBarView>
+    android:background="@drawable/bg_generic"
+    android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/PackPurchase_Buttons"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:id="@+id/PackPurchase_ContentLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_generic"
+        android:orientation="vertical" >
 
-        <com.buzzwords.AntonButton
-            android:id="@+id/PackPurchase_Button_Next"
+        <com.buzzwords.AntonTextView
+            android:id="@+id/PackPurchase_Title"
+            style="@style/ActivityHeader"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:text="@string/packpurchase_button"
-            android:textSize="22dp" >
-        </com.buzzwords.AntonButton>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="-5dp"
+            android:gravity="left"
+            android:text="@string/packpurchase_title" />
+
+        <ScrollView
+            android:id="@+id/PackPurchase_ScrollView"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical" >
+
+            <LinearLayout
+                android:id="@+id/PackPurchase_Packlist"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/PackPurchase_UnlockedPackHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <View
+                        android:id="@+id/PackPurchase_UnlockedPackHeaderBar"
+                        android:layout_width="fill_parent"
+                        android:layout_height="4dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/genericBG_trim" />
+
+                    <com.buzzwords.AntonTextView
+                        android:id="@+id/PackPurchase_UnlockedPackTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@id/PackPurchase_UnlockedPackHeaderBar"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center"
+                        android:text="@string/packpurchase_unlockedheader"
+                        android:textColor="@color/white"
+                        android:textSize="24sp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/PackPurchase_UnlockedPackSets"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/black"
+                    android:longClickable="false"
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/PackPurchase_PaidPackHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <View
+                        android:id="@+id/PackPurchase_PaidPackHeaderBar"
+                        android:layout_width="fill_parent"
+                        android:layout_height="4dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/genericBG_trim" />
+
+                    <com.buzzwords.AntonTextView
+                        android:id="@+id/PackPurchase_PaidPackTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@id/PackPurchase_PaidPackHeaderBar"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center"
+                        android:text="@string/packpurchase_lockedheader"
+                        android:textColor="@color/white"
+                        android:textSize="24sp" />
+                </RelativeLayout>
+
+                <ProgressBar
+                    android:id="@+id/PackPurchase_PaidPackPlaceholderImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:progress="@android:integer/config_shortAnimTime" />
+
+                <com.buzzwords.FrancoisOneTextView
+                    android:id="@+id/PackPurchase_PaidPackPlaceholderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:id="@+id/PackPurchase_PaidPackSets"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/black"
+                    android:longClickable="false"
+                    android:orientation="vertical" >
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <View
+            android:id="@+id/PackPurchase_BottomBorder"
+            android:layout_width="fill_parent"
+            android:layout_height="4dp"
+            android:background="@color/genericBG_trim" />
+
+        <com.buzzwords.ProgressBarView
+            android:id="@+id/PackPurchase_Progress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
+        </com.buzzwords.ProgressBarView>
+
+        <LinearLayout
+            android:id="@+id/PackPurchase_Buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <com.buzzwords.AntonButton
+                android:id="@+id/PackPurchase_Button_Next"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:text="@string/packpurchase_button"
+                android:textSize="22dp" />
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+    <com.buzzwords.TutorialLayout
+        android:id="@+id/PackPurchase_TutorialLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+    </com.buzzwords.TutorialLayout>
+
+</RelativeLayout>

@@ -212,6 +212,8 @@
     
     <!--  Tutorial Strings -->
     <string name="tutorial_tapprompt">* Tap *</string>
+    <string name="tutorial_packpurchase_screen">This is the Select Word Packs screen, where you choose the words you want to play with.</string>
+    <string name="tutorial_packpurchase_packs">Tap on a row to select a pack. During the game, you will see random words from the selected packs.</string>
     <string name="tutorial_turn_guess">This is the word you are trying to get your team to guess.</string>
     <string name="tutorial_turn_buzzwords">If you say any of these \'buzz\'words, mark the card "incorrect."</string>
     <string name="tutorial_turn_right">Press the Check button when your team successfully guesses the guess word.</string>
