@@ -138,8 +138,8 @@ public class PackPurchaseActivity extends Activity {
   };
   
   /**
-   * PlayGameListener plays an animation on the view that will result in
-   * launching GameSetup
+   * AdvanceTutorialListener advances to the next page in the tutorial when
+   * it is clicked.
    */
   private OnClickListener mAdvanceTutorialListener = new OnClickListener() {
     public void onClick(View v) {
@@ -153,41 +153,6 @@ public class PackPurchaseActivity extends Activity {
       }
     }
   };
-  
-  /**
-   * Method initializes and starts the tutorial
-   */
-  private void startTutorial()
-  {
-    mTutorialPage = TutorialPage.SCREEN;
-    advanceTutorial();
-  }
-  
-  /**
-   * Advance the tutorial and the content to the next stage
-   */
-  private void advanceTutorial()
-  {
-    // Sets the content and the next tutorial page for the given tutorial page
-    switch(mTutorialPage)
-    {
-    case SCREEN:
-      mTutorialLayout.setContent(getResources().getString(R.string.tutorial_packpurchase_screen), TutorialLayout.BOTTOM);
-      mTutorialPage = TutorialPage.PACKS;
-      break;
-    case PACKS:
-      mTutorialLayout.setContent(findViewById(R.id.PackPurchase_UnlockedPackSets), getResources().getString(R.string.tutorial_packpurchase_packs),
-          TutorialLayout.BOTTOM);
-      mTutorialPage = TutorialPage.END;
-      break;
-    case END:
-      mTutorialPage = TutorialPage.NOADVANCE;
-      mTutorialLayout.hide();
-    case NOADVANCE:
-      break;
-    }
-  }
-
   /**
    * Create the packages screen from an XML layout and
    */
@@ -224,6 +189,44 @@ public class PackPurchaseActivity extends Activity {
     startTutorial();
     
   }
+  
+  /**
+   * Initializes and starts the tutorial
+   */
+  private void startTutorial()
+  {
+    mTutorialPage = TutorialPage.SCREEN;
+    advanceTutorial();
+  }
+
+  /**
+   * Advance the tutorial and the content to the next stage
+   */
+  private void advanceTutorial() {
+    // Sets the content and the next tutorial page for the given tutorial page
+    switch (mTutorialPage) {
+    case SCREEN:
+      mTutorialLayout.setContent(
+          getResources().getString(R.string.tutorial_packpurchase_screen),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.PACKS;
+      break;
+    case PACKS:
+      mTutorialLayout.setContent(
+          findViewById(R.id.PackPurchase_UnlockedPackSets), getResources()
+              .getString(R.string.tutorial_packpurchase_packs),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.END;
+      break;
+    case END:
+      mTutorialPage = TutorialPage.NOADVANCE;
+      mTutorialLayout.hide();
+      break;
+    case NOADVANCE:
+      break;
+    }
+  }
+
 
   /**
    * Lazy loads the packLineList which is used for populating
