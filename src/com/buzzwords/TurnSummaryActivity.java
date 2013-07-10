@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.buzzwords.R;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -63,7 +64,21 @@ public class TurnSummaryActivity extends Activity {
   private List<Card> mCardList;
   private List<ImageView> mCardViewList;
   private List<View> mCardLineList;
+  
+  private TutorialLayout mTutorialLayout;
 
+
+  /**
+   * Track which part of the tutorial the user is in.
+   */
+  private TutorialPage mTutorialPage;
+
+  /**
+   * Enum gives a name to each tutorial page
+   */
+  private enum TutorialPage {SCREEN, REVIEW, SCORE, END, NOADVANCE};
+  
+  
   private boolean mIsActivityClosing;
 
   /**
@@ -145,6 +160,94 @@ public class TurnSummaryActivity extends Activity {
     }
   };
 
+  
+  /**
+   * AdvanceTutorialListener advances to the next page in the tutorial when
+   * it is clicked.
+   */
+  private OnClickListener mAdvanceTutorialListener = new OnClickListener() {
+    public void onClick(View v) {
+      // Throw out any queued onClicks.
+      if(!v.isEnabled()){
+        return;
+      }
+      
+      if(mTutorialPage != TutorialPage.NOADVANCE){
+        advanceTutorial();  
+      }
+    }
+  };
+
+  /**
+   * Initializes and starts the tutorial
+   */
+  private void startTutorial()
+  {
+    mTutorialPage = TutorialPage.SCREEN;
+    advanceTutorial();
+  }
+
+  /**
+   * Advance the tutorial and the content to the next stage
+   */
+  private void advanceTutorial() {
+    // Sets the content and the next tutorial page for the given tutorial page
+    switch (mTutorialPage) {
+    case SCREEN:
+      mTutorialLayout.setContent(
+          getResources().getString(R.string.tutorial_turnsummary_screen),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.REVIEW;
+      break;
+    case REVIEW:
+      mTutorialLayout.setContent(findViewById(R.id.TurnSummary_CardList),
+          getResources().getString(R.string.tutorial_turnsummary_review),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.SCORE;
+      break;
+    case SCORE:
+      mTutorialLayout.setContent(findViewById(R.id.TurnSummary_ScoreGroup),
+          getResources().getString(R.string.tutorial_turnsummary_scores),
+          TutorialLayout.CENTER);
+      mTutorialPage = TutorialPage.END;
+      break;
+    case END:
+      mTutorialLayout.hide();
+      mTutorialPage = TutorialPage.NOADVANCE;
+      break;
+    case NOADVANCE:
+      break;
+    }
+  }
+
+  /*
+   * Here we establish permanent references to views to limit calls to
+   * findViewById()
+   */
+  private void setupViewReferences()
+  {
+    mTutorialLayout = (TutorialLayout) findViewById(R.id.TurnSummary_TutorialLayout); 
+  }
+
+  /**
+   * Setup any special properties on views such as onClick events and tags
+   */
+  private void setupUIProperties()
+  {
+
+    // Bind Next button
+    Button playGameButton = (Button) this
+        .findViewById(R.id.TurnSummary_NextTurn);
+    playGameButton.setOnClickListener(mNextTurnListener);
+
+    // Bind menu button
+    Button menuButton = (Button) this.findViewById(R.id.TurnSummary_Menu);
+    menuButton.setOnClickListener(mMenuListener);
+
+    // Bind tutorial listener
+    mTutorialLayout.setOnClickListener(mAdvanceTutorialListener);
+  }
+
   /**
    * Initializes the activity to display the results of the turn.
    */
@@ -157,17 +260,20 @@ public class TurnSummaryActivity extends Activity {
 
     // Setup the view
     this.setContentView(R.layout.turnsummary);
+    
+    // Setup references to elements of the View
+    setupViewReferences();
 
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();
     GameManager game = application.getGameManager();
-
+    
     // Populate and display list of cards
     ScrollView list = (ScrollView) findViewById(R.id.TurnSummary_CardList);
     LinearLayout layout = new LinearLayout(this.getBaseContext());
     layout.setOrientation(LinearLayout.VERTICAL);
 
-    // iterate through all completed cards and set layout accordingly
+    // Iterate through all completed cards and set layout accordingly
     mCardViewList = new LinkedList<ImageView>();
     mCardLineList = new LinkedList<View>();
     mCardList = game.getCurrentCards();
@@ -229,15 +335,10 @@ public class TurnSummaryActivity extends Activity {
     // Update Turn Order display
     updateTurnOrderDisplay();
 
-    // Bind Next button
-    Button playGameButton = (Button) this
-        .findViewById(R.id.TurnSummary_NextTurn);
-    playGameButton.setOnClickListener(mNextTurnListener);
-
-    // Bind menu button
-    Button menuButton = (Button) this.findViewById(R.id.TurnSummary_Menu);
-    menuButton.setOnClickListener(mMenuListener);
-
+    // Initialize UI Properties such as onClick events
+    setupUIProperties();
+    
+    startTutorial();
   }
 
   /**

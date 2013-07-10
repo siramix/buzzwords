@@ -199,7 +199,7 @@
     <!-- Activity Credits -->
     <string name="credits_title">Buzzwords Credits</string>
     <string name="credits_team_subheader">The Team</string>
-    <string name="credits_edward"><b>Edward Rowe\nProgrammer</b>\nEd works as a video game programmer near Durham, NC.</string>
+    <string name="credits_edward"><b>Edward Rowe\nProgrammer</b>\nEdward works as a video game programmer near Durham, NC.</string>
     <string name="credits_lucas"><b>Lucas Rowe\nProgrammer</b>\nLucas is currently a QA Engineer in Raleigh, NC.</string>
     <string name="credits_patrick"><b>Patrick Reynolds\nProgrammer</b>\nPatrick is a programmer in Carborro, NC and is also working on his PHD in Computer Science from UNC Chapel Hill.</string>
     <string name="credits_acknowledgements_subheader">Acknowledgements</string>
@@ -220,11 +220,14 @@
     <string name="tutorial_packpurchase_packs">Tap on a row to select a pack. During the game, you will see random unseen words from the selected packs.</string>
     <string name="tutorial_turn_guess">Use clues to try to get your team to guess this word.</string>
     <string name="tutorial_turn_buzzwords">But watch out! Don\'t use any of these \'buzz\'words."</string>
-    <string name="tutorial_turn_right">Press the Right button when your team successfully guesses the \'guess\' word.</string>
+    <string name="tutorial_turn_right">Press the Right button when your team successfully guesses the secret word.</string>
     <string name="tutorial_turn_wrong">Press the Buzz button if you say one of the \'buzz\'words.</string>
     <string name="tutorial_turn_skip">Press the Skip button if you want to move on to another word.</string>
     <string name="tutorial_turn_time">This is the turn timer. Try to get your team to guess as many words as possible before it expires! (Tap it to pause)</string>
-
+    <string name="tutorial_turnsummary_screen">During the Results screen you can review the words you saw during your turn and the way you scored them.</string>
+    <string name="tutorial_turnsummary_review">You can tap on a card in this list to see its badwords or change the way it was marked.</string>
+    <string name="tutorial_turnsummary_scores">Team standings after adding in the turn\'s score are displayed here.</string>
+    
     <!-- Settings -->
     <string name="settings_scorechange_summary">Current score change is </string>
     <string name="toast_settings_shuffled">All packs have been shuffled.</string>
