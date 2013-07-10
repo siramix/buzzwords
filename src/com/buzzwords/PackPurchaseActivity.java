@@ -213,7 +213,7 @@ public class PackPurchaseActivity extends Activity {
       break;
     case PACKS:
       mTutorialLayout.setContent(
-          findViewById(R.id.PackPurchase_UnlockedPackSets), getResources()
+          findViewById(R.id.PackPurchase_UnlockedPacksGroup), getResources()
               .getString(R.string.tutorial_packpurchase_packs),
           TutorialLayout.BOTTOM);
       mTutorialPage = TutorialPage.END;

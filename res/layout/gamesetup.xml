@@ -49,86 +49,94 @@
                     android:layout_marginTop="-5dp"
                     android:text="@string/gameSetup_title" />
 
-                <RelativeLayout
-                    android:id="@+id/GameSetup_TeamHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-10dp" >
-
-                    <View
-                        android:id="@+id/GameSetup_TeamHeaderBar"
-                        android:layout_width="fill_parent"
-                        android:layout_height="4dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:background="@color/genericBG_trim" />
-
-                    <com.buzzwords.AntonTextView
-                        android:id="@+id/GameSetup_TeamsTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:text="@string/gameSetup_teams_header"
-                        android:textColor="@color/white"
-                        android:textSize="24sp" />
-
-                    <Button
-                        android:id="@+id/GameSetup_TeamsHintButton"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignRight="@id/GameSetup_TeamHeaderBar"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/button_info" />
-                </RelativeLayout>
-
                 <LinearLayout
-                    android:id="@+id/GameSetup_TeamLayout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="180dp"
+                    android:id="@+id/GameSetup_TeamsGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
                     android:orientation="vertical" >
 
-                    <View
-                        android:id="@+id/GameSetup_TeamBorderTop"
+                    <RelativeLayout
+                        android:id="@+id/GameSetup_TeamHeader"
                         android:layout_width="wrap_content"
-                        android:layout_height="1dp"
-                        android:background="@color/black" />
+                        android:layout_height="wrap_content">
 
-                    <com.buzzwords.TeamSelectLayout
-                        android:id="@+id/GameSetup_TeamALayout"
+                        <View
+                            android:id="@+id/GameSetup_TeamHeaderBar"
+                            android:layout_width="fill_parent"
+                            android:layout_height="4dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@color/genericBG_trim" />
+
+                        <com.buzzwords.AntonTextView
+                            android:id="@+id/GameSetup_TeamsTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:text="@string/gameSetup_teams_header"
+                            android:textColor="@color/white"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/GameSetup_TeamsHintButton"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignRight="@id/GameSetup_TeamHeaderBar"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/button_info" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/GameSetup_TeamLayout"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1" >
-                    </com.buzzwords.TeamSelectLayout>
+                        android:layout_height="180dp"
+                        android:orientation="vertical" >
 
-                    <com.buzzwords.TeamSelectLayout
-                        android:id="@+id/GameSetup_TeamBLayout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1" >
-                    </com.buzzwords.TeamSelectLayout>
+                        <View
+                            android:id="@+id/GameSetup_TeamBorderTop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:background="@color/black" />
 
-                    <com.buzzwords.TeamSelectLayout
-                        android:id="@+id/GameSetup_TeamCLayout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1" >
-                    </com.buzzwords.TeamSelectLayout>
+                        <com.buzzwords.TeamSelectLayout
+                            android:id="@+id/GameSetup_TeamALayout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1" >
+                        </com.buzzwords.TeamSelectLayout>
 
-                    <com.buzzwords.TeamSelectLayout
-                        android:id="@+id/GameSetup_TeamDLayout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1" >
-                    </com.buzzwords.TeamSelectLayout>
+                        <com.buzzwords.TeamSelectLayout
+                            android:id="@+id/GameSetup_TeamBLayout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1" >
+                        </com.buzzwords.TeamSelectLayout>
 
-                    <View
-                        android:id="@+id/GameSetup_TeamBorderBot"
-                        android:layout_width="wrap_content"
-                        android:layout_height="1dp"
-                        android:background="@color/black" />
+                        <com.buzzwords.TeamSelectLayout
+                            android:id="@+id/GameSetup_TeamCLayout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1" >
+                        </com.buzzwords.TeamSelectLayout>
+
+                        <com.buzzwords.TeamSelectLayout
+                            android:id="@+id/GameSetup_TeamDLayout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1" >
+                        </com.buzzwords.TeamSelectLayout>
+
+                        <View
+                            android:id="@+id/GameSetup_TeamBorderBot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:background="@color/black" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -286,7 +294,7 @@
 
         <com.buzzwords.AntonButton
             android:id="@+id/GameSetup_StartGameButton"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_gravity="right"
             android:text="@string/gameSetup_button_startgame"

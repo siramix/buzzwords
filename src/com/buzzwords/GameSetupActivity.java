@@ -332,7 +332,7 @@ public class GameSetupActivity extends Activity {
       mTutorialPage = TutorialPage.TEAMS;
       break;
     case TEAMS:
-      mTutorialLayout.setContent(findViewById(R.id.GameSetup_TeamLayout),
+      mTutorialLayout.setContent(findViewById(R.id.GameSetup_TeamsGroup),
           getResources().getString(R.string.tutorial_gamesetup_teams),
           TutorialLayout.BOTTOM);
       mTutorialPage = TutorialPage.WIN;

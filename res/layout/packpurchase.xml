@@ -55,38 +55,46 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
-                <RelativeLayout
-                    android:id="@+id/PackPurchase_UnlockedPackHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <View
-                        android:id="@+id/PackPurchase_UnlockedPackHeaderBar"
-                        android:layout_width="fill_parent"
-                        android:layout_height="4dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:background="@color/genericBG_trim" />
-
-                    <com.buzzwords.AntonTextView
-                        android:id="@+id/PackPurchase_UnlockedPackTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignRight="@id/PackPurchase_UnlockedPackHeaderBar"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center"
-                        android:text="@string/packpurchase_unlockedheader"
-                        android:textColor="@color/white"
-                        android:textSize="24sp" />
-                </RelativeLayout>
-
                 <LinearLayout
-                    android:id="@+id/PackPurchase_UnlockedPackSets"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@color/black"
-                    android:longClickable="false"
+                    android:id="@+id/PackPurchase_UnlockedPacksGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:id="@+id/PackPurchase_UnlockedPackHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <View
+                            android:id="@+id/PackPurchase_UnlockedPackHeaderBar"
+                            android:layout_width="fill_parent"
+                            android:layout_height="4dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@color/genericBG_trim" />
+
+                        <com.buzzwords.AntonTextView
+                            android:id="@+id/PackPurchase_UnlockedPackTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@id/PackPurchase_UnlockedPackHeaderBar"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center"
+                            android:text="@string/packpurchase_unlockedheader"
+                            android:textColor="@color/white"
+                            android:textSize="24sp" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/PackPurchase_UnlockedPackSets"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@color/black"
+                        android:longClickable="false"
+                        android:orientation="vertical" >
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <RelativeLayout
