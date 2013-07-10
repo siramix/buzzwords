@@ -1569,17 +1569,21 @@ public class TurnActivity extends Activity {
     case BADWORDS:
       mTutorialLayout.setContent(mCardBadWords, getResources().getString(R.string.tutorial_turn_buzzwords),
           TutorialLayout.TOP);
-      mTutorialPage = TutorialPage.RIGHT;
+      mTutorialPage = TutorialPage.WRONG;
       break;
     case RIGHT:
       mTutorialLayout.setContent(mNextButton, getResources().getString(R.string.tutorial_turn_right),
           TutorialLayout.CENTER);
-      mTutorialPage = TutorialPage.WRONG;
+      if (mSkipEnabled) {
+        mTutorialPage = TutorialPage.SKIP;
+      } else {
+        mTutorialPage = TutorialPage.TIME;
+      }
       break;
     case WRONG:
       mTutorialLayout.setContent(mBuzzerButton, getResources().getString(R.string.tutorial_turn_wrong),
           TutorialLayout.CENTER);
-      mTutorialPage = TutorialPage.SKIP;
+      mTutorialPage = TutorialPage.RIGHT;
       break;
     case SKIP:
       mTutorialLayout.setContent(mSkipButton, getResources().getString(R.string.tutorial_turn_skip),
