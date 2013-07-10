@@ -76,7 +76,7 @@
     <string name="packpurchase_unlockedheader">Your Packs</string>
     <string name="packpurchase_lockedheader">Available Packs</string>
     <string name="packpurchase_nopacksselected">No Packs Selected</string>
-    <string name="packpurchase_button">Confirm</string>
+    <string name="packpurchase_button">Play Game</string>
     <string name="packpurchase_nointernet">Could not access the online store. We can only show your installed packs.</string>
     <string name="packpurchase_allpurchased">Thanks for supporting us! We currently have no packs available but check back for more.</string>
     <string name="toast_packpurchase_nofacebook">Sorry, we could not detect any Facebook apps.</string>
@@ -138,9 +138,9 @@
     <string name="gameSetup_title">Game Setup</string>
     <string name="gameSetup_teams_header">Teams</string>
     <string name="gameSetup_gametype_header">Game Type</string>
-    <string name="gameSetup_button_startgame">Start Game</string>
+    <string name="gameSetup_button_startgame">Continue</string>
     <string name="gameSetup_hint_teams">Tap teams to add or remove them. Tap the pencil to rename a team.</string>
-    <string name="gameSetup_hint_GameType">Game limit determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
+    <string name="gameSetup_hint_GameType">Game type determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
     <string name="gameSetup_hint_turns">Set the number of turns each team will take.</string>
     <string name="gameSetup_hint_score">Set the number of points a team needs to win. All teams will play an equal number of turns.</string>
 
@@ -159,7 +159,7 @@
     <string name="rules_gameplay_text1">Let\'s take a look at the buttons you\'ll encounter while playing.</string>
     <string name="rules_gameplay_text2">Right Button: For when your team guesses the card correctly. +1 Point by default.</string>
     <string name="rules_gameplay_text3">Skip Button: For when you are not up to the challenge of the current word. No penalty by default.</string>
-    <string name="rules_gameplay_text4">Wrong Button: For when you get called out by the other team for using a \'buzz\'word. -1 Point by default.</string>
+    <string name="rules_gameplay_text4">Buzz Button: For when you get called out by the other team for using a \'buzz\'word. -1 Point by default.</string>
     <string name="rules_gameplay_text5">Back Button (phone): You can use the back button on your Android device to go back one card.  Don\'t worry if you messed up more than once. You can always fix the results on Turn Summary.</string>
     <string name="rules_gameplay_text6">Gestures can also be used perform actions. Swipe up for right (think thumbs up), down for wrong (thumbs down), left for skip, and right for back.</string>
     <string name="rules_gameplay_text7">The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don\'t worry, it will pause if anyone calls and interrupts your intense game of Buzzwords.</string>
@@ -212,18 +212,18 @@
     
     <!--  Tutorial Strings -->
     <string name="tutorial_tapprompt">* Tap *</string>
-    <string name="tutorial_gamesetup_game">Welcome to Buzzwords! Buzzwords is a team based party game where players take turns trying to get their team to guess specific words. </string>
+    <string name="tutorial_gamesetup_game">Welcome to Buzzwords, a team based party game where players take turns trying to get their team to guess specific words! </string>
     <string name="tutorial_gamesetup_screen">On this screen you can customize the game rules to match your playstyle.</string>
-    <string name="tutorial_gamesetup_teams">Players should divide up into two, three, or four teams. Tap a team on this list to add or remove it from the game.</string>
-    <string name="tutorial_gamesetup_win">Next choose a win condition to determine how a team can win.</string>
-    <string name="tutorial_packpurchase_screen">This is the Select Word Packs screen, where you choose the words you want to play with.</string>
-    <string name="tutorial_packpurchase_packs">Tap on a row to select a pack. During the game, you will see random words from the selected packs.</string>
-    <string name="tutorial_turn_guess">This is the word you are trying to get your team to guess.</string>
-    <string name="tutorial_turn_buzzwords">If you say any of these \'buzz\'words, mark the card "incorrect."</string>
-    <string name="tutorial_turn_right">Press the Check button when your team successfully guesses the guess word.</string>
+    <string name="tutorial_gamesetup_teams">Players should divide up into two, three, or four teams. Highlight the team colors you want to play with by tapping them..</string>
+    <string name="tutorial_gamesetup_win">Choose from different game types to change how a team can win.</string>
+    <string name="tutorial_packpurchase_screen">On this screen you choose the words you want to play with.</string>
+    <string name="tutorial_packpurchase_packs">Tap on a row to select a pack. During the game, you will see random unseen words from the selected packs.</string>
+    <string name="tutorial_turn_guess">Use clues to try to get your team to guess this word.</string>
+    <string name="tutorial_turn_buzzwords">But watch out! Don\'t use any of these \'buzz\'words."</string>
+    <string name="tutorial_turn_right">Press the Right button when your team successfully guesses the \'guess\' word.</string>
     <string name="tutorial_turn_wrong">Press the Buzz button if you say one of the \'buzz\'words.</string>
     <string name="tutorial_turn_skip">Press the Skip button if you want to move on to another word.</string>
-    <string name="tutorial_turn_time">This is the turn timer. Try to get your team to guess as many words as possible before it expires!</string>
+    <string name="tutorial_turn_time">This is the turn timer. Try to get your team to guess as many words as possible before it expires! (Tap it to pause)</string>
 
     <!-- Settings -->
     <string name="settings_scorechange_summary">Current score change is </string>
