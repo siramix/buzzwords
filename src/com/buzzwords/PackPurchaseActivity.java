@@ -186,7 +186,14 @@ public class PackPurchaseActivity extends Activity {
         .findViewById(R.id.PackPurchase_TutorialLayout);
     mTutorialLayout.setClickListener(mAdvanceTutorialListener);
     
-    startTutorial();
+    // Show the tutorial if set in the preference
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    boolean showTutorial = sp.getBoolean(
+        Consts.PREFKEY_SHOWTUTORIAL_PACKSELECT, true);
+    if (showTutorial) {
+      startTutorial();
+    }
     
   }
   
@@ -194,7 +201,14 @@ public class PackPurchaseActivity extends Activity {
    * Initializes and starts the tutorial
    */
   private void startTutorial()
-  {
+ {
+    // Flag the tutorial as seen
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    SharedPreferences.Editor spEditor = sp.edit();
+    spEditor.putBoolean(Consts.PREFKEY_SHOWTUTORIAL_PACKSELECT, false);
+    spEditor.commit();
+    
     mTutorialPage = TutorialPage.SCREEN;
     advanceTutorial();
   }

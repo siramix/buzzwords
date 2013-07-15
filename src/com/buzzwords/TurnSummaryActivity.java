@@ -28,10 +28,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -183,6 +185,13 @@ public class TurnSummaryActivity extends Activity {
    */
   private void startTutorial()
   {
+    // Flag the tutorial as seen
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    SharedPreferences.Editor spEditor = sp.edit();
+    spEditor.putBoolean(Consts.PREFKEY_SHOWTUTORIAL_TURNSUMMARY, false);
+    spEditor.commit();
+    
     mTutorialPage = TutorialPage.SCREEN;
     advanceTutorial();
   }
@@ -337,8 +346,14 @@ public class TurnSummaryActivity extends Activity {
 
     // Initialize UI Properties such as onClick events
     setupUIProperties();
-    
-    startTutorial();
+
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    boolean showTutorial = sp.getBoolean(
+        Consts.PREFKEY_SHOWTUTORIAL_TURNSUMMARY, true);
+    if (showTutorial) {
+      startTutorial();
+    }
   }
 
   /**

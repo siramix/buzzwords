@@ -309,6 +309,10 @@ public class GameSetupActivity extends Activity {
    */
   private void startTutorial()
   {
+    // Flag tutorial as seen
+    mGameSetupPrefEditor.putBoolean(Consts.PREFKEY_SHOWTUTORIAL_SETUP, false);
+    mGameSetupPrefEditor.commit();
+    
     mTutorialPage = TutorialPage.GAME;
     advanceTutorial();
   }
@@ -476,7 +480,11 @@ public class GameSetupActivity extends Activity {
     
     // Setup and start the tutorial
     mTutorialLayout.setClickListener(mAdvanceTutorialListener);
-    startTutorial();
+    boolean showTutorial = mGameSetupPrefs.getBoolean(
+        Consts.PREFKEY_SHOWTUTORIAL_SETUP, true);
+    if (showTutorial) {
+      startTutorial();
+    }
   }
 
   /**

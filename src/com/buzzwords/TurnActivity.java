@@ -1325,6 +1325,7 @@ public class TurnActivity extends Activity {
 
       String curTeam = mGameManager.getActiveTeam().getName();
 
+      // Setup the dialog
       builder = new AlertDialog.Builder(this);
       builder.setMessage("Ready " + curTeam + "?").setCancelable(false)
           .setPositiveButton("Start!", new DialogInterface.OnClickListener() {
@@ -1335,15 +1336,25 @@ public class TurnActivity extends Activity {
               startGame();
             }
 
-          }).setNegativeButton("No, How do I play?", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-              dialog.dismiss();
-              startTutorial();
-            }
-
           });
+      
+      // Add on the tutorial button if set in the preferences
+      SharedPreferences sp = PreferenceManager
+          .getDefaultSharedPreferences(getBaseContext());
+      boolean showTutorial = sp.getBoolean(
+          Consts.PREFKEY_SHOWTUTORIAL_TURN, true);
+      if (showTutorial) {
+        builder.setNegativeButton("No, How do I play?",
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                startTutorial();
+              }
 
+            });
+      }
+
+      // Create the dialog
       dialog = builder.create();
 
       // We add an onDismiss listener to handle the case in which a user

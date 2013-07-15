@@ -226,7 +226,7 @@
     <string name="tutorial_turn_time">This is the turn timer. Try to get your team to guess as many words as possible before it expires! (Tap it to pause)</string>
     <string name="tutorial_turnsummary_screen">During the Results screen you can review the words you saw during your turn and the way you scored them.</string>
     <string name="tutorial_turnsummary_review">You can tap on a card in this list to see its badwords or change the way it was marked.</string>
-    <string name="tutorial_turnsummary_scores">Team standings after adding in the turn\'s score are displayed here.</string>
+    <string name="tutorial_turnsummary_scores">Team standings, including the score for this turn, are displayed here.</string>
     
     <!-- Settings -->
     <string name="settings_scorechange_summary">Current score change is </string>

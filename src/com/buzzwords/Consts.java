@@ -69,6 +69,11 @@ public class Consts {
     public static final String PREFFILE_PACK_SELECTIONS = "com.buzzwords.PACK_SELECTIONS";
     public static final String PREFFILE_MUSIC_STATE = "com.buzzwords.MUSIC_STATE";
     public static final String PREFFILE_TURN_STATE = "com.buzzwords.TURN_STATE";
+    public static final String PREFKEY_SHOWTUTORIAL_SETUP = "com.buzzwords.SHOWTUTORIAL_SETUP";
+    public static final String PREFKEY_SHOWTUTORIAL_PACKSELECT = "com.buzzwords.SHOWTUTORIAL_PACKSELECT";
+    public static final String PREFKEY_SHOWTUTORIAL_TURN = "com.buzzwords.SHOWTUTORIAL_TURN";
+    public static final String PREFKEY_SHOWTUTORIAL_TURNSUMMARY = "com.buzzwords.SHOWTUTORIAL_TURNSUMMARY";
+
 
     public static final String packList = "packs.json";
     public static final String buzzwordsFBAppLauncher = "fb://page/472759256084535";
