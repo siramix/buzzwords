@@ -310,8 +310,12 @@ public class GameSetupActivity extends Activity {
   private void startTutorial()
   {
     // Flag tutorial as seen
-    mGameSetupPrefEditor.putBoolean(Consts.PREFKEY_SHOWTUTORIAL_SETUP, false);
-    mGameSetupPrefEditor.commit();
+
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    SharedPreferences.Editor spEditor = sp.edit();
+    spEditor.putBoolean(Consts.TutorialPrefkey.SETUP.getKey(), false);
+    spEditor.commit();
     
     mTutorialPage = TutorialPage.GAME;
     advanceTutorial();
@@ -480,8 +484,10 @@ public class GameSetupActivity extends Activity {
     
     // Setup and start the tutorial
     mTutorialLayout.setClickListener(mAdvanceTutorialListener);
-    boolean showTutorial = mGameSetupPrefs.getBoolean(
-        Consts.PREFKEY_SHOWTUTORIAL_SETUP, true);
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    boolean showTutorial = sp.getBoolean(
+        Consts.TutorialPrefkey.SETUP.getKey(), true);
     if (showTutorial) {
       startTutorial();
     }

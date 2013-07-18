@@ -224,7 +224,7 @@
     <string name="tutorial_turn_wrong">Press the Buzz button if you say one of the \'buzz\'words.</string>
     <string name="tutorial_turn_skip">Press the Skip button if you want to move on to another word.</string>
     <string name="tutorial_turn_time">This is the turn timer. Try to get your team to guess as many words as possible before it expires! (Tap it to pause)</string>
-    <string name="tutorial_turnsummary_screen">During the Results screen you can review the words you saw during your turn and the way you scored them.</string>
+    <string name="tutorial_turnsummary_screen">During the Results screen you can review the words you saw during your turn and check the way you marked them.</string>
     <string name="tutorial_turnsummary_review">You can tap on a card in this list to see its badwords or change the way it was marked.</string>
     <string name="tutorial_turnsummary_scores">Team standings, including the score for this turn, are displayed here.</string>
     
@@ -235,6 +235,12 @@
     <string name="shuffleDialog_text">Buzzwords handles shuffling on its own, but this will let you force a shuffle.  You will still keep all of your cards, but progress on all packs will be reset and all cards reordered. Are you sure you want to reshuffle?</string>
     <string name="shuffleDialog_positiveBtn">Yes, Shuffle!</string>
     <string name="shuffleDialog_negativeBtn">Nevermind!</string>
+    
+    <string name="resetTutorialDialog_title">Show Tutorial Hints?</string>
+    <string name="resetTutorialDialog_text">Tutorial Hints will be displayed again on the next playthrough. Are you sure?</string>
+    <string name="resetTutorialDialog_positiveBtn">Yes, I have no idea what\'s going on.</string>
+    <string name="resetTutorialDialog_negativeBtn">No</string>
+    <string name="toast_settings_tutorial_reset">Tutorial Hints will again be displayed.</string>
 
     <!-- Dialog FirstOpen -->
     <string name="openingDialog_title">First Time?</string>

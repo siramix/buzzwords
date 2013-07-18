@@ -190,7 +190,7 @@ public class PackPurchaseActivity extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
     boolean showTutorial = sp.getBoolean(
-        Consts.PREFKEY_SHOWTUTORIAL_PACKSELECT, true);
+        Consts.TutorialPrefkey.PACKSELECT.getKey(), true);
     if (showTutorial) {
       startTutorial();
     }
@@ -206,7 +206,7 @@ public class PackPurchaseActivity extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
     SharedPreferences.Editor spEditor = sp.edit();
-    spEditor.putBoolean(Consts.PREFKEY_SHOWTUTORIAL_PACKSELECT, false);
+    spEditor.putBoolean(Consts.TutorialPrefkey.PACKSELECT.getKey(), false);
     spEditor.commit();
     
     mTutorialPage = TutorialPage.SCREEN;

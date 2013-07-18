@@ -362,7 +362,7 @@ public class GameEndActivity extends Activity {
     animateGameEnd(teams.size());
     
     // Flag the tutorial for TurnActivity as seen
-    prefEditor.putBoolean(Consts.PREFKEY_SHOWTUTORIAL_TURN, false);
+    prefEditor.putBoolean(Consts.TutorialPrefkey.TURN.getKey(), false);
     prefEditor.commit();
   }
 

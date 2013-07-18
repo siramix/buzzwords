@@ -189,7 +189,7 @@ public class TurnSummaryActivity extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
     SharedPreferences.Editor spEditor = sp.edit();
-    spEditor.putBoolean(Consts.PREFKEY_SHOWTUTORIAL_TURNSUMMARY, false);
+    spEditor.putBoolean(Consts.TutorialPrefkey.TURNSUMMARY.getKey(), false);
     spEditor.commit();
     
     mTutorialPage = TutorialPage.SCREEN;
@@ -350,7 +350,7 @@ public class TurnSummaryActivity extends Activity {
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
     boolean showTutorial = sp.getBoolean(
-        Consts.PREFKEY_SHOWTUTORIAL_TURNSUMMARY, true);
+        Consts.TutorialPrefkey.TURNSUMMARY.getKey(), true);
     if (showTutorial) {
       startTutorial();
     }

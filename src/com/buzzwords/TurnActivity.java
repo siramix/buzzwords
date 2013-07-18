@@ -1342,7 +1342,7 @@ public class TurnActivity extends Activity {
       SharedPreferences sp = PreferenceManager
           .getDefaultSharedPreferences(getBaseContext());
       boolean showTutorial = sp.getBoolean(
-          Consts.PREFKEY_SHOWTUTORIAL_TURN, true);
+          Consts.TutorialPrefkey.TURN.getKey(), true);
       if (showTutorial) {
         builder.setNegativeButton("No, How do I play?",
             new DialogInterface.OnClickListener() {
