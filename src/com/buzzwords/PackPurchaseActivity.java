@@ -58,6 +58,8 @@ public class PackPurchaseActivity extends Activity {
   private boolean mIsActivityClosing;
   
   LinkedList<View> mPackLineList;
+
+  private TutorialLayout mTutorialLayout;
   
   // Our local packs.
   private LinkedList<Pack> mUnlockedPacks;
@@ -77,11 +79,20 @@ public class PackPurchaseActivity extends Activity {
   private boolean mUserError = false;
   
   /**
+   * Track which part of the tutorial the user is in.
+   */
+  private TutorialPage mTutorialPage;
+
+  /**
+   * Enum gives a name to each tutorial page
+   */
+  private enum TutorialPage {SCREEN, PACKS, END, NOADVANCE};
+  
+  /**
    * Request Code constants for social media sharing
    */
-    private static final int FACEBOOK_REQUEST_CODE = 12;
-    private static final int PACKINFO_REQUEST_CODE = 14;
-
+  private static final int FACEBOOK_REQUEST_CODE = 12;
+  private static final int PACKINFO_REQUEST_CODE = 14;
     
   /**
    * PlayGameListener plays an animation on the view that will result in
@@ -127,7 +138,23 @@ public class PackPurchaseActivity extends Activity {
       }
     }
   };
-
+  
+  /**
+   * AdvanceTutorialListener advances to the next page in the tutorial when
+   * it is clicked.
+   */
+  private OnClickListener mAdvanceTutorialListener = new OnClickListener() {
+    public void onClick(View v) {
+      // Throw out any queued onClicks.
+      if(!v.isEnabled()){
+        return;
+      }
+      
+      if(mTutorialPage != TutorialPage.NOADVANCE){
+        advanceTutorial();  
+      }
+    }
+  };
   /**
    * Create the packages screen from an XML layout and
    */
@@ -155,7 +182,67 @@ public class PackPurchaseActivity extends Activity {
     // Set next button listener
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
     btn.setOnClickListener(mGameSetupListener);
+    
+    // Setup the tutorial layout
+    mTutorialLayout = (TutorialLayout) this
+        .findViewById(R.id.PackPurchase_TutorialLayout);
+    mTutorialLayout.setClickListener(mAdvanceTutorialListener);
+    
+    // Show the tutorial if set in the preference
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    boolean showTutorial = sp.getBoolean(
+        Consts.TutorialPrefkey.PACKSELECT.getKey(), true);
+    if (showTutorial) {
+      startTutorial();
+    }
+    
   }
+  
+  /**
+   * Initializes and starts the tutorial
+   */
+  private void startTutorial()
+ {
+    // Flag the tutorial as seen
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    SharedPreferences.Editor spEditor = sp.edit();
+    spEditor.putBoolean(Consts.TutorialPrefkey.PACKSELECT.getKey(), false);
+    spEditor.commit();
+    
+    mTutorialPage = TutorialPage.SCREEN;
+    advanceTutorial();
+  }
+
+  /**
+   * Advance the tutorial and the content to the next stage
+   */
+  private void advanceTutorial() {
+    // Sets the content and the next tutorial page for the given tutorial page
+    switch (mTutorialPage) {
+    case SCREEN:
+      mTutorialLayout.setContent(
+          getResources().getString(R.string.tutorial_packpurchase_screen),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.PACKS;
+      break;
+    case PACKS:
+      mTutorialLayout.setContent(
+          findViewById(R.id.PackPurchase_UnlockedPacksGroup), getResources()
+              .getString(R.string.tutorial_packpurchase_packs),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.END;
+      break;
+    case END:
+      mTutorialPage = TutorialPage.NOADVANCE;
+      mTutorialLayout.hide();
+      break;
+    case NOADVANCE:
+      break;
+    }
+  }
+
 
   /**
    * Lazy loads the packLineList which is used for populating

@@ -360,6 +360,10 @@ public class GameEndActivity extends Activity {
 
     // Animate the whole thing
     animateGameEnd(teams.size());
+    
+    // Flag the tutorial for TurnActivity as seen
+    prefEditor.putBoolean(Consts.TutorialPrefkey.TURN.getKey(), false);
+    prefEditor.commit();
   }
 
   /**

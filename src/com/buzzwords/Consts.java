@@ -49,6 +49,7 @@ public class Consts {
     public static final String PREFKEY_WRONG_SCORE = "com.buzzwords.WRONG_SCORE";
     public static final String PREFKEY_SKIP_SCORE = "com.buzzwords.SKIP_SCORE";
     public static final String PREFKEY_RESET_PACKS = "com.buzzwords.RESET_PACKS";
+    public static final String PREFKEY_RESET_TUTORIAL = "com.buzzwords.RESET_TUTORIAL";
     public static final String PREFKEY_DB_INITIALIZED = "com.buzzwords.DB_INITIALIZED";
     public static final String PREFKEY_MUSIC_RESOURCE = "com.buzzwords.MUSIC_RESOURCE";
     public static final String PREFKEY_MUSIC_LOOPING = "com.buzzwords.MUSIC_LOOPING";
@@ -69,6 +70,23 @@ public class Consts {
     public static final String PREFFILE_PACK_SELECTIONS = "com.buzzwords.PACK_SELECTIONS";
     public static final String PREFFILE_MUSIC_STATE = "com.buzzwords.MUSIC_STATE";
     public static final String PREFFILE_TURN_STATE = "com.buzzwords.TURN_STATE";
+  
+    public static enum TutorialPrefkey {
+      SETUP ("com.buzzwords.SHOWTUTORIAL_SETUP"),
+      PACKSELECT ("com.buzzwords.SHOWTUTORIAL_PACKSELECT"),
+      TURN ("com.buzzwords.SHOWTUTORIAL_TURN"),
+      TURNSUMMARY ("com.buzzwords.SHOWTUTORIAL_TURNSUMMARY");
+  
+      private final String mKey;
+  
+      TutorialPrefkey(String key) {
+        mKey = key;
+      }
+  
+      public String getKey() {
+        return mKey;
+      }
+    }
 
     public static final String packList = "packs.json";
     public static final String buzzwordsFBAppLauncher = "fb://page/472759256084535";

@@ -15,285 +15,297 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout1"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/GameSetup_Root"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:focusable="false"
-    android:orientation="vertical" >
+    android:layout_height="fill_parent" >
 
-    <ScrollView
-        android:id="@+id/GameSetup_ScrollView"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
+    <LinearLayout
+        android:id="@+id/PackPurchase_ContentLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:focusable="false"
+        android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/GameSetup_ScrollInnerLayout"
-            android:layout_width="match_parent"
+        <ScrollView
+            android:id="@+id/GameSetup_ScrollView"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:orientation="vertical" >
-
-            <com.buzzwords.AntonTextView
-                android:id="@+id/GameSetup_Title"
-                style="@style/ActivityHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="-5dp"
-                android:text="@string/gameSetup_title" />
-
-            <RelativeLayout
-                android:id="@+id/GameSetup_TeamHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-10dp" >
-
-                <View
-                    android:id="@+id/GameSetup_TeamHeaderBar"
-                    android:layout_width="fill_parent"
-                    android:layout_height="4dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:background="@color/genericBG_trim" />
-
-                <com.buzzwords.AntonTextView
-                    android:id="@+id/GameSetup_TeamsTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:text="@string/gameSetup_teams_header"
-                    android:textColor="@color/white"
-                    android:textSize="24sp" />
-
-                <Button
-                    android:id="@+id/GameSetup_TeamsHintButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignRight="@id/GameSetup_TeamHeaderBar"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/button_info" />
-            </RelativeLayout>
+            android:layout_weight="1" >
 
             <LinearLayout
-                android:id="@+id/GameSetup_TeamLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="180dp"
+                android:id="@+id/GameSetup_ScrollInnerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:orientation="vertical" >
 
-                <View
-                    android:id="@+id/GameSetup_TeamBorderTop"
+                <com.buzzwords.AntonTextView
+                    android:id="@+id/GameSetup_Title"
+                    style="@style/ActivityHeader"
                     android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="@color/black" />
-
-                <com.buzzwords.TeamSelectLayout
-                    android:id="@+id/GameSetup_TeamALayout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1" >
-                </com.buzzwords.TeamSelectLayout>
-
-                <com.buzzwords.TeamSelectLayout
-                    android:id="@+id/GameSetup_TeamBLayout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1" >
-                </com.buzzwords.TeamSelectLayout>
-
-                <com.buzzwords.TeamSelectLayout
-                    android:id="@+id/GameSetup_TeamCLayout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1" >
-                </com.buzzwords.TeamSelectLayout>
-
-                <com.buzzwords.TeamSelectLayout
-                    android:id="@+id/GameSetup_TeamDLayout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1" >
-                </com.buzzwords.TeamSelectLayout>
-
-                <View
-                    android:id="@+id/GameSetup_TeamBorderBot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="@color/black" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/GameSetup_GameType_Group"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingTop="10dp" >
-
-                <RelativeLayout
-                    android:id="@+id/GameSetup_GameType_SubHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <View
-                        android:id="@+id/GameSetup_GameType_Bar"
-                        android:layout_width="fill_parent"
-                        android:layout_height="4dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:background="@color/genericBG_trim" />
-
-                    <com.buzzwords.AntonTextView
-                        android:id="@+id/GameSetup_GameType_Text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:text="@string/gameSetup_gametype_header"
-                        android:textColor="@color/white"
-                        android:textSize="24sp" />
-
-                    <Button
-                        android:id="@+id/GameSetup_GameType_HintButton"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignRight="@id/GameSetup_GameType_Bar"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/button_info" />
-                </RelativeLayout>
-
-                <RadioGroup
-                    android:id="@+id/GameSetup_GameType_RadioGroup"
-                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp" 
-                    android:checkedButton="@+id/GameSetup_GameType_Radio_Turns"
-                    android:orientation="horizontal" >
-
-                    <RadioButton
-                        android:id="@+id/GameSetup_GameType_Radio_Turns"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:text="@string/gameManager_gameType_turns"
-                        android:textSize="22sp" />
-
-                    <RadioButton
-                        android:id="@+id/GameSetup_GameType_Radio_Score"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:text="@string/gameManager_gameType_score"
-                        android:textSize="22sp" />
-
-                    <RadioButton
-                        android:id="@+id/GameSetup_GameType_Radio_Free"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:text="@string/gameManager_gameType_freeplay"
-                        android:textSize="22sp" />
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/GameSetup_GameTypeParamter_Group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="10dp" >
-
-                <RelativeLayout
-                    android:id="@+id/GameSetup_GameTypeParameter_SubHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <View
-                        android:id="@+id/GameSetup_GameTypeParameter_Bar"
-                        android:layout_width="fill_parent"
-                        android:layout_height="4dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:background="@color/genericBG_trim" />
-
-                    <com.buzzwords.AntonTextView
-                        android:id="@+id/GameSetup_GameTypeParameter_Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:text="@string/test_header"
-                        android:textColor="@color/white"
-                        android:textSize="24sp" />
-
-                    <Button
-                        android:id="@+id/GameSetup_GameTypeParameter_HintButton"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignRight="@id/GameSetup_GameTypeParameter_Bar"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/button_info" />
-                </RelativeLayout>
+                    android:layout_gravity="right"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="-5dp"
+                    android:text="@string/gameSetup_title" />
 
                 <LinearLayout
-                    android:id="@+id/GameSetup_GameTypeParameter_PlusMinus_Group"
+                    android:id="@+id/GameSetup_TeamsGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:id="@+id/GameSetup_TeamHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:id="@+id/GameSetup_TeamHeaderBar"
+                            android:layout_width="fill_parent"
+                            android:layout_height="4dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@color/genericBG_trim" />
+
+                        <com.buzzwords.AntonTextView
+                            android:id="@+id/GameSetup_TeamsTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:text="@string/gameSetup_teams_header"
+                            android:textColor="@color/white"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/GameSetup_TeamsHintButton"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignRight="@id/GameSetup_TeamHeaderBar"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/button_info" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/GameSetup_TeamLayout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="180dp"
+                        android:orientation="vertical" >
+
+                        <View
+                            android:id="@+id/GameSetup_TeamBorderTop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:background="@color/black" />
+
+                        <com.buzzwords.TeamSelectLayout
+                            android:id="@+id/GameSetup_TeamALayout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1" >
+                        </com.buzzwords.TeamSelectLayout>
+
+                        <com.buzzwords.TeamSelectLayout
+                            android:id="@+id/GameSetup_TeamBLayout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1" >
+                        </com.buzzwords.TeamSelectLayout>
+
+                        <com.buzzwords.TeamSelectLayout
+                            android:id="@+id/GameSetup_TeamCLayout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1" >
+                        </com.buzzwords.TeamSelectLayout>
+
+                        <com.buzzwords.TeamSelectLayout
+                            android:id="@+id/GameSetup_TeamDLayout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1" >
+                        </com.buzzwords.TeamSelectLayout>
+
+                        <View
+                            android:id="@+id/GameSetup_TeamBorderBot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:background="@color/black" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/GameSetup_GameType_Group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp" >
+
+                    <RelativeLayout
+                        android:id="@+id/GameSetup_GameType_SubHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <View
+                            android:id="@+id/GameSetup_GameType_Bar"
+                            android:layout_width="fill_parent"
+                            android:layout_height="4dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@color/genericBG_trim" />
+
+                        <com.buzzwords.AntonTextView
+                            android:id="@+id/GameSetup_GameType_Text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:text="@string/gameSetup_gametype_header"
+                            android:textColor="@color/white"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/GameSetup_GameType_HintButton"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignRight="@id/GameSetup_GameType_Bar"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/button_info" />
+                    </RelativeLayout>
+
+                    <RadioGroup
+                        android:id="@+id/GameSetup_GameType_RadioGroup"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:checkedButton="@+id/GameSetup_GameType_Radio_Turns"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp" >
+
+                        <RadioButton
+                            android:id="@+id/GameSetup_GameType_Radio_Turns"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:text="@string/gameManager_gameType_turns"
+                            android:textSize="22sp" />
+
+                        <RadioButton
+                            android:id="@+id/GameSetup_GameType_Radio_Score"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:text="@string/gameManager_gameType_score"
+                            android:textSize="22sp" />
+
+                        <RadioButton
+                            android:id="@+id/GameSetup_GameType_Radio_Free"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:text="@string/gameManager_gameType_freeplay"
+                            android:textSize="22sp" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/GameSetup_GameTypeParamter_Group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal" >
+                    android:orientation="vertical"
+                    android:paddingTop="10dp" >
 
-                    <Button
-                        android:id="@+id/GameSetup_GameTypeParameter_Minus"
-                        android:layout_width="90dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/button_minus" />
+                    <RelativeLayout
+                        android:id="@+id/GameSetup_GameTypeParameter_SubHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
 
-                    <com.buzzwords.AntonTextView
-                        android:id="@+id/GameSetup_GameTypeParameter_Value"
-                        android:layout_width="70dp"
+                        <View
+                            android:id="@+id/GameSetup_GameTypeParameter_Bar"
+                            android:layout_width="fill_parent"
+                            android:layout_height="4dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@color/genericBG_trim" />
+
+                        <com.buzzwords.AntonTextView
+                            android:id="@+id/GameSetup_GameTypeParameter_Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:text="@string/test_header"
+                            android:textColor="@color/white"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/GameSetup_GameTypeParameter_HintButton"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignRight="@id/GameSetup_GameTypeParameter_Bar"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/button_info" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/GameSetup_GameTypeParameter_PlusMinus_Group"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="-5dp"
-                        android:gravity="center"
-                        android:text="@string/test_number"
-                        android:textSize="48sp" />
+                        android:layout_gravity="center_horizontal" >
 
-                    <Button
-                        android:id="@+id/GameSetup_GameTypeParameter_Plus"
-                        android:layout_width="90dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/button_plus" />
+                        <Button
+                            android:id="@+id/GameSetup_GameTypeParameter_Minus"
+                            android:layout_width="90dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/button_minus" />
+
+                        <com.buzzwords.AntonTextView
+                            android:id="@+id/GameSetup_GameTypeParameter_Value"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="-5dp"
+                            android:gravity="center"
+                            android:text="@string/test_number"
+                            android:textSize="48sp" />
+
+                        <Button
+                            android:id="@+id/GameSetup_GameTypeParameter_Plus"
+                            android:layout_width="90dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/button_plus" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
 
-    <!-- Team selection box -->
+        <com.buzzwords.AntonButton
+            android:id="@+id/GameSetup_StartGameButton"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="right"
+            android:text="@string/gameSetup_button_startgame"
+            android:textSize="20sp" >
+        </com.buzzwords.AntonButton>
+    </LinearLayout>
 
+    <com.buzzwords.TutorialLayout
+        android:id="@+id/GameSetup_TutorialLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </com.buzzwords.TutorialLayout>
 
-    <!-- Helper caption for Team selection -->
-
-
-    <!-- Select number of turns -->
-
-    <com.buzzwords.AntonButton
-        android:id="@+id/GameSetup_StartGameButton"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_gravity="right"
-        android:text="@string/gameSetup_button_startgame"
-        android:textSize="20sp" >
-    </com.buzzwords.AntonButton>
-
-</LinearLayout>
+</RelativeLayout>

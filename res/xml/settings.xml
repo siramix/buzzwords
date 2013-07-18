@@ -141,6 +141,15 @@
 			
 		</PreferenceScreen>
 	
+		          
+      <Preference 
+         android:key="com.buzzwords.RESET_TUTORIAL"
+         android:enabled="true"
+         android:selectable="true"
+         android:summary="Restores Tutorial hints throughout the app."
+         android:title="Show Tutorial Hints"
+         />
+      
 		<Preference 
 			android:key="app_version"
 			android:title="Version"

@@ -106,6 +106,8 @@ public class TurnActivity extends Activity {
   private RelativeLayout mMenuBar;
   private RelativeLayout mTimerGroup;
   private RelativeLayout mButtonGroup;
+  
+  private TutorialLayout mTutorialLayout;
 
   
   public GameManager getGameManager() {
@@ -128,10 +130,25 @@ public class TurnActivity extends Activity {
   private boolean mIsWaitingForTeamReady = false;
 
   /**
-   * Track when the game has paused. This will prevents code from executing
+   * Track when the game has paused. This prevents code from executing
    * pointlessly if already paused.
    */
   private boolean mIsPaused = true;
+  
+  /**
+   * Track when the game is in the tutorial state.
+   */
+  private boolean mIsInTutorial = false;
+  
+  /**
+   * Track which part of the tutorial the user is in.
+   */
+  private TutorialPage mTutorialPage;
+
+  /**
+   * Enum gives a name to each tutorial page
+   */
+  private enum TutorialPage {TITLE, BADWORDS, RIGHT, WRONG, SKIP, TIME, END, NOADVANCE };
   
   /**
    * Flag tells onPause event when leaving to the next activity
@@ -363,6 +380,29 @@ public class TurnActivity extends Activity {
   };
 
   /**
+   * Listener for advancing the tutorial
+   */
+  private final OnClickListener mTutorialClickListener = new OnClickListener() {
+    public void onClick(View v) {
+      if (mTutorialPage != TutorialPage.NOADVANCE) {
+        advanceTutorial();
+      }
+    }
+  };
+  
+  /**
+   * Listener to watch when the Tutorial is finished animating
+   */
+  private final TutorialListener mTutorialListener = new TutorialListener() {
+
+    @Override
+    public void onTutorialEnded() {
+      TurnActivity.this.showDialog(DIALOG_READY_ID);
+    }
+    
+  };
+
+  /**
    * Listener for menu button
    */
   private final OnClickListener mMenuButtonListener = new OnClickListener() {
@@ -399,7 +439,6 @@ public class TurnActivity extends Activity {
    */
   private final OnClickListener mSkipListener = new OnClickListener() {
     public void onClick(View v) {
-
       TurnActivity.this.doSkip();
     }
   }; // End SkipListener
@@ -799,7 +838,20 @@ public class TurnActivity extends Activity {
       wordLayout.getChildAt(maxBuzzwords - i).setVisibility(View.GONE);
     }
   }
-
+  
+  /**
+   * Clears the card text views, used when the tutorial needs to wipe it clean.
+   */
+  private void clearCardViews()
+  {
+    this.assignActiveCardViewReferences();
+    
+    mCardTitle.setText("");
+    for (int i = 0; i < mCardBadWords.getChildCount(); ++i) {
+      ((TextView) mCardBadWords.getChildAt(i)).setText("");
+    }
+  }
+  
   /**
    * OnTimeExpired defines what happens when the player's turn timer runs out
    */
@@ -908,6 +960,8 @@ public class TurnActivity extends Activity {
     mMenuBar = (RelativeLayout) this.findViewById(R.id.Turn_HighBar);
     mTimerGroup = (RelativeLayout) this.findViewById(R.id.Turn_TimerBar);
     mButtonGroup = (RelativeLayout) this.findViewById(R.id.Turn_LowBar);
+    
+    mTutorialLayout = (TutorialLayout) this.findViewById(R.id.Turn_TutorialLayout);
   }
 
   /**
@@ -915,24 +969,48 @@ public class TurnActivity extends Activity {
    */
   protected void setupUIProperties() {
     mPauseOverlay.setVisibility(View.INVISIBLE);
-    mPauseOverlay.setOnClickListener(mPauseListener);
-
-    mTimerGroup.setOnClickListener(mTimerClickListener);
 
     mViewFlipper.setInAnimation(inFromRightAnimation());
     mViewFlipper.setOutAnimation(outToLeftAnimation());
 
-    // this.buzzerButton.setOnTouchListener( BuzzListener );
-    mBuzzerButton.setOnClickListener(mWrongListener);
-    mNextButton.setOnClickListener(mCorrectListener);
-
     // Set visibility and control of Skip Button
     if (mSkipEnabled) {
-      mSkipButton.setOnClickListener(mSkipListener);
       mSkipButton.setVisibility(View.VISIBLE);
     } else {
       mSkipButton.setVisibility(View.INVISIBLE);
     }
+
+    // Change views to appropriate team color
+    ImageView barFill = (ImageView) this.findViewById(R.id.Turn_TimerFill);
+    // Color timer fill
+    Team curTeam = this.getGameManager().getActiveTeam();
+    barFill.setImageResource(curTeam.getPrimaryColor());
+
+    // Set Turn Timer frame color
+    Drawable timerFrameBG = getResources().getDrawable(
+        R.drawable.gameend_row_end_white);
+    ImageView timerFrame = (ImageView) this.findViewById(R.id.Turn_TimerFrame);
+    timerFrameBG.setColorFilter(
+        getResources().getColor(R.color.genericBG_trim), Mode.MULTIPLY);
+    timerFrame.setBackgroundDrawable(timerFrameBG);
+
+    // Set background gradient
+    this.findViewById(R.id.Turn_Root).setBackgroundResource(
+        curTeam.getGradient());
+  }
+  
+  /**
+   * Assign listeners to all the elements in TurnActivity
+   */
+  private void setupClickListeners()
+  {
+    mPauseOverlay.setOnClickListener(mPauseListener);
+
+    mTimerGroup.setOnClickListener(mTimerClickListener);
+
+    mBuzzerButton.setOnClickListener(mWrongListener);
+    mNextButton.setOnClickListener(mCorrectListener);
+    mSkipButton.setOnClickListener(mSkipListener);
 
     // assign click to menu button
     mMenuButton.setOnClickListener(mMenuButtonListener);
@@ -966,23 +1044,6 @@ public class TurnActivity extends Activity {
     this.findViewById(R.id.Turn_CardLayoutB).setOnTouchListener(
         mGestureListener);
 
-    // Change views to appropriate team color
-    ImageView barFill = (ImageView) this.findViewById(R.id.Turn_TimerFill);
-    // Color timer fill
-    Team curTeam = this.getGameManager().getActiveTeam();
-    barFill.setImageResource(curTeam.getPrimaryColor());
-
-    // Set Turn Timer frame color
-    Drawable timerFrameBG = getResources().getDrawable(
-        R.drawable.gameend_row_end_white);
-    ImageView timerFrame = (ImageView) this.findViewById(R.id.Turn_TimerFrame);
-    timerFrameBG.setColorFilter(
-        getResources().getColor(R.color.genericBG_trim), Mode.MULTIPLY);
-    timerFrame.setBackgroundDrawable(timerFrameBG);
-
-    // Set background gradient
-    this.findViewById(R.id.Turn_Root).setBackgroundResource(
-        curTeam.getGradient());
   }
 
   /**
@@ -1104,8 +1165,8 @@ public class TurnActivity extends Activity {
       // starting from a finished turn
       onDelayTimerExpired();
     }
+    
   }
-
   /**
    * Helper function ensures we use the same view when setting KeepScreenOn
    * 
@@ -1169,7 +1230,7 @@ public class TurnActivity extends Activity {
   @Override
   public void onResume() {
     super.onResume();
-    
+
     if(mResultsDelay != null)
     {
       mResultsDelay.resume();
@@ -1264,6 +1325,7 @@ public class TurnActivity extends Activity {
 
       String curTeam = mGameManager.getActiveTeam().getName();
 
+      // Setup the dialog
       builder = new AlertDialog.Builder(this);
       builder.setMessage("Ready " + curTeam + "?").setCancelable(false)
           .setPositiveButton("Start!", new DialogInterface.OnClickListener() {
@@ -1273,17 +1335,35 @@ public class TurnActivity extends Activity {
               mIsWaitingForTeamReady = false;
               startGame();
             }
-          });
 
+          });
+      
+      // Add on the tutorial button if set in the preferences
+      SharedPreferences sp = PreferenceManager
+          .getDefaultSharedPreferences(getBaseContext());
+      boolean showTutorial = sp.getBoolean(
+          Consts.TutorialPrefkey.TURN.getKey(), true);
+      if (showTutorial) {
+        builder.setNegativeButton("No, How do I play?",
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                startTutorial();
+              }
+
+            });
+      }
+
+      // Create the dialog
       dialog = builder.create();
 
       // We add an onDismiss listener to handle the case in which a user
-      // attempts
-      // to search on the ready dialog
+      // attempts to search on the ready dialog
       dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
         public void onDismiss(DialogInterface dialog) {
-          if (mIsPaused) {
+          // If it's paused but they are not in tutorial mode, re-show Ready
+          if (mIsPaused && !mIsInTutorial) {
             showDialog(DIALOG_READY_ID);
           }
         }
@@ -1410,6 +1490,11 @@ public class TurnActivity extends Activity {
    */
   private void startGame() {
     mIsPaused = false;
+    
+    // Assign listeners to views at start game to prevent illegal
+    // clicks before game starts (tutorial).
+    setupClickListeners();
+    
     TurnActivity.this.showNextCard();
     mIsBack = true;
     TurnActivity.this.startTurnTimer();
@@ -1450,6 +1535,100 @@ public class TurnActivity extends Activity {
       mp.start();
     }
   }
+  
+
+  /**
+   * Begins the tutorial by initializing views and references, and showing the layout
+   */
+  private void startTutorial() {
+    
+    mIsInTutorial = true;
+    
+    // Set the listener to get a callback when the view is done
+    mTutorialLayout.setTutorialListener(mTutorialListener);
+    
+    // Set the first page of the tutorial
+    mTutorialPage = TutorialPage.TITLE;
+    
+    // Assign references to match the shown tutorial card
+    this.assignActiveCardViewReferences();
+    
+    // Create a temporary card that shows tutorial entries.
+    Card tutorialCard = new Card(-1, "Puppy", "Dog,Bark,Litter,Baby,Train", null);
+    mCardTitle.setText(tutorialCard.getTitle());
+    this.setBadWords(mCardBadWords, tutorialCard, mGameManager.getActiveTeam());
+    
+    // Advance the tutorial to the first page
+    advanceTutorial();
+    
+    // Assign a listener to catch click events on the Tutorial
+    mTutorialLayout.setClickListener(mTutorialClickListener);
+  }
+  
+  /**
+   * Advance the tutorial and the content to the next stage
+   */
+  private void advanceTutorial()
+  {
+    // Sets the content and the next tutorial page for the given tutorial page
+    switch(mTutorialPage)
+    {
+    case TITLE:
+      mTutorialLayout.setContent(mCardTitle, getResources().getString(R.string.tutorial_turn_guess), TutorialLayout.CENTER);
+      mTutorialPage = TutorialPage.BADWORDS;
+      break;
+    case BADWORDS:
+      mTutorialLayout.setContent(mCardBadWords, getResources().getString(R.string.tutorial_turn_buzzwords),
+          TutorialLayout.TOP);
+      mTutorialPage = TutorialPage.WRONG;
+      break;
+    case RIGHT:
+      mTutorialLayout.setContent(mNextButton, getResources().getString(R.string.tutorial_turn_right),
+          TutorialLayout.CENTER);
+      if (mSkipEnabled) {
+        mTutorialPage = TutorialPage.SKIP;
+      } else {
+        mTutorialPage = TutorialPage.TIME;
+      }
+      break;
+    case WRONG:
+      mTutorialLayout.setContent(mBuzzerButton, getResources().getString(R.string.tutorial_turn_wrong),
+          TutorialLayout.CENTER);
+      mTutorialPage = TutorialPage.RIGHT;
+      break;
+    case SKIP:
+      mTutorialLayout.setContent(mSkipButton, getResources().getString(R.string.tutorial_turn_skip),
+          TutorialLayout.CENTER);
+      mTutorialPage = TutorialPage.TIME;
+      break;
+    case TIME:
+      mTutorialLayout.setContent(mTimerGroup, getResources().getString(R.string.tutorial_turn_time),
+          TutorialLayout.CENTER);
+      mTutorialPage = TutorialPage.END;
+      break;
+    case END:
+      // Set TutorialPage to a value that will prevent tutorial advancement
+      mTutorialPage = TutorialPage.NOADVANCE;
+      stopTutorial();
+      break;
+    case NOADVANCE:
+      break;
+    default:
+      stopTutorial();
+      break;
+    }
+  }
+  
+  /**
+   * Performs all actions to stop the tutorial and return to game ready.
+   */
+  private void stopTutorial()
+  {
+    mIsInTutorial = false;
+    mTutorialLayout.hide();
+    this.clearCardViews();
+  }
+
 
   /**
    * We make sure to pause the game when the menu is opened
@@ -1491,6 +1670,11 @@ public class TurnActivity extends Activity {
       if (!(mIsPaused || mTurnTimeIsUp)) {
         this.doBack();
       }
+      else if (mIsInTutorial)
+      {
+        // Stop the tutorial if they press Back during it
+        stopTutorial();
+      }
       return true;
     }
 
@@ -1503,7 +1687,7 @@ public class TurnActivity extends Activity {
    */
   @Override
   public boolean onTouchEvent(MotionEvent event) {
-    if (mSwipeDetector.onTouchEvent(event))
+    if (mSwipeDetector != null && mSwipeDetector.onTouchEvent(event))
       return true;
     else
       return false;
