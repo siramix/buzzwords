@@ -1344,7 +1344,7 @@ public class TurnActivity extends Activity {
       boolean showTutorial = sp.getBoolean(
           Consts.TutorialPrefkey.TURN.getKey(), true);
       if (showTutorial) {
-        builder.setNegativeButton("No, How do I play?",
+        builder.setNegativeButton("No. How do I play?",
             new DialogInterface.OnClickListener() {
               public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
