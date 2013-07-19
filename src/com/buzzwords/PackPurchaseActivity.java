@@ -644,6 +644,8 @@ public class PackPurchaseActivity extends Activity {
           null,
           getString(R.string.progressDialog_update_text), 
           true);
+      // Hide the tutorial when it's behind the dialog
+      mTutorialLayout.setVisibility(View.INVISIBLE);
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, true);
       syncPrefEditor.commit();
     }
@@ -698,6 +700,8 @@ public class PackPurchaseActivity extends Activity {
     {
       refreshAllPackLayouts();
       dialog.dismiss();
+      // Reshow hidden tutorial if it's behind the dialog.
+      mTutorialLayout.setVisibility(View.VISIBLE); 
       if (installOrUpdateError) {
         showToast(getString(R.string.toast_packpurchase_installfailed));
         syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
