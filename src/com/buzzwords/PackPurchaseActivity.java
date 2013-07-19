@@ -204,13 +204,6 @@ public class PackPurchaseActivity extends Activity {
    */
   private void startTutorial()
  {
-    // Flag the tutorial as seen
-    SharedPreferences sp = PreferenceManager
-        .getDefaultSharedPreferences(getBaseContext());
-    SharedPreferences.Editor spEditor = sp.edit();
-    spEditor.putBoolean(Consts.TutorialPrefkey.PACKSELECT.getKey(), false);
-    spEditor.commit();
-    
     mTutorialPage = TutorialPage.SCREEN;
     advanceTutorial();
   }
@@ -235,8 +228,17 @@ public class PackPurchaseActivity extends Activity {
       mTutorialPage = TutorialPage.END;
       break;
     case END:
+
+      // Flag the tutorial as seen
+      SharedPreferences sp = PreferenceManager
+          .getDefaultSharedPreferences(getBaseContext());
+      SharedPreferences.Editor spEditor = sp.edit();
+      spEditor.putBoolean(Consts.TutorialPrefkey.PACKSELECT.getKey(), false);
+      spEditor.commit();
+      
       mTutorialPage = TutorialPage.NOADVANCE;
       mTutorialLayout.hide();
+      
       break;
     case NOADVANCE:
       break;

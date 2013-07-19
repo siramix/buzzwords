@@ -309,14 +309,6 @@ public class GameSetupActivity extends Activity {
    */
   private void startTutorial()
   {
-    // Flag tutorial as seen
-
-    SharedPreferences sp = PreferenceManager
-        .getDefaultSharedPreferences(getBaseContext());
-    SharedPreferences.Editor spEditor = sp.edit();
-    spEditor.putBoolean(Consts.TutorialPrefkey.SETUP.getKey(), false);
-    spEditor.commit();
-    
     mTutorialPage = TutorialPage.GAME;
     advanceTutorial();
   }
@@ -352,6 +344,13 @@ public class GameSetupActivity extends Activity {
       mTutorialPage = TutorialPage.END;
       break;
     case END:
+      // Flag tutorial as seen
+      SharedPreferences sp = PreferenceManager
+          .getDefaultSharedPreferences(getBaseContext());
+      SharedPreferences.Editor spEditor = sp.edit();
+      spEditor.putBoolean(Consts.TutorialPrefkey.SETUP.getKey(), false);
+      spEditor.commit();
+      
       mTutorialLayout.hide();
       mTutorialPage = TutorialPage.NOADVANCE;
       break;

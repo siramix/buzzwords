@@ -185,13 +185,6 @@ public class TurnSummaryActivity extends Activity {
    */
   private void startTutorial()
   {
-    // Flag the tutorial as seen
-    SharedPreferences sp = PreferenceManager
-        .getDefaultSharedPreferences(getBaseContext());
-    SharedPreferences.Editor spEditor = sp.edit();
-    spEditor.putBoolean(Consts.TutorialPrefkey.TURNSUMMARY.getKey(), false);
-    spEditor.commit();
-    
     mTutorialPage = TutorialPage.SCREEN;
     advanceTutorial();
   }
@@ -221,6 +214,13 @@ public class TurnSummaryActivity extends Activity {
       mTutorialPage = TutorialPage.END;
       break;
     case END:
+      // Flag the tutorial as seen
+      SharedPreferences sp = PreferenceManager
+          .getDefaultSharedPreferences(getBaseContext());
+      SharedPreferences.Editor spEditor = sp.edit();
+      spEditor.putBoolean(Consts.TutorialPrefkey.TURNSUMMARY.getKey(), false);
+      spEditor.commit();
+      
       mTutorialLayout.hide();
       mTutorialPage = TutorialPage.NOADVANCE;
       break;
