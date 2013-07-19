@@ -213,9 +213,9 @@
     
     <!--  Tutorial Strings -->
     <string name="tutorial_tapprompt">* Tap *</string>
-    <string name="tutorial_gamesetup_game">Welcome to Buzzwords, a team based party game where players take turns trying to get their team to guess specific words! </string>
+    <string name="tutorial_gamesetup_game">Welcome to Buzzwords, a team based party game where players take turns trying to get their team to guess secret words! </string>
     <string name="tutorial_gamesetup_screen">On this screen you can customize the game rules to match your playstyle.</string>
-    <string name="tutorial_gamesetup_teams">Players should divide up into two, three, or four teams. Highlight the team colors you want to play with by tapping them..</string>
+    <string name="tutorial_gamesetup_teams">Players should divide up into two, three, or four teams. Highlight the team colors you want to play with by tapping them.</string>
     <string name="tutorial_gamesetup_win">Choose from different game types to change how a team can win.</string>
     <string name="tutorial_packpurchase_screen">On this screen you choose the words you want to play with.</string>
     <string name="tutorial_packpurchase_packs">Tap on a row to select a pack. During the game, you will see random unseen words from the selected packs.</string>
@@ -225,7 +225,7 @@
     <string name="tutorial_turn_wrong">Press the Buzz button if you say one of the \'buzz\'words.</string>
     <string name="tutorial_turn_skip">Press the Skip button if you want to move on to another word.</string>
     <string name="tutorial_turn_time">This is the turn timer. Try to get your team to guess as many words as possible before it expires! (Tap it to pause)</string>
-    <string name="tutorial_turnsummary_screen">During the Results screen you can review the words you saw during your turn and check the way you marked them.</string>
+    <string name="tutorial_turnsummary_screen">During the Results screen you view the words from your turn.</string>
     <string name="tutorial_turnsummary_review">You can tap on a card in this list to see its badwords or change the way it was marked.</string>
     <string name="tutorial_turnsummary_scores">Team standings, including the score for this turn, are displayed here.</string>
     
@@ -239,7 +239,7 @@
     
     <string name="resetTutorialDialog_title">Show Tutorial Hints?</string>
     <string name="resetTutorialDialog_text">Tutorial Hints will be displayed again on the next playthrough. Are you sure?</string>
-    <string name="resetTutorialDialog_positiveBtn">Yes, I have no idea what\'s going on.</string>
+    <string name="resetTutorialDialog_positiveBtn">Yes. I have no idea what\'s going on.</string>
     <string name="resetTutorialDialog_negativeBtn">No</string>
     <string name="toast_settings_tutorial_reset">Tutorial Hints will again be displayed.</string>
 
