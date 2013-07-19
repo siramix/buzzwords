@@ -95,18 +95,17 @@ public class PackPurchaseActivity extends Activity {
   private static final int PACKINFO_REQUEST_CODE = 14;
     
   /**
-   * PlayGameListener plays an animation on the view that will result in
-   * launching GameSetup
+   * NextActivityListener launches into the next Activity
    */
-  private OnClickListener mGameSetupListener = new OnClickListener() {
+  private OnClickListener mNextActivityListener = new OnClickListener() {
     public void onClick(View v) {
       // Throw out any queued onClicks.
       if(!v.isEnabled()){
         return;
       }
 
-      // Carry music into GameSetup
-      mContinueMusic = true;
+      // Music should not continue into Turn
+      mContinueMusic = false;
       
       // play confirm sound
       SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
@@ -130,9 +129,22 @@ public class PackPurchaseActivity extends Activity {
         // Only disable this view when we are definitely advancing
         v.setEnabled(false);
         mIsActivityClosing = true;
+
+        // Stop the music
+        BuzzWordsApplication application = (BuzzWordsApplication) PackPurchaseActivity.this
+            .getApplication();
+        MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
+        mp.stop();
+
+        // Release the Music Manager
+        application.cleanUpMusicPlayer();
         
-        startActivity(new Intent(getApplication().getString(R.string.IntentGameSetup),
+        application.getGameManager().startGame(application.getBaseContext());
+        
+        // Launch the Turn
+        startActivity(new Intent(getApplication().getString(R.string.IntentTurn),
               getIntent().getData()));
+    
       } else {
         showToast(getString(R.string.toast_packpurchase_nopackselected));
       }
@@ -165,7 +177,9 @@ public class PackPurchaseActivity extends Activity {
     // Initialize our packs
     mServerPacks = new LinkedList<Pack>();
 
-    mGameManager= new GameManager(PackPurchaseActivity.this);
+    BuzzWordsApplication application = (BuzzWordsApplication) this
+        .getApplication();
+    mGameManager= application.getGameManager();
 
     requestIds = new HashMap<String, String>();
     
@@ -181,7 +195,7 @@ public class PackPurchaseActivity extends Activity {
     
     // Set next button listener
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
-    btn.setOnClickListener(mGameSetupListener);
+    btn.setOnClickListener(mNextActivityListener);
     
     // Setup the tutorial layout
     mTutorialLayout = (TutorialLayout) this
@@ -619,10 +633,8 @@ public class PackPurchaseActivity extends Activity {
     private long timeStarted = System.currentTimeMillis();
     final SharedPreferences userPurchases = getPurchasePrefsForCurrentUser();
     final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
-    //TODO FIX THIS.  IT CRASHES.
-//    final BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
-//    final GameManager gm = application.getGameManager();
-    final GameManager gm = new GameManager(PackPurchaseActivity.this);
+    final BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+    final GameManager gm = application.getGameManager();
     private boolean installOrUpdateError = false;
     
     @Override

@@ -293,11 +293,11 @@
         </ScrollView>
 
         <com.buzzwords.AntonButton
-            android:id="@+id/GameSetup_StartGameButton"
+            android:id="@+id/GameSetup_NextButton"
             android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_gravity="right"
-            android:text="@string/gameSetup_button_startgame"
+            android:text="@string/gameSetup_button_next"
             android:textSize="20sp" >
         </com.buzzwords.AntonButton>
     </LinearLayout>

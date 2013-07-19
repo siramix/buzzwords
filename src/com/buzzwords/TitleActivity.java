@@ -213,7 +213,7 @@ public class TitleActivity extends Activity {
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       startActivity(new Intent(TitleActivity.this.getApplication().getString(
-          R.string.IntentPackPurchase), getIntent().getData()));
+          R.string.IntentGameSetup), getIntent().getData()));
     }
   };
 
@@ -511,7 +511,6 @@ public class TitleActivity extends Activity {
         R.drawable.title_starburst, factoryOptions);
     findViewById(R.id.Title_Starburst).setBackgroundDrawable(
         new BitmapDrawable(starburst));
-
   }
 
   /**

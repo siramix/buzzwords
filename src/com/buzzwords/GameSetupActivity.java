@@ -107,14 +107,19 @@ public class GameSetupActivity extends Activity {
   public static String TAG = "GameSetup";
 
   /**
-   * Watches the button that handles hand-off to the Turn activity.
+   * Watches the button that handles hand-off to the next activity.
    */
-  private final OnClickListener mStartGameListener = new OnClickListener() {
+  private final OnClickListener mNextActivityListener = new OnClickListener() {
     public void onClick(View v) {
       // Throw out any queued onClicks.
       if (!v.isEnabled() || mIsActivityClosing) {
         return;
       }
+
+      // play confirm sound
+      SoundManager sm = SoundManager.getInstance(GameSetupActivity.this
+          .getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
 
       // Validate team numbers
       if (GameSetupActivity.this.mTeamList.size() <= 1) {
@@ -138,30 +143,25 @@ public class GameSetupActivity extends Activity {
       while (keepLooping) {
         try {
           GameManager gm = new GameManager(GameSetupActivity.this);
-          gm.startGame(mTeamList, GameType.values()[mGameType],
-              mGameLimits[mGameType], getBaseContext());
+          gm.setupGameAttributes(mTeamList, GameType.values()[mGameType],
+              mGameLimits[mGameType]);
           application.setGameManager(gm);
           keepLooping = false;
           
           // Disable other buttons and this one to prevent double clicks
           mIsActivityClosing = true;
           v.setEnabled(false);
-
-          // Release the Music Manager
-          application.cleanUpMusicPlayer();
-          
+    
         } catch (SQLiteException e) {
           keepLooping = true;
         }
       }
 
-      // Launch into Turn activity
-      startActivity(new Intent(getApplication().getString(R.string.IntentTurn),
+      mContinueMusic = true;
+      
+      // Launch into PackPurchase activity
+      startActivity(new Intent(getApplication().getString(R.string.IntentPackPurchase),
           getIntent().getData()));
-
-      // Stop the music
-      MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
-      mp.stop();
     }
   };
 
@@ -437,8 +437,8 @@ public class GameSetupActivity extends Activity {
 
     // Bind start buttons
     Button startGameButton = (Button) this
-        .findViewById(R.id.GameSetup_StartGameButton);
-    startGameButton.setOnClickListener(mStartGameListener);
+        .findViewById(R.id.GameSetup_NextButton);
+    startGameButton.setOnClickListener(mNextActivityListener);
 
     // Do hint bindings
     Button hintButton = (Button) this
@@ -677,6 +677,10 @@ public class GameSetupActivity extends Activity {
     Log.d(TAG, "onResume()");
 
     mIsActivityClosing = false;
+    
+    // Re-enable buttons that were disabled to prevent double click.
+    Button btn = (Button) this.findViewById(R.id.GameSetup_NextButton);
+    btn.setEnabled(true); 
 
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this

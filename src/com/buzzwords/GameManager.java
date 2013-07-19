@@ -80,6 +80,11 @@ public class GameManager implements Serializable {
    * The maximum number of rounds for this game
    */
   private int mTurnLimitPerTeam;
+  
+  /**
+   * Game Mode parameter provides game-mode specific info
+   */
+  private int mGameModeParam;
 
   /**
    * The index of the round being played
@@ -313,44 +318,35 @@ public class GameManager implements Serializable {
   }
 
   /**
-   * Start the game given a set of team names. This creates both a game and a
-   * set of teams in the database
-   * 
-   * @param teams
-   *          a string array of team names
-   * @param mode
-   *          GameType for this game (play to score, or number of rounds)
-   * @param modeInfo
-   *          the number of rounds to play, or the points to play to
+   * Initialize the game so that it can deal with Turn actions.
+
    * @param context
    *          the context in which the pack preferences will be dealt
    */
-  public void startGame(ArrayList<Team> teams, GameType mode, int modeInfo, Context context) {
+  public void startGame(Context context) {
     Log.d(TAG, "StartGame()");
 
     // Initialize the deck and fill the cache
     mDeck.setPackData(context);
     fillDeckIfLow(context);
     
-    mTeams = teams;
     // Set team scores to 0
-    Iterator<Team> itr = teams.iterator();
-    for (itr = teams.iterator(); itr.hasNext();) {
+    Iterator<Team> itr = mTeams.iterator();
+    for (itr = mTeams.iterator(); itr.hasNext();) {
       itr.next().setScore(0);
     }
-    mCurrentTeam = teams.get(0);
+    mCurrentTeam = mTeams.get(0);
     this.mTeamPosition = 1;
-    mCurrentGameLimit = mode;
     switch (mCurrentGameLimit) {
     case TURNS:
-      mTurnLimitPerTeam = modeInfo;
+      mTurnLimitPerTeam = mGameModeParam;
       mTotalRounds = mTeams.size() * mTurnLimitPerTeam;
       mScoreLimit = -1;
       break;
     case SCORE:
       mTurnLimitPerTeam = -1;
       mTotalRounds = -1;
-      mScoreLimit = modeInfo;
+      mScoreLimit = mGameModeParam;
       break;
     case FREEPLAY:
       mTurnLimitPerTeam = -1;
@@ -359,6 +355,25 @@ public class GameManager implements Serializable {
       break;
     }
     mCurrentTurn++;
+  }
+  
+  /**
+   * Setup the Settings for the game based on GameSetup
+   * @param teams
+   *          a string array of team names
+   * @param mode
+   *          GameType for this game (play to score, or number of rounds)
+   * @param modeInfo
+   *          the number of rounds to play, or the points to play to
+   * @param teams
+   * @param mode
+   * @param modeInfo
+   */
+  public void setupGameAttributes(ArrayList<Team> teams, GameType mode, int modeInfo)
+  {
+    mTeams = teams;
+    mCurrentGameLimit = mode;
+    mGameModeParam = modeInfo;
   }
 
   /**

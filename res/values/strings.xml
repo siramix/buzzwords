@@ -139,7 +139,7 @@
     <string name="gameSetup_title">Game Setup</string>
     <string name="gameSetup_teams_header">Teams</string>
     <string name="gameSetup_gametype_header">Game Type</string>
-    <string name="gameSetup_button_startgame">Continue</string>
+    <string name="gameSetup_button_next">Continue</string>
     <string name="gameSetup_hint_teams">Tap teams to add or remove them. Tap the pencil to rename a team.</string>
     <string name="gameSetup_hint_GameType">Game type determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
     <string name="gameSetup_hint_turns">Set the number of turns each team will take.</string>
