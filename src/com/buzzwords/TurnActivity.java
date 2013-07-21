@@ -1126,24 +1126,29 @@ public class TurnActivity extends Activity {
     this.setupViewReferences();
     this.setupUIProperties();
 
+
+    // Restore State of Turn based on preferences
     SharedPreferences turnStatePrefs = this.getSharedPreferences(
         Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    // Prefs are cleared when going to next screen, so if they exist, it's a
+    // restore.
     boolean isAppRestored = turnStatePrefs
         .contains(Consts.PREFKEY_IS_TURN_IN_START_DIALOG);
 
-    // Restore State of Turn based on preferences
     // Set which card is active
     mAIsActive = true;
     mIsBack = true;
-    boolean isTurnInProgress = turnStatePrefs.getBoolean(
-        Consts.PREFKEY_IS_TURN_IN_PROGRESS, false);
     mIsWaitingForTeamReady = turnStatePrefs.getBoolean(
         Consts.PREFKEY_IS_TURN_IN_START_DIALOG, true);
+    boolean isTurnInProgress = turnStatePrefs.getBoolean(
+        Consts.PREFKEY_IS_TURN_IN_PROGRESS, false);
+    boolean isRestoredFromTutorial = turnStatePrefs.getBoolean(
+        Consts.PREFKEY_IS_TURN_IN_TUTORIAL, false);
 
     if (mIsWaitingForTeamReady) {
       // Dialog is automatically restored by OS, so only show it if it is not a
-      // restore.
-      if (!isAppRestored) {
+      // restore, or if restoring during the Tutorial when the DG was hidden.
+      if (!isAppRestored || isRestoredFromTutorial) {
         this.showDialog(DIALOG_READY_ID);
       }
       mCounter = createTurnTimer(mGameManager.getTurnTime());
@@ -1214,6 +1219,8 @@ public class TurnActivity extends Activity {
           mIsWaitingForTeamReady);
       turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_TURN_IN_PROGRESS,
           !mTurnTimeIsUp);
+      turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_TURN_IN_TUTORIAL,
+          mIsInTutorial);
       turnStatePrefsEditor.putBoolean(Consts.PREFKEY_A_IS_ACTIVE, mAIsActive);
       turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_BACK, mIsBack);
       turnStatePrefsEditor.putBoolean(Consts.PREFKEY_IS_TICKING, mIsTicking);
