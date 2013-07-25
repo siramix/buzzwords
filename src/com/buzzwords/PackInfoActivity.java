@@ -184,8 +184,10 @@ public class PackInfoActivity extends Activity {
   {
     
     mButtonAccept.setOnClickListener(mAcceptListener);
+    
     if(!mIsPackPurchased)
     {
+      // Display the buttons for a pack that has been unpurchased
       mButtonCancel.setVisibility(View.VISIBLE);
       mButtonCancel.setOnClickListener(mCancelListener);
       mPackIsOwnedText.setVisibility(View.GONE);
@@ -196,9 +198,9 @@ public class PackInfoActivity extends Activity {
       // Do not show progress for unpurchased packs
       setProgressVisible(false);
     }
-    //TODO Edward we need to handle the case where billing service is not available
     else
     {
+      // Display the buttons for a pack that is owned by the user
       setProgressVisible(true);
       mButtonCancel.setVisibility(View.GONE);
       mPackIsOwnedText.setVisibility(View.VISIBLE);
