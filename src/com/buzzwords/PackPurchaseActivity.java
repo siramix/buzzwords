@@ -37,8 +37,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.RelativeLayout.LayoutParams;
 
 public class PackPurchaseActivity extends Activity {
 
@@ -81,7 +83,7 @@ public class PackPurchaseActivity extends Activity {
   /**
    * Track which part of the tutorial the user is in.
    */
-  private TutorialPage mTutorialPage;
+  private TutorialPage mTutorialPage = TutorialPage.SCREEN;
 
   /**
    * Enum gives a name to each tutorial page
@@ -197,11 +199,7 @@ public class PackPurchaseActivity extends Activity {
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
     btn.setOnClickListener(mNextActivityListener);
     
-    // Setup the tutorial layout
-    mTutorialLayout = (TutorialLayout) this
-        .findViewById(R.id.PackPurchase_TutorialLayout);
-    mTutorialLayout.setClickListener(mAdvanceTutorialListener);
-    
+
     // Show the tutorial if set in the preference
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
@@ -217,7 +215,14 @@ public class PackPurchaseActivity extends Activity {
    * Initializes and starts the tutorial
    */
   private void startTutorial()
- {
+ {  
+    // Setup the tutorial layout
+    mTutorialLayout = new TutorialLayout(this);
+    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+        LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+    this.addContentView(mTutorialLayout, params);
+    mTutorialLayout.setClickListener(mAdvanceTutorialListener);
+    
     mTutorialPage = TutorialPage.SCREEN;
     advanceTutorial();
   }
@@ -645,7 +650,9 @@ public class PackPurchaseActivity extends Activity {
           getString(R.string.progressDialog_update_text), 
           true);
       // Hide the tutorial when it's behind the dialog
-      mTutorialLayout.setVisibility(View.INVISIBLE);
+      if (mTutorialLayout != null) {
+        mTutorialLayout.setVisibility(View.INVISIBLE);
+      }
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, true);
       syncPrefEditor.commit();
     }
@@ -701,7 +708,9 @@ public class PackPurchaseActivity extends Activity {
       refreshAllPackLayouts();
       dialog.dismiss();
       // Reshow hidden tutorial if it's behind the dialog.
-      mTutorialLayout.setVisibility(View.VISIBLE); 
+      if (mTutorialLayout != null) {
+        mTutorialLayout.setVisibility(View.VISIBLE); 
+      }
       if (installOrUpdateError) {
         showToast(getString(R.string.toast_packpurchase_installfailed));
         syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);

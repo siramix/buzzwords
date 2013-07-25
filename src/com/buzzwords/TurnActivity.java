@@ -56,6 +56,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * This handles a single turn consisting of cards presented to a player for a
@@ -143,7 +144,7 @@ public class TurnActivity extends Activity {
   /**
    * Track which part of the tutorial the user is in.
    */
-  private TutorialPage mTutorialPage;
+  private TutorialPage mTutorialPage = TutorialPage.TITLE;
 
   /**
    * Enum gives a name to each tutorial page
@@ -960,8 +961,6 @@ public class TurnActivity extends Activity {
     mMenuBar = (RelativeLayout) this.findViewById(R.id.Turn_HighBar);
     mTimerGroup = (RelativeLayout) this.findViewById(R.id.Turn_TimerBar);
     mButtonGroup = (RelativeLayout) this.findViewById(R.id.Turn_LowBar);
-    
-    mTutorialLayout = (TutorialLayout) this.findViewById(R.id.Turn_TutorialLayout);
   }
 
   /**
@@ -1542,10 +1541,18 @@ public class TurnActivity extends Activity {
    */
   private void startTutorial() {
     
-    mIsInTutorial = true;
-    
+    // Create the tutorial layout and add it to the hierarchy
+    if (mTutorialLayout == null) {
+      mTutorialLayout = new TutorialLayout(this);
+      RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+          LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+      this.addContentView(mTutorialLayout, params);
+    }   
+
     // Set the listener to get a callback when the view is done
     mTutorialLayout.setTutorialListener(mTutorialListener);
+    
+    mIsInTutorial = true;
     
     // Set the first page of the tutorial
     mTutorialPage = TutorialPage.TITLE;

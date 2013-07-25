@@ -42,8 +42,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * This activity class is responsible for gathering game information before the
@@ -88,7 +90,7 @@ public class GameSetupActivity extends Activity {
   /**
    * Track which part of the tutorial the user is in.
    */
-  private TutorialPage mTutorialPage;
+  private TutorialPage mTutorialPage = TutorialPage.SCREEN;
 
   /**
    * Enum gives a name to each tutorial page
@@ -309,6 +311,13 @@ public class GameSetupActivity extends Activity {
    */
   private void startTutorial()
   {
+    // Create the tutorial layout and add it to the hierarchy
+    mTutorialLayout = new TutorialLayout(this);
+    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+        LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+    this.addContentView(mTutorialLayout, params);
+    mTutorialLayout.setClickListener(mAdvanceTutorialListener);
+    
     mTutorialPage = TutorialPage.GAME;
     advanceTutorial();
   }
@@ -403,7 +412,6 @@ public class GameSetupActivity extends Activity {
   private void setupViewReferences() {
     mGameLimitView = (TextView) findViewById(R.id.GameSetup_GameTypeParameter_Value);
     mRadioGroup = (RadioGroup) findViewById(R.id.GameSetup_GameType_RadioGroup);
-    mTutorialLayout = (TutorialLayout) findViewById(R.id.GameSetup_TutorialLayout);
   }
 
   /**
@@ -482,7 +490,6 @@ public class GameSetupActivity extends Activity {
     restorePreferences();
     
     // Setup and start the tutorial
-    mTutorialLayout.setClickListener(mAdvanceTutorialListener);
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(getBaseContext());
     boolean showTutorial = sp.getBoolean(

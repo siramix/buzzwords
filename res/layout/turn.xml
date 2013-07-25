@@ -328,10 +328,4 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp" />
 
-    <com.buzzwords.TutorialLayout
-        android:id="@+id/Turn_TutorialLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-    </com.buzzwords.TutorialLayout>
-
 </RelativeLayout>

@@ -46,6 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * This activity class is responsible for summarizing the turn and the hand-off
@@ -73,7 +74,7 @@ public class TurnSummaryActivity extends Activity {
   /**
    * Track which part of the tutorial the user is in.
    */
-  private TutorialPage mTutorialPage;
+  private TutorialPage mTutorialPage = TutorialPage.SCREEN;
 
   /**
    * Enum gives a name to each tutorial page
@@ -185,6 +186,13 @@ public class TurnSummaryActivity extends Activity {
    */
   private void startTutorial()
   {
+    // Setup the tutorial layout
+    mTutorialLayout = new TutorialLayout(this);
+    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+        LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+    this.addContentView(mTutorialLayout, params);
+    mTutorialLayout.setClickListener(mAdvanceTutorialListener);
+    
     mTutorialPage = TutorialPage.SCREEN;
     advanceTutorial();
   }
@@ -229,14 +237,6 @@ public class TurnSummaryActivity extends Activity {
     }
   }
 
-  /*
-   * Here we establish permanent references to views to limit calls to
-   * findViewById()
-   */
-  private void setupViewReferences()
-  {
-    mTutorialLayout = (TutorialLayout) findViewById(R.id.TurnSummary_TutorialLayout); 
-  }
 
   /**
    * Setup any special properties on views such as onClick events and tags
@@ -252,9 +252,6 @@ public class TurnSummaryActivity extends Activity {
     // Bind menu button
     Button menuButton = (Button) this.findViewById(R.id.TurnSummary_Menu);
     menuButton.setOnClickListener(mMenuListener);
-
-    // Bind tutorial listener
-    mTutorialLayout.setOnClickListener(mAdvanceTutorialListener);
   }
 
   /**
@@ -270,8 +267,6 @@ public class TurnSummaryActivity extends Activity {
     // Setup the view
     this.setContentView(R.layout.turnsummary);
     
-    // Setup references to elements of the View
-    setupViewReferences();
 
     BuzzWordsApplication application = (BuzzWordsApplication) this
         .getApplication();

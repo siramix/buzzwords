@@ -302,10 +302,4 @@
         </com.buzzwords.AntonButton>
     </LinearLayout>
 
-    <com.buzzwords.TutorialLayout
-        android:id="@+id/GameSetup_TutorialLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-    </com.buzzwords.TutorialLayout>
-
 </RelativeLayout>
