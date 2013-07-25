@@ -31,6 +31,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -998,9 +999,9 @@ public class PackPurchaseActivity extends Activity {
           Toast.LENGTH_LONG);
     } else {
       mHelpToast.setText(text);
-      // TODO Can we get these toasts to display in a different spot?
       mHelpToast.setDuration(Toast.LENGTH_LONG);
     }
+    mHelpToast.setGravity(Gravity.BOTTOM, 0, 80);
     mHelpToast.show();
   }
 
