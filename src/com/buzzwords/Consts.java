@@ -59,6 +59,7 @@ public class Consts {
     public static final String PREFKEY_IS_TICKING = "com.buzzwords.IS_TICKING";
     public static final String PREFKEY_IS_PAUSED = "com.buzzwords.IS_PAUSED";
     public static final String PREFKEY_IS_TURN_IN_START_DIALOG = "com.buzzwords.IS_TURN_IN_START_DIALOG";
+    public static final String PREFKEY_IS_TURN_IN_TUTORIAL = "com.buzzwords.IS_TURN_IN_TUTORIAL";
     public static final String PREFKEY_TURN_TIME_REMAINING = "com.buzzwords.TURN_TIME_REMAINING";
     public static final String PREFKEY_UNSYNCED_PURCHASE_CHANGE = "com.buzzwords.PREFKEY_UNSYNCED_PURCHASE_CHANGE";
     public static final String PREFKEY_SYNC_IN_PROGRESS = "com.buzzwords.SYNC_IN_PROGRESS";
