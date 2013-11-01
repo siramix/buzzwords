@@ -81,6 +81,9 @@ public class PackPurchaseActivity extends Activity {
   // Flag for failures to get userId from Amazon's API
   private boolean mUserError = false;
   
+  // Installation dialog
+  private ProgressDialog mInstallDialog;
+  
   /**
    * Track which part of the tutorial the user is in.
    */
@@ -635,7 +638,6 @@ public class PackPurchaseActivity extends Activity {
    */
   public class PackSyncronizer extends AsyncTask <Pack, Void, Integer>
   {
-    private ProgressDialog dialog;
     private long timeStarted = System.currentTimeMillis();
     final SharedPreferences userPurchases = getPurchasePrefsForCurrentUser();
     final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
@@ -645,7 +647,7 @@ public class PackPurchaseActivity extends Activity {
     
     @Override
     protected void onPreExecute() {
-      dialog = ProgressDialog.show(
+      mInstallDialog = ProgressDialog.show(
           PackPurchaseActivity.this,
           null,
           getString(R.string.progressDialog_update_text), 
@@ -707,7 +709,13 @@ public class PackPurchaseActivity extends Activity {
     protected void onPostExecute(Integer result)
     {
       refreshAllPackLayouts();
-      dialog.dismiss();
+      // Hide our dialog if it's still showing (which it should be unless app is closed)
+      if (mInstallDialog != null) {
+        if (mInstallDialog.isShowing()) {
+          mInstallDialog.dismiss();
+          mInstallDialog = null;
+        }
+      }
       // Reshow hidden tutorial if it's behind the dialog.
       if (mTutorialLayout != null) {
         mTutorialLayout.setVisibility(View.VISIBLE); 
@@ -1059,6 +1067,13 @@ public class PackPurchaseActivity extends Activity {
       super.onStop();
 //      ResponseHandler.unregister(mPurchaseObserver);
 //      mBillingService.unbind();
+      // Terminate our install dialog if it's still in progress when app closes.
+      if (mInstallDialog != null) {
+        if (mInstallDialog.isShowing()) {
+          mInstallDialog.dismiss();
+        }
+        mInstallDialog = null;
+      }
   }
 
   @Override
