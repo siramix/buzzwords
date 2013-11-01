@@ -61,7 +61,7 @@ def updateAndroidManifest():
         # Prompt user to update Verision Name
         print "\nCurrent versionName is %s" % curVsnName
         print "What should the version name be updated to? (format: #.##)"
-        newVsnName = sys.stdin.read(5).strip("\n")
+        newVsnName = float(sys.stdin.read(5).strip("\n"))
         replaceAll(manifestFile, "android:versionName=\"%s\"" % curVsnName, "android:versionName=\"%s\"" % newVsnName)
         print "versionName updated."
 
