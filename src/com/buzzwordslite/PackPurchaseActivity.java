@@ -336,11 +336,11 @@ public class PackPurchaseActivity extends Activity {
    * First populates purchased then goes online to get list of unpurchased packs.
    */
   protected void refreshAllPackLayouts() {
-    mServerError = !isNetworkAvailable();
+    /*mServerError = !isNetworkAvailable();
     // If they don't have internet, dump cached serve packs.
     if (mServerError) {
       mServerPacks.clear();
-    }
+    }*/
     mUnlockedPacks = mGameManager.getInstalledPacks(this.getBaseContext());
 
     displayUnlockedPacks();
