@@ -1,14 +1,14 @@
 package com.buzzwordslite;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+//import java.io.IOException;
+//import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.json.JSONException;
+//import org.json.JSONException;
 
 import com.amazon.inapp.purchasing.PurchasingManager;
 
@@ -27,8 +27,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+//import android.os.Handler;
+//import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -203,6 +203,14 @@ public class PackPurchaseActivity extends Activity {
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
     btn.setOnClickListener(mNextActivityListener);
 
+    // Remove Progress bar
+    ProgressBar progressImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
+    progressImage.setVisibility(View.GONE);
+    
+    // Show lite text
+    TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
+    placeHolderText.setVisibility(View.VISIBLE);
+    placeHolderText.setText(getString(R.string.packpurchase_litemode));
 
     // Show the tutorial if set in the preference
     SharedPreferences sp = PreferenceManager
@@ -288,8 +296,8 @@ public class PackPurchaseActivity extends Activity {
   @Override
   public void onStart() {
       super.onStart();
-      PackPurchaseObserver packPurchaseObserver = new PackPurchaseObserver(this);
-      PurchasingManager.registerObserver(packPurchaseObserver);
+      //PackPurchaseObserver packPurchaseObserver = new PackPurchaseObserver(this);
+      //PurchasingManager.registerObserver(packPurchaseObserver);
   }
 
   /**
@@ -299,7 +307,7 @@ public class PackPurchaseActivity extends Activity {
   public void onResume() {
     super.onResume();
     // Asynchronous call to check our current user. Flags for re-sync if needed.
-    PurchasingManager.initiateGetUserIdRequest();
+    //PurchasingManager.initiateGetUserIdRequest();
     refreshAllPackLayouts();
 
     // Re-enable buttons that were disabled to prevent double click.
@@ -336,7 +344,7 @@ public class PackPurchaseActivity extends Activity {
     mUnlockedPacks = mGameManager.getInstalledPacks(this.getBaseContext());
 
     displayUnlockedPacks();
-    refreshLockedPacksLayout();
+    //refreshLockedPacksLayout();
 
     // Update the appropriate card count views
     updateCardCountViews();
@@ -357,7 +365,7 @@ public class PackPurchaseActivity extends Activity {
    * has not already purchased.  Must be called after displayUnlockedPacks to
    * show a list that filters out packs user already owns.
    */
-  private void refreshLockedPacksLayout() {
+  /*private void refreshLockedPacksLayout() {
     TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
     placeHolderText.setVisibility(View.GONE);
     ProgressBar progressImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
@@ -373,13 +381,13 @@ public class PackPurchaseActivity extends Activity {
       // Display the cached server packs
       displayLockedPackServerResults();
     }
-  }
+  }*/
 
   /**
    * Retrieve the pack list within a thread.
    */
   public void fetchPurchasablePacksOnThread() {
-    final PackClient client = PackClient.getInstance();
+    /*final PackClient client = PackClient.getInstance();
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message message) {
@@ -390,7 +398,7 @@ public class PackPurchaseActivity extends Activity {
     Thread thread = new Thread() {
         @Override
         public void run() {
-          try {
+          /*try {
             mServerPacks = client.getServerPacks();
           } catch (IOException e1) {
             Log.e(TAG, "Error occurred during I/O of serverPacks.");
@@ -412,7 +420,7 @@ public class PackPurchaseActivity extends Activity {
         }
     };
 
-    thread.start();
+    thread.start();*/
   }
 
   /**
@@ -421,7 +429,7 @@ public class PackPurchaseActivity extends Activity {
    * @param localPacks packs to exclude from list
    * @return list of unpurchased packs
    */
-  private LinkedList<Pack> getUnownedPacks(LinkedList<Pack> lockedPacks, LinkedList<Pack> installedPacks) {
+  /*private LinkedList<Pack> getUnownedPacks(LinkedList<Pack> lockedPacks, LinkedList<Pack> installedPacks) {
     LinkedList<Pack> unownedPackList = new LinkedList<Pack>();
     unownedPackList.addAll(lockedPacks);
 
@@ -435,14 +443,14 @@ public class PackPurchaseActivity extends Activity {
     }
 
     return unownedPackList;
-  }
+  }*/
 
   /**
    * Populate the list of purchasable packs. Handle special cases like removing
    * the loading bar and changing or removing the placeholder text. Assumes layout
    * has been emptied.
    */
-  private void displayLockedPackServerResults() {
+  /*private void displayLockedPackServerResults() {
     // Hide the network progress icon
     ProgressBar progressImage = (ProgressBar) findViewById(R.id.PackPurchase_PaidPackPlaceholderImage);
     progressImage.setVisibility(View.GONE);
@@ -461,7 +469,7 @@ public class PackPurchaseActivity extends Activity {
     } else {
       populatePackLayout(lockedPacks, paidPackLayout);
     }
-  }
+  }*/
 
   /**
    * Create dynamic rows of packs at runtime for pack purchase view. This will
