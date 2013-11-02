@@ -143,7 +143,7 @@
 	
 		          
       <Preference 
-         android:key="com.buzzwords.RESET_TUTORIAL"
+         android:key="com.buzzwordslite.RESET_TUTORIAL"
          android:enabled="true"
          android:selectable="true"
          android:summary="Restores Tutorial hints throughout the app."

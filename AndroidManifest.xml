@@ -57,7 +57,7 @@
             android:label="@string/AppName"
             android:screenOrientation="portrait" >
             <intent-filter>
-                <action android:name="com.buzzwords.intent.action.WORDPACKPURCHASE" />
+                <action android:name="com.buzzwordslite.intent.action.WORDPACKPURCHASE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -182,7 +182,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleDialog" >
             <intent-filter>
-                <action android:name="com.buzzwords.intent.action.PACKINFO" >
+                <action android:name="com.buzzwordslite.intent.action.PACKINFO" >
                 </action>
                 <category android:name="android.intent.category.DEFAULT" >
                 </category>

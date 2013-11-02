@@ -73,10 +73,10 @@ public class Consts {
     public static final String PREFFILE_TURN_STATE = "com.buzzwordslite.TURN_STATE";
 
     public static enum TutorialPrefkey {
-      SETUP ("com.buzzwords.SHOWTUTORIAL_SETUP"),
-      PACKSELECT ("com.buzzwords.SHOWTUTORIAL_PACKSELECT"),
-      TURN ("com.buzzwords.SHOWTUTORIAL_TURN"),
-      TURNSUMMARY ("com.buzzwords.SHOWTUTORIAL_TURNSUMMARY");
+      SETUP ("com.buzzwordslite.SHOWTUTORIAL_SETUP"),
+      PACKSELECT ("com.buzzwordslite.SHOWTUTORIAL_PACKSELECT"),
+      TURN ("com.buzzwordslite.SHOWTUTORIAL_TURN"),
+      TURNSUMMARY ("com.buzzwordslite.SHOWTUTORIAL_TURNSUMMARY");
 
       private final String mKey;
 

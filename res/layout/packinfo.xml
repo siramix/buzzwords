@@ -59,7 +59,7 @@
             android:textSize="18sp" >
         </TextView>
 
-        <com.buzzwords.AntonTextView
+        <com.buzzwordslite.AntonTextView
             android:id="@+id/PackInfo_CardInPack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,12 +68,12 @@
             android:textSize="20sp" 
             android:padding="5dp"/>
 
-        <com.buzzwords.ProgressBarView
+        <com.buzzwordslite.ProgressBarView
             android:id="@+id/PackInfo_ProgressBarView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp" >
-        </com.buzzwords.ProgressBarView>
+        </com.buzzwordslite.ProgressBarView>
 
         <LinearLayout
             android:id="@+id/PackInfo_Buttons"
@@ -82,7 +82,7 @@
             android:layout_marginTop="5dp"
             android:padding="5dp" >
 
-            <com.buzzwords.AntonButton
+            <com.buzzwordslite.AntonButton
                 android:id="@+id/PackInfo_Buttons_Cancel"
                 style="@style/BuzzWordsButton"
                 android:layout_width="fill_parent"
@@ -93,7 +93,7 @@
                 android:background="@drawable/button_generic"
                 android:text="@string/cancel"
                 android:visibility="gone" >
-            </com.buzzwords.AntonButton>
+            </com.buzzwordslite.AntonButton>
 
             <TextView
                 android:id="@+id/PackInfo_AlreadyOwnedText"
@@ -105,7 +105,7 @@
                 android:textSize="16sp" >
             </TextView>
 
-            <com.buzzwords.AntonButton
+            <com.buzzwordslite.AntonButton
                 android:id="@+id/PackInfo_Buttons_Accept"
                 style="@style/BuzzWordsButton"
                 android:layout_width="fill_parent"
@@ -115,7 +115,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_generic"
                 android:text="@string/confirm">
-            </com.buzzwords.AntonButton>
+            </com.buzzwordslite.AntonButton>
         </LinearLayout>
     </LinearLayout>
 

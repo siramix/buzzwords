@@ -32,7 +32,7 @@
         android:background="@drawable/bg_generic"
         android:orientation="vertical" >
 
-        <com.buzzwords.AntonTextView
+        <com.buzzwordslite.AntonTextView
             android:id="@+id/PackPurchase_Title"
             style="@style/ActivityHeader"
             android:layout_width="fill_parent"
@@ -74,7 +74,7 @@
                             android:layout_centerVertical="true"
                             android:background="@color/genericBG_trim" />
 
-                        <com.buzzwords.AntonTextView
+                        <com.buzzwordslite.AntonTextView
                             android:id="@+id/PackPurchase_UnlockedPackTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                         android:layout_centerVertical="true"
                         android:background="@color/genericBG_trim" />
 
-                    <com.buzzwords.AntonTextView
+                    <com.buzzwordslite.AntonTextView
                         android:id="@+id/PackPurchase_PaidPackTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                     android:layout_marginTop="15dp"
                     android:progress="@android:integer/config_shortAnimTime" />
 
-                <com.buzzwords.FrancoisOneTextView
+                <com.buzzwordslite.FrancoisOneTextView
                     android:id="@+id/PackPurchase_PaidPackPlaceholderText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
             android:layout_height="4dp"
             android:background="@color/genericBG_trim" />
 
-        <com.buzzwords.ProgressBarView
+        <com.buzzwordslite.ProgressBarView
             android:id="@+id/PackPurchase_Progress"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -165,14 +165,14 @@
             android:layout_marginRight="10dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp" >
-        </com.buzzwords.ProgressBarView>
+        </com.buzzwordslite.ProgressBarView>
 
         <LinearLayout
             android:id="@+id/PackPurchase_Buttons"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
-            <com.buzzwords.AntonButton
+            <com.buzzwordslite.AntonButton
                 android:id="@+id/PackPurchase_Button_Next"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
