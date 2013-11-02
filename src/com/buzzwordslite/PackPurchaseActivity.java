@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -501,7 +502,25 @@ public class PackPurchaseActivity extends Activity {
       // Assign the pack to the row. This should maybe be done in
       // a constructor
       row.setPack(curPack, getPackSelectedPref(curPack), count % 2 == 0);
-
+      
+      // Override our icon for the starter packs. Note this will prevent the packs
+      // from being able to update their icons, so when pack purchasing is added, we
+      // should eliminate this code.
+      switch (curPack.getId()) {
+        case (Consts.LITE_PACK_ID):
+          row.setAndScalePackIcon(BitmapFactory.decodeResource(getBaseContext().getResources(),
+              R.drawable.packicon_lite));
+          break;
+        case (Consts.STARTER_PACK_1_ID):
+          row.setAndScalePackIcon(BitmapFactory.decodeResource(getBaseContext().getResources(),
+              R.drawable.packicon_classic1));
+          break;
+        case (Consts.STARTER_PACK_2_ID):
+          row.setAndScalePackIcon(BitmapFactory.decodeResource(getBaseContext().getResources(),
+              R.drawable.packicon_classic2));
+          break;
+        }
+      
       // Add pack rows to the list. Give margin so borders don't double up.
       LinearLayout.LayoutParams margin = (LinearLayout.LayoutParams) row
           .getLayoutParams();
