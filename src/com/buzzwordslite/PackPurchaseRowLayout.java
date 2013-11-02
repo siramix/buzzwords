@@ -1,7 +1,7 @@
 /*****************************************************************************
  *  PhraseCraze is a family friendly word game for mobile phones.
  *  Copyright (C) 2011 Siramix Team
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-package com.buzzwords;
+package com.buzzwordslite;
 
 import java.io.IOException;
 
@@ -39,9 +39,9 @@ import android.widget.RelativeLayout;
 
 /**
  * Custom view that represents a pack.
- * 
+ *
  * @author The Buzzwords Team
- * 
+ *
  */
 public class PackPurchaseRowLayout extends FrameLayout {
 
@@ -62,7 +62,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
   private boolean mIsPackEnabled;
   private boolean mIsRowOdd;
   private boolean mIsPackPurchased;
-  
+
   /*
    * Listeners for click events on this row
    */
@@ -215,7 +215,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
 
     // Add the views to frame
     this.addView(mContents);
-    
+
     // Disable clicking sounds on the view.
     mContents.setSoundEffectsEnabled(false);
 
@@ -309,38 +309,38 @@ public class PackPurchaseRowLayout extends FrameLayout {
   {
     // Set background
     mContents.setBackgroundColor(backgroundColor);
-    
+
     // Set icon color
     if (iconFilterColor != 0) {
       mIcon.setColorFilter(iconFilterColor, Mode.MULTIPLY);
     } else {
       mIcon.setColorFilter(null);
     }
-    
+
     // Set Title text color
     mTitle.setTextColor(titleTextColor);
 
     // Set info button drawable
-    mInfoButton.setBackgroundResource(infoIconDrawableId); 
-    
+    mInfoButton.setBackgroundResource(infoIconDrawableId);
+
     // Set price visibility
     int priceVisibility = isPriceVisible ? View.VISIBLE : View.INVISIBLE;
     mPrice.setVisibility(priceVisibility);
     mRowEndBG.setVisibility(priceVisibility);
-    
+
     // Set info button visibility
-    int infoButtonVisibility = infoIconDrawableId != 0 ? View.VISIBLE : View.INVISIBLE;   
+    int infoButtonVisibility = infoIconDrawableId != 0 ? View.VISIBLE : View.INVISIBLE;
     mInfoButton.setVisibility(infoButtonVisibility);
   }
 
   /**
    * Set the pack this Layout is associated with
-   * 
+   *
    * @param pack
    *          The pack this Layout represents
    * @param isSelected
    *          Specify whether the pack is selected for the game
-   * @throws IOException 
+   * @throws IOException
    */
   public void setPack(Pack pack, Boolean isSelected, Boolean isRowOdd) {
     // Setup new members
@@ -354,7 +354,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
     retrieveAndSetPackIcon(pack);
 
     mPrice.setText(pack.getPrice());
-    
+
     // Assign click listeners based on the pack's purchase state
     if (mIsPackPurchased) {
       mContents.setOnClickListener(mSelectPackListener);
@@ -369,7 +369,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
 
   /**
    * Set the status of a layout while keeping pack the same
-   * 
+   *
    * @param isSelected
    *          Specify whether the pack is selected for the game
    */
@@ -380,7 +380,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
 
   /*
    * Assign a listener to receive the OnPackSelected callback
-   * 
+   *
    * @param listener Listener to receive the callback
    */
   public void setOnPackSelectedListener(OnPackSelectedListener listener) {
@@ -389,7 +389,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
 
   /*
    * Assign a listener to receive the OnPackInfoRequested callback
-   * 
+   *
    * @param listener Listener to receive the callback
    */
   public void setOnPackInfoRequestedListener(
@@ -448,7 +448,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
     // on the dialog. This is kinda hacky.
     final float DENSITY = this.getResources().getDisplayMetrics().density;
     mTitle.setWidth((int) (DENSITY * getDesiredTitleWidth() + 0.5f));
-    
+
     mIsRowClickable = isClickable;
     mContents.setClickable(mIsRowClickable);
     mInfoButton.setClickable(mIsRowClickable);

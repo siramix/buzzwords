@@ -1,7 +1,7 @@
 /*****************************************************************************
  *  Buzzwords is a family friendly word game for mobile phones.
  *  Copyright (C) 2011 Siramix Team
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-package com.buzzwords;
+package com.buzzwordslite;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -30,9 +30,9 @@ import android.widget.RelativeLayout;
 /**
  * Custom view that pairs a mask with a chat bubble and handles showing, hiding,
  * and advancing tutorial text.
- * 
+ *
  * @author Siramix Labs
- * 
+ *
  */
 public class TutorialLayout extends RelativeLayout {
 
@@ -115,7 +115,7 @@ public class TutorialLayout extends RelativeLayout {
     mTapText.setTextSize(22);
     mTapText.setLayoutParams(tapParams);
     mTapText.setVisibility(View.INVISIBLE);
-    
+
     // Add the views to the layout
     this.addView(mMask);
     this.addView(mChat);
@@ -128,7 +128,7 @@ public class TutorialLayout extends RelativeLayout {
     // Layout
     this.setVisibility(View.GONE);
   }
-  
+
   /**
    * Initializes the LayoutParameters for the ChatBubbleLayout. This is useful
    * because as the Layout content changes, we need to supply new layout
@@ -165,7 +165,7 @@ public class TutorialLayout extends RelativeLayout {
   /**
    * Set the content of the tutorial, highlighting the specified view and
    * displaying the text as spoken by Buzz.
-   * 
+   *
    * @param View
    *          target - The view to highlight using the MaskView
    * @param String
@@ -209,7 +209,7 @@ public class TutorialLayout extends RelativeLayout {
   /**
    * Set the content of the tutorial, highlighting the specified view and
    * displaying the text as spoken by Buzz.
-   * 
+   *
    * @param text
    * @param chatLocation
    */
@@ -229,11 +229,11 @@ public class TutorialLayout extends RelativeLayout {
     mMask.startAnimation(fadeOutMaskAnimation());
     // Fade the tap text out
     mTapText.startAnimation(fadeOutTapAnimation());
-    
+
     // Allow clicks on the views below the tutorial during fade.
     this.setClickable(false);
   }
-  
+
   /**
    * Ends the tutorial, hiding the entire layout
    */
@@ -243,10 +243,10 @@ public class TutorialLayout extends RelativeLayout {
     if ( mTutorialListener != null) {
       mTutorialListener.onTutorialEnded();
     }
-    
+
     // Hide the whole layout after fading
     mMask.setTarget(null);
-    TutorialLayout.this.setVisibility(View.GONE);  
+    TutorialLayout.this.setVisibility(View.GONE);
   }
 
   /**
@@ -256,7 +256,7 @@ public class TutorialLayout extends RelativeLayout {
     mClickListener = listener;
     this.setOnClickListener(mClickListener);
   }
-  
+
   public void setTutorialListener(TutorialListener listener){
     mTutorialListener = listener;
   }

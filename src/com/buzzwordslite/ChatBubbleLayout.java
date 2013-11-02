@@ -1,7 +1,7 @@
 /*****************************************************************************
  *  Buzzwords is a family friendly word game for mobile phones.
  *  Copyright (C) 2011 Siramix Team
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-package com.buzzwords;
+package com.buzzwordslite;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -31,9 +31,9 @@ import android.widget.RelativeLayout;
 /**
  * Custom view that is used to display text to the players, as spoken by
  * Buzzword's mascot, Buzz.
- * 
+ *
  * @author Siramix Labs
- * 
+ *
  */
 public class ChatBubbleLayout extends RelativeLayout {
 
@@ -171,7 +171,7 @@ public class ChatBubbleLayout extends RelativeLayout {
 
   /**
    * Set the text for the chat bubble and shows it if necessary.
-   * 
+   *
    * @param text
    */
   public void setText(String text) {
@@ -189,7 +189,7 @@ public class ChatBubbleLayout extends RelativeLayout {
    */
   public void hideChat() {
     mChatBox.startAnimation(scaleDownChatAnimation());
-    
+
     // play chat disappear sound
     SoundManager sm = SoundManager.getInstance(this.getContext());
     sm.playSound(SoundManager.Sound.CHAT_OUT);
@@ -201,11 +201,11 @@ public class ChatBubbleLayout extends RelativeLayout {
    */
   private void showChatBubble() {
     mChatBox.startAnimation(scaleUpChatAnimation());
-    
+
     // play chat pop in sound
     SoundManager sm = SoundManager.getInstance(this.getContext());
     sm.playSound(SoundManager.Sound.CHAT_IN);
-    
+
   }
 
   /**

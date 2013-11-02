@@ -1,7 +1,7 @@
 /*****************************************************************************
  *  Buzzwords is a family friendly word game for mobile phones.
  *  Copyright (C) 2011 Siramix Team
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-package com.buzzwords;
+package com.buzzwordslite;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 /**
  * This handles changing the points scored for each team in a round
- * 
+ *
  * @author Siramix Labs
  */
 public class PackInfoActivity extends Activity {
@@ -46,13 +46,13 @@ public class PackInfoActivity extends Activity {
    * flag used for stopping music OnStop() event.
    */
   private boolean mContinueMusic = false;
-  
+
   /*
    * References to button views
    */
   private Button mButtonCancel;
   private Button mButtonAccept;
-  
+
   /**
    * References to elements that render pack data
    */
@@ -61,7 +61,7 @@ public class PackInfoActivity extends Activity {
   private TextView mPackIsOwnedText;
   private ProgressBarView mProgressBar;
   private AntonTextView mCardsInPack;
-  
+
   /*
    * Reference to the pack this activity is displaying
    */
@@ -95,9 +95,9 @@ public class PackInfoActivity extends Activity {
       // play back sound
       SoundManager sm = SoundManager.getInstance(PackInfoActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.BACK);
-      
+
       mContinueMusic = true;
-      
+
       finish();
     }
   };
@@ -111,13 +111,13 @@ public class PackInfoActivity extends Activity {
       outIntent.putExtra(getString(R.string.packBundleKey), mPack);
       // Set result
       PackInfoActivity.this.setResult((Integer) v.getTag(), outIntent);
-      
+
       // play confirm sound
       SoundManager sm = SoundManager.getInstance(PackInfoActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
-      
+
       mContinueMusic = true;
-      
+
       finish();
     }
   };
@@ -130,7 +130,7 @@ public class PackInfoActivity extends Activity {
     super.onCreate(savedInstanceState);
     this.setContentView(R.layout.packinfo);
     Intent inIntent = getIntent();
-    
+
     // Set references to passed-in data
     mPack = (Pack) inIntent.getExtras().get(
         getApplication().getString(R.string.packBundleKey));
@@ -144,12 +144,12 @@ public class PackInfoActivity extends Activity {
     mPurchaseType = mPack.getPurchaseType();
 
     setupViewReferences();
-    
+
     setupPackDataViews();
-    
+
     setupButtons();
   }
-  
+
   /*
    * Populate the elements with the Pack's Data
    */
@@ -176,22 +176,22 @@ public class PackInfoActivity extends Activity {
           Integer.toString(mPack.getServerSize())));
     }
   }
- 
-  /* 
+
+  /*
    * Setup the view and buttons based on the purchasability of the pack
    */
   private void setupButtons()
   {
-    
+
     mButtonAccept.setOnClickListener(mAcceptListener);
-    
+
     if(!mIsPackPurchased)
     {
       // Display the buttons for a pack that has been unpurchased
       mButtonCancel.setVisibility(View.VISIBLE);
       mButtonCancel.setOnClickListener(mCancelListener);
       mPackIsOwnedText.setVisibility(View.GONE);
-      
+
       mButtonAccept.setText(this.getResources().
           getString(PackPurchaseConsts.PURCHASE_LABEL_IDS[mPurchaseType]));
       mButtonAccept.setTag(PackPurchaseConsts.PURCHASE_RESULT_CODES[mPurchaseType]);
@@ -223,7 +223,7 @@ public class PackInfoActivity extends Activity {
 
     return super.onKeyUp(keyCode, event);
   }
-  
+
   /**
    * Override onPause for music continuation
    */

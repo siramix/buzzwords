@@ -1,4 +1,4 @@
-package com.buzzwords;
+package com.buzzwordslite;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,7 +15,7 @@ import android.util.Log;
 /*****************************************************************************
  *  Buzzwords is a family friendly word game for mobile phones.
  *  Copyright (C) 2011 Siramix Team
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -63,7 +63,7 @@ public class PackIconUtils {
     }
     return bitmap;
   }
-  
+
   /**
    * Return whether or not a pack icon is cached.
    * @param iconName of icon to search for
@@ -75,7 +75,7 @@ public class PackIconUtils {
     File iconFile = new File(path);
     return iconFile.exists();
   }
-  
+
   /**
    * Delete the pack icon from internal storage.
    * @param iconName name of icon to delete
@@ -90,7 +90,7 @@ public class PackIconUtils {
     return deleted;
   }
 
-  
+
   /**
    * Store the icon png in Internal Storage according to iconName.png format.  The
    * icon should be world readable, but only for transparency's sake.  It should be deleted
@@ -119,9 +119,9 @@ public class PackIconUtils {
         return false;
       }
   }
-  
+
   /**
-   * Scale a bitmap to the correct size for a given device's density.  This 
+   * Scale a bitmap to the correct size for a given device's density.  This
    * ensures all of our icons can be the same size regardless of where the
    * bitmap comes from.
    * @param icon to scale
@@ -133,18 +133,18 @@ public class PackIconUtils {
     Log.d(TAG, "width: " + bitmap.getWidth());
     Log.d(TAG, "height: " + bitmap.getHeight());
     Log.d(TAG, "densityBefore: " + bitmap.getDensity());
-    
+
     final float density = context.getResources().getDisplayMetrics().density;
     int p = (int) (ICON_DP * density + 0.5f);
     bitmap = Bitmap.createScaledBitmap(bitmap, p, p, true);
-    
+
     Log.d(TAG, "widthAfter: " + bitmap.getWidth());
     Log.d(TAG, "heightAfter: " + bitmap.getHeight());
     Log.d(TAG, "densityAfter: " + bitmap.getDensity());
-    
+
     return bitmap;
   }
-  
+
   /**
    * Helper method to build the path to location in internal storage where icon
    * pngs are stored.
@@ -153,7 +153,7 @@ public class PackIconUtils {
    * @return path to icon file
    */
   public static String buildIconPath(String iconName, Context context) {
-    return context.getDir(ICON_DIRECTORY, Context.MODE_WORLD_READABLE).getPath() + "/" 
+    return context.getDir(ICON_DIRECTORY, Context.MODE_WORLD_READABLE).getPath() + "/"
                            + iconName + ".png";
   }
 }

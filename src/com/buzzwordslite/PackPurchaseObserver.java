@@ -12,7 +12,7 @@
  * implied.
  * See the License for the specific language governing permissions and limitations under the License.
  */
-package com.buzzwords;
+package com.buzzwordslite;
 
 import java.util.Map;
 
@@ -39,14 +39,14 @@ import com.amazon.inapp.purchasing.Receipt;
  * unresponsive.
  */
 public class PackPurchaseObserver extends BasePurchasingObserver {
-    
+
     private static final String OFFSET = "offset";
     private static final String TAG = "Amazon-IAP";
     private final PackPurchaseActivity baseActivity;
 
     /**
      * Creates new instance of the PackPurchaseActivity class.
-     * 
+     *
      * @param PackPurchaseActivity Activity context
      */
     public PackPurchaseObserver(final PackPurchaseActivity packPurchaseActivity) {
@@ -57,7 +57,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
     /**
      * Invoked once the observer is registered with the Puchasing Manager If the boolean is false, the application is
      * receiving responses from the SDK Tester. If the boolean is true, the application is live in production.
-     * 
+     *
      * @param isSandboxMode
      *            Boolean value that shows if the app is live or not.
      */
@@ -71,7 +71,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      * Invoked once the call from initiateGetUserIdRequest is completed.
      * On a successful response, a response object is passed which contains the request id, request status, and the
      * userid generated for your application.
-     * 
+     *
      * @param getUserIdResponse
      *            Response object containing the UserID
      */
@@ -88,7 +88,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      * On a successful response, a response object is passed which contains the request id, request status, and a set of
      * item data for the requested skus. Items that have been suppressed or are unavailable will be returned in a
      * set of unavailable skus.
-     * 
+     *
      * @param itemDataResponse
      *            Response object containing a set of purchasable/non-purchasable items
      */
@@ -104,7 +104,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      * Is invoked once the call from initiatePurchaseRequest is completed.
      * On a successful response, a response object is passed which contains the request id, request status, and the
      * receipt of the purchase.
-     * 
+     *
      * @param purchaseResponse
      *            Response object containing a receipt of a purchase
      */
@@ -120,7 +120,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
      * On a successful response, a response object is passed which contains the request id, request status, a set of
      * previously purchased receipts, a set of revoked skus, and the next offset if applicable. If a user downloads your
      * application to another device, this call is used to sync up this device with all the user's purchases.
-     * 
+     *
      * @param purchaseUpdatesResponse
      *            Response object containing the user's recent purchases.
      */
@@ -222,7 +222,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 final Map<String, Item> items = itemDataResponse.getItemData();
                 for (final String key : items.keySet()) {
                     Item i = items.get(key);
-                    Log.d(TAG, String.format("Item: %s\n Type: %s\n SKU: %s\n Price: %s\n Description: %s\n", 
+                    Log.d(TAG, String.format("Item: %s\n Type: %s\n SKU: %s\n Price: %s\n Description: %s\n",
                         i.getTitle(), i.getItemType(), i.getSku(), i.getPrice(), i.getDescription()));
                 }
                 break;
@@ -230,7 +230,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 // On failed responses will fail gracefully.
                 break;
             }
-            
+
             return null;
         }
     }
@@ -337,7 +337,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 baseActivity.setPurchasePrefs(getKey(sku), false);
             }
 
-            
+
             switch (purchaseUpdatesResponse.getPurchaseUpdatesRequestStatus()) {
             case SUCCESSFUL:
                 for (final Receipt receipt : purchaseUpdatesResponse.getReceipts()) {

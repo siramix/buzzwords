@@ -1,7 +1,7 @@
 /*****************************************************************************
  *  PhraseCraze is a family friendly word game for mobile phones.
  *  Copyright (C) 2011 Siramix Team
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-package com.buzzwords;
+package com.buzzwordslite;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,9 +44,9 @@ import android.util.Log;
  * Client for communicating with the Buzzwords pack server
  */
 public class PackClient {
-  
+
   private static final String TAG = "PackClient";
-  
+
   /**
    * Members
    */
@@ -98,7 +98,7 @@ public class PackClient {
     ret = PackParser.parseCards(in);
     return ret;
   }
-  
+
   /**
    * Retrieve an image from a provided url, in this case an icon for each purchasable
    * pack stored on our servers.
@@ -144,7 +144,7 @@ public class PackClient {
           }
         }
     };
-  
+
     Thread thread = new Thread() {
         @Override
         public void run() {

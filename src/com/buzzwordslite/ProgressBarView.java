@@ -1,7 +1,7 @@
 /*****************************************************************************
  *  PhraseCraze is a family friendly word game for mobile phones.
  *  Copyright (C) 2011 Siramix Team
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-package com.buzzwords;
+package com.buzzwordslite;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -27,9 +27,9 @@ import android.widget.LinearLayout;
 
 /**
  * Custom view that represents one value as a progress bar of a total.
- * 
+ *
  * @author The PhraseCraze Team
- * 
+ *
  */
 public class ProgressBarView extends RelativeLayout {
 
@@ -178,7 +178,7 @@ public class ProgressBarView extends RelativeLayout {
 
   /**
    * Set all the data that this segment of the ComboPercentageBar can represent.
-   * 
+   *
    * @param numerator
    *          the numerator on the progress (not a percent)
    * @param denominator
