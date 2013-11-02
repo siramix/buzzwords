@@ -73,7 +73,7 @@ public class Deck implements Serializable {
   private LinkedList<Pack> mSelectedPacks;
 
   private Pack mStarterPack;
-  private Pack mStarterPack2;
+  //private Pack mStarterPack2;
   
   /**
    * Constructor
@@ -89,14 +89,14 @@ public class Deck implements Serializable {
 
     // Stub pack (swap this in to get app running if you don't have access to buzzwords_i and _ii,
     // which you won't if you are forking our repository).
-    // mStarterPack = new Pack(0, "Lite Pack", "packs/lite_pack.json", "packs/icons/packicon_classic1.png",
-    //    "A sample pack of 125 Buzzwords.", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
-    mStarterPack = new Pack(1, "Buzzwords I", "packs/buzzwords_i.json", "packs/icons/packicon_classic1.png",
-        "The first of two pre-installed packs that include a mix of words from every catagory.", 
-        500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
-    mStarterPack2 = new Pack(2, "Buzzwords II", "packs/buzzwords_ii.json", "packs/icons/packicon_classic2.png",
-        "The second of two pre-installed packs that include a mix of words from every catagory.", 
-        500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
+    mStarterPack = new Pack(0, "Lite Pack", "packs/lite_pack.json", "packs/icons/packicon_classic1.png",
+        "A sample pack of 125 Buzzwords.", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
+    //mStarterPack = new Pack(1, "Buzzwords I", "packs/buzzwords_i.json", "packs/icons/packicon_classic1.png",
+    //    "The first of two pre-installed packs that include a mix of words from every catagory.", 
+    //    500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
+    //mStarterPack2 = new Pack(2, "Buzzwords II", "packs/buzzwords_ii.json", "packs/icons/packicon_classic2.png",
+    //    "The second of two pre-installed packs that include a mix of words from every catagory.", 
+    //    500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
   }
 
   public void saveState(Context context) {
@@ -234,11 +234,11 @@ public class Deck implements Serializable {
     // them in our source code. To get the app working, comment out the R.raw.buzzwords
     // lines and uncomment the line below as well as the code that initializes mStartPack
     //
-    // helper.installPackFromResource(mStarterPack, R.raw.lite_pack, context);
-    helper.installPackFromResource(mStarterPack, R.raw.buzzwords_i, context);
-    helper.installPackFromResource(mStarterPack2, R.raw.buzzwords_ii, context);
+    helper.installPackFromResource(mStarterPack, R.raw.lite_pack, context);
+    //helper.installPackFromResource(mStarterPack, R.raw.buzzwords_i, context);
+    //helper.installPackFromResource(mStarterPack2, R.raw.buzzwords_ii, context);
     setPackSelectionPref(mStarterPack.getId(), true, context);
-    setPackSelectionPref(mStarterPack2.getId(), true, context);
+    //setPackSelectionPref(mStarterPack2.getId(), true, context);
   }
   
   /** 
