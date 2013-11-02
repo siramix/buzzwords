@@ -22,8 +22,8 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+//import android.net.ConnectivityManager;
+//import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -336,11 +336,11 @@ public class PackPurchaseActivity extends Activity {
    * First populates purchased then goes online to get list of unpurchased packs.
    */
   protected void refreshAllPackLayouts() {
-    mServerError = !isNetworkAvailable();
-    // If they don't have internet, dump cached serve packs. 
+    /*mServerError = !isNetworkAvailable();
+    // If they don't have internet, dump cached serve packs.
     if (mServerError) {
       mServerPacks.clear();
-    }
+    }*/
     mUnlockedPacks = mGameManager.getInstalledPacks(this.getBaseContext());
     
     displayUnlockedPacks();
@@ -883,12 +883,12 @@ public class PackPurchaseActivity extends Activity {
    * Perform a basic internet connection check.
    * @return
    */
-  private boolean isNetworkAvailable() {
+  /*private boolean isNetworkAvailable() {
     ConnectivityManager connectivityManager 
           = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
     NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
     return activeNetworkInfo != null;
-  }
+  }*/
 
   /**
    * Returns the Component name of either Twitter, Google, or Facebook
