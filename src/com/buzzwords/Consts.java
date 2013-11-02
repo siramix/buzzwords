@@ -105,4 +105,8 @@ public class Consts {
     
     public static final int PACK_CURRENT = -1;
     public static final int PACK_NOT_PRESENT = -2;
+    
+    public static final int LITE_PACK_ID = 0;
+    public static final int STARTER_PACK_1_ID = 1;
+    public static final int STARTER_PACK_2_ID = 2;
 }

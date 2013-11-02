@@ -94,12 +94,12 @@ public class Deck implements Serializable {
 
     // Stub pack (swap this in to get app running if you don't have access to buzzwords_i and _ii,
     // which you won't if you are forking our repository).
-    // mStarterPack = new Pack(0, "Lite Pack", "packs/lite_pack.json", "packs/icons/packicon_classic1.png",
-    //    "A sample pack of 125 Buzzwords.", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
-    mStarterPack = new Pack(1, "Buzzwords I", "packs/buzzwords_i.json", "packs/icons/packicon_classic1.png",
+    //mStarterPack = new Pack(Consts.LITE_PACK_ID, "Lite Pack", "packs/lite_pack.json", "packs/icons/packicon_classic1.png",
+    //  "A sample pack of 125 Buzzwords.", 125, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
+    mStarterPack = new Pack(Consts.STARTER_PACK_1_ID, "Buzzwords I", "packs/buzzwords_i.json", "packs/icons/packicon_classic1.png",
         "The first of two pre-installed packs that include a mix of words from every catagory.", 
         500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
-    mStarterPack2 = new Pack(2, "Buzzwords II", "packs/buzzwords_ii.json", "packs/icons/packicon_classic2.png",
+    mStarterPack2 = new Pack(Consts.STARTER_PACK_2_ID, "Buzzwords II", "packs/buzzwords_ii.json", "packs/icons/packicon_classic2.png",
         "The second of two pre-installed packs that include a mix of words from every catagory.", 
         500, PackPurchaseConsts.PACKTYPE_FREE, 0, true, "");
   }
