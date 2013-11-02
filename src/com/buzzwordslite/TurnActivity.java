@@ -40,6 +40,7 @@ import android.view.animation.TranslateAnimation;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnSeekCompleteListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
@@ -1339,7 +1340,7 @@ public class TurnActivity extends Activity {
              // Play confirmation sound
              SoundManager sm = SoundManager.getInstance(getBaseContext());
              sm.playSound(SoundManager.Sound.CONFIRM);             
-             Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);             
+             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.storeUriBuzzwords));             
              startActivity(intent);
            }
          }).setNegativeButton(getString(R.string.upgradeDialog_negativeButton), 

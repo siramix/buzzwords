@@ -17,8 +17,6 @@
  ****************************************************************************/
 package com.buzzwordslite;
 
-import com.buzzwordslite.R;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;

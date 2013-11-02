@@ -32,6 +32,7 @@ import android.content.SharedPreferences;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
@@ -439,7 +440,7 @@ public class TurnSummaryActivity extends Activity {
              // Play confirmation sound
              SoundManager sm = SoundManager.getInstance(getBaseContext());
              sm.playSound(SoundManager.Sound.CONFIRM);
-             Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
+             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.storeUriBuzzwords));
              startActivity(intent);
            }
          }).setNegativeButton(getString(R.string.upgradeDialog_negativeButton),

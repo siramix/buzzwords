@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -444,9 +445,7 @@ public class GameEndActivity extends Activity {
    */
   @Override
   protected Dialog onCreateDialog(int id) {
-    if (BuzzWordsApplication.DEBUG) {
-      SafeLog.d(TAG, "onCreateDialog(" + id + ")");
-    }
+    Log.d(TAG, "onCreateDialog(" + id + ")");
     Dialog dialog = null;
     AlertDialog.Builder builder = null;
 
@@ -457,7 +456,7 @@ public class GameEndActivity extends Activity {
       .setPositiveButton(getString(R.string.upgradeDialog_positiveButton),
           new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-              Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
+              Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Config.storeUriBuzzwords));
               startActivity(intent);
             }
           }).setNegativeButton(getString(R.string.upgradeDialog_negativeButton),
@@ -485,7 +484,7 @@ public class GameEndActivity extends Activity {
   @Override
   public void onResume() {
     super.onResume();
-    SafeLog.d(TAG, "onResume()");
+    Log.d(TAG, "onResume()");
 
     // Re-enable things
     this.findViewById(R.id.GameEnd_MainMenu).setEnabled(true);
