@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class SoundManager {
 
@@ -33,7 +34,7 @@ public class SoundManager {
   private static SoundPool mSoundPool;
 
   public static enum Sound {
-    RIGHT, WRONG, SKIP, TEAMREADY, WIN, BACK, CONFIRM, GONG, BUZZ,
+    RIGHT, WRONG, SKIP, TEAMREADY, WIN, BACK, CONFIRM, GONG, BUZZ, CHAT_IN, CHAT_OUT
   };
 
   /**
@@ -73,7 +74,7 @@ public class SoundManager {
    * @param baseContext
    */
   private void initSoundManager(Context baseContext) {
-    SafeLog.d(TAG, "initSoundManager()");
+    Log.d(TAG, "initSoundManager()");
     mContext = baseContext;
     mAudioManager = (AudioManager) mContext
         .getSystemService(Context.AUDIO_SERVICE);
@@ -84,7 +85,7 @@ public class SoundManager {
    * Load all the sounds for the game
    */
   private void loadSounds() {
-    SafeLog.d(TAG, "loadSounds()");
+    Log.d(TAG, "loadSounds()");
     mSoundIds = new int[Sound.values().length];
     mSoundIds[Sound.RIGHT.ordinal()] = mSoundPool.load(mContext,
         R.raw.fx_right, 1);
@@ -103,6 +104,10 @@ public class SoundManager {
         R.raw.fx_countdown_gong, 1);
     mSoundIds[Sound.BUZZ.ordinal()] = mSoundPool.load(mContext,
         R.raw.fx_buzzer, 1);
+    mSoundIds[Sound.CHAT_IN.ordinal()] = mSoundPool.load(mContext,
+        R.raw.fx_chat_in, 1);
+    mSoundIds[Sound.CHAT_OUT.ordinal()] = mSoundPool.load(mContext,
+        R.raw.fx_chat_out, 1);
   }
 
   /**

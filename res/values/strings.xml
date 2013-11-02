@@ -15,6 +15,8 @@
     <string name="IntentEndGame">com.buzzwordslite.intent.action.GAMEEND</string>
     <string name="IntentCardReview">com.buzzwordslite.intent.action.CARDREVIEW</string>
     <string name="IntentEditTeamName">com.buzzwordslite.intent.action.EDITTEAMNAME</string>
+    <string name="IntentPackPurchase">com.buzzwordslite.intent.action.WORDPACKPURCHASE</string>
+    <string name="IntentPackInfo">com.buzzwordslite.intent.action.PACKINFO</string>
     <string name="IntentCredits">com.buzzwordslite.intent.action.CREDITS</string>
 
     <!-- Global Prefkey IDs -->
@@ -36,12 +38,12 @@
     <string name="menu_Rules_Title">Rules</string>
     <string name="menu_GoPro">MENU_GOPRO</string>
     <string name="menu_GoPro_Title">Go Pro</string>
-    
+
     <!-- Upgrade Dialog -->
     <string name = "upgradeDialog_text">Mastered the lite version? Go Pro and get all 1000 cards.\n\nThanks for your support!</string>
     <string name = "upgradeDialog_positiveButton">Marketplace</string>
     <string name = "upgradeDialog_negativeButton">Not Yet</string>
-    
+
 
     <!-- Team names -->
     <string name="teamnameA">Blue</string>
@@ -63,6 +65,9 @@
     <string name="cardStateBundleKey">com.buzzwordslite.cardState</string>
     <string name="teamBundleKey">com.buzzwordslite.team</string>
     <string name="teamNameBundleKey">com.buzzwordslite.teamName</string>
+    <string name="packInfoIsPackSelectedBundleKey">com.buzzwordslite.isPackSelected</string>
+    <string name="packInfoIsPackRowOddBundleKey">com.buzzwordslite.isPackRowOdd</string>
+    <string name="packInfoPurchaseTypeKey">com.buzzwordslite.packPurchaseType</string>
 
     <!-- Generic Strings -->
     <string name="confirm">OK</string>
@@ -74,6 +79,20 @@
     <string name="title_button_label_settings">Settings</string>
     <string name="title_button_label_rules">Rules</string>
     <string name="title_lite">LITE</string>
+
+    <!-- Activity PackPurchase -->
+    <string name="packpurchase_title">Select Word Packs</string>
+    <string name="packpurchase_unlockedheader">Your Packs</string>
+    <string name="packpurchase_lockedheader">Available Packs</string>
+    <string name="packpurchase_nopacksselected">No Packs Selected</string>
+    <string name="packpurchase_button">Play Game</string>
+    <string name="packpurchase_nointernet">Could not access the online store. We can only show your installed packs.</string>
+    <string name="packpurchase_allpurchased">Thanks for supporting us! We currently have no packs available but check back for more.</string>
+    <string name="toast_packpurchase_nofacebook">Sorry, we could not detect any Facebook apps.</string>
+    <string name="toast_packpurchase_purhcasefailed">Sorry, your purchase could not be made. Please try again later.</string>
+    <string name="toast_packpurchase_installfailed">Sorry, we encountered an error installing a pack. Please try again later.</string>
+    <string name="toast_packpurchase_nopackselected">Select at least one of Your Packs to play.</string>
+    <string name="toast_packpurchase_alreadypurchased">You\'ve already purchased this pack. Installing it now.</string>
 
     <!-- Activity Turn -->
     <string name="turn_timesup">Time\'s Up!</string>
@@ -108,7 +127,7 @@
 
     <!-- Dialog RateUs -->
     <string name="rateUsFirstDialog_title">We want your feedback!</string>
-    <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.  
+    <string name="rateUsFirstDialog_text">It looks like you\'ve played a few games.
      Would you mind taking a minute to provide some feedback?</string>
     <string name="rateUsSecondDialog_title">We still want your feedback!</string>
     <string name="rateUsSecondDialog_text">Wow you\'ve played a LOT, which means your opinion is especially valuable to us!
@@ -117,13 +136,21 @@
     <string name="rateUsDialog_neutralBtn">Later</string>
     <string name="rateUsDialog_negativeBtn">Never</string>
 
+    <!-- Activity PackInfo -->
+    <string name="packInfo_confirm_nobuy">OK</string>
+    <string name="packInfo_alreadyowned">This pack is installed</string>
+    <string name="packInfo_cardsinpack">Cards in Pack: %s</string>
+    <string name="packInfo_button_free">Download (Free)</string>
+    <string name="packInfo_button_pay">Purchase</string>
+    <string name="packInfo_button_facebook">Like Us</string>
+
     <!-- Activity GameSetup -->
     <string name="gameSetup_title">Game Setup</string>
     <string name="gameSetup_teams_header">Teams</string>
     <string name="gameSetup_gametype_header">Game Type</string>
-    <string name="gameSetup_button_startgame">Start Game</string>
+    <string name="gameSetup_button_next">Continue</string>
     <string name="gameSetup_hint_teams">Tap teams to add or remove them. Tap the pencil to rename a team.</string>
-    <string name="gameSetup_hint_GameType">Game limit determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
+    <string name="gameSetup_hint_GameType">Game type determines when the game will end. Play to a set number of turns, points, or choose free play to play to your heart\'s content.</string>
     <string name="gameSetup_hint_turns">Set the number of turns each team will take.</string>
     <string name="gameSetup_hint_score">Set the number of points a team needs to win. All teams will play an equal number of turns.</string>
 
@@ -142,7 +169,7 @@
     <string name="rules_gameplay_text1">Let\'s take a look at the buttons you\'ll encounter while playing.</string>
     <string name="rules_gameplay_text2">Right Button: For when your team guesses the card correctly. +1 Point by default.</string>
     <string name="rules_gameplay_text3">Skip Button: For when you are not up to the challenge of the current word. No penalty by default.</string>
-    <string name="rules_gameplay_text4">Wrong Button: For when you get called out by the other team for using a \'buzz\'word. -1 Point by default.</string>
+    <string name="rules_gameplay_text4">Buzz Button: For when you get called out by the other team for using a \'buzz\'word. -1 Point by default.</string>
     <string name="rules_gameplay_text5">Back Button (phone): You can use the back button on your Android device to go back one card.  Don\'t worry if you messed up more than once. You can always fix the results on Turn Summary.</string>
     <string name="rules_gameplay_text6">Gestures can also be used perform actions. Swipe up for right (think thumbs up), down for wrong (thumbs down), left for skip, and right for back.</string>
     <string name="rules_gameplay_text7">The game can be paused by either hitting the Menu button or tapping the timer at the top.  And don\'t worry, it will pause if anyone calls and interrupts your intense game of Buzzwords.</string>
@@ -165,7 +192,7 @@
     <string name="rules_example_subheader">Example Game</string>
     <string name="rules_example_text1">Finally, let\'s go through an example game to help you get started.</string>
     <string name="rules_example_text2">Sally and three of her close friends are out camping and realize they forgot to bring any games. But Sally comes to the rescue and pulls out her Android phone with Buzzwords! The group praises her foresight and excitedly divides up into two teams of two.</string>
-    <string name="rules_example_text3">Sally opens the app and taps Play to enter the Game Setup screen. The group divides into two teams, yellow and green, and Sally highlights those colors.</string>
+    <string name="rules_example_text3">Sally opens the app and taps Play to enter the Pack Purchase screen. After selecting the packs of cards they wish to play, they press \"Confirm\" to enter the Game Setup screen. The group divides into two teams, yellow and green, and Sally highlights those colors.</string>
     <string name="rules_example_text4">Since they want to each play 4 times they set it to 8 turns (#teams X #times for each player = #turns). Sally taps Start Game to play!</string>
     <string name="rules_example_text5">Sally starts off presenting for the Yellow Team and Rob, sitting to her left, monitors Sally on behalf of the Green Team. Sally\'s first word to present is Sandwich, which includes the \'buzz\'words bread, butter, eat, lunch, and sub. She starts by saying,</string>
     <string name="rules_example_text6">\"OK. This is something you eat for lunch.\"</string>
@@ -182,7 +209,7 @@
     <!-- Activity Credits -->
     <string name="credits_title">Buzzwords Credits</string>
     <string name="credits_team_subheader">The Team</string>
-    <string name="credits_edward"><b>Edward Rowe\nProgrammer</b>\nEd works as a video game programmer near Durham, NC.</string>
+    <string name="credits_edward"><b>Edward Rowe\nProgrammer</b>\nEdward works as a video game programmer near Durham, NC.</string>
     <string name="credits_lucas"><b>Lucas Rowe\nProgrammer</b>\nLucas is currently a QA Engineer in Raleigh, NC.</string>
     <string name="credits_patrick"><b>Patrick Reynolds\nProgrammer</b>\nPatrick is a programmer in Carborro, NC and is also working on his PHD in Computer Science from UNC Chapel Hill.</string>
     <string name="credits_acknowledgements_subheader">Acknowledgements</string>
@@ -193,6 +220,24 @@
     <string name="credits_font_luckiestguy">Luckiest Guy font, used in our icon, created by Brian J. Bonislawsky</string>
     <string name="credits_others">Thank you to our friends and family who helped us create and test Buzzwords!</string>
 
+    <!--  Tutorial Strings -->
+    <string name="tutorial_tapprompt">* Tap *</string>
+    <string name="tutorial_gamesetup_game">Welcome to Buzzwords, a team based party game where players take turns trying to get their team to guess secret words! </string>
+    <string name="tutorial_gamesetup_screen">On this screen you can customize the game rules to match your playstyle.</string>
+    <string name="tutorial_gamesetup_teams">Players should divide up into two, three, or four teams. Highlight the team colors you want to play with by tapping them.</string>
+    <string name="tutorial_gamesetup_win">Choose from different game types to change how a team can win.</string>
+    <string name="tutorial_packpurchase_screen">On this screen you choose the words you want to play with.</string>
+    <string name="tutorial_packpurchase_packs">Tap on a row to select a pack. During the game, you will see random unseen words from the selected packs.</string>
+    <string name="tutorial_turn_guess">Use clues to try to get your team to guess this word.</string>
+    <string name="tutorial_turn_buzzwords">But watch out! Don\'t use any of these \'buzz\'words."</string>
+    <string name="tutorial_turn_right">Press the Right button when your team successfully guesses the secret word.</string>
+    <string name="tutorial_turn_wrong">Press the Buzz button if you say one of the \'buzz\'words.</string>
+    <string name="tutorial_turn_skip">Press the Skip button if you want to move on to another word.</string>
+    <string name="tutorial_turn_time">This is the turn timer. Try to get your team to guess as many words as possible before it expires! (Tap it to pause)</string>
+    <string name="tutorial_turnsummary_screen">During the Results screen you view the words from your turn.</string>
+    <string name="tutorial_turnsummary_review">You can tap on a card in this list to see its badwords or change the way it was marked.</string>
+    <string name="tutorial_turnsummary_scores">Team standings, including the score for this turn, are displayed here.</string>
+
     <!-- Settings -->
     <string name="settings_scorechange_summary">Current score change is </string>
     <string name="toast_settings_shuffled">All packs have been shuffled.</string>
@@ -200,6 +245,12 @@
     <string name="shuffleDialog_text">Buzzwords handles shuffling on its own, but this will let you force a shuffle.  You will still keep all of your cards, but progress on all packs will be reset and all cards reordered. Are you sure you want to reshuffle?</string>
     <string name="shuffleDialog_positiveBtn">Yes, Shuffle!</string>
     <string name="shuffleDialog_negativeBtn">Nevermind!</string>
+
+    <string name="resetTutorialDialog_title">Show Tutorial Hints?</string>
+    <string name="resetTutorialDialog_text">Tutorial Hints will be displayed again on the next playthrough. Are you sure?</string>
+    <string name="resetTutorialDialog_positiveBtn">Yes. I have no idea what\'s going on.</string>
+    <string name="resetTutorialDialog_negativeBtn">No</string>
+    <string name="toast_settings_tutorial_reset">Tutorial Hints will again be displayed.</string>
 
     <!-- Dialog FirstOpen -->
     <string name="openingDialog_title">First Time?</string>
@@ -213,16 +264,7 @@
     <string name="progressDialog_install_text">Installing Words&#8230;</string>
     <string name="progressDialog_update_text">Updating Words&#8230;</string>
 
-    <!-- URIs for Rate Us -->
-    <string name="URI_buzzwords_redirect">http://www.siramix.com/buzzwordsappstore</string>
-    <string name="URI_android_market_buzzwords">https://market.android.com/details?id=com.buzzwords</string>
-    <string name="URI_android_market_buzzwordslite">https://market.android.com/details?id=com.buzzwordslite</string>
-    <string name="URI_amazon_market_buzzwords">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwords</string>
-    <string name="URI_amazon_market_buzzwordslite">http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite</string>
-
-    <!-- URI for About us page -->
-    <string name="URI_fb_buzzwordsapp">https://www.facebook.com/buzzwordsapp</string>
-    <string name="URI_fb_launcher_buzzwordsapp">fb://page/472759256084535</string>
+		<!--  URIs for About Us Page -->
     <string name="tagline_fb_buzzwordsapp">Find us on Facebook</string>
 
     <!-- Accessibility Strings -->

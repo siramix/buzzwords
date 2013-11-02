@@ -1,7 +1,7 @@
 /*****************************************************************************
  *  Buzzwords is a family friendly word game for mobile phones.
  *  Copyright (C) 2011 Siramix Team
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -30,6 +30,7 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,9 +50,9 @@ import com.buzzwordslite.BuzzWordsApplication;
  * The GameEnd class is the final screen of the application, called when either
  * the number of turns is up, the time is up, the end game button is clicked, or
  * any other number of ways to end a game.
- * 
+ *
  * @author BuzzWords team
- * 
+ *
  */
 public class GameEndActivity extends Activity {
 
@@ -69,12 +70,12 @@ public class GameEndActivity extends Activity {
    * Resources to be retrieved throughout GameEnd display
    */
   private Resources mResources;
-  
+
   /**
    * Dialog constants
    */
   static final int DIALOG_BUYFULL_ID = 0;
-  
+
   /**
    * Whether to rematch after the dialog
    */
@@ -231,7 +232,7 @@ public class GameEndActivity extends Activity {
       // Play confirm sound
       SoundManager sm = SoundManager.getInstance(GameEndActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
-      
+
       showDialog(DIALOG_BUYFULL_ID);
     }
   }; // End MainMenuListener
@@ -242,11 +243,11 @@ public class GameEndActivity extends Activity {
   private final OnClickListener mRematchListener = new OnClickListener() {
     public void onClick(View v) {
       v.setEnabled(false);
-      
+
       // Play confirm sound
       SoundManager sm = SoundManager.getInstance(GameEndActivity.this.getBaseContext());
       sm.playSound(SoundManager.Sound.CONFIRM);
-      
+
       mRematch = true;
       showDialog(DIALOG_BUYFULL_ID);
     }
@@ -366,6 +367,10 @@ public class GameEndActivity extends Activity {
 
     // Animate the whole thing
     animateGameEnd(teams.size());
+
+    // Flag the tutorial for TurnActivity as seen
+    prefEditor.putBoolean(Consts.TutorialPrefkey.TURN.getKey(), false);
+    prefEditor.commit();
   }
 
   /**
@@ -374,7 +379,7 @@ public class GameEndActivity extends Activity {
   @Override
   public void onStop() {
     super.onStop();
-    SafeLog.d(TAG, "onStop()");
+    Log.d(TAG, "onStop()");
   }
 
   /**
@@ -383,7 +388,7 @@ public class GameEndActivity extends Activity {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    SafeLog.d(TAG, "onDestroy()");
+    Log.d(TAG, "onDestroy()");
   }
 
   /**
@@ -409,8 +414,9 @@ public class GameEndActivity extends Activity {
 
     GameManager curgm = application.getGameManager();
     GameManager newgm = new GameManager(GameEndActivity.this);
-    newgm.startGame(curgm.getTeams(), curgm.getGameType(),
-        curgm.getGameLimitValue(), this.getBaseContext());
+    newgm.setupGameAttributes(curgm.getTeams(), curgm.getGameType(),
+      curgm.getGameLimitValue());
+    newgm.startGame(getBaseContext());
     application.setGameManager(newgm);
 
     Intent clearStackIntent = new Intent(getApplication().getString(
@@ -418,7 +424,7 @@ public class GameEndActivity extends Activity {
     clearStackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(clearStackIntent);
   }
-  
+
 
   /**
    * Go to the main menu after clearing the activity stack
@@ -430,8 +436,8 @@ public class GameEndActivity extends Activity {
     clearStackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(clearStackIntent);
   }
-  
-  
+
+
 
   /**
    * Create game over and ready dialogs using builders
@@ -448,13 +454,13 @@ public class GameEndActivity extends Activity {
     case DIALOG_BUYFULL_ID:
       builder = new AlertDialog.Builder(this);
       builder.setMessage(getString(R.string.upgradeDialog_text))
-      .setPositiveButton(getString(R.string.upgradeDialog_positiveButton), 
+      .setPositiveButton(getString(R.string.upgradeDialog_positiveButton),
           new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {              
-              Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);              
+            public void onClick(DialogInterface dialog, int id) {
+              Intent intent = new Intent(Intent.ACTION_VIEW, BuzzWordsApplication.storeURI_Buzzwords);
               startActivity(intent);
             }
-          }).setNegativeButton(getString(R.string.upgradeDialog_negativeButton), 
+          }).setNegativeButton(getString(R.string.upgradeDialog_negativeButton),
               new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                   if (mRematch) {
@@ -471,7 +477,7 @@ public class GameEndActivity extends Activity {
     }
     return dialog;
   }
-  
+
 
   /**
    * Override OnResume to resume activity specific processes
@@ -484,7 +490,7 @@ public class GameEndActivity extends Activity {
     // Re-enable things
     this.findViewById(R.id.GameEnd_MainMenu).setEnabled(true);
     this.findViewById(R.id.GameEnd_Rematch).setEnabled(true);
-  }    
+  }
 
   @Override
   protected void onPause() {

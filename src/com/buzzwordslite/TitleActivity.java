@@ -42,6 +42,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -332,15 +333,13 @@ public class TitleActivity extends Activity {
       sm.playSound(SoundManager.Sound.CONFIRM);
 
       // Launch Facebook, if not found, launch a browser intent
-      String url = getApplication().getString(
-          R.string.URI_fb_launcher_buzzwordsapp);
+      String url = Consts.buzzwordsFBAppLauncher;
       Intent facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW,
           Uri.parse(url));
       try {
         startActivity(facebookOrBrowserIntent);
       } catch (ActivityNotFoundException e) {
-        Uri uri = Uri.parse(getApplication().getString(
-            R.string.URI_fb_buzzwordsapp));
+        Uri uri = Uri.parse(Consts.buzzwordsFBPage);
         facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW);
         facebookOrBrowserIntent.setDataAndType(uri, "text/plain");
         startActivity(facebookOrBrowserIntent);
@@ -512,7 +511,6 @@ public class TitleActivity extends Activity {
         R.drawable.title_starburst, factoryOptions);
     findViewById(R.id.Title_Starburst).setBackgroundDrawable(
         new BitmapDrawable(starburst));
-
   }
 
   /**
@@ -522,7 +520,7 @@ public class TitleActivity extends Activity {
   @Override
   public void onPause() {
     super.onPause();
-    SafeLog.d(TAG, "onPause()");
+    Log.d(TAG, "onPause()");
 
     if (!mContinueMusic) {
       BuzzWordsApplication application = (BuzzWordsApplication) this
@@ -542,7 +540,7 @@ public class TitleActivity extends Activity {
   @Override
   public void onResume() {
     super.onResume();
-    SafeLog.d(TAG, "onResume()");
+    Log.d(TAG, "onResume()");
 
     mIsActivityClosing = false;
 
@@ -579,6 +577,7 @@ public class TitleActivity extends Activity {
     private ProgressDialog dialog;
     private SharedPreferences prefs;
     private boolean initialized;
+    private long timeStarted = System.currentTimeMillis();
 
     @Override
     protected void onPreExecute() {
@@ -606,6 +605,14 @@ public class TitleActivity extends Activity {
         SharedPreferences.Editor edit = prefs.edit();
         edit.putBoolean(Consts.PREFKEY_DB_INITIALIZED, true);
         edit.commit();
+        // Ensure our dialog takes no less than 2.2 seconds
+        while(System.currentTimeMillis() - timeStarted < 2200){
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException e) {
+            Log.e(TAG, "thread interrupted", e);
+          }
+        }
         dialog.dismiss();
       }
 
@@ -726,7 +733,7 @@ public class TitleActivity extends Activity {
               new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                   Intent intent = new Intent(Intent.ACTION_VIEW,
-                      BuzzWordsApplication.storeURI_Buzzwords);
+                      Uri.parse(Config.storeUriBuzzwords));
                   startActivity(intent);
                   muteRateReminder();
                 }
@@ -755,7 +762,7 @@ public class TitleActivity extends Activity {
               new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                   Intent intent = new Intent(Intent.ACTION_VIEW,
-                      BuzzWordsApplication.storeURI_Buzzwords);
+                      Uri.parse(Config.storeUriBuzzwords));
                   startActivity(intent);
                   muteRateReminder();
                 }

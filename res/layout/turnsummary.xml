@@ -15,282 +15,285 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/ 
 -->
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <com.buzzwordslite.AntonTextView
-            android:id="@+id/TurnSummary_Title"
-            style="@style/ActivityHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="-5dp"
-            android:text="@string/turnSummary_title" />
-
-        <com.buzzwordslite.AntonButton
-            android:id="@+id/TurnSummary_Menu"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:text="@string/button_menu" >
-        </com.buzzwordslite.AntonButton>
-    </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/TurnSummary_SpacerA"
-        android:layout_width="fill_parent"
-        android:layout_height="3dp"
-        android:background="@color/genericBG_trim" >
-    </ImageView>
-
-    <ImageView
-        android:id="@+id/TurnSummary_SpacerC"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/black" >
-    </ImageView>
-
-    <ScrollView
-        android:id="@+id/TurnSummary_CardList"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-    </ScrollView>
-
-    <ImageView
-        android:id="@+id/TurnSummary_SpacerB"
-        android:layout_width="fill_parent"
-        android:layout_height="3dp"
-        android:background="@color/genericBG_trim" >
-    </ImageView>
-
-    <TextView
-        android:id="@+id/TurnSummary_TurnScore"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
-        android:layout_gravity="right"
-        android:gravity="right"
-        android:minWidth="130dp"
-        android:paddingRight="10dp"
-        android:text="@string/turnSummary_total"
-        android:textSize="32dp"
-        android:textStyle="bold" >
-    </TextView>
-
-    <RelativeLayout
-        android:id="@+id/TurnSummary_ScoreboardTitle_Group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-15dp" >
-
-        <View
-            android:id="@+id/TurnSummary_ScoreboardTitle_Bar"
-            android:layout_width="fill_parent"
-            android:layout_height="4dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@color/genericBG_trim" >
-        </View>
-
-        <com.buzzwordslite.AntonTextView
-            android:id="@+id/TurnSummary_ScoreboardTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:gravity="center"
-            android:text="@string/turnSummary_scores_header"
-            android:textColor="@color/white"
-            android:textSize="24sp" >
-        </com.buzzwordslite.AntonTextView>
-    </RelativeLayout>
+    android:layout_height="fill_parent" >
 
     <LinearLayout
-        android:id="@+id/TurnSummary_ScoreGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="-5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical" >
 
-        <com.buzzwordslite.ScoreboardRowLayout
-            android:id="@+id/TurnSummary_Scores_TeamA"
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="30dp" >
-        </com.buzzwordslite.ScoreboardRowLayout>
+            android:layout_height="wrap_content" >
 
-        <com.buzzwordslite.ScoreboardRowLayout
-            android:id="@+id/TurnSummary_Scores_TeamB"
+            <com.buzzwords.AntonTextView
+                android:id="@+id/TurnSummary_Title"
+                style="@style/ActivityHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="-5dp"
+                android:text="@string/turnSummary_title" />
+
+            <com.buzzwords.AntonButton
+                android:id="@+id/TurnSummary_Menu"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:text="@string/button_menu" >
+            </com.buzzwords.AntonButton>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/TurnSummary_SpacerA"
             android:layout_width="fill_parent"
-            android:layout_height="30dp" >
-        </com.buzzwordslite.ScoreboardRowLayout>
+            android:layout_height="3dp"
+            android:background="@color/genericBG_trim" >
+        </ImageView>
 
-        <com.buzzwordslite.ScoreboardRowLayout
-            android:id="@+id/TurnSummary_Scores_TeamC"
+        <ImageView
+            android:id="@+id/TurnSummary_SpacerC"
             android:layout_width="fill_parent"
-            android:layout_height="30dp" >
-        </com.buzzwordslite.ScoreboardRowLayout>
+            android:layout_height="1dp"
+            android:background="@color/black" >
+        </ImageView>
 
-        <com.buzzwordslite.ScoreboardRowLayout
-            android:id="@+id/TurnSummary_Scores_TeamD"
+        <ScrollView
+            android:id="@+id/TurnSummary_CardList"
             android:layout_width="fill_parent"
-            android:layout_height="30dp" >
-        </com.buzzwordslite.ScoreboardRowLayout>
-    </LinearLayout>
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+        </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/TurnSummary_BottomGroup"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <com.buzzwordslite.FrancoisOneTextView
-            android:id="@+id/TurnSummary_GameTypeInfo"
+        <ImageView
+            android:id="@+id/TurnSummary_SpacerB"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="@string/turnSummary_scorelimit"
-            android:textSize="18sp" />
+            android:layout_height="3dp"
+            android:background="@color/genericBG_trim" >
+        </ImageView>
 
-        <LinearLayout
-            android:id="@+id/TurnSummary_TurnOrder"
+        <TextView
+            android:id="@+id/TurnSummary_TurnScore"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:minWidth="130dp"
+            android:paddingRight="10dp"
+            android:text="@string/turnSummary_total"
+            android:textSize="32dp"
+            android:textStyle="bold" >
+        </TextView>
+
+        <RelativeLayout
+            android:id="@+id/TurnSummary_ScoreboardTitle_Group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
-
-            <LinearLayout
-                android:id="@+id/TurnSummary_TurnOrder_TeamA"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical" >
-
-                <View
-                    android:id="@+id/TurnSummary_TurnOrder_TeamAc"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/teamA_primary" />
-
-                <ImageView
-                    android:id="@+id/TurnSummary_TurnOrder_TeamAmark"
-                    android:layout_width="12dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/turnsum_marker" />
-            </LinearLayout>
+            android:layout_marginTop="-15dp" >
 
             <View
-                android:id="@+id/TurnSummary_TurnOrder_Separator1"
-                android:layout_width="8dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center"
-                android:background="@color/genericBG_trim" />
+                android:id="@+id/TurnSummary_ScoreboardTitle_Bar"
+                android:layout_width="fill_parent"
+                android:layout_height="4dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/genericBG_trim" >
+            </View>
 
-            <LinearLayout
-                android:id="@+id/TurnSummary_TurnOrder_TeamB"
+            <com.buzzwords.AntonTextView
+                android:id="@+id/TurnSummary_ScoreboardTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical" >
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="@string/turnSummary_scores_header"
+                android:textColor="@color/white"
+                android:textSize="24sp" >
+            </com.buzzwords.AntonTextView>
+        </RelativeLayout>
 
-                <View
-                    android:id="@+id/TurnSummary_TurnOrder_TeamBc"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/teamB_primary" />
+        <LinearLayout
+            android:id="@+id/TurnSummary_ScoreGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="-5dp"
+            android:orientation="vertical" >
 
-                <ImageView
-                    android:id="@+id/TurnSummary_TurnOrder_TeamBmark"
-                    android:layout_width="12dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/turnsum_marker" />
-            </LinearLayout>
+            <com.buzzwords.ScoreboardRowLayout
+                android:id="@+id/TurnSummary_Scores_TeamA"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp" >
+            </com.buzzwords.ScoreboardRowLayout>
 
-            <View
-                android:id="@+id/TurnSummary_TurnOrder_Separator2"
-                android:layout_width="8dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center"
-                android:background="@color/genericBG_trim" />
+            <com.buzzwords.ScoreboardRowLayout
+                android:id="@+id/TurnSummary_Scores_TeamB"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp" >
+            </com.buzzwords.ScoreboardRowLayout>
 
-            <LinearLayout
-                android:id="@+id/TurnSummary_TurnOrder_TeamC"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical" >
+            <com.buzzwords.ScoreboardRowLayout
+                android:id="@+id/TurnSummary_Scores_TeamC"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp" >
+            </com.buzzwords.ScoreboardRowLayout>
 
-                <View
-                    android:id="@+id/TurnSummary_TurnOrder_TeamCc"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/teamC_primary" />
-
-                <ImageView
-                    android:id="@+id/TurnSummary_TurnOrder_TeamCmark"
-                    android:layout_width="12dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/turnsum_marker" />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/TurnSummary_TurnOrder_Separator3"
-                android:layout_width="8dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center"
-                android:background="@color/genericBG_trim" />
-
-            <LinearLayout
-                android:id="@+id/TurnSummary_TurnOrder_TeamD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical" >
-
-                <View
-                    android:id="@+id/TurnSummary_TurnOrder_TeamDc"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/teamD_primary" />
-
-                <ImageView
-                    android:id="@+id/TurnSummary_TurnOrder_TeamDmark"
-                    android:layout_width="12dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/turnsum_marker" />
-            </LinearLayout>
+            <com.buzzwords.ScoreboardRowLayout
+                android:id="@+id/TurnSummary_Scores_TeamD"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp" >
+            </com.buzzwords.ScoreboardRowLayout>
         </LinearLayout>
 
-        <com.buzzwordslite.AntonButton
-            android:id="@+id/TurnSummary_NextTurn"
+        <LinearLayout
+            android:id="@+id/TurnSummary_BottomGroup"
             android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:text="@string/turnSummary_button_next"
-            android:textSize="16sp" >
-        </com.buzzwordslite.AntonButton>
-    </LinearLayout>
+            android:layout_height="wrap_content" >
 
-</LinearLayout>
+            <com.buzzwords.FrancoisOneTextView
+                android:id="@+id/TurnSummary_GameTypeInfo"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/turnSummary_scorelimit"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/TurnSummary_TurnOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" >
+
+                <LinearLayout
+                    android:id="@+id/TurnSummary_TurnOrder_TeamA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <View
+                        android:id="@+id/TurnSummary_TurnOrder_TeamAc"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/teamA_primary" />
+
+                    <ImageView
+                        android:id="@+id/TurnSummary_TurnOrder_TeamAmark"
+                        android:layout_width="12dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/turnsum_marker" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/TurnSummary_TurnOrder_Separator1"
+                    android:layout_width="8dp"
+                    android:layout_height="5dp"
+                    android:layout_gravity="center"
+                    android:background="@color/genericBG_trim" />
+
+                <LinearLayout
+                    android:id="@+id/TurnSummary_TurnOrder_TeamB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <View
+                        android:id="@+id/TurnSummary_TurnOrder_TeamBc"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/teamB_primary" />
+
+                    <ImageView
+                        android:id="@+id/TurnSummary_TurnOrder_TeamBmark"
+                        android:layout_width="12dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/turnsum_marker" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/TurnSummary_TurnOrder_Separator2"
+                    android:layout_width="8dp"
+                    android:layout_height="5dp"
+                    android:layout_gravity="center"
+                    android:background="@color/genericBG_trim" />
+
+                <LinearLayout
+                    android:id="@+id/TurnSummary_TurnOrder_TeamC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <View
+                        android:id="@+id/TurnSummary_TurnOrder_TeamCc"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/teamC_primary" />
+
+                    <ImageView
+                        android:id="@+id/TurnSummary_TurnOrder_TeamCmark"
+                        android:layout_width="12dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/turnsum_marker" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/TurnSummary_TurnOrder_Separator3"
+                    android:layout_width="8dp"
+                    android:layout_height="5dp"
+                    android:layout_gravity="center"
+                    android:background="@color/genericBG_trim" />
+
+                <LinearLayout
+                    android:id="@+id/TurnSummary_TurnOrder_TeamD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <View
+                        android:id="@+id/TurnSummary_TurnOrder_TeamDc"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/teamD_primary" />
+
+                    <ImageView
+                        android:id="@+id/TurnSummary_TurnOrder_TeamDmark"
+                        android:layout_width="12dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/turnsum_marker" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.buzzwords.AntonButton
+                android:id="@+id/TurnSummary_NextTurn"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/turnSummary_button_next"
+                android:textSize="16sp" >
+            </com.buzzwords.AntonButton>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

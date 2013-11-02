@@ -1,7 +1,7 @@
 /*****************************************************************************
  *  Buzzwords is a family friendly word game for mobile phones.
  *  Copyright (C) 2011 Siramix Team
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -39,9 +39,7 @@ package com.buzzwordslite;
  */
 public class Consts {
 
-    public static final boolean DEBUG = true;
     public static final String PREFKEY_NUM_BUZZWORDS = "com.buzzwordslite.NUM_BUZZWORDS";
-
     public static final String PREFKEY_TIMER = "com.buzzwordslite.TURN_TIMER";
     public static final String PREFKEY_MUSIC = "com.buzzwordslite.MUSIC_ENABLED";
     public static final String PREFKEY_SFX = "com.buzzwordslite.SFX_ENABLED";
@@ -51,6 +49,7 @@ public class Consts {
     public static final String PREFKEY_WRONG_SCORE = "com.buzzwordslite.WRONG_SCORE";
     public static final String PREFKEY_SKIP_SCORE = "com.buzzwordslite.SKIP_SCORE";
     public static final String PREFKEY_RESET_PACKS = "com.buzzwordslite.RESET_PACKS";
+    public static final String PREFKEY_RESET_TUTORIAL = "com.buzzwordslite.RESET_TUTORIAL";
     public static final String PREFKEY_DB_INITIALIZED = "com.buzzwordslite.DB_INITIALIZED";
     public static final String PREFKEY_MUSIC_RESOURCE = "com.buzzwordslite.MUSIC_RESOURCE";
     public static final String PREFKEY_MUSIC_LOOPING = "com.buzzwordslite.MUSIC_LOOPING";
@@ -60,21 +59,50 @@ public class Consts {
     public static final String PREFKEY_IS_TICKING = "com.buzzwordslite.IS_TICKING";
     public static final String PREFKEY_IS_PAUSED = "com.buzzwordslite.IS_PAUSED";
     public static final String PREFKEY_IS_TURN_IN_START_DIALOG = "com.buzzwordslite.IS_TURN_IN_START_DIALOG";
+    public static final String PREFKEY_IS_TURN_IN_TUTORIAL = "com.buzzwordslite.IS_TURN_IN_TUTORIAL";
     public static final String PREFKEY_TURN_TIME_REMAINING = "com.buzzwordslite.TURN_TIME_REMAINING";
+    public static final String PREFKEY_UNSYNCED_PURCHASE_CHANGE = "com.buzzwordslite.PREFKEY_UNSYNCED_PURCHASE_CHANGE";
+    public static final String PREFKEY_SYNC_IN_PROGRESS = "com.buzzwordslite.SYNC_IN_PROGRESS";
+    public static final String PREFKEY_CURRENT_USER = "com.buzzwordslite.PACK_SYNC_CURRENT_USER";
+    public static final String PREFKEY_LAST_USER = "com.buzzwordslite.PACK_SYNC_LAST_USER";
+    public static final String PREFKEY_FACEBOOK_REQUEST_CODE = "com.buzzwordslite.RECENT_REQUEST_CODE";
+    public static final String PREFKEY_FACEBOOK_PACK_ID = "com.buzzwordslite.FACEBOOK_PACK_ID";
+    public static final String PREFFILE_SYNC_PREFS = "com.buzzwordslite.SYNC_PREF";
     public static final String PREFFILE_PACK_SELECTIONS = "com.buzzwordslite.PACK_SELECTIONS";
     public static final String PREFFILE_MUSIC_STATE = "com.buzzwordslite.MUSIC_STATE";
     public static final String PREFFILE_TURN_STATE = "com.buzzwordslite.TURN_STATE";
 
+    public static enum TutorialPrefkey {
+      SETUP ("com.buzzwords.SHOWTUTORIAL_SETUP"),
+      PACKSELECT ("com.buzzwords.SHOWTUTORIAL_PACKSELECT"),
+      TURN ("com.buzzwords.SHOWTUTORIAL_TURN"),
+      TURNSUMMARY ("com.buzzwords.SHOWTUTORIAL_TURNSUMMARY");
+
+      private final String mKey;
+
+      TutorialPrefkey(String key) {
+        mKey = key;
+      }
+
+      public String getKey() {
+        return mKey;
+      }
+    }
+
+    public static final String packList = "packs.json";
+    public static final String buzzwordsFBAppLauncher = "fb://page/472759256084535";
+    public static final String buzzwordsFBPage = "https://www.facebook.com/buzzwordsapp";
+
     public static final String DECK_TEMP_FILE = "cur_deck.ser";
     public static final String GAME_MANAGER_TEMP_FILE = "cur_gm.ser";
     public static final String TIMER_TEMP_FILE = "cur_timer.ser";
-    
+
     public static final String DATABASE_NAME = "buzzwords";
     public static final int DATABASE_VERSION = 3;
-    
+
     public static final int CACHE_MAXSIZE = 100;
     public static final int CACHE_TURNSIZE = 20;
-    
+
     public static final int PACK_CURRENT = -1;
     public static final int PACK_NOT_PRESENT = -2;
 }

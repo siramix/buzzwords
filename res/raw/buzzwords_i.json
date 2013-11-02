@@ -1,0 +1,500 @@
+{"title" : "Abdominal", "badwords" : "CRUNCH,SIT UP,SIX PACK,WASHBOARD,MUSCLE", "_id" : 1}
+{"title" : "Abraham Lincoln", "badwords" : "HONEST ABE,ASSASSINATE,SLAVE,BEARD,PRESIDENT", "_id" : 2}
+{"title" : "Academy", "badwords" : "SCHOOL,PRIVATE,POLICE,LEARN,COLLEGE", "_id" : 3}
+{"title" : "Accident", "badwords" : "PURPOSE,WRECK,CAR,VEHICLE,TRAGEDY", "_id" : 4}
+{"title" : "Accordion", "badwords" : "KEYBOARD,SQUEEZE,MUSIC,INSTRUMENT,POLKA", "_id" : 5}
+{"title" : "Accountant", "badwords" : "TAX,MONEY,BOOK,MATH,IRS", "_id" : 6}
+{"title" : "Acoustic Guitar", "badwords" : "SING,PLAY,STRUM,STRING,INSTRUMENT", "_id" : 7}
+{"title" : "Addiction", "badwords" : "DRUG,ALCOHOL,REHAB,HABIT,WITHDRAWAL", "_id" : 8}
+{"title" : "Adultery", "badwords" : "COMMIT,CHEAT,SIN,HUSBAND,UNFAITHFUL", "_id" : 9}
+{"title" : "Afternoon", "badwords" : "TIME,LUNCH,EVENING,MORNING,GOOD", "_id" : 10}
+{"title" : "Aircraft Carrier", "badwords" : "RUNWAY,OCEAN,SHIP,NAVY,AIRPLANE", "_id" : 11}
+{"title" : "Airport", "badwords" : "PLANE,RUNWAY,SECURITY,TRAVEL,FLY", "_id" : 12}
+{"title" : "Al Capone", "badwords" : "MOB,MAFIA,PROHIBITION,ALCOHOL,BOOTLEG", "_id" : 13}
+{"title" : "Alaska", "badwords" : "COLD,RUSSIA,SARAH PALIN,STATE,CANADA", "_id" : 14}
+{"title" : "Albert Einstein", "badwords" : "PHYSICS,GERMANY,NUCLEAR,E=MC2,HAIR", "_id" : 15}
+{"title" : "Algebra", "badwords" : "MATH,X,VARIABLE,NUMBER,GEOMETRY", "_id" : 16}
+{"title" : "Allergy", "badwords" : "SNEEZE,MEDICINE,SHOT,DOCTOR,POLLEN", "_id" : 17}
+{"title" : "Aluminum", "badwords" : "SIDING,CAN,METAL,FOIL,WRAP", "_id" : 18}
+{"title" : "Amelia Earhart", "badwords" : "PLANE,WOMAN,FLY,DISAPPEAR,MYSTERY", "_id" : 19}
+{"title" : "Amerigo Vespucci", "badwords" : "AMERICA,EXPLORE,DISCOVER,NAME,SOUTH", "_id" : 20}
+{"title" : "Ancestor", "badwords" : "PARENT,DESCENDANT,CHILD,BEFORE,OLD", "_id" : 21}
+{"title" : "Android", "badwords" : "PHONE,GOOGLE,ROBOT,HUMAN,SHEEP", "_id" : 22}
+{"title" : "Angel", "badwords" : "WING,HALO,HEAVEN,GUARDIAN,MERCY", "_id" : 23}
+{"title" : "Anne Frank", "badwords" : "JEWISH,HOLOCAUST,DIARY,NAZI,PLAY", "_id" : 24}
+{"title" : "Anteater", "badwords" : "ANIMAL,INSECTS,TONGUE,TERMITES,HILL", "_id" : 25}
+{"title" : "Apocalypse", "badwords" : "END,WORLD,PLAGUE,RAPTURE,NUCLEAR", "_id" : 26}
+{"title" : "Applause", "badwords" : "CLAP,CHEER,ROUND,STAGE,HAND", "_id" : 27}
+{"title" : "Apple Pie", "badwords" : "AMERICA,DESSERT,ICE CREAM,SWEET,CRUST", "_id" : 28}
+{"title" : "Archaeology", "badwords" : "FOSSIL,INDIANA JONES,DINOSAUR,DIG,BONE", "_id" : 29}
+{"title" : "Area 51", "badwords" : "ALIEN,BASE,EXPERIMENT,UFO,SECRET", "_id" : 30}
+{"title" : "Ares", "badwords" : "MARS,WAR,GOD,GREEK,ZEUS", "_id" : 31}
+{"title" : "Argue", "badwords" : "DEBATE,FIGHT,DISAGREE,BICKER,COUPLE", "_id" : 32}
+{"title" : "Arm Wrestle", "badwords" : "GRIP,STRONG,CONTEST,BICEP,HAND", "_id" : 33}
+{"title" : "The Terminator", "badwords" : "ARNOLD,GOVERNOR,BODY BUILDER,HASTA LA VISTA,MARIA SHRIVER", "_id" : 34}
+{"title" : "Artery", "badwords" : "HEART,BLOOD,PULSE,PUMP,RED", "_id" : 35}
+{"title" : "Arthritis", "badwords" : "JOINT,PAIN,FINGER,HAND,MEDICATION", "_id" : 36}
+{"title" : "Assassinate", "badwords" : "KILL,MURDER,LEADER,SPY,SHOOT", "_id" : 37}
+{"title" : "Assumption", "badwords" : "LEAP,JUDGE,GUESS,CONCLUSION,FACT", "_id" : 38}
+{"title" : "Astronaut", "badwords" : "SPACE,SHUTTLE,MOON,NEIL ARMSTRONG,NASA", "_id" : 39}
+{"title" : "Attendance", "badwords" : "PRESENT,HERE,ROLL CALL,SCHOOL,LATE", "_id" : 40}
+{"title" : "Auto Mechanic", "badwords" : "OIL,GREASE,WRENCH,CAR,REPAIR", "_id" : 41}
+{"title" : "Awkward", "badwords" : "SOCIAL,NERD,WEIRD,ODD,STRANGE", "_id" : 42}
+{"title" : "Babe Ruth", "badwords" : "SULTAN OF SWAT,BAMBINO,HOME RUN,BASEBALL,PITCHER", "_id" : 43}
+{"title" : "Bach", "badwords" : "BAROQUE,COMPOSER,ORGAN,CONCERTO,CLASSICAL", "_id" : 44}
+{"title" : "Ballet Dancer", "badwords" : "SHOES,STAGE,PIROUETTE,SWAN LAKE,TUTU", "_id" : 45}
+{"title" : "Ballroom", "badwords" : "DANCE,WALTZ,TANGO,JUDGE,CINDERELLA", "_id" : 46}
+{"title" : "Banana", "badwords" : "MONKEY,YELLOW,PEEL,PLANTAIN,FRUIT", "_id" : 47}
+{"title" : "Bandanna", "badwords" : "HAIR,BANDIT,HIPPIE,FACE,TIE", "_id" : 48}
+{"title" : "Bang", "badwords" : "BOOM,SOUND,NOISE,GUN,LOUD", "_id" : 49}
+{"title" : "Banker", "badwords" : "MONEY,CREDIT,LOAN,MORTGAGE,TELLER", "_id" : 50}
+{"title" : "Bankruptcy", "badwords" : "DEBT,MONEY,LOAN,FILE,BROKE", "_id" : 51}
+{"title" : "Bar Stool", "badwords" : "DRINK,SIT,CHAIR,FIGHT,KITCHEN", "_id" : 52}
+{"title" : "Barack Obama", "badwords" : "PRESIDENT,HOPE,FIRST,BIRTH,CHANGE", "_id" : 53}
+{"title" : "Barbed Wire", "badwords" : "FENCE,JAIL,SPIKE,METAL,BORDER", "_id" : 54}
+{"title" : "Barbell", "badwords" : "LIFT,WEIGHT,DUMBBELL,BENCH PRESS,WORKOUT", "_id" : 55}
+{"title" : "Barber", "badwords" : "CUT,HAIR,SHAVE,MAN,SCISSORS", "_id" : 56}
+{"title" : "Barn", "badwords" : "ANIMAL,HORSE,HAY,FARM,RED", "_id" : 57}
+{"title" : "Barometer", "badwords" : "MEASURE,PRESSURE,THERMOMETER,ALTITUDE,WEATHER", "_id" : 58}
+{"title" : "Bartender", "badwords" : "SERVE,DRINK,ALCOHOL,BEER,ORDER", "_id" : 59}
+{"title" : "Barter", "badwords" : "TRADE,EXCHANGE,MONEY,GOODS,NEGOTIATE", "_id" : 60}
+{"title" : "Baseball", "badwords" : "SWING,SPORT,BASE,WORLD SERIES™,STRIKE", "_id" : 61}
+{"title" : "Basement", "badwords" : "CELLAR,DOWNSTAIRS,BELOW,DARK,HOUSE", "_id" : 62}
+{"title" : "Basket", "badwords" : "STRAW,WEAVE,CARRY,NET,BALL", "_id" : 63}
+{"title" : "Basketball", "badwords" : "COURT,NBA™,DRIBBLE,DUNK,MICHAEL JORDAN", "_id" : 64}
+{"title" : "Batman™", "badwords" : "BAT MOBILE,BAT CAVE,BRUCE WAYNE,GOTHAM CITY,SUPERHERO", "_id" : 65}
+{"title" : "Battleship", "badwords" : "NAVY,CANNON,SINK,BOAT,HARBOR", "_id" : 66}
+{"title" : "Bayonet", "badwords" : "RIFLE,GUN,SWORD,BLADE,STAB", "_id" : 67}
+{"title" : "Bazooka", "badwords" : "ROCKET,BUBBLEGUM,MISSILE,WEAPON,EXPLODE", "_id" : 68}
+{"title" : "Beach", "badwords" : "BOYS,TAN,SAND,OCEAN,TOWEL", "_id" : 69}
+{"title" : "Beach Towel", "badwords" : "BATH,SAND,OCEAN,LIE,SUN", "_id" : 70}
+{"title" : "Bear Hug", "badwords" : "GRIZZLY,KISS,ARMS,OUT,EMBRACE", "_id" : 71}
+{"title" : "Beatbox", "badwords" : "RHYTHM,DRUM,MOUTH,SOUND,MUSIC", "_id" : 72}
+{"title" : "Beet", "badwords" : "SUGAR,RED,ROOT,TURNIP,RHYTHM", "_id" : 73}
+{"title" : "Beethoven", "badwords" : "COMPOSER,DEAF,PIANO,SYMPHONY,ROLL OVER", "_id" : 74}
+{"title" : "Beg", "badwords" : "ASK,KNEE,PLEAD,MERCY,DOG", "_id" : 75}
+{"title" : "Belch", "badwords" : "BURP,GAS,EAT,EXCUSE,RUDE", "_id" : 76}
+{"title" : "Bench Press", "badwords" : "CHEST,WEIGHT,SPOT,GYM,BAR", "_id" : 77}
+{"title" : "Berlin", "badwords" : "CITY,GERMANY,WALL,WORLD,HITLER", "_id" : 78}
+{"title" : "Big Bang", "badwords" : "THEORY,UNIVERSE,EXPLODE,CREATION,EXPAND", "_id" : 79}
+{"title" : "Bigfoot", "badwords" : "SASQUATCH,YETI,HAIRY,MONSTER,LEGEND", "_id" : 80}
+{"title" : "Bikini", "badwords" : "YELLOW,BEACH,WEAR,TWO PIECE,WAX", "_id" : 81}
+{"title" : "Bill Gates", "badwords" : "RICH,COMPUTER,MICROSOFT™,HARVARD,NERD", "_id" : 82}
+{"title" : "Billboard", "badwords" : "ADVERTISE,READ,SIGN,EXIT,HIGHWAY", "_id" : 83}
+{"title" : "Billionaire", "badwords" : "DOLLARS,RICH,WEALTHY,MONEY,MILLION", "_id" : 84}
+{"title" : "Birdhouse", "badwords" : "NEST,HOME,BUILD,TREE,EGG", "_id" : 85}
+{"title" : "Birthday", "badwords" : "GIFT,PRESENT,SUIT,PARTY,YEAR", "_id" : 86}
+{"title" : "Birthday Cake", "badwords" : "CANDLE,CHOCOLATE,VANILLA,FROSTING,PARTY", "_id" : 87}
+{"title" : "Black", "badwords" : "COLOR,NIGHT,DARK,WHITE,BERRY", "_id" : 88}
+{"title" : "Black Coffee", "badwords" : "CAFFEINE,CUP,CREAM,SUGAR,LATTE", "_id" : 89}
+{"title" : "Black Widow Spider", "badwords" : "POISONOUS,RECLUSE,HOUR GLASS,BITE,KILL", "_id" : 90}
+{"title" : "Blackout", "badwords" : "POWER,ELECTRICITY,CANDLE,STORM,DARK", "_id" : 91}
+{"title" : "Blimp", "badwords" : "BALLOON,HELIUM,FOOTBALL,GOODYEAR™,HINDENBURG", "_id" : 92}
+{"title" : "Blind", "badwords" : "VISION,SEE,GLASSES,CANE,DOG", "_id" : 93}
+{"title" : "Blind Melon", "badwords" : "BAND,NO RAIN,BUMBLE BEE,90S,SAY", "_id" : 94}
+{"title" : "Blister", "badwords" : "POP,SKIN,HEEL,HANDLE,FOOT", "_id" : 95}
+{"title" : "Bloated", "badwords" : "PRESSURE,GAS,AIR,WAIST,HEAVY", "_id" : 96}
+{"title" : "Blubber", "badwords" : "FAT,WHALE,WARM,CRY,SOB", "_id" : 97}
+{"title" : "Blueberry", "badwords" : "MUFFIN,BAGEL,YOGURT,STRAWBERRY,RASPBERRY", "_id" : 98}
+{"title" : "Boast", "badwords" : "BRAG,GLOAT,PROUD,EGO,NARCISSIST", "_id" : 99}
+{"title" : "Bobsled", "badwords" : "RACE,TEAM,SPORT,DOWNHILL,OLYMPICS", "_id" : 100}
+{"title" : "Bone", "badwords" : "DINOSAUR,DIG,DOG,WISH,FUNNY", "_id" : 101}
+{"title" : "Boomerang", "badwords" : "THROW,AUSTRALIA,FRISBEE,COMES BACK,WEAPON", "_id" : 102}
+{"title" : "Boredom", "badwords" : "FUN,SLOW,ENTERTAINMENT,NOTHING,ACTIVITY", "_id" : 103}
+{"title" : "Borrow", "badwords" : "TAKE,LEND,LOAN,BOOK,LIBRARY", "_id" : 104}
+{"title" : "Boulder", "badwords" : "BIG,ROCK,ROLL,AVALANCHE,STONE", "_id" : 105}
+{"title" : "Bounty", "badwords" : "REWARD,TREASURE,HUNT,COLLECT,BAIL", "_id" : 106}
+{"title" : "Bouquet", "badwords" : "FLOWER,ROSE,VALENTINE,GIFT,SMELL", "_id" : 107}
+{"title" : "Bow Tie", "badwords" : "TUXEDO,NECK,POLKA DOT,PASTA,CLIP-ON", "_id" : 108}
+{"title" : "Boxer", "badwords" : "SPORT,DOG,PUNCH,RING,GLOVES", "_id" : 109}
+{"title" : "Beef Jerky", "badwords" : "SLIM JIM™,DRY,MEAT,CHEW,SALT", "_id" : 110}
+{"title" : "Brainwash", "badwords" : "TORTURE,CONVINCE,PROPAGANDA,SCIENTIST,GOVERNMENT", "_id" : 111}
+{"title" : "Brass", "badwords" : "ALLOY,METAL,BRONZE,INSTRUMENT,TRUMPET", "_id" : 112}
+{"title" : "Bratwurst", "badwords" : "HOT DOG,SAUSAGE,MEAT,MUSTARD,GRILL", "_id" : 113}
+{"title" : "Bravery", "badwords" : "HERO,COURAGE,FEAR,SCARE,FIGHT", "_id" : 114}
+{"title" : "Brazil", "badwords" : "SAO PAULO,RIO DE JANEIRO,SOUTH AMERICA,PORTUGUESE,WAX", "_id" : 115}
+{"title" : "Breakdance", "badwords" : "FLOOR,SPIN,HIP HOP,STREET,FREEZE", "_id" : 116}
+{"title" : "Breathalyzer", "badwords" : "ALCOHOL,DRIVE,BLOW,DRUNK,POLICE", "_id" : 117}
+{"title" : "Breeze", "badwords" : "COOL,WARM,WIND,AIR,MOVE", "_id" : 118}
+{"title" : "Brick", "badwords" : "CLAY,YELLOW,RED,HOUSE,ROAD", "_id" : 119}
+{"title" : "Bride", "badwords" : "WEDDING,DRESS,GOWN,MAID,GROOM", "_id" : 120}
+{"title" : "Broccoli", "badwords" : "GREEN,VEGETABLE,TREE,CAULIFLOWER,HEAD", "_id" : 121}
+{"title" : "Broil", "badwords" : "STOVE,OVEN,HEAT,HOT,LONDON", "_id" : 122}
+{"title" : "Brontosaurus", "badwords" : "NECK,DINOSAUR,JURASSIC,PLANT,LONG", "_id" : 123}
+{"title" : "Bruise", "badwords" : "BLACK,BLUE,BLOOD,SKIN,HURT", "_id" : 124}
+{"title" : "Brutal", "badwords" : "MEAN,BLOODY,VIOLENT,HARSH,DICTATOR", "_id" : 125}
+{"title" : "Bubble", "badwords" : "SOAP,POP,BLOW,FLOAT,GUM", "_id" : 126}
+{"title" : "Buck", "badwords" : "DEER,MALE,ANTLER,HUNT,TEETH", "_id" : 127}
+{"title" : "Buddha", "badwords" : "FAT,INDIA,MEDITATE,RELIGION,STATUE", "_id" : 128}
+{"title" : "Buddy", "badwords" : "FRIEND,BEST,PAL,PARTNER,SYSTEM", "_id" : 129}
+{"title" : "Buffet", "badwords" : "EAT,MEAL,ALL,SALAD,CHINESE", "_id" : 130}
+{"title" : "Bulldoze", "badwords" : "DESTROY,DEMOLISH,CONSTRUCTION,LEVEL,YELLOW", "_id" : 131}
+{"title" : "Bullet", "badwords" : "GUN,KILL,SHOOT,FIRE,RIFLE", "_id" : 132}
+{"title" : "Bullfrog", "badwords" : "HOP,TOAD,JEREMIAH,CROAK,POND", "_id" : 133}
+{"title" : "Bunsen Burner", "badwords" : "LABORATORY,CHEMISTRY,FIRE,GAS,HEAT", "_id" : 134}
+{"title" : "Burger King™", "badwords" : "WHOPPER™,FAST,FRIES,EAT,MCDONALD'S™", "_id" : 135}
+{"title" : "Burn", "badwords" : "SUN,HOT,FIRE,SKIN,DEGREE", "_id" : 136}
+{"title" : "Busy", "badwords" : "WORK,FREE,TIME,BODY,STRESS", "_id" : 137}
+{"title" : "Butcher", "badwords" : "MEAT,CLEAVER,KNIFE,CUT,SLAUGHTER", "_id" : 138}
+{"title" : "Butler", "badwords" : "WORK,MANSION,WAIT,MAN,SERVANT", "_id" : 139}
+{"title" : "Cactus", "badwords" : "PRICK,PLANT,DESERT,THORN,WATER", "_id" : 140}
+{"title" : "Cafeteria", "badwords" : "LUNCH,DINING HALL,SCHOOL,EAT,LINE", "_id" : 141}
+{"title" : "Caffeine", "badwords" : "COFFEE,SODA,AWAKE,STIMULANT,FREE", "_id" : 142}
+{"title" : "Calculator", "badwords" : "COMPUTER,MATH,BUTTON,TI,GRAPHING", "_id" : 143}
+{"title" : "Calculus", "badwords" : "MATH,FUNCTION,DERIVATIVE,INTEGRAL,LIMIT", "_id" : 144}
+{"title" : "California", "badwords" : "WEST,SURF,SAN FRANCISCO,STATE,HOLLYWOOD", "_id" : 145}
+{"title" : "Camel", "badwords" : "HUMP,RIDE,SPIT,DESERT,WATER", "_id" : 146}
+{"title" : "Campfire", "badwords" : "TENT,S'MORES,GHOST,WOODS,KINDLE", "_id" : 147}
+{"title" : "Canada", "badwords" : "NORTH,COLD,SNOW,GOOSE,MOUNTIE", "_id" : 148}
+{"title" : "Canal", "badwords" : "PANAMA,MAN-MADE,SHIP,SAIL,SUEZ", "_id" : 149}
+{"title" : "Candlestick", "badwords" : "JACK,NIMBLE,JUMP,FLAME,LIGHT", "_id" : 150}
+{"title" : "Candy Corn", "badwords" : "ORANGE,HALLOWEEN,BRACH'S™,TRIANGLE,YELLOW", "_id" : 151}
+{"title" : "Canvas", "badwords" : "BLANK,PAINT,DRAW,DOOR,POLL", "_id" : 152}
+{"title" : "Capsize", "badwords" : "BOAT,SINK,FLIP,WAVE,STORM", "_id" : 153}
+{"title" : "Car Wash", "badwords" : "FUNDRAISER,SOAP,CLEAN,VEHICLE,SCRUB", "_id" : 154}
+{"title" : "Carnival", "badwords" : "CRUISE,FERRIS WHEEL,CLOWN,COTTON CANDY,FESTIVAL", "_id" : 155}
+{"title" : "Carpet Bagger", "badwords" : "NORTH,YANKEE,SOUTH,FLOOR,CIVIL WAR", "_id" : 156}
+{"title" : "Carrot", "badwords" : "ORANGE,ROOT,RABBIT,VEGETABLE,SALAD", "_id" : 157}
+{"title" : "Castle", "badwords" : "KING,WALL,KNIGHT,STORM,TOWER", "_id" : 158}
+{"title" : "Caveman", "badwords" : "NEANDERTHAL,STONE,HUNT,FLINTSTONES™,EASY", "_id" : 159}
+{"title" : "Ceiling Fan", "badwords" : "COOL,SPIN,BLOW,BLADE,BREEZE", "_id" : 160}
+{"title" : "Celebrate", "badwords" : "PARTY,GOOD,HONOR,CHAMPAGNE,WIN", "_id" : 161}
+{"title" : "Cello", "badwords" : "STRING,BASS,YO-YO MA,BOW,ORCHESTRA", "_id" : 162}
+{"title" : "CEO", "badwords" : "BUSINESS,COMPANY,LEAD,HEAD,RUN", "_id" : 163}
+{"title" : "Chairman", "badwords" : "BOARD,HEAD,COMMITTEE,MEMBER,OFFICE", "_id" : 164}
+{"title" : "Chapstick™", "badwords" : "LIPS,COLD,DRY,CHAPPED,CRACK", "_id" : 165}
+{"title" : "Charity", "badwords" : "VOLUNTEER,DONATE,CAUSE,HELP,MONEY", "_id" : 166}
+{"title" : "Charles Darwin", "badwords" : "EVOLUTION,GALAPAGOS,NATURAL SELECTION,MONKEY,FIT", "_id" : 167}
+{"title" : "Charlotte's Web", "badwords" : "WILBUR,PIG,FINE,SPIDER,BOOK", "_id" : 168}
+{"title" : "Charm", "badwords" : "CHARISMA,APPEAL,SUPERSTITION,PRINCE,ATTRACT", "_id" : 169}
+{"title" : "Cheat", "badwords" : "RULES,SYSTEM,AFFAIR,GAME,BREAK", "_id" : 170}
+{"title" : "Cheeseburger", "badwords" : "BUN,MEAT,VEGGIE,GRILL,COOK", "_id" : 171}
+{"title" : "Chicken Pox", "badwords" : "SPOT,RASH,ITCH,IMMUNE,CATCH", "_id" : 172}
+{"title" : "Chimney", "badwords" : "SWEEP,BRICK,SMOKE,FIRE,SANTA", "_id" : 173}
+{"title" : "Chimpanzee", "badwords" : "MONKEY,HUMAN,GORILLA,CLIMB,SIGN", "_id" : 174}
+{"title" : "Chipmunk", "badwords" : "ALVIN,RODENT,CHIP AND DALE™,SQUIRREL,FREEZE", "_id" : 175}
+{"title" : "Chocolate", "badwords" : "DARK,COCOA,CANDY,HERSHEY'S™,MILK", "_id" : 176}
+{"title" : "Choir", "badwords" : "CHURCH,SING,GROUP,HYMN,BOY", "_id" : 177}
+{"title" : "Christopher Columbus", "badwords" : "SAIL,OCEAN,DISCOVER,AMERICA,FLAT", "_id" : 178}
+{"title" : "Circus", "badwords" : "ELEPHANT,THREE RING,CLOWN,CIRQUE DU SOLEIL,TRAPEZE", "_id" : 179}
+{"title" : "Citrus", "badwords" : "LEMON,LIME,ORANGE,SOUR,FRUIT", "_id" : 180}
+{"title" : "City", "badwords" : "LIVE,NEW YORK,POPULATION,VILLAGE,TOWN", "_id" : 181}
+{"title" : "Civil War", "badwords" : "UNION,CONFEDERACY,CONFLICT,1865,GETTYSBURG", "_id" : 182}
+{"title" : "Cleopatra", "badwords" : "EGYPT,BEAUTIFUL,MARC ANTHONY,JULIUS CAESAR,SNAKE", "_id" : 183}
+{"title" : "Cliff", "badwords" : "CLIMB,FALL,MOUNTAIN,ROCK,HANGER", "_id" : 184}
+{"title" : "Clothes Drier", "badwords" : "SPIN,WET,WASH,HEAT,LINT", "_id" : 185}
+{"title" : "Clothes Line", "badwords" : "DRY,HANG,ROPE,SHIRT,OUTSIDE", "_id" : 186}
+{"title" : "Coal", "badwords" : "BLACK LUNG,STOCKING,MINE,FOSSIL FUEL,FIRE", "_id" : 187}
+{"title" : "Coast", "badwords" : "OCEAN,BEACH,SAND,SAIL,WAVE", "_id" : 188}
+{"title" : "Cocoon", "badwords" : "CATERPILLARS,LARVA,PUPA,BUTTERFLY,MOTH", "_id" : 189}
+{"title" : "Coed", "badwords" : "MALE,FEMALE,COLLEGE,BATHROOM,UNDERGRADUATE", "_id" : 190}
+{"title" : "Coffee Mug", "badwords" : "DRINK,DOUGHNUT,HOT,HANDLE,CUP", "_id" : 191}
+{"title" : "Coffee Table", "badwords" : "LIVING ROOM,COUCH,FURNITURE,WOODEN,BOOKS", "_id" : 192}
+{"title" : "Coliseum", "badwords" : "ARENA,FIGHT,ROME,GLADIATOR,SPORT", "_id" : 193}
+{"title" : "Cologne", "badwords" : "SMELL,DATE,MAN,FRENCH,DAB", "_id" : 194}
+{"title" : "Comic Book", "badwords" : "GRAPHIC NOVEL,HERO,SPIDERMAN™,NERD,READ", "_id" : 195}
+{"title" : "Compromise", "badwords" : "NEGOTIATE,MIDDLE,DEAL,GIVE,TAKE", "_id" : 196}
+{"title" : "Computer Programmer", "badwords" : "NERD,HACK,CODE,INTERNET,GEEK", "_id" : 197}
+{"title" : "Conch", "badwords" : "SHELL,WHELK,OCEAN,BEACH,SNAIL", "_id" : 198}
+{"title" : "Conclusion", "badwords" : "END,DECISION,FINAL,REACH,COME", "_id" : 199}
+{"title" : "Congress", "badwords" : "SENATE,REPRESENTATIVE,LAW,WASHINGTON DC,VOTE", "_id" : 200}
+{"title" : "Convertible", "badwords" : "CAR,TOP,WIND,SPORT,ROOF", "_id" : 201}
+{"title" : "Cordless Phone", "badwords" : "TALK,RING,HELLO,ANSWER,CALL", "_id" : 202}
+{"title" : "Corn on the Cob", "badwords" : "HUSK,YELLOW,KERNEL,GRILL,TEETH", "_id" : 203}
+{"title" : "Costume", "badwords" : "HALLOWEEN,WEAR,DISGUISE,PARTY,DRESS UP", "_id" : 204}
+{"title" : "Couch", "badwords" : "SIT,TV,CHAIR,POTATO,ROOM", "_id" : 205}
+{"title" : "Court House", "badwords" : "LAWYER,JUDGE,JURY,TRIAL,CRIME", "_id" : 206}
+{"title" : "Covered Wagon", "badwords" : "OREGON TRAIL™,WEST,OXEN,WHEEL,PIONEER", "_id" : 207}
+{"title" : "Crawl", "badwords" : "BABY,SPACE,BUG,KNEES,FLOOR", "_id" : 208}
+{"title" : "Criminal", "badwords" : "INVESTIGATE,CROOK,FUGITIVE,LAW,POLICE", "_id" : 209}
+{"title" : "Crop Circle", "badwords" : "UFO,ALIEN,CORN FIELD,HOAX,PATTERN", "_id" : 210}
+{"title" : "Crumb", "badwords" : "BREAD,COOKIE,BISCUIT,PIECE,DROP", "_id" : 211}
+{"title" : "Crutch", "badwords" : "LEAN,WALK,CAST,HURT,LEG", "_id" : 212}
+{"title" : "Cry", "badwords" : "SAD,TEAR,SORROW,TISSUE,LAUGH", "_id" : 213}
+{"title" : "Cucumber", "badwords" : "VEGETABLE,GREEN,CRUNCH,GROW,PICKLE", "_id" : 214}
+{"title" : "Cumulonimbus", "badwords" : "CLOUD,FLUFFY,WHITE,SKY,STORM", "_id" : 215}
+{"title" : "Curfew", "badwords" : "LATE,TEENAGER,HOME,GROUND,TIME", "_id" : 216}
+{"title" : "Dagger", "badwords" : "CLOAK,KNIFE,STAB,KILL,BLOOD", "_id" : 217}
+{"title" : "Dairy Cow", "badwords" : "MILK,UTTER,FARM,SPOT,MOO", "_id" : 218}
+{"title" : "Dalai Lama", "badwords" : "TIBET,LEADER,SPIRITUAL,BUDDHIST ,CHINA", "_id" : 219}
+{"title" : "Dance", "badwords" : "DISCO,BALLROOM,WALTZ,FLOOR,REVOLUTION", "_id" : 220}
+{"title" : "Dandruff", "badwords" : "SCALP,HEAD,SHAMPOO,FLAKE,DRY", "_id" : 221}
+{"title" : "Dart Board", "badwords" : "BAR,GAME,THROW,BULLSEYE,TARGET", "_id" : 222}
+{"title" : "Dashboard", "badwords" : "CAR,DRIVE,CONFESSIONALS,STEERING WHEEL,AIRBAG", "_id" : 223}
+{"title" : "David Beckham", "badwords" : "SOCCER,FOOTBALL,BRITAIN,BEND IT,CELEBRITY", "_id" : 224}
+{"title" : "Debate", "badwords" : "POLITICAL,DISCUSS,ARGUE,PRESIDENTIAL,PARTY", "_id" : 225}
+{"title" : "Deceive", "badwords" : "TRICK,LIE,MISLEAD,FALSE,CUNNING", "_id" : 226}
+{"title" : "Deer", "badwords" : "HEADLIGHT,HUNT,ANTLER,BAMBI,JOHN", "_id" : 227}
+{"title" : "Democracy", "badwords" : "GOVERNMENT,ELECT,VOTE,AMERICA,REPUBLIC", "_id" : 228}
+{"title" : "Democrat", "badwords" : "LIBERAL,REPUBLICAN,PARTY,DONKEY,LEFT", "_id" : 229}
+{"title" : "Demon", "badwords" : "EVIL,POSSESS,HALLOWEEN,HELL,HORN", "_id" : 230}
+{"title" : "Demonstration", "badwords" : "PRESENT,SPEAK,PROTEST,MARCH,TRAIN", "_id" : 231}
+{"title" : "Dentures", "badwords" : "TEETH,FALSE,GUM,CHEW,FALL OUT", "_id" : 232}
+{"title" : "Deodorant", "badwords" : "SMELL,ARM PIT,SWEAT,ANTIPERSPIRANT,STICK", "_id" : 233}
+{"title" : "Depart", "badwords" : "LEAVE,TRAIN,FLIGHT,DELAY,SCHEDULE", "_id" : 234}
+{"title" : "Desert", "badwords" : "DRY,ARID,SUN,HOT,SAHARA", "_id" : 235}
+{"title" : "Destiny", "badwords" : "FATE,TIME,INEVITABLE,PREDETERMINE,AVOID", "_id" : 236}
+{"title" : "Diaper", "badwords" : "WEAR,STINK,WET,CHANGE,BABY", "_id" : 237}
+{"title" : "Dice", "badwords" : "ROLL,CRAPS,SIX,CRAPS,YAHTZEE™", "_id" : 238}
+{"title" : "Diesel", "badwords" : "GAS,ENGINE,TRUCK,FUEL,UNLEADED", "_id" : 239}
+{"title" : "Dinner Plate", "badwords" : "FANCY,FOOD,EAT,GLASS,ROUND", "_id" : 240}
+{"title" : "Disco", "badwords" : "DANCE,BELL BOTTOM,BEE GEES,70S,SATURDAY NIGHT", "_id" : 241}
+{"title" : "Dishwasher", "badwords" : "PLATE,SILVERWARE,CLEAN,DIRTY,KITCHEN", "_id" : 242}
+{"title" : "Distill", "badwords" : "MOONSHINE,ALCOHOL,GRAIN,WATER,EVAPORATE", "_id" : 243}
+{"title" : "Diver", "badwords" : "SNORKEL,TANK,CORAL REEF,CLIFF,BOARD", "_id" : 244}
+{"title" : "Doctor", "badwords" : "SICK,APPLE,HURT,WHITE,STETHOSCOPE", "_id" : 245}
+{"title" : "Dodgeball", "badwords" : "RED,RECESS,THROW,SCHOOL,HIT", "_id" : 246}
+{"title" : "Doggy Paddle", "badwords" : "SWIM,KICK,DROWN,POOL,FLOAT", "_id" : 247}
+{"title" : "Dogsled", "badwords" : "RACE,HUSKY,SNOW,MUSH,TEAM", "_id" : 248}
+{"title" : "Dollhouse", "badwords" : "PLAY,GIRL,BARBIE,TOY,DRESS", "_id" : 249}
+{"title" : "Dolphin", "badwords" : "TUNA,FLIPPER,MAMMAL,SPOUT,OCEAN", "_id" : 250}
+{"title" : "Donald Trump", "badwords" : "HAIR,TOUPEE,FIRED,APPRENTICE,CASINO", "_id" : 251}
+{"title" : "Draw", "badwords" : "ART,STRAWS,TIE,PENCIL,PEN", "_id" : 252}
+{"title" : "Drawbridge", "badwords" : "CASTLE,MOAT,PULL,BOAT,RIVER", "_id" : 253}
+{"title" : "Drive", "badwords" : "CAR,TRUCK,ROAD,STREET,GOLF", "_id" : 254}
+{"title" : "Drizzle", "badwords" : "RAIN,WATER,CLOUDY,POUR,WET", "_id" : 255}
+{"title" : "Drown", "badwords" : "WATER,DIE,LIFEGUARD,OCEAN,CHOKE", "_id" : 256}
+{"title" : "Drumstick", "badwords" : "WOOD,CHICKEN,HIT,BAND,SNARE", "_id" : 257}
+{"title" : "Duel", "badwords" : "KILL,SWORD,GUN,FENCE,PACE", "_id" : 258}
+{"title" : "Dungeon", "badwords" : "PRISON,DRAGON,TORTURE,CASTLE,CELL", "_id" : 259}
+{"title" : "Dust", "badwords" : "ALLERGY,CLEAN,DIRT,BUST,MITE", "_id" : 260}
+{"title" : "DVR", "badwords" : "TIVO™,RECORD,TELEVISION,PAUSE,LIVE", "_id" : 261}
+{"title" : "Dwarf", "badwords" : "SNOW WHITE,SMALL,LITTLE,GNOME,ELF", "_id" : 262}
+{"title" : "Eager", "badwords" : "EXCITE,FORWARD,WAIT,HELP,PLEASE", "_id" : 263}
+{"title" : "Earring", "badwords" : "PIERCE,JEWELRY,LOBE,HOOP,GIRL", "_id" : 264}
+{"title" : "Earthquake", "badwords" : "GROUND,FAULT,MOUNTAIN,PLATE,VOLCANO", "_id" : 265}
+{"title" : "East", "badwords" : "SUNRISE,ASIA,RUSSIA,WEST,NEW YORK", "_id" : 266}
+{"title" : "Easter Egg", "badwords" : "COLOR,PAINT,DYE,VINEGAR,HUNT", "_id" : 267}
+{"title" : "Easter Island", "badwords" : "STATUE,CHILE,FACES,TREES,DESERTED", "_id" : 268}
+{"title" : "Eggs Benedict", "badwords" : "POACHED,HOLLANDAISE,HAM,BACON,ENGLISH MUFFIN", "_id" : 269}
+{"title" : "Elastic", "badwords" : "STRETCH,UNDERWEAR,BAND,WAIST,PANTS", "_id" : 270}
+{"title" : "Elderly", "badwords" : "OLD,FRAIL,AGE,WISE,SENIOR", "_id" : 271}
+{"title" : "Electric Eel", "badwords" : "WATER,SHOCK,REEF,OCEAN,SNAKE", "_id" : 272}
+{"title" : "Electric Guitar", "badwords" : "INSTRUMENT,STRING,STRUM,AMP,JIMMY HENDRIX", "_id" : 273}
+{"title" : "Elephant", "badwords" : "EARS,TRUNK,TUSK,DUMBO,FORGET", "_id" : 274}
+{"title" : "Elvis Presley", "badwords" : "GRACELAND,HOUND DOG,SING,ROCK N' ROLL,KING", "_id" : 275}
+{"title" : "Embarrassed", "badwords" : "SHY,BLUSH,RED,FOOLISH,FEEL", "_id" : 276}
+{"title" : "Emerald", "badwords" : "GREEN,OZ,STONE,GEM,DIAMOND", "_id" : 277}
+{"title" : "Emergency", "badwords" : "911,POLICE,AMBULANCE,HOSPITAL,STATE", "_id" : 278}
+{"title" : "Engineer", "badwords" : "TRAIN,CIVIL,BRIDGE,ELECTRIC,COMPUTER", "_id" : 279}
+{"title" : "Enthusiastic", "badwords" : "INTEREST,ENERGETIC,EAGER,DESIRE,EXCITED", "_id" : 280}
+{"title" : "Entrepreneur", "badwords" : "BUSINESS,COMPANY,HIRE,START,SELL", "_id" : 281}
+{"title" : "Escape", "badwords" : "RUN,PRISON,FLEE,JAIL,ARTIST", "_id" : 282}
+{"title" : "Exam", "badwords" : "TEST,FINAL,SCHOOL,DOCTOR,QUESTION", "_id" : 283}
+{"title" : "Excalibur", "badwords" : "ARTHUR,SWORD,STONE,LANCELOT,LAKE", "_id" : 284}
+{"title" : "Exile", "badwords" : "BAN,KICK,PUNISH,COUNTRY,CONDEMN", "_id" : 285}
+{"title" : "Exorcism", "badwords" : "DEMON,PRIEST,HOLY,CHRIST,CLEANSE", "_id" : 286}
+{"title" : "Exterminator", "badwords" : "POISON,INSECT,INFEST,SPRAY,TERMITE", "_id" : 287}
+{"title" : "Faint", "badwords" : "DIZZY,LIGHTHEADED,FALL,PASS OUT,SUBTLE", "_id" : 288}
+{"title" : "Fantasy Football", "badwords" : "SPORT,ONLINE,POOL,TEAM,LEAGUE", "_id" : 289}
+{"title" : "Faucet", "badwords" : "WATER,BATHROOM,KITCHEN,SINK,LEAK", "_id" : 290}
+{"title" : "Feedback", "badwords" : "INTERFERENCE,POSITIVE,REVERB,LOOP,SOUND", "_id" : 291}
+{"title" : "Fencing", "badwords" : "SWORD,FOIL,MASK,TOUCHE,EN GUARDE", "_id" : 292}
+{"title" : "Ferris Wheel", "badwords" : "FAIR,RIDE,CIRCUS,AROUND,HIGH", "_id" : 293}
+{"title" : "Fight", "badwords" : "BRAWL,HIT,PUNCH,BOXING,CLUB", "_id" : 294}
+{"title" : "Fighter Jet", "badwords" : "AIR FORCE,PILOT,PLANE,FLY,DOGFIGHT", "_id" : 295}
+{"title" : "Figure Skating", "badwords" : "ICE,RINK,PAIR,OLYMPICS,DANCE", "_id" : 296}
+{"title" : "Filibuster", "badwords" : "TALK,BILL,SENATE,VOTE,MAJORITY", "_id" : 297}
+{"title" : "Firefighter", "badwords" : "BURNING,TRUCK,EXTINGUISH,FIRE HYDRANT,VOLUNTEER", "_id" : 298}
+{"title" : "Fireworks", "badwords" : "4TH OF JULY,EXPLODE,COLOR,SHOOT,SKY", "_id" : 299}
+{"title" : "Fisherman", "badwords" : "SEA,NET,TRAP,LOBSTER,BAIT", "_id" : 300}
+{"title" : "Fitness", "badwords" : "EXERCISE,SHAPE,DIET,GYM,PHYSICAL", "_id" : 301}
+{"title" : "Flank", "badwords" : "STEAK,SURROUND,TACTIC,SIDE,HORSE", "_id" : 302}
+{"title" : "Flea", "badwords" : "BITE,DOG,JUMP,BUG,TICK", "_id" : 303}
+{"title" : "Flock", "badwords" : "BIRDS,SHEEP,GROUP,BUNCH,GEESE", "_id" : 304}
+{"title" : "Flood", "badwords" : "RAIN,FLASH,RIVER,TRAP,ENGINE", "_id" : 305}
+{"title" : "Florida", "badwords" : "SOUTH,ORANGE,RETIREE,DISNEY™,ORLANDO", "_id" : 306}
+{"title" : "Floss", "badwords" : "DAILY,STRING,TEETH,GUMS,DENTIST", "_id" : 307}
+{"title" : "Flunk", "badwords" : "FAIL,GRADE,DROPOUT,PASS,F", "_id" : 308}
+{"title" : "Flute", "badwords" : "PAN,PIPE,HOLE,BLOW,PLAY", "_id" : 309}
+{"title" : "Fly Swatter", "badwords" : "KILL,SLAP,BUG,BUZZ,TOOL", "_id" : 310}
+{"title" : "Foolish", "badwords" : "DUMB,SILLY,MISTAKE,STUPID,THINK", "_id" : 311}
+{"title" : "Football", "badwords" : "AMERICA,SOCCER,TOUCHDOWN,TACKLE,FIELD", "_id" : 312}
+{"title" : "Forest", "badwords" : "RAIN,TREE,FIRE,WOOD,GUMP", "_id" : 313}
+{"title" : "Forgive", "badwords" : "FORGET,APOLOGY,SORRY,ANGER,ACCEPT", "_id" : 314}
+{"title" : "Forrest Gump", "badwords" : "RUN,BOX OF CHOCOLATES,BUBBA,JENNY,STUPID", "_id" : 315}
+{"title" : "Fortress", "badwords" : "PROTECT,CASTLE,WALL,CANNON,SIEGE", "_id" : 316}
+{"title" : "Fossil", "badwords" : "BRAND,BONES,DINOSAURS,ROCK,OLD", "_id" : 317}
+{"title" : "Foul Play", "badwords" : "DECEIVE,TRICK,CRIME,BASEBALL,CONSPIRACY", "_id" : 318}
+{"title" : "Futon", "badwords" : "COUCH,SIT,BED,DORM,FOLD", "_id" : 319}
+{"title" : "France", "badwords" : "EUROPE,COUNTRY,PARIS,ROMANCE,FRIES", "_id" : 320}
+{"title" : "Frankenstein", "badwords" : "MONSTER,STITCH,DOCTOR,ALIVE,BOLT", "_id" : 321}
+{"title" : "Freckle", "badwords" : "SPOT,SKIN,SUN,BROWN,REDHEAD", "_id" : 322}
+{"title" : "Freestyle", "badwords" : "RAP,RULES,IMPROVISE,SWIM,SPORT", "_id" : 323}
+{"title" : "French Toast", "badwords" : "MORNING,SYRUP,BREAD,EGGS,BREAKFAST", "_id" : 324}
+{"title" : "Friendly Fire", "badwords" : "WAR,TEAM,SIDE,SHOOT,ENEMY", "_id" : 325}
+{"title" : "Frolic", "badwords" : "PLAY,SKIP,JUMP,FIELD,MERRY", "_id" : 326}
+{"title" : "Fungus", "badwords" : "MUSHROOM,SPORE,MILDEW,MOLD,GREEN", "_id" : 327}
+{"title" : "Futon", "badwords" : "BED,SLEEP,FOLD,DORM,COUCH", "_id" : 328}
+{"title" : "Fuzz", "badwords" : "HAIR,FUR,STATIC,PEACH,HOT", "_id" : 329}
+{"title" : "Galaxy", "badwords" : "PLANET,SPACE,MILKY WAY,STAR,UNIVERSE", "_id" : 330}
+{"title" : "Gang War", "badwords" : "CRIPS,BLOODS,CRIME,RIVAL,DRUGS", "_id" : 331}
+{"title" : "Garbage", "badwords" : "DAY,TRASH,COLLECT,TRUCK,CAN", "_id" : 332}
+{"title" : "Gargoyle", "badwords" : "MONSTER,STONE,FLY,STATUE,GOTHIC", "_id" : 333}
+{"title" : "Genius", "badwords" : "SMART,IQ,INTELLIGENT,BRAIN,ALBERT EINSTEIN", "_id" : 334}
+{"title" : "Geyser", "badwords" : "STEAM,VOLCANO,HOT,SHOOT,WATER", "_id" : 335}
+{"title" : "Ghost", "badwords" : "BOO,HAUNT,SCARE,TOWN,CASPER", "_id" : 336}
+{"title" : "Gift", "badwords" : "PRESENT,SHOP,WRAP,GIVE,CHRISTMAS", "_id" : 337}
+{"title" : "Gift Shop", "badwords" : "PURCHASE,BUY,SOUVENIR,TOURIST,PRESENT", "_id" : 338}
+{"title" : "Giggle", "badwords" : "LAUGH,CHUCKLE,TICKLE,FUNNY,JOKE", "_id" : 339}
+{"title" : "Giraffe", "badwords" : "AFRICA,NECK,SPOT,TALL,TREE", "_id" : 340}
+{"title" : "Girlfriend", "badwords" : "BOYFRIEND,DATE,LOVE,GO OUT,COUPLE", "_id" : 341}
+{"title" : "Glacier", "badwords" : "ICE,NORTH,MELT,SLOW,MOUNTAIN", "_id" : 342}
+{"title" : "Glare", "badwords" : "HATE,STARE,LOOK,EYE,SCOWL", "_id" : 343}
+{"title" : "Global Warming", "badwords" : "EARTH,WEATHER,TEMPERATURE,CARBON,ATMOSPHERE", "_id" : 344}
+{"title" : "Globe", "badwords" : "EARTH,WORLD,SPHERE,MAP,GEOGRAPHY", "_id" : 345}
+{"title" : "Glue Stick", "badwords" : "SCHOOL,GLITTER,PASTE,ELMER'S™,CRAFT", "_id" : 346}
+{"title" : "Goat", "badwords" : "CHEESE,BILLY,MOUNTAIN,SHEEP,FARM", "_id" : 347}
+{"title" : "Goatee", "badwords" : "BEARD,HAIR,FACE,CHIN,MUSTACHE", "_id" : 348}
+{"title" : "Godzilla", "badwords" : "JAPAN,MONSTER,LIZARD,GIGANTIC,MOVIE", "_id" : 349}
+{"title" : "Golden Retriever", "badwords" : "DOG,FETCH,BARK,HOWL,OLD YELLER", "_id" : 350}
+{"title" : "Goldfish", "badwords" : "GUPPY,BOWL,CRACKERS,CHEESE,AQUARIUM", "_id" : 351}
+{"title" : "Goldrush", "badwords" : "CALIFORNIA,WEST,SETTLER,MOUNTAIN,RICH", "_id" : 352}
+{"title" : "Golf", "badwords" : "BALL,CLUB,PUTT,FORE,DRIVE", "_id" : 353}
+{"title" : "Goose", "badwords" : "MOTHER,CANADA,MIGRATE,SURPRISE,ROAST", "_id" : 354}
+{"title" : "Goosebumps", "badwords" : "HAIR,COLD,SCARE,SKIN,BOOKS", "_id" : 355}
+{"title" : "Gorilla", "badwords" : "APE,BANANA,KING KONG™,JUNGLE,MONKEY", "_id" : 356}
+{"title" : "Gourd", "badwords" : "SQUASH,PUMPKIN,HALLOWEEN,DRINKING,HOLLOW", "_id" : 357}
+{"title" : "Governor", "badwords" : "STATE,GOVERNMENT,EXECUTIVE,ELECT,VOTE", "_id" : 358}
+{"title" : "Graduation", "badwords" : "GOWN,DIPLOMA,SCHOOL,CEREMONY,COLLEGE", "_id" : 359}
+{"title" : "Grand Canyon", "badwords" : "CLIFF,ARIZONA,PARK,VALLEY,HIKE", "_id" : 360}
+{"title" : "Grand Piano", "badwords" : "KEYS,WHITE,BLACK,PLAY,MUSIC", "_id" : 361}
+{"title" : "Grandfather Clock", "badwords" : "TICK-TOCK,CHIME,TIME,OLD,CUCKOO", "_id" : 362}
+{"title" : "Granny Smith", "badwords" : "APPLE,SOUR,GREEN,CIDER,TART", "_id" : 363}
+{"title" : "Grape", "badwords" : "JUICE,CONCORD,WELCH'S™,WINE,NUTS", "_id" : 364}
+{"title" : "Gravestone", "badwords" : "CEMETERY,TOMB,FLOWER,BURY,RIP", "_id" : 365}
+{"title" : "Great Uncle", "badwords" : "BROTHER,OLDER,RELATIVE,COUSIN,AUNT", "_id" : 366}
+{"title" : "Green Tea", "badwords" : "CAFFEINE,HOT,BAG,DRINK,COFFEE", "_id" : 367}
+{"title" : "Grim Reaper", "badwords" : "DEATH,SCYTHE,BLACK,TOUCH,SKELETON", "_id" : 368}
+{"title" : "Grizzly Bear", "badwords" : "SALMON,HIBERNATE,SMOKEY,YOGI,HUNT", "_id" : 369}
+{"title" : "Guillotine", "badwords" : "FRANCE,HEAD,EXECUTE,CUT,DECAPITATE", "_id" : 370}
+{"title" : "Gymnast", "badwords" : "BALANCE,FLIP,SPORT,SMALL,JUDGE", "_id" : 371}
+{"title" : "Gypsy", "badwords" : "BAND,WANDER,FORTUNE,STEAL,WAGON", "_id" : 372}
+{"title" : "Hail", "badwords" : "ICE,RAIN,SKY,FREEZE,GOLF BALL", "_id" : 373}
+{"title" : "Hairbrush", "badwords" : "COMB,SALON,STRAIGHT,TANGLE,MORNING", "_id" : 374}
+{"title" : "Hamster", "badwords" : "BALL,PET,GUINEA PIG,GERBIL,DANCE", "_id" : 375}
+{"title" : "Hand Grenade", "badwords" : "FIRE,THROW,PIN,HOLD,EXPLODE", "_id" : 376}
+{"title" : "Hang Glide", "badwords" : "AIR,FLY,DUNE,WIND,EXTREME", "_id" : 377}
+{"title" : "Hangman", "badwords" : "EXECUTE,ROPE,HOOD,DEATH,PUNISH", "_id" : 378}
+{"title" : "Hangnail", "badwords" : "FINGER,SKIN,CLIP,HURT,PULL", "_id" : 379}
+{"title" : "Hangover", "badwords" : "DRUNK,MORNING,HEADACHE,VOMIT,ALCOHOL", "_id" : 380}
+{"title" : "Harvard University", "badwords" : "IVY LEAGUE,SCHOOL,CRIMSON,CAMBRIDGE,YALE", "_id" : 381}
+{"title" : "Hawaii", "badwords" : "ISLAND,VOLCANO,ALOHA,STATE,HONOLULU", "_id" : 382}
+{"title" : "Crop Circle", "badwords" : "CORN,UFO,PATTERN,ALIEN,HOAX", "_id" : 383}
+{"title" : "Heist", "badwords" : "ROBBERY,PLOT,PLAN,STEAL,BANK", "_id" : 384}
+{"title" : "Helen Keller", "badwords" : "BLIND,DEAF,MIRACLE,SOCIALIST,TEACHER", "_id" : 385}
+{"title" : "Hell", "badwords" : "BAD,SIN,FIRE,SATAN,DIE", "_id" : 386}
+{"title" : "Henry Ford", "badwords" : "CAR,MOTOR,MODEL T™,ASSEMBLY LINE,INVENTOR", "_id" : 387}
+{"title" : "Hermit Crab", "badwords" : "SHELL,OCEAN,CLAW,PET,BEACH", "_id" : 388}
+{"title" : "Hero", "badwords" : "SUPER,SAVE,POWER,SANDWICH,RESCUE", "_id" : 389}
+{"title" : "Hidden Camera", "badwords" : "SECRET,FILM,WATCH,SMILE,CATCH", "_id" : 390}
+{"title" : "Hide and Seek", "badwords" : "PLAY,KID,GAME,FIND,SPOT", "_id" : 391}
+{"title" : "Hideous", "badwords" : "UGLY,SCARY,FACE,DISGUSTING,UNATTRACTIVE", "_id" : 392}
+{"title" : "High Chair", "badwords" : "BABY,FEED,TABLE,FALL,TRAY", "_id" : 393}
+{"title" : "High Five", "badwords" : "SLAP,HIT,HAND,UP,LOW", "_id" : 394}
+{"title" : "Hillary Clinton", "badwords" : "FIRST LADY,PRESIDENT,SECRETARY OF STATE,BILL,ELECTION", "_id" : 395}
+{"title" : "Hip Hop", "badwords" : "RAP,BEAT,MUSIC,DANCE,80S", "_id" : 396}
+{"title" : "Hippie", "badwords" : "60S,FREE LOVE,DRUG,FLOWER,WOODSTOCK", "_id" : 397}
+{"title" : "Hippopotamus", "badwords" : "WATER,AFRICA,HUNGRY,FAT,FLOAT", "_id" : 398}
+{"title" : "Hitchhike", "badwords" : "THUMB,RIDE,PICK UP ,ROAD,TRUCK", "_id" : 399}
+{"title" : "Hobo", "badwords" : "BUM,HOMELESS,TRAIN,BEG,CRAZY", "_id" : 400}
+{"title" : "Hockey", "badwords" : "PUCK,CHECK,SPORT,STICK,GOAL", "_id" : 401}
+{"title" : "Honesty", "badwords" : "TRUTH,LIE,POLICY,ABE,CANDID", "_id" : 402}
+{"title" : "Honey Bee", "badwords" : "FLOWER,YELLOW,STING,BUZZ,HIVE", "_id" : 403}
+{"title" : "Honeymoon", "badwords" : "WEDDING,MARRY,VACATION,NEWLYWED,SUITE", "_id" : 404}
+{"title" : "French Kiss", "badwords" : "LIPS,MAKE OUT,TONGUE,PARTY,MOUTH", "_id" : 405}
+{"title" : "Hoover Dam", "badwords" : "WATERFALL,ELECTRICITY,PRESIDENT,ARIZONA,COLORADO RIVER", "_id" : 406}
+{"title" : "Hose", "badwords" : "WATER,GARDEN,PANTIES,FIRE,SPRAY", "_id" : 407}
+{"title" : "Hula Hoop", "badwords" : "RING,HIP,HAWAII,TOY,AROUND", "_id" : 408}
+{"title" : "Hummer™", "badwords" : "JEEP,MILITARY,HUMVEE,GAS,ARMOR", "_id" : 409}
+{"title" : "Hybrid", "badwords" : "ENGINE,GAS,ELECTRICITY,PRIUS™,VEHICLE", "_id" : 410}
+{"title" : "Hydroelectric", "badwords" : "WATER,POWER,ENERGY,GREEN,CARBON", "_id" : 411}
+{"title" : "Hyena", "badwords" : "LAUGH,SCAVENGE,SPOT,DOG,AFRICA", "_id" : 412}
+{"title" : "Ignition", "badwords" : "CAR,FUSE,FIRE,KEYS,FLAME", "_id" : 413}
+{"title" : "Illiterate", "badwords" : "READ,WRITE,WORD,SCHOOL,EDUCATE", "_id" : 414}
+{"title" : "Illness", "badwords" : "SICK,DISEASE,COUGH,VIRUS,DOCTOR", "_id" : 415}
+{"title" : "Incision", "badwords" : "CUT,OPERATE,SURGERY,SCALPEL,STITCH", "_id" : 416}
+{"title" : "Incognito", "badwords" : "DISGUISE,UNDERCOVER,INVESTIGATE,IDENTITY,SPY", "_id" : 417}
+{"title" : "Indentured Servant", "badwords" : "WORK,PAY,IMMIGRANT,LABOR,PLANTATION", "_id" : 418}
+{"title" : "Insane", "badwords" : "BRAIN,CRAZY,ASYLUM,STRAIGHT JACKET,LOONY", "_id" : 419}
+{"title" : "Inspire", "badwords" : "MOTIVATE,IDEA,MUSE,SPEECH,LEADER", "_id" : 420}
+{"title" : "Insurgent", "badwords" : "IRAQ,TERRORIST,ENEMY,BOMBING,KILL", "_id" : 421}
+{"title" : "Invest", "badwords" : "MONEY,FUTURE,RETIRE,BANK,STOCK", "_id" : 422}
+{"title" : "iPhone™", "badwords" : "APPLE™,SMART,APP,TOUCH,AT&T™", "_id" : 423}
+{"title" : "Iron", "badwords" : "STEEL,ANVIL,BOARD,HOT,STRIKE", "_id" : 424}
+{"title" : "Island", "badwords" : "LAND,OCEAN,TREE,GETAWAY,SURROUND", "_id" : 425}
+{"title" : "J.R.R. Tolkien", "badwords" : "LORD OF THE RINGS™,THE HOBBIT™,AUTHOR,FANTASY,WRITER", "_id" : 426}
+{"title" : "Jack-o'-Lantern", "badwords" : "PUMPKIN,CARVE,FACE,HALLOWEEN,CANDLE", "_id" : 427}
+{"title" : "Jackalope", "badwords" : "RABBIT,ANTELOPE,ANTLER,FICTIONAL,MYTHICAL", "_id" : 428}
+{"title" : "Janitor", "badwords" : "CLEAN,SCHOOL,SWEEP,MOP,MAINTENANCE", "_id" : 429}
+{"title" : "Jargon", "badwords" : "BUZZ WORD,LANGUAGE,TECHNICAL,INDUSTRY,EXPRESSION", "_id" : 430}
+{"title" : "Jawbreaker", "badwords" : "CANDY,MOUTH,TEETH,SUGAR,BULGE", "_id" : 431}
+{"title" : "Jaywalk", "badwords" : "CROSS,ROAD,STREET,ILLEGAL,CARS", "_id" : 432}
+{"title" : "Jazz", "badwords" : "NEW ORLEANS,SWING,BAND,LOUIS ARMSTRONG,DANCE", "_id" : 433}
+{"title" : "Jean Shorts", "badwords" : "CUT OFF,80S,JORTS,BLUE,LEVI'S™", "_id" : 434}
+{"title" : "Jester", "badwords" : "COURT,CLOWN,JOKE,MEDIEVAL,HAT", "_id" : 435}
+{"title" : "Jockey", "badwords" : "HORSE,SHORT,RIDE,RACE,DISC", "_id" : 436}
+{"title" : "John Lennon", "badwords" : "THE BEATLES,SINGER,ASSASSINATED,YOKO ONO,PEACE", "_id" : 437}
+{"title" : "Julius Caesar", "badwords" : "BRUTUS,ROME,SALAD,CALENDAR,EMPEROR", "_id" : 438}
+{"title" : "Jump", "badwords" : "LEAP,HOP,ROPE,UP,START", "_id" : 439}
+{"title" : "Jump Rope", "badwords" : "PLAYGROUND,SKIP,HOP,KID,EXERCISE", "_id" : 440}
+{"title" : "Jungle", "badwords" : "GYM,TREE,VINE,RAIN FOREST,JUICE", "_id" : 441}
+{"title" : "Junk Food", "badwords" : "CANDY,SUGAR,SNACK,UNHEALTHY,DIET", "_id" : 442}
+{"title" : "Jury", "badwords" : "JUDGE,LAWYER,COURT,DUTY,TRIAL", "_id" : 443}
+{"title" : "Juvenile Delinquent", "badwords" : "JAIL,YOUNG,CRIME,PRISON,LAW", "_id" : 444}
+{"title" : "Kangaroo", "badwords" : "POUCH,BOUNCE,CAPTAIN,MARSUPIAL,AUSTRALIA", "_id" : 445}
+{"title" : "Kansas", "badwords" : "MIDDLE,DOROTHY,CITY,STATE,TOPEKA", "_id" : 446}
+{"title" : "Karate", "badwords" : "PUNCH,KICK,JAPAN,KID,BELT", "_id" : 447}
+{"title" : "Kayak", "badwords" : "BOAT,ROLL,ONE,PADDLE,RIVER", "_id" : 448}
+{"title" : "Kermit the Frog™", "badwords" : "GREEN,MISS PIGGY™,MUPPET™,JIM HENSON,POND", "_id" : 449}
+{"title" : "KGB", "badwords" : "SPY,RUSSIA,SOVIET,CIA,SECRET", "_id" : 450}
+{"title" : "Kiddie Pool", "badwords" : "SWIM,SMALL,WATER,SHALLOW,BABY", "_id" : 451}
+{"title" : "Killer Whale", "badwords" : "SHAMU™,WILLY,OCEAN,BLACK,SEAL", "_id" : 452}
+{"title" : "Kilt", "badwords" : "SCOTTISH,PLAID,SKIRT,MAN,BAGPIPE", "_id" : 453}
+{"title" : "King Cobra", "badwords" : "SNAKE,VENOM,CHARMER,STRIKE,BITE", "_id" : 454}
+{"title" : "King Crab", "badwords" : "SEAFOOD,CLAW,SIDEWAYS,PINCER,LEG", "_id" : 455}
+{"title" : "King Kong™", "badwords" : "GODZILLA™,GORILLA,EMPIRE STATE,GIANT,MONSTER", "_id" : 456}
+{"title" : "Kiss", "badwords" : "SMOOCH,HUG,HERSHEY'S™,LIPS,FRENCH", "_id" : 457}
+{"title" : "Kitchen Sink", "badwords" : "WASH,DISH,SOAP,CLEAN,RINSE", "_id" : 458}
+{"title" : "Kite", "badwords" : "FLY,STRING,WIND,BEN FRANKLIN,RUNNER", "_id" : 459}
+{"title" : "Kiwi", "badwords" : "BIRD,GREEN,FUZZ,STRAWBERRY,FRUIT", "_id" : 460}
+{"title" : "Koala Bear", "badwords" : "TREE,FUZZY,EUCALYPTUS,AUSTRALIA,MARSUPIAL", "_id" : 461}
+{"title" : "Kung Fu", "badwords" : "MARTIAL ARTS,NINJA,KARATE,PANDA,FIGHT", "_id" : 462}
+{"title" : "Lacrosse", "badwords" : "STICK,PAD,HELMET,FIELD,SPORT", "_id" : 463}
+{"title" : "Ladder", "badwords" : "RUNG,ROOF,CLIMB,UP,HOLD", "_id" : 464}
+{"title" : "Lady Gaga", "badwords" : "SINGER,POKER FACE,BAD ROMANCE,DANCE,FAMOUS", "_id" : 465}
+{"title" : "Lampshade", "badwords" : "LIGHT,COVER,DIM,BULB,DESK", "_id" : 466}
+{"title" : "Landfill", "badwords" : "GARBAGE,TRASH,PILE,COLLECT,WASTE", "_id" : 467}
+{"title" : "Laptop", "badwords" : "COMPUTER,PORTABLE,MOBILE,DELL™,NETBOOK", "_id" : 468}
+{"title" : "Laugh", "badwords" : "CHUCKLE,JOKE,HA HA,FUNNY,CRY", "_id" : 469}
+{"title" : "Lawnmower", "badwords" : "GRASS,CUT,YARD,RIDE,PUSH", "_id" : 470}
+{"title" : "Layoff", "badwords" : "FIRE,REDUNDANCY,QUIT,PINK SLIP,DOWNSIZE", "_id" : 471}
+{"title" : "Leap Year", "badwords" : "FEBRUARY,FOUR,TWENTY EIGHT,MONTH,DAY", "_id" : 472}
+{"title" : "Lebron James", "badwords" : "HEAT™,CAVALIERS™,BASKETBALL,NBA™,KING", "_id" : 473}
+{"title" : "Lettuce", "badwords" : "GREEN,LEAF,SALAD,GROW,GARDEN", "_id" : 474}
+{"title" : "License Plate", "badwords" : "NUMBER,LETTER,CAR,TAG,BUMPER", "_id" : 475}
+{"title" : "Light Bulb", "badwords" : "ELECTRIC,FILAMENT,GLASS,BREAK,BURN OUT", "_id" : 476}
+{"title" : "Lighthouse", "badwords" : "COAST,CAPE,BRIGHT,NIGHT,BOATS", "_id" : 477}
+{"title" : "Lightning", "badwords" : "ELECTRIC,STRIKE,STORM,BOLT,BEN FRANKLIN", "_id" : 478}
+{"title" : "Lightning Bug", "badwords" : "SUMMER,NIGHT,CATCH,JAR,FIREFLY", "_id" : 479}
+{"title" : "Limousine", "badwords" : "RIDE,LONG,STRETCH,PROM,WEDDING", "_id" : 480}
+{"title" : "Lioness", "badwords" : "AFRICA,MANE,HUNT,COWARDLY,FEMALE", "_id" : 481}
+{"title" : "Lips", "badwords" : "PUCKER,KISS,CHAPSTICK,RED,LICK", "_id" : 482}
+{"title" : "Literature", "badwords" : "READING,BOOK,NEWSPAPER,RESOURCE,WRITING", "_id" : 483}
+{"title" : "Lobster", "badwords" : "CLAW,TAIL,MAINE,SHELL,ROCK", "_id" : 484}
+{"title" : "Loch Ness Monster", "badwords" : "DINOSAUR,LAKE,SCOTLAND,NESSIE,LEGEND", "_id" : 485}
+{"title" : "Locksmith", "badwords" : "KEY,DOOR,HOUSE,CAR,PICK", "_id" : 486}
+{"title" : "London", "badwords" : "BRITAIN,ENGLAND,BIG BEN,MONARCH,TOWER", "_id" : 487}
+{"title" : "Los Angeles", "badwords" : "HOLLYWOOD,CALIFORNIA,CITY,LAKERS™,MOVIE", "_id" : 488}
+{"title" : "Lost and Found", "badwords" : "MISPLACE,LEAVE,MAP,DIRECTIONS,CLAIM", "_id" : 489}
+{"title" : "Luge", "badwords" : "OLYMPICS,SLIDE,BACK,BOARD,DOWNHILL", "_id" : 490}
+{"title" : "Lumberjack", "badwords" : "CHOP,TREE,PLAID,AX,TIMBER", "_id" : 491}
+{"title" : "Lunch", "badwords" : "SANDWICH,DINNER,EAT,BREAKFAST,DAY", "_id" : 492}
+{"title" : "Lust", "badwords" : "DESIRE,LOVE,ROMANCE,PASSION,ATTRACTION", "_id" : 493}
+{"title" : "Machete", "badwords" : "KNIFE,LONG,CUTLASS,SWORD,CHOP", "_id" : 494}
+{"title" : "Madonna", "badwords" : "SINGER,EVITA,LIKE A VIRGIN,BLONDE,JESUS", "_id" : 495}
+{"title" : "Magician", "badwords" : "TRICK,ILLUSION,CARD,STAGE,HAT", "_id" : 496}
+{"title" : "Malaria", "badwords" : "TONIC WATER,MOSQUITOES,DISEASE,QUININE,FEVER", "_id" : 497}
+{"title" : "Mallard", "badwords" : "MIGHTY,QUACK,AFLAC™,COVER,DUCK", "_id" : 498}
+{"title" : "Manatee", "badwords" : "SEA COW,FLORIDA,MAMMAL,OCEAN,ENDANGERED", "_id" : 499}
+{"title" : "Mansion", "badwords" : "RICH,MONEY,HOUSE,PLAYBOY,LIVE", "_id" : 500}
