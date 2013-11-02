@@ -409,7 +409,7 @@ public class PackPurchaseRowLayout extends FrameLayout {
     if (PackIconUtils.isPackIconCached(pack.getIconName(), mContext)) {
       setAndScalePackIcon(PackIconUtils.getCachedIcon(pack.getIconName(), mContext));
     } else {
-      PackClient.fetchIconOnThread(pack, this, mContext);
+      //PackClient.fetchIconOnThread(pack, this, mContext);
     }
   }
 
