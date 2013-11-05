@@ -733,7 +733,7 @@ public class TitleActivity extends Activity {
               new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                   Intent intent = new Intent(Intent.ACTION_VIEW,
-                      Uri.parse(Config.storeUriBuzzwords));
+                      Uri.parse(Config.storeUriBuzzwordsLite));
                   startActivity(intent);
                   muteRateReminder();
                 }
@@ -762,7 +762,7 @@ public class TitleActivity extends Activity {
               new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                   Intent intent = new Intent(Intent.ACTION_VIEW,
-                      Uri.parse(Config.storeUriBuzzwords));
+                      Uri.parse(Config.storeUriBuzzwordsLite));
                   startActivity(intent);
                   muteRateReminder();
                 }
