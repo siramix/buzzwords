@@ -10,7 +10,7 @@
   <!-- Copy Config.java to our source tree, replacing custom tokens with values in build.properties. The configuration depends on "clean" because otherwise the build system will not detect changes in the configuration. -->
   <target name="config" depends="clean">
 
-    <property name="config-target-path" value="${source.dir}/com/buzzwords/"/>
+    <property name="config-target-path" value="${source.dir}/com/buzzwordslite/"/>
       <!-- Copy the configuration file, replacing tokens in the file. -->
       <copy file="config/Config.java" todir="${config-target-path}"
           overwrite="true" encoding="utf-8">
@@ -25,13 +25,13 @@
   <target name="config-google" depends="config">
 
     <replace
-        file="${source.dir}/com/buzzwords/Config.java"
+        file="${source.dir}/com/buzzwordslite/Config.java"
         propertyFile="build.properties">
-      <replacefilter 
-          token="@CONFIG.BUZZWORDSSTORE@" 
+      <replacefilter
+          token="@CONFIG.BUZZWORDSSTORE@"
           property="config.playStoreBuzzwords"/>
-      <replacefilter 
-          token="@CONFIG.BUSSWORDSLITESTORE@" 
+      <replacefilter
+          token="@CONFIG.BUSSWORDSLITESTORE@"
           property="config.playStoreBuzzwordsLite"/>
     </replace>
 
@@ -41,13 +41,13 @@
   <target name="config-amazon" depends="config">
 
     <replace
-        file="${source.dir}/com/buzzwords/Config.java"
+        file="${source.dir}/com/buzzwordslite/Config.java"
         propertyFile="build.properties">
-      <replacefilter 
-          token="@CONFIG.BUZZWORDSSTORE@" 
+      <replacefilter
+          token="@CONFIG.BUZZWORDSSTORE@"
           property="config.amazonMarketBuzzwords"/>
-      <replacefilter 
-          token="@CONFIG.BUSSWORDSLITESTORE@" 
+      <replacefilter
+          token="@CONFIG.BUSSWORDSLITESTORE@"
           property="config.amazonMarketBuzzwordsLite"/>
     </replace>
 
@@ -70,7 +70,7 @@
     <echo>                     The 'nodeps' target can be used to only build the</echo>
     <echo>                     current project and ignore the libraries using:</echo>
     <echo>                     'ant nodeps debug'</echo>
-    <echo>   -------------------- </echo>    
+    <echo>   -------------------- </echo>
     <echo>   custom_rules.xml  </echo>
     <echo>                     </echo>
     <echo>   config:         Copy the config template to the java codebase and make</echo>

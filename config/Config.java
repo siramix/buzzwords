@@ -1,4 +1,4 @@
-package com.buzzwords;
+package com.buzzwordslite;
 
 /**
  * Configurable constants belong in this file. This file serves as a template
