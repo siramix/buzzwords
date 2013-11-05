@@ -27,11 +27,11 @@
     <replace
         file="${source.dir}/com/buzzwords/Config.java"
         propertyFile="build.properties">
-      <replacefilter 
-          token="@CONFIG.BUZZWORDSSTORE@" 
+      <replacefilter
+          token="@CONFIG.BUZZWORDSSTORE@"
           property="config.playStoreBuzzwords"/>
-      <replacefilter 
-          token="@CONFIG.BUSSWORDSLITESTORE@" 
+      <replacefilter
+          token="@CONFIG.BUSSWORDSLITESTORE@"
           property="config.playStoreBuzzwordsLite"/>
     </replace>
 
@@ -43,17 +43,34 @@
     <replace
         file="${source.dir}/com/buzzwords/Config.java"
         propertyFile="build.properties">
-      <replacefilter 
-          token="@CONFIG.BUZZWORDSSTORE@" 
+      <replacefilter
+          token="@CONFIG.BUZZWORDSSTORE@"
           property="config.amazonMarketBuzzwords"/>
-      <replacefilter 
-          token="@CONFIG.BUSSWORDSLITESTORE@" 
+      <replacefilter
+          token="@CONFIG.BUSSWORDSLITESTORE@"
           property="config.amazonMarketBuzzwordsLite"/>
     </replace>
 
   </target>
 
-      <!-- ******************************************************* -->
+
+  <!-- After copying our config file, set up Amazon Market URLs -->
+  <target name="config-samsung" depends="config">
+
+    <replace
+        file="${source.dir}/com/buzzwords/Config.java"
+        propertyFile="build.properties">
+      <replacefilter
+          token="@CONFIG.BUZZWORDSSTORE@"
+          property="config.samsungStoreBuzzwords"/>
+      <replacefilter
+          token="@CONFIG.BUSSWORDSLITESTORE@"
+          property="config.samsungStoreBuzzwordsLite"/>
+    </replace>
+
+  </target>
+
+    <!-- ******************************************************* -->
     <!-- ************************* Help ************************ -->
     <!-- ******************************************************* -->
 
@@ -70,7 +87,7 @@
     <echo>                     The 'nodeps' target can be used to only build the</echo>
     <echo>                     current project and ignore the libraries using:</echo>
     <echo>                     'ant nodeps debug'</echo>
-    <echo>   -------------------- </echo>    
+    <echo>   -------------------- </echo>
     <echo>   custom_rules.xml  </echo>
     <echo>                     </echo>
     <echo>   config:         Copy the config template to the java codebase and make</echo>
