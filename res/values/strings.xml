@@ -227,7 +227,7 @@
     <string name="tutorial_turn_skip">Press the Skip button if you want to move on to another word.</string>
     <string name="tutorial_turn_time">This is the turn timer. Try to get your team to guess as many words as possible before it expires! (Tap it to pause)</string>
     <string name="tutorial_turnsummary_screen">During the Results screen you view the words from your turn.</string>
-    <string name="tutorial_turnsummary_review">You can tap on a card in this list to see its badwords or change the way it was marked.</string>
+    <string name="tutorial_turnsummary_review">You can tap on a card in this list to see its \'buzz\'words or change the way it was marked.</string>
     <string name="tutorial_turnsummary_scores">Team standings, including the score for this turn, are displayed here.</string>
     
     <!-- Settings -->
