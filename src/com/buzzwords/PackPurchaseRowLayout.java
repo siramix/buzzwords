@@ -409,6 +409,23 @@ public class PackPurchaseRowLayout extends FrameLayout {
     if (PackIconUtils.isPackIconCached(pack.getIconName(), mContext)) {
       setAndScalePackIcon(PackIconUtils.getCachedIcon(pack.getIconName(), mContext));
     } else {
+      // Override our icon for the starter packs. Note this will prevent the packs
+      // from being able to update their icons, so when pack purchasing is added, we
+      // should eliminate this code.
+      switch (pack.getId()) {
+        case (Consts.LITE_PACK_ID):
+          setAndScalePackIcon(BitmapFactory.decodeResource(mContext.getResources(),
+              R.drawable.packicon_lite));
+          break;
+        case (Consts.STARTER_PACK_1_ID):
+          setAndScalePackIcon(BitmapFactory.decodeResource(mContext.getResources(),
+              R.drawable.packicon_classic1));
+          break;
+        case (Consts.STARTER_PACK_2_ID):
+          setAndScalePackIcon(BitmapFactory.decodeResource(mContext.getResources(),
+              R.drawable.packicon_classic2));
+          break;
+      }
       //PackClient.fetchIconOnThread(pack, this, mContext);
     }
   }
