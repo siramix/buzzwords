@@ -1,3 +1,13 @@
+'''
+Deployment script for pre-release code changes and package building.
+
+TODOS:
+* Mkdir checks for existing dir. Really we should check for existing apk and warn then.
+* The argument for --lite and --full is a silly way to do it. We should check the
+   current branch and if it's not release-lite or release exit, otherwise just
+   do the right thing automatically.
+* Tagging process can be added to --prep
+'''
 import os
 import sys
 import shutil
@@ -12,6 +22,9 @@ parser = argparse.ArgumentParser(description=desc)
 group = parser.add_mutually_exclusive_group()
 group.add_argument("-p", "--prep", help="Run this FIRST before creating a build.", action='store_true')
 group.add_argument("-b", "--build", help="Run this AFTER tagging and commiting the PREP'ed code", action='store_true')
+litefull = parser.add_mutually_exclusive_group()
+litefull.add_argument("-l", "--lite", help="For deploying release-lite", action='store_true')
+litefull.add_argument("-f", "--full", help="For deploying release", action='store_true')
 args = parser.parse_args()
 
 
@@ -158,8 +171,8 @@ def copyApk(market):
     try:
         print "\033[94m" + "mkdir %s" % marketApkDir + "\033[0m"
         subprocess.check_call(["mkdir", marketApkDir])
-        print "\033[94m" + "copy %s to %s" % (RELEASE_APK, marketApkDir) + "\033[0m"
-        shutil.copy2(RELEASE_APK, marketApkDir + "buzzwords.apk")
+        print "\033[94m" + "copy %s to %s%s" % (RELEASE_APK, marketApkDir, NEW_APK_NAME) + "\033[0m"
+        shutil.copy2(RELEASE_APK, marketApkDir + NEW_APK_NAME)
     except:
         print "\nError copying %s APK to dropbox." % market
         print "If the folder for your apk version already exists, make sure you've updated versions or delete the existing folder."
@@ -176,10 +189,22 @@ for line in fileinput.input(manifestFile):
 DROPBOX = os.environ['HOME'] + "/Dropbox/Siramix/"
 APK_VSN_DIR = DROPBOX + "apps/buzzwords_apks/Buzzwords-%s/" % curVsnName
 RELEASE_APK = "bin/Buzzwords-release.apk"
+NEW_APK_NAME = "buzzwords.apk"
 
 '''
 Primary script functionality. Two paths depending passed arguments, PREP or BUILD.
 '''
+if (not args.lite and not args.full) or (not args.build and not args.prep):
+    print "\033[94mYou must supply --full or --lite AND --prep or --build.\033[0m"
+    print "\033[94mSee launch_process.txt\033[0m"
+    parser.print_help()
+    exitDeploy()
+
+if args.lite:
+    NEW_APK_NAME = "buzzwordslite.apk"
+elif args.full:
+    NEW_APK_NAME = "buzzwords.apk"
+
 if args.prep:
     print "Prepping codebase for final commit..."
     updateAndroidManifest()
@@ -188,8 +213,8 @@ if args.prep:
 
 elif args.build:
     print "Have you already committed, pushed, and tagged the release (prepped) version? (y/n)"
-    inputchar = sys.stdin.read(1)
-    if inputchar != 'y':
+    inputchar = sys.stdin.read(2)
+    if inputchar != 'y\n':
         printGitHelp()
         exitDeploy()
 
@@ -209,9 +234,13 @@ elif args.build:
         print "\033[94m" + "mkdir %s" % APK_VSN_DIR + "\033[0m"
         subprocess.check_call(["mkdir", APK_VSN_DIR])
     except:
-        print "Error creating dropbox apk folder for current version."
-        print "If the folder for your apk version already exists, make sure you've updated versions or delete the existing folder."
-        exitDeploy()
+        print "Careful, you may be overriding the contents of this folder."
+        print "\033[94mThe only reason for doing this is deploying both Lite and Full versions or testing builds.\033[0m\n"
+        print "Continue deploying to this location (BE SURE)? (y/n)"
+        inputchar = sys.stdin.read(2)
+        if inputchar != 'y\n':
+            print "Make sure you've updated versions or delete the existing folder."
+            exitDeploy()
 
     # Parse configs and build new Amazon APK
     buildApk("amazon")
