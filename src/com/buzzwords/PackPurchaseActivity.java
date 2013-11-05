@@ -30,14 +30,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.RelativeLayout.LayoutParams;
 
 public class PackPurchaseActivity extends Activity {
 
@@ -57,6 +61,8 @@ public class PackPurchaseActivity extends Activity {
   private boolean mIsActivityClosing;
   
   LinkedList<View> mPackLineList;
+
+  private TutorialLayout mTutorialLayout;
   
   // Our local packs.
   private LinkedList<Pack> mUnlockedPacks;
@@ -72,27 +78,40 @@ public class PackPurchaseActivity extends Activity {
   // Flag for whether user can connect to our site, set on each refresh.
   private boolean mServerError = false;
   
+  // Flag for failures to get userId from Amazon's API
+  private boolean mUserError = false;
+  
+  // Installation dialog
+  private ProgressDialog mInstallDialog;
+  
+  /**
+   * Track which part of the tutorial the user is in.
+   */
+  private TutorialPage mTutorialPage = TutorialPage.SCREEN;
+
+  /**
+   * Enum gives a name to each tutorial page
+   */
+  private enum TutorialPage {SCREEN, PACKS, END, NOADVANCE};
+  
   /**
    * Request Code constants for social media sharing
    */
-    private static final int FACEBOOK_REQUEST_CODE = 12;
-    private static final int PACKINFO_REQUEST_CODE = 14;
-
+  private static final int FACEBOOK_REQUEST_CODE = 12;
+  private static final int PACKINFO_REQUEST_CODE = 14;
     
   /**
-   * PlayGameListener plays an animation on the view that will result in
-   * launching GameSetup
+   * NextActivityListener launches into the next Activity
    */
-  private OnClickListener mGameSetupListener = new OnClickListener() {
+  private OnClickListener mNextActivityListener = new OnClickListener() {
     public void onClick(View v) {
-      SafeLog.d(TAG, "PlayGameListener OnClick()");
       // Throw out any queued onClicks.
       if(!v.isEnabled()){
         return;
       }
 
-      // Carry music into GameSetup
-      mContinueMusic = true;
+      // Music should not continue into Turn
+      mContinueMusic = false;
       
       // play confirm sound
       SoundManager sm = SoundManager.getInstance(PackPurchaseActivity.this
@@ -116,27 +135,57 @@ public class PackPurchaseActivity extends Activity {
         // Only disable this view when we are definitely advancing
         v.setEnabled(false);
         mIsActivityClosing = true;
+
+        // Stop the music
+        BuzzWordsApplication application = (BuzzWordsApplication) PackPurchaseActivity.this
+            .getApplication();
+        MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
+        mp.stop();
+
+        // Release the Music Manager
+        application.cleanUpMusicPlayer();
         
-        startActivity(new Intent(getApplication().getString(R.string.IntentGameSetup),
+        application.getGameManager().startGame(application.getBaseContext());
+        
+        // Launch the Turn
+        startActivity(new Intent(getApplication().getString(R.string.IntentTurn),
               getIntent().getData()));
+    
       } else {
         showToast(getString(R.string.toast_packpurchase_nopackselected));
       }
     }
   };
-
+  
+  /**
+   * AdvanceTutorialListener advances to the next page in the tutorial when
+   * it is clicked.
+   */
+  private OnClickListener mAdvanceTutorialListener = new OnClickListener() {
+    public void onClick(View v) {
+      // Throw out any queued onClicks.
+      if(!v.isEnabled()){
+        return;
+      }
+      
+      if(mTutorialPage != TutorialPage.NOADVANCE){
+        advanceTutorial();  
+      }
+    }
+  };
   /**
    * Create the packages screen from an XML layout and
    */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    SafeLog.d(TAG, "onCreate()");
 
     // Initialize our packs
     mServerPacks = new LinkedList<Pack>();
 
-    mGameManager= new GameManager(PackPurchaseActivity.this);
+    BuzzWordsApplication application = (BuzzWordsApplication) this
+        .getApplication();
+    mGameManager= application.getGameManager();
 
     requestIds = new HashMap<String, String>();
     
@@ -152,8 +201,73 @@ public class PackPurchaseActivity extends Activity {
     
     // Set next button listener
     Button btn = (Button) this.findViewById(R.id.PackPurchase_Button_Next);
-    btn.setOnClickListener(mGameSetupListener);
+    btn.setOnClickListener(mNextActivityListener);
+    
+
+    // Show the tutorial if set in the preference
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    boolean showTutorial = sp.getBoolean(
+        Consts.TutorialPrefkey.PACKSELECT.getKey(), true);
+    if (showTutorial) {
+      startTutorial();
+    }
+    
   }
+  
+  /**
+   * Initializes and starts the tutorial
+   */
+  private void startTutorial()
+ {  
+    // Setup the tutorial layout
+    mTutorialLayout = new TutorialLayout(this);
+    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+        LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+    this.addContentView(mTutorialLayout, params);
+    mTutorialLayout.setClickListener(mAdvanceTutorialListener);
+    
+    mTutorialPage = TutorialPage.SCREEN;
+    advanceTutorial();
+  }
+
+  /**
+   * Advance the tutorial and the content to the next stage
+   */
+  private void advanceTutorial() {
+    // Sets the content and the next tutorial page for the given tutorial page
+    switch (mTutorialPage) {
+    case SCREEN:
+      mTutorialLayout.setContent(
+          getResources().getString(R.string.tutorial_packpurchase_screen),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.PACKS;
+      break;
+    case PACKS:
+      mTutorialLayout.setContent(
+          findViewById(R.id.PackPurchase_UnlockedPacksGroup), getResources()
+              .getString(R.string.tutorial_packpurchase_packs),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.END;
+      break;
+    case END:
+
+      // Flag the tutorial as seen
+      SharedPreferences sp = PreferenceManager
+          .getDefaultSharedPreferences(getBaseContext());
+      SharedPreferences.Editor spEditor = sp.edit();
+      spEditor.putBoolean(Consts.TutorialPrefkey.PACKSELECT.getKey(), false);
+      spEditor.commit();
+      
+      mTutorialPage = TutorialPage.NOADVANCE;
+      mTutorialLayout.hide();
+      
+      break;
+    case NOADVANCE:
+      break;
+    }
+  }
+
 
   /**
    * Lazy loads the packLineList which is used for populating
@@ -214,7 +328,6 @@ public class PackPurchaseActivity extends Activity {
    * First populates purchased then goes online to get list of unpurchased packs.
    */
   protected void refreshAllPackLayouts() {
-    SafeLog.d(TAG, "refreshAllPackLayouts");
     mServerError = !isNetworkAvailable();
     // If they don't have internet, dump cached serve packs. 
     if (mServerError) {
@@ -280,18 +393,18 @@ public class PackPurchaseActivity extends Activity {
           try {
             mServerPacks = client.getServerPacks();
           } catch (IOException e1) {
-            SafeLog.e(TAG, "Error occurred during I/O of serverPacks.");
+            Log.e(TAG, "Error occurred during I/O of serverPacks.");
             mServerError = true;
-            SafeLog.e(TAG, e1.toString());
+            Log.e(TAG, e1.toString());
             e1.printStackTrace();
           } catch (URISyntaxException e1) {
             mServerError = true;
-            SafeLog.e(TAG, e1.toString());
+            Log.e(TAG, e1.toString());
             e1.printStackTrace();
           } catch (JSONException e1) {
-            SafeLog.e(TAG, "Error parsing pack JSON from server.");
+            Log.e(TAG, "Error parsing pack JSON from server.");
             mServerError = true;
-            SafeLog.e(TAG, e1.toString());
+            Log.e(TAG, e1.toString());
             e1.printStackTrace();
           }
           Message message = handler.obtainMessage(1, mServerPacks);
@@ -309,7 +422,6 @@ public class PackPurchaseActivity extends Activity {
    * @return list of unpurchased packs
    */
   private LinkedList<Pack> getUnownedPacks(LinkedList<Pack> lockedPacks, LinkedList<Pack> installedPacks) {
-    SafeLog.d(TAG, "removeLocalPacks");
     LinkedList<Pack> unownedPackList = new LinkedList<Pack>();
     unownedPackList.addAll(lockedPacks);
 
@@ -340,7 +452,7 @@ public class PackPurchaseActivity extends Activity {
     TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
     
     lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
-    if (mServerError) {
+    if (mServerError || mUserError) {
       placeHolderText.setVisibility(View.VISIBLE);
       placeHolderText.setText(getString(R.string.packpurchase_nointernet));
     } else if (lockedPacks.size() == 0) {
@@ -413,7 +525,7 @@ public class PackPurchaseActivity extends Activity {
    * and install or uninstall as necessary.  This is called remotely by PackPurchaseObserver.
    */
   protected void syncronizePacks() {
-    SafeLog.d(TAG, "SYNCRONIZING PACKS...");
+    Log.d(TAG, "SYNCRONIZING PACKS...");
     boolean unsyncedPurchaseChange = 
                       getSyncPreferences().getBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
     boolean syncInProgress = getSyncPreferences().getBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, false);
@@ -422,9 +534,9 @@ public class PackPurchaseActivity extends Activity {
     // If outstanding purchases or a pack is out of date
     Boolean syncRequired = (unsyncedPurchaseChange || updateRequired);
 
-    SafeLog.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
-    SafeLog.d(TAG, "   UPDATE REQUIRED: " + updateRequired);
-    SafeLog.d(TAG, "   SYNC IN PROGRESS: " + syncInProgress);
+    Log.d(TAG, "   SYNC_REQUIRED: " + syncRequired);
+    Log.d(TAG, "   UPDATE REQUIRED: " + updateRequired);
+    Log.d(TAG, "   SYNC IN PROGRESS: " + syncInProgress);
     
     // Don't call synchronize unless PREFKEY_UNSYNCED_PURCHASE_CHANGE preference is true or
     // some packs are out of date and we have successfully retrieved packs from our server.
@@ -436,7 +548,7 @@ public class PackPurchaseActivity extends Activity {
         new PackSyncronizer().execute(packArray);
       }
       catch (RuntimeException e) {
-        SafeLog.e(TAG, "Encountered an error syncronizing packs.");
+        Log.e(TAG, "Encountered an error syncronizing packs.");
         e.printStackTrace();
       }
     }
@@ -448,12 +560,12 @@ public class PackPurchaseActivity extends Activity {
   private void openFacebookClient()
   {
     // Launch Facebook, if not found, launch a browser intent
-    String url = getApplication().getString(R.string.URI_fb_launcher_buzzwordsapp);
+    String url = Consts.buzzwordsFBAppLauncher;
     Intent facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
     try {
       startActivityForResult(facebookOrBrowserIntent, FACEBOOK_REQUEST_CODE);
     } catch (ActivityNotFoundException e) {
-      Uri uri = Uri.parse(getApplication().getString(R.string.URI_fb_buzzwordsapp));
+      Uri uri = Uri.parse(Consts.buzzwordsFBPage);
       facebookOrBrowserIntent = new Intent(Intent.ACTION_VIEW);
       facebookOrBrowserIntent.setDataAndType(uri, "text/plain");
       startActivityForResult(facebookOrBrowserIntent, FACEBOOK_REQUEST_CODE);
@@ -526,23 +638,24 @@ public class PackPurchaseActivity extends Activity {
    */
   public class PackSyncronizer extends AsyncTask <Pack, Void, Integer>
   {
-    private ProgressDialog dialog;
     private long timeStarted = System.currentTimeMillis();
     final SharedPreferences userPurchases = getPurchasePrefsForCurrentUser();
     final SharedPreferences.Editor syncPrefEditor = getSyncPreferences().edit();
-    //TODO FIX THIS.  IT CRASHES.
-//    final BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
-//    final GameManager gm = application.getGameManager();
-    final GameManager gm = new GameManager(PackPurchaseActivity.this);
+    final BuzzWordsApplication application = (BuzzWordsApplication) getApplication();
+    final GameManager gm = application.getGameManager();
     private boolean installOrUpdateError = false;
     
     @Override
     protected void onPreExecute() {
-      dialog = ProgressDialog.show(
+      mInstallDialog = ProgressDialog.show(
           PackPurchaseActivity.this,
           null,
           getString(R.string.progressDialog_update_text), 
           true);
+      // Hide the tutorial when it's behind the dialog
+      if (mTutorialLayout != null) {
+        mTutorialLayout.setVisibility(View.INVISIBLE);
+      }
       syncPrefEditor.putBoolean(Consts.PREFKEY_SYNC_IN_PROGRESS, true);
       syncPrefEditor.commit();
     }
@@ -550,7 +663,7 @@ public class PackPurchaseActivity extends Activity {
     @Override
     protected Integer doInBackground(Pack... packs) {
       for (int i=0; i<packs.length; ++i) {
-        SafeLog.d(TAG, "SYNCING PACK: " + packs[i].getName());
+        Log.d(TAG, "SYNCING PACK: " + packs[i].getName());
         boolean isPackPurchased = userPurchases.getBoolean(String.valueOf(packs[i].getId()), false);
 
         //Install or update the pack if it is purchased.  Select it if it's a new pack.
@@ -559,7 +672,7 @@ public class PackPurchaseActivity extends Activity {
             gm.installLatestPack(packs[i], getBaseContext());
           } catch (RuntimeException e) {
             installOrUpdateError = true;
-            SafeLog.e(TAG, "Failed to update or install PURCHASED packId: " + 
+            Log.e(TAG, "Failed to update or install PURCHASED packId: " + 
                 packs[i].getId() + " name: " + packs[i].getName());
             e.printStackTrace();
           }
@@ -575,7 +688,7 @@ public class PackPurchaseActivity extends Activity {
             gm.installLatestPack(packs[i], getBaseContext());
           } catch (RuntimeException e) {
             installOrUpdateError = true;
-            SafeLog.e(TAG, "Failed to update or install STARTER packId: " + 
+            Log.e(TAG, "Failed to update or install STARTER packId: " + 
                 packs[i].getId() + " name: " + packs[i].getName());
             e.printStackTrace();
           }
@@ -586,7 +699,7 @@ public class PackPurchaseActivity extends Activity {
         try {
           Thread.sleep(100);
         } catch (InterruptedException e) {
-          SafeLog.e(TAG, "thread interrupted", e);
+          Log.e(TAG, "thread interrupted", e);
         }
       }
       return 0; 
@@ -596,7 +709,17 @@ public class PackPurchaseActivity extends Activity {
     protected void onPostExecute(Integer result)
     {
       refreshAllPackLayouts();
-      dialog.dismiss();
+      // Hide our dialog if it's still showing (which it should be unless app is closed)
+      if (mInstallDialog != null) {
+        if (mInstallDialog.isShowing()) {
+          mInstallDialog.dismiss();
+          mInstallDialog = null;
+        }
+      }
+      // Reshow hidden tutorial if it's behind the dialog.
+      if (mTutorialLayout != null) {
+        mTutorialLayout.setVisibility(View.VISIBLE); 
+      }
       if (installOrUpdateError) {
         showToast(getString(R.string.toast_packpurchase_installfailed));
         syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
@@ -770,7 +893,6 @@ public class PackPurchaseActivity extends Activity {
    */
   public ComponentName getClientComponentName(
       HashMap<String, ActivityInfo> foundClients) {
-    SafeLog.d(TAG, "getClientComponentName()");
 
     ComponentName result = null;
 
@@ -866,6 +988,15 @@ public class PackPurchaseActivity extends Activity {
     syncPrefEditor.commit();
   }
 
+  /**
+   * Allow purchase observer to make changes to the user flag as the
+   * observer handles getUserId requests and can handle the failure responses.
+   * @param trueFalse
+   */
+  protected void setUserErrorFlag(boolean trueFalse) {
+    mUserError = trueFalse;
+  }
+
   
   /**
    * Handle showing a toast or refreshing an existing toast
@@ -876,10 +1007,17 @@ public class PackPurchaseActivity extends Activity {
           Toast.LENGTH_LONG);
     } else {
       mHelpToast.setText(text);
-      // TODO Can we get these toasts to display in a different spot?
       mHelpToast.setDuration(Toast.LENGTH_LONG);
     }
+    mHelpToast.setGravity(Gravity.BOTTOM, 0, 80);
     mHelpToast.show();
+  }
+
+  /**
+   * Method allows observer class to trigger toasts to user.
+   */
+  protected void showAlreadyPurchasedToast() {
+    showToast(getString(R.string.toast_packpurchase_alreadypurchased));
   }
   
   /**
@@ -907,7 +1045,6 @@ public class PackPurchaseActivity extends Activity {
    */
   @Override
   public void onPause() {
-    SafeLog.d(TAG, "onPause()");
     super.onPause();
     
     if (!mContinueMusic) {
@@ -930,6 +1067,13 @@ public class PackPurchaseActivity extends Activity {
       super.onStop();
 //      ResponseHandler.unregister(mPurchaseObserver);
 //      mBillingService.unbind();
+      // Terminate our install dialog if it's still in progress when app closes.
+      if (mInstallDialog != null) {
+        if (mInstallDialog.isShowing()) {
+          mInstallDialog.dismiss();
+        }
+        mInstallDialog = null;
+      }
   }
 
   @Override

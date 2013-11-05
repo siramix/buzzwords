@@ -15,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 -->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.buzzwords"
     android:id="@+id/Turn_Root"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -32,7 +32,7 @@
         android:gravity="center"
         android:text="@string/turn_timesup"
         android:textColor="@color/white"
-        android:visibility="invisible" />
+        android:visibility="invisible" />>
 
     <LinearLayout
         android:id="@+id/Turn_PauseTextGroup"
@@ -179,7 +179,7 @@
 
                     <com.buzzwords.FrancoisOneTextView
                         android:id="@+id/Turn_CardTitleA"
-                        style="@style/CardTitle" />
+                        style="@style/CardTitle"/>
 
                     <LinearLayout
                         android:id="@+id/Turn_CardA_BadWords"
@@ -189,23 +189,24 @@
 
                         <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord0"
-                            style="@style/BadWordText" />
+                            style="@style/BadWordText"/>
 
                         <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord1"
-                            style="@style/BadWordText" />
+                            style="@style/BadWordText"/>
 
                         <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord2"
-                            style="@style/BadWordText" />
+                            style="@style/BadWordText"/>
 
                         <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord3"
-                            style="@style/BadWordText" />
+                            style="@style/BadWordText"/>
 
                         <com.buzzwords.FrancoisOneTextView
                             android:id="@+id/Turn_CardA_BadWord4"
-                            style="@style/BadWordText" />
+                            style="@style/BadWordText"/>
+
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>

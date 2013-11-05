@@ -2,3 +2,7 @@ bin/
 .settings/
 gen/
 .DS_Store
+local.properties
+keystore
+*.sublime-project
+*.sublime-workspace

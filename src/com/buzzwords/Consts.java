@@ -39,7 +39,6 @@ package com.buzzwords;
  */
 public class Consts {
 
-    public static final boolean DEBUG = true;
     public static final String PREFKEY_NUM_BUZZWORDS = "com.buzzwords.NUM_BUZZWORDS";
     public static final String PREFKEY_TIMER = "com.buzzwords.TURN_TIMER";
     public static final String PREFKEY_MUSIC = "com.buzzwords.MUSIC_ENABLED";
@@ -50,16 +49,17 @@ public class Consts {
     public static final String PREFKEY_WRONG_SCORE = "com.buzzwords.WRONG_SCORE";
     public static final String PREFKEY_SKIP_SCORE = "com.buzzwords.SKIP_SCORE";
     public static final String PREFKEY_RESET_PACKS = "com.buzzwords.RESET_PACKS";
+    public static final String PREFKEY_RESET_TUTORIAL = "com.buzzwords.RESET_TUTORIAL";
     public static final String PREFKEY_DB_INITIALIZED = "com.buzzwords.DB_INITIALIZED";
     public static final String PREFKEY_MUSIC_RESOURCE = "com.buzzwords.MUSIC_RESOURCE";
     public static final String PREFKEY_MUSIC_LOOPING = "com.buzzwords.MUSIC_LOOPING";
-    public static final String PREFKEY_TURN_GOING = "com.buzzwords.TURN_GOING";
+    public static final String PREFKEY_IS_TURN_IN_PROGRESS = "com.buzzwords.TURN_IN_PROGRESS";
     public static final String PREFKEY_A_IS_ACTIVE = "com.buzzwords.A_IS_ACTIVE";
     public static final String PREFKEY_IS_BACK = "com.buzzwords.IS_BACK";
     public static final String PREFKEY_IS_TICKING = "com.buzzwords.IS_TICKING";
     public static final String PREFKEY_IS_PAUSED = "com.buzzwords.IS_PAUSED";
-    public static final String PREFKEY_IS_TURN_OVER = "com.buzzwords.IS_TURN_OVER";
-    public static final String PREFKEY_IS_IN_TURN_START_DIALOG = "com.buzzwords.IS_IN_TURN_START_DIALOG";
+    public static final String PREFKEY_IS_TURN_IN_START_DIALOG = "com.buzzwords.IS_TURN_IN_START_DIALOG";
+    public static final String PREFKEY_IS_TURN_IN_TUTORIAL = "com.buzzwords.IS_TURN_IN_TUTORIAL";
     public static final String PREFKEY_TURN_TIME_REMAINING = "com.buzzwords.TURN_TIME_REMAINING";
     public static final String PREFKEY_UNSYNCED_PURCHASE_CHANGE = "com.buzzwords.PREFKEY_UNSYNCED_PURCHASE_CHANGE";
     public static final String PREFKEY_SYNC_IN_PROGRESS = "com.buzzwords.SYNC_IN_PROGRESS";
@@ -71,14 +71,35 @@ public class Consts {
     public static final String PREFFILE_PACK_SELECTIONS = "com.buzzwords.PACK_SELECTIONS";
     public static final String PREFFILE_MUSIC_STATE = "com.buzzwords.MUSIC_STATE";
     public static final String PREFFILE_TURN_STATE = "com.buzzwords.TURN_STATE";
+  
+    public static enum TutorialPrefkey {
+      SETUP ("com.buzzwords.SHOWTUTORIAL_SETUP"),
+      PACKSELECT ("com.buzzwords.SHOWTUTORIAL_PACKSELECT"),
+      TURN ("com.buzzwords.SHOWTUTORIAL_TURN"),
+      TURNSUMMARY ("com.buzzwords.SHOWTUTORIAL_TURNSUMMARY");
+  
+      private final String mKey;
+  
+      TutorialPrefkey(String key) {
+        mKey = key;
+      }
+  
+      public String getKey() {
+        return mKey;
+      }
+    }
+
+    public static final String packList = "packs.json";
+    public static final String buzzwordsFBAppLauncher = "fb://page/472759256084535";
+    public static final String buzzwordsFBPage = "https://www.facebook.com/buzzwordsapp";
 
     public static final String DECK_TEMP_FILE = "cur_deck.ser";
     public static final String GAME_MANAGER_TEMP_FILE = "cur_gm.ser";
     public static final String TIMER_TEMP_FILE = "cur_timer.ser";
-    
+
     public static final String DATABASE_NAME = "buzzwords";
     public static final int DATABASE_VERSION = 3;
-    
+
     public static final int CACHE_MAXSIZE = 100;
     public static final int CACHE_TURNSIZE = 20;
     

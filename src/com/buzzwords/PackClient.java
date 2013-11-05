@@ -37,6 +37,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 /**
  * @author Siramix Labs
@@ -45,13 +46,6 @@ import android.os.Message;
 public class PackClient {
   
   private static final String TAG = "PackClient";
-  
-  /**
-   * URL Constants
-   */
-  private static final String URL_BASE = "http://siramix.com/buzzwords/packs/";
-  private static final String TEST_URL_BASE = "https://s3.amazonaws.com/siramix.buzzwords/bw-packdata-test/";
-  private static final String PACK_LIST_URL = "packs.json";
   
   /**
    * Members
@@ -63,26 +57,11 @@ public class PackClient {
    * @return
    */
   public static PackClient getInstance() {
-    SafeLog.d(TAG, "getInstance");
+    Log.d(TAG, "getInstance");
     if(mInstance == null) {
       mInstance = new PackClient();
     }
     return mInstance;
-  }
-  
-  /**
-   * Return the appropriate base URL for the packs data, depending on whether
-   * our USE_TEST_PACKS flag in BuzzwordsApplication is set or not.
-   * @return test or live pack baseUrl
-   */
-  public static String getPacksBaseURL() {
-    String baseURL;
-    if (BuzzWordsApplication.USE_TEST_PACKS) {
-      baseURL = TEST_URL_BASE;
-    } else {
-      baseURL = URL_BASE;
-    }
-    return baseURL;
   }
 
   /**
@@ -93,10 +72,10 @@ public class PackClient {
    * @throws JSONException if the JSON is invalid
    */
   public LinkedList<Pack> getServerPacks() throws IOException, URISyntaxException, JSONException {
-    SafeLog.d(TAG, "getServerPacks");
+    Log.d(TAG, "getServerPacks");
     StringBuilder in = null;
     LinkedList<Pack> ret = null;
-    in = doHTTPGet(getPacksBaseURL()+PACK_LIST_URL);
+    in = doHTTPGet(Config.packBaseUri + Consts.packList);
     ret = PackParser.parsePacks(in);
     return ret;
   }
@@ -111,11 +90,11 @@ public class PackClient {
    * @throws URISyntaxException if the URI is invalid in some way
    */
   public CardJSONIterator getCardsForPack(Pack pack) throws IOException, URISyntaxException {
-    SafeLog.d(TAG, "getCardsForPack");
+    Log.d(TAG, "getCardsForPack");
     StringBuilder in = null;
     CardJSONIterator ret = null;
     String packPath = pack.getPath();
-    in = doHTTPGet(getPacksBaseURL()+packPath);
+    in = doHTTPGet(Config.packBaseUri + packPath);
     ret = PackParser.parseCards(in);
     return ret;
   }
@@ -128,19 +107,19 @@ public class PackClient {
    * @return Bitmap icon
    */
   private static Bitmap fetchIconForPack(String iconPath)  {
-    final String urlString = getPacksBaseURL() + iconPath;
+    final String urlString = Config.packBaseUri + iconPath;
     try {
       InputStream is = fetch(urlString);
       Bitmap bitmap = BitmapFactory.decodeStream(is);
       if (bitmap == null) {
-        SafeLog.w(TAG, "Could not get thumbnail");
+        Log.w(TAG, "Could not get thumbnail");
       }
       return bitmap;
     } catch (MalformedURLException e) {
-        SafeLog.e(TAG, "fetchIconForPack failed for url:" + urlString, e);
+        Log.e(TAG, "fetchIconForPack failed for url:" + urlString, e);
         return null;
     } catch (IOException e) {
-        SafeLog.e(TAG, "fetchIconForPack failed for url:" + urlString, e);
+        Log.e(TAG, "fetchIconForPack failed for url:" + urlString, e);
         return null;
     }
   }
@@ -161,7 +140,7 @@ public class PackClient {
             packRow.setAndScalePackIcon(packIcon);
             PackIconUtils.storeIcon(pack.getIconName(), packIcon, context);
           } else {
-            SafeLog.w(TAG, "Fetched icon response was null for " + pack.getIconPath());
+            Log.w(TAG, "Fetched icon response was null for " + pack.getIconPath());
           }
         }
     };
@@ -201,7 +180,7 @@ public class PackClient {
    * @throws URISyntaxException if the URI is malformed
    */
   private static StringBuilder doHTTPGet(String url) throws IOException, URISyntaxException {
-    SafeLog.d(TAG, "doHTTPGet(" + url + ")");
+    Log.d(TAG, "doHTTPGet(" + url + ")");
     HttpClient client = new DefaultHttpClient();
     HttpGet request = new HttpGet();
     request.setURI(new URI(url));

@@ -19,6 +19,7 @@ package com.buzzwords;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
@@ -37,6 +38,7 @@ import com.buzzwords.Pack;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * @author Siramix Labs
@@ -78,6 +80,11 @@ public class GameManager implements Serializable {
    * The maximum number of rounds for this game
    */
   private int mTurnLimitPerTeam;
+  
+  /**
+   * Game Mode parameter provides game-mode specific info
+   */
+  private int mGameModeParam;
 
   /**
    * The index of the round being played
@@ -168,7 +175,7 @@ public class GameManager implements Serializable {
    *          required for game to instantiate the database
    */
   public GameManager(Context context) {
-    SafeLog.d(TAG, "GameManager()");
+    Log.d(TAG, "GameManager()");
 
     SharedPreferences sp = PreferenceManager
         .getDefaultSharedPreferences(context);
@@ -200,8 +207,13 @@ public class GameManager implements Serializable {
 
   }
 
+  /**
+   * Save the state of the gameManager so that it can be restored
+   * when the application is restored.
+   * @param context
+   */
   public synchronized void saveState(Context context) {
-    SafeLog.e(TAG, "saveState()");
+    Log.e(TAG, "saveState()");
     try {
       //use buffering
       OutputStream file = context.openFileOutput(Consts.GAME_MANAGER_TEMP_FILE, Context.MODE_PRIVATE);
@@ -215,33 +227,63 @@ public class GameManager implements Serializable {
       }
     }  
     catch(IOException ex){
-      SafeLog.e(TAG, "IOException while saving Game Manager state.", ex);
+      Log.e(TAG, "IOException while saving Game Manager state.", ex);
       ex.printStackTrace();
     }
   }
   
+  /**
+   * Restores the gameManager to the state previously saved
+   * @param context
+   * @return
+   */
   public static synchronized GameManager restoreState(Context context) {
-    SafeLog.e(TAG, "restoreState()");
+    Log.e(TAG, "restoreState()");
     GameManager savedGameManager = null;
     try {
-      //use buffering
-      InputStream file = context.openFileInput(Consts.GAME_MANAGER_TEMP_FILE);
-      InputStream buffer = new BufferedInputStream( file );
-      ObjectInput input = new ObjectInputStream ( buffer );
-      try {
-        savedGameManager = (GameManager) input.readObject();
+      if (context.getFileStreamPath(Consts.GAME_MANAGER_TEMP_FILE).exists()) {
+        //use buffering
+        InputStream file = context.openFileInput(Consts.GAME_MANAGER_TEMP_FILE);
+        InputStream buffer = new BufferedInputStream( file );
+        ObjectInput input = new ObjectInputStream ( buffer );
+        try {
+          savedGameManager = (GameManager) input.readObject();
+        }
+        finally{
+          input.close();
+        }
+      } else {
+        Log.d(TAG, "SaveState file did not exist during restoreState.");
       }
-      finally{
-        input.close();
-      }
+    }
+    catch(FileNotFoundException ex)
+    {
+      Log.e(TAG, "FileNotFoundException while restoring Game Manager.", ex);
     }
     catch(ClassNotFoundException ex) {
-      SafeLog.e(TAG, "ClassNotFoundException while restoring Game Manager.", ex);
+      Log.e(TAG, "ClassNotFoundException while restoring Game Manager.", ex);
     }
     catch(IOException ex) {
-      SafeLog.e(TAG, "IOException while restoring Game Manager.", ex);
+      Log.e(TAG, "IOException while restoring Game Manager.", ex);
     }
     return savedGameManager;
+  }
+  
+  /**
+   * Deletes any save state data for the Game Manager. This is used to
+   * clean up garbage saves, which occur when the application is force closed. 
+   * @param context
+   */
+  public synchronized void cleanupSaveState(Context context) {
+    Log.d(TAG, "destroy()");
+    
+    SharedPreferences turnStatePrefs =
+        context.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
+    SharedPreferences.Editor turnStatePrefsEditor = turnStatePrefs.edit();
+    turnStatePrefsEditor.clear();
+    turnStatePrefsEditor.commit();
+    
+    context.deleteFile(Consts.GAME_MANAGER_TEMP_FILE);
   }
 
   /**
@@ -276,44 +318,35 @@ public class GameManager implements Serializable {
   }
 
   /**
-   * Start the game given a set of team names. This creates both a game and a
-   * set of teams in the database
-   * 
-   * @param teams
-   *          a string array of team names
-   * @param mode
-   *          GameType for this game (play to score, or number of rounds)
-   * @param modeInfo
-   *          the number of rounds to play, or the points to play to
+   * Initialize the game so that it can deal with Turn actions.
+
    * @param context
    *          the context in which the pack preferences will be dealt
    */
-  public void startGame(ArrayList<Team> teams, GameType mode, int modeInfo, Context context) {
-    SafeLog.d(TAG, "StartGame()");
+  public void startGame(Context context) {
+    Log.d(TAG, "StartGame()");
 
     // Initialize the deck and fill the cache
     mDeck.setPackData(context);
     fillDeckIfLow(context);
     
-    mTeams = teams;
     // Set team scores to 0
-    Iterator<Team> itr = teams.iterator();
-    for (itr = teams.iterator(); itr.hasNext();) {
+    Iterator<Team> itr = mTeams.iterator();
+    for (itr = mTeams.iterator(); itr.hasNext();) {
       itr.next().setScore(0);
     }
-    mCurrentTeam = teams.get(0);
+    mCurrentTeam = mTeams.get(0);
     this.mTeamPosition = 1;
-    mCurrentGameLimit = mode;
     switch (mCurrentGameLimit) {
     case TURNS:
-      mTurnLimitPerTeam = modeInfo;
+      mTurnLimitPerTeam = mGameModeParam;
       mTotalRounds = mTeams.size() * mTurnLimitPerTeam;
       mScoreLimit = -1;
       break;
     case SCORE:
       mTurnLimitPerTeam = -1;
       mTotalRounds = -1;
-      mScoreLimit = modeInfo;
+      mScoreLimit = mGameModeParam;
       break;
     case FREEPLAY:
       mTurnLimitPerTeam = -1;
@@ -323,6 +356,25 @@ public class GameManager implements Serializable {
     }
     mCurrentTurn++;
   }
+  
+  /**
+   * Setup the Settings for the game based on GameSetup
+   * @param teams
+   *          a string array of team names
+   * @param mode
+   *          GameType for this game (play to score, or number of rounds)
+   * @param modeInfo
+   *          the number of rounds to play, or the points to play to
+   * @param teams
+   * @param mode
+   * @param modeInfo
+   */
+  public void setupGameAttributes(ArrayList<Team> teams, GameType mode, int modeInfo)
+  {
+    mTeams = teams;
+    mCurrentGameLimit = mode;
+    mGameModeParam = modeInfo;
+  }
 
   /**
    * Starts a new turn incrementing the round and/or team index as necessary.
@@ -330,7 +382,7 @@ public class GameManager implements Serializable {
    * @param context the context for the deck
    */
   public void nextTurn(Context context) {
-    SafeLog.d(TAG, "NextTurn()");
+    Log.d(TAG, "NextTurn()");
     fillDeckIfLow(context);
     this.incrementActiveTeamIndex();
     mCardsDealtDuringTurn.clear();
@@ -376,7 +428,7 @@ public class GameManager implements Serializable {
    * Write turn and game relevant data to the database.
    */
   public void endGame() {
-    SafeLog.d(TAG, "EndGame()");
+    Log.d(TAG, "EndGame()");
     mTeamPosition = 0;
 
     // clear current cards so that scoreboards don't add turn score in
@@ -389,7 +441,7 @@ public class GameManager implements Serializable {
    * @param context the context for the deck
    */
   private void fillDeckIfLow(Context context) {
-    SafeLog.d(TAG, "fillDeckIfLow()");
+    Log.d(TAG, "fillDeckIfLow()");
     mDeck.fillCacheIfLow(context);
   }
 
@@ -401,7 +453,7 @@ public class GameManager implements Serializable {
    * @return true if any pack needs update
    */
   public boolean packsRequireUpdate(LinkedList<Pack> serverPacks, Context context) {
-    SafeLog.d(TAG, "packsRequireUpdate(LinkedList<Pack>)");
+    Log.d(TAG, "packsRequireUpdate(LinkedList<Pack>)");
     return mDeck.packsRequireUpdate(serverPacks, context);
   }
 
@@ -437,7 +489,7 @@ public class GameManager implements Serializable {
     try {
       mDeck.uninstallPack(packId, context);
     } catch (RuntimeException e) {
-      SafeLog.e(TAG, "Unable to install pack: " + String.valueOf(packId));
+      Log.e(TAG, "Unable to install pack: " + String.valueOf(packId));
       e.printStackTrace();
     }
   }
@@ -491,7 +543,7 @@ public class GameManager implements Serializable {
    * @return true if the game should end instead of advancing to another turn
    */
   public boolean shouldGameEnd() {
-    SafeLog.d(TAG, "shouldGameEnd()");
+    Log.d(TAG, "shouldGameEnd()");
 
     boolean ret = false;
     switch (mCurrentGameLimit) {

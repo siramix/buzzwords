@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="custom_rules">
+
+  <!-- ==================
+       custom_rules.xml
+       This file is where new build targets can be added. We've added things
+       like config, config-google, and config-amazon here.
+       ================== -->
+
+  <!-- Copy Config.java to our source tree, replacing custom tokens with values in build.properties. The configuration depends on "clean" because otherwise the build system will not detect changes in the configuration. -->
+  <target name="config" depends="clean">
+
+    <property name="config-target-path" value="${source.dir}/com/buzzwords/"/>
+      <!-- Copy the configuration file, replacing tokens in the file. -->
+      <copy file="config/Config.java" todir="${config-target-path}"
+          overwrite="true" encoding="utf-8">
+        <filterset>
+          <filter token="CONFIG.PACKURI" value="${config.packBaseUri}"/>
+        </filterset>
+      </copy>
+
+  </target>
+
+  <!-- After copying our config file, set up Google Play Store URLs -->
+  <target name="config-google" depends="config">
+
+    <replace
+        file="${source.dir}/com/buzzwords/Config.java"
+        propertyFile="build.properties">
+      <replacefilter 
+          token="@CONFIG.BUZZWORDSSTORE@" 
+          property="config.playStoreBuzzwords"/>
+      <replacefilter 
+          token="@CONFIG.BUSSWORDSLITESTORE@" 
+          property="config.playStoreBuzzwordsLite"/>
+    </replace>
+
+  </target>
+
+  <!-- After copying our config file, set up Amazon Market URLs -->
+  <target name="config-amazon" depends="config">
+
+    <replace
+        file="${source.dir}/com/buzzwords/Config.java"
+        propertyFile="build.properties">
+      <replacefilter 
+          token="@CONFIG.BUZZWORDSSTORE@" 
+          property="config.amazonMarketBuzzwords"/>
+      <replacefilter 
+          token="@CONFIG.BUSSWORDSLITESTORE@" 
+          property="config.amazonMarketBuzzwordsLite"/>
+    </replace>
+
+  </target>
+
+      <!-- ******************************************************* -->
+    <!-- ************************* Help ************************ -->
+    <!-- ******************************************************* -->
+
+  <target name="help">
+    <!-- displays starts at col 13
+          |13                                                              80| -->
+    <echo>Android Ant Build. Available targets:</echo>
+    <echo>   help:           Displays this help.</echo>
+    <echo>   clean:          Removes output files created by other targets.</echo>
+    <echo>                     The 'all' target can be used to clean dependencies</echo>
+    <echo>                     (tested projects and libraries)at the same time</echo>
+    <echo>                     using: 'ant all clean'</echo>
+    <echo>   debug:          Builds the application and signs it with a debug key.</echo>
+    <echo>                     The 'nodeps' target can be used to only build the</echo>
+    <echo>                     current project and ignore the libraries using:</echo>
+    <echo>                     'ant nodeps debug'</echo>
+    <echo>   -------------------- </echo>    
+    <echo>   custom_rules.xml  </echo>
+    <echo>                     </echo>
+    <echo>   config:         Copy the config template to the java codebase and make</echo>
+    <echo>                     substitutions that are needed for all builds.</echo>
+    <echo>   config-google:  Run config and then make additional substitutions</echo>
+    <echo>                     for releasing to the Google Play market.</echo>
+    <echo>   config-amazon:  Run config and then make additional subtitutions</echo>
+    <echo>                     for releasing to the Amazon market.</echo>
+    <echo>   -------------------- </echo>
+    <echo>   release:        Builds the application. The generated apk file must be</echo>
+    <echo>                     signed before it is published.</echo>
+    <echo>                     The 'nodeps' target can be used to only build the</echo>
+    <echo>                     current project and ignore the libraries using:</echo>
+    <echo>                     'ant nodeps release'</echo>
+    <echo>   instrument:     Builds an instrumented package and signs it with a</echo>
+    <echo>                     debug key.</echo>
+    <echo>   test:           Runs the tests. Project must be a test project and</echo>
+    <echo>                     must have been built. Typical usage would be:</echo>
+    <echo>                     ant [emma] debug install test</echo>
+    <echo>   emma:           Transiently enables code coverage for subsequent</echo>
+    <echo>                     targets.</echo>
+    <echo>   install:        Installs the newly build package. Must either be used</echo>
+    <echo>                     in conjunction with a build target (debug/release/</echo>
+    <echo>                     instrument) or with the proper suffix indicating</echo>
+    <echo>                     which package to install (see below).</echo>
+    <echo>                     If the application was previously installed, the</echo>
+    <echo>                     application is reinstalled if the signature matches.</echo>
+    <echo>   installd:       Installs (only) the debug package.</echo>
+    <echo>   installr:       Installs (only) the release package.</echo>
+    <echo>   installi:       Installs (only) the instrumented package.</echo>
+    <echo>   installt:       Installs (only) the test and tested packages (unless</echo>
+    <echo>                     nodeps is used as well.</echo>
+    <echo>   uninstall:      Uninstalls the application from a running emulator or</echo>
+    <echo>                     device. Also uninstall tested package if applicable</echo>
+    <echo>                     unless 'nodeps' is used as well.</echo>
+  </target>
+
+</project>

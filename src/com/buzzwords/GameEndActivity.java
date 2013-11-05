@@ -27,6 +27,7 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -234,8 +235,8 @@ public class GameEndActivity extends Activity {
 
       GameManager curgm = application.getGameManager();
       GameManager newgm = new GameManager(GameEndActivity.this);
-      newgm.startGame(curgm.getTeams(), curgm.getGameType(), curgm.getGameLimitValue(),
-          getBaseContext());
+      newgm.setupGameAttributes(curgm.getTeams(), curgm.getGameType(), curgm.getGameLimitValue());
+      newgm.startGame(getBaseContext());
       application.setGameManager(newgm);
 
       Intent clearStackIntent = new Intent(getApplication().getString(
@@ -359,6 +360,10 @@ public class GameEndActivity extends Activity {
 
     // Animate the whole thing
     animateGameEnd(teams.size());
+    
+    // Flag the tutorial for TurnActivity as seen
+    prefEditor.putBoolean(Consts.TutorialPrefkey.TURN.getKey(), false);
+    prefEditor.commit();
   }
 
   /**
@@ -367,7 +372,7 @@ public class GameEndActivity extends Activity {
   @Override
   public void onStop() {
     super.onStop();
-    SafeLog.d(TAG, "onStop()");
+    Log.d(TAG, "onStop()");
   }
 
   /**
@@ -376,7 +381,7 @@ public class GameEndActivity extends Activity {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    SafeLog.d(TAG, "onDestroy()");
+    Log.d(TAG, "onDestroy()");
   }
 
   /**

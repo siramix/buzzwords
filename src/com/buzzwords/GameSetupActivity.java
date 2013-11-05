@@ -27,7 +27,6 @@ import com.buzzwords.GameManager.GameType;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,14 +35,17 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.RelativeLayout.LayoutParams;
 
 /**
  * This activity class is responsible for gathering game information before the
@@ -72,6 +74,7 @@ public class GameSetupActivity extends Activity {
   // References to views to limit calls to FindViewById
   private TextView mGameLimitView;
   private RadioGroup mRadioGroup;
+  private TutorialLayout mTutorialLayout;
 
   // Track the current shown toast
   private Toast mHelpToast = null;
@@ -83,7 +86,17 @@ public class GameSetupActivity extends Activity {
 
   // Preference keys (indicating quadrant)
   public static final String PREFS_NAME = "gamesetupprefs";
+  
+  /**
+   * Track which part of the tutorial the user is in.
+   */
+  private TutorialPage mTutorialPage = TutorialPage.SCREEN;
 
+  /**
+   * Enum gives a name to each tutorial page
+   */
+  private enum TutorialPage {GAME, SCREEN, TEAMS, WIN, END, NOADVANCE};
+  
   // Flag to play music into the next Activity
   private boolean mContinueMusic = false;
 
@@ -96,14 +109,19 @@ public class GameSetupActivity extends Activity {
   public static String TAG = "GameSetup";
 
   /**
-   * Watches the button that handles hand-off to the Turn activity.
+   * Watches the button that handles hand-off to the next activity.
    */
-  private final OnClickListener mStartGameListener = new OnClickListener() {
+  private final OnClickListener mNextActivityListener = new OnClickListener() {
     public void onClick(View v) {
       // Throw out any queued onClicks.
       if (!v.isEnabled() || mIsActivityClosing) {
         return;
       }
+
+      // play confirm sound
+      SoundManager sm = SoundManager.getInstance(GameSetupActivity.this
+          .getBaseContext());
+      sm.playSound(SoundManager.Sound.CONFIRM);
 
       // Validate team numbers
       if (GameSetupActivity.this.mTeamList.size() <= 1) {
@@ -127,30 +145,25 @@ public class GameSetupActivity extends Activity {
       while (keepLooping) {
         try {
           GameManager gm = new GameManager(GameSetupActivity.this);
-          gm.startGame(mTeamList, GameType.values()[mGameType],
-              mGameLimits[mGameType], getBaseContext());
+          gm.setupGameAttributes(mTeamList, GameType.values()[mGameType],
+              mGameLimits[mGameType]);
           application.setGameManager(gm);
           keepLooping = false;
           
           // Disable other buttons and this one to prevent double clicks
           mIsActivityClosing = true;
           v.setEnabled(false);
-
-          // Release the Music Manager
-          application.cleanUpMusicPlayer();
-          
+    
         } catch (SQLiteException e) {
           keepLooping = true;
         }
       }
 
-      // Launch into Turn activity
-      startActivity(new Intent(getApplication().getString(R.string.IntentTurn),
+      mContinueMusic = true;
+      
+      // Launch into PackPurchase activity
+      startActivity(new Intent(getApplication().getString(R.string.IntentPackPurchase),
           getIntent().getData()));
-
-      // Stop the music
-      MediaPlayer mp = application.getMusicPlayer(application.getBaseContext());
-      mp.stop();
     }
   };
 
@@ -275,6 +288,85 @@ public class GameSetupActivity extends Activity {
       sm.playSound(SoundManager.Sound.CONFIRM);
     }
   };
+  
+  /**
+   * AdvanceTutorialListener advances to the next page in the tutorial when
+   * it is clicked.
+   */
+  private OnClickListener mAdvanceTutorialListener = new OnClickListener() {
+    public void onClick(View v) {
+      // Throw out any queued onClicks.
+      if(!v.isEnabled()){
+        return;
+      }
+      
+      if(mTutorialPage != TutorialPage.NOADVANCE){
+        advanceTutorial();  
+      }
+    }
+  };
+  
+  /**
+   * Initializes and starts the tutorial
+   */
+  private void startTutorial()
+  {
+    // Create the tutorial layout and add it to the hierarchy
+    mTutorialLayout = new TutorialLayout(this);
+    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+        LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+    this.addContentView(mTutorialLayout, params);
+    mTutorialLayout.setClickListener(mAdvanceTutorialListener);
+    
+    mTutorialPage = TutorialPage.GAME;
+    advanceTutorial();
+  }
+
+  /**
+   * Advance the tutorial and the content to the next stage
+   */
+  private void advanceTutorial() {
+    // Sets the content and the next tutorial page for the given tutorial page
+    switch (mTutorialPage) {
+    case GAME:
+      mTutorialLayout.setContent(
+          getResources().getString(R.string.tutorial_gamesetup_game),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.SCREEN;
+      break;
+    case SCREEN:
+      mTutorialLayout.setContent(
+          getResources().getString(R.string.tutorial_gamesetup_screen),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.TEAMS;
+      break;
+    case TEAMS:
+      mTutorialLayout.setContent(findViewById(R.id.GameSetup_TeamsGroup),
+          getResources().getString(R.string.tutorial_gamesetup_teams),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.WIN;
+      break;
+    case WIN:
+      mTutorialLayout.setContent(findViewById(R.id.GameSetup_GameType_Group),
+          getResources().getString(R.string.tutorial_gamesetup_win),
+          TutorialLayout.BOTTOM);
+      mTutorialPage = TutorialPage.END;
+      break;
+    case END:
+      // Flag tutorial as seen
+      SharedPreferences sp = PreferenceManager
+          .getDefaultSharedPreferences(getBaseContext());
+      SharedPreferences.Editor spEditor = sp.edit();
+      spEditor.putBoolean(Consts.TutorialPrefkey.SETUP.getKey(), false);
+      spEditor.commit();
+      
+      mTutorialLayout.hide();
+      mTutorialPage = TutorialPage.NOADVANCE;
+      break;
+    case NOADVANCE:
+      break;
+    }
+  }
 
   /**
    * This function is called when the EditTeamName activity finishes. It
@@ -353,8 +445,8 @@ public class GameSetupActivity extends Activity {
 
     // Bind start buttons
     Button startGameButton = (Button) this
-        .findViewById(R.id.GameSetup_StartGameButton);
-    startGameButton.setOnClickListener(mStartGameListener);
+        .findViewById(R.id.GameSetup_NextButton);
+    startGameButton.setOnClickListener(mNextActivityListener);
 
     // Do hint bindings
     Button hintButton = (Button) this
@@ -383,14 +475,6 @@ public class GameSetupActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // This sets up the preference so the application does not think that a
-    // turn is in progress on the TurnActivity onCreate
-    SharedPreferences turnStatePrefs =
-        this.getSharedPreferences(Consts.PREFFILE_TURN_STATE, Context.MODE_PRIVATE);
-    SharedPreferences.Editor turnStatePrefsEditor = turnStatePrefs.edit();
-    turnStatePrefsEditor.putBoolean(Consts.PREFKEY_TURN_GOING, false);
-    turnStatePrefsEditor.commit();
-
     // Setup the view
     this.setContentView(R.layout.gamesetup);
 
@@ -404,6 +488,15 @@ public class GameSetupActivity extends Activity {
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
     restorePreferences();
+    
+    // Setup and start the tutorial
+    SharedPreferences sp = PreferenceManager
+        .getDefaultSharedPreferences(getBaseContext());
+    boolean showTutorial = sp.getBoolean(
+        Consts.TutorialPrefkey.SETUP.getKey(), true);
+    if (showTutorial) {
+      startTutorial();
+    }
   }
 
   /**
@@ -553,7 +646,7 @@ public class GameSetupActivity extends Activity {
   @Override
   public void onPause() {
     super.onPause();
-    SafeLog.d(TAG, "onPause()");
+    Log.d(TAG, "onPause()");
     // Pause the music unless going to an Activity where it is supposed to
     // continue through
     BuzzWordsApplication application = (BuzzWordsApplication) this
@@ -588,9 +681,13 @@ public class GameSetupActivity extends Activity {
   @Override
   public void onResume() {
     super.onResume();
-    SafeLog.d(TAG, "onResume()");
+    Log.d(TAG, "onResume()");
 
     mIsActivityClosing = false;
+    
+    // Re-enable buttons that were disabled to prevent double click.
+    Button btn = (Button) this.findViewById(R.id.GameSetup_NextButton);
+    btn.setEnabled(true); 
 
     // Resume Title Music
     BuzzWordsApplication application = (BuzzWordsApplication) this

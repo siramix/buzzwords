@@ -33,6 +33,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ import android.widget.Toast;
 public class SettingsPreferenceActivity extends PreferenceActivity {
   
   final private int RESET_CARDS_DIALOG = -1;
+  final private int RESET_TUTORIAL_DIALOG = -2;
   
   // Track the current shown toast
   private Toast mHelpToast = null;
@@ -51,7 +53,7 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
   private boolean mContinueMusic = false; // Flag to continue music across
                                           // Activities
 
-  private OnPreferenceClickListener mPrefClickListener = new OnPreferenceClickListener() {
+  private OnPreferenceClickListener mResetPacksListener = new OnPreferenceClickListener() {
     
     public boolean onPreferenceClick(Preference preference) {
       if (preference.getKey().equals(Consts.PREFKEY_RESET_PACKS)) {
@@ -60,6 +62,32 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
       return false;
     }
   };
+  
+
+  private OnPreferenceClickListener mResetTutorialListener = new OnPreferenceClickListener() {
+    
+    public boolean onPreferenceClick(Preference preference) {
+      if (preference.getKey().equals(Consts.PREFKEY_RESET_TUTORIAL)) {
+        showDialog(RESET_TUTORIAL_DIALOG);
+      }
+      return false;
+    }
+  };
+  
+  /**
+   * Resets all the preference flags used to track tutorial progress
+   */
+  private void resetTutorialProgress()
+  {
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this
+        .getBaseContext());
+    SharedPreferences.Editor spEditor = sp.edit();
+    for (Consts.TutorialPrefkey p : Consts.TutorialPrefkey.values())
+    {
+      spEditor.putBoolean(p.getKey(), true);
+    }
+    spEditor.commit();
+  }
   
   /**
    * Watch the settings to update any changes (like start up music, reset
@@ -129,9 +157,11 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
     this.updateScorePreferenceSummary(Consts.PREFKEY_WRONG_SCORE);
     this.updateScorePreferenceSummary(Consts.PREFKEY_SKIP_SCORE);
 
-    // Register onclick listener
-    Preference resetPref = (Preference) findPreference(Consts.PREFKEY_RESET_PACKS);
-    resetPref.setOnPreferenceClickListener(mPrefClickListener);
+    // Register onclick listeners
+    Preference resetPacksPref = (Preference) findPreference(Consts.PREFKEY_RESET_PACKS);
+    resetPacksPref.setOnPreferenceClickListener(mResetPacksListener);
+    Preference resetTutorialPref = (Preference) findPreference(Consts.PREFKEY_RESET_TUTORIAL);
+    resetTutorialPref.setOnPreferenceClickListener(mResetTutorialListener);    
     
     // Update the version preference caption to the existing app version
     Preference version = findPreference("app_version");
@@ -143,7 +173,7 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
                   0).versionName);
     } catch (NameNotFoundException e) {
       e.printStackTrace();
-      SafeLog.e(TAG, e.getMessage());
+      Log.e(TAG, e.getMessage());
     }
   }
 
@@ -225,10 +255,37 @@ public class SettingsPreferenceActivity extends PreferenceActivity {
           }).setNegativeButton(this.getString(R.string.shuffleDialog_negativeBtn),
               new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+              // Play back sound
+              SoundManager sm = SoundManager
+                  .getInstance(getBaseContext());
+              sm.playSound(SoundManager.Sound.BACK);
+              dialog.cancel();
+            }
+          });
+      dialog = builder.create();
+      break;
+    case RESET_TUTORIAL_DIALOG:
+      builder = new AlertDialog.Builder(this);
+      builder.setTitle(getString(R.string.resetTutorialDialog_title));
+      builder.setMessage(getString(R.string.resetTutorialDialog_text))
+          .setPositiveButton(getString(R.string.resetTutorialDialog_positiveBtn),
+               new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              resetTutorialProgress();
+              
               // Play confirmation sound
               SoundManager sm = SoundManager
                   .getInstance(getBaseContext());
               sm.playSound(SoundManager.Sound.CONFIRM);
+              showToast(getString(R.string.toast_settings_tutorial_reset));
+            }
+          }).setNegativeButton(this.getString(R.string.resetTutorialDialog_negativeBtn),
+              new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+              // Play confirmation sound
+              SoundManager sm = SoundManager
+                  .getInstance(getBaseContext());
+              sm.playSound(SoundManager.Sound.BACK);
               dialog.cancel();
             }
           });
