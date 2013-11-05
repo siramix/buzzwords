@@ -58,7 +58,7 @@
   <target name="config-samsung" depends="config">
 
     <replace
-        file="${source.dir}/com/buzzwords/Config.java"
+        file="${source.dir}/com/buzzwordslite/Config.java"
         propertyFile="build.properties">
       <replacefilter
           token="@CONFIG.BUZZWORDSSTORE@"
