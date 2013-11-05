@@ -157,7 +157,7 @@ def buildApk(market):
     Echo and run the ant commands necessary to create a build for the provided
     market. Accepts "google" or "amazon" as parameter values.
     '''
-    print "Building apk for %s..." % market
+    print "\n\nBuilding apk for %s..." % market
     print "\033[94m" + "ant config-%s" % market + "\033[0m"
     subprocess.call(["ant", "config-%s" % market])
     print "\033[94m" + "ant release" + "\033[0m"
@@ -255,6 +255,9 @@ elif args.build:
 
     # Parse configs and build new Google APK
     buildApk("google")
+
+    # Parse configs and build new Samsung APK
+    buildApk("samsung")
 
     # Clean up our temporary keystore
     try:

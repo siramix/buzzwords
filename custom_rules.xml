@@ -53,7 +53,24 @@
 
   </target>
 
-      <!-- ******************************************************* -->
+
+  <!-- After copying our config file, set up Amazon Market URLs -->
+  <target name="config-samsung" depends="config">
+
+    <replace
+        file="${source.dir}/com/buzzwords/Config.java"
+        propertyFile="build.properties">
+      <replacefilter
+          token="@CONFIG.BUZZWORDSSTORE@"
+          property="config.samsungStoreBuzzwords"/>
+      <replacefilter
+          token="@CONFIG.BUSSWORDSLITESTORE@"
+          property="config.samsungStoreBuzzwordsLite"/>
+    </replace>
+
+  </target>
+
+    <!-- ******************************************************* -->
     <!-- ************************* Help ************************ -->
     <!-- ******************************************************* -->
 
