@@ -2,7 +2,6 @@
 Deployment script for pre-release code changes and package building.
 
 TODOS:
-* Mkdir checks for existing dir. Really we should check for existing apk and warn then.
 * The argument for --lite and --full is a silly way to do it. We should check the
    current branch and if it's not release-lite or release exit, otherwise just
    do the right thing automatically.
@@ -39,8 +38,8 @@ def replaceAll(file, searchExp, replaceExp):
 
 
 def exitDeploy():
-    print "Exiting deployment."
-    exit()
+    print "\033[31mExiting deployment.\033[0m"
+    sys.exit(1)
 
 
 def updateAndroidManifest():
@@ -148,6 +147,10 @@ def printGitHelp():
     print "git push --tags"
     print "\033[94m\nAfter you tag this release, rerun deploy-app.py to create your builds.\033[0m"
 
+def printDirExistsWarning():
+    print "\033[94mCareful, you are overriding the contents of this folder."
+    print "The only reason for doing this is deploying both Lite and Full versions or testing builds.\033[0m\n"
+
 
 def buildApk(market):
     '''
@@ -169,14 +172,31 @@ def copyApk(market):
     '''
     marketApkDir = APK_VSN_DIR + market + "/"
     try:
-        print "\033[94m" + "mkdir %s" % marketApkDir + "\033[0m"
-        subprocess.check_call(["mkdir", marketApkDir])
+        print "\033[94m" + "mkdir -p %s" % marketApkDir + "\033[0m"
+        subprocess.check_call(["mkdir", "-p", marketApkDir])
+    except:
+        printDirExistsWarning()
+
+    try:
+        apkFind = subprocess.check_call(["find", marketApkDir + NEW_APK_NAME])
+    except:
+        apkFind = 1
+        print "APK did not already exist. Beginning copy."
+    if apkFind == 0:
+        print "The APK already exists. You should have updated versions using --prep."
+        print "Continue deploying to this location (BE SURE)? (y/n)"
+        inputchar = sys.stdin.read(2)
+        if inputchar != 'y\n':
+            print "Make sure you've updated versions or delete the existing folder or apk."
+            exitDeploy()
+        else:
+            sys.stdin.flush();
+
+    try:
         print "\033[94m" + "copy %s to %s%s" % (RELEASE_APK, marketApkDir, NEW_APK_NAME) + "\033[0m"
         shutil.copy2(RELEASE_APK, marketApkDir + NEW_APK_NAME)
     except:
         print "\nError copying %s APK to dropbox." % market
-        print "If the folder for your apk version already exists, make sure you've updated versions or delete the existing folder."
-
 
 '''
 Global variables
@@ -217,7 +237,8 @@ elif args.build:
     if inputchar != 'y\n':
         printGitHelp()
         exitDeploy()
-
+    else:
+        sys.stdin.flush();
     pointToSecretPacks()
 
     # Get our keystore from dropbox if possible
@@ -228,19 +249,6 @@ elif args.build:
         print "Couldn't find keystore in Dropbox"
         print "Is this your dropbox directory %s ?" % DROPBOX
         print "If it isn't, open up this util and modify this code to point to your Dropbox (or make it modifiable)."
-
-    # Create Dropbox directory for current version of our apk
-    try:
-        print "\033[94m" + "mkdir %s" % APK_VSN_DIR + "\033[0m"
-        subprocess.check_call(["mkdir", APK_VSN_DIR])
-    except:
-        print "Careful, you may be overriding the contents of this folder."
-        print "\033[94mThe only reason for doing this is deploying both Lite and Full versions or testing builds.\033[0m\n"
-        print "Continue deploying to this location (BE SURE)? (y/n)"
-        inputchar = sys.stdin.read(2)
-        if inputchar != 'y\n':
-            print "Make sure you've updated versions or delete the existing folder."
-            exitDeploy()
 
     # Parse configs and build new Amazon APK
     buildApk("amazon")
@@ -255,6 +263,7 @@ elif args.build:
     except:
         print "Error deleting temporary keystore."
         exitDeploy()
-
+    print "\033[32m\nDeployment Complete!\033[0m"
+    sys.exit(0)
 else:
     parser.print_help()
