@@ -7,6 +7,6 @@ package com.buzzwordslite;
  */
 public class Config {
   public static final String packBaseUri = "https://s3.amazonaws.com/siramix.buzzwords/bw-packdata-test/";
-  public static final String storeUriBuzzwords = "http://www.amazon.com/gp/mas/dl/android?p=com.buzzwords";
-  public static final String storeUriBuzzwordsLite = "http://www.amazon.com/gp/mas/dl/android?p=com.buzzwordslite";
+  public static final String storeUriBuzzwords = "http://www.siramix.com/buzzwords-redirect.html";
+  public static final String storeUriBuzzwordsLite = "http://www.siramix.com/buzzwordslite-redirect.html";
 }
