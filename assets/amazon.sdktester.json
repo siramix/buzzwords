@@ -3,14 +3,14 @@
     "itemType": "ENTITLED",
     "price": 0.99,
     "title": "Extra Buzzwords",
-    "description": "A pack of extra buzzwords for anyone who wants to beef up their original buzzwords deck.",
+    "description": "A pack of extra buzzwords for anyone who wants to beef up their original buzzwords deck.\n Cards in Pack: 250",
     "smallIconUrl": "http://siramix.com/buzzwords/packs/packs/icons/packicon_classic2.png"
   },
   "200" : {
     "itemType": "ENTITLED",
     "price": 0.99,
     "title": "Winter Holidays",
-    "description": "Celebrate the holiday season with this festive set of wintery words.",
+    "description": "Celebrate the holiday season with this festive set of wintery words.\n Cards in Pack: 250",
     "smallIconUrl": "http://siramix.com/buzzwords/packs/packs/icons/packicon_christmas.png"
   }
 }

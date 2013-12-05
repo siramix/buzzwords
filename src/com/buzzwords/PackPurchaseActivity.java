@@ -3,10 +3,12 @@ package com.buzzwords;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimerTask;
 
 import org.json.JSONException;
 
@@ -30,6 +32,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.text.format.Time;
+import android.text.method.TimeKeyListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -69,6 +73,10 @@ public class PackPurchaseActivity extends Activity {
   
   // Our pack lists as retrieved from the server
   private LinkedList<Pack> mServerPacks;
+  
+  // A set of pack IDs retrieved from Amazon's IAP JSON, retrieved by an ItemDataRequest
+  private Set<String> mAvailableAmazonSKUs = new HashSet<String> ();
+  private boolean mBlockedOnItemDataRequest = false;
   
   private GameManager mGameManager;
 
@@ -392,6 +400,15 @@ public class PackPurchaseActivity extends Activity {
         public void run() {
           try {
             mServerPacks = client.getServerPacks();
+            // Retrieve IAP ItemData for each purchasable pack
+            Set<String> skus = new HashSet<String> ();
+            for (Pack pack : mServerPacks) {
+              if (pack.getPurchaseType() == PackPurchaseConsts.PACKTYPE_PAY) {
+                skus.add(String.valueOf(pack.getId()));
+              }
+            }
+            mBlockedOnItemDataRequest = true;
+            PurchasingManager.initiateItemDataRequest(skus);
           } catch (IOException e1) {
             Log.e(TAG, "Error occurred during I/O of serverPacks.");
             mServerError = true;
@@ -407,6 +424,14 @@ public class PackPurchaseActivity extends Activity {
             Log.e(TAG, e1.toString());
             e1.printStackTrace();
           }
+          int timeoutInMillis = 7500;
+          long timeoutStamp = System.currentTimeMillis() + timeoutInMillis;
+          while (mBlockedOnItemDataRequest) {
+            // Thread is blocked until ItemData comes back
+            if (System.currentTimeMillis() > timeoutStamp) {
+              break;
+            }
+          }
           Message message = handler.obtainMessage(1, mServerPacks);
           handler.sendMessage(message);
         }
@@ -414,7 +439,15 @@ public class PackPurchaseActivity extends Activity {
     
     thread.start();
   }
-
+  
+  /*
+   * This method should be called when the PackPurchaseObserver's ItemDataRequest has been completed.
+   */
+  public void unBlockFetchPurchasablePacksThread() {
+    mBlockedOnItemDataRequest = false;
+  }
+  
+  
   /**
    * Remove from lockedPacks those packs that are already installed.
    * @param lockedPacks all locked packs
@@ -437,6 +470,28 @@ public class PackPurchaseActivity extends Activity {
     return unownedPackList;
   }
   
+  /*
+   * Compare the list of lockedPacks with the list of packs available as Amazon IAP. Only
+   * return packs that are either not of Packtype_PAY or are in the list of available Amazon
+   * packs. The list of available Amazon packs should be created asyncronously before this
+   * method is called.
+   */
+  private LinkedList<Pack> getOnlyAvailablePacks(LinkedList<Pack> lockedPacks) {
+    LinkedList<Pack> availablePacks = new LinkedList<Pack>();
+    
+    for (Pack lockedPack : lockedPacks) {
+      if (lockedPack.getPurchaseType() == PackPurchaseConsts.PACKTYPE_PAY) {
+        if (mAvailableAmazonSKUs.size() != 0 && mAvailableAmazonSKUs.contains(String.valueOf(lockedPack.getId()))) {
+          availablePacks.add(lockedPack);
+        }
+      } else {
+        availablePacks.add(lockedPack);
+      }
+    }
+    
+    return availablePacks;
+  }
+  
   /**
    * Populate the list of purchasable packs. Handle special cases like removing
    * the loading bar and changing or removing the placeholder text. Assumes layout
@@ -452,6 +507,7 @@ public class PackPurchaseActivity extends Activity {
     TextView placeHolderText = (TextView) findViewById(R.id.PackPurchase_PaidPackPlaceholderText);
     
     lockedPacks = getUnownedPacks(mServerPacks, mUnlockedPacks);
+    lockedPacks = getOnlyAvailablePacks(lockedPacks);
     if (mServerError || mUserError) {
       placeHolderText.setVisibility(View.VISIBLE);
       placeHolderText.setText(getString(R.string.packpurchase_nointernet));
@@ -462,7 +518,7 @@ public class PackPurchaseActivity extends Activity {
       populatePackLayout(lockedPacks, paidPackLayout);
     }
   }
-  
+
   /**
    * Create dynamic rows of packs at runtime for pack purchase view. This will
    * set up the XML, bind listeners, and update pack titles, price, and images
@@ -986,6 +1042,13 @@ public class PackPurchaseActivity extends Activity {
     syncPrefEditor.putBoolean(Consts.PREFKEY_UNSYNCED_PURCHASE_CHANGE, true);
     userPurchases.commit();
     syncPrefEditor.commit();
+  }
+  
+  /*
+   * Add a pack SKU to the list of Amazon Packs to compare our list of server packs against.
+   */
+  protected void addAvailableAmazonPackSKU (final String SKU) {
+      mAvailableAmazonSKUs.add(SKU);
   }
 
   /**

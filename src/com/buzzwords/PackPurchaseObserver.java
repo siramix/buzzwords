@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 import com.amazon.inapp.purchasing.BasePurchasingObserver;
 import com.amazon.inapp.purchasing.GetUserIdResponse;
@@ -43,6 +44,7 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
     private static final String OFFSET = "offset";
     private static final String TAG = "Amazon-IAP";
     private final PackPurchaseActivity baseActivity;
+    private boolean isDoneRetrievingItemData = false;
 
     /**
      * Creates new instance of the PackPurchaseActivity class.
@@ -215,6 +217,8 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                 // Skus that you can not purchase will be here.
                 for (final String s : itemDataResponse.getUnavailableSkus()) {
                     Log.d(TAG, "Unavailable SKU:" + s);
+                    // We don't need to store these values. They should just not be added to the
+                    // available SKU list.
                 }
             case SUCCESSFUL:
                 // Information you'll want to display about your IAP items is here
@@ -224,16 +228,21 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
                     Item i = items.get(key);
                     Log.d(TAG, String.format("Item: %s\n Type: %s\n SKU: %s\n Price: %s\n Description: %s\n", 
                         i.getTitle(), i.getItemType(), i.getSku(), i.getPrice(), i.getDescription()));
+                    // Add it to our available SKU list
+                    baseActivity.addAvailableAmazonPackSKU(i.getSku());
                 }
+
                 break;
             case FAILED:
                 // On failed responses will fail gracefully.
+                // In this case, our available packs list will be empty
                 break;
             }
-            
+            baseActivity.unBlockFetchPurchasablePacksThread();
             return null;
         }
     }
+
 
     /*
      * Started when the observer receives a Purchase Response
