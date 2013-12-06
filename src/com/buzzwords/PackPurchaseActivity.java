@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TimerTask;
 
 import org.json.JSONException;
 
@@ -32,8 +31,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.text.format.Time;
-import android.text.method.TimeKeyListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;

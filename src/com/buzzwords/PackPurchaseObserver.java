@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
 
 import com.amazon.inapp.purchasing.BasePurchasingObserver;
 import com.amazon.inapp.purchasing.GetUserIdResponse;
@@ -44,7 +43,6 @@ public class PackPurchaseObserver extends BasePurchasingObserver {
     private static final String OFFSET = "offset";
     private static final String TAG = "Amazon-IAP";
     private final PackPurchaseActivity baseActivity;
-    private boolean isDoneRetrievingItemData = false;
 
     /**
      * Creates new instance of the PackPurchaseActivity class.
