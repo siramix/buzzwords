@@ -420,6 +420,11 @@ public class PackPurchaseActivity extends Activity {
             mServerError = true;
             Log.e(TAG, e1.toString());
             e1.printStackTrace();
+          } catch (Exception e1) {
+            Log.e(TAG, "Unknown error retrieving pack JSON from server.");
+            mServerError = true;
+            Log.e(TAG, e1.toString());
+            e1.printStackTrace();
           }
           int timeoutInMillis = 7500;
           long timeoutStamp = System.currentTimeMillis() + timeoutInMillis;
@@ -631,7 +636,7 @@ public class PackPurchaseActivity extends Activity {
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     // If the request is coming from our packInfo Activity, handle the request as
-    // a purchase, a facebook post, or nothing.
+    // a purchase, a Facebook post, or nothing.
     if(requestCode == PACKINFO_REQUEST_CODE)
     {
       if(resultCode == RESULT_CANCELED)
@@ -640,25 +645,12 @@ public class PackPurchaseActivity extends Activity {
         return;
       }
       
-      // Get the pack
+      // Get the pack and check if the code is the Facebook pack result
       Pack curPack = (Pack) data.getExtras().get(getString(R.string.packBundleKey));
       int resultTypeIndex = curPack.getPurchaseType();
       
-      switch(PackPurchaseConsts.PURCHASE_RESULT_CODES[resultTypeIndex])
-      {
-        case PackPurchaseConsts.RESULT_NOCODE:
-          final SharedPreferences settings = getPurchasePrefsForCurrentUser();
-          final String sku = String.valueOf(curPack.getId());
-          boolean entitled = settings.getBoolean(sku, false);
-          
-          if (!entitled) {
-            String requestId = PurchasingManager.initiatePurchaseRequest(sku);
-            storeRequestId(requestId, sku);
-          }
-          break;
-        case PackPurchaseConsts.RESULT_FACEBOOK:
+      if (PackPurchaseConsts.PURCHASE_RESULT_CODES[resultTypeIndex] == PackPurchaseConsts.RESULT_FACEBOOK) {
           openFacebookClient();
-          break;
       }
     } 
 
@@ -864,6 +856,18 @@ public class PackPurchaseActivity extends Activity {
     intent.putExtra(getApplication().getString(R.string.packInfoPurchaseTypeKey),
         pack.getPurchaseType());
     
+    // In app purchase pack info clicks open up the Amazon store popup.
+    if (pack.getPurchaseType() == PackPurchaseConsts.PACKTYPE_PAY) {
+      final SharedPreferences settings = getPurchasePrefsForCurrentUser();
+      final String sku = String.valueOf(pack.getId());
+      boolean entitled = settings.getBoolean(sku, false);
+      
+      if (!entitled) {
+        String requestId = PurchasingManager.initiatePurchaseRequest(sku);
+        storeRequestId(requestId, sku);
+        return;
+      }
+    }
     startActivityForResult(intent, PACKINFO_REQUEST_CODE);
   }
 
