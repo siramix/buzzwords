@@ -405,7 +405,20 @@ public class PackPurchaseActivity extends Activity {
               }
             }
             mBlockedOnItemDataRequest = true;
-            PurchasingManager.initiateItemDataRequest(skus);
+            // Get Item Data from any In App Purchase items. This makes
+            // sure we don't display purchasable IAP items that aren't in Amazon
+            // market yet.
+            if (!skus.isEmpty()) {
+              PurchasingManager.initiateItemDataRequest(skus);
+              int timeoutInMillis = 7500;
+              long timeoutStamp = System.currentTimeMillis() + timeoutInMillis;
+              while (mBlockedOnItemDataRequest) {
+                // Thread is blocked until ItemData comes back
+                if (System.currentTimeMillis() > timeoutStamp) {
+                  break;
+                }
+              }
+            }
           } catch (IOException e1) {
             Log.e(TAG, "Error occurred during I/O of serverPacks.");
             mServerError = true;
@@ -425,14 +438,6 @@ public class PackPurchaseActivity extends Activity {
             mServerError = true;
             Log.e(TAG, e1.toString());
             e1.printStackTrace();
-          }
-          int timeoutInMillis = 7500;
-          long timeoutStamp = System.currentTimeMillis() + timeoutInMillis;
-          while (mBlockedOnItemDataRequest) {
-            // Thread is blocked until ItemData comes back
-            if (System.currentTimeMillis() > timeoutStamp) {
-              break;
-            }
           }
           Message message = handler.obtainMessage(1, mServerPacks);
           handler.sendMessage(message);
