@@ -863,11 +863,12 @@ public class PackPurchaseActivity extends Activity {
     
     // In app purchase pack info clicks open up the Amazon store popup.
     if (pack.getPurchaseType() == PackPurchaseConsts.PACKTYPE_PAY) {
-      final SharedPreferences settings = getPurchasePrefsForCurrentUser();
       final String sku = String.valueOf(pack.getId());
-      boolean entitled = settings.getBoolean(sku, false);
-      
-      if (!entitled) {
+      // Initiate the purchase request whether they have the pack already or not
+      // If they already own it, the pack should be immediately downloaded
+      // The only use case where I've seen this is a user owning a pack prior to us
+      // releasing it which should never happen
+      if (!pack.isInstalled()){
         String requestId = PurchasingManager.initiatePurchaseRequest(sku);
         storeRequestId(requestId, sku);
         return;
