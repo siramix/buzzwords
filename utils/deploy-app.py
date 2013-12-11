@@ -123,8 +123,29 @@ def updateDatabaseVersion():
 
 
 def pointToSecretPacks():
-    print "This is where we will update Config.java to point to the super secret pack location."
+    '''
+    Ask the user what the secret pack directory is and insert it into the
+    build properties file.
+    '''
+    secret_dir = raw_input("Enter the name of the production S3 bucket (ex. bw-packdata-test).\n")
+    propfile = "build.properties"
+    packUriTag = "config.packBaseUri"
+    try:
+        for line in fileinput.input(propfile):
+            if packUriTag in line:
+                cur_url = line.split('=')[1]
+                new_url = "\"https://s3.amazonaws.com/siramix.buzzwords/%s/\"" % secret_dir
+        replaceAll(propfile, "%s=%s" % (packUriTag, cur_url), "%s=%s" % (packUriTag, new_url))
+        print "Pack URI updated."
 
+    except IOError:
+        print "\nError reading %s. Are you running from the buzzwords root directory?" % propfile
+        exitDeploy()
+    # Confirm replacements
+    print "\nUpdated %s with the following lines.\n" % propfile
+    for line in fileinput.input(propfile):
+        if packUriTag in line:
+            print line
 
 def printGitHelp():
     print "\nBefore building, you must\033[94m COMMIT, PUSH, AND TAG\033[0m changes by --prep!\n"
@@ -187,8 +208,7 @@ if args.prep:
     printGitHelp()
 
 elif args.build:
-    print "Have you already committed, pushed, and tagged the release (prepped) version? (y/n)"
-    inputchar = sys.stdin.read(1)
+    inputchar = raw_input("Have you already committed, pushed, and tagged the release (prepped) version? (y/n)\n")
     if inputchar != 'y':
         printGitHelp()
         exitDeploy()
