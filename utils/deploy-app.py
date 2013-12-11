@@ -134,7 +134,7 @@ def pointToSecretPacks():
         for line in fileinput.input(propfile):
             if packUriTag in line:
                 cur_url = line.split('=')[1]
-                new_url = "\"https://s3.amazonaws.com/siramix.buzzwords/%s/\"" % secret_dir
+                new_url = "\"https://s3.amazonaws.com/siramix.buzzwords/%s/\"\n" % secret_dir
         replaceAll(propfile, "%s=%s" % (packUriTag, cur_url), "%s=%s" % (packUriTag, new_url))
         print "Pack URI updated."
 
