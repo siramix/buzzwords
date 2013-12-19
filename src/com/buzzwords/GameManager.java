@@ -213,7 +213,7 @@ public class GameManager implements Serializable {
    * @param context
    */
   public synchronized void saveState(Context context) {
-    Log.e(TAG, "saveState()");
+    Log.d(TAG, "saveState()");
     try {
       //use buffering
       OutputStream file = context.openFileOutput(Consts.GAME_MANAGER_TEMP_FILE, Context.MODE_PRIVATE);
@@ -238,7 +238,7 @@ public class GameManager implements Serializable {
    * @return
    */
   public static synchronized GameManager restoreState(Context context) {
-    Log.e(TAG, "restoreState()");
+    Log.d(TAG, "restoreState()");
     GameManager savedGameManager = null;
     try {
       if (context.getFileStreamPath(Consts.GAME_MANAGER_TEMP_FILE).exists()) {
