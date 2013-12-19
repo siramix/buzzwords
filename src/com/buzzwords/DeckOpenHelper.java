@@ -44,6 +44,8 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
   private static DeckOpenHelper mInstance = null;
 
   private static String TAG = "DeckOpenHelper";
+  
+  private static final String RAND_DATE_STR = "datetime(abs(random())%1000000000, 'unixepoch')";
 
   /**
    * Method for getting the singleton DeckOpenHelper
@@ -404,14 +406,12 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    * @return The new id of the row where the card was inserted, -1 if error
    */
   private synchronized static long insertCard(Card card, int packId, SQLiteDatabase db) {
-    Random randomizer = new Random();
     // Get a random year to make sure installations have different play orders.
-    final int randYear = randomizer.nextInt(1970);
     ContentValues initialValues = new ContentValues();
     initialValues.put(CardColumns._ID, card.getId());
     initialValues.put(CardColumns.TITLE, card.getTitle());
     initialValues.put(CardColumns.BADWORDS, card.getBadWordsString());
-    initialValues.put(CardColumns.PLAY_DATE, randYear + "-01-01 00:00:00");
+    initialValues.put(CardColumns.PLAY_DATE, RAND_DATE_STR);
     initialValues.put(CardColumns.TIMES_SEEN, 0);
     initialValues.put(CardColumns.PACK_ID, packId);
     return db.insert(CardColumns.TABLE_NAME, null, initialValues);
@@ -483,7 +483,6 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    * this ensures users get a totally reordered deck.
    */
   public synchronized void shuffleAllPacks() {
-    final String RAND_DATE_STR = "datetime(abs(random())%1000000000, 'unixepoch')";
     mDatabase = getWritableDatabase();
     mDatabase.beginTransaction();
     try {
@@ -553,9 +552,10 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
     String[] args = new String[] {String.valueOf(packid), String.valueOf(targetNum)};
     
     // Get the playable cards from pack, sorted by playdate
+
     Cursor res = mDatabase.query(CardColumns.TABLE_NAME, CardColumns.COLUMNS,
           CardColumns.PACK_ID + " = " + args[0],
-          null, null, null, CardColumns.PLAY_DATE + " asc, " + CardColumns.TIMES_SEEN + " asc", args[1]);
+          null, null, null, CardColumns.PLAY_DATE + " ASC, " + CardColumns.TIMES_SEEN + " ASC", args[1]);
     res.moveToFirst();
     
     // The number of cards to return from any given pack will use the following formula:
@@ -571,7 +571,6 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
       returnCards.add(card);
       res.moveToNext();
     }
-    
     res.close();
     mDatabase.close();
     return returnCards;
@@ -614,13 +613,18 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     Log.d(TAG, "Upgrading database from version " + oldVersion + " to "
-        + newVersion + ", which will destroy all old data");
-    db.execSQL("DROP TABLE IF EXISTS cache;");
-    db.execSQL("DROP TABLE IF EXISTS " + CardColumns.TABLE_NAME + ";");
-    db.execSQL("DROP TABLE IF EXISTS " + PackColumns.TABLE_NAME + ";");
-    db.execSQL(PackColumns.TABLE_CREATE);
-    db.execSQL(CardColumns.TABLE_CREATE);
-    onCreate(db);
+        + newVersion + ", which should update the ");
+    // Call any migrations or scripts that need to run on update.
+    FixTimestamps();
+  }
+  
+  /*
+   * Fix the timestamps to be all 1970+ (unixepoch). Dates were being sorted as strings which
+   * meant that 2013 was being marked as older than 21 (year 21) for example.
+   */
+  private void FixTimestamps()
+  {
+    mDatabase.execSQL("UPDATE cards SET play_date = " + RAND_DATE_STR + ") WHERE times_seen = 0;");
   }
 
   /**
