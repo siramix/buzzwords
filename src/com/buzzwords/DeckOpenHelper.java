@@ -23,7 +23,6 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -615,16 +614,26 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
     Log.d(TAG, "Upgrading database from version " + oldVersion + " to "
         + newVersion + ", which should update the ");
     // Call any migrations or scripts that need to run on update.
-    FixTimestamps();
+    DeleteLitePack(db);
+    FixTimestamps(db);
   }
   
   /*
    * Fix the timestamps to be all 1970+ (unixepoch). Dates were being sorted as strings which
    * meant that 2013 was being marked as older than 21 (year 21) for example.
    */
-  private void FixTimestamps()
-  {
-    mDatabase.execSQL("UPDATE cards SET play_date = " + RAND_DATE_STR + ") WHERE times_seen = 0;");
+  private void FixTimestamps(SQLiteDatabase db) {
+    db.execSQL("UPDATE " + CardColumns.TABLE_NAME +
+        " SET " + CardColumns.PLAY_DATE + " = " + RAND_DATE_STR +
+        " WHERE times_seen = 0;");
+  }
+
+  /*
+   * Remove the Lite pack from installs which had the lite pack in their pack list.
+   */
+  private void DeleteLitePack(SQLiteDatabase db) {
+    db.execSQL("DELETE FROM " + PackColumns.TABLE_NAME +
+        " WHERE " + PackColumns._ID + " = 0;");
   }
 
   /**
