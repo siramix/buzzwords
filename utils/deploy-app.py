@@ -1,3 +1,12 @@
+'''
+Deployment script for pre-release code changes and package building.
+
+TODOS:
+* The argument for --lite and --full is a silly way to do it. We should check the
+   current branch and if it's not release-lite or release exit, otherwise just
+   do the right thing automatically.
+* Tagging process can be added to --prep
+'''
 import os
 import sys
 import shutil
@@ -12,6 +21,9 @@ parser = argparse.ArgumentParser(description=desc)
 group = parser.add_mutually_exclusive_group()
 group.add_argument("-p", "--prep", help="Run this FIRST before creating a build.", action='store_true')
 group.add_argument("-b", "--build", help="Run this AFTER tagging and commiting the PREP'ed code", action='store_true')
+litefull = parser.add_mutually_exclusive_group()
+litefull.add_argument("-l", "--lite", help="For deploying release-lite", action='store_true')
+litefull.add_argument("-f", "--full", help="For deploying release", action='store_true')
 args = parser.parse_args()
 
 
@@ -26,8 +38,8 @@ def replaceAll(file, searchExp, replaceExp):
 
 
 def exitDeploy():
-    print "Exiting deployment."
-    exit()
+    print "\033[31mExiting deployment.\033[0m"
+    sys.exit(1)
 
 
 def updateAndroidManifest():
@@ -147,6 +159,7 @@ def pointToSecretPacks():
         if packUriTag in line:
             print line
 
+
 def printGitHelp():
     print "\nBefore building, you must\033[94m COMMIT, PUSH, AND TAG\033[0m changes by --prep!\n"
     print "LUCAS LOOK THIS PROCESS UP AND DOCUMENT HERE"
@@ -156,13 +169,17 @@ def printGitHelp():
     print "git push --tags"
     print "\033[94m\nAfter you tag this release, rerun deploy-app.py to create your builds.\033[0m"
 
+def printDirExistsWarning():
+    print "\033[94mCareful, you are overriding the contents of this folder."
+    print "The only reason for doing this is deploying both Lite and Full versions or testing builds.\033[0m\n"
+
 
 def buildApk(market):
     '''
     Echo and run the ant commands necessary to create a build for the provided
     market. Accepts "google" or "amazon" as parameter values.
     '''
-    print "Building apk for %s..." % market
+    print "\n\nBuilding apk for %s..." % market
     print "\033[94m" + "ant config-%s" % market + "\033[0m"
     subprocess.call(["ant", "config-%s" % market])
     print "\033[94m" + "ant release" + "\033[0m"
@@ -177,14 +194,31 @@ def copyApk(market):
     '''
     marketApkDir = APK_VSN_DIR + market + "/"
     try:
-        print "\033[94m" + "mkdir %s" % marketApkDir + "\033[0m"
-        subprocess.check_call(["mkdir", marketApkDir])
-        print "\033[94m" + "copy %s to %s" % (RELEASE_APK, marketApkDir) + "\033[0m"
-        shutil.copy2(RELEASE_APK, marketApkDir + "buzzwords.apk")
+        print "\033[94m" + "mkdir -p %s" % marketApkDir + "\033[0m"
+        subprocess.check_call(["mkdir", "-p", marketApkDir])
+    except:
+        printDirExistsWarning()
+
+    try:
+        apkFind = subprocess.check_call(["find", marketApkDir + NEW_APK_NAME])
+    except:
+        apkFind = 1
+        print "APK did not already exist. Beginning copy."
+    if apkFind == 0:
+        print "The APK already exists. You should have updated versions using --prep."
+        print "Continue deploying to this location (BE SURE)? (y/n)"
+        inputchar = sys.stdin.read(2)
+        if inputchar != 'y\n':
+            print "Make sure you've updated versions or delete the existing folder or apk."
+            exitDeploy()
+        else:
+            sys.stdin.flush();
+
+    try:
+        print "\033[94m" + "copy %s to %s%s" % (RELEASE_APK, marketApkDir, NEW_APK_NAME) + "\033[0m"
+        shutil.copy2(RELEASE_APK, marketApkDir + NEW_APK_NAME)
     except:
         print "\nError copying %s APK to dropbox." % market
-        print "If the folder for your apk version already exists, make sure you've updated versions or delete the existing folder."
-
 
 '''
 Global variables
@@ -197,10 +231,22 @@ for line in fileinput.input(manifestFile):
 DROPBOX = os.environ['HOME'] + "/Dropbox/Siramix/"
 APK_VSN_DIR = DROPBOX + "apps/buzzwords_apks/Buzzwords-%s/" % curVsnName
 RELEASE_APK = "bin/Buzzwords-release.apk"
+NEW_APK_NAME = "buzzwords.apk"
 
 '''
 Primary script functionality. Two paths depending passed arguments, PREP or BUILD.
 '''
+if (not args.lite and not args.full) or (not args.build and not args.prep):
+    print "\033[94mYou must supply --full or --lite AND --prep or --build.\033[0m"
+    print "\033[94mSee launch_process.txt\033[0m"
+    parser.print_help()
+    exitDeploy()
+
+if args.lite:
+    NEW_APK_NAME = "buzzwordslite.apk"
+elif args.full:
+    NEW_APK_NAME = "buzzwords.apk"
+
 if args.prep:
     print "Prepping codebase for final commit..."
     updateAndroidManifest()
@@ -212,7 +258,8 @@ elif args.build:
     if inputchar != 'y':
         printGitHelp()
         exitDeploy()
-
+    else:
+        sys.stdin.flush();
     pointToSecretPacks()
 
     # Get our keystore from dropbox if possible
@@ -224,20 +271,14 @@ elif args.build:
         print "Is this your dropbox directory %s ?" % DROPBOX
         print "If it isn't, open up this util and modify this code to point to your Dropbox (or make it modifiable)."
 
-    # Create Dropbox directory for current version of our apk
-    try:
-        print "\033[94m" + "mkdir %s" % APK_VSN_DIR + "\033[0m"
-        subprocess.check_call(["mkdir", APK_VSN_DIR])
-    except:
-        print "Error creating dropbox apk folder for current version."
-        print "If the folder for your apk version already exists, make sure you've updated versions or delete the existing folder."
-        exitDeploy()
-
     # Parse configs and build new Amazon APK
     buildApk("amazon")
 
     # Parse configs and build new Google APK
     buildApk("google")
+
+    # Parse configs and build new Samsung APK
+    buildApk("samsung")
 
     # Clean up our temporary keystore
     try:
@@ -246,6 +287,7 @@ elif args.build:
     except:
         print "Error deleting temporary keystore."
         exitDeploy()
-
+    print "\033[32m\nDeployment Complete!\033[0m"
+    sys.exit(0)
 else:
     parser.print_help()
