@@ -98,7 +98,7 @@ public class Consts {
     public static final String TIMER_TEMP_FILE = "cur_timer.ser";
 
     public static final String DATABASE_NAME = "buzzwords";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
 
     public static final int CACHE_MAXSIZE = 100;
     public static final int CACHE_TURNSIZE = 20;
