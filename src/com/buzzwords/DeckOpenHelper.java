@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -406,11 +407,15 @@ public class DeckOpenHelper extends SQLiteOpenHelper {
    */
   private synchronized static long insertCard(Card card, int packId, SQLiteDatabase db) {
     // Get a random year to make sure installations have different play orders.
+    long rangebegin = Timestamp.valueOf("1970-01-01 00:00:00").getTime();
+    long rangeend = Timestamp.valueOf("1999-01-01 00:00:00").getTime();
+    long diff = rangeend - rangebegin + 1;
+    Timestamp rand = new Timestamp(rangebegin + (long)(Math.random() * diff));
     ContentValues initialValues = new ContentValues();
     initialValues.put(CardColumns._ID, card.getId());
     initialValues.put(CardColumns.TITLE, card.getTitle());
     initialValues.put(CardColumns.BADWORDS, card.getBadWordsString());
-    initialValues.put(CardColumns.PLAY_DATE, RAND_DATE_STR);
+    initialValues.put(CardColumns.PLAY_DATE, rand.toString());
     initialValues.put(CardColumns.TIMES_SEEN, 0);
     initialValues.put(CardColumns.PACK_ID, packId);
     return db.insert(CardColumns.TABLE_NAME, null, initialValues);
